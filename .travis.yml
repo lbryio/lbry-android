@@ -2,13 +2,14 @@ language: python
 python:
       - "2.7"
 install:
+      - export PATH=/usr/bin:$PATH
       - sudo dpkg --add-architecture i386
       - sudo apt-get -qq update
       - sudo apt-get install build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386
       - sudo apt-get install m4
       - sudo apt-get install libc6-dev-i386
-      - sudo pip install --upgrade cython==0.25.2
-      - sudo pip install -e git+https://github.com/kivy/buildozer.git#egg=buildozer
+      - pip install --upgrade cython==0.25.2
+      - pip install -e git+https://github.com/kivy/buildozer.git#egg=buildozer
       - mv buildozer.spec.travis buildozer.spec
       - mkdir -p cd ~/.buildozer/android/platform/
       - wget 'https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip' -P ~/.buildozer/android/platform/
