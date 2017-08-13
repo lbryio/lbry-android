@@ -26,5 +26,6 @@ install:
         #      - mv ~/.buildozer/android/platform/android-5.0.1 ~/.buildozer/android/platform/android-sdk-21
       - ls -lhsa ~/.buildozer/android/platform/
 script:
+      - buildozer android update
       - buildozer android debug
       - buildozer android deploy
