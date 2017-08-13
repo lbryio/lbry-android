@@ -1,0 +1,6 @@
+.buildozer
+bin
+buildozer.spec
+build.log
+recipes/**/*.pyc
+

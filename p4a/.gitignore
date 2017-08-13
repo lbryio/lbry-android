@@ -1,0 +1,23 @@
+*.swp
+*.swo
+*~
+
+#ECLIPSE + PYDEV
+.project
+.pydevproject
+
+.deps
+
+.optional-deps
+
+*.pyc
+*.pyo
+*.apk
+.packages
+python_for_android.egg-info
+/build/
+doc/build
+__pycache__/
+
+#idea/pycharm
+.idea/

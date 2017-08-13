@@ -1,0 +1,22 @@
+--- Python-2.7.13/Lib/platform.py	2016-12-17 21:05:06.000000000 +0100
++++ Python-2.7.13-modified/Lib/platform.py	2017-08-13 00:46:39.161864994 +0100
+@@ -1311,7 +1311,18 @@
+         e.g.  NetBSD does this.
+ 
+     """
+-    return uname()[5]
++    # Attempt to obtain the processor name from /proc/cpuinfo on Android
++    processor_name = uname()[5]
++    if (processor_name.strip() == ""):
++        cpuinfo = '/proc/cpuinfo'
++        if (os.path.exists(cpuinfo)):
++            lines = tuple(open(cpuinfo, 'r'))
++            for line in lines:
++                if (line.startswith('model name') and line.index(':') > -1):
++                    processor_name = line[line.index(':') + 1:].strip()
++                    break
++
++    return processor_name
+ 
+ ### Various APIs for extracting information from sys.version
+ 

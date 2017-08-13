@@ -1,0 +1,11 @@
+--- Python-2.7.13/Modules/pwdmodule.c	2016-12-17 21:05:07.000000000 +0100
++++ Python-2.7.13-modified/Modules/pwdmodule.c	2017-08-10 13:55:19.603089081 +0100
+@@ -75,7 +75,7 @@
+ #endif
+     PyStructSequence_SET_ITEM(v, setIndex++, _PyInt_FromUid(p->pw_uid));
+     PyStructSequence_SET_ITEM(v, setIndex++, _PyInt_FromGid(p->pw_gid));
+-#ifdef __VMS
++#if defined(__VMS) || defined(ANDROID)
+     SETS(setIndex++, "");
+ #else
+     SETS(setIndex++, p->pw_gecos);
