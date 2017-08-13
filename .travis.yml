@@ -12,7 +12,7 @@ install:
       - mv buildozer.spec.travis buildozer.spec
       - mkdir -p cd ~/.buildozer/android/platform/
       - wget 'https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip' -P ~/.buildozer/android/platform/
-      - unzip ~/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip -d ~/.buildozer/android/platform/
+      - unzip -qq ~/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip -d ~/.buildozer/android/platform/
 script:
       - buildozer android update
       - buildozer android deploy
