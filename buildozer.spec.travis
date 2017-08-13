@@ -89,13 +89,13 @@ fullscreen = 0
 android.permissions = INTERNET,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
 
 # (int) Android API to use
-android.api = 21
+android.api = 24
 
 # (int) Minimum API required
 #android.minapi = 9
 
 # (int) Android SDK version to use
-android.sdk = 21
+android.sdk = 24
 
 # (str) Android NDK version to use
 android.ndk = 13b
