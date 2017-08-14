@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/lbryio/lbry-android.svg?branch=master)](https://travis-ci.org/lbryio/lbry-android)
 ## 64-bit Ubuntu 16.04 LTS build instructions
 
 ### Install Prerequisites
