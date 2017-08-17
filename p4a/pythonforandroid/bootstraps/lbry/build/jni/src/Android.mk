@@ -4,12 +4,8 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := main
 
-#SDL_PATH := ../SDL
-
-#LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include
-
 # Add your application source files here...
-LOCAL_SRC_FILES := pyjniusjni.c start.c
+LOCAL_SRC_FILES := start.c pyjniusjni.c
 
 LOCAL_CFLAGS += -I$(LOCAL_PATH)/../../../../other_builds/$(PYTHON2_NAME)/$(ARCH)/python2/python-install/include/python2.7 $(EXTRA_CFLAGS)
 
