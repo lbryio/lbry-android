@@ -9,7 +9,7 @@ class PyjniusRecipe(CythonRecipe):
     version = 'master'
     url = 'https://github.com/kivy/pyjnius/archive/{version}.zip'
     name = 'pyjnius'
-    depends = [('python2', 'python3crystax'), ('sdl2', 'sdl', 'genericndkbuild'), 'six']
+    depends = [('python2', 'python3crystax'), 'genericndkbuild', 'six']
     site_packages_name = 'jnius'
     call_hostpython_via_targetpython = False
 

@@ -7,7 +7,7 @@ import sh
 class LbryBootstrap(Bootstrap):
     name = 'lbry'
 
-    recipe_depends = ['sdl2', ('python2', 'python3crystax')]
+    recipe_depends = ['genericndkbuild', ('python2', 'python3crystax')]
 
     def run_distribute(self):
         info_main('# Creating Android project from build and {} bootstrap'.format(

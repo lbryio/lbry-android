@@ -1,50 +1,6 @@
 import platform
 
-# logging override (until we can figure out why logging doesn't work normally)
-import logging
-from kivy.logger import Logger
-class InternalLogger(logging.Logger):
-    def __init__(self, name, level=logging.DEBUG):
-        self.name = name
-        return super(InternalLogger, self).__init__(name, level)
-
-    def debug(self, msg, *args, **kwargs):
-        msg = '%s: %s' % (self.name, msg)
-        Logger.debug(msg, *args, **kwargs)
-
-    def info(self, msg, *args, **kwargs):
-        msg = '%s: %s' % (self.name, msg)
-        Logger.info(msg, *args, **kwargs)
-
-    def warning(self, msg, *args, **kwargs):
-        msg = '%s: %s' % (self.name, msg)
-        Logger.warning(msg, *args, **kwargs)
-
-    def error(self, msg, *args, **kwargs):
-        msg = '%s: %s' % (self.name, msg)
-        Logger.error(msg, *args, **kwargs)
-
-    def critical(self, msg, *args, **kwargs):
-        msg = '%s: %s' % (self.name, msg)
-        Logger.critical(msg, *args, **kwargs)
-
-    def log(self, lvl, msg, *args, **kwargs):
-        msg = '%s: %s' % (self.name, msg)
-        Logger.log(lvl, msg, *args, **kwargs)
-
-    def exception(self, msg, *args, **kwargs):
-        msg = '%s: %s' % (self.name, msg)
-        Logger.exception(msg, *args, **kwargs)
-
-    # required by twisted for some reason.
-    def fail(self, *args, **kwargs):
-        pass
-
-def getLoggerOverride(name='root', loglevel=logging.DEBUG):
-    return InternalLogger(name, loglevel)
-
-logging.getLogger = getLoggerOverride
-
+import logging.handlers
 from lbrynet.core import log_support
 
 from twisted.internet import defer, reactor
@@ -56,15 +12,13 @@ from lbrynet.core import utils, system_info
 from lbrynet.daemon.auth.client import LBRYAPIClient
 from lbrynet.daemon.DaemonServer import DaemonServer
 
-import kivy
 import ssl
 
 # Fixes / patches / overrides
 # platform.platform() in libc_ver: IOError: [Errno 21] Is a directory
-if (kivy.platform == 'android'):
-    from jnius import autoclass
-    util = autoclass('io.lbry.lbrynet.Utils')
-    platform.platform = lambda: 'Android %s (API %s)' % (util.getAndroidRelease(), util.getAndroidSdk())
+from jnius import autoclass
+util = autoclass('io.lbry.lbrynet.Utils')
+platform.platform = lambda: 'Android %s (API %s)' % (util.getAndroidRelease(), util.getAndroidSdk())
 
 # https certificate verification
 # TODO: this is bad. Need to find a way to properly verify https requests

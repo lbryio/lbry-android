@@ -14,9 +14,7 @@
 #include <sys/types.h>
 #include <errno.h>
 
-#include "SDL.h"
 #include "android/log.h"
-#include "SDL_opengles2.h"
 
 #define ENTRYPOINT_MAXLEN 128
 #define LOG(n, x) __android_log_write(ANDROID_LOG_INFO, (n), (x))
@@ -84,7 +82,7 @@ int main(int argc, char *argv[]) {
   setenv("ANDROID_APP_PATH", env_argument, 1);
   env_entrypoint = getenv("ANDROID_ENTRYPOINT");
   env_logname = getenv("PYTHON_NAME");
-  
+
   if (env_logname == NULL) {
     env_logname = "python";
     setenv("PYTHON_NAME", "python", 1);
