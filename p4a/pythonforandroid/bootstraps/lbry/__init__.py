@@ -7,13 +7,13 @@ import sh
 class LbryBootstrap(Bootstrap):
     name = 'lbry'
 
-    recipe_depends = ['sdl2', ('python2', 'python3crystax')]
+    recipe_depends = ['genericndkbuild', ('python2', 'python3crystax')]
 
     def run_distribute(self):
         info_main('# Creating Android project from build and {} bootstrap'.format(
             self.name))
 
-        info('This currently just copies the SDL2 build stuff straight from the build dir.')
+        info('This currently just copies the build stuff straight from the build dir.')
         shprint(sh.rm, '-rf', self.dist_dir)
         shprint(sh.cp, '-r', self.build_dir, self.dist_dir)
         with current_directory(self.dist_dir):
