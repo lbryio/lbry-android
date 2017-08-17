@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">{{ args.name }}</string>
+    <string name="private_version">0.1</string>
+    <string name="presplash_color">{{ args.presplash_color }}</string>
+    <string name="urlScheme">{{ url_scheme }}</string>
+
+    <string name="running">Running</string>
+    <string name="service_status">Service Status</string>
+    <string name="stopped">Stopped</string>
+    <string name="start">START</string>
+    <string name="stop">STOP</string>
+</resources>

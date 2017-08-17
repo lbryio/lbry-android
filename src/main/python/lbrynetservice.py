@@ -63,7 +63,7 @@ import ssl
 # platform.platform() in libc_ver: IOError: [Errno 21] Is a directory
 if (kivy.platform == 'android'):
     from jnius import autoclass
-    util = autoclass('io.lbry.lbrynet.LbrynetService')
+    util = autoclass('io.lbry.lbrynet.Utils')
     platform.platform = lambda: 'Android %s (API %s)' % (util.getAndroidRelease(), util.getAndroidSdk())
 
 # https certificate verification

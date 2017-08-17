@@ -40,9 +40,10 @@ class AndroidRecipe(IncludedFilesBehaviour, CythonRecipe):
         bootstrap = bootstrap_name = self.ctx.bootstrap.name
         is_sdl2 = bootstrap_name in ('sdl2', 'sdl2python3')
         is_pygame = bootstrap_name in ('pygame',)
-        is_webview = bootstrap_name in ('webview',)
+        is_webview = bootstrap_name in ('webview')
+        is_lbry = bootstrap_name in ('lbry')
 
-        if is_sdl2 or is_webview:
+        if is_sdl2 or is_webview or is_lbry:
             if is_sdl2:
                 bootstrap = 'sdl2'
             java_ns = 'org.kivy.android'

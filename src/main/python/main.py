@@ -16,11 +16,11 @@ class ServiceApp(App):
             LbrynetService = autoclass('io.lbry.lbrynet.LbrynetService')
             context = autoclass('org.kivy.android.PythonActivity').mActivity
 
-            LbrynetService.start(context, '')
+            #LbrynetService.start(context, '')
 
             # close the activity once the service starts
             # ideally, we should have some form of service control for the activity
-            context.finish()
+            #context.finish()
 
         return Builder.load_string(kv)
 

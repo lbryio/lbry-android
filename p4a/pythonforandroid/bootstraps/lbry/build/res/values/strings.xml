@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LbryControl</string>
+    <string name="private_version">0.1</string>
+
+    <string name="running">Running</string>
+    <string name="service_status">Service Status</string>
+    <string name="stopped">Stopped</string>
+    <string name="start">START</string>
+    <string name="stop">STOP</string>
+</resources>
