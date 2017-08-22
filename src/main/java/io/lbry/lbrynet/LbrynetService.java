@@ -29,8 +29,23 @@ public class LbrynetService extends PythonService {
 
     public static String TAG = "LbrynetService";
 
+    public static LbrynetService serviceInstance;
+
+    @Override
+    public int startType() {
+        return START_STICKY;
+    }
+
+    @Override
+    public boolean canDisplayNotification() {
+        return false;
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // Assign service instance
+        serviceInstance = this;
+
         // Extract files
         File app_root_file = new File(getAppRoot());
         unpackData("private", app_root_file);
@@ -43,21 +58,17 @@ public class LbrynetService extends PythonService {
     }
 
     @Override
-    public boolean canDisplayNotification() {
-        return false;
+    public void onDestroy() {
+        super.onDestroy();
+        serviceInstance = null;
     }
 
-    @Override
-    public int startType() {
-        return START_STICKY;
-    }
-
-    private String getAppRoot() {
+    public String getAppRoot() {
         String app_root = getApplicationContext().getFilesDir().getAbsolutePath() + "/app";
         return app_root;
     }
 
-    private void recursiveDelete(File f) {
+    public void recursiveDelete(File f) {
         if (f.isDirectory()) {
             for (File r : f.listFiles()) {
                 recursiveDelete(r);
@@ -66,7 +77,7 @@ public class LbrynetService extends PythonService {
         f.delete();
     }
 
-    private void unpackData(final String resource, File target) {
+    public void unpackData(final String resource, File target) {
         Log.v(TAG, "UNPACKING!!! " + resource + " " + target.getName());
 
         // The version of data in memory and on disk.

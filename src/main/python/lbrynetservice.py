@@ -1,8 +1,23 @@
 import platform
+import ssl
+
+# Fixes / patches / overrides
+# platform.platform() in libc_ver: IOError: [Errno 21] Is a directory
+from jnius import autoclass
+lbrynet_utils = autoclass('io.lbry.lbrynet.Utils')
+service = autoclass('io.lbry.lbrynet.LbrynetService').serviceInstance
+platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_utils.getAndroidRelease(), lbrynet_utils.getAndroidSdk())
+
+import lbrynet.androidhelpers
+lbrynet.androidhelpers.paths.android_files_dir = lambda: lbrynet_utils.getFilesDir(service.getApplicationContext())
+lbrynet.androidhelpers.paths.android_internal_storage_dir = lambda: lbrynet_utils.getInternalStorageDir(service.getApplicationContext())
+lbrynet.androidhelpers.paths.android_external_storage_dir = lambda: lbrynet_utils.getExternalStorageDir(service.getApplicationContext())
+lbrynet.androidhelpers.paths.android_app_internal_storage_dir = lambda: lbrynet_utils.getAppInternalStorageDir(service.getApplicationContext())
+lbrynet.androidhelpers.paths.android_app_external_storage_dir = lambda: lbrynet_utils.getAppExternalStorageDir(service.getApplicationContext())
 
 import logging.handlers
-from lbrynet.core import log_support
 
+from lbrynet.core import log_support
 from twisted.internet import defer, reactor
 from jsonrpc.proxy import JSONRPCProxy
 
@@ -11,14 +26,6 @@ from lbrynet import conf
 from lbrynet.core import utils, system_info
 from lbrynet.daemon.auth.client import LBRYAPIClient
 from lbrynet.daemon.DaemonServer import DaemonServer
-
-import ssl
-
-# Fixes / patches / overrides
-# platform.platform() in libc_ver: IOError: [Errno 21] Is a directory
-from jnius import autoclass
-util = autoclass('io.lbry.lbrynet.Utils')
-platform.platform = lambda: 'Android %s (API %s)' % (util.getAndroidRelease(), util.getAndroidSdk())
 
 # https certificate verification
 # TODO: this is bad. Need to find a way to properly verify https requests
@@ -46,7 +53,6 @@ def https_context():
     default_request = requests.Session.request
     requests.Session.request = partialmethod(default_request, verify=False)
     '''
-
 
 # LBRY Daemon
 log = logging.getLogger(__name__)
@@ -88,6 +94,7 @@ def start_server_and_listen(use_auth, analytics_manager, max_tries=5):
         yield daemon_server.stop()
         analytics_manager.send_server_startup_error(str(e))
         reactor.fireSystemEvent("shutdown")
+
 
 if __name__ == '__main__':
     start()
