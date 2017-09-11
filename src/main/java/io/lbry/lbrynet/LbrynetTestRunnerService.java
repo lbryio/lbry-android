@@ -1,11 +1,6 @@
 package io.lbry.lbrynet;
 
-import android.app.Activity;
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 
 import java.io.File;
@@ -18,24 +13,11 @@ import org.kivy.android.PythonService;
 import org.renpy.android.AssetExtract;
 import org.renpy.android.ResourceManager;
 
-/**
- * This service class is based on the auto-generated P4A service class
- * which changes the service start type to START_STICKY and lets it run
- * properly as a background service.
- *
- * @author akinwale
- * @version 0.1
- */
-public class LbrynetService extends PythonService {
+public class LbrynetTestRunnerService extends PythonService {
 
-    public static String TAG = "LbrynetService";
+    public static String TAG = "LbrynetTestRunnerService";
 
-    public static LbrynetService serviceInstance;
-
-    @Override
-    public int startType() {
-        return START_STICKY;
-    }
+    public static LbrynetTestRunnerService serviceInstance;
 
     @Override
     public boolean canDisplayNotification() {
@@ -44,39 +26,30 @@ public class LbrynetService extends PythonService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Assign service instance
-        serviceInstance = this;
-
         // Extract files
         File app_root_file = new File(getAppRoot());
         unpackData("private", app_root_file);
 
         if (intent == null) {
             intent = ServiceHelper.buildIntent(
-                getApplicationContext(), "", LbrynetService.class, "lbrynetservice");
+                getApplicationContext(), "", LbrynetTestRunnerService.class, "testrunnerservice");
         }
 
+        serviceInstance = this;
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         serviceInstance = null;
+        super.onDestroy();
     }
 
-    public String getAppRoot() {
-        String app_root = getApplicationContext().getFilesDir().getAbsolutePath() + "/app";
-        return app_root;
-    }
-
-    public void recursiveDelete(File f) {
-        if (f.isDirectory()) {
-            for (File r : f.listFiles()) {
-                recursiveDelete(r);
-            }
-        }
-        f.delete();
+    public void broadcastTestRunnerOutput(String output) {
+        Intent intent = new Intent();
+        intent.setAction(ServiceControlActivity.TEST_RUNNER_OUTPUT);
+        intent.putExtra("output", output);
+        sendBroadcast(intent);
     }
 
     public void unpackData(final String resource, File target) {
@@ -135,5 +108,19 @@ public class LbrynetService extends PythonService {
                 Log.w("python", e);
             }
         }
+    }
+
+    public void recursiveDelete(File f) {
+        if (f.isDirectory()) {
+            for (File r : f.listFiles()) {
+                recursiveDelete(r);
+            }
+        }
+        f.delete();
+    }
+
+    public String getAppRoot() {
+        String app_root = getApplicationContext().getFilesDir().getAbsolutePath() + "/app";
+        return app_root;
     }
 }

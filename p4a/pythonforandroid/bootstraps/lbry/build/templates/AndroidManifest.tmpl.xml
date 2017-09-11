@@ -118,6 +118,8 @@
         {% endfor %}
 		<service android:name="{{ args.package }}.LbrynetService"
 				 android:process=":service_lbrynet" />
+		<service android:name="{{ args.package }}.LbrynetTestRunnerService"
+				 android:process=":service_lbrynet_testrunner" />
 
         {% if args.billing_pubkey %}
         <service android:name="org.kivy.android.billing.BillingReceiver"

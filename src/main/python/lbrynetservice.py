@@ -54,7 +54,8 @@ lbrynet.daemon.auth.util.save_api_keys = save_api_keys
 lbrynet.daemon.auth.util.initialize_api_key_file = initialize_api_key_file
 
 import logging.handlers
-
+if __name__ == '__main__':
+    ServiceApp().run()
 from lbrynet.core import log_support
 from twisted.internet import defer, reactor
 from jsonrpc.proxy import JSONRPCProxy
