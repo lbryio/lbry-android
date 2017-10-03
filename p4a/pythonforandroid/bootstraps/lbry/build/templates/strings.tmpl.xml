@@ -10,4 +10,7 @@
     <string name="stopped">Stopped</string>
     <string name="start">START</string>
     <string name="stop">STOP</string>
+
+    <string name="unit_tests">Unit tests</string>
+    <string name="run_tests">RUN</string>
 </resources>

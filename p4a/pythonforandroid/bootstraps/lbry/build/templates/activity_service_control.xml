@@ -33,7 +33,6 @@
             />
     </LinearLayout>
 
-
     <Button
         android:id="@+id/btn_start_stop"
         android:layout_width="120dp"
@@ -41,5 +40,48 @@
         android:layout_gravity="right"
         android:layout_marginTop="12dp"
         android:text="@string/start"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="24dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <TextView
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/unit_tests"
+                />
+            <Button
+                android:id="@+id/btn_run_tests"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:text="@string/run_tests"/>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_marginTop="12dp"
+            android:padding="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/test_runner_output"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                />
+        </ScrollView>
+
+    </LinearLayout>
 
 </LinearLayout>
