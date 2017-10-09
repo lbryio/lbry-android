@@ -1,3 +1,4 @@
+import keyring.backend
 import platform
 import ssl
 
@@ -35,12 +36,12 @@ def save_api_keys(keys, path):
     if key_name in keys:
         secret = keys[key_name].secret
         # TODO: For testing. Normally, this should not be displayed.
-        log.info('Saving API Secret: %s', secret);
-        context = service.getApplicationContext();
+        log.info('Saving API Secret: %s', secret)
+        context = service.getApplicationContext()
         lbrynet_utils.saveApiSecret(secret, context, ks)
 
 def initialize_api_key_file(key_path):
-    context = service.getApplicationContext();
+    context = service.getApplicationContext()
     secret = lbrynet_utils.loadApiSecret(context, ks)
     if secret is None:
         keys = {}
@@ -53,9 +54,26 @@ lbrynet.daemon.auth.util.load_api_keys = load_api_keys
 lbrynet.daemon.auth.util.save_api_keys = save_api_keys
 lbrynet.daemon.auth.util.initialize_api_key_file = initialize_api_key_file
 
+# Keyring backend
+class LbryAndroidKeyring(keyring.backend.KeyringBackend):
+    priority = 1
+
+    def set_password(self, servicename, username, password):
+        context = service.getApplicationContext()
+        lbrynet_utils.setPassword(servicename, username, password, context, ks)
+
+    def get_password(self, servicename, username):
+        context = service.getApplicationContext()
+        return lbrynet_utils.getPassword(servicename, username, context, ks)
+
+    def delete_password(self, servicename, username):
+        context = service.getApplicationContext()
+        lbrynet_utils.deletePassword(servicename, username, context, ks)
+
+# set the keyring backend
+keyring.set_keyring(LbryAndroidKeyring())
+
 import logging.handlers
-if __name__ == '__main__':
-    ServiceApp().run()
 from lbrynet.core import log_support
 from twisted.internet import defer, reactor
 from jsonrpc.proxy import JSONRPCProxy
@@ -111,7 +129,7 @@ def start():
 
     if test_internet_connection():
         analytics_manager = analytics.Manager.new_instance()
-        start_server_and_listen(True, analytics_manager)
+        start_server_and_listen(False, analytics_manager)
         reactor.run()
     else:
         log.info("Not connected to internet, unable to start")
