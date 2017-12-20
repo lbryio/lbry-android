@@ -121,7 +121,50 @@ public final class Utils {
 
         return null;
     }
-
+    
+    public static void setPassword(String serviceName, String username, String password, Context context, KeyStore keyStore) {
+        try {
+            String encryptedUsername = String.format("u_%s_%s", serviceName, encrypt(username.getBytes(), context, keyStore));
+            String encryptedPassword = encrypt(password.getBytes(), context, keyStore);
+            SharedPreferences pref = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString(encryptedUsername, encryptedPassword);
+            editor.commit();
+        } catch (Exception ex) {
+            Log.e(TAG, "lbrynetservice - Could not set a password", ex);
+        }
+    }
+    
+    public static String getPassword(String serviceName, String username, Context context, KeyStore keyStore) {
+        try {
+            String encryptedUsername = String.format("u_%s_%s", serviceName, encrypt(username.getBytes(), context, keyStore));
+            SharedPreferences pref = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+            String encryptedPassword = pref.getString(encryptedUsername, null);
+            if (encryptedPassword == null || encryptedPassword.trim().length() == 0) {
+                return null;
+            }
+            
+            byte[] decoded = Base64.decode(encryptedPassword, Base64.DEFAULT);
+            return new String(decrypt(decoded, context, keyStore), Charset.forName("UTF8"));
+        } catch (Exception ex) {
+            Log.e(TAG, "lbrynetservice - could not decrypt password for user", ex);
+        }
+        
+        return null;
+    }
+    
+    public static void deletePassword(String serviceName, String username, Context context, KeyStore keyStore) {
+        try {
+            String encryptedUsername = String.format("u_%s_%s", serviceName, encrypt(username.getBytes(), context, keyStore));
+            SharedPreferences pref = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.remove(encryptedUsername);
+            editor.commit();
+        }  catch (Exception ex) {
+            Log.e(TAG, "lbrynetservice - Could not delete a password", ex);
+        }
+    }
+    
     public static String encrypt(byte[] input, Context context, KeyStore keyStore) throws Exception {
         Cipher c = Cipher.getInstance(AES_MODE, "BC");
         c.init(Cipher.ENCRYPT_MODE, getSecretKey(context, keyStore));
