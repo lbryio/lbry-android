@@ -17,7 +17,7 @@ class PyCryptoRecipe(CompiledComponentsPythonRecipe):
     site_packages_name = 'Crypto'
     call_hostpython_via_targetpython = False
 
-    patches = ['add_length.patch']
+    patches = ['add_length.patch', 'fix-fastmath-include-dirs.patch']
 
     def get_recipe_env(self, arch=None):
         env = super(PyCryptoRecipe, self).get_recipe_env(arch)
@@ -40,8 +40,9 @@ class PyCryptoRecipe(CompiledComponentsPythonRecipe):
             self.ctx.get_libs_dir(arch.arch) +
             '-L{}'.format(self.ctx.libs_dir)) + ' -L{}'.format(
             openssl_build_dir)
-        #env['EXTRA_CFLAGS'] = '--host linux-armv'
+        env['EXTRA_CFLAGS'] = '--host linux-armv'
         env['ac_cv_func_malloc_0_nonnull'] = 'yes'
+
         return env
 
     def build_compiled_components(self, arch):
@@ -50,7 +51,7 @@ class PyCryptoRecipe(CompiledComponentsPythonRecipe):
         env = self.get_recipe_env(arch)
         with current_directory(self.get_build_dir(arch.arch)):
             configure = sh.Command('./configure')
-            shprint(configure, '--host=arm-linux',
+            shprint(configure, '--host=arm-eabi',
                     '--prefix={}'.format(self.ctx.get_python_install_dir()),
                     '--enable-shared', _env=env)
         super(PyCryptoRecipe, self).build_compiled_components(arch)
