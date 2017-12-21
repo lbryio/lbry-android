@@ -1,6 +1,8 @@
 package io.lbry.lbrynet;
 
 import android.content.Intent;
+import android.os.Binder;
+import android.os.IBinder;
 import android.util.Log;
 
 import java.io.File;
@@ -14,15 +16,10 @@ import org.renpy.android.AssetExtract;
 import org.renpy.android.ResourceManager;
 
 public class LbrynetTestRunnerService extends PythonService {
-
+    
     public static String TAG = "LbrynetTestRunnerService";
 
     public static LbrynetTestRunnerService serviceInstance;
-
-    @Override
-    public boolean canDisplayNotification() {
-        return false;
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -44,7 +41,7 @@ public class LbrynetTestRunnerService extends PythonService {
         serviceInstance = null;
         super.onDestroy();
     }
-
+    
     public void broadcastTestRunnerOutput(String output) {
         Intent intent = new Intent();
         intent.setAction(ServiceControlActivity.TEST_RUNNER_OUTPUT);
