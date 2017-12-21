@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Binder;
+import android.os.IBinder;
 import android.util.Log;
 
 import java.io.File;
@@ -27,7 +29,7 @@ import org.renpy.android.ResourceManager;
  * @version 0.1
  */
 public class LbrynetService extends PythonService {
-
+    
     public static String TAG = "LbrynetService";
 
     public static LbrynetService serviceInstance;
@@ -35,11 +37,6 @@ public class LbrynetService extends PythonService {
     @Override
     public int startType() {
         return START_STICKY;
-    }
-
-    @Override
-    public boolean canDisplayNotification() {
-        return false;
     }
 
     @Override
@@ -64,7 +61,7 @@ public class LbrynetService extends PythonService {
         super.onDestroy();
         serviceInstance = null;
     }
-
+    
     public String getAppRoot() {
         String app_root = getApplicationContext().getFilesDir().getAbsolutePath() + "/app";
         return app_root;

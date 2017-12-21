@@ -145,7 +145,7 @@ android.add_src = ./src/main/java
 
 # (list) Gradle dependencies to add (currently works only with sdl2_gradle
 # bootstrap)
-#android.gradle_dependencies =
+android.gradle_dependencies = com.android.support:appcompat-v7:21.0.3
 
 # (str) python-for-android branch to use, defaults to master
 #p4a.branch = stable
