@@ -28,6 +28,8 @@ install:
       - mkdir -p ~/.buildozer/android/platform/android-sdk-21/build-tools
       - unzip -qq ~/.buildozer/android/platform/build-tools_r26.0.1-linux.zip -d ~/.buildozer/android/platform/android-sdk-21/build-tools
       - mv ~/.buildozer/android/platform/android-sdk-21/build-tools/android-8.0.0 ~/.buildozer/android/platform/android-sdk-21/build-tools/26.0.1
+      - mkdir -p ~/.buildozer/android/platform/android-sdk-21/licenses
+      - echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platform/android-sdk-21/licenses/android-sdk-license
 script:
       - buildozer android debug | grep -v 'working:' --line-buffered
       - cp bin/*.apk /dev/null
