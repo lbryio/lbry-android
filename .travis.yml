@@ -8,7 +8,7 @@ install:
       - export PATH=/usr/bin:$PATH
       - sudo dpkg --add-architecture i386
       - sudo apt-get -qq update
-      - sudo apt-get -qq install build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386 npm
+      - sudo apt-get -qq install build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386 npm nodejs
       - sudo pip install --upgrade cython==0.25.2 pip setuptools
       - git clone https://github.com/akinwale/buildozer.git
       - cd app
