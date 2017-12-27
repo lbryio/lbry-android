@@ -11,6 +11,10 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            // All of React Native (JS, Android binaries) is installed from npm
+            url "$rootDir/react/node_modules/react-native/android"
+        }
 	    flatDir {
 	    	dirs 'libs'
 	    }

@@ -2,6 +2,7 @@ package org.kivy.android;
 
 import android.app.Service;
 import android.os.IBinder;
+import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
 import android.content.Context;
@@ -94,7 +95,9 @@ public class PythonService extends Service implements Runnable {
         Intent contextIntent = new Intent(context, PythonActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, contextIntent,
             PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setLatestEventInfo(context, serviceTitle, serviceDescription, pIntent);
+        /*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            notification.setLatestEventInfo(context, serviceTitle, serviceDescription, pIntent);
+        }*/
         startForeground(1, notification);
     }
 
