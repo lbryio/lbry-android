@@ -98,6 +98,7 @@ public class PythonService extends Service implements Runnable {
             .setContentText(serviceDescription)
             .setContentIntent(pIntent)
             .setWhen(System.currentTimeMillis())
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setOngoing(true)
             .build();
         startForeground(1, notification);
