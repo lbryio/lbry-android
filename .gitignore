@@ -1,4 +1,5 @@
 .buildozer
+app/node_modules/
 bin
 buildozer.spec
 build.log

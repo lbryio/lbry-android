@@ -11,6 +11,10 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            // All of React Native (JS, Android binaries) is installed from npm
+            url "$rootDir/react/node_modules/react-native/android"
+        }
 	    flatDir {
 	    	dirs 'libs'
 	    }
@@ -27,6 +31,10 @@ android {
 		targetSdkVersion {{ android_api }}
 		versionCode {{ args.numeric_version }}
 		versionName '{{ args.version }}'
+        
+        ndk {  
+            abiFilters "armeabi-v7a", "x86"  
+        }
 	}
 
 	{% if args.sign -%}

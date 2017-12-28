@@ -16,7 +16,7 @@ source.dir = ./src/main/python
 source.include_exts = py,png,jpg,kv,atlas
 
 # (list) List of inclusions using pattern matching
-#source.include_patterns = assets/*,images/*.png
+#source.include_patterns = assets/*, res/*
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -89,13 +89,13 @@ fullscreen = 0
 android.permissions = INTERNET,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
 
 # (int) Android API to use
-android.api = 21
+android.api = 23
 
 # (int) Minimum API required
-#android.minapi = 9
+android.minapi = 16
 
 # (int) Android SDK version to use
-android.sdk = 21
+android.sdk = 23
 
 # (str) Android NDK version to use
 android.ndk = 13b
@@ -137,7 +137,10 @@ android.ndk = 13b
 
 # (list) List of Java files to add to the android project (can be java or a
 # directory containing the files)
-android.add_src = ./src/main/java
+android.add_src = ./src/main
+
+# (str) Path to the React files and node_modules for building
+android.react_src = ./app
 
 # (list) Android AAR archives to add (currently works only with sdl2_gradle
 # bootstrap)
@@ -145,7 +148,7 @@ android.add_src = ./src/main/java
 
 # (list) Gradle dependencies to add (currently works only with sdl2_gradle
 # bootstrap)
-android.gradle_dependencies = com.android.support:appcompat-v7:21.0.3
+android.gradle_dependencies = com.android.support:appcompat-v7:23.4.0, com.facebook.react:react-native:+
 
 # (str) python-for-android branch to use, defaults to master
 #p4a.branch = stable

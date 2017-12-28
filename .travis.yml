@@ -8,28 +8,31 @@ install:
       - export PATH=/usr/bin:$PATH
       - sudo dpkg --add-architecture i386
       - sudo apt-get -qq update
-      - sudo apt-get -qq install build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386
+      - sudo apt-get -qq install build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386 npm nodejs
       - sudo pip install --upgrade cython==0.25.2 pip setuptools
-      - git clone https://github.com/kivy/buildozer.git
+      - git clone https://github.com/akinwale/buildozer.git
+      - cd app
+      - npm install --silent --save react@16.0.0 react-native
+      - cd ..
       - cd buildozer
       - sudo python setup.py install
       - cd ..
       - mv buildozer.spec.travis buildozer.spec
       - mkdir -p cd ~/.buildozer/android/platform/
       - wget 'https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip' -P ~/.buildozer/android/platform/
-      - wget 'https://dl.google.com/android/android-sdk_r21-linux.tgz' -P ~/.buildozer/android/platform/
-      - wget 'https://dl.google.com/android/repository/android-21_r02.zip' -P ~/.buildozer/android/platform/
+      - wget 'https://dl.google.com/android/android-sdk_r23-linux.tgz' -P ~/.buildozer/android/platform/
+      - wget 'https://dl.google.com/android/repository/android-23_r02.zip' -P ~/.buildozer/android/platform/
       - wget 'https://dl.google.com/android/repository/build-tools_r26.0.1-linux.zip' -P ~/.buildozer/android/platform/
       - unzip -qq ~/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip -d ~/.buildozer/android/platform/
-      - tar -xf ~/.buildozer/android/platform/android-sdk_r21-linux.tgz -C ~/.buildozer/android/platform/
-      - mv ~/.buildozer/android/platform/android-sdk-linux ~/.buildozer/android/platform/android-sdk-21
-      - unzip -qq ~/.buildozer/android/platform/android-21_r02.zip -d ~/.buildozer/android/platform/android-sdk-21/platforms
-      - mv ~/.buildozer/android/platform/android-sdk-21/platforms/android-5.0.1 ~/.buildozer/android/platform/android-sdk-21/platforms/android-21
-      - mkdir -p ~/.buildozer/android/platform/android-sdk-21/build-tools
-      - unzip -qq ~/.buildozer/android/platform/build-tools_r26.0.1-linux.zip -d ~/.buildozer/android/platform/android-sdk-21/build-tools
-      - mv ~/.buildozer/android/platform/android-sdk-21/build-tools/android-8.0.0 ~/.buildozer/android/platform/android-sdk-21/build-tools/26.0.1
-      - mkdir -p ~/.buildozer/android/platform/android-sdk-21/licenses
-      - echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platform/android-sdk-21/licenses/android-sdk-license
+      - tar -xf ~/.buildozer/android/platform/android-sdk_r23-linux.tgz -C ~/.buildozer/android/platform/
+      - mv ~/.buildozer/android/platform/android-sdk-linux ~/.buildozer/android/platform/android-sdk-23
+      - unzip -qq ~/.buildozer/android/platform/android-23_r02.zip -d ~/.buildozer/android/platform/android-sdk-23/platforms
+      - mv ~/.buildozer/android/platform/android-sdk-23/platforms/android-6.0 ~/.buildozer/android/platform/android-sdk-23/platforms/android-23
+      - mkdir -p ~/.buildozer/android/platform/android-sdk-23/build-tools
+      - unzip -qq ~/.buildozer/android/platform/build-tools_r26.0.1-linux.zip -d ~/.buildozer/android/platform/android-sdk-23/build-tools
+      - mv ~/.buildozer/android/platform/android-sdk-23/build-tools/android-8.0.0 ~/.buildozer/android/platform/android-sdk-23/build-tools/26.0.1
+      - mkdir -p ~/.buildozer/android/platform/android-sdk-23/licenses
+      - echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license
 script:
-      - buildozer android debug | grep -v 'working:' --line-buffered
+      - buildozer android debug | grep -Fv -e 'working:' -e 'copy' --line-buffered
       - cp bin/*.apk /dev/null
