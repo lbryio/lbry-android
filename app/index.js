@@ -5,7 +5,7 @@ class InfoComponent extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>LBRY Info</Text>
+        <Text style={styles.title}>LBRY UI</Text>
       </View>
     );
   }
