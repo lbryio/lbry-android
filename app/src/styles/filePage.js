@@ -12,8 +12,7 @@ const filePageStyle = StyleSheet.create({
     flex: 1
   },
   mediaContainer: {
-    backgroundColor: '#000000',
-    paddingTop: 24
+    backgroundColor: '#000000'
   },
   emptyClaimText: {
     textAlign: 'center',

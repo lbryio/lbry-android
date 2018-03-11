@@ -74878,8 +74878,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       flex: 1
     },
     mediaContainer: {
-      backgroundColor: '#000000',
-      paddingTop: 24
+      backgroundColor: '#000000'
     },
     emptyClaimText: {
       textAlign: 'center',
