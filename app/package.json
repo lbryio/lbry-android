@@ -3,10 +3,21 @@
     "version": "0.0.1",
     "private": "true",
     "scripts": {
-        "start": "node node_modules/react-native/local-cli/cli.js start"
+        "start": "node node_modules/react-native/local-cli/cli.js start",
+        "postinstall": "cp ./patch/ReactNativeRenderer-dev.js.patch ./node_modules/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js; rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
     },
     "dependencies": {
-        "react": "^16.0.0",
-        "react-native": "^0.51.0"
+        "lbry-redux": "lbryio/lbry-redux#common-components-refactor",
+        "react": "16.2.0",
+        "react-native": "0.52.0",
+        "react-native-vector-icons": "^4.5.0",
+        "react-navigation": "^1.0.3",
+        "react-navigation-redux-helpers": "^1.0.1",
+        "react-redux": "^5.0.3",
+        "redux": "^3.6.0",
+        "redux-persist": "^4.8.0",
+        "redux-persist-transform-compress": "^4.2.0",
+        "redux-persist-transform-filter": "0.0.10",
+        "redux-thunk": "^2.2.0"
     }
 }
