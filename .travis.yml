@@ -13,7 +13,6 @@ install:
       - git clone https://github.com/akinwale/buildozer.git
       - cd app
       - npm install --silent --save react@16.2.0 react-native@0.52.0
-      - npm install
       - cd ..
       - cd buildozer
       - sudo python setup.py install

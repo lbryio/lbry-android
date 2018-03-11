@@ -74549,7 +74549,10 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
     },
     File: {
-      screen: _file2.default
+      screen: _file2.default,
+      navigationOptions: {
+        header: null
+      }
     }
   }, {
     headerMode: 'screen'
@@ -74582,11 +74585,37 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     babelHelpers.createClass(AppWithNavigationState, [{
+      key: "componentWillMount",
+      value: function componentWillMount() {
+        _reactNative.BackHandler.addEventListener('hardwareBackPress', function () {
+          var _props = this.props,
+              dispatch = _props.dispatch,
+              navigation = _props.navigation,
+              nav = _props.nav;
+
+          if (nav.routes.length === 2 && nav.routes[1].routeName === 'Main') {
+            if (nav.routes[1].routes[0].routes[0].index > 0) {
+              dispatch({
+                type: 'Navigation/BACK'
+              });
+              return true;
+            }
+          }
+
+          return false;
+        }.bind(this));
+      }
+    }, {
+      key: "componentWillUnmount",
+      value: function componentWillUnmount() {
+        _reactNative.BackHandler.removeEventListener('hardwareBackPress');
+      }
+    }, {
       key: "render",
       value: function render() {
-        var _props = this.props,
-            dispatch = _props.dispatch,
-            nav = _props.nav;
+        var _props2 = this.props,
+            dispatch = _props2.dispatch,
+            nav = _props2.nav;
         return _react2.default.createElement(AppNavigator, {
           navigation: (0, _reactNavigation.addNavigationHelpers)({
             dispatch: dispatch,
@@ -74595,7 +74624,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
           }),
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 47
+            lineNumber: 69
           }
         });
       }
@@ -74759,6 +74788,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
           _react2.default.createElement(
             _reactNative.View,
             {
+              style: _filePage2.default.mediaContainer,
               __source: {
                 fileName: _jsxFileName,
                 lineNumber: 66
@@ -74846,6 +74876,10 @@ __d(function (global, require, module, exports, _dependencyMap) {
     },
     pageContainer: {
       flex: 1
+    },
+    mediaContainer: {
+      backgroundColor: '#000000',
+      paddingTop: 24
     },
     emptyClaimText: {
       textAlign: 'center',

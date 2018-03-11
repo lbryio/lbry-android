@@ -63,7 +63,7 @@ class FilePage extends React.PureComponent {
     
     return (
       <View style={filePageStyle.pageContainer}>
-        <View>
+        <View style={filePageStyle.mediaContainer}>
           <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />
         </View>
         <ScrollView style={filePageStyle.scrollContainer}>
