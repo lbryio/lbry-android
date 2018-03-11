@@ -4,7 +4,7 @@
     "private": "true",
     "scripts": {
         "start": "node node_modules/react-native/local-cli/cli.js start",
-        "postinstall": "rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
+        "postinstall": "cp ./patch/ReactNativeRenderer-dev.js.patch ./node_modules/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js; rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
     },
     "dependencies": {
         "lbry-redux": "lbryio/lbry-redux#common-components-refactor",
