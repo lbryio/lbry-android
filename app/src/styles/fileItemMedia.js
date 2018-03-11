@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const windowDimension = Dimensions.get('window'); 
-const width = windowDimension.width - 48; // screen width minus combined left and right margins
+const screenDimension = Dimensions.get('window'); 
+const width = screenDimension.width - 48; // screen width minus combined left and right margins
 
 const fileItemMediaStyle = StyleSheet.create({
   autothumb: {

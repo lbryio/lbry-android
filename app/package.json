@@ -16,6 +16,8 @@
         "react-redux": "^5.0.3",
         "redux": "^3.6.0",
         "redux-persist": "^4.8.0",
+        "redux-persist-transform-compress": "^4.2.0",
+        "redux-persist-transform-filter": "0.0.10",
         "redux-thunk": "^2.2.0"
     }
 }

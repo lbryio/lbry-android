@@ -6,14 +6,18 @@ import discoverStyle from '../../styles/discover';
 
 class FeaturedCategory extends React.PureComponent {
   render() {
-    const { category, names, categoryLink } = this.props;
+    const { category, names, categoryLink, navigation } = this.props;
 
     return (
       <View>
         <Text style={discoverStyle.categoryName}>{category}</Text>
           {names &&
             names.map(name => (
-              <FileItem style={discoverStyle.fileItem} key={name} uri={normalizeURI(name)} />
+              <FileItem
+                style={discoverStyle.fileItem}
+                key={name}
+                uri={normalizeURI(name)}
+                navigation={navigation} />
             ))}
       </View>
     );

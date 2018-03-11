@@ -27,14 +27,20 @@ class FileItemMedia extends React.PureComponent {
   }
 
   render() {
+    let style = this.props.style;
     const { title, thumbnail } = this.props;
     const atStyle = this.state.autoThumbStyle;
 
     if (thumbnail && ((typeof thumbnail) === 'string')) {
+      if (style == null) {
+        style = fileItemMediaStyle.thumbnail;
+      }
+      
       return (
-        <Image source={{uri: thumbnail }} resizeMode="cover" style={fileItemMediaStyle.thumbnail} />
-      )
+        <Image source={{uri: thumbnail}} resizeMode="cover" style={style} />
+      );
     }
+        
     return (
       <View style={[fileItemMediaStyle.autothumb, atStyle]}>
         <Text style={fileItemMediaStyle.autothumbText}>{title &&

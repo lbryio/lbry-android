@@ -33,20 +33,27 @@ const discoverStyle = StyleSheet.create({
   channelName: {
     fontSize: 14,
     marginTop: 4,
-    color: '#888888'
+    color: '#c0c0c0',
+    fontWeight: 'bold'
   },
   filePriceContainer: {
-    backgroundColor: '#60f9d6',
+    backgroundColor: '#61fcd8',
     justifyContent: 'center',
     position: 'absolute',
     right: 16,
     top: 16,
-    width: 64,
-    height: 24
+    width: 56,
+    height: 24,
+    borderRadius: 4 
   },
   filePriceText: {
-    fontSize: 11,
-    textAlign: 'center'
+    fontSize: 12,
+    textAlign: 'center',
+    color: '#0c604b',
+    fontWeight: 'bold'
+  },
+  drawerHamburger: {
+    marginLeft: 8
   }
 });
 

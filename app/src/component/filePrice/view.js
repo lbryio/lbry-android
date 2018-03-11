@@ -42,7 +42,7 @@ class CreditAmount extends React.PureComponent {
 
     let amountText;
     if (this.props.showFree && parseFloat(this.props.amount) === 0) {
-      amountText = 'free';
+      amountText = 'FREE';
     } else {
       if (this.props.label) {
         const label =

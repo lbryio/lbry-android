@@ -1,13 +1,11 @@
 import React from 'react';
 import FeaturedCategory from '../../component/featuredCategory';
+import NavigationActions from 'react-navigation';
 import { Text, View, ScrollView } from 'react-native';
 import discoverStyle from '../../styles/discover';
+import Feather from 'react-native-vector-icons/Feather';
 
 class DiscoverPage extends React.PureComponent {
-  static navigationOptions = {
-    title: 'Discover'
-  };
-  
   componentWillMount() {
     this.props.fetchFeaturedUris();
   }
@@ -30,6 +28,7 @@ class DiscoverPage extends React.PureComponent {
                       key={category}
                       category={category}
                       names={featuredUris[category]}
+                      navigation={this.props.navigation}
                     />
                 ) : (
                   ''

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import DiscoverPage from './page/discover';
-import { AppRegistry, StyleSheet, Text, View } from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import {
   StackNavigator, addNavigationHelpers
@@ -9,6 +9,8 @@ import {
 import { AppNavigator } from './component/AppNavigator';
 import AppWithNavigationState from './component/AppNavigator';
 import { persistStore, autoRehydrate } from 'redux-persist';
+import createCompressor from 'redux-persist-transform-compress';
+import createFilter from 'redux-persist-transform-filter';
 import thunk from 'redux-thunk';
 import {
   Lbry,
@@ -75,13 +77,29 @@ const store = createStore(
   enableBatching(reducers),
   {}, // initial state,
   composeEnhancers(
-    /*autoRehydrate({
-      log: app.env === 'development',
-    }),*/
+    autoRehydrate(),
     applyMiddleware(...middleware)
   )
 );
 
+const compressor = createCompressor();
+const saveClaimsFilter = createFilter('claims', ['byId', 'claimsByUri']);
+const subscriptionsFilter = createFilter('subscriptions', ['subscriptions']);
+
+const persistOptions = {
+  whitelist: ['claims', 'subscriptions'],
+  // Order is important. Needs to be compressed last or other transforms can't
+  // read the data
+  transforms: [saveClaimsFilter, subscriptionsFilter, compressor],
+  debounce: 10000,
+  storage: AsyncStorage
+};
+
+persistStore(store, persistOptions, err => {
+  if (err) {
+    console.log('Unable to load saved SETTINGS');
+  }
+});
 
 class LBRYApp extends React.Component {
   render() {

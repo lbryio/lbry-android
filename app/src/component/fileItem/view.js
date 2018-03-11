@@ -1,6 +1,7 @@
 import React from 'react';
 import { normalizeURI } from 'lbry-redux';
-import { Text, View } from 'react-native';
+import { NavigationActions } from 'react-navigation';
+import { Text, View, TouchableOpacity } from 'react-native';
 import FileItemMedia from '../fileItemMedia';
 import FilePrice from '../filePrice';
 import discoverStyle from '../../styles/discover';
@@ -53,13 +54,16 @@ class FileItem extends React.PureComponent {
     }
     
     return (
-      <View style={style}>
+      <TouchableOpacity style={style} onPress={() => {
+            this.props.navigation.navigate('File', { uri: uri });
+          }
+        }>
         <FileItemMedia title={title} thumbnail={thumbnail} />
         <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />
         <Text style={discoverStyle.fileItemName}>{title}</Text>
         {channelName &&
           <Text style={discoverStyle.channelName}>{channelName}</Text>}
-      </View>
+      </TouchableOpacity>
     );
   }
 }

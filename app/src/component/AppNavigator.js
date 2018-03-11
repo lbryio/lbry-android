@@ -1,46 +1,43 @@
 import React from 'react';
 import DiscoverPage from '../page/discover';
+import FilePage from '../page/file';
 import SplashScreen from '../page/splash';
 import { addNavigationHelpers, DrawerNavigator, StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { addListener } from '../utils/redux';
 import { StyleSheet } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-
-const styles = StyleSheet.create({
-  drawerHamburger: {
-    marginLeft: 8
-  }
-});
+import discoverStyle from '../styles/discover';
 
 const discoverStack = StackNavigator({
   Discover: {
     screen: DiscoverPage,
-  }
+    navigationOptions: ({ navigation }) => ({
+      title: 'Discover',
+      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />
+    })
+  },
+  File: { screen: FilePage }
 }, {
-  headerMode: 'screen'
+  headerMode: 'screen',
 });
 
 const drawer = DrawerNavigator({
-  Discover: { screen: DiscoverPage },
+  Discover: { screen: discoverStack },
 }, {
   drawerWidth: 300,
-  headerMode: 'screen'
+  headerMode: 'none'
 });
 
 export const AppNavigator = new StackNavigator({
   Splash: {
-    screen: SplashScreen,
-    navigationOptions: { header: null }
+    screen: SplashScreen
   },
   Main: {
     screen: drawer
   }
 }, {
-  headerMode: 'screen',
-  navigationOptions: ({ navigation }) => ({
-    headerLeft: () => <Feather name="menu" size={24} style={styles.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />
-  })
+  headerMode: 'none'
 });
 
 class AppWithNavigationState extends React.Component {
