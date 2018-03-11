@@ -127,4 +127,3 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         return false;
     }
 }
-
