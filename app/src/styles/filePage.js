@@ -12,7 +12,8 @@ const filePageStyle = StyleSheet.create({
     flex: 1
   },
   mediaContainer: {
-    backgroundColor: '#000000'
+    backgroundColor: '#000000',
+    alignItems: 'center'
   },
   emptyClaimText: {
     textAlign: 'center',
@@ -47,6 +48,14 @@ const filePageStyle = StyleSheet.create({
     color: '#999999'
   },
   thumbnail: {
+    width: screenWidth,
+    height: 200
+  },
+  downloadButton: {
+    position: 'absolute',
+    top: '50%'
+  },
+  player: {
     width: screenWidth,
     height: 200
   }

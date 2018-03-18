@@ -9,11 +9,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.provider.Settings;
 
+import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.shell.MainReactPackage;
+
+import io.lbry.lbrynet.reactpackages.LbryReactPackage;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
     private static final int OVERLAY_PERMISSION_REQ_CODE = 101;
@@ -51,7 +54,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .setBundleAssetName("index.android.bundle")
                 .setJSMainModulePath("index")
                 .addPackage(new MainReactPackage())
-                /*.setUseDeveloperSupport(BuildConfig.DEBUG)*/
+                .addPackage(new ReactVideoPackage())
+                .addPackage(new LbryReactPackage())
+                .setUseDeveloperSupport(true)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
         mReactRootView.startReactApplication(mReactInstanceManager, "LBRYApp", null);

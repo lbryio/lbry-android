@@ -1556,7 +1556,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = LBRYApp;
-},11,[12,22,61,66,36,376,609,621,633,635,642,62,616],"LBRYApp/src/index.js");
+},11,[12,22,61,66,36,376,609,628,640,642,649,62,623],"LBRYApp/src/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -6862,6 +6862,15 @@ __d(function (global, require, module, exports, _dependencyMap) {
             });
             var dummyClaims = Lbry.getPendingPublishes().map(pendingPublishToDummyClaim);
             resolve([].concat(_toConsumableArray(claims), _toConsumableArray(dummyClaims)));
+          }, reject);
+        });
+      };
+
+      Lbry.get = function () {
+        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        return new Promise(function (resolve, reject) {
+          apiCall('get', params, function (streamInfo) {
+            resolve(streamInfo);
           }, reject);
         });
       };
@@ -74639,7 +74648,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(mapStateToProps)(AppWithNavigationState);
-},609,[12,61,610,613,376,22,616,66,455,454],"LBRYApp/src/component/AppNavigator.js");
+},609,[12,61,610,620,376,22,623,66,455,454],"LBRYApp/src/component/AppNavigator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -74690,22 +74699,49 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var _react2 = babelHelpers.interopRequireDefault(_react);
 
-  var _reactNative = require(_dependencyMap[1], "react-native");
+  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
 
-  var _filePage = require(_dependencyMap[2], "../../styles/filePage");
+  var _reactNative = require(_dependencyMap[2], "react-native");
+
+  var _reactNativeVideo = require(_dependencyMap[3], "react-native-video");
+
+  var _reactNativeVideo2 = babelHelpers.interopRequireDefault(_reactNativeVideo);
+
+  var _filePage = require(_dependencyMap[4], "../../styles/filePage");
 
   var _filePage2 = babelHelpers.interopRequireDefault(_filePage);
 
-  var _fileItemMedia = require(_dependencyMap[3], "../../component/fileItemMedia");
+  var _fileItemMedia = require(_dependencyMap[5], "../../component/fileItemMedia");
 
   var _fileItemMedia2 = babelHelpers.interopRequireDefault(_fileItemMedia);
+
+  var _fileDownloadButton = require(_dependencyMap[6], "../../component/fileDownloadButton");
+
+  var _fileDownloadButton2 = babelHelpers.interopRequireDefault(_fileDownloadButton);
 
   var FilePage = function (_React$PureComponent) {
     babelHelpers.inherits(FilePage, _React$PureComponent);
 
     function FilePage() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
       babelHelpers.classCallCheck(this, FilePage);
-      return babelHelpers.possibleConstructorReturn(this, (FilePage.__proto__ || Object.getPrototypeOf(FilePage)).apply(this, arguments));
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = FilePage.__proto__ || Object.getPrototypeOf(FilePage)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+        rate: 1,
+        volume: 1,
+        muted: false,
+        resizeMode: 'contain',
+        duration: 0.0,
+        currentTime: 0.0,
+        paused: true
+      }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
     }
 
     babelHelpers.createClass(FilePage, [{
@@ -74736,14 +74772,16 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }, {
       key: "render",
       value: function render() {
+        var _this2 = this;
+
         var _props = this.props,
             claim = _props.claim,
             fileInfo = _props.fileInfo,
             metadata = _props.metadata,
             contentType = _props.contentType,
             tab = _props.tab,
-            uri = _props.uri,
-            rewardedContentClaimIds = _props.rewardedContentClaimIds;
+            rewardedContentClaimIds = _props.rewardedContentClaimIds,
+            navigation = _props.navigation;
 
         if (!claim || !metadata) {
           return _react2.default.createElement(
@@ -74752,7 +74790,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: _filePage2.default.container,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 45
+                lineNumber: 58
               }
             },
             _react2.default.createElement(
@@ -74761,7 +74799,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.emptyClaimText,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 46
+                  lineNumber: 59
                 }
               },
               "Empty claim or metadata info."
@@ -74769,9 +74807,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
           );
         }
 
+        var completed = fileInfo && fileInfo.completed;
         var title = metadata.title;
         var isRewardContent = rewardedContentClaimIds.includes(claim.claim_id);
         var description = metadata.description ? metadata.description : null;
+
+        var mediaType = _lbryRedux.Lbry.getMediaType(contentType);
+
+        var isPlayable = mediaType === 'video' || mediaType === 'audio';
         var height = claim.height,
             channelName = claim.channel_name,
             value = claim.value;
@@ -74782,7 +74825,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             style: _filePage2.default.pageContainer,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 65
+              lineNumber: 75
             }
           },
           _react2.default.createElement(
@@ -74791,18 +74834,56 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: _filePage2.default.mediaContainer,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 66
+                lineNumber: 76
               }
             },
-            _react2.default.createElement(_fileItemMedia2.default, {
+            (!fileInfo || !isPlayable) && _react2.default.createElement(_fileItemMedia2.default, {
               style: _filePage2.default.thumbnail,
               title: title,
               thumbnail: metadata.thumbnail,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 67
+                lineNumber: 77
               }
-            })
+            }),
+            !completed && _react2.default.createElement(_fileDownloadButton2.default, {
+              uri: navigation.state.params.uri,
+              style: _filePage2.default.downloadButton,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 78
+              }
+            }),
+            fileInfo && isPlayable && _react2.default.createElement(
+              _reactNative.TouchableOpacity,
+              {
+                style: _filePage2.default.player,
+                onPress: function onPress() {
+                  return _this2.setState({
+                    paused: !_this2.state.paused
+                  });
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 81
+                }
+              },
+              _react2.default.createElement(_reactNativeVideo2.default, {
+                source: {
+                  uri: 'file:///' + fileInfo.download_path
+                },
+                resizeMode: "cover",
+                playInBackground: true,
+                style: _filePage2.default.player,
+                rate: this.state.rate,
+                volume: this.state.volume,
+                paused: this.state.paused,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 84
+                }
+              })
+            )
           ),
           _react2.default.createElement(
             _reactNative.ScrollView,
@@ -74810,7 +74891,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: _filePage2.default.scrollContainer,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 69
+                lineNumber: 96
               }
             },
             _react2.default.createElement(
@@ -74819,7 +74900,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.title,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 70
+                  lineNumber: 97
                 }
               },
               title
@@ -74830,7 +74911,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.channelName,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 71
+                  lineNumber: 98
                 }
               },
               channelName
@@ -74841,7 +74922,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.description,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 72
+                  lineNumber: 99
                 }
               },
               description
@@ -74857,7 +74938,411 @@ __d(function (global, require, module, exports, _dependencyMap) {
     title: ''
   };
   exports.default = FilePage;
-},611,[12,66,612,449],"LBRYApp/src/page/file/view.js");
+},611,[12,62,66,612,615,449,616],"LBRYApp/src/page/file/view.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/home/akinwale/Dev/Python/lbry-android/app/node_modules/react-native-video/Video.js";
+
+  var _react = require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _propTypes = require(_dependencyMap[1], "prop-types");
+
+  var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
+
+  var _reactNative = require(_dependencyMap[2], "react-native");
+
+  var _resolveAssetSource = require(_dependencyMap[3], "react-native/Libraries/Image/resolveAssetSource");
+
+  var _resolveAssetSource2 = babelHelpers.interopRequireDefault(_resolveAssetSource);
+
+  var _VideoResizeMode = require(_dependencyMap[4], "./VideoResizeMode.js");
+
+  var _VideoResizeMode2 = babelHelpers.interopRequireDefault(_VideoResizeMode);
+
+  var styles = _reactNative.StyleSheet.create({
+    base: {
+      overflow: 'hidden'
+    }
+  });
+
+  var Video = function (_Component) {
+    babelHelpers.inherits(Video, _Component);
+
+    function Video(props) {
+      babelHelpers.classCallCheck(this, Video);
+
+      var _this = babelHelpers.possibleConstructorReturn(this, (Video.__proto__ || Object.getPrototypeOf(Video)).call(this, props));
+
+      _this.seek = function (time) {
+        _this.setNativeProps({
+          seek: time
+        });
+      };
+
+      _this.presentFullscreenPlayer = function () {
+        _this.setNativeProps({
+          fullscreen: true
+        });
+      };
+
+      _this.dismissFullscreenPlayer = function () {
+        _this.setNativeProps({
+          fullscreen: false
+        });
+      };
+
+      _this._assignRoot = function (component) {
+        _this._root = component;
+      };
+
+      _this._onLoadStart = function (event) {
+        if (_this.props.onLoadStart) {
+          _this.props.onLoadStart(event.nativeEvent);
+        }
+      };
+
+      _this._onLoad = function (event) {
+        if (_this.props.onLoad) {
+          _this.props.onLoad(event.nativeEvent);
+        }
+      };
+
+      _this._onError = function (event) {
+        if (_this.props.onError) {
+          _this.props.onError(event.nativeEvent);
+        }
+      };
+
+      _this._onProgress = function (event) {
+        if (_this.props.onProgress) {
+          _this.props.onProgress(event.nativeEvent);
+        }
+      };
+
+      _this._onSeek = function (event) {
+        if (_this.state.showPoster) {
+          _this.setState({
+            showPoster: false
+          });
+        }
+
+        if (_this.props.onSeek) {
+          _this.props.onSeek(event.nativeEvent);
+        }
+      };
+
+      _this._onEnd = function (event) {
+        if (_this.props.onEnd) {
+          _this.props.onEnd(event.nativeEvent);
+        }
+      };
+
+      _this._onTimedMetadata = function (event) {
+        if (_this.props.onTimedMetadata) {
+          _this.props.onTimedMetadata(event.nativeEvent);
+        }
+      };
+
+      _this._onFullscreenPlayerWillPresent = function (event) {
+        if (_this.props.onFullscreenPlayerWillPresent) {
+          _this.props.onFullscreenPlayerWillPresent(event.nativeEvent);
+        }
+      };
+
+      _this._onFullscreenPlayerDidPresent = function (event) {
+        if (_this.props.onFullscreenPlayerDidPresent) {
+          _this.props.onFullscreenPlayerDidPresent(event.nativeEvent);
+        }
+      };
+
+      _this._onFullscreenPlayerWillDismiss = function (event) {
+        if (_this.props.onFullscreenPlayerWillDismiss) {
+          _this.props.onFullscreenPlayerWillDismiss(event.nativeEvent);
+        }
+      };
+
+      _this._onFullscreenPlayerDidDismiss = function (event) {
+        if (_this.props.onFullscreenPlayerDidDismiss) {
+          _this.props.onFullscreenPlayerDidDismiss(event.nativeEvent);
+        }
+      };
+
+      _this._onReadyForDisplay = function (event) {
+        if (_this.props.onReadyForDisplay) {
+          _this.props.onReadyForDisplay(event.nativeEvent);
+        }
+      };
+
+      _this._onPlaybackStalled = function (event) {
+        if (_this.props.onPlaybackStalled) {
+          _this.props.onPlaybackStalled(event.nativeEvent);
+        }
+      };
+
+      _this._onPlaybackResume = function (event) {
+        if (_this.props.onPlaybackResume) {
+          _this.props.onPlaybackResume(event.nativeEvent);
+        }
+      };
+
+      _this._onPlaybackRateChange = function (event) {
+        if (_this.state.showPoster && event.nativeEvent.playbackRate !== 0) {
+          _this.setState({
+            showPoster: false
+          });
+        }
+
+        if (_this.props.onPlaybackRateChange) {
+          _this.props.onPlaybackRateChange(event.nativeEvent);
+        }
+      };
+
+      _this._onAudioBecomingNoisy = function () {
+        if (_this.props.onAudioBecomingNoisy) {
+          _this.props.onAudioBecomingNoisy();
+        }
+      };
+
+      _this._onAudioFocusChanged = function (event) {
+        if (_this.props.onAudioFocusChanged) {
+          _this.props.onAudioFocusChanged(event.nativeEvent);
+        }
+      };
+
+      _this._onBuffer = function (event) {
+        if (_this.props.onBuffer) {
+          _this.props.onBuffer(event.nativeEvent);
+        }
+      };
+
+      _this.state = {
+        showPoster: true
+      };
+      return _this;
+    }
+
+    babelHelpers.createClass(Video, [{
+      key: "setNativeProps",
+      value: function setNativeProps(nativeProps) {
+        this._root.setNativeProps(nativeProps);
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var resizeMode = this.props.resizeMode;
+        var source = (0, _resolveAssetSource2.default)(this.props.source) || {};
+        var uri = source.uri || '';
+
+        if (uri && uri.match(/^\//)) {
+          uri = "file://" + uri;
+        }
+
+        var isNetwork = !!(uri && uri.match(/^https?:/));
+        var isAsset = !!(uri && uri.match(/^(assets-library|file|content|ms-appx|ms-appdata):/));
+        var nativeResizeMode = void 0;
+
+        if (resizeMode === _VideoResizeMode2.default.stretch) {
+          nativeResizeMode = _reactNative.NativeModules.UIManager.RCTVideo.Constants.ScaleToFill;
+        } else if (resizeMode === _VideoResizeMode2.default.contain) {
+          nativeResizeMode = _reactNative.NativeModules.UIManager.RCTVideo.Constants.ScaleAspectFit;
+        } else if (resizeMode === _VideoResizeMode2.default.cover) {
+          nativeResizeMode = _reactNative.NativeModules.UIManager.RCTVideo.Constants.ScaleAspectFill;
+        } else {
+          nativeResizeMode = _reactNative.NativeModules.UIManager.RCTVideo.Constants.ScaleNone;
+        }
+
+        var nativeProps = babelHelpers.extends({}, this.props);
+        babelHelpers.extends(nativeProps, {
+          style: [styles.base, nativeProps.style],
+          resizeMode: nativeResizeMode,
+          src: {
+            uri: uri,
+            isNetwork: isNetwork,
+            isAsset: isAsset,
+            type: source.type || '',
+            mainVer: source.mainVer || 0,
+            patchVer: source.patchVer || 0
+          },
+          onVideoLoadStart: this._onLoadStart,
+          onVideoLoad: this._onLoad,
+          onVideoError: this._onError,
+          onVideoProgress: this._onProgress,
+          onVideoSeek: this._onSeek,
+          onVideoEnd: this._onEnd,
+          onVideoBuffer: this._onBuffer,
+          onTimedMetadata: this._onTimedMetadata,
+          onVideoFullscreenPlayerWillPresent: this._onFullscreenPlayerWillPresent,
+          onVideoFullscreenPlayerDidPresent: this._onFullscreenPlayerDidPresent,
+          onVideoFullscreenPlayerWillDismiss: this._onFullscreenPlayerWillDismiss,
+          onVideoFullscreenPlayerDidDismiss: this._onFullscreenPlayerDidDismiss,
+          onReadyForDisplay: this._onReadyForDisplay,
+          onPlaybackStalled: this._onPlaybackStalled,
+          onPlaybackResume: this._onPlaybackResume,
+          onPlaybackRateChange: this._onPlaybackRateChange,
+          onAudioFocusChanged: this._onAudioFocusChanged,
+          onAudioBecomingNoisy: this._onAudioBecomingNoisy
+        });
+
+        if (this.props.poster && this.state.showPoster) {
+          var posterStyle = {
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            resizeMode: 'contain'
+          };
+          return _react2.default.createElement(
+            _reactNative.View,
+            {
+              style: nativeProps.style,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 225
+              }
+            },
+            _react2.default.createElement(RCTVideo, babelHelpers.extends({
+              ref: this._assignRoot
+            }, nativeProps, {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 226
+              }
+            })),
+            _react2.default.createElement(_reactNative.Image, {
+              style: posterStyle,
+              source: {
+                uri: this.props.poster
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 230
+              }
+            })
+          );
+        }
+
+        return _react2.default.createElement(RCTVideo, babelHelpers.extends({
+          ref: this._assignRoot
+        }, nativeProps, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 239
+          }
+        }));
+      }
+    }]);
+    return Video;
+  }(_react.Component);
+
+  exports.default = Video;
+  Video.propTypes = babelHelpers.extends({
+    src: _propTypes2.default.object,
+    seek: _propTypes2.default.number,
+    fullscreen: _propTypes2.default.bool,
+    onVideoLoadStart: _propTypes2.default.func,
+    onVideoLoad: _propTypes2.default.func,
+    onVideoBuffer: _propTypes2.default.func,
+    onVideoError: _propTypes2.default.func,
+    onVideoProgress: _propTypes2.default.func,
+    onVideoSeek: _propTypes2.default.func,
+    onVideoEnd: _propTypes2.default.func,
+    onTimedMetadata: _propTypes2.default.func,
+    onVideoFullscreenPlayerWillPresent: _propTypes2.default.func,
+    onVideoFullscreenPlayerDidPresent: _propTypes2.default.func,
+    onVideoFullscreenPlayerWillDismiss: _propTypes2.default.func,
+    onVideoFullscreenPlayerDidDismiss: _propTypes2.default.func,
+    source: _propTypes2.default.oneOfType([_propTypes2.default.shape({
+      uri: _propTypes2.default.string
+    }), _propTypes2.default.number]),
+    resizeMode: _propTypes2.default.string,
+    poster: _propTypes2.default.string,
+    repeat: _propTypes2.default.bool,
+    paused: _propTypes2.default.bool,
+    muted: _propTypes2.default.bool,
+    volume: _propTypes2.default.number,
+    rate: _propTypes2.default.number,
+    playInBackground: _propTypes2.default.bool,
+    playWhenInactive: _propTypes2.default.bool,
+    ignoreSilentSwitch: _propTypes2.default.oneOf(['ignore', 'obey']),
+    disableFocus: _propTypes2.default.bool,
+    controls: _propTypes2.default.bool,
+    currentTime: _propTypes2.default.number,
+    progressUpdateInterval: _propTypes2.default.number,
+    onLoadStart: _propTypes2.default.func,
+    onLoad: _propTypes2.default.func,
+    onBuffer: _propTypes2.default.func,
+    onError: _propTypes2.default.func,
+    onProgress: _propTypes2.default.func,
+    onSeek: _propTypes2.default.func,
+    onEnd: _propTypes2.default.func,
+    onFullscreenPlayerWillPresent: _propTypes2.default.func,
+    onFullscreenPlayerDidPresent: _propTypes2.default.func,
+    onFullscreenPlayerWillDismiss: _propTypes2.default.func,
+    onFullscreenPlayerDidDismiss: _propTypes2.default.func,
+    onReadyForDisplay: _propTypes2.default.func,
+    onPlaybackStalled: _propTypes2.default.func,
+    onPlaybackResume: _propTypes2.default.func,
+    onPlaybackRateChange: _propTypes2.default.func,
+    onAudioFocusChanged: _propTypes2.default.func,
+    onAudioBecomingNoisy: _propTypes2.default.func,
+    scaleX: _propTypes2.default.number,
+    scaleY: _propTypes2.default.number,
+    translateX: _propTypes2.default.number,
+    translateY: _propTypes2.default.number,
+    rotation: _propTypes2.default.number
+  }, _reactNative.View.propTypes);
+  var RCTVideo = (0, _reactNative.requireNativeComponent)('RCTVideo', Video, {
+    nativeOnly: {
+      src: true,
+      seek: true,
+      fullscreen: true
+    }
+  });
+},612,[12,24,66,201,613],"react-native-video/Video.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _keymirror = require(_dependencyMap[0], "keymirror");
+
+  var _keymirror2 = babelHelpers.interopRequireDefault(_keymirror);
+
+  exports.default = (0, _keymirror2.default)({
+    contain: null,
+    cover: null,
+    stretch: null
+  });
+},613,[614],"react-native-video/VideoResizeMode.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  "use strict";
+
+  var keyMirror = function keyMirror(obj) {
+    var ret = {};
+    var key;
+
+    if (!(obj instanceof Object && !Array.isArray(obj))) {
+      throw new Error('keyMirror(...): Argument must be an object.');
+    }
+
+    for (key in obj) {
+      if (!obj.hasOwnProperty(key)) {
+        continue;
+      }
+
+      ret[key] = key;
+    }
+
+    return ret;
+  };
+
+  module.exports = keyMirror;
+},614,[],"keymirror/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -74878,7 +75363,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
       flex: 1
     },
     mediaContainer: {
-      backgroundColor: '#000000'
+      backgroundColor: '#000000',
+      alignItems: 'center'
     },
     emptyClaimText: {
       textAlign: 'center',
@@ -74915,11 +75401,458 @@ __d(function (global, require, module, exports, _dependencyMap) {
     thumbnail: {
       width: screenWidth,
       height: 200
+    },
+    downloadButton: {
+      position: 'absolute',
+      top: '50%'
+    },
+    player: {
+      width: screenWidth,
+      height: 200
     }
   });
 
   exports.default = filePageStyle;
-},612,[66],"LBRYApp/src/styles/filePage.js");
+},615,[66],"LBRYApp/src/styles/filePage.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactRedux = require(_dependencyMap[0], "react-redux");
+
+  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
+
+  var _file = require(_dependencyMap[2], "../../redux/actions/file");
+
+  var _view = require(_dependencyMap[3], "./view");
+
+  var _view2 = babelHelpers.interopRequireDefault(_view);
+
+  var select = function select(state, props) {
+    return {
+      fileInfo: (0, _lbryRedux.makeSelectFileInfoForUri)(props.uri)(state),
+      downloading: (0, _lbryRedux.makeSelectDownloadingForUri)(props.uri)(state),
+      costInfo: (0, _lbryRedux.makeSelectCostInfoForUri)(props.uri)(state),
+      loading: (0, _lbryRedux.makeSelectLoadingForUri)(props.uri)(state)
+    };
+  };
+
+  var perform = function perform(dispatch) {
+    return {
+      purchaseUri: function purchaseUri(uri) {
+        return dispatch((0, _file.doPurchaseUri)(uri));
+      },
+      restartDownload: function restartDownload(uri, outpoint) {
+        return dispatch((0, _file.doStartDownload)(uri, outpoint));
+      }
+    };
+  };
+
+  exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
+},616,[22,62,617,618],"LBRYApp/src/component/fileDownloadButton/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.doUpdateLoadStatus = doUpdateLoadStatus;
+  exports.doStartDownload = doStartDownload;
+  exports.doDownloadFile = doDownloadFile;
+  exports.doSetPlayingUri = doSetPlayingUri;
+  exports.doLoadVideo = doLoadVideo;
+  exports.doPurchaseUri = doPurchaseUri;
+
+  var _lbryRedux = require(_dependencyMap[0], "lbry-redux");
+
+  var _reactNative = require(_dependencyMap[1], "react-native");
+
+  var DOWNLOAD_POLL_INTERVAL = 250;
+
+  function doUpdateLoadStatus(uri, outpoint) {
+    return function (dispatch, getState) {
+      _lbryRedux.Lbry.file_list({
+        outpoint: outpoint,
+        full_status: true
+      }).then(function (_ref) {
+        var _ref2 = babelHelpers.slicedToArray(_ref, 1),
+            fileInfo = _ref2[0];
+
+        if (!fileInfo || fileInfo.written_bytes === 0) {
+          setTimeout(function () {
+            dispatch(doUpdateLoadStatus(uri, outpoint));
+          }, DOWNLOAD_POLL_INTERVAL);
+        } else if (fileInfo.completed) {
+          var totalBytes = fileInfo.total_bytes,
+              writtenBytes = fileInfo.written_bytes;
+          dispatch({
+            type: _lbryRedux.ACTIONS.DOWNLOADING_COMPLETED,
+            data: {
+              uri: uri,
+              outpoint: outpoint,
+              fileInfo: fileInfo
+            }
+          });
+
+          _reactNative.NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, 100, writtenBytes, totalBytes);
+        } else {
+          var _totalBytes = fileInfo.total_bytes,
+              _writtenBytes = fileInfo.written_bytes;
+          var progress = _writtenBytes / _totalBytes * 100;
+          dispatch({
+            type: _lbryRedux.ACTIONS.DOWNLOADING_PROGRESSED,
+            data: {
+              uri: uri,
+              outpoint: outpoint,
+              fileInfo: fileInfo,
+              progress: progress
+            }
+          });
+
+          _reactNative.NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, progress, _writtenBytes, _totalBytes);
+
+          setTimeout(function () {
+            dispatch(doUpdateLoadStatus(uri, outpoint));
+          }, DOWNLOAD_POLL_INTERVAL);
+        }
+      });
+    };
+  }
+
+  function doStartDownload(uri, outpoint) {
+    return function (dispatch, getState) {
+      var state = getState();
+
+      if (!outpoint) {
+        throw new Error('outpoint is required to begin a download');
+      }
+
+      var _state$fileInfo$downl = state.fileInfo.downloadingByOutpoint,
+          downloadingByOutpoint = _state$fileInfo$downl === undefined ? {} : _state$fileInfo$downl;
+      if (downloadingByOutpoint[outpoint]) return;
+
+      _lbryRedux.Lbry.file_list({
+        outpoint: outpoint,
+        full_status: true
+      }).then(function (_ref3) {
+        var _ref4 = babelHelpers.slicedToArray(_ref3, 1),
+            fileInfo = _ref4[0];
+
+        dispatch({
+          type: _lbryRedux.ACTIONS.DOWNLOADING_STARTED,
+          data: {
+            uri: uri,
+            outpoint: outpoint,
+            fileInfo: fileInfo
+          }
+        });
+
+        _reactNative.NativeModules.LbryDownloadManager.startDownload(uri, fileInfo.file_name);
+
+        dispatch(doUpdateLoadStatus(uri, outpoint));
+      });
+    };
+  }
+
+  function doDownloadFile(uri, streamInfo) {
+    return function (dispatch) {
+      dispatch(doStartDownload(uri, streamInfo.outpoint));
+    };
+  }
+
+  function doSetPlayingUri(uri) {
+    return function (dispatch) {
+      dispatch({
+        type: _lbryRedux.ACTIONS.SET_PLAYING_URI,
+        data: {
+          uri: uri
+        }
+      });
+    };
+  }
+
+  function doLoadVideo(uri) {
+    return function (dispatch) {
+      dispatch({
+        type: _lbryRedux.ACTIONS.LOADING_VIDEO_STARTED,
+        data: {
+          uri: uri
+        }
+      });
+
+      _lbryRedux.Lbry.get({
+        uri: uri
+      }).then(function (streamInfo) {
+        var timeout = streamInfo === null || typeof streamInfo !== 'object' || streamInfo.error === 'Timeout';
+
+        if (timeout) {
+          dispatch(doSetPlayingUri(null));
+          dispatch({
+            type: _lbryRedux.ACTIONS.LOADING_VIDEO_FAILED,
+            data: {
+              uri: uri
+            }
+          });
+          console.log("File timeout for uri " + uri);
+        } else {
+          dispatch(doDownloadFile(uri, streamInfo));
+        }
+      }).catch(function () {
+        dispatch(doSetPlayingUri(null));
+        dispatch({
+          type: _lbryRedux.ACTIONS.LOADING_VIDEO_FAILED,
+          data: {
+            uri: uri
+          }
+        });
+        console.log("Failed to download " + uri);
+      });
+    };
+  }
+
+  function doPurchaseUri(uri, specificCostInfo) {
+    return function (dispatch, getState) {
+      var state = getState();
+      var balance = 0;
+      var fileInfo = (0, _lbryRedux.makeSelectFileInfoForUri)(uri)(state);
+      var downloadingByOutpoint = (0, _lbryRedux.selectDownloadingByOutpoint)(state);
+      var alreadyDownloading = fileInfo && !!downloadingByOutpoint[fileInfo.outpoint];
+
+      function attemptPlay(cost) {
+        var instantPurchaseMax = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+        if (cost > 0 && (!instantPurchaseMax || cost > instantPurchaseMax)) {
+          console.log('Affirm purchase...');
+        } else {
+          dispatch(doLoadVideo(uri));
+        }
+      }
+
+      if (fileInfo && fileInfo.completed) {
+        if (!fileInfo.written_bytes) dispatch(doLoadVideo(uri));
+        Promise.resolve();
+        return;
+      }
+
+      if (alreadyDownloading) {
+        Promise.resolve();
+        return;
+      }
+
+      var costInfo = (0, _lbryRedux.makeSelectCostInfoForUri)(uri)(state) || specificCostInfo;
+      var cost = costInfo.cost;
+
+      if (cost > balance) {
+        dispatch(doSetPlayingUri(null));
+        Promise.resolve();
+        return;
+      }
+
+      if (cost === 0) {
+          attemptPlay(cost);
+        }
+    };
+  }
+},617,[62,66],"LBRYApp/src/redux/actions/file.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/home/akinwale/Dev/Python/lbry-android/app/src/component/fileDownloadButton/view.js";
+
+  var _react = require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _reactNative = require(_dependencyMap[1], "react-native");
+
+  var _fileDownloadButton = require(_dependencyMap[2], "../../styles/fileDownloadButton");
+
+  var _fileDownloadButton2 = babelHelpers.interopRequireDefault(_fileDownloadButton);
+
+  var FileDownloadButton = function (_React$PureComponent) {
+    babelHelpers.inherits(FileDownloadButton, _React$PureComponent);
+
+    function FileDownloadButton() {
+      babelHelpers.classCallCheck(this, FileDownloadButton);
+      return babelHelpers.possibleConstructorReturn(this, (FileDownloadButton.__proto__ || Object.getPrototypeOf(FileDownloadButton)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(FileDownloadButton, [{
+      key: "componentWillReceiveProps",
+      value: function componentWillReceiveProps(nextProps) {
+        this.restartDownload(nextProps);
+      }
+    }, {
+      key: "restartDownload",
+      value: function restartDownload(props) {
+        var downloading = props.downloading,
+            fileInfo = props.fileInfo,
+            uri = props.uri,
+            restartDownload = props.restartDownload;
+
+        if (!downloading && fileInfo && !fileInfo.completed && fileInfo.written_bytes !== false && fileInfo.written_bytes < fileInfo.total_bytes) {
+          restartDownload(uri, fileInfo.outpoint);
+        }
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _props = this.props,
+            fileInfo = _props.fileInfo,
+            downloading = _props.downloading,
+            uri = _props.uri,
+            purchaseUri = _props.purchaseUri,
+            costInfo = _props.costInfo,
+            loading = _props.loading,
+            doPause = _props.doPause,
+            style = _props.style;
+
+        var openFile = function openFile() {};
+
+        if (loading || downloading) {
+          var progress = fileInfo && fileInfo.written_bytes ? fileInfo.written_bytes / fileInfo.total_bytes * 100 : 0,
+              label = fileInfo ? progress.toFixed(0) + '% complete' : 'Connecting...';
+          return _react2.default.createElement(
+            _reactNative.View,
+            {
+              style: [style, _fileDownloadButton2.default.container],
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 48
+              }
+            },
+            _react2.default.createElement(_reactNative.View, {
+              style: {
+                width: progress + "%",
+                backgroundColor: '#ff0000',
+                position: 'absolute',
+                left: 0,
+                top: 0
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 49
+              }
+            }),
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _fileDownloadButton2.default.text,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 50
+                }
+              },
+              label
+            )
+          );
+        } else if (fileInfo === null && !downloading) {
+          if (!costInfo) {
+            return _react2.default.createElement(
+              _reactNative.View,
+              {
+                style: [style, _fileDownloadButton2.default.container],
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 56
+                }
+              },
+              _react2.default.createElement(
+                _reactNative.Text,
+                {
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 57
+                  }
+                },
+                "Fetching cost info..."
+              )
+            );
+          }
+
+          return _react2.default.createElement(
+            _reactNative.TouchableOpacity,
+            {
+              style: [style, _fileDownloadButton2.default.container],
+              onPress: function onPress() {
+                purchaseUri(uri);
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 62
+              }
+            },
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _fileDownloadButton2.default.text,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 65
+                }
+              },
+              "Download"
+            )
+          );
+        } else if (fileInfo && fileInfo.download_path) {
+          return _react2.default.createElement(
+            _reactNative.TouchableOpacity,
+            {
+              style: [style, _fileDownloadButton2.default.container],
+              onPress: function onPress() {
+                return openFile();
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 70
+              }
+            },
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _fileDownloadButton2.default.text,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 71
+                }
+              },
+              "Open"
+            )
+          );
+        }
+
+        return null;
+      }
+    }]);
+    return FileDownloadButton;
+  }(_react2.default.PureComponent);
+
+  exports.default = FileDownloadButton;
+},618,[12,66,619],"LBRYApp/src/component/fileDownloadButton/view.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _reactNative = require(_dependencyMap[0], "react-native");
+
+    var fileDownloadButtonStyle = _reactNative.StyleSheet.create({
+        container: {
+            width: 120,
+            height: 36,
+            borderRadius: 18,
+            justifyContent: 'center',
+            backgroundColor: '#40c0a9'
+        },
+        text: {
+            color: '#ffffff',
+            fontSize: 13,
+            textAlign: 'center'
+        }
+    });
+
+    exports.default = fileDownloadButtonStyle;
+},619,[66],"LBRYApp/src/styles/fileDownloadButton.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -74940,7 +75873,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},613,[22,614],"LBRYApp/src/page/splash/index.js");
+},620,[22,621],"LBRYApp/src/page/splash/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75110,7 +76043,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     title: 'Splash'
   };
   exports.default = SplashScreen;
-},614,[12,62,66,24,615],"LBRYApp/src/page/splash/view.js");
+},621,[12,62,66,24,622],"LBRYApp/src/page/splash/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75150,7 +76083,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = splashStyle;
-},615,[66],"LBRYApp/src/styles/splash.js");
+},622,[66],"LBRYApp/src/styles/splash.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75165,7 +76098,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var addListener = (0, _reactNavigationReduxHelpers.createReduxBoundAddListener)("root");
   exports.reactNavigationMiddleware = reactNavigationMiddleware;
   exports.addListener = addListener;
-},616,[617],"LBRYApp/src/utils/redux.js");
+},623,[624],"LBRYApp/src/utils/redux.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75199,8 +76132,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var _reducer = require(_dependencyMap[2], "./reducer");
 
   exports.createNavigationReducer = _reducer.createNavigationReducer;
-},617,[618,619,620],"react-navigation-redux-helpers/src/index.js");
-__d(function (global, require, module, exports, _dependencyMap) {},618,[],"react-navigation-redux-helpers/src/types.js");
+},624,[625,626,627],"react-navigation-redux-helpers/src/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {},625,[],"react-navigation-redux-helpers/src/types.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75277,7 +76210,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.createReactNavigationReduxMiddleware = createReactNavigationReduxMiddleware;
   exports.createReduxBoundAddListener = createReduxBoundAddListener;
   exports.initializeListeners = initializeListeners;
-},619,[31,620],"react-navigation-redux-helpers/src/middleware.js");
+},626,[31,627],"react-navigation-redux-helpers/src/middleware.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75300,7 +76233,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   ;
   exports.createNavigationReducer = createNavigationReducer;
   exports.initAction = initAction;
-},620,[376],"react-navigation-redux-helpers/src/reducer.js");
+},627,[376],"react-navigation-redux-helpers/src/reducer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -75361,7 +76294,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.persistStore = _persistStore2.default;
   exports.purgeStoredState = _purgeStoredState2.default;
   exports.storages = storages;
-},621,[622,625,630,631,632,628],"redux-persist/lib/index.js");
+},628,[629,632,637,638,639,635],"redux-persist/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -75463,14 +76396,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
     });
     return newState;
   }
-},622,[623,624],"redux-persist/lib/autoRehydrate.js");
+},629,[630,631],"redux-persist/lib/autoRehydrate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
   exports.__esModule = true;
   var KEY_PREFIX = exports.KEY_PREFIX = 'reduxPersist:';
   var REHYDRATE = exports.REHYDRATE = 'persist/REHYDRATE';
-},623,[],"redux-persist/lib/constants.js");
+},630,[],"redux-persist/lib/constants.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -75501,7 +76434,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     if (!(0, _isPlainObject2.default)(a)) return false;
     return true;
   }
-},624,[38],"redux-persist/lib/utils/isStatePlainEnough.js");
+},631,[38],"redux-persist/lib/utils/isStatePlainEnough.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -75674,7 +76607,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     state[key] = value;
     return state;
   }
-},625,[623,626,628,629],"redux-persist/lib/createPersistor.js");
+},632,[630,633,635,636],"redux-persist/lib/createPersistor.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -75820,7 +76753,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       };
     }
   }
-},626,[627],"redux-persist/lib/defaults/asyncLocalStorage.js");
+},633,[634],"redux-persist/lib/defaults/asyncLocalStorage.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -75832,7 +76765,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     return setTimeout(fn, ms);
   };
   exports.default = setImmediate;
-},627,[],"redux-persist/lib/utils/setImmediate.js");
+},634,[],"redux-persist/lib/utils/setImmediate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -75876,7 +76809,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
     };
   }
-},628,[623],"redux-persist/lib/purgeStoredState.js");
+},635,[630],"redux-persist/lib/purgeStoredState.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   exports = module.exports = stringify;
   exports.getSerialize = serializer;
@@ -75903,7 +76836,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return replacer == null ? value : replacer.call(this, key, value);
     };
   }
-},629,[],"json-stringify-safe/stringify.js");
+},636,[],"json-stringify-safe/stringify.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -75931,7 +76864,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = createTransform;
-},630,[],"redux-persist/lib/createTransform.js");
+},637,[],"redux-persist/lib/createTransform.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76043,7 +76976,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   function defaultDeserializer(serial) {
     return JSON.parse(serial);
   }
-},631,[623,626],"redux-persist/lib/getStoredState.js");
+},638,[630,633],"redux-persist/lib/getStoredState.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76138,7 +77071,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       error: error
     };
   }
-},632,[623,631,625,627],"redux-persist/lib/persistStore.js");
+},639,[630,638,632,634],"redux-persist/lib/persistStore.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -76188,7 +77121,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             }
         }, config);
     }
-},633,[621,634,629],"redux-persist-transform-compress/lib/index.js");
+},640,[628,641,636],"redux-persist-transform-compress/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var LZString = function () {
     var f = String.fromCharCode;
@@ -76765,7 +77698,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   } else if (typeof module !== 'undefined' && module != null) {
     module.exports = LZString;
   }
-},634,[],"lz-string/libs/lz-string.js");
+},641,[],"lz-string/libs/lz-string.js");
 __d(function (global, require, module, exports, _dependencyMap) {
 	'use strict';
 
@@ -76897,7 +77830,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
 		return subset;
 	}
-},635,[621,636,637,638,639,640,641],"redux-persist-transform-filter/dist/index.js");
+},642,[628,643,644,645,646,647,648],"redux-persist-transform-filter/dist/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -77284,7 +78217,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = get;
-},636,[],"lodash.get/index.js");
+},643,[],"lodash.get/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -77704,7 +78637,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = set;
-},637,[],"lodash.set/index.js");
+},644,[],"lodash.set/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -78131,7 +79064,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = unset;
-},638,[],"lodash.unset/index.js");
+},645,[],"lodash.unset/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var LARGE_ARRAY_SIZE = 200;
   var FUNC_ERROR_TEXT = 'Expected a function';
@@ -79293,7 +80226,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = pickBy;
-},639,[],"lodash.pickby/index.js");
+},646,[],"lodash.pickby/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MAX_SAFE_INTEGER = 9007199254740991;
   var argsTag = '[object Arguments]',
@@ -79503,7 +80436,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isEmpty;
-},640,[],"lodash.isempty/index.js");
+},647,[],"lodash.isempty/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MAX_SAFE_INTEGER = 9007199254740991;
   var argsTag = '[object Arguments]',
@@ -79647,7 +80580,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = forIn;
-},641,[],"lodash.forin/index.js");
+},648,[],"lodash.forin/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -79672,6 +80605,6 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var thunk = createThunkMiddleware();
   thunk.withExtraArgument = createThunkMiddleware;
   exports['default'] = thunk;
-},642,[],"redux-thunk/lib/index.js");
+},649,[],"redux-thunk/lib/index.js");
 require(76);
 require(11);

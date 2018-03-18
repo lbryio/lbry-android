@@ -1,9 +1,22 @@
 import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Lbry } from 'lbry-redux';
+import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import Video from 'react-native-video';
 import filePageStyle from '../../styles/filePage';
 import FileItemMedia from '../../component/fileItemMedia';
+import FileDownloadButton from '../../component/fileDownloadButton';
 
 class FilePage extends React.PureComponent {
+  state = {
+    rate: 1,
+    volume: 1,
+    muted: false,
+    resizeMode: 'contain',
+    duration: 0.0,
+    currentTime: 0.0,
+    paused: true,
+  };
+  
   static navigationOptions = {
     title: ''
   };
@@ -28,7 +41,7 @@ class FilePage extends React.PureComponent {
       props.fetchCostInfo(props.navigation.state.params.uri);
     }
   }
-
+  
   render() {
     const {
       claim,
@@ -36,9 +49,9 @@ class FilePage extends React.PureComponent {
       metadata,
       contentType,
       tab,
-      uri,
       rewardedContentClaimIds,
-    } = this.props;
+      navigation
+    } = this.props; 
     
     if (!claim || !metadata) {
       return (
@@ -48,23 +61,37 @@ class FilePage extends React.PureComponent {
       );
     }
     
+    const completed = fileInfo && fileInfo.completed;  
     const title = metadata.title;
     const isRewardContent = rewardedContentClaimIds.includes(claim.claim_id);
     const description = metadata.description ? metadata.description : null;
-    //const mediaType = lbry.getMediaType(contentType);
-    //const player = require('render-media');
-    //const obscureNsfw = this.props.obscureNsfw && metadata && metadata.nsfw;
-    /*const isPlayable =
-      Object.values(player.mime).indexOf(contentType) !== -1 || mediaType === 'audio';*/
+    const mediaType = Lbry.getMediaType(contentType);
+    const isPlayable = mediaType === 'video' || mediaType === 'audio';
     const { height, channel_name: channelName, value } = claim;
     const channelClaimId =
       value && value.publisherSignature && value.publisherSignature.certificateId;
     
-    
     return (
       <View style={filePageStyle.pageContainer}>
         <View style={filePageStyle.mediaContainer}>
-          <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />
+          {(!fileInfo || !isPlayable) && <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
+          {!completed && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
+          
+          {fileInfo && isPlayable &&
+            <TouchableOpacity
+              style={filePageStyle.player}
+              onPress={() => this.setState({ paused: !this.state.paused })}>
+              <Video source={{ uri: 'file:///' + fileInfo.download_path }}
+                     resizeMode="cover"
+                     playInBackground={true}
+                     style={filePageStyle.player}
+                     rate={this.state.rate}
+                     volume={this.state.volume}
+                     paused={this.state.paused}
+                    />
+            </TouchableOpacity>
+          }
+          
         </View>
         <ScrollView style={filePageStyle.scrollContainer}>
           <Text style={filePageStyle.title}>{title}</Text>

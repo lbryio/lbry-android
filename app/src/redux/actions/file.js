@@ -1,0 +1,222 @@
+import {
+    ACTIONS,
+    Lbry,
+    makeSelectCostInfoForUri,
+    makeSelectFileInfoForUri,
+    selectTotalDownloadProgress,
+    selectDownloadingByOutpoint,
+} from 'lbry-redux';
+import { NativeModules } from 'react-native';
+
+const DOWNLOAD_POLL_INTERVAL = 250;
+
+export function doUpdateLoadStatus(uri, outpoint) {
+  return (dispatch, getState) => {
+    Lbry.file_list({
+      outpoint,
+      full_status: true,
+    }).then(([fileInfo]) => {
+      if (!fileInfo || fileInfo.written_bytes === 0) {
+        // download hasn't started yet
+        setTimeout(() => {
+          dispatch(doUpdateLoadStatus(uri, outpoint));
+        }, DOWNLOAD_POLL_INTERVAL);
+      } else if (fileInfo.completed) {
+        // TODO this isn't going to get called if they reload the client before
+        // the download finished
+        const { total_bytes: totalBytes, written_bytes: writtenBytes } = fileInfo;
+        dispatch({
+          type: ACTIONS.DOWNLOADING_COMPLETED,
+          data: {
+            uri,
+            outpoint,
+            fileInfo,
+          },
+        });
+
+        NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, 100, writtenBytes, totalBytes);
+        
+        /*const notif = new window.Notification('LBRY Download Complete', {
+          body: fileInfo.metadata.stream.metadata.title,
+          silent: false,
+        });
+        notif.onclick = () => {
+          ipcRenderer.send('focusWindow', 'main');
+        };*/
+      } else {
+        // ready to play
+        const { total_bytes: totalBytes, written_bytes: writtenBytes } = fileInfo;
+        const progress = writtenBytes / totalBytes * 100;
+
+        dispatch({
+          type: ACTIONS.DOWNLOADING_PROGRESSED,
+          data: {
+            uri,
+            outpoint,
+            fileInfo,
+            progress,
+          },
+        });
+
+        NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, progress, writtenBytes, totalBytes);
+        
+        setTimeout(() => {
+          dispatch(doUpdateLoadStatus(uri, outpoint));
+        }, DOWNLOAD_POLL_INTERVAL);
+      }
+    });
+  };
+}
+
+export function doStartDownload(uri, outpoint) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    if (!outpoint) {
+      throw new Error('outpoint is required to begin a download');
+    }
+
+    const { downloadingByOutpoint = {} } = state.fileInfo;
+
+    if (downloadingByOutpoint[outpoint]) return;
+
+    Lbry.file_list({ outpoint, full_status: true }).then(([fileInfo]) => {
+      dispatch({
+        type: ACTIONS.DOWNLOADING_STARTED,
+        data: {
+          uri,
+          outpoint,
+          fileInfo,
+        },
+      });
+      
+      NativeModules.LbryDownloadManager.startDownload(uri, fileInfo.file_name);
+
+      dispatch(doUpdateLoadStatus(uri, outpoint));
+    });
+  };
+}
+
+export function doDownloadFile(uri, streamInfo) {
+  return dispatch => {
+    dispatch(doStartDownload(uri, streamInfo.outpoint));
+
+    //analytics.apiLog(uri, streamInfo.output, streamInfo.claim_id);
+
+    //dispatch(doClaimEligiblePurchaseRewards());
+  };
+}
+
+export function doSetPlayingUri(uri) {
+  return dispatch => {
+    dispatch({
+      type: ACTIONS.SET_PLAYING_URI,
+      data: { uri },
+    });
+  };
+}
+
+export function doLoadVideo(uri) {
+  return dispatch => {
+    dispatch({
+      type: ACTIONS.LOADING_VIDEO_STARTED,
+      data: {
+        uri,
+      },
+    });
+    
+    Lbry.get({ uri })
+      .then(streamInfo => {
+        const timeout =
+          streamInfo === null || typeof streamInfo !== 'object' || streamInfo.error === 'Timeout';
+
+        if (timeout) {
+          dispatch(doSetPlayingUri(null));
+          dispatch({
+            type: ACTIONS.LOADING_VIDEO_FAILED,
+            data: { uri },
+          });
+
+          console.log(`File timeout for uri ${uri}`);
+          //dispatch(doOpenModal(MODALS.FILE_TIMEOUT, { uri }));
+        } else {
+          dispatch(doDownloadFile(uri, streamInfo));
+        }
+      })
+      .catch(() => {
+        dispatch(doSetPlayingUri(null));
+        dispatch({
+          type: ACTIONS.LOADING_VIDEO_FAILED,
+          data: { uri },
+        });
+        
+        console.log(`Failed to download ${uri}`);
+        /*dispatch(
+          doAlertError(
+            `Failed to download ${uri}, please try again. If this problem persists, visit https://lbry.io/faq/support for support.`
+          )
+        );*/
+      });
+  };
+}
+
+export function doPurchaseUri(uri, specificCostInfo) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const balance = 0;//selectBalance(state);
+    const fileInfo = makeSelectFileInfoForUri(uri)(state);
+    const downloadingByOutpoint = selectDownloadingByOutpoint(state);
+    const alreadyDownloading = fileInfo && !!downloadingByOutpoint[fileInfo.outpoint];
+
+    function attemptPlay(cost, instantPurchaseMax = null) {
+      if (cost > 0 && (!instantPurchaseMax || cost > instantPurchaseMax)) {
+        //dispatch(doOpenModal(MODALS.AFFIRM_PURCHASE, { uri }));
+        console.log('Affirm purchase...');
+      } else {
+        dispatch(doLoadVideo(uri));
+      }
+    }
+
+    // we already fully downloaded the file.
+    if (fileInfo && fileInfo.completed) {
+      // If written_bytes is false that means the user has deleted/moved the
+      // file manually on their file system, so we need to dispatch a
+      // doLoadVideo action to reconstruct the file from the blobs
+      if (!fileInfo.written_bytes) dispatch(doLoadVideo(uri));
+
+      Promise.resolve();
+      return;
+    }
+
+    // we are already downloading the file
+    if (alreadyDownloading) {
+      Promise.resolve();
+      return;
+    }
+
+    const costInfo = makeSelectCostInfoForUri(uri)(state) || specificCostInfo;
+    const { cost } = costInfo;
+
+    if (cost > balance) {
+      dispatch(doSetPlayingUri(null));
+      //dispatch(doOpenModal(MODALS.INSUFFICIENT_CREDITS));
+      Promise.resolve();
+      return;
+    }
+
+    if (cost === 0/* || !makeSelectClientSetting(SETTINGS.INSTANT_PURCHASE_ENABLED)(state)*/) {
+      attemptPlay(cost);
+    }
+    /*} else {
+      const instantPurchaseMax = makeSelectClientSetting(SETTINGS.INSTANT_PURCHASE_MAX)(state);
+      if (instantPurchaseMax.currency === 'LBC') {
+        attemptPlay(cost, instantPurchaseMax.amount);
+      } else {
+        // Need to convert currency of instant purchase maximum before trying to play
+        Lbryio.getExchangeRates().then(({ LBC_USD }) => {
+          attemptPlay(cost, instantPurchaseMax.amount / LBC_USD);
+        });
+      }
+    }*/
+  };
+}

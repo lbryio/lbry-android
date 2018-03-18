@@ -67,6 +67,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-video')
 	{%- for aar in aars %}
 	compile(name: '{{ aar }}', ext: 'aar')
 	{%- endfor -%}

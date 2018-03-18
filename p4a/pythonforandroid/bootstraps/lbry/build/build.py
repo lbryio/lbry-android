@@ -364,7 +364,6 @@ main.py that loads it.''')
         remove('AndroidManifest.xml')
     shutil.copy(join('src', 'main', 'AndroidManifest.xml'),
                 'AndroidManifest.xml')
-        
 
     render(
         'strings.tmpl.xml',
@@ -397,6 +396,18 @@ main.py that loads it.''')
         aars=aars,
         android_api=android_api,
         build_tools_version=build_tools_version)
+    
+    render(
+        'settings.tmpl.gradle',
+        'settings.gradle'
+    )
+    
+    # copy icon drawables
+    for folder in ('drawable-hdpi', 'drawable-mdpi', 'drawable-xhdpi', 'drawable-xxhdpi', 'drawable-xxxhdpi'):
+        shutil.copy(
+            'templates/res/{}/ic_file_download_black_24dp.png'.format(folder),
+            'src/main/res/{}/ic_file_download_black_24dp.png'.format(folder)
+        );
 
     ## ant build templates
     render(
