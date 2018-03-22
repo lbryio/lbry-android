@@ -5,11 +5,13 @@ const width = screenDimension.width - 48; // screen width minus combined left an
 
 const fileItemMediaStyle = StyleSheet.create({
   autothumb: {
-    width: width,
-    height: 180,
+    flex: 1,
+    width: '100%',
+    height: 200,
     justifyContent: 'center'
   },
   autothumbText: {
+    fontFamily: 'Metropolis-SemiBold',
     textAlign: 'center',
     color: '#ffffff',
     fontSize: 40
@@ -48,8 +50,9 @@ const fileItemMediaStyle = StyleSheet.create({
     backgroundColor: '#ffa726'
   },
   thumbnail: {
-    width: width,
-    height: 180,
+    flex: 1,
+    width: '100%',
+    height: 200,
     shadowColor: 'transparent'
   }
 });

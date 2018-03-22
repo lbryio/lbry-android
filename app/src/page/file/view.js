@@ -1,20 +1,16 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
-import Video from 'react-native-video';
-import filePageStyle from '../../styles/filePage';
+import { Text, View, ScrollView, StatusBar, TouchableOpacity, NativeModules } from 'react-native';
 import FileItemMedia from '../../component/fileItemMedia';
 import FileDownloadButton from '../../component/fileDownloadButton';
+import MediaPlayer from '../../component/mediaPlayer';
+import Video from 'react-native-video';
+import filePageStyle from '../../styles/filePage';
 
 class FilePage extends React.PureComponent {
   state = {
-    rate: 1,
-    volume: 1,
-    muted: false,
-    resizeMode: 'contain',
-    duration: 0.0,
-    currentTime: 0.0,
-    paused: true,
+    mediaLoaded: false,
+    fullscreenMode: false
   };
   
   static navigationOptions = {
@@ -22,6 +18,7 @@ class FilePage extends React.PureComponent {
   };
     
   componentDidMount() {
+    StatusBar.setHidden(false);
     this.fetchFileInfo(this.props);
     this.fetchCostInfo(this.props);
   }
@@ -39,6 +36,26 @@ class FilePage extends React.PureComponent {
   fetchCostInfo(props) {
     if (props.costInfo === undefined) {
       props.fetchCostInfo(props.navigation.state.params.uri);
+    }
+  }
+  
+  handleFullscreenToggle = (mode) => {
+    this.setState({ fullscreenMode: mode });
+    StatusBar.setHidden(mode);
+    if (NativeModules.ScreenOrientation) {
+      if (mode) {
+        // fullscreen, so change orientation to landscape mode
+        NativeModules.ScreenOrientation.lockOrientationLandscape();
+      } else {
+        NativeModules.ScreenOrientation.unlockOrientation();
+      }
+    }
+  }
+  
+  componentWillUnmount() {
+    StatusBar.setHidden(false);
+    if (NativeModules.ScreenOrientation) {
+      NativeModules.ScreenOrientation.unlockOrientation();
     }
   }
   
@@ -73,25 +90,14 @@ class FilePage extends React.PureComponent {
     
     return (
       <View style={filePageStyle.pageContainer}>
-        <View style={filePageStyle.mediaContainer}>
-          {(!fileInfo || !isPlayable) && <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
+        <View style={this.state.fullscreenMode ? filePageStyle.fullscreenMedia : filePageStyle.mediaContainer}>
+          {(!fileInfo || (isPlayable && !this.state.mediaLoaded)) &&
+            <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
           {!completed && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
-          
-          {fileInfo && isPlayable &&
-            <TouchableOpacity
-              style={filePageStyle.player}
-              onPress={() => this.setState({ paused: !this.state.paused })}>
-              <Video source={{ uri: 'file:///' + fileInfo.download_path }}
-                     resizeMode="cover"
-                     playInBackground={true}
-                     style={filePageStyle.player}
-                     rate={this.state.rate}
-                     volume={this.state.volume}
-                     paused={this.state.paused}
-                    />
-            </TouchableOpacity>
-          }
-          
+          {fileInfo && isPlayable && <MediaPlayer fileInfo={fileInfo}
+                                                  style={filePageStyle.player}
+                                                  onFullscreenToggled={this.handleFullscreenToggle} 
+                                                  onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
         </View>
         <ScrollView style={filePageStyle.scrollContainer}>
           <Text style={filePageStyle.title}>{title}</Text>

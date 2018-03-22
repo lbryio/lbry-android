@@ -18,7 +18,7 @@ import java.util.Random;
  * Created by akinwale on 3/15/18.
  */
 
-public class LbryDownloadManagerModule extends ReactContextBaseJavaModule {
+public class DownloadManagerModule extends ReactContextBaseJavaModule {
     private Context context;
 
     private HashMap<Integer, NotificationCompat.Builder> builders = new HashMap<Integer, NotificationCompat.Builder>();
@@ -29,7 +29,7 @@ public class LbryDownloadManagerModule extends ReactContextBaseJavaModule {
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 
-    public LbryDownloadManagerModule(ReactApplicationContext reactContext) {
+    public DownloadManagerModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.context = reactContext;
     }

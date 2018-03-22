@@ -58,7 +58,7 @@ class FileItem extends React.PureComponent {
             this.props.navigation.navigate('File', { uri: uri });
           }
         }>
-        <FileItemMedia title={title} thumbnail={thumbnail} />
+        <FileItemMedia title={title} thumbnail={thumbnail} resizeMode="cover" />
         <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />
         <Text style={discoverStyle.fileItemName}>{title}</Text>
         {channelName &&

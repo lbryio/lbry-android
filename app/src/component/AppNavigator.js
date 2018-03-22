@@ -20,7 +20,8 @@ const discoverStack = StackNavigator({
   File: {
     screen: FilePage,
     navigationOptions: {
-      header: null
+      header: null,
+      drawerLockMode: 'locked-closed'
     }
   }
 }, {
