@@ -77,7 +77,7 @@ const mediaPlayerStyle = StyleSheet.create({
   seekerCircle: {
     borderRadius: 12,
     position: 'relative',
-    top: 8,
+    top: 16,
     left: 8,
     height: 12,
     width: 12,
@@ -85,15 +85,15 @@ const mediaPlayerStyle = StyleSheet.create({
   },
   seekerHandle: {
     position: 'absolute',
-    height: 28,
-    width: 28,
+    height: 36,
+    width: 36,
     bottom: -12,
     marginLeft: -8
   },
   bigSeekerCircle: {
     borderRadius: 24,
     position: 'relative',
-    top: 2,
+    top: 10,
     left: 8,
     height: 24,
     width: 24,
