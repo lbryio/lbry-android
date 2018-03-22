@@ -7,13 +7,14 @@ const splashStyle = StyleSheet.create({
     backgroundColor: '#40b89a'
   },
   title: {
+    fontFamily: 'Metropolis-Bold',
     fontSize: 64,
-    fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 48,
     color: '#ffffff'
   },
   details: {
+    fontFamily: 'Metropolis-Regular',
     fontSize: 14,
     marginLeft: 16,
     marginRight: 16,
@@ -21,7 +22,7 @@ const splashStyle = StyleSheet.create({
     textAlign: 'center'
   },
   message: {
-    fontWeight: 'bold',
+    fontFamily: 'Metropolis-Bold',
     fontSize: 18,
     color: '#ffffff',
     marginLeft: 16,

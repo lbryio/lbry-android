@@ -1556,7 +1556,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = LBRYApp;
-},11,[12,22,61,66,36,376,609,628,640,642,649,62,623],"LBRYApp/src/index.js");
+},11,[12,22,61,66,36,376,609,633,645,647,654,62,628],"LBRYApp/src/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -60102,6 +60102,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
           _react2.default.createElement(_fileItemMedia2.default, {
             title: title,
             thumbnail: thumbnail,
+            resizeMode: "cover",
             __source: {
               fileName: _jsxFileName,
               lineNumber: 61
@@ -70604,7 +70605,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
         var style = this.props.style;
         var _props = this.props,
             title = _props.title,
-            thumbnail = _props.thumbnail;
+            thumbnail = _props.thumbnail,
+            resizeMode = _props.resizeMode;
         var atStyle = this.state.autoThumbStyle;
 
         if (thumbnail && typeof thumbnail === 'string') {
@@ -70616,7 +70618,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             source: {
               uri: thumbnail
             },
-            resizeMode: "cover",
+            resizeMode: resizeMode ? resizeMode : "cover",
             style: style,
             __source: {
               fileName: _jsxFileName,
@@ -70667,11 +70669,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var fileItemMediaStyle = _reactNative.StyleSheet.create({
     autothumb: {
-      width: width,
-      height: 180,
+      flex: 1,
+      width: '100%',
+      height: 200,
       justifyContent: 'center'
     },
     autothumbText: {
+      fontFamily: 'Metropolis-SemiBold',
       textAlign: 'center',
       color: '#ffffff',
       fontSize: 40
@@ -70710,8 +70714,9 @@ __d(function (global, require, module, exports, _dependencyMap) {
       backgroundColor: '#ffa726'
     },
     thumbnail: {
-      width: width,
-      height: 180,
+      flex: 1,
+      width: '100%',
+      height: 200,
       shadowColor: 'transparent'
     }
   });
@@ -70962,11 +70967,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
       flex: 1
     },
     title: {
+      fontFamily: 'Metropolis-Regular',
       fontSize: 20,
       textAlign: 'center',
       margin: 10
     },
     categoryName: {
+      fontFamily: 'Metropolis-Regular',
       fontSize: 20,
       marginLeft: 24,
       marginTop: 16,
@@ -70979,15 +70986,15 @@ __d(function (global, require, module, exports, _dependencyMap) {
       marginBottom: 48
     },
     fileItemName: {
+      fontFamily: 'Metropolis-Bold',
       marginTop: 8,
-      fontSize: 16,
-      fontWeight: 'bold'
+      fontSize: 16
     },
     channelName: {
+      fontFamily: 'Metropolis-SemiBold',
       fontSize: 14,
       marginTop: 4,
-      color: '#c0c0c0',
-      fontWeight: 'bold'
+      color: '#c0c0c0'
     },
     filePriceContainer: {
       backgroundColor: '#61fcd8',
@@ -71000,10 +71007,10 @@ __d(function (global, require, module, exports, _dependencyMap) {
       borderRadius: 4
     },
     filePriceText: {
+      fontFamily: 'Metropolis-Bold',
       fontSize: 12,
       textAlign: 'center',
-      color: '#0c604b',
-      fontWeight: 'bold'
+      color: '#0c604b'
     },
     drawerHamburger: {
       marginLeft: 8
@@ -74560,7 +74567,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
     File: {
       screen: _file2.default,
       navigationOptions: {
-        header: null
+        header: null,
+        drawerLockMode: 'locked-closed'
       }
     }
   }, {
@@ -74633,7 +74641,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
           }),
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 69
+            lineNumber: 70
           }
         });
       }
@@ -74648,7 +74656,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(mapStateToProps)(AppWithNavigationState);
-},609,[12,61,610,620,376,22,623,66,455,454],"LBRYApp/src/component/AppNavigator.js");
+},609,[12,61,610,625,376,22,628,66,455,454],"LBRYApp/src/component/AppNavigator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -74703,21 +74711,25 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var _reactNative = require(_dependencyMap[2], "react-native");
 
-  var _reactNativeVideo = require(_dependencyMap[3], "react-native-video");
-
-  var _reactNativeVideo2 = babelHelpers.interopRequireDefault(_reactNativeVideo);
-
-  var _filePage = require(_dependencyMap[4], "../../styles/filePage");
-
-  var _filePage2 = babelHelpers.interopRequireDefault(_filePage);
-
-  var _fileItemMedia = require(_dependencyMap[5], "../../component/fileItemMedia");
+  var _fileItemMedia = require(_dependencyMap[3], "../../component/fileItemMedia");
 
   var _fileItemMedia2 = babelHelpers.interopRequireDefault(_fileItemMedia);
 
-  var _fileDownloadButton = require(_dependencyMap[6], "../../component/fileDownloadButton");
+  var _fileDownloadButton = require(_dependencyMap[4], "../../component/fileDownloadButton");
 
   var _fileDownloadButton2 = babelHelpers.interopRequireDefault(_fileDownloadButton);
+
+  var _mediaPlayer = require(_dependencyMap[5], "../../component/mediaPlayer");
+
+  var _mediaPlayer2 = babelHelpers.interopRequireDefault(_mediaPlayer);
+
+  var _reactNativeVideo = require(_dependencyMap[6], "react-native-video");
+
+  var _reactNativeVideo2 = babelHelpers.interopRequireDefault(_reactNativeVideo);
+
+  var _filePage = require(_dependencyMap[7], "../../styles/filePage");
+
+  var _filePage2 = babelHelpers.interopRequireDefault(_filePage);
 
   var FilePage = function (_React$PureComponent) {
     babelHelpers.inherits(FilePage, _React$PureComponent);
@@ -74734,19 +74746,30 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
 
       return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = FilePage.__proto__ || Object.getPrototypeOf(FilePage)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-        rate: 1,
-        volume: 1,
-        muted: false,
-        resizeMode: 'contain',
-        duration: 0.0,
-        currentTime: 0.0,
-        paused: true
+        mediaLoaded: false,
+        fullscreenMode: false
+      }, _this.handleFullscreenToggle = function (mode) {
+        _this.setState({
+          fullscreenMode: mode
+        });
+
+        _reactNative.StatusBar.setHidden(mode);
+
+        if (_reactNative.NativeModules.ScreenOrientation) {
+          if (mode) {
+            _reactNative.NativeModules.ScreenOrientation.lockOrientationLandscape();
+          } else {
+            _reactNative.NativeModules.ScreenOrientation.unlockOrientation();
+          }
+        }
       }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
     }
 
     babelHelpers.createClass(FilePage, [{
       key: "componentDidMount",
       value: function componentDidMount() {
+        _reactNative.StatusBar.setHidden(false);
+
         this.fetchFileInfo(this.props);
         this.fetchCostInfo(this.props);
       }
@@ -74770,6 +74793,15 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       }
     }, {
+      key: "componentWillUnmount",
+      value: function componentWillUnmount() {
+        _reactNative.StatusBar.setHidden(false);
+
+        if (_reactNative.NativeModules.ScreenOrientation) {
+          _reactNative.NativeModules.ScreenOrientation.unlockOrientation();
+        }
+      }
+    }, {
       key: "render",
       value: function render() {
         var _this2 = this;
@@ -74790,7 +74822,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: _filePage2.default.container,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 58
+                lineNumber: 75
               }
             },
             _react2.default.createElement(
@@ -74799,7 +74831,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.emptyClaimText,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 59
+                  lineNumber: 76
                 }
               },
               "Empty claim or metadata info."
@@ -74825,25 +74857,25 @@ __d(function (global, require, module, exports, _dependencyMap) {
             style: _filePage2.default.pageContainer,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 75
+              lineNumber: 92
             }
           },
           _react2.default.createElement(
             _reactNative.View,
             {
-              style: _filePage2.default.mediaContainer,
+              style: this.state.fullscreenMode ? _filePage2.default.fullscreenMedia : _filePage2.default.mediaContainer,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 76
+                lineNumber: 93
               }
             },
-            (!fileInfo || !isPlayable) && _react2.default.createElement(_fileItemMedia2.default, {
+            (!fileInfo || isPlayable && !this.state.mediaLoaded) && _react2.default.createElement(_fileItemMedia2.default, {
               style: _filePage2.default.thumbnail,
               title: title,
               thumbnail: metadata.thumbnail,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 77
+                lineNumber: 95
               }
             }),
             !completed && _react2.default.createElement(_fileDownloadButton2.default, {
@@ -74851,39 +74883,23 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: _filePage2.default.downloadButton,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 78
+                lineNumber: 96
               }
             }),
-            fileInfo && isPlayable && _react2.default.createElement(
-              _reactNative.TouchableOpacity,
-              {
-                style: _filePage2.default.player,
-                onPress: function onPress() {
-                  return _this2.setState({
-                    paused: !_this2.state.paused
-                  });
-                },
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 81
-                }
+            fileInfo && isPlayable && _react2.default.createElement(_mediaPlayer2.default, {
+              fileInfo: fileInfo,
+              style: _filePage2.default.player,
+              onFullscreenToggled: this.handleFullscreenToggle,
+              onMediaLoaded: function onMediaLoaded() {
+                _this2.setState({
+                  mediaLoaded: true
+                });
               },
-              _react2.default.createElement(_reactNativeVideo2.default, {
-                source: {
-                  uri: 'file:///' + fileInfo.download_path
-                },
-                resizeMode: "cover",
-                playInBackground: true,
-                style: _filePage2.default.player,
-                rate: this.state.rate,
-                volume: this.state.volume,
-                paused: this.state.paused,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 84
-                }
-              })
-            )
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 97
+              }
+            })
           ),
           _react2.default.createElement(
             _reactNative.ScrollView,
@@ -74891,7 +74907,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: _filePage2.default.scrollContainer,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 96
+                lineNumber: 102
               }
             },
             _react2.default.createElement(
@@ -74900,7 +74916,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.title,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 97
+                  lineNumber: 103
                 }
               },
               title
@@ -74911,7 +74927,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.channelName,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 98
+                  lineNumber: 104
                 }
               },
               channelName
@@ -74922,7 +74938,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.description,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 99
+                  lineNumber: 105
                 }
               },
               description
@@ -74938,7 +74954,986 @@ __d(function (global, require, module, exports, _dependencyMap) {
     title: ''
   };
   exports.default = FilePage;
-},611,[12,62,66,612,615,449,616],"LBRYApp/src/page/file/view.js");
+},611,[12,62,66,449,612,616,618,624],"LBRYApp/src/page/file/view.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactRedux = require(_dependencyMap[0], "react-redux");
+
+  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
+
+  var _file = require(_dependencyMap[2], "../../redux/actions/file");
+
+  var _view = require(_dependencyMap[3], "./view");
+
+  var _view2 = babelHelpers.interopRequireDefault(_view);
+
+  var select = function select(state, props) {
+    return {
+      fileInfo: (0, _lbryRedux.makeSelectFileInfoForUri)(props.uri)(state),
+      downloading: (0, _lbryRedux.makeSelectDownloadingForUri)(props.uri)(state),
+      costInfo: (0, _lbryRedux.makeSelectCostInfoForUri)(props.uri)(state),
+      loading: (0, _lbryRedux.makeSelectLoadingForUri)(props.uri)(state)
+    };
+  };
+
+  var perform = function perform(dispatch) {
+    return {
+      purchaseUri: function purchaseUri(uri) {
+        return dispatch((0, _file.doPurchaseUri)(uri));
+      },
+      restartDownload: function restartDownload(uri, outpoint) {
+        return dispatch((0, _file.doStartDownload)(uri, outpoint));
+      }
+    };
+  };
+
+  exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
+},612,[22,62,613,614],"LBRYApp/src/component/fileDownloadButton/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.doUpdateLoadStatus = doUpdateLoadStatus;
+  exports.doStartDownload = doStartDownload;
+  exports.doDownloadFile = doDownloadFile;
+  exports.doSetPlayingUri = doSetPlayingUri;
+  exports.doLoadVideo = doLoadVideo;
+  exports.doPurchaseUri = doPurchaseUri;
+
+  var _lbryRedux = require(_dependencyMap[0], "lbry-redux");
+
+  var _reactNative = require(_dependencyMap[1], "react-native");
+
+  var DOWNLOAD_POLL_INTERVAL = 250;
+
+  function doUpdateLoadStatus(uri, outpoint) {
+    return function (dispatch, getState) {
+      _lbryRedux.Lbry.file_list({
+        outpoint: outpoint,
+        full_status: true
+      }).then(function (_ref) {
+        var _ref2 = babelHelpers.slicedToArray(_ref, 1),
+            fileInfo = _ref2[0];
+
+        if (!fileInfo || fileInfo.written_bytes === 0) {
+          setTimeout(function () {
+            dispatch(doUpdateLoadStatus(uri, outpoint));
+          }, DOWNLOAD_POLL_INTERVAL);
+        } else if (fileInfo.completed) {
+          var totalBytes = fileInfo.total_bytes,
+              writtenBytes = fileInfo.written_bytes;
+          dispatch({
+            type: _lbryRedux.ACTIONS.DOWNLOADING_COMPLETED,
+            data: {
+              uri: uri,
+              outpoint: outpoint,
+              fileInfo: fileInfo
+            }
+          });
+
+          _reactNative.NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, 100, writtenBytes, totalBytes);
+        } else {
+          var _totalBytes = fileInfo.total_bytes,
+              _writtenBytes = fileInfo.written_bytes;
+          var progress = _writtenBytes / _totalBytes * 100;
+          dispatch({
+            type: _lbryRedux.ACTIONS.DOWNLOADING_PROGRESSED,
+            data: {
+              uri: uri,
+              outpoint: outpoint,
+              fileInfo: fileInfo,
+              progress: progress
+            }
+          });
+
+          _reactNative.NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, progress, _writtenBytes, _totalBytes);
+
+          setTimeout(function () {
+            dispatch(doUpdateLoadStatus(uri, outpoint));
+          }, DOWNLOAD_POLL_INTERVAL);
+        }
+      });
+    };
+  }
+
+  function doStartDownload(uri, outpoint) {
+    return function (dispatch, getState) {
+      var state = getState();
+
+      if (!outpoint) {
+        throw new Error('outpoint is required to begin a download');
+      }
+
+      var _state$fileInfo$downl = state.fileInfo.downloadingByOutpoint,
+          downloadingByOutpoint = _state$fileInfo$downl === undefined ? {} : _state$fileInfo$downl;
+      if (downloadingByOutpoint[outpoint]) return;
+
+      _lbryRedux.Lbry.file_list({
+        outpoint: outpoint,
+        full_status: true
+      }).then(function (_ref3) {
+        var _ref4 = babelHelpers.slicedToArray(_ref3, 1),
+            fileInfo = _ref4[0];
+
+        dispatch({
+          type: _lbryRedux.ACTIONS.DOWNLOADING_STARTED,
+          data: {
+            uri: uri,
+            outpoint: outpoint,
+            fileInfo: fileInfo
+          }
+        });
+
+        _reactNative.NativeModules.LbryDownloadManager.startDownload(uri, fileInfo.file_name);
+
+        dispatch(doUpdateLoadStatus(uri, outpoint));
+      });
+    };
+  }
+
+  function doDownloadFile(uri, streamInfo) {
+    return function (dispatch) {
+      dispatch(doStartDownload(uri, streamInfo.outpoint));
+    };
+  }
+
+  function doSetPlayingUri(uri) {
+    return function (dispatch) {
+      dispatch({
+        type: _lbryRedux.ACTIONS.SET_PLAYING_URI,
+        data: {
+          uri: uri
+        }
+      });
+    };
+  }
+
+  function doLoadVideo(uri) {
+    return function (dispatch) {
+      dispatch({
+        type: _lbryRedux.ACTIONS.LOADING_VIDEO_STARTED,
+        data: {
+          uri: uri
+        }
+      });
+
+      _lbryRedux.Lbry.get({
+        uri: uri
+      }).then(function (streamInfo) {
+        var timeout = streamInfo === null || typeof streamInfo !== 'object' || streamInfo.error === 'Timeout';
+
+        if (timeout) {
+          dispatch(doSetPlayingUri(null));
+          dispatch({
+            type: _lbryRedux.ACTIONS.LOADING_VIDEO_FAILED,
+            data: {
+              uri: uri
+            }
+          });
+          console.log("File timeout for uri " + uri);
+        } else {
+          dispatch(doDownloadFile(uri, streamInfo));
+        }
+      }).catch(function () {
+        dispatch(doSetPlayingUri(null));
+        dispatch({
+          type: _lbryRedux.ACTIONS.LOADING_VIDEO_FAILED,
+          data: {
+            uri: uri
+          }
+        });
+        console.log("Failed to download " + uri);
+      });
+    };
+  }
+
+  function doPurchaseUri(uri, specificCostInfo) {
+    return function (dispatch, getState) {
+      var state = getState();
+      var balance = 0;
+      var fileInfo = (0, _lbryRedux.makeSelectFileInfoForUri)(uri)(state);
+      var downloadingByOutpoint = (0, _lbryRedux.selectDownloadingByOutpoint)(state);
+      var alreadyDownloading = fileInfo && !!downloadingByOutpoint[fileInfo.outpoint];
+
+      function attemptPlay(cost) {
+        var instantPurchaseMax = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+        if (cost > 0 && (!instantPurchaseMax || cost > instantPurchaseMax)) {
+          console.log('Affirm purchase...');
+        } else {
+          dispatch(doLoadVideo(uri));
+        }
+      }
+
+      if (fileInfo && fileInfo.completed) {
+        if (!fileInfo.written_bytes) dispatch(doLoadVideo(uri));
+        Promise.resolve();
+        return;
+      }
+
+      if (alreadyDownloading) {
+        Promise.resolve();
+        return;
+      }
+
+      var costInfo = (0, _lbryRedux.makeSelectCostInfoForUri)(uri)(state) || specificCostInfo;
+      var cost = costInfo.cost;
+
+      if (cost > balance) {
+        dispatch(doSetPlayingUri(null));
+        Promise.resolve();
+        return;
+      }
+
+      if (cost === 0) {
+          attemptPlay(cost);
+        }
+    };
+  }
+},613,[62,66],"LBRYApp/src/redux/actions/file.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/home/akinwale/Dev/Python/lbry-android/app/src/component/fileDownloadButton/view.js";
+
+  var _react = require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _reactNative = require(_dependencyMap[1], "react-native");
+
+  var _fileDownloadButton = require(_dependencyMap[2], "../../styles/fileDownloadButton");
+
+  var _fileDownloadButton2 = babelHelpers.interopRequireDefault(_fileDownloadButton);
+
+  var FileDownloadButton = function (_React$PureComponent) {
+    babelHelpers.inherits(FileDownloadButton, _React$PureComponent);
+
+    function FileDownloadButton() {
+      babelHelpers.classCallCheck(this, FileDownloadButton);
+      return babelHelpers.possibleConstructorReturn(this, (FileDownloadButton.__proto__ || Object.getPrototypeOf(FileDownloadButton)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(FileDownloadButton, [{
+      key: "componentWillReceiveProps",
+      value: function componentWillReceiveProps(nextProps) {
+        this.restartDownload(nextProps);
+      }
+    }, {
+      key: "restartDownload",
+      value: function restartDownload(props) {
+        var downloading = props.downloading,
+            fileInfo = props.fileInfo,
+            uri = props.uri,
+            restartDownload = props.restartDownload;
+
+        if (!downloading && fileInfo && !fileInfo.completed && fileInfo.written_bytes !== false && fileInfo.written_bytes < fileInfo.total_bytes) {
+          restartDownload(uri, fileInfo.outpoint);
+        }
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _props = this.props,
+            fileInfo = _props.fileInfo,
+            downloading = _props.downloading,
+            uri = _props.uri,
+            purchaseUri = _props.purchaseUri,
+            costInfo = _props.costInfo,
+            loading = _props.loading,
+            doPause = _props.doPause,
+            style = _props.style;
+
+        var openFile = function openFile() {};
+
+        if (loading || downloading) {
+          var progress = fileInfo && fileInfo.written_bytes ? fileInfo.written_bytes / fileInfo.total_bytes * 100 : 0,
+              label = fileInfo ? progress.toFixed(0) + '% complete' : 'Connecting...';
+          return _react2.default.createElement(
+            _reactNative.View,
+            {
+              style: [style, _fileDownloadButton2.default.container],
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 48
+              }
+            },
+            _react2.default.createElement(_reactNative.View, {
+              style: {
+                width: progress + "%",
+                backgroundColor: '#ff0000',
+                position: 'absolute',
+                left: 0,
+                top: 0
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 49
+              }
+            }),
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _fileDownloadButton2.default.text,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 50
+                }
+              },
+              label
+            )
+          );
+        } else if (fileInfo === null && !downloading) {
+          if (!costInfo) {
+            return _react2.default.createElement(
+              _reactNative.View,
+              {
+                style: [style, _fileDownloadButton2.default.container],
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 56
+                }
+              },
+              _react2.default.createElement(
+                _reactNative.Text,
+                {
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 57
+                  }
+                },
+                "Fetching cost info..."
+              )
+            );
+          }
+
+          return _react2.default.createElement(
+            _reactNative.TouchableOpacity,
+            {
+              style: [style, _fileDownloadButton2.default.container],
+              onPress: function onPress() {
+                purchaseUri(uri);
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 62
+              }
+            },
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _fileDownloadButton2.default.text,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 65
+                }
+              },
+              "Download"
+            )
+          );
+        } else if (fileInfo && fileInfo.download_path) {
+          return _react2.default.createElement(
+            _reactNative.TouchableOpacity,
+            {
+              style: [style, _fileDownloadButton2.default.container],
+              onPress: function onPress() {
+                return openFile();
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 70
+              }
+            },
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _fileDownloadButton2.default.text,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 71
+                }
+              },
+              "Open"
+            )
+          );
+        }
+
+        return null;
+      }
+    }]);
+    return FileDownloadButton;
+  }(_react2.default.PureComponent);
+
+  exports.default = FileDownloadButton;
+},614,[12,66,615],"LBRYApp/src/component/fileDownloadButton/view.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNative = require(_dependencyMap[0], "react-native");
+
+  var fileDownloadButtonStyle = _reactNative.StyleSheet.create({
+    container: {
+      width: 120,
+      height: 36,
+      borderRadius: 18,
+      justifyContent: 'center',
+      backgroundColor: '#40c0a9'
+    },
+    text: {
+      fontFamily: 'Metropolis-Medium',
+      color: '#ffffff',
+      fontSize: 14,
+      textAlign: 'center'
+    }
+  });
+
+  exports.default = fileDownloadButtonStyle;
+},615,[66],"LBRYApp/src/styles/fileDownloadButton.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactRedux = require(_dependencyMap[0], "react-redux");
+
+  var _view = require(_dependencyMap[1], "./view");
+
+  var _view2 = babelHelpers.interopRequireDefault(_view);
+
+  var select = function select(state) {
+    return {};
+  };
+
+  var perform = function perform(dispatch) {
+    return {};
+  };
+
+  exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
+},616,[22,617],"LBRYApp/src/component/mediaPlayer/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/home/akinwale/Dev/Python/lbry-android/app/src/component/mediaPlayer/view.js";
+
+  var _react = require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
+
+  var _reactNative = require(_dependencyMap[2], "react-native");
+
+  var _reactNativeVideo = require(_dependencyMap[3], "react-native-video");
+
+  var _reactNativeVideo2 = babelHelpers.interopRequireDefault(_reactNativeVideo);
+
+  var _FontAwesome = require(_dependencyMap[4], "react-native-vector-icons/FontAwesome");
+
+  var _FontAwesome2 = babelHelpers.interopRequireDefault(_FontAwesome);
+
+  var _fileItemMedia = require(_dependencyMap[5], "../fileItemMedia");
+
+  var _fileItemMedia2 = babelHelpers.interopRequireDefault(_fileItemMedia);
+
+  var _mediaPlayer = require(_dependencyMap[6], "../../styles/mediaPlayer");
+
+  var _mediaPlayer2 = babelHelpers.interopRequireDefault(_mediaPlayer);
+
+  var MediaPlayer = function (_React$PureComponent) {
+    babelHelpers.inherits(MediaPlayer, _React$PureComponent);
+
+    function MediaPlayer() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
+      babelHelpers.classCallCheck(this, MediaPlayer);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = MediaPlayer.__proto__ || Object.getPrototypeOf(MediaPlayer)).call.apply(_ref, [this].concat(args))), _this), _this.seekResponder = null, _this.seekerWidth = 0, _this.video = null, _this.state = {
+        rate: 1,
+        volume: 1,
+        muted: false,
+        resizeMode: 'stretch',
+        duration: 0.0,
+        currentTime: 0.0,
+        paused: false,
+        fullscreenMode: false,
+        areControlsVisible: true,
+        controlsTimeout: -1,
+        seekerOffset: 0,
+        seekerPosition: 0,
+        firstPlay: true
+      }, _this.onLoad = function (data) {
+        _this.setState({
+          duration: data.duration
+        });
+
+        if (_this.props.onMediaLoaded) {
+          _this.props.onMediaLoaded();
+        }
+      }, _this.onProgress = function (data) {
+        _this.setState({
+          currentTime: data.currentTime
+        });
+
+        if (!_this.state.seeking) {
+          _this.setSeekerPosition(_this.calculateSeekerPosition());
+        }
+
+        if (_this.state.firstPlay) {
+          _this.setState({
+            firstPlay: false
+          });
+
+          _this.hidePlayerControls();
+        }
+      }, _this.clearControlsTimeout = function () {
+        if (_this.state.controlsTimeout > -1) {
+          clearTimeout(_this.state.controlsTimeout);
+        }
+      }, _this.showPlayerControls = function () {
+        _this.clearControlsTimeout();
+
+        if (!_this.state.areControlsVisible) {
+          _this.setState({
+            areControlsVisible: true
+          });
+        }
+
+        _this.hidePlayerControls();
+      }, _this.togglePlay = function () {
+        _this.showPlayerControls();
+
+        _this.setState({
+          paused: !_this.state.paused
+        });
+      }, _this.toggleFullscreenMode = function () {
+        _this.showPlayerControls();
+
+        var onFullscreenToggled = _this.props.onFullscreenToggled;
+
+        _this.setState({
+          fullscreenMode: !_this.state.fullscreenMode
+        }, function () {
+          _this.setState({
+            resizeMode: _this.state.fullscreenMode ? 'contain' : 'stretch'
+          });
+
+          if (onFullscreenToggled) {
+            onFullscreenToggled(_this.state.fullscreenMode);
+          }
+        });
+      }, _this.onEnd = function () {
+        _this.setState({
+          paused: true
+        });
+
+        _this.video.seek(0);
+      }, _this.seekTo = function () {
+        var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+        if (time > _this.state.duration) {
+          return;
+        }
+
+        _this.video.seek(time);
+
+        _this.setState({
+          currentTime: time
+        });
+      }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+    }
+
+    babelHelpers.createClass(MediaPlayer, [{
+      key: "formatTime",
+      value: function formatTime(time) {
+        var str = '';
+        var minutes = 0,
+            hours = 0,
+            seconds = parseInt(time, 10);
+
+        if (seconds > 60) {
+          minutes = parseInt(seconds / 60, 10);
+          seconds = seconds % 60;
+
+          if (minutes > 60) {
+            hours = parseInt(minutes / 60, 10);
+            minutes = minutes % 60;
+          }
+
+          str = (hours > 0 ? this.pad(hours) + ':' : '') + this.pad(minutes) + ':' + this.pad(seconds);
+        } else {
+          str = '00:' + this.pad(seconds);
+        }
+
+        return str;
+      }
+    }, {
+      key: "pad",
+      value: function pad(value) {
+        if (value < 10) {
+          return '0' + String(value);
+        }
+
+        return value;
+      }
+    }, {
+      key: "hidePlayerControls",
+      value: function hidePlayerControls() {
+        var player = this;
+        var timeout = setTimeout(function () {
+          player.setState({
+            areControlsVisible: false
+          });
+        }, MediaPlayer.ControlsTimeout);
+        player.setState({
+          controlsTimeout: timeout
+        });
+      }
+    }, {
+      key: "setSeekerPosition",
+      value: function setSeekerPosition() {
+        var position = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        position = this.checkSeekerPosition(position);
+        this.setState({
+          seekerPosition: position
+        });
+
+        if (!this.state.seeking) {
+          this.setState({
+            seekerOffset: position
+          });
+        }
+      }
+    }, {
+      key: "checkSeekerPosition",
+      value: function checkSeekerPosition() {
+        var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+        if (val < 0) {
+          val = 0;
+        } else if (val >= this.seekerWidth) {
+          return this.seekerWidth;
+        }
+
+        return val;
+      }
+    }, {
+      key: "initSeeker",
+      value: function initSeeker() {
+        var _this2 = this;
+
+        this.seekResponder = _reactNative.PanResponder.create({
+          onStartShouldSetPanResponder: function onStartShouldSetPanResponder(evt, gestureState) {
+            return true;
+          },
+          onMoveShouldSetPanResponder: function onMoveShouldSetPanResponder(evt, gestureState) {
+            return true;
+          },
+          onPanResponderGrant: function onPanResponderGrant(evt, gestureState) {
+            _this2.clearControlsTimeout();
+
+            _this2.setState({
+              seeking: true
+            });
+          },
+          onPanResponderMove: function onPanResponderMove(evt, gestureState) {
+            var position = _this2.state.seekerOffset + gestureState.dx;
+
+            _this2.setSeekerPosition(position);
+          },
+          onPanResponderRelease: function onPanResponderRelease(evt, gestureState) {
+            var time = _this2.getCurrentTimeForSeekerPosition();
+
+            if (time >= _this2.state.duration) {
+              _this2.setState({
+                paused: true
+              });
+
+              _this2.onEnd();
+            } else {
+              _this2.seekTo(time);
+
+              _this2.setState({
+                seeking: false
+              });
+            }
+
+            _this2.hidePlayerControls();
+          }
+        });
+      }
+    }, {
+      key: "getCurrentTimeForSeekerPosition",
+      value: function getCurrentTimeForSeekerPosition() {
+        return this.state.duration * (this.state.seekerPosition / this.seekerWidth);
+      }
+    }, {
+      key: "calculateSeekerPosition",
+      value: function calculateSeekerPosition() {
+        return this.seekerWidth * this.getCurrentTimePercentage();
+      }
+    }, {
+      key: "getCurrentTimePercentage",
+      value: function getCurrentTimePercentage() {
+        if (this.state.currentTime > 0) {
+          return parseFloat(this.state.currentTime) / parseFloat(this.state.duration);
+        }
+
+        return 0;
+      }
+    }, {
+      key: "componentWillMount",
+      value: function componentWillMount() {
+        this.initSeeker();
+      }
+    }, {
+      key: "componentWillUnmount",
+      value: function componentWillUnmount() {
+        this.setState({
+          paused: true,
+          fullscreenMode: false
+        });
+        var onFullscreenToggled = this.props.onFullscreenToggled;
+
+        if (onFullscreenToggled) {
+          onFullscreenToggled(false);
+        }
+      }
+    }, {
+      key: "renderPlayerControls",
+      value: function renderPlayerControls() {
+        if (this.state.areControlsVisible) {
+          return _react2.default.createElement(
+            _reactNative.View,
+            {
+              style: _mediaPlayer2.default.playerControlsContainer,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 212
+              }
+            },
+            _react2.default.createElement(
+              _reactNative.TouchableOpacity,
+              {
+                style: _mediaPlayer2.default.playPauseButton,
+                onPress: this.togglePlay,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 213
+                }
+              },
+              this.state.paused && _react2.default.createElement(_FontAwesome2.default, {
+                name: "play",
+                size: 32,
+                color: "#ffffff",
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 215
+                }
+              }),
+              !this.state.paused && _react2.default.createElement(_FontAwesome2.default, {
+                name: "pause",
+                size: 32,
+                color: "#ffffff",
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 216
+                }
+              })
+            ),
+            _react2.default.createElement(
+              _reactNative.TouchableOpacity,
+              {
+                style: _mediaPlayer2.default.toggleFullscreenButton,
+                onPress: this.toggleFullscreenMode,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 219
+                }
+              },
+              this.state.fullscreenMode && _react2.default.createElement(_FontAwesome2.default, {
+                name: "compress",
+                size: 16,
+                color: "#ffffff",
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 220
+                }
+              }),
+              !this.state.fullscreenMode && _react2.default.createElement(_FontAwesome2.default, {
+                name: "expand",
+                size: 16,
+                color: "#ffffff",
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 221
+                }
+              })
+            ),
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _mediaPlayer2.default.elapsedDuration,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 224
+                }
+              },
+              this.formatTime(this.state.currentTime)
+            ),
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _mediaPlayer2.default.totalDuration,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 225
+                }
+              },
+              this.formatTime(this.state.duration)
+            )
+          );
+        }
+
+        return null;
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this3 = this;
+
+        var _props = this.props,
+            fileInfo = _props.fileInfo,
+            title = _props.title,
+            thumbnail = _props.thumbnail,
+            style = _props.style,
+            fullScreenStyle = _props.fullScreenStyle;
+        var flexCompleted = this.getCurrentTimePercentage() * 100;
+        var flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
+        return _react2.default.createElement(
+          _reactNative.View,
+          {
+            style: [style, _mediaPlayer2.default.container],
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 239
+            }
+          },
+          _react2.default.createElement(_reactNativeVideo2.default, {
+            source: {
+              uri: 'file:///' + fileInfo.download_path
+            },
+            ref: function ref(_ref2) {
+              _this3.video = _ref2;
+            },
+            resizeMode: this.state.resizeMode,
+            playInBackground: true,
+            style: _mediaPlayer2.default.player,
+            rate: this.state.rate,
+            volume: this.state.volume,
+            paused: this.state.paused,
+            onLoad: this.onLoad,
+            onProgress: this.onProgress,
+            onEnd: this.onEnd,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 240
+            }
+          }),
+          _react2.default.createElement(
+            _reactNative.TouchableOpacity,
+            {
+              style: _mediaPlayer2.default.playerControls,
+              onPress: this.showPlayerControls,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 253
+              }
+            },
+            this.renderPlayerControls()
+          ),
+          _react2.default.createElement(
+            _reactNative.View,
+            {
+              style: _mediaPlayer2.default.trackingControls,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 257
+              }
+            },
+            _react2.default.createElement(
+              _reactNative.View,
+              {
+                style: _mediaPlayer2.default.progress,
+                onLayout: function onLayout(evt) {
+                  return _this3.seekerWidth = evt.nativeEvent.layout.width;
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 258
+                }
+              },
+              _react2.default.createElement(_reactNative.View, {
+                style: [_mediaPlayer2.default.innerProgressCompleted, {
+                  flex: flexCompleted
+                }],
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 259
+                }
+              }),
+              _react2.default.createElement(_reactNative.View, {
+                style: [_mediaPlayer2.default.innerProgressRemaining, {
+                  flex: flexRemaining
+                }],
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 260
+                }
+              })
+            )
+          ),
+          this.state.areControlsVisible && _react2.default.createElement(
+            _reactNative.View,
+            babelHelpers.extends({
+              style: [_mediaPlayer2.default.seekerHandle, {
+                left: this.state.seekerPosition
+              }]
+            }, this.seekResponder.panHandlers, {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 265
+              }
+            }),
+            _react2.default.createElement(_reactNative.View, {
+              style: this.state.seeking ? _mediaPlayer2.default.bigSeekerCircle : _mediaPlayer2.default.seekerCircle,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 266
+              }
+            })
+          )
+        );
+      }
+    }]);
+    return MediaPlayer;
+  }(_react2.default.PureComponent);
+
+  MediaPlayer.ControlsTimeout = 3000;
+  exports.default = MediaPlayer;
+},617,[12,62,66,618,621,449,623],"LBRYApp/src/component/mediaPlayer/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75303,7 +76298,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       fullscreen: true
     }
   });
-},612,[12,24,66,201,613],"react-native-video/Video.js");
+},618,[12,24,66,201,619],"react-native-video/Video.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75318,7 +76313,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     cover: null,
     stretch: null
   });
-},613,[614],"react-native-video/VideoResizeMode.js");
+},619,[620],"react-native-video/VideoResizeMode.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -75342,7 +76337,929 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   module.exports = keyMirror;
-},614,[],"keymirror/index.js");
+},620,[],"keymirror/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.getImageSource = exports.ToolbarAndroid = exports.TabBarItemIOS = exports.TabBarItem = exports.Button = undefined;
+
+  var _createIconSet = require(_dependencyMap[0], "./lib/create-icon-set");
+
+  var _createIconSet2 = babelHelpers.interopRequireDefault(_createIconSet);
+
+  var _FontAwesome = require(_dependencyMap[1], "./glyphmaps/FontAwesome.json");
+
+  var _FontAwesome2 = babelHelpers.interopRequireDefault(_FontAwesome);
+
+  var iconSet = (0, _createIconSet2.default)(_FontAwesome2.default, 'FontAwesome', 'FontAwesome.ttf');
+  exports.default = iconSet;
+  var Button = exports.Button = iconSet.Button;
+  var TabBarItem = exports.TabBarItem = iconSet.TabBarItem;
+  var TabBarItemIOS = exports.TabBarItemIOS = iconSet.TabBarItemIOS;
+  var ToolbarAndroid = exports.ToolbarAndroid = iconSet.ToolbarAndroid;
+  var getImageSource = exports.getImageSource = iconSet.getImageSource;
+},621,[456,622],"react-native-vector-icons/FontAwesome.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  module.exports = {
+    "glass": 61440,
+    "music": 61441,
+    "search": 61442,
+    "envelope-o": 61443,
+    "heart": 61444,
+    "star": 61445,
+    "star-o": 61446,
+    "user": 61447,
+    "film": 61448,
+    "th-large": 61449,
+    "th": 61450,
+    "th-list": 61451,
+    "check": 61452,
+    "remove": 61453,
+    "close": 61453,
+    "times": 61453,
+    "search-plus": 61454,
+    "search-minus": 61456,
+    "power-off": 61457,
+    "signal": 61458,
+    "gear": 61459,
+    "cog": 61459,
+    "trash-o": 61460,
+    "home": 61461,
+    "file-o": 61462,
+    "clock-o": 61463,
+    "road": 61464,
+    "download": 61465,
+    "arrow-circle-o-down": 61466,
+    "arrow-circle-o-up": 61467,
+    "inbox": 61468,
+    "play-circle-o": 61469,
+    "rotate-right": 61470,
+    "repeat": 61470,
+    "refresh": 61473,
+    "list-alt": 61474,
+    "lock": 61475,
+    "flag": 61476,
+    "headphones": 61477,
+    "volume-off": 61478,
+    "volume-down": 61479,
+    "volume-up": 61480,
+    "qrcode": 61481,
+    "barcode": 61482,
+    "tag": 61483,
+    "tags": 61484,
+    "book": 61485,
+    "bookmark": 61486,
+    "print": 61487,
+    "camera": 61488,
+    "font": 61489,
+    "bold": 61490,
+    "italic": 61491,
+    "text-height": 61492,
+    "text-width": 61493,
+    "align-left": 61494,
+    "align-center": 61495,
+    "align-right": 61496,
+    "align-justify": 61497,
+    "list": 61498,
+    "dedent": 61499,
+    "outdent": 61499,
+    "indent": 61500,
+    "video-camera": 61501,
+    "photo": 61502,
+    "image": 61502,
+    "picture-o": 61502,
+    "pencil": 61504,
+    "map-marker": 61505,
+    "adjust": 61506,
+    "tint": 61507,
+    "edit": 61508,
+    "pencil-square-o": 61508,
+    "share-square-o": 61509,
+    "check-square-o": 61510,
+    "arrows": 61511,
+    "step-backward": 61512,
+    "fast-backward": 61513,
+    "backward": 61514,
+    "play": 61515,
+    "pause": 61516,
+    "stop": 61517,
+    "forward": 61518,
+    "fast-forward": 61520,
+    "step-forward": 61521,
+    "eject": 61522,
+    "chevron-left": 61523,
+    "chevron-right": 61524,
+    "plus-circle": 61525,
+    "minus-circle": 61526,
+    "times-circle": 61527,
+    "check-circle": 61528,
+    "question-circle": 61529,
+    "info-circle": 61530,
+    "crosshairs": 61531,
+    "times-circle-o": 61532,
+    "check-circle-o": 61533,
+    "ban": 61534,
+    "arrow-left": 61536,
+    "arrow-right": 61537,
+    "arrow-up": 61538,
+    "arrow-down": 61539,
+    "mail-forward": 61540,
+    "share": 61540,
+    "expand": 61541,
+    "compress": 61542,
+    "plus": 61543,
+    "minus": 61544,
+    "asterisk": 61545,
+    "exclamation-circle": 61546,
+    "gift": 61547,
+    "leaf": 61548,
+    "fire": 61549,
+    "eye": 61550,
+    "eye-slash": 61552,
+    "warning": 61553,
+    "exclamation-triangle": 61553,
+    "plane": 61554,
+    "calendar": 61555,
+    "random": 61556,
+    "comment": 61557,
+    "magnet": 61558,
+    "chevron-up": 61559,
+    "chevron-down": 61560,
+    "retweet": 61561,
+    "shopping-cart": 61562,
+    "folder": 61563,
+    "folder-open": 61564,
+    "arrows-v": 61565,
+    "arrows-h": 61566,
+    "bar-chart-o": 61568,
+    "bar-chart": 61568,
+    "twitter-square": 61569,
+    "facebook-square": 61570,
+    "camera-retro": 61571,
+    "key": 61572,
+    "gears": 61573,
+    "cogs": 61573,
+    "comments": 61574,
+    "thumbs-o-up": 61575,
+    "thumbs-o-down": 61576,
+    "star-half": 61577,
+    "heart-o": 61578,
+    "sign-out": 61579,
+    "linkedin-square": 61580,
+    "thumb-tack": 61581,
+    "external-link": 61582,
+    "sign-in": 61584,
+    "trophy": 61585,
+    "github-square": 61586,
+    "upload": 61587,
+    "lemon-o": 61588,
+    "phone": 61589,
+    "square-o": 61590,
+    "bookmark-o": 61591,
+    "phone-square": 61592,
+    "twitter": 61593,
+    "facebook-f": 61594,
+    "facebook": 61594,
+    "github": 61595,
+    "unlock": 61596,
+    "credit-card": 61597,
+    "feed": 61598,
+    "rss": 61598,
+    "hdd-o": 61600,
+    "bullhorn": 61601,
+    "bell": 61683,
+    "certificate": 61603,
+    "hand-o-right": 61604,
+    "hand-o-left": 61605,
+    "hand-o-up": 61606,
+    "hand-o-down": 61607,
+    "arrow-circle-left": 61608,
+    "arrow-circle-right": 61609,
+    "arrow-circle-up": 61610,
+    "arrow-circle-down": 61611,
+    "globe": 61612,
+    "wrench": 61613,
+    "tasks": 61614,
+    "filter": 61616,
+    "briefcase": 61617,
+    "arrows-alt": 61618,
+    "group": 61632,
+    "users": 61632,
+    "chain": 61633,
+    "link": 61633,
+    "cloud": 61634,
+    "flask": 61635,
+    "cut": 61636,
+    "scissors": 61636,
+    "copy": 61637,
+    "files-o": 61637,
+    "paperclip": 61638,
+    "save": 61639,
+    "floppy-o": 61639,
+    "square": 61640,
+    "navicon": 61641,
+    "reorder": 61641,
+    "bars": 61641,
+    "list-ul": 61642,
+    "list-ol": 61643,
+    "strikethrough": 61644,
+    "underline": 61645,
+    "table": 61646,
+    "magic": 61648,
+    "truck": 61649,
+    "pinterest": 61650,
+    "pinterest-square": 61651,
+    "google-plus-square": 61652,
+    "google-plus": 61653,
+    "money": 61654,
+    "caret-down": 61655,
+    "caret-up": 61656,
+    "caret-left": 61657,
+    "caret-right": 61658,
+    "columns": 61659,
+    "unsorted": 61660,
+    "sort": 61660,
+    "sort-down": 61661,
+    "sort-desc": 61661,
+    "sort-up": 61662,
+    "sort-asc": 61662,
+    "envelope": 61664,
+    "linkedin": 61665,
+    "rotate-left": 61666,
+    "undo": 61666,
+    "legal": 61667,
+    "gavel": 61667,
+    "dashboard": 61668,
+    "tachometer": 61668,
+    "comment-o": 61669,
+    "comments-o": 61670,
+    "flash": 61671,
+    "bolt": 61671,
+    "sitemap": 61672,
+    "umbrella": 61673,
+    "paste": 61674,
+    "clipboard": 61674,
+    "lightbulb-o": 61675,
+    "exchange": 61676,
+    "cloud-download": 61677,
+    "cloud-upload": 61678,
+    "user-md": 61680,
+    "stethoscope": 61681,
+    "suitcase": 61682,
+    "bell-o": 61602,
+    "coffee": 61684,
+    "cutlery": 61685,
+    "file-text-o": 61686,
+    "building-o": 61687,
+    "hospital-o": 61688,
+    "ambulance": 61689,
+    "medkit": 61690,
+    "fighter-jet": 61691,
+    "beer": 61692,
+    "h-square": 61693,
+    "plus-square": 61694,
+    "angle-double-left": 61696,
+    "angle-double-right": 61697,
+    "angle-double-up": 61698,
+    "angle-double-down": 61699,
+    "angle-left": 61700,
+    "angle-right": 61701,
+    "angle-up": 61702,
+    "angle-down": 61703,
+    "desktop": 61704,
+    "laptop": 61705,
+    "tablet": 61706,
+    "mobile-phone": 61707,
+    "mobile": 61707,
+    "circle-o": 61708,
+    "quote-left": 61709,
+    "quote-right": 61710,
+    "spinner": 61712,
+    "circle": 61713,
+    "mail-reply": 61714,
+    "reply": 61714,
+    "github-alt": 61715,
+    "folder-o": 61716,
+    "folder-open-o": 61717,
+    "smile-o": 61720,
+    "frown-o": 61721,
+    "meh-o": 61722,
+    "gamepad": 61723,
+    "keyboard-o": 61724,
+    "flag-o": 61725,
+    "flag-checkered": 61726,
+    "terminal": 61728,
+    "code": 61729,
+    "mail-reply-all": 61730,
+    "reply-all": 61730,
+    "star-half-empty": 61731,
+    "star-half-full": 61731,
+    "star-half-o": 61731,
+    "location-arrow": 61732,
+    "crop": 61733,
+    "code-fork": 61734,
+    "unlink": 61735,
+    "chain-broken": 61735,
+    "question": 61736,
+    "info": 61737,
+    "exclamation": 61738,
+    "superscript": 61739,
+    "subscript": 61740,
+    "eraser": 61741,
+    "puzzle-piece": 61742,
+    "microphone": 61744,
+    "microphone-slash": 61745,
+    "shield": 61746,
+    "calendar-o": 61747,
+    "fire-extinguisher": 61748,
+    "rocket": 61749,
+    "maxcdn": 61750,
+    "chevron-circle-left": 61751,
+    "chevron-circle-right": 61752,
+    "chevron-circle-up": 61753,
+    "chevron-circle-down": 61754,
+    "html5": 61755,
+    "css3": 61756,
+    "anchor": 61757,
+    "unlock-alt": 61758,
+    "bullseye": 61760,
+    "ellipsis-h": 61761,
+    "ellipsis-v": 61762,
+    "rss-square": 61763,
+    "play-circle": 61764,
+    "ticket": 61765,
+    "minus-square": 61766,
+    "minus-square-o": 61767,
+    "level-up": 61768,
+    "level-down": 61769,
+    "check-square": 61770,
+    "pencil-square": 61771,
+    "external-link-square": 61772,
+    "share-square": 61773,
+    "compass": 61774,
+    "toggle-down": 61776,
+    "caret-square-o-down": 61776,
+    "toggle-up": 61777,
+    "caret-square-o-up": 61777,
+    "toggle-right": 61778,
+    "caret-square-o-right": 61778,
+    "euro": 61779,
+    "eur": 61779,
+    "gbp": 61780,
+    "dollar": 61781,
+    "usd": 61781,
+    "rupee": 61782,
+    "inr": 61782,
+    "cny": 61783,
+    "rmb": 61783,
+    "yen": 61783,
+    "jpy": 61783,
+    "ruble": 61784,
+    "rouble": 61784,
+    "rub": 61784,
+    "won": 61785,
+    "krw": 61785,
+    "bitcoin": 61786,
+    "btc": 61786,
+    "file": 61787,
+    "file-text": 61788,
+    "sort-alpha-asc": 61789,
+    "sort-alpha-desc": 61790,
+    "sort-amount-asc": 61792,
+    "sort-amount-desc": 61793,
+    "sort-numeric-asc": 61794,
+    "sort-numeric-desc": 61795,
+    "thumbs-up": 61796,
+    "thumbs-down": 61797,
+    "youtube-square": 61798,
+    "youtube": 61799,
+    "xing": 61800,
+    "xing-square": 61801,
+    "youtube-play": 61802,
+    "dropbox": 61803,
+    "stack-overflow": 61804,
+    "instagram": 61805,
+    "flickr": 61806,
+    "adn": 61808,
+    "bitbucket": 61809,
+    "bitbucket-square": 61810,
+    "tumblr": 61811,
+    "tumblr-square": 61812,
+    "long-arrow-down": 61813,
+    "long-arrow-up": 61814,
+    "long-arrow-left": 61815,
+    "long-arrow-right": 61816,
+    "apple": 61817,
+    "windows": 61818,
+    "android": 61819,
+    "linux": 61820,
+    "dribbble": 61821,
+    "skype": 61822,
+    "foursquare": 61824,
+    "trello": 61825,
+    "female": 61826,
+    "male": 61827,
+    "gittip": 61828,
+    "gratipay": 61828,
+    "sun-o": 61829,
+    "moon-o": 61830,
+    "archive": 61831,
+    "bug": 61832,
+    "vk": 61833,
+    "weibo": 61834,
+    "renren": 61835,
+    "pagelines": 61836,
+    "stack-exchange": 61837,
+    "arrow-circle-o-right": 61838,
+    "arrow-circle-o-left": 61840,
+    "toggle-left": 61841,
+    "caret-square-o-left": 61841,
+    "dot-circle-o": 61842,
+    "wheelchair": 61843,
+    "vimeo-square": 61844,
+    "turkish-lira": 61845,
+    "try": 61845,
+    "plus-square-o": 61846,
+    "space-shuttle": 61847,
+    "slack": 61848,
+    "envelope-square": 61849,
+    "wordpress": 61850,
+    "openid": 61851,
+    "institution": 61852,
+    "bank": 61852,
+    "university": 61852,
+    "mortar-board": 61853,
+    "graduation-cap": 61853,
+    "yahoo": 61854,
+    "google": 61856,
+    "reddit": 61857,
+    "reddit-square": 61858,
+    "stumbleupon-circle": 61859,
+    "stumbleupon": 61860,
+    "delicious": 61861,
+    "digg": 61862,
+    "pied-piper-pp": 61863,
+    "pied-piper-alt": 61864,
+    "drupal": 61865,
+    "joomla": 61866,
+    "language": 61867,
+    "fax": 61868,
+    "building": 61869,
+    "child": 61870,
+    "paw": 61872,
+    "spoon": 61873,
+    "cube": 61874,
+    "cubes": 61875,
+    "behance": 61876,
+    "behance-square": 61877,
+    "steam": 61878,
+    "steam-square": 61879,
+    "recycle": 61880,
+    "automobile": 61881,
+    "car": 61881,
+    "cab": 61882,
+    "taxi": 61882,
+    "tree": 61883,
+    "spotify": 61884,
+    "deviantart": 61885,
+    "soundcloud": 61886,
+    "database": 61888,
+    "file-pdf-o": 61889,
+    "file-word-o": 61890,
+    "file-excel-o": 61891,
+    "file-powerpoint-o": 61892,
+    "file-photo-o": 61893,
+    "file-picture-o": 61893,
+    "file-image-o": 61893,
+    "file-zip-o": 61894,
+    "file-archive-o": 61894,
+    "file-sound-o": 61895,
+    "file-audio-o": 61895,
+    "file-movie-o": 61896,
+    "file-video-o": 61896,
+    "file-code-o": 61897,
+    "vine": 61898,
+    "codepen": 61899,
+    "jsfiddle": 61900,
+    "life-bouy": 61901,
+    "life-buoy": 61901,
+    "life-saver": 61901,
+    "support": 61901,
+    "life-ring": 61901,
+    "circle-o-notch": 61902,
+    "ra": 61904,
+    "resistance": 61904,
+    "rebel": 61904,
+    "ge": 61905,
+    "empire": 61905,
+    "git-square": 61906,
+    "git": 61907,
+    "y-combinator-square": 61908,
+    "yc-square": 61908,
+    "hacker-news": 61908,
+    "tencent-weibo": 61909,
+    "qq": 61910,
+    "wechat": 61911,
+    "weixin": 61911,
+    "send": 61912,
+    "paper-plane": 61912,
+    "send-o": 61913,
+    "paper-plane-o": 61913,
+    "history": 61914,
+    "circle-thin": 61915,
+    "header": 61916,
+    "paragraph": 61917,
+    "sliders": 61918,
+    "share-alt": 61920,
+    "share-alt-square": 61921,
+    "bomb": 61922,
+    "soccer-ball-o": 61923,
+    "futbol-o": 61923,
+    "tty": 61924,
+    "binoculars": 61925,
+    "plug": 61926,
+    "slideshare": 61927,
+    "twitch": 61928,
+    "yelp": 61929,
+    "newspaper-o": 61930,
+    "wifi": 61931,
+    "calculator": 61932,
+    "paypal": 61933,
+    "google-wallet": 61934,
+    "cc-visa": 61936,
+    "cc-mastercard": 61937,
+    "cc-discover": 61938,
+    "cc-amex": 61939,
+    "cc-paypal": 61940,
+    "cc-stripe": 61941,
+    "bell-slash": 61942,
+    "bell-slash-o": 61943,
+    "trash": 61944,
+    "copyright": 61945,
+    "at": 61946,
+    "eyedropper": 61947,
+    "paint-brush": 61948,
+    "birthday-cake": 61949,
+    "area-chart": 61950,
+    "pie-chart": 61952,
+    "line-chart": 61953,
+    "lastfm": 61954,
+    "lastfm-square": 61955,
+    "toggle-off": 61956,
+    "toggle-on": 61957,
+    "bicycle": 61958,
+    "bus": 61959,
+    "ioxhost": 61960,
+    "angellist": 61961,
+    "cc": 61962,
+    "shekel": 61963,
+    "sheqel": 61963,
+    "ils": 61963,
+    "meanpath": 61964,
+    "buysellads": 61965,
+    "connectdevelop": 61966,
+    "dashcube": 61968,
+    "forumbee": 61969,
+    "leanpub": 61970,
+    "sellsy": 61971,
+    "shirtsinbulk": 61972,
+    "simplybuilt": 61973,
+    "skyatlas": 61974,
+    "cart-plus": 61975,
+    "cart-arrow-down": 61976,
+    "diamond": 61977,
+    "ship": 61978,
+    "user-secret": 61979,
+    "motorcycle": 61980,
+    "street-view": 61981,
+    "heartbeat": 61982,
+    "venus": 61985,
+    "mars": 61986,
+    "mercury": 61987,
+    "intersex": 61988,
+    "transgender": 61988,
+    "transgender-alt": 61989,
+    "venus-double": 61990,
+    "mars-double": 61991,
+    "venus-mars": 61992,
+    "mars-stroke": 61993,
+    "mars-stroke-v": 61994,
+    "mars-stroke-h": 61995,
+    "neuter": 61996,
+    "genderless": 61997,
+    "facebook-official": 62000,
+    "pinterest-p": 62001,
+    "whatsapp": 62002,
+    "server": 62003,
+    "user-plus": 62004,
+    "user-times": 62005,
+    "hotel": 62006,
+    "bed": 62006,
+    "viacoin": 62007,
+    "train": 62008,
+    "subway": 62009,
+    "medium": 62010,
+    "yc": 62011,
+    "y-combinator": 62011,
+    "optin-monster": 62012,
+    "opencart": 62013,
+    "expeditedssl": 62014,
+    "battery-4": 62016,
+    "battery": 62016,
+    "battery-full": 62016,
+    "battery-3": 62017,
+    "battery-three-quarters": 62017,
+    "battery-2": 62018,
+    "battery-half": 62018,
+    "battery-1": 62019,
+    "battery-quarter": 62019,
+    "battery-0": 62020,
+    "battery-empty": 62020,
+    "mouse-pointer": 62021,
+    "i-cursor": 62022,
+    "object-group": 62023,
+    "object-ungroup": 62024,
+    "sticky-note": 62025,
+    "sticky-note-o": 62026,
+    "cc-jcb": 62027,
+    "cc-diners-club": 62028,
+    "clone": 62029,
+    "balance-scale": 62030,
+    "hourglass-o": 62032,
+    "hourglass-1": 62033,
+    "hourglass-start": 62033,
+    "hourglass-2": 62034,
+    "hourglass-half": 62034,
+    "hourglass-3": 62035,
+    "hourglass-end": 62035,
+    "hourglass": 62036,
+    "hand-grab-o": 62037,
+    "hand-rock-o": 62037,
+    "hand-stop-o": 62038,
+    "hand-paper-o": 62038,
+    "hand-scissors-o": 62039,
+    "hand-lizard-o": 62040,
+    "hand-spock-o": 62041,
+    "hand-pointer-o": 62042,
+    "hand-peace-o": 62043,
+    "trademark": 62044,
+    "registered": 62045,
+    "creative-commons": 62046,
+    "gg": 62048,
+    "gg-circle": 62049,
+    "tripadvisor": 62050,
+    "odnoklassniki": 62051,
+    "odnoklassniki-square": 62052,
+    "get-pocket": 62053,
+    "wikipedia-w": 62054,
+    "safari": 62055,
+    "chrome": 62056,
+    "firefox": 62057,
+    "opera": 62058,
+    "internet-explorer": 62059,
+    "tv": 62060,
+    "television": 62060,
+    "contao": 62061,
+    "500px": 62062,
+    "amazon": 62064,
+    "calendar-plus-o": 62065,
+    "calendar-minus-o": 62066,
+    "calendar-times-o": 62067,
+    "calendar-check-o": 62068,
+    "industry": 62069,
+    "map-pin": 62070,
+    "map-signs": 62071,
+    "map-o": 62072,
+    "map": 62073,
+    "commenting": 62074,
+    "commenting-o": 62075,
+    "houzz": 62076,
+    "vimeo": 62077,
+    "black-tie": 62078,
+    "fonticons": 62080,
+    "reddit-alien": 62081,
+    "edge": 62082,
+    "credit-card-alt": 62083,
+    "codiepie": 62084,
+    "modx": 62085,
+    "fort-awesome": 62086,
+    "usb": 62087,
+    "product-hunt": 62088,
+    "mixcloud": 62089,
+    "scribd": 62090,
+    "pause-circle": 62091,
+    "pause-circle-o": 62092,
+    "stop-circle": 62093,
+    "stop-circle-o": 62094,
+    "shopping-bag": 62096,
+    "shopping-basket": 62097,
+    "hashtag": 62098,
+    "bluetooth": 62099,
+    "bluetooth-b": 62100,
+    "percent": 62101,
+    "gitlab": 62102,
+    "wpbeginner": 62103,
+    "wpforms": 62104,
+    "envira": 62105,
+    "universal-access": 62106,
+    "wheelchair-alt": 62107,
+    "question-circle-o": 62108,
+    "blind": 62109,
+    "audio-description": 62110,
+    "volume-control-phone": 62112,
+    "braille": 62113,
+    "assistive-listening-systems": 62114,
+    "asl-interpreting": 62115,
+    "american-sign-language-interpreting": 62115,
+    "deafness": 62116,
+    "hard-of-hearing": 62116,
+    "deaf": 62116,
+    "glide": 62117,
+    "glide-g": 62118,
+    "signing": 62119,
+    "sign-language": 62119,
+    "low-vision": 62120,
+    "viadeo": 62121,
+    "viadeo-square": 62122,
+    "snapchat": 62123,
+    "snapchat-ghost": 62124,
+    "snapchat-square": 62125,
+    "pied-piper": 62126,
+    "first-order": 62128,
+    "yoast": 62129,
+    "themeisle": 62130,
+    "google-plus-circle": 62131,
+    "google-plus-official": 62131,
+    "fa": 62132,
+    "font-awesome": 62132,
+    "handshake-o": 62133,
+    "envelope-open": 62134,
+    "envelope-open-o": 62135,
+    "linode": 62136,
+    "address-book": 62137,
+    "address-book-o": 62138,
+    "vcard": 62139,
+    "address-card": 62139,
+    "vcard-o": 62140,
+    "address-card-o": 62140,
+    "user-circle": 62141,
+    "user-circle-o": 62142,
+    "user-o": 62144,
+    "id-badge": 62145,
+    "drivers-license": 62146,
+    "id-card": 62146,
+    "drivers-license-o": 62147,
+    "id-card-o": 62147,
+    "quora": 62148,
+    "free-code-camp": 62149,
+    "telegram": 62150,
+    "thermometer-4": 62151,
+    "thermometer": 62151,
+    "thermometer-full": 62151,
+    "thermometer-3": 62152,
+    "thermometer-three-quarters": 62152,
+    "thermometer-2": 62153,
+    "thermometer-half": 62153,
+    "thermometer-1": 62154,
+    "thermometer-quarter": 62154,
+    "thermometer-0": 62155,
+    "thermometer-empty": 62155,
+    "shower": 62156,
+    "bathtub": 62157,
+    "s15": 62157,
+    "bath": 62157,
+    "podcast": 62158,
+    "window-maximize": 62160,
+    "window-minimize": 62161,
+    "window-restore": 62162,
+    "times-rectangle": 62163,
+    "window-close": 62163,
+    "times-rectangle-o": 62164,
+    "window-close-o": 62164,
+    "bandcamp": 62165,
+    "grav": 62166,
+    "etsy": 62167,
+    "imdb": 62168,
+    "ravelry": 62169,
+    "eercast": 62170,
+    "microchip": 62171,
+    "snowflake-o": 62172,
+    "superpowers": 62173,
+    "wpexplorer": 62174,
+    "meetup": 62176
+  };
+},622,[],"react-native-vector-icons/glyphmaps/FontAwesome.json");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNative = require(_dependencyMap[0], "react-native");
+
+  var screenDimension = _reactNative.Dimensions.get('window');
+
+  var screenWidth = screenDimension.width;
+
+  var mediaPlayerStyle = _reactNative.StyleSheet.create({
+    player: {
+      flex: 1
+    },
+    container: {},
+    progress: {
+      flex: 1,
+      flexDirection: 'row',
+      overflow: 'hidden'
+    },
+    innerProgressCompleted: {
+      height: 4,
+      backgroundColor: '#40c0a9'
+    },
+    innerProgressRemaining: {
+      height: 4,
+      backgroundColor: '#2c2c2c'
+    },
+    trackingControls: {
+      height: 3,
+      width: '100%',
+      position: 'absolute',
+      bottom: 0,
+      left: 0
+    },
+    playerControls: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      width: '100%',
+      height: '100%'
+    },
+    playerControlsContainer: {
+      backgroundColor: 'transparent',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    playPauseButton: {
+      position: 'absolute',
+      width: 64,
+      height: 64,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    toggleFullscreenButton: {
+      position: 'absolute',
+      width: 36,
+      height: 36,
+      alignItems: 'center',
+      justifyContent: 'center',
+      right: 0,
+      bottom: 14
+    },
+    elapsedDuration: {
+      fontFamily: 'Metropolis-Regular',
+      position: 'absolute',
+      left: 8,
+      bottom: 24,
+      fontSize: 12,
+      color: '#ffffff'
+    },
+    totalDuration: {
+      fontFamily: 'Metropolis-Regular',
+      position: 'absolute',
+      right: 40,
+      bottom: 24,
+      fontSize: 12,
+      color: '#ffffff'
+    },
+    seekerCircle: {
+      borderRadius: 12,
+      position: 'relative',
+      top: 8,
+      left: 8,
+      height: 12,
+      width: 12,
+      backgroundColor: '#40c0a9'
+    },
+    seekerHandle: {
+      position: 'absolute',
+      height: 28,
+      width: 28,
+      bottom: -12,
+      marginLeft: -8
+    },
+    bigSeekerCircle: {
+      borderRadius: 24,
+      position: 'relative',
+      top: 2,
+      left: 8,
+      height: 24,
+      width: 24,
+      backgroundColor: '#40c0a9'
+    }
+  });
+
+  exports.default = mediaPlayerStyle;
+},623,[66],"LBRYApp/src/styles/mediaPlayer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75363,10 +77280,12 @@ __d(function (global, require, module, exports, _dependencyMap) {
       flex: 1
     },
     mediaContainer: {
-      backgroundColor: '#000000',
-      alignItems: 'center'
+      alignItems: 'center',
+      width: screenWidth,
+      height: 220
     },
     emptyClaimText: {
+      fontFamily: 'Metropolis-Regular',
       textAlign: 'center',
       fontSize: 20,
       marginLeft: 16,
@@ -75376,22 +77295,23 @@ __d(function (global, require, module, exports, _dependencyMap) {
       flex: 1
     },
     title: {
+      fontFamily: 'Metropolis-Bold',
       fontSize: 24,
-      fontWeight: 'bold',
-      marginTop: 20,
+      marginTop: 12,
       marginLeft: 20,
       marginRight: 20,
       marginBottom: 12
     },
     channelName: {
+      fontFamily: 'Metropolis-SemiBold',
       fontSize: 20,
-      fontWeight: 'bold',
       marginLeft: 20,
       marginRight: 20,
       marginBottom: 20,
       color: '#9b9b9b'
     },
     description: {
+      fontFamily: 'Metropolis-Regular',
       fontSize: 16,
       marginLeft: 20,
       marginRight: 20,
@@ -75407,452 +77327,25 @@ __d(function (global, require, module, exports, _dependencyMap) {
       top: '50%'
     },
     player: {
-      width: screenWidth,
-      height: 200
+      flex: 1,
+      width: '100%',
+      height: '100%',
+      marginBottom: 14
+    },
+    fullscreenMedia: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      flex: 1,
+      backgroundColor: '#000000',
+      zIndex: 100
     }
   });
 
   exports.default = filePageStyle;
-},615,[66],"LBRYApp/src/styles/filePage.js");
-__d(function (global, require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _reactRedux = require(_dependencyMap[0], "react-redux");
-
-  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
-
-  var _file = require(_dependencyMap[2], "../../redux/actions/file");
-
-  var _view = require(_dependencyMap[3], "./view");
-
-  var _view2 = babelHelpers.interopRequireDefault(_view);
-
-  var select = function select(state, props) {
-    return {
-      fileInfo: (0, _lbryRedux.makeSelectFileInfoForUri)(props.uri)(state),
-      downloading: (0, _lbryRedux.makeSelectDownloadingForUri)(props.uri)(state),
-      costInfo: (0, _lbryRedux.makeSelectCostInfoForUri)(props.uri)(state),
-      loading: (0, _lbryRedux.makeSelectLoadingForUri)(props.uri)(state)
-    };
-  };
-
-  var perform = function perform(dispatch) {
-    return {
-      purchaseUri: function purchaseUri(uri) {
-        return dispatch((0, _file.doPurchaseUri)(uri));
-      },
-      restartDownload: function restartDownload(uri, outpoint) {
-        return dispatch((0, _file.doStartDownload)(uri, outpoint));
-      }
-    };
-  };
-
-  exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},616,[22,62,617,618],"LBRYApp/src/component/fileDownloadButton/index.js");
-__d(function (global, require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.doUpdateLoadStatus = doUpdateLoadStatus;
-  exports.doStartDownload = doStartDownload;
-  exports.doDownloadFile = doDownloadFile;
-  exports.doSetPlayingUri = doSetPlayingUri;
-  exports.doLoadVideo = doLoadVideo;
-  exports.doPurchaseUri = doPurchaseUri;
-
-  var _lbryRedux = require(_dependencyMap[0], "lbry-redux");
-
-  var _reactNative = require(_dependencyMap[1], "react-native");
-
-  var DOWNLOAD_POLL_INTERVAL = 250;
-
-  function doUpdateLoadStatus(uri, outpoint) {
-    return function (dispatch, getState) {
-      _lbryRedux.Lbry.file_list({
-        outpoint: outpoint,
-        full_status: true
-      }).then(function (_ref) {
-        var _ref2 = babelHelpers.slicedToArray(_ref, 1),
-            fileInfo = _ref2[0];
-
-        if (!fileInfo || fileInfo.written_bytes === 0) {
-          setTimeout(function () {
-            dispatch(doUpdateLoadStatus(uri, outpoint));
-          }, DOWNLOAD_POLL_INTERVAL);
-        } else if (fileInfo.completed) {
-          var totalBytes = fileInfo.total_bytes,
-              writtenBytes = fileInfo.written_bytes;
-          dispatch({
-            type: _lbryRedux.ACTIONS.DOWNLOADING_COMPLETED,
-            data: {
-              uri: uri,
-              outpoint: outpoint,
-              fileInfo: fileInfo
-            }
-          });
-
-          _reactNative.NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, 100, writtenBytes, totalBytes);
-        } else {
-          var _totalBytes = fileInfo.total_bytes,
-              _writtenBytes = fileInfo.written_bytes;
-          var progress = _writtenBytes / _totalBytes * 100;
-          dispatch({
-            type: _lbryRedux.ACTIONS.DOWNLOADING_PROGRESSED,
-            data: {
-              uri: uri,
-              outpoint: outpoint,
-              fileInfo: fileInfo,
-              progress: progress
-            }
-          });
-
-          _reactNative.NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, progress, _writtenBytes, _totalBytes);
-
-          setTimeout(function () {
-            dispatch(doUpdateLoadStatus(uri, outpoint));
-          }, DOWNLOAD_POLL_INTERVAL);
-        }
-      });
-    };
-  }
-
-  function doStartDownload(uri, outpoint) {
-    return function (dispatch, getState) {
-      var state = getState();
-
-      if (!outpoint) {
-        throw new Error('outpoint is required to begin a download');
-      }
-
-      var _state$fileInfo$downl = state.fileInfo.downloadingByOutpoint,
-          downloadingByOutpoint = _state$fileInfo$downl === undefined ? {} : _state$fileInfo$downl;
-      if (downloadingByOutpoint[outpoint]) return;
-
-      _lbryRedux.Lbry.file_list({
-        outpoint: outpoint,
-        full_status: true
-      }).then(function (_ref3) {
-        var _ref4 = babelHelpers.slicedToArray(_ref3, 1),
-            fileInfo = _ref4[0];
-
-        dispatch({
-          type: _lbryRedux.ACTIONS.DOWNLOADING_STARTED,
-          data: {
-            uri: uri,
-            outpoint: outpoint,
-            fileInfo: fileInfo
-          }
-        });
-
-        _reactNative.NativeModules.LbryDownloadManager.startDownload(uri, fileInfo.file_name);
-
-        dispatch(doUpdateLoadStatus(uri, outpoint));
-      });
-    };
-  }
-
-  function doDownloadFile(uri, streamInfo) {
-    return function (dispatch) {
-      dispatch(doStartDownload(uri, streamInfo.outpoint));
-    };
-  }
-
-  function doSetPlayingUri(uri) {
-    return function (dispatch) {
-      dispatch({
-        type: _lbryRedux.ACTIONS.SET_PLAYING_URI,
-        data: {
-          uri: uri
-        }
-      });
-    };
-  }
-
-  function doLoadVideo(uri) {
-    return function (dispatch) {
-      dispatch({
-        type: _lbryRedux.ACTIONS.LOADING_VIDEO_STARTED,
-        data: {
-          uri: uri
-        }
-      });
-
-      _lbryRedux.Lbry.get({
-        uri: uri
-      }).then(function (streamInfo) {
-        var timeout = streamInfo === null || typeof streamInfo !== 'object' || streamInfo.error === 'Timeout';
-
-        if (timeout) {
-          dispatch(doSetPlayingUri(null));
-          dispatch({
-            type: _lbryRedux.ACTIONS.LOADING_VIDEO_FAILED,
-            data: {
-              uri: uri
-            }
-          });
-          console.log("File timeout for uri " + uri);
-        } else {
-          dispatch(doDownloadFile(uri, streamInfo));
-        }
-      }).catch(function () {
-        dispatch(doSetPlayingUri(null));
-        dispatch({
-          type: _lbryRedux.ACTIONS.LOADING_VIDEO_FAILED,
-          data: {
-            uri: uri
-          }
-        });
-        console.log("Failed to download " + uri);
-      });
-    };
-  }
-
-  function doPurchaseUri(uri, specificCostInfo) {
-    return function (dispatch, getState) {
-      var state = getState();
-      var balance = 0;
-      var fileInfo = (0, _lbryRedux.makeSelectFileInfoForUri)(uri)(state);
-      var downloadingByOutpoint = (0, _lbryRedux.selectDownloadingByOutpoint)(state);
-      var alreadyDownloading = fileInfo && !!downloadingByOutpoint[fileInfo.outpoint];
-
-      function attemptPlay(cost) {
-        var instantPurchaseMax = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-        if (cost > 0 && (!instantPurchaseMax || cost > instantPurchaseMax)) {
-          console.log('Affirm purchase...');
-        } else {
-          dispatch(doLoadVideo(uri));
-        }
-      }
-
-      if (fileInfo && fileInfo.completed) {
-        if (!fileInfo.written_bytes) dispatch(doLoadVideo(uri));
-        Promise.resolve();
-        return;
-      }
-
-      if (alreadyDownloading) {
-        Promise.resolve();
-        return;
-      }
-
-      var costInfo = (0, _lbryRedux.makeSelectCostInfoForUri)(uri)(state) || specificCostInfo;
-      var cost = costInfo.cost;
-
-      if (cost > balance) {
-        dispatch(doSetPlayingUri(null));
-        Promise.resolve();
-        return;
-      }
-
-      if (cost === 0) {
-          attemptPlay(cost);
-        }
-    };
-  }
-},617,[62,66],"LBRYApp/src/redux/actions/file.js");
-__d(function (global, require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  var _jsxFileName = "/home/akinwale/Dev/Python/lbry-android/app/src/component/fileDownloadButton/view.js";
-
-  var _react = require(_dependencyMap[0], "react");
-
-  var _react2 = babelHelpers.interopRequireDefault(_react);
-
-  var _reactNative = require(_dependencyMap[1], "react-native");
-
-  var _fileDownloadButton = require(_dependencyMap[2], "../../styles/fileDownloadButton");
-
-  var _fileDownloadButton2 = babelHelpers.interopRequireDefault(_fileDownloadButton);
-
-  var FileDownloadButton = function (_React$PureComponent) {
-    babelHelpers.inherits(FileDownloadButton, _React$PureComponent);
-
-    function FileDownloadButton() {
-      babelHelpers.classCallCheck(this, FileDownloadButton);
-      return babelHelpers.possibleConstructorReturn(this, (FileDownloadButton.__proto__ || Object.getPrototypeOf(FileDownloadButton)).apply(this, arguments));
-    }
-
-    babelHelpers.createClass(FileDownloadButton, [{
-      key: "componentWillReceiveProps",
-      value: function componentWillReceiveProps(nextProps) {
-        this.restartDownload(nextProps);
-      }
-    }, {
-      key: "restartDownload",
-      value: function restartDownload(props) {
-        var downloading = props.downloading,
-            fileInfo = props.fileInfo,
-            uri = props.uri,
-            restartDownload = props.restartDownload;
-
-        if (!downloading && fileInfo && !fileInfo.completed && fileInfo.written_bytes !== false && fileInfo.written_bytes < fileInfo.total_bytes) {
-          restartDownload(uri, fileInfo.outpoint);
-        }
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        var _props = this.props,
-            fileInfo = _props.fileInfo,
-            downloading = _props.downloading,
-            uri = _props.uri,
-            purchaseUri = _props.purchaseUri,
-            costInfo = _props.costInfo,
-            loading = _props.loading,
-            doPause = _props.doPause,
-            style = _props.style;
-
-        var openFile = function openFile() {};
-
-        if (loading || downloading) {
-          var progress = fileInfo && fileInfo.written_bytes ? fileInfo.written_bytes / fileInfo.total_bytes * 100 : 0,
-              label = fileInfo ? progress.toFixed(0) + '% complete' : 'Connecting...';
-          return _react2.default.createElement(
-            _reactNative.View,
-            {
-              style: [style, _fileDownloadButton2.default.container],
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 48
-              }
-            },
-            _react2.default.createElement(_reactNative.View, {
-              style: {
-                width: progress + "%",
-                backgroundColor: '#ff0000',
-                position: 'absolute',
-                left: 0,
-                top: 0
-              },
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 49
-              }
-            }),
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: _fileDownloadButton2.default.text,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 50
-                }
-              },
-              label
-            )
-          );
-        } else if (fileInfo === null && !downloading) {
-          if (!costInfo) {
-            return _react2.default.createElement(
-              _reactNative.View,
-              {
-                style: [style, _fileDownloadButton2.default.container],
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 56
-                }
-              },
-              _react2.default.createElement(
-                _reactNative.Text,
-                {
-                  __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 57
-                  }
-                },
-                "Fetching cost info..."
-              )
-            );
-          }
-
-          return _react2.default.createElement(
-            _reactNative.TouchableOpacity,
-            {
-              style: [style, _fileDownloadButton2.default.container],
-              onPress: function onPress() {
-                purchaseUri(uri);
-              },
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 62
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: _fileDownloadButton2.default.text,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 65
-                }
-              },
-              "Download"
-            )
-          );
-        } else if (fileInfo && fileInfo.download_path) {
-          return _react2.default.createElement(
-            _reactNative.TouchableOpacity,
-            {
-              style: [style, _fileDownloadButton2.default.container],
-              onPress: function onPress() {
-                return openFile();
-              },
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 70
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: _fileDownloadButton2.default.text,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 71
-                }
-              },
-              "Open"
-            )
-          );
-        }
-
-        return null;
-      }
-    }]);
-    return FileDownloadButton;
-  }(_react2.default.PureComponent);
-
-  exports.default = FileDownloadButton;
-},618,[12,66,619],"LBRYApp/src/component/fileDownloadButton/view.js");
-__d(function (global, require, module, exports, _dependencyMap) {
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    var _reactNative = require(_dependencyMap[0], "react-native");
-
-    var fileDownloadButtonStyle = _reactNative.StyleSheet.create({
-        container: {
-            width: 120,
-            height: 36,
-            borderRadius: 18,
-            justifyContent: 'center',
-            backgroundColor: '#40c0a9'
-        },
-        text: {
-            color: '#ffffff',
-            fontSize: 13,
-            textAlign: 'center'
-        }
-    });
-
-    exports.default = fileDownloadButtonStyle;
-},619,[66],"LBRYApp/src/styles/fileDownloadButton.js");
+},624,[66],"LBRYApp/src/styles/filePage.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75873,7 +77366,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},620,[22,621],"LBRYApp/src/page/splash/index.js");
+},625,[22,626],"LBRYApp/src/page/splash/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76043,7 +77536,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     title: 'Splash'
   };
   exports.default = SplashScreen;
-},621,[12,62,66,24,622],"LBRYApp/src/page/splash/view.js");
+},626,[12,62,66,24,627],"LBRYApp/src/page/splash/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76058,13 +77551,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
       backgroundColor: '#40b89a'
     },
     title: {
+      fontFamily: 'Metropolis-Bold',
       fontSize: 64,
-      fontWeight: 'bold',
       textAlign: 'center',
       marginBottom: 48,
       color: '#ffffff'
     },
     details: {
+      fontFamily: 'Metropolis-Regular',
       fontSize: 14,
       marginLeft: 16,
       marginRight: 16,
@@ -76072,7 +77566,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       textAlign: 'center'
     },
     message: {
-      fontWeight: 'bold',
+      fontFamily: 'Metropolis-Bold',
       fontSize: 18,
       color: '#ffffff',
       marginLeft: 16,
@@ -76083,7 +77577,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = splashStyle;
-},622,[66],"LBRYApp/src/styles/splash.js");
+},627,[66],"LBRYApp/src/styles/splash.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76098,7 +77592,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var addListener = (0, _reactNavigationReduxHelpers.createReduxBoundAddListener)("root");
   exports.reactNavigationMiddleware = reactNavigationMiddleware;
   exports.addListener = addListener;
-},623,[624],"LBRYApp/src/utils/redux.js");
+},628,[629],"LBRYApp/src/utils/redux.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76132,8 +77626,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var _reducer = require(_dependencyMap[2], "./reducer");
 
   exports.createNavigationReducer = _reducer.createNavigationReducer;
-},624,[625,626,627],"react-navigation-redux-helpers/src/index.js");
-__d(function (global, require, module, exports, _dependencyMap) {},625,[],"react-navigation-redux-helpers/src/types.js");
+},629,[630,631,632],"react-navigation-redux-helpers/src/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {},630,[],"react-navigation-redux-helpers/src/types.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76210,7 +77704,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.createReactNavigationReduxMiddleware = createReactNavigationReduxMiddleware;
   exports.createReduxBoundAddListener = createReduxBoundAddListener;
   exports.initializeListeners = initializeListeners;
-},626,[31,627],"react-navigation-redux-helpers/src/middleware.js");
+},631,[31,632],"react-navigation-redux-helpers/src/middleware.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76233,7 +77727,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   ;
   exports.createNavigationReducer = createNavigationReducer;
   exports.initAction = initAction;
-},627,[376],"react-navigation-redux-helpers/src/reducer.js");
+},632,[376],"react-navigation-redux-helpers/src/reducer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76294,7 +77788,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.persistStore = _persistStore2.default;
   exports.purgeStoredState = _purgeStoredState2.default;
   exports.storages = storages;
-},628,[629,632,637,638,639,635],"redux-persist/lib/index.js");
+},633,[634,637,642,643,644,640],"redux-persist/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76396,14 +77890,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
     });
     return newState;
   }
-},629,[630,631],"redux-persist/lib/autoRehydrate.js");
+},634,[635,636],"redux-persist/lib/autoRehydrate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
   exports.__esModule = true;
   var KEY_PREFIX = exports.KEY_PREFIX = 'reduxPersist:';
   var REHYDRATE = exports.REHYDRATE = 'persist/REHYDRATE';
-},630,[],"redux-persist/lib/constants.js");
+},635,[],"redux-persist/lib/constants.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76434,7 +77928,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     if (!(0, _isPlainObject2.default)(a)) return false;
     return true;
   }
-},631,[38],"redux-persist/lib/utils/isStatePlainEnough.js");
+},636,[38],"redux-persist/lib/utils/isStatePlainEnough.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76607,7 +78101,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     state[key] = value;
     return state;
   }
-},632,[630,633,635,636],"redux-persist/lib/createPersistor.js");
+},637,[635,638,640,641],"redux-persist/lib/createPersistor.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76753,7 +78247,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       };
     }
   }
-},633,[634],"redux-persist/lib/defaults/asyncLocalStorage.js");
+},638,[639],"redux-persist/lib/defaults/asyncLocalStorage.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76765,7 +78259,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     return setTimeout(fn, ms);
   };
   exports.default = setImmediate;
-},634,[],"redux-persist/lib/utils/setImmediate.js");
+},639,[],"redux-persist/lib/utils/setImmediate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76809,7 +78303,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
     };
   }
-},635,[630],"redux-persist/lib/purgeStoredState.js");
+},640,[635],"redux-persist/lib/purgeStoredState.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   exports = module.exports = stringify;
   exports.getSerialize = serializer;
@@ -76836,7 +78330,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return replacer == null ? value : replacer.call(this, key, value);
     };
   }
-},636,[],"json-stringify-safe/stringify.js");
+},641,[],"json-stringify-safe/stringify.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -76864,7 +78358,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = createTransform;
-},637,[],"redux-persist/lib/createTransform.js");
+},642,[],"redux-persist/lib/createTransform.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76976,7 +78470,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   function defaultDeserializer(serial) {
     return JSON.parse(serial);
   }
-},638,[630,633],"redux-persist/lib/getStoredState.js");
+},643,[635,638],"redux-persist/lib/getStoredState.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -77071,7 +78565,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       error: error
     };
   }
-},639,[630,638,632,634],"redux-persist/lib/persistStore.js");
+},644,[635,643,637,639],"redux-persist/lib/persistStore.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -77121,7 +78615,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             }
         }, config);
     }
-},640,[628,641,636],"redux-persist-transform-compress/lib/index.js");
+},645,[633,646,641],"redux-persist-transform-compress/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var LZString = function () {
     var f = String.fromCharCode;
@@ -77698,7 +79192,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   } else if (typeof module !== 'undefined' && module != null) {
     module.exports = LZString;
   }
-},641,[],"lz-string/libs/lz-string.js");
+},646,[],"lz-string/libs/lz-string.js");
 __d(function (global, require, module, exports, _dependencyMap) {
 	'use strict';
 
@@ -77830,7 +79324,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
 		return subset;
 	}
-},642,[628,643,644,645,646,647,648],"redux-persist-transform-filter/dist/index.js");
+},647,[633,648,649,650,651,652,653],"redux-persist-transform-filter/dist/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -78217,7 +79711,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = get;
-},643,[],"lodash.get/index.js");
+},648,[],"lodash.get/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -78637,7 +80131,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = set;
-},644,[],"lodash.set/index.js");
+},649,[],"lodash.set/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -79064,7 +80558,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = unset;
-},645,[],"lodash.unset/index.js");
+},650,[],"lodash.unset/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var LARGE_ARRAY_SIZE = 200;
   var FUNC_ERROR_TEXT = 'Expected a function';
@@ -80226,7 +81720,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = pickBy;
-},646,[],"lodash.pickby/index.js");
+},651,[],"lodash.pickby/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MAX_SAFE_INTEGER = 9007199254740991;
   var argsTag = '[object Arguments]',
@@ -80436,7 +81930,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isEmpty;
-},647,[],"lodash.isempty/index.js");
+},652,[],"lodash.isempty/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MAX_SAFE_INTEGER = 9007199254740991;
   var argsTag = '[object Arguments]',
@@ -80580,7 +82074,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = forIn;
-},648,[],"lodash.forin/index.js");
+},653,[],"lodash.forin/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -80605,6 +82099,6 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var thunk = createThunkMiddleware();
   thunk.withExtraArgument = createThunkMiddleware;
   exports['default'] = thunk;
-},649,[],"redux-thunk/lib/index.js");
+},654,[],"redux-thunk/lib/index.js");
 require(76);
 require(11);

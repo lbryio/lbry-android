@@ -9,11 +9,13 @@ const discoverStyle = StyleSheet.create({
     flex: 1
   },
   title: {
+    fontFamily: 'Metropolis-Regular',
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
   },
   categoryName: {
+    fontFamily: 'Metropolis-Regular',
     fontSize: 20,
     marginLeft: 24,
     marginTop: 16,
@@ -26,15 +28,15 @@ const discoverStyle = StyleSheet.create({
     marginBottom: 48
   },
   fileItemName: {
+    fontFamily: 'Metropolis-Bold',
     marginTop: 8,
-    fontSize: 16,
-    fontWeight: 'bold'
+    fontSize: 16
   },
   channelName: {
+    fontFamily: 'Metropolis-SemiBold',
     fontSize: 14,
     marginTop: 4,
-    color: '#c0c0c0',
-    fontWeight: 'bold'
+    color: '#c0c0c0'
   },
   filePriceContainer: {
     backgroundColor: '#61fcd8',
@@ -47,10 +49,10 @@ const discoverStyle = StyleSheet.create({
     borderRadius: 4 
   },
   filePriceText: {
+    fontFamily: 'Metropolis-Bold',
     fontSize: 12,
     textAlign: 'center',
-    color: '#0c604b',
-    fontWeight: 'bold'
+    color: '#0c604b'
   },
   drawerHamburger: {
     marginLeft: 8
