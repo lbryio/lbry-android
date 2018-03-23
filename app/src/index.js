@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import DiscoverPage from './page/discover';
-import { AppRegistry, StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { AppRegistry, AppState, StyleSheet, Text, View, AsyncStorage, NativeModules } from 'react-native';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import {
   StackNavigator, addNavigationHelpers
@@ -20,6 +20,7 @@ import {
   searchReducer,
   walletReducer
 } from 'lbry-redux';
+import settingsReducer from './redux/reducers/settings';
 import { reactNavigationMiddleware } from './utils/redux';
 
 function isFunction(object) {
@@ -64,7 +65,8 @@ const reducers = combineReducers({
   fileInfo: fileInfoReducer,
   search: searchReducer,
   wallet: walletReducer,
-  nav: navigatorReducer
+  nav: navigatorReducer,
+  settings: settingsReducer
 });
 
 const bulkThunk = createBulkThunkMiddleware();

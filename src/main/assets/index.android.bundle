@@ -1439,7 +1439,11 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var _lbryRedux = require(_dependencyMap[11], "lbry-redux");
 
-  var _redux2 = require(_dependencyMap[12], "./utils/redux");
+  var _settings = require(_dependencyMap[12], "./redux/reducers/settings");
+
+  var _settings2 = babelHelpers.interopRequireDefault(_settings);
+
+  var _redux2 = require(_dependencyMap[13], "./utils/redux");
 
   function isFunction(object) {
     return typeof object === 'function';
@@ -1498,7 +1502,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
     fileInfo: _lbryRedux.fileInfoReducer,
     search: _lbryRedux.searchReducer,
     wallet: _lbryRedux.walletReducer,
-    nav: navigatorReducer
+    nav: navigatorReducer,
+    settings: _settings2.default
   });
   var bulkThunk = createBulkThunkMiddleware();
   var middleware = [_reduxThunk2.default, bulkThunk, _redux2.reactNavigationMiddleware];
@@ -1536,13 +1541,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
             store: store,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 107
+              lineNumber: 109
             }
           },
           _react2.default.createElement(_AppNavigator2.default, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 108
+              lineNumber: 110
             }
           })
         );
@@ -1556,7 +1561,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = LBRYApp;
-},11,[12,22,61,66,36,376,609,633,645,647,654,62,628],"LBRYApp/src/index.js");
+},11,[12,22,61,66,36,376,609,639,651,653,660,62,661,634],"LBRYApp/src/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -7671,8 +7676,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.selectBlocks = exports.selectDraftTransactionError = exports.selectDraftTransactionAddress = exports.selectDraftTransactionAmount = exports.selectDraftTransaction = exports.selectGettingNewAddress = exports.selectReceiveAddress = exports.selectIsSendingSupport = exports.selectIsFetchingTransactions = exports.selectHasTransactions = exports.selectRecentTransactions = exports.selectTransactionItems = exports.selectTransactionsById = exports.selectBalance = exports.makeSelectBlockDate = exports.selectWunderBarIcon = exports.selectWunderBarAddress = exports.selectSearchUrisByQuery = exports.selectIsSearching = exports.selectSearchQuery = exports.makeSelectSearchUris = exports.selectActiveHistoryEntry = exports.selectHistoryStack = exports.selectHistoryIndex = exports.selectIsForwardDisabled = exports.selectIsBackDisabled = exports.selectPathAfterAuth = exports.selectPageTitle = exports.selectHeaderLinks = undefined;
-      exports.selectCurrentParams = exports.selectCurrentPage = exports.selectCurrentPath = exports.makeSelectCurrentParam = exports.computePageFromPath = exports.selectTotalDownloadProgress = exports.selectDownloadingFileInfos = exports.selectFileInfosDownloaded = exports.selectUrisLoading = exports.selectDownloadingByOutpoint = exports.selectIsFetchingFileListDownloadedOrPublished = exports.selectIsFetchingFileList = exports.selectFileInfosByOutpoint = exports.makeSelectLoadingForUri = exports.makeSelectDownloadingForUri = exports.makeSelectFileInfoForUri = exports.selectFetchingCostInfo = exports.selectCostForCurrentPageUri = exports.selectAllCostInfoByUri = exports.makeSelectCostInfoForUri = exports.makeSelectFetchingCostInfoForUri = exports.selectRewardContentClaimIds = exports.selectChannelClaimCounts = exports.selectPlayingUri = exports.selectFetchingFeaturedUris = exports.selectFeaturedUris = exports.selectResolvingUris = exports.selectMyChannelClaims = exports.selectFetchingMyChannels = exports.selectMyClaimsOutpoints = exports.selectAllMyClaimsByOutpoint = exports.selectMyClaimsWithoutChannels = exports.selectMyClaims = exports.selectPendingClaims = exports.selectIsFetchingClaimListMine = exports.selectAllFetchingChannelClaims = exports.selectMyActiveClaims = exports.selectAbandoningIds = exports.selectMyClaimsRaw = exports.selectAllClaimsByChannel = exports.selectClaimsByUri = exports.selectClaimsById = exports.makeSelectTotalPagesForChannel = exports.makeSelectTotalItemsForChannel = exports.makeSelectIsUriResolving = exports.makeSelectContentTypeForUri = exports.makeSelectTitleForUri = exports.makeSelectMetadataForUri = exports.makeSelectClaimsInChannelForCurrentPage = exports.makeSelectFetchingChannelClaims = exports.makeSelectClaimIsMine = exports.makeSelectClaimForUri = exports.selectNotification = exports.walletReducer = exports.searchReducer = exports.notificationsReducer = exports.fileInfoReducer = exports.costInfoReducer = exports.claimsReducer = exports.formatFullPrice = exports.formatCredits = exports.toQueryString = exports.parseQueryParams = exports.batchActions = exports.doSendSupport = exports.doSetDraftTransactionAddress = exports.doSetDraftTransactionAmount = exports.doSendDraftTransaction = exports.doCheckAddressIsMine = exports.doGetNewAddress = exports.doFetchBlock = exports.doFetchTransactions = exports.doBalanceSubscribe = exports.doUpdateBalance = exports.doSearch = exports.doFetchFileInfosAndPublishedClaims = exports.doFileList = exports.doFetchFileInfo = exports.doFetchCostInfoForUri = exports.doFetchRewardedContent = exports.doFetchFeaturedUris = exports.doResolveUri = exports.doResolveUris = exports.doAbandonClaim = exports.doFetchClaimListMine = exports.doShowSnackBar = exports.doCloseModal = exports.doOpenModal = exports.doNotify = exports.isURIClaimable = exports.isURIValid = exports.normalizeURI = exports.buildURI = exports.parseURI = exports.regexAddress = exports.regexInvalidURI = exports.Lbryapi = exports.Lbry = exports.ACTIONS = exports.Notification = undefined;
+      exports.selectBlocks = exports.selectDraftTransactionError = exports.selectDraftTransactionAddress = exports.selectDraftTransactionAmount = exports.selectDraftTransaction = exports.selectGettingNewAddress = exports.selectReceiveAddress = exports.selectIsSendingSupport = exports.selectIsFetchingTransactions = exports.selectHasTransactions = exports.selectRecentTransactions = exports.selectTransactionItems = exports.selectTransactionsById = exports.selectBalance = exports.makeSelectBlockDate = exports.selectWunderBarIcon = exports.selectWunderBarAddress = exports.selectSearchUrisByQuery = exports.selectIsSearching = exports.selectSearchQuery = exports.makeSelectSearchUris = exports.selectActiveHistoryEntry = exports.selectHistoryStack = exports.selectHistoryIndex = exports.selectIsForwardDisabled = exports.selectIsBackDisabled = exports.selectPathAfterAuth = exports.selectPageTitle = exports.selectHeaderLinks = exports.selectCurrentParams = undefined;
+      exports.selectCurrentPage = exports.selectCurrentPath = exports.makeSelectCurrentParam = exports.computePageFromPath = exports.selectTotalDownloadProgress = exports.selectDownloadingFileInfos = exports.selectFileInfosDownloaded = exports.selectUrisLoading = exports.selectDownloadingByOutpoint = exports.selectIsFetchingFileListDownloadedOrPublished = exports.selectIsFetchingFileList = exports.selectFileInfosByOutpoint = exports.makeSelectLoadingForUri = exports.makeSelectDownloadingForUri = exports.makeSelectFileInfoForUri = exports.selectFetchingCostInfo = exports.selectCostForCurrentPageUri = exports.selectAllCostInfoByUri = exports.makeSelectCostInfoForUri = exports.makeSelectFetchingCostInfoForUri = exports.selectRewardContentClaimIds = exports.selectChannelClaimCounts = exports.selectPlayingUri = exports.selectFetchingFeaturedUris = exports.selectFeaturedUris = exports.selectResolvingUris = exports.selectMyChannelClaims = exports.selectFetchingMyChannels = exports.selectMyClaimsOutpoints = exports.selectAllMyClaimsByOutpoint = exports.selectMyClaimsWithoutChannels = exports.selectMyClaims = exports.selectPendingClaims = exports.selectIsFetchingClaimListMine = exports.selectAllFetchingChannelClaims = exports.selectMyActiveClaims = exports.selectAbandoningIds = exports.selectMyClaimsRaw = exports.selectAllClaimsByChannel = exports.selectClaimsByUri = exports.selectClaimsById = exports.makeSelectTotalPagesForChannel = exports.makeSelectTotalItemsForChannel = exports.makeSelectIsUriResolving = exports.makeSelectContentTypeForUri = exports.makeSelectTitleForUri = exports.makeSelectMetadataForUri = exports.makeSelectClaimsInChannelForCurrentPage = exports.makeSelectFetchingChannelClaims = exports.makeSelectClaimIsMine = exports.makeSelectClaimForUri = exports.selectNotification = exports.walletReducer = exports.searchReducer = exports.notificationsReducer = exports.fileInfoReducer = exports.costInfoReducer = exports.claimsReducer = exports.formatFullPrice = exports.formatCredits = exports.toQueryString = exports.parseQueryParams = exports.batchActions = exports.doSendSupport = exports.doSetDraftTransactionAddress = exports.doSetDraftTransactionAmount = exports.doSendDraftTransaction = exports.doCheckAddressIsMine = exports.doGetNewAddress = exports.doFetchBlock = exports.doFetchTransactions = exports.doBalanceSubscribe = exports.doUpdateBalance = exports.doSearch = exports.doFetchFileInfosAndPublishedClaims = exports.doFileList = exports.doFetchFileInfo = exports.doFetchCostInfoForUri = exports.doFetchRewardedContent = exports.doFetchFeaturedUris = exports.doResolveUri = exports.doResolveUris = exports.doAbandonClaim = exports.doFetchClaimListMine = exports.doShowSnackBar = exports.doCloseModal = exports.doOpenModal = exports.doNotify = exports.isURIClaimable = exports.isURIValid = exports.normalizeURI = exports.buildURI = exports.parseURI = exports.regexAddress = exports.regexInvalidURI = exports.Lbryapi = exports.Lbry = exports.SETTINGS = exports.ACTIONS = exports.Notification = undefined;
 
       var _Notification = __webpack_require__(9);
 
@@ -8509,6 +8514,10 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
       var ACTIONS = _interopRequireWildcard(_action_types);
 
+      var _settings = __webpack_require__(37);
+
+      var SETTINGS = _interopRequireWildcard(_settings);
+
       var _lbry = __webpack_require__(5);
 
       var _lbry2 = _interopRequireDefault(_lbry);
@@ -8541,6 +8550,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
 
       exports.ACTIONS = ACTIONS;
+      exports.SETTINGS = SETTINGS;
       exports.Lbry = _lbry2.default;
       exports.Lbryapi = _lbryapi2.default;
     }, function (module, exports, __webpack_require__) {
@@ -10674,6 +10684,24 @@ __d(function (global, require, module, exports, _dependencyMap) {
             return 'icon-file';
         }
       });
+    }, function (module, exports, __webpack_require__) {
+      "use strict";
+
+      Object.defineProperty(exports, "__esModule", {
+        value: true
+      });
+      var CREDIT_REQUIRED_ACKNOWLEDGED = exports.CREDIT_REQUIRED_ACKNOWLEDGED = 'credit_required_acknowledged';
+      var NEW_USER_ACKNOWLEDGED = exports.NEW_USER_ACKNOWLEDGED = 'welcome_acknowledged';
+      var EMAIL_COLLECTION_ACKNOWLEDGED = exports.EMAIL_COLLECTION_ACKNOWLEDGED = 'email_collection_acknowledged';
+      var LANGUAGE = exports.LANGUAGE = 'language';
+      var SHOW_NSFW = exports.SHOW_NSFW = 'showNsfw';
+      var SHOW_UNAVAILABLE = exports.SHOW_UNAVAILABLE = 'showUnavailable';
+      var INSTANT_PURCHASE_ENABLED = exports.INSTANT_PURCHASE_ENABLED = 'instantPurchaseEnabled';
+      var INSTANT_PURCHASE_MAX = exports.INSTANT_PURCHASE_MAX = 'instantPurchaseMax';
+      var THEME = exports.THEME = 'theme';
+      var THEMES = exports.THEMES = 'themes';
+      var AUTOMATIC_DARK_MODE_ENABLED = exports.AUTOMATIC_DARK_MODE_ENABLED = 'automaticDarkModeEnabled';
+      var KEEP_DAEMON_RUNNING = exports.KEEP_DAEMON_RUNNING = 'keepDaemonRunning';
     }]);
   });
 },62,[],"lbry-redux/build/index.js");
@@ -74522,25 +74550,33 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var _file2 = babelHelpers.interopRequireDefault(_file);
 
-  var _splash = require(_dependencyMap[3], "../page/splash");
+  var _settings = require(_dependencyMap[3], "../page/settings");
+
+  var _settings2 = babelHelpers.interopRequireDefault(_settings);
+
+  var _splash = require(_dependencyMap[4], "../page/splash");
 
   var _splash2 = babelHelpers.interopRequireDefault(_splash);
 
-  var _reactNavigation = require(_dependencyMap[4], "react-navigation");
+  var _reactNavigation = require(_dependencyMap[5], "react-navigation");
 
-  var _reactRedux = require(_dependencyMap[5], "react-redux");
+  var _reactRedux = require(_dependencyMap[6], "react-redux");
 
-  var _redux = require(_dependencyMap[6], "../utils/redux");
+  var _redux = require(_dependencyMap[7], "../utils/redux");
 
-  var _reactNative = require(_dependencyMap[7], "react-native");
+  var _reactNative = require(_dependencyMap[8], "react-native");
 
-  var _Feather = require(_dependencyMap[8], "react-native-vector-icons/Feather");
+  var _lbryRedux = require(_dependencyMap[9], "lbry-redux");
+
+  var _Feather = require(_dependencyMap[10], "react-native-vector-icons/Feather");
 
   var _Feather2 = babelHelpers.interopRequireDefault(_Feather);
 
-  var _discover3 = require(_dependencyMap[9], "../styles/discover");
+  var _discover3 = require(_dependencyMap[11], "../styles/discover");
 
   var _discover4 = babelHelpers.interopRequireDefault(_discover3);
+
+  var _settings3 = require(_dependencyMap[12], "../redux/selectors/settings");
 
   var discoverStack = (0, _reactNavigation.StackNavigator)({
     Discover: {
@@ -74558,7 +74594,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 17
+              lineNumber: 20
             }
           })
         };
@@ -74577,6 +74613,10 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var drawer = (0, _reactNavigation.DrawerNavigator)({
     Discover: {
       screen: discoverStack
+    },
+    Settings: {
+      screen: _settings2.default,
+      headerMode: 'screen'
     }
   }, {
     drawerWidth: 300,
@@ -74597,13 +74637,32 @@ __d(function (global, require, module, exports, _dependencyMap) {
     babelHelpers.inherits(AppWithNavigationState, _React$Component);
 
     function AppWithNavigationState() {
+      var _ref2;
+
+      var _temp, _this, _ret;
+
       babelHelpers.classCallCheck(this, AppWithNavigationState);
-      return babelHelpers.possibleConstructorReturn(this, (AppWithNavigationState.__proto__ || Object.getPrototypeOf(AppWithNavigationState)).apply(this, arguments));
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref2 = AppWithNavigationState.__proto__ || Object.getPrototypeOf(AppWithNavigationState)).call.apply(_ref2, [this].concat(args))), _this), _this._handleAppStateChange = function (nextAppState) {
+        var keepDaemonRunning = _this.props.keepDaemonRunning;
+
+        if (_reactNative.AppState.currentState && _reactNative.AppState.currentState.match(/inactive|background/) && _reactNative.NativeModules.DaemonServiceControl) {
+          if (!keepDaemonRunning) {
+            _reactNative.NativeModules.DaemonServiceControl.stopService();
+          }
+        }
+      }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
     }
 
     babelHelpers.createClass(AppWithNavigationState, [{
       key: "componentWillMount",
       value: function componentWillMount() {
+        _reactNative.AppState.addEventListener('change', this._handleAppStateChange);
+
         _reactNative.BackHandler.addEventListener('hardwareBackPress', function () {
           var _props = this.props,
               dispatch = _props.dispatch,
@@ -74625,6 +74684,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }, {
       key: "componentWillUnmount",
       value: function componentWillUnmount() {
+        _reactNative.AppState.removeEventListener('change', this._handleAppStateChange);
+
         _reactNative.BackHandler.removeEventListener('hardwareBackPress');
       }
     }, {
@@ -74641,7 +74702,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
           }),
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 70
+            lineNumber: 91
           }
         });
       }
@@ -74651,12 +74712,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var mapStateToProps = function mapStateToProps(state) {
     return {
-      nav: state.nav
+      nav: state.nav,
+      keepDaemonRunning: (0, _settings3.makeSelectClientSetting)(_lbryRedux.SETTINGS.KEEP_DAEMON_RUNNING)(state),
+      showNsfw: (0, _settings3.makeSelectClientSetting)(_lbryRedux.SETTINGS.SHOW_NSFW)(state)
     };
   };
 
   exports.default = (0, _reactRedux.connect)(mapStateToProps)(AppWithNavigationState);
-},609,[12,61,610,625,376,22,628,66,455,454],"LBRYApp/src/component/AppNavigator.js");
+},609,[12,61,610,625,631,376,22,634,66,62,455,454,627],"LBRYApp/src/component/AppNavigator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75467,7 +75530,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         resizeMode: 'stretch',
         duration: 0.0,
         currentTime: 0.0,
-        paused: false,
+        paused: true,
         fullscreenMode: false,
         areControlsVisible: true,
         controlsTimeout: -1,
@@ -75540,18 +75603,6 @@ __d(function (global, require, module, exports, _dependencyMap) {
         });
 
         _this.video.seek(0);
-      }, _this.seekTo = function () {
-        var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-        if (time > _this.state.duration) {
-          return;
-        }
-
-        _this.video.seek(time);
-
-        _this.setState({
-          currentTime: time
-        });
       }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
     }
 
@@ -75628,6 +75679,20 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
 
         return val;
+      }
+    }, {
+      key: "seekTo",
+      value: function seekTo() {
+        var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+        if (time > this.state.duration) {
+          return;
+        }
+
+        this.video.seek(time);
+        this.setState({
+          currentTime: time
+        });
       }
     }, {
       key: "initSeeker",
@@ -77234,7 +77299,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     seekerCircle: {
       borderRadius: 12,
       position: 'relative',
-      top: 8,
+      top: 16,
       left: 8,
       height: 12,
       width: 12,
@@ -77242,15 +77307,15 @@ __d(function (global, require, module, exports, _dependencyMap) {
     },
     seekerHandle: {
       position: 'absolute',
-      height: 28,
-      width: 28,
+      height: 36,
+      width: 36,
       bottom: -12,
       marginLeft: -8
     },
     bigSeekerCircle: {
       borderRadius: 24,
       position: 'relative',
-      top: 2,
+      top: 10,
       left: 8,
       height: 24,
       width: 24,
@@ -77353,6 +77418,388 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var _reactRedux = require(_dependencyMap[0], "react-redux");
 
+  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
+
+  var _settings = require(_dependencyMap[2], "../../redux/actions/settings");
+
+  var _settings2 = require(_dependencyMap[3], "../../redux/selectors/settings");
+
+  var _view = require(_dependencyMap[4], "./view");
+
+  var _view2 = babelHelpers.interopRequireDefault(_view);
+
+  var select = function select(state) {
+    return {
+      keepDaemonRunning: (0, _settings2.makeSelectClientSetting)(_lbryRedux.SETTINGS.KEEP_DAEMON_RUNNING)(state),
+      showNsfw: (0, _settings2.makeSelectClientSetting)(_lbryRedux.SETTINGS.SHOW_NSFW)(state)
+    };
+  };
+
+  var perform = function perform(dispatch) {
+    return {
+      setClientSetting: function setClientSetting(key, value) {
+        return dispatch((0, _settings.doSetClientSetting)(key, value));
+      }
+    };
+  };
+
+  exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
+},625,[22,62,626,627,629],"LBRYApp/src/page/settings/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.doSetClientSetting = doSetClientSetting;
+
+  var _lbryRedux = require(_dependencyMap[0], "lbry-redux");
+
+  function doSetClientSetting(key, value) {
+    return {
+      type: _lbryRedux.ACTIONS.CLIENT_SETTING_CHANGED,
+      data: {
+        key: key,
+        value: value
+      }
+    };
+  }
+},626,[62],"LBRYApp/src/redux/actions/settings.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.selectKeepDaemonRunning = exports.selectShowNsfw = exports.makeSelectClientSetting = exports.selectClientSettings = exports.selectDaemonSettings = undefined;
+
+  var _lbryRedux = require(_dependencyMap[0], "lbry-redux");
+
+  var _reselect = require(_dependencyMap[1], "reselect");
+
+  var selectState = function selectState(state) {
+    return state.settings || {};
+  };
+
+  var selectDaemonSettings = exports.selectDaemonSettings = (0, _reselect.createSelector)(selectState, function (state) {
+    return state.daemonSettings;
+  });
+  var selectClientSettings = exports.selectClientSettings = (0, _reselect.createSelector)(selectState, function (state) {
+    return state.clientSettings || {};
+  });
+
+  var makeSelectClientSetting = exports.makeSelectClientSetting = function makeSelectClientSetting(setting) {
+    return (0, _reselect.createSelector)(selectClientSettings, function (settings) {
+      return settings ? settings[setting] : undefined;
+    });
+  };
+
+  var selectShowNsfw = exports.selectShowNsfw = makeSelectClientSetting(_lbryRedux.SETTINGS.SHOW_NSFW);
+  var selectKeepDaemonRunning = exports.selectKeepDaemonRunning = makeSelectClientSetting(_lbryRedux.SETTINGS.KEEP_DAEMON_RUNNING);
+},627,[62,628],"LBRYApp/src/redux/selectors/settings.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  exports.__esModule = true;
+  exports.defaultMemoize = defaultMemoize;
+  exports.createSelectorCreator = createSelectorCreator;
+  exports.createStructuredSelector = createStructuredSelector;
+
+  function defaultEqualityCheck(a, b) {
+    return a === b;
+  }
+
+  function areArgumentsShallowlyEqual(equalityCheck, prev, next) {
+    if (prev === null || next === null || prev.length !== next.length) {
+      return false;
+    }
+
+    var length = prev.length;
+
+    for (var i = 0; i < length; i++) {
+      if (!equalityCheck(prev[i], next[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function defaultMemoize(func) {
+    var equalityCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultEqualityCheck;
+    var lastArgs = null;
+    var lastResult = null;
+    return function () {
+      if (!areArgumentsShallowlyEqual(equalityCheck, lastArgs, arguments)) {
+        lastResult = func.apply(null, arguments);
+      }
+
+      lastArgs = arguments;
+      return lastResult;
+    };
+  }
+
+  function getDependencies(funcs) {
+    var dependencies = Array.isArray(funcs[0]) ? funcs[0] : funcs;
+
+    if (!dependencies.every(function (dep) {
+      return typeof dep === 'function';
+    })) {
+      var dependencyTypes = dependencies.map(function (dep) {
+        return typeof dep;
+      }).join(', ');
+      throw new Error('Selector creators expect all input-selectors to be functions, ' + ('instead received the following types: [' + dependencyTypes + ']'));
+    }
+
+    return dependencies;
+  }
+
+  function createSelectorCreator(memoize) {
+    for (var _len = arguments.length, memoizeOptions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      memoizeOptions[_key - 1] = arguments[_key];
+    }
+
+    return function () {
+      for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        funcs[_key2] = arguments[_key2];
+      }
+
+      var recomputations = 0;
+      var resultFunc = funcs.pop();
+      var dependencies = getDependencies(funcs);
+      var memoizedResultFunc = memoize.apply(undefined, [function () {
+        recomputations++;
+        return resultFunc.apply(null, arguments);
+      }].concat(memoizeOptions));
+      var selector = defaultMemoize(function () {
+        var params = [];
+        var length = dependencies.length;
+
+        for (var i = 0; i < length; i++) {
+          params.push(dependencies[i].apply(null, arguments));
+        }
+
+        return memoizedResultFunc.apply(null, params);
+      });
+      selector.resultFunc = resultFunc;
+
+      selector.recomputations = function () {
+        return recomputations;
+      };
+
+      selector.resetRecomputations = function () {
+        return recomputations = 0;
+      };
+
+      return selector;
+    };
+  }
+
+  var createSelector = exports.createSelector = createSelectorCreator(defaultMemoize);
+
+  function createStructuredSelector(selectors) {
+    var selectorCreator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : createSelector;
+
+    if (typeof selectors !== 'object') {
+      throw new Error('createStructuredSelector expects first argument to be an object ' + ('where each property is a selector, instead received a ' + typeof selectors));
+    }
+
+    var objectKeys = Object.keys(selectors);
+    return selectorCreator(objectKeys.map(function (key) {
+      return selectors[key];
+    }), function () {
+      for (var _len3 = arguments.length, values = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        values[_key3] = arguments[_key3];
+      }
+
+      return values.reduce(function (composition, value, index) {
+        composition[objectKeys[index]] = value;
+        return composition;
+      }, {});
+    });
+  }
+},628,[],"reselect/lib/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/home/akinwale/Dev/Python/lbry-android/app/src/page/settings/view.js";
+
+  var _react = require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
+
+  var _reactNative = require(_dependencyMap[2], "react-native");
+
+  var _settings = require(_dependencyMap[3], "../../styles/settings");
+
+  var _settings2 = babelHelpers.interopRequireDefault(_settings);
+
+  var SettingsPage = function (_React$PureComponent) {
+    babelHelpers.inherits(SettingsPage, _React$PureComponent);
+
+    function SettingsPage() {
+      babelHelpers.classCallCheck(this, SettingsPage);
+      return babelHelpers.possibleConstructorReturn(this, (SettingsPage.__proto__ || Object.getPrototypeOf(SettingsPage)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(SettingsPage, [{
+      key: "render",
+      value: function render() {
+        var _props = this.props,
+            keepDaemonRunning = _props.keepDaemonRunning,
+            showNsfw = _props.showNsfw,
+            setClientSetting = _props.setClientSetting;
+        return _react2.default.createElement(
+          _reactNative.View,
+          {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 19
+            }
+          },
+          _react2.default.createElement(
+            _reactNative.Text,
+            {
+              style: _settings2.default.title,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 20
+              }
+            },
+            "Settings"
+          ),
+          _react2.default.createElement(
+            _reactNative.ScrollView,
+            {
+              style: _settings2.default.scrollContainer,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 21
+              }
+            },
+            _react2.default.createElement(
+              _reactNative.View,
+              {
+                style: _settings2.default.row,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 22
+                }
+              },
+              _react2.default.createElement(
+                _reactNative.View,
+                {
+                  style: _settings2.default.switchText,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 23
+                  }
+                },
+                _react2.default.createElement(
+                  _reactNative.Text,
+                  {
+                    style: _settings2.default.label,
+                    __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 24
+                    }
+                  },
+                  "Keep the daemon background service running when the app is suspended."
+                ),
+                _react2.default.createElement(
+                  _reactNative.Text,
+                  {
+                    style: _settings2.default.description,
+                    __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 25
+                    }
+                  },
+                  "Enable this option for quicker app launch and to keep the synchronisation with the blockchain up to date."
+                )
+              ),
+              _react2.default.createElement(
+                _reactNative.View,
+                {
+                  style: _settings2.default.switchContainer,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 27
+                  }
+                },
+                _react2.default.createElement(_reactNative.Switch, {
+                  value: keepDaemonRunning,
+                  onValueChange: function onValueChange(value) {
+                    return setClientSetting(_lbryRedux.SETTINGS.KEEP_DAEMON_RUNNING, value);
+                  },
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 28
+                  }
+                })
+              )
+            )
+          )
+        );
+      }
+    }]);
+    return SettingsPage;
+  }(_react2.default.PureComponent);
+
+  SettingsPage.navigationOptions = {
+    title: 'Settings'
+  };
+  exports.default = SettingsPage;
+},629,[12,62,66,630],"LBRYApp/src/page/settings/view.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNative = require(_dependencyMap[0], "react-native");
+
+  var settingsStyle = _reactNative.StyleSheet.create({
+    title: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      margin: 16
+    },
+    scrollContainer: {
+      paddingLeft: 16,
+      paddingRight: 16,
+      paddingBottom: 16
+    },
+    row: {
+      marginBottom: 12,
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
+    switchText: {
+      width: '70%'
+    },
+    switchContainer: {
+      width: '25%'
+    },
+    label: {
+      fontSize: 14,
+      fontFamily: 'Metropolis-Regular'
+    },
+    description: {
+      fontSize: 12,
+      fontFamily: 'Metropolis-Regular',
+      color: '#aaaaaa'
+    }
+  });
+
+  exports.default = settingsStyle;
+},630,[66],"LBRYApp/src/styles/settings.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactRedux = require(_dependencyMap[0], "react-redux");
+
   var _view = require(_dependencyMap[1], "./view");
 
   var _view2 = babelHelpers.interopRequireDefault(_view);
@@ -77366,7 +77813,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},625,[22,626],"LBRYApp/src/page/splash/index.js");
+},631,[22,632],"LBRYApp/src/page/splash/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77536,7 +77983,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     title: 'Splash'
   };
   exports.default = SplashScreen;
-},626,[12,62,66,24,627],"LBRYApp/src/page/splash/view.js");
+},632,[12,62,66,24,633],"LBRYApp/src/page/splash/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77577,7 +78024,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = splashStyle;
-},627,[66],"LBRYApp/src/styles/splash.js");
+},633,[66],"LBRYApp/src/styles/splash.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77592,7 +78039,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var addListener = (0, _reactNavigationReduxHelpers.createReduxBoundAddListener)("root");
   exports.reactNavigationMiddleware = reactNavigationMiddleware;
   exports.addListener = addListener;
-},628,[629],"LBRYApp/src/utils/redux.js");
+},634,[635],"LBRYApp/src/utils/redux.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77626,8 +78073,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var _reducer = require(_dependencyMap[2], "./reducer");
 
   exports.createNavigationReducer = _reducer.createNavigationReducer;
-},629,[630,631,632],"react-navigation-redux-helpers/src/index.js");
-__d(function (global, require, module, exports, _dependencyMap) {},630,[],"react-navigation-redux-helpers/src/types.js");
+},635,[636,637,638],"react-navigation-redux-helpers/src/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {},636,[],"react-navigation-redux-helpers/src/types.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77704,7 +78151,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.createReactNavigationReduxMiddleware = createReactNavigationReduxMiddleware;
   exports.createReduxBoundAddListener = createReduxBoundAddListener;
   exports.initializeListeners = initializeListeners;
-},631,[31,632],"react-navigation-redux-helpers/src/middleware.js");
+},637,[31,638],"react-navigation-redux-helpers/src/middleware.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77727,7 +78174,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   ;
   exports.createNavigationReducer = createNavigationReducer;
   exports.initAction = initAction;
-},632,[376],"react-navigation-redux-helpers/src/reducer.js");
+},638,[376],"react-navigation-redux-helpers/src/reducer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -77788,7 +78235,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.persistStore = _persistStore2.default;
   exports.purgeStoredState = _purgeStoredState2.default;
   exports.storages = storages;
-},633,[634,637,642,643,644,640],"redux-persist/lib/index.js");
+},639,[640,643,648,649,650,646],"redux-persist/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -77890,14 +78337,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
     });
     return newState;
   }
-},634,[635,636],"redux-persist/lib/autoRehydrate.js");
+},640,[641,642],"redux-persist/lib/autoRehydrate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
   exports.__esModule = true;
   var KEY_PREFIX = exports.KEY_PREFIX = 'reduxPersist:';
   var REHYDRATE = exports.REHYDRATE = 'persist/REHYDRATE';
-},635,[],"redux-persist/lib/constants.js");
+},641,[],"redux-persist/lib/constants.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -77928,7 +78375,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     if (!(0, _isPlainObject2.default)(a)) return false;
     return true;
   }
-},636,[38],"redux-persist/lib/utils/isStatePlainEnough.js");
+},642,[38],"redux-persist/lib/utils/isStatePlainEnough.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78101,7 +78548,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     state[key] = value;
     return state;
   }
-},637,[635,638,640,641],"redux-persist/lib/createPersistor.js");
+},643,[641,644,646,647],"redux-persist/lib/createPersistor.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78247,7 +78694,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       };
     }
   }
-},638,[639],"redux-persist/lib/defaults/asyncLocalStorage.js");
+},644,[645],"redux-persist/lib/defaults/asyncLocalStorage.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78259,7 +78706,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     return setTimeout(fn, ms);
   };
   exports.default = setImmediate;
-},639,[],"redux-persist/lib/utils/setImmediate.js");
+},645,[],"redux-persist/lib/utils/setImmediate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78303,7 +78750,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
     };
   }
-},640,[635],"redux-persist/lib/purgeStoredState.js");
+},646,[641],"redux-persist/lib/purgeStoredState.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   exports = module.exports = stringify;
   exports.getSerialize = serializer;
@@ -78330,7 +78777,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return replacer == null ? value : replacer.call(this, key, value);
     };
   }
-},641,[],"json-stringify-safe/stringify.js");
+},647,[],"json-stringify-safe/stringify.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -78358,7 +78805,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = createTransform;
-},642,[],"redux-persist/lib/createTransform.js");
+},648,[],"redux-persist/lib/createTransform.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78470,7 +78917,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   function defaultDeserializer(serial) {
     return JSON.parse(serial);
   }
-},643,[635,638],"redux-persist/lib/getStoredState.js");
+},649,[641,644],"redux-persist/lib/getStoredState.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78565,7 +79012,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       error: error
     };
   }
-},644,[635,643,637,639],"redux-persist/lib/persistStore.js");
+},650,[641,649,643,645],"redux-persist/lib/persistStore.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -78615,7 +79062,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             }
         }, config);
     }
-},645,[633,646,641],"redux-persist-transform-compress/lib/index.js");
+},651,[639,652,647],"redux-persist-transform-compress/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var LZString = function () {
     var f = String.fromCharCode;
@@ -79192,7 +79639,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   } else if (typeof module !== 'undefined' && module != null) {
     module.exports = LZString;
   }
-},646,[],"lz-string/libs/lz-string.js");
+},652,[],"lz-string/libs/lz-string.js");
 __d(function (global, require, module, exports, _dependencyMap) {
 	'use strict';
 
@@ -79324,7 +79771,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
 		return subset;
 	}
-},647,[633,648,649,650,651,652,653],"redux-persist-transform-filter/dist/index.js");
+},653,[639,654,655,656,657,658,659],"redux-persist-transform-filter/dist/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -79711,7 +80158,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = get;
-},648,[],"lodash.get/index.js");
+},654,[],"lodash.get/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -80131,7 +80578,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = set;
-},649,[],"lodash.set/index.js");
+},655,[],"lodash.set/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -80558,7 +81005,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = unset;
-},650,[],"lodash.unset/index.js");
+},656,[],"lodash.unset/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var LARGE_ARRAY_SIZE = 200;
   var FUNC_ERROR_TEXT = 'Expected a function';
@@ -81720,7 +82167,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = pickBy;
-},651,[],"lodash.pickby/index.js");
+},657,[],"lodash.pickby/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MAX_SAFE_INTEGER = 9007199254740991;
   var argsTag = '[object Arguments]',
@@ -81930,7 +82377,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isEmpty;
-},652,[],"lodash.isempty/index.js");
+},658,[],"lodash.isempty/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MAX_SAFE_INTEGER = 9007199254740991;
   var argsTag = '[object Arguments]',
@@ -82074,7 +82521,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = forIn;
-},653,[],"lodash.forin/index.js");
+},659,[],"lodash.forin/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -82099,6 +82546,41 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var thunk = createThunkMiddleware();
   thunk.withExtraArgument = createThunkMiddleware;
   exports['default'] = thunk;
-},654,[],"redux-thunk/lib/index.js");
+},660,[],"redux-thunk/lib/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = reducer;
+
+  var _lbryRedux = require(_dependencyMap[0], "lbry-redux");
+
+  var reducers = {};
+  var defaultState = {
+    clientSettings: {
+      keepDaemonRunning: true,
+      showNsfw: false
+    }
+  };
+
+  reducers[_lbryRedux.ACTIONS.CLIENT_SETTING_CHANGED] = function (state, action) {
+    var _action$data = action.data,
+        key = _action$data.key,
+        value = _action$data.value;
+    var clientSettings = babelHelpers.extends({}, state.clientSettings);
+    clientSettings[key] = value;
+    return babelHelpers.extends({}, state, {
+      clientSettings: clientSettings
+    });
+  };
+
+  function reducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+    var action = arguments[1];
+    var handler = reducers[action.type];
+    if (handler) return handler(state, action);
+    return state;
+  }
+},661,[62],"LBRYApp/src/redux/reducers/settings.js");
 require(76);
 require(11);

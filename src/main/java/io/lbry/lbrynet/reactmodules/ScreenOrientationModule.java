@@ -8,10 +8,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
-/**
- * Created by akinwale on 3/19/18.
- */
-
 public class ScreenOrientationModule extends ReactContextBaseJavaModule {
     private Context context;
 

@@ -1,13 +1,16 @@
 import React from 'react';
 import DiscoverPage from '../page/discover';
 import FilePage from '../page/file';
+import SettingsPage from '../page/settings';
 import SplashScreen from '../page/splash';
 import { addNavigationHelpers, DrawerNavigator, StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { addListener } from '../utils/redux';
-import { BackHandler } from 'react-native';
+import { AppState, BackHandler, NativeModules } from 'react-native';
+import { SETTINGS } from 'lbry-redux';
 import Feather from 'react-native-vector-icons/Feather';
 import discoverStyle from '../styles/discover';
+import { makeSelectClientSetting } from '../redux/selectors/settings';
 
 const discoverStack = StackNavigator({
   Discover: {
@@ -30,6 +33,10 @@ const discoverStack = StackNavigator({
 
 const drawer = DrawerNavigator({
   Discover: { screen: discoverStack },
+  Settings: {
+    screen: SettingsPage,
+    headerMode: 'screen'
+  }
 }, {
   drawerWidth: 300,
   headerMode: 'none'
@@ -48,6 +55,7 @@ export const AppNavigator = new StackNavigator({
 
 class AppWithNavigationState extends React.Component {
   componentWillMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
       const { dispatch, navigation, nav } = this.props;
       if (nav.routes.length === 2 && nav.routes[1].routeName === 'Main') {
@@ -61,7 +69,20 @@ class AppWithNavigationState extends React.Component {
   }
   
   componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
     BackHandler.removeEventListener('hardwareBackPress');
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    const { keepDaemonRunning } = this.props;
+    if (AppState.currentState &&
+        AppState.currentState.match(/inactive|background/) &&
+        NativeModules.DaemonServiceControl) {
+      if (!keepDaemonRunning) {
+        // terminate the daemon background service when is suspended / inactive 
+        NativeModules.DaemonServiceControl.stopService();
+      }
+    }
   }
   
   render() {
@@ -80,6 +101,8 @@ class AppWithNavigationState extends React.Component {
 
 const mapStateToProps = state => ({
   nav: state.nav,
+  keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
+  showNsfw: makeSelectClientSetting(SETTINGS.SHOW_NSFW)(state)
 });
   
 export default connect(mapStateToProps)(AppWithNavigationState);
