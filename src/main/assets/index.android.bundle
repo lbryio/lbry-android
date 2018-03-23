@@ -1512,9 +1512,10 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var compressor = (0, _reduxPersistTransformCompress2.default)();
   var saveClaimsFilter = (0, _reduxPersistTransformFilter2.default)('claims', ['byId', 'claimsByUri']);
   var subscriptionsFilter = (0, _reduxPersistTransformFilter2.default)('subscriptions', ['subscriptions']);
+  var settingsFilter = (0, _reduxPersistTransformFilter2.default)('settings', ['clientSettings']);
   var persistOptions = {
-    whitelist: ['claims', 'subscriptions'],
-    transforms: [saveClaimsFilter, subscriptionsFilter, compressor],
+    whitelist: ['claims', 'subscriptions', 'settings'],
+    transforms: [saveClaimsFilter, subscriptionsFilter, settingsFilter, compressor],
     debounce: 10000,
     storage: _reactNative.AsyncStorage
   };
@@ -1541,13 +1542,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
             store: store,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 109
+              lineNumber: 110
             }
           },
           _react2.default.createElement(_AppNavigator2.default, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 110
+              lineNumber: 111
             }
           })
         );
