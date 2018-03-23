@@ -13,7 +13,7 @@ reducers[ACTIONS.CLIENT_SETTING_CHANGED] = (state, action) => {
   const clientSettings = Object.assign({}, state.clientSettings);
 
   clientSettings[key] = value;
-  
+
   return Object.assign({}, state, {
     clientSettings,
   });

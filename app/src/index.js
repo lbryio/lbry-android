@@ -87,12 +87,13 @@ const store = createStore(
 const compressor = createCompressor();
 const saveClaimsFilter = createFilter('claims', ['byId', 'claimsByUri']);
 const subscriptionsFilter = createFilter('subscriptions', ['subscriptions']);
+const settingsFilter = createFilter('settings', ['clientSettings']);
 
 const persistOptions = {
-  whitelist: ['claims', 'subscriptions'],
+  whitelist: ['claims', 'subscriptions', 'settings'],
   // Order is important. Needs to be compressed last or other transforms can't
   // read the data
-  transforms: [saveClaimsFilter, subscriptionsFilter, compressor],
+  transforms: [saveClaimsFilter, subscriptionsFilter, settingsFilter, compressor],
   debounce: 10000,
   storage: AsyncStorage
 };
