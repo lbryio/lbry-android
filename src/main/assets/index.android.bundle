@@ -1562,7 +1562,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = LBRYApp;
-},11,[12,22,61,66,36,376,609,639,651,653,660,62,661,634],"LBRYApp/src/index.js");
+},11,[12,22,61,66,36,378,613,641,653,655,662,62,663,636],"LBRYApp/src/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -10806,7 +10806,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }(_react2.default.PureComponent);
 
   exports.default = DiscoverPage;
-},63,[12,64,376,66,454,455],"LBRYApp/src/page/discover/view.js");
+},63,[12,64,378,66,458,459],"LBRYApp/src/page/discover/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -10904,7 +10904,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }(_react2.default.PureComponent);
 
   exports.default = FeaturedCategory;
-},65,[12,66,62,374,454],"LBRYApp/src/component/featuredCategory/view.js");
+},65,[12,66,62,374,458],"LBRYApp/src/component/featuredCategory/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -60004,7 +60004,9 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
 
-  var _view = require(_dependencyMap[2], "./view");
+  var _settings = require(_dependencyMap[2], "../../redux/selectors/settings");
+
+  var _view = require(_dependencyMap[3], "./view");
 
   var _view2 = babelHelpers.interopRequireDefault(_view);
 
@@ -60014,7 +60016,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
       fileInfo: (0, _lbryRedux.makeSelectFileInfoForUri)(props.uri)(state),
       metadata: (0, _lbryRedux.makeSelectMetadataForUri)(props.uri)(state),
       rewardedContentClaimIds: (0, _lbryRedux.selectRewardContentClaimIds)(state, props),
-      isResolvingUri: (0, _lbryRedux.makeSelectIsUriResolving)(props.uri)(state)
+      isResolvingUri: (0, _lbryRedux.makeSelectIsUriResolving)(props.uri)(state),
+      showNsfw: (0, _settings.makeSelectClientSetting)(_lbryRedux.SETTINGS.SHOW_NSFW)
     };
   };
 
@@ -60027,7 +60030,159 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},374,[22,62,375],"LBRYApp/src/component/fileItem/index.js");
+},374,[22,62,375,377],"LBRYApp/src/component/fileItem/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.selectKeepDaemonRunning = exports.selectShowNsfw = exports.makeSelectClientSetting = exports.selectClientSettings = exports.selectDaemonSettings = undefined;
+
+  var _lbryRedux = require(_dependencyMap[0], "lbry-redux");
+
+  var _reselect = require(_dependencyMap[1], "reselect");
+
+  var selectState = function selectState(state) {
+    return state.settings || {};
+  };
+
+  var selectDaemonSettings = exports.selectDaemonSettings = (0, _reselect.createSelector)(selectState, function (state) {
+    return state.daemonSettings;
+  });
+  var selectClientSettings = exports.selectClientSettings = (0, _reselect.createSelector)(selectState, function (state) {
+    return state.clientSettings || {};
+  });
+
+  var makeSelectClientSetting = exports.makeSelectClientSetting = function makeSelectClientSetting(setting) {
+    return (0, _reselect.createSelector)(selectClientSettings, function (settings) {
+      return settings ? settings[setting] : undefined;
+    });
+  };
+
+  var selectShowNsfw = exports.selectShowNsfw = makeSelectClientSetting(_lbryRedux.SETTINGS.SHOW_NSFW);
+  var selectKeepDaemonRunning = exports.selectKeepDaemonRunning = makeSelectClientSetting(_lbryRedux.SETTINGS.KEEP_DAEMON_RUNNING);
+},375,[62,376],"LBRYApp/src/redux/selectors/settings.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  exports.__esModule = true;
+  exports.defaultMemoize = defaultMemoize;
+  exports.createSelectorCreator = createSelectorCreator;
+  exports.createStructuredSelector = createStructuredSelector;
+
+  function defaultEqualityCheck(a, b) {
+    return a === b;
+  }
+
+  function areArgumentsShallowlyEqual(equalityCheck, prev, next) {
+    if (prev === null || next === null || prev.length !== next.length) {
+      return false;
+    }
+
+    var length = prev.length;
+
+    for (var i = 0; i < length; i++) {
+      if (!equalityCheck(prev[i], next[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function defaultMemoize(func) {
+    var equalityCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultEqualityCheck;
+    var lastArgs = null;
+    var lastResult = null;
+    return function () {
+      if (!areArgumentsShallowlyEqual(equalityCheck, lastArgs, arguments)) {
+        lastResult = func.apply(null, arguments);
+      }
+
+      lastArgs = arguments;
+      return lastResult;
+    };
+  }
+
+  function getDependencies(funcs) {
+    var dependencies = Array.isArray(funcs[0]) ? funcs[0] : funcs;
+
+    if (!dependencies.every(function (dep) {
+      return typeof dep === 'function';
+    })) {
+      var dependencyTypes = dependencies.map(function (dep) {
+        return typeof dep;
+      }).join(', ');
+      throw new Error('Selector creators expect all input-selectors to be functions, ' + ('instead received the following types: [' + dependencyTypes + ']'));
+    }
+
+    return dependencies;
+  }
+
+  function createSelectorCreator(memoize) {
+    for (var _len = arguments.length, memoizeOptions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      memoizeOptions[_key - 1] = arguments[_key];
+    }
+
+    return function () {
+      for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        funcs[_key2] = arguments[_key2];
+      }
+
+      var recomputations = 0;
+      var resultFunc = funcs.pop();
+      var dependencies = getDependencies(funcs);
+      var memoizedResultFunc = memoize.apply(undefined, [function () {
+        recomputations++;
+        return resultFunc.apply(null, arguments);
+      }].concat(memoizeOptions));
+      var selector = defaultMemoize(function () {
+        var params = [];
+        var length = dependencies.length;
+
+        for (var i = 0; i < length; i++) {
+          params.push(dependencies[i].apply(null, arguments));
+        }
+
+        return memoizedResultFunc.apply(null, params);
+      });
+      selector.resultFunc = resultFunc;
+
+      selector.recomputations = function () {
+        return recomputations;
+      };
+
+      selector.resetRecomputations = function () {
+        return recomputations = 0;
+      };
+
+      return selector;
+    };
+  }
+
+  var createSelector = exports.createSelector = createSelectorCreator(defaultMemoize);
+
+  function createStructuredSelector(selectors) {
+    var selectorCreator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : createSelector;
+
+    if (typeof selectors !== 'object') {
+      throw new Error('createStructuredSelector expects first argument to be an object ' + ('where each property is a selector, instead received a ' + typeof selectors));
+    }
+
+    var objectKeys = Object.keys(selectors);
+    return selectorCreator(objectKeys.map(function (key) {
+      return selectors[key];
+    }), function () {
+      for (var _len3 = arguments.length, values = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        values[_key3] = arguments[_key3];
+      }
+
+      return values.reduce(function (composition, value, index) {
+        composition[objectKeys[index]] = value;
+        return composition;
+      }, {});
+    });
+  }
+},376,[],"reselect/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -60052,7 +60207,11 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var _filePrice2 = babelHelpers.interopRequireDefault(_filePrice);
 
-  var _discover = require(_dependencyMap[6], "../../styles/discover");
+  var _nsfwOverlay = require(_dependencyMap[6], "../nsfwOverlay");
+
+  var _nsfwOverlay2 = babelHelpers.interopRequireDefault(_nsfwOverlay);
+
+  var _discover = require(_dependencyMap[7], "../../styles/discover");
 
   var _discover2 = babelHelpers.interopRequireDefault(_discover);
 
@@ -60097,7 +60256,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
             metadata = _props.metadata,
             isResolvingUri = _props.isResolvingUri,
             rewardedContentClaimIds = _props.rewardedContentClaimIds,
-            style = _props.style;
+            style = _props.style,
+            showNsfw = _props.showNsfw;
         var uri = (0, _lbryRedux.normalizeURI)(this.props.uri);
         var title = metadata && metadata.title ? metadata.title : uri;
         var thumbnail = metadata && metadata.thumbnail ? metadata.thumbnail : null;
@@ -60115,59 +60275,75 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
 
         return _react2.default.createElement(
-          _reactNative.TouchableOpacity,
+          _reactNative.View,
           {
             style: style,
-            onPress: function onPress() {
-              _this2.props.navigation.navigate('File', {
-                uri: uri
-              });
-            },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 57
+              lineNumber: 59
             }
           },
-          _react2.default.createElement(_fileItemMedia2.default, {
-            title: title,
-            thumbnail: thumbnail,
-            resizeMode: "cover",
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 61
-            }
-          }),
-          _react2.default.createElement(_filePrice2.default, {
-            uri: uri,
-            style: _discover2.default.filePriceContainer,
-            textStyle: _discover2.default.filePriceText,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 62
-            }
-          }),
           _react2.default.createElement(
-            _reactNative.Text,
+            _reactNative.TouchableOpacity,
             {
-              style: _discover2.default.fileItemName,
+              style: _discover2.default.container,
+              onPress: function onPress() {
+                _this2.props.navigation.navigate('File', {
+                  uri: uri
+                });
+              },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 63
+                lineNumber: 60
               }
             },
-            title
-          ),
-          channelName && _react2.default.createElement(
-            _reactNative.Text,
-            {
-              style: _discover2.default.channelName,
+            _react2.default.createElement(_fileItemMedia2.default, {
+              title: title,
+              thumbnail: thumbnail,
+              resizeMode: "cover",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 64
+              }
+            }),
+            _react2.default.createElement(_filePrice2.default, {
+              uri: uri,
+              style: _discover2.default.filePriceContainer,
+              textStyle: _discover2.default.filePriceText,
               __source: {
                 fileName: _jsxFileName,
                 lineNumber: 65
               }
-            },
-            channelName
-          )
+            }),
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _discover2.default.fileItemName,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 66
+                }
+              },
+              title
+            ),
+            channelName && _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _discover2.default.channelName,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 68
+                }
+              },
+              channelName
+            )
+          ),
+          !showNsfw && _react2.default.createElement(_nsfwOverlay2.default, {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 70
+            }
+          })
         );
       }
     }]);
@@ -60175,7 +60351,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }(_react2.default.PureComponent);
 
   exports.default = FileItem;
-},375,[12,62,376,66,449,452,454],"LBRYApp/src/component/fileItem/view.js");
+},377,[12,62,378,66,451,454,456,458],"LBRYApp/src/component/fileItem/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -60291,7 +60467,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
   };
-},376,[377,382,380,379,383,384,420,424,441,411,425,421,408,385,386,388,392,391,394,395,443,446,426,438,440,422,447,448],"react-navigation/src/react-navigation.js");
+},378,[379,384,382,381,385,386,422,426,443,413,427,423,410,387,388,390,394,393,396,397,445,448,428,440,442,424,449,450],"react-navigation/src/react-navigation.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -60573,7 +60749,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     NavigationContainer.navigationOptions = null;
     return NavigationContainer;
   }
-},377,[12,66,378,379,380,381],"react-navigation/src/createNavigationContainer.js");
+},379,[12,66,380,381,382,383],"react-navigation/src/createNavigationContainer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -60585,7 +60761,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var BackHandler = _reactNative.BackHandler || _reactNative.BackAndroid;
   exports.BackHandler = BackHandler;
   exports.MaskedViewIOS = _reactNative.MaskedViewIOS;
-},378,[66],"react-navigation/src/PlatformHelpers.native.js");
+},380,[66],"react-navigation/src/PlatformHelpers.native.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -60742,7 +60918,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     uri: uri,
     completeTransition: completeTransition
   };
-},379,[],"react-navigation/src/NavigationActions.js");
+},381,[],"react-navigation/src/NavigationActions.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -60829,7 +61005,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var _invariant = require(_dependencyMap[1], "./utils/invariant");
 
   var _invariant2 = babelHelpers.interopRequireDefault(_invariant);
-},380,[379,381],"react-navigation/src/addNavigationHelpers.js");
+},382,[381,383],"react-navigation/src/addNavigationHelpers.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -60866,7 +61042,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = invariant;
-},381,[],"react-navigation/src/utils/invariant.js");
+},383,[],"react-navigation/src/utils/invariant.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -60976,7 +61152,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
   };
   exports.default = StateUtils;
-},382,[381],"react-navigation/src/StateUtils.js");
+},384,[383],"react-navigation/src/StateUtils.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -61018,7 +61194,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return Navigator;
     };
   }
-},383,[12],"react-navigation/src/navigators/createNavigator.js");
+},385,[12],"react-navigation/src/navigators/createNavigator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -61096,7 +61272,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     });
     return (0, _createNavigationContainer2.default)(navigator);
   };
-},384,[12,377,383,385,411,379],"react-navigation/src/navigators/StackNavigator.js");
+},386,[12,379,385,387,413,381],"react-navigation/src/navigators/StackNavigator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -61200,7 +61376,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     mode: 'card'
   };
   exports.default = CardStackTransitioner;
-},385,[12,66,386,406,408,405],"react-navigation/src/views/CardStack/CardStackTransitioner.js");
+},387,[12,66,388,408,410,407],"react-navigation/src/views/CardStack/CardStackTransitioner.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -61720,14 +61896,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = CardStack;
-},386,[12,387,66,388,391,379,380,403,404,405,407],"react-navigation/src/views/CardStack/CardStack.js");
+},388,[12,389,66,390,393,381,382,405,406,407,409],"react-navigation/src/views/CardStack/CardStack.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   module.exports = clamp;
 
   function clamp(value, min, max) {
     return min < max ? value < min ? min : value > max ? max : value : value < max ? max : value > min ? min : value;
   }
-},387,[],"clamp/index.js");
+},389,[],"clamp/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -61797,7 +61973,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   Card = (0, _PointerEventsContainer2.default)(Card);
   exports.default = Card;
-},388,[12,66,389],"react-navigation/src/views/CardStack/Card.js");
+},390,[12,66,391],"react-navigation/src/views/CardStack/Card.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -61922,7 +62098,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return Container;
   }
-},389,[12,381,390],"react-navigation/src/views/CardStack/PointerEventsContainer.js");
+},391,[12,383,392],"react-navigation/src/views/CardStack/PointerEventsContainer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -61947,7 +62123,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }();
 
   exports.default = AnimatedValueSubscription;
-},390,[66],"react-navigation/src/views/AnimatedValueSubscription.js");
+},392,[66],"react-navigation/src/views/AnimatedValueSubscription.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -62596,7 +62772,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = (0, _withOrientation2.default)(Header);
-},391,[12,66,378,392,394,395,398,399,401,402],"react-navigation/src/views/Header/Header.js");
+},393,[12,66,380,394,396,397,400,401,403,404],"react-navigation/src/views/Header/Header.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -62954,7 +63130,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _withOrientation2.default)(SafeView);
-},392,[12,66,393],"react-native-safe-area-view/index.js");
+},394,[12,66,395],"react-native-safe-area-view/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -63035,7 +63211,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         height = _ref.height;
     return width > height;
   };
-},393,[12,66,30],"react-native-safe-area-view/withOrientation.js");
+},395,[12,66,30],"react-native-safe-area-view/withOrientation.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -63076,7 +63252,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = HeaderTitle;
-},394,[12,66],"react-navigation/src/views/Header/HeaderTitle.js");
+},396,[12,66],"react-navigation/src/views/Header/HeaderTitle.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -63234,7 +63410,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = HeaderBackButton;
-},395,[12,66,396,397],"react-navigation/src/views/Header/HeaderBackButton.js");
+},397,[12,66,398,399],"react-navigation/src/views/Header/HeaderBackButton.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -63308,7 +63484,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     pressColor: 'rgba(0, 0, 0, .32)'
   };
   exports.default = TouchableItem;
-},396,[12,66],"react-navigation/src/views/TouchableItem.js");
+},398,[12,66],"react-navigation/src/views/TouchableItem.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   module.exports = require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
@@ -63320,7 +63496,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     "name": "back-icon",
     "type": "png"
   });
-},397,[202],"node_modules/react-navigation/src/views/assets/back-icon.png");
+},399,[202],"node_modules/react-navigation/src/views/assets/back-icon.png");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -63491,7 +63667,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = ModularHeaderBackButton;
-},398,[12,66,396,397],"react-navigation/src/views/Header/ModularHeaderBackButton.js");
+},400,[12,66,398,399],"react-navigation/src/views/Header/ModularHeaderBackButton.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -63639,7 +63815,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     forCenter: forCenter,
     forRight: forRight
   };
-},399,[66,400],"react-navigation/src/views/Header/HeaderStyleInterpolator.js");
+},401,[66,402],"react-navigation/src/views/Header/HeaderStyleInterpolator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -63689,7 +63865,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = getSceneIndicesForInterpolationInputRange;
-},400,[],"react-navigation/src/utils/getSceneIndicesForInterpolationInputRange.js");
+},402,[],"react-navigation/src/utils/getSceneIndicesForInterpolationInputRange.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -63770,7 +63946,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         height = _ref.height;
     return width > height;
   };
-},401,[12,66,30],"react-navigation/src/views/withOrientation.js");
+},403,[12,66,30],"react-navigation/src/views/withOrientation.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   module.exports = require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
@@ -63782,7 +63958,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     "name": "back-icon-mask",
     "type": "png"
   });
-},402,[202],"node_modules/react-navigation/src/views/assets/back-icon-mask.png");
+},404,[202],"node_modules/react-navigation/src/views/assets/back-icon-mask.png");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -63916,7 +64092,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       };
     };
   }
-},403,[],"react-navigation/src/getChildEventSubscriber.js");
+},405,[],"react-navigation/src/getChildEventSubscriber.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -63970,7 +64146,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     navigation: _propTypes2.default.object.isRequired
   };
   exports.default = SceneView;
-},404,[12,24],"react-navigation/src/views/SceneView.js");
+},406,[12,24],"react-navigation/src/views/SceneView.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -64063,7 +64239,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     defaultTransitionConfig: defaultTransitionConfig,
     getTransitionConfig: getTransitionConfig
   };
-},405,[66,406,407],"react-navigation/src/views/CardStack/TransitionConfigs.js");
+},407,[66,408,409],"react-navigation/src/views/CardStack/TransitionConfigs.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -64235,7 +64411,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     forFade: forFade,
     canUseNativeDriver: canUseNativeDriver
   };
-},406,[66,400],"react-navigation/src/views/CardStack/CardStackStyleInterpolator.js");
+},408,[66,402],"react-navigation/src/views/CardStack/CardStackStyleInterpolator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -64256,7 +64432,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return false;
   };
-},407,[66],"react-navigation/src/utils/ReactNativeFeatures.js");
+},409,[66],"react-navigation/src/utils/ReactNativeFeatures.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -64539,7 +64715,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = Transitioner;
-},408,[12,66,381,409],"react-navigation/src/views/Transitioner.js");
+},410,[12,66,383,411],"react-navigation/src/views/Transitioner.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -64697,7 +64873,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return scenes;
   }
-},409,[381,410],"react-navigation/src/views/ScenesReducer.js");
+},411,[383,412],"react-navigation/src/views/ScenesReducer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -64737,7 +64913,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = shallowEqual;
-},410,[],"react-navigation/src/utils/shallowEqual.js");
+},412,[],"react-navigation/src/utils/shallowEqual.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -65304,7 +65480,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       getScreenConfig: _getScreenConfigDeprecated2.default
     };
   };
-},411,[412,379,414,415,382,417,418,381,419],"react-navigation/src/routers/StackRouter.js");
+},413,[414,381,416,417,384,419,420,383,421],"react-navigation/src/routers/StackRouter.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isarray = require(_dependencyMap[0], 'isarray');
 
@@ -65595,12 +65771,12 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return stringToRegexp(path, keys, options);
   }
-},412,[413],"path-to-regexp/index.js");
+},414,[415],"path-to-regexp/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   module.exports = Array.isArray || function (arr) {
     return Object.prototype.toString.call(arr) == '[object Array]';
   };
-},413,[],"isarray/index.js");
+},415,[],"isarray/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -65681,7 +65857,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return outputConfig;
     };
   };
-},414,[381,415,380,416,403],"react-navigation/src/routers/createConfigGetter.js");
+},416,[383,417,382,418,405],"react-navigation/src/routers/createConfigGetter.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -65713,7 +65889,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return routeConfig;
   }
-},415,[381],"react-navigation/src/routers/getScreenForRouteName.js");
+},417,[383],"react-navigation/src/routers/getScreenForRouteName.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -65742,7 +65918,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       })), ['}']).join('\n'));
     }
   };
-},416,[],"react-navigation/src/routers/validateScreenOptions.js");
+},418,[],"react-navigation/src/routers/validateScreenOptions.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -65778,7 +65954,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = validateRouteConfigMap;
-},417,[381],"react-navigation/src/routers/validateRouteConfigMap.js");
+},419,[383],"react-navigation/src/routers/validateRouteConfigMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -65791,7 +65967,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.default = function () {
     return (0, _invariant2.default)(false, '`getScreenConfig` has been replaced with `getScreenOptions`');
   };
-},418,[381],"react-navigation/src/routers/getScreenConfigDeprecated.js");
+},420,[383],"react-navigation/src/routers/getScreenConfigDeprecated.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -65809,7 +65985,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   function generateKey() {
     return uniqueBaseId + "-" + uuidCount++;
   }
-},419,[],"react-navigation/src/routers/KeyGenerator.js");
+},421,[],"react-navigation/src/routers/KeyGenerator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -65849,7 +66025,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     });
     return (0, _createNavigationContainer2.default)(navigator);
   };
-},420,[12,421,422,377,383],"react-navigation/src/navigators/SwitchNavigator.js");
+},422,[12,423,424,379,385],"react-navigation/src/navigators/SwitchNavigator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -66187,7 +66363,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       getScreenConfig: _getScreenConfigDeprecated2.default
     };
   };
-},421,[381,415,414,379,417,418],"react-navigation/src/routers/SwitchRouter.js");
+},423,[383,417,416,381,419,420],"react-navigation/src/routers/SwitchRouter.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -66236,7 +66412,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }(_react2.default.Component);
 
   exports.default = (0, _withCachedChildNavigation2.default)(SwitchContainer);
-},422,[12,404,423],"react-navigation/src/views/SwitchView/SwitchView.js");
+},424,[12,406,425],"react-navigation/src/views/SwitchView/SwitchView.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -66345,7 +66521,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return _class;
     }(_react2.default.PureComponent), _class.displayName = "withCachedChildNavigation(" + displayName + ")", _temp2;
   }
-},423,[12,380,403],"react-navigation/src/withCachedChildNavigation.js");
+},425,[12,382,405],"react-navigation/src/withCachedChildNavigation.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -66438,7 +66614,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     Default: _reactNative.Platform.OS === 'ios' ? Presets.iOSBottomTabs : Presets.AndroidTopTabs
   };
   exports.default = TabNavigator;
-},424,[12,66,383,377,425,426,438,440],"react-navigation/src/navigators/TabNavigator.js");
+},426,[12,66,385,379,427,428,440,442],"react-navigation/src/navigators/TabNavigator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -66756,7 +66932,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       getScreenConfig: _getScreenConfigDeprecated2.default
     };
   };
-},425,[381,415,414,379,417,418],"react-navigation/src/routers/TabRouter.js");
+},427,[383,417,416,381,419,420],"react-navigation/src/routers/TabRouter.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -66981,7 +67157,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       flex: 1
     }
   });
-},426,[12,66,427,392,437,423],"react-navigation/src/views/TabView/TabView.js");
+},428,[12,66,429,394,439,425],"react-navigation/src/views/TabView/TabView.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   module.exports = {
     get TabViewAnimated() {
@@ -67013,7 +67189,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
   };
-},427,[428,432,431,430,433,434,436],"react-native-tab-view/src/index.js");
+},429,[430,434,433,432,435,436,438],"react-native-tab-view/src/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -67252,7 +67428,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       overflow: 'hidden'
     }
   });
-},428,[12,24,66,429,430,431,432],"react-native-tab-view/src/TabViewAnimated.js");
+},430,[12,24,66,431,432,433,434],"react-native-tab-view/src/TabViewAnimated.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -67304,7 +67480,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     useNativeDriver: _propTypes2.default.bool,
     children: _propTypes2.default.node.isRequired
   };
-},429,[24,66],"react-native-tab-view/src/TabViewPropTypes.js");
+},431,[24,66],"react-native-tab-view/src/TabViewPropTypes.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -67466,7 +67642,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       overflow: 'hidden'
     }
   });
-},430,[12,66,429],"react-native-tab-view/src/TabViewPagerAndroid.js");
+},432,[12,66,431],"react-native-tab-view/src/TabViewPagerAndroid.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -67656,7 +67832,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       overflow: 'hidden'
     }
   });
-},431,[12,66,429],"react-native-tab-view/src/TabViewPagerScroll.js");
+},433,[12,66,431],"react-native-tab-view/src/TabViewPagerScroll.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -67887,7 +68063,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       alignItems: 'stretch'
     }
   });
-},432,[12,24,66,429],"react-native-tab-view/src/TabViewPagerPan.js");
+},434,[12,24,66,431],"react-native-tab-view/src/TabViewPagerPan.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -68097,7 +68273,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       alignItems: 'stretch'
     }
   });
-},433,[12,24,66,429],"react-native-tab-view/src/TabViewPagerExperimental.js");
+},435,[12,24,66,431],"react-native-tab-view/src/TabViewPagerExperimental.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -68678,7 +68854,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       height: 2
     }
   });
-},434,[12,24,66,435,429],"react-native-tab-view/src/TabBar.js");
+},436,[12,24,66,437,431],"react-native-tab-view/src/TabBar.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -68781,7 +68957,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     pressColor: 'rgba(255, 255, 255, .4)'
   };
   exports.default = TouchableItem;
-},435,[12,24,66],"react-native-tab-view/src/TouchableItem.js");
+},437,[12,24,66],"react-native-tab-view/src/TouchableItem.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -68823,7 +68999,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       });
     };
   }
-},436,[12],"react-native-tab-view/src/SceneMap.js");
+},438,[12],"react-native-tab-view/src/SceneMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -68977,7 +69153,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       top: FAR_FAR_AWAY
     }
   });
-},437,[12,66,24,404],"react-navigation/src/views/ResourceSavingSceneView.js");
+},439,[12,66,24,406],"react-navigation/src/views/ResourceSavingSceneView.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -69157,7 +69333,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       backgroundColor: 'transparent'
     }
   });
-},438,[12,66,427,439],"react-navigation/src/views/TabView/TabBarTop.js");
+},440,[12,66,429,441],"react-navigation/src/views/TabView/TabBarTop.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -69269,7 +69445,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       width: '100%'
     }
   });
-},439,[12,66],"react-navigation/src/views/TabView/TabBarIcon.js");
+},441,[12,66],"react-navigation/src/views/TabView/TabBarIcon.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -69663,7 +69839,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = (0, _withOrientation2.default)(TabBarBottom);
-},440,[12,66,392,439,379,401],"react-navigation/src/views/TabView/TabBarBottom.js");
+},442,[12,66,394,441,381,403],"react-navigation/src/views/TabView/TabBarBottom.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -69818,7 +69994,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = DrawerNavigator;
-},441,[12,66,392,383,377,425,442,443,446],"react-navigation/src/navigators/DrawerNavigator.js");
+},443,[12,66,394,385,379,427,444,445,448],"react-navigation/src/navigators/DrawerNavigator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -69873,7 +70049,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }(_react2.default.PureComponent);
 
   exports.default = (0, _withCachedChildNavigation2.default)(DrawerScreen);
-},442,[12,404,423],"react-navigation/src/views/Drawer/DrawerScreen.js");
+},444,[12,406,425],"react-navigation/src/views/Drawer/DrawerScreen.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70091,7 +70267,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }(_react2.default.PureComponent);
 
   exports.default = DrawerView;
-},443,[12,66,444,380,445,403],"react-navigation/src/views/Drawer/DrawerView.js");
+},445,[12,66,446,382,447,405],"react-navigation/src/views/Drawer/DrawerView.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70100,7 +70276,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var _reactNative = require(_dependencyMap[0], 'react-native');
 
   exports.default = _reactNative.DrawerLayoutAndroid;
-},444,[66],"react-native-drawer-layout-polyfill/dist/index.android.js");
+},446,[66],"react-native-drawer-layout-polyfill/dist/index.android.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70261,7 +70437,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       flex: 1
     }
   });
-},445,[12,66,392,423,379,381],"react-navigation/src/views/Drawer/DrawerSidebar.js");
+},447,[12,66,394,425,381,383],"react-navigation/src/views/Drawer/DrawerSidebar.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70424,7 +70600,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = DrawerNavigatorItems;
-},446,[12,66,392,396],"react-navigation/src/views/Drawer/DrawerNavigatorItems.js");
+},448,[12,66,394,398],"react-navigation/src/views/Drawer/DrawerNavigatorItems.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70476,7 +70652,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     };
     return (0, _hoistNonReactStatics2.default)(ComponentWithNavigation, Component);
   }
-},447,[12,24,30],"react-navigation/src/views/withNavigation.js");
+},449,[12,24,30],"react-navigation/src/views/withNavigation.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70575,7 +70751,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
     return (0, _hoistNonReactStatics2.default)(ComponentWithNavigationFocus, Component);
   }
-},448,[12,24,30,381],"react-navigation/src/views/withNavigationFocus.js");
+},450,[12,24,30,383],"react-navigation/src/views/withNavigationFocus.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70596,7 +70772,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},449,[22,450],"LBRYApp/src/component/fileItemMedia/index.js");
+},451,[22,452],"LBRYApp/src/component/fileItemMedia/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70684,7 +70860,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   FileItemMedia.AUTO_THUMB_STYLES = [_fileItemMedia2.default.autothumbPurple, _fileItemMedia2.default.autothumbRed, _fileItemMedia2.default.autothumbPink, _fileItemMedia2.default.autothumbIndigo, _fileItemMedia2.default.autothumbBlue, _fileItemMedia2.default.autothumbLightBlue, _fileItemMedia2.default.autothumbCyan, _fileItemMedia2.default.autothumbTeal, _fileItemMedia2.default.autothumbGreen, _fileItemMedia2.default.autothumbYellow, _fileItemMedia2.default.autothumbOrange];
   exports.default = FileItemMedia;
-},450,[12,66,451],"LBRYApp/src/component/fileItemMedia/view.js");
+},452,[12,66,453],"LBRYApp/src/component/fileItemMedia/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70751,7 +70927,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = fileItemMediaStyle;
-},451,[66],"LBRYApp/src/styles/fileItemMedia.js");
+},453,[66],"LBRYApp/src/styles/fileItemMedia.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70782,7 +70958,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},452,[22,62,453],"LBRYApp/src/component/filePrice/index.js");
+},454,[22,62,455],"LBRYApp/src/component/filePrice/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -70979,7 +71155,80 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }(_react2.default.PureComponent);
 
   exports.default = FilePrice;
-},453,[12,24,66,62],"LBRYApp/src/component/filePrice/view.js");
+},455,[12,24,66,62],"LBRYApp/src/component/filePrice/view.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactRedux = require(_dependencyMap[0], "react-redux");
+
+  var _view = require(_dependencyMap[1], "./view");
+
+  var _view2 = babelHelpers.interopRequireDefault(_view);
+
+  var perform = function perform(dispatch) {
+    return {};
+  };
+
+  exports.default = (0, _reactRedux.connect)(null, perform)(_view2.default);
+},456,[22,457],"LBRYApp/src/component/nsfwOverlay/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/home/akinwale/Dev/Python/lbry-android/app/src/component/nsfwOverlay/view.js";
+
+  var _react = require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _reactNative = require(_dependencyMap[1], "react-native");
+
+  var _discover = require(_dependencyMap[2], "../../styles/discover");
+
+  var _discover2 = babelHelpers.interopRequireDefault(_discover);
+
+  var NsfwOverlay = function (_React$PureComponent) {
+    babelHelpers.inherits(NsfwOverlay, _React$PureComponent);
+
+    function NsfwOverlay() {
+      babelHelpers.classCallCheck(this, NsfwOverlay);
+      return babelHelpers.possibleConstructorReturn(this, (NsfwOverlay.__proto__ || Object.getPrototypeOf(NsfwOverlay)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(NsfwOverlay, [{
+      key: "render",
+      value: function render() {
+        return _react2.default.createElement(
+          _reactNative.TouchableOpacity,
+          {
+            style: _discover2.default.overlay,
+            onPress: this.props.onPress,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 8
+            }
+          },
+          _react2.default.createElement(
+            _reactNative.Text,
+            {
+              style: _discover2.default.overlayText,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 9
+              }
+            },
+            "This content is Not Safe For Work. To view adult content, please change your Settings."
+          )
+        );
+      }
+    }]);
+    return NsfwOverlay;
+  }(_react2.default.PureComponent);
+
+  exports.default = NsfwOverlay;
+},457,[12,66,458],"LBRYApp/src/component/nsfwOverlay/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -71043,11 +71292,21 @@ __d(function (global, require, module, exports, _dependencyMap) {
     },
     drawerHamburger: {
       marginLeft: 8
+    },
+    overlay: {
+      flex: 1,
+      backgroundColor: 'rgba(128, 128, 128, 0.8)',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    overlayText: {
+      fontSize: 14,
+      textAlign: 'center'
     }
   });
 
   exports.default = discoverStyle;
-},454,[66],"LBRYApp/src/styles/discover.js");
+},458,[66],"LBRYApp/src/styles/discover.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -71069,7 +71328,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var TabBarItemIOS = exports.TabBarItemIOS = iconSet.TabBarItemIOS;
   var ToolbarAndroid = exports.ToolbarAndroid = iconSet.ToolbarAndroid;
   var getImageSource = exports.getImageSource = iconSet.getImageSource;
-},455,[456,608],"react-native-vector-icons/Feather.js");
+},459,[460,612],"react-native-vector-icons/Feather.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -71276,7 +71535,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     Icon.loadFont = loadFont;
     return Icon;
   }
-},456,[12,24,457,458,593,607],"react-native-vector-icons/lib/create-icon-set.js");
+},460,[12,24,461,462,597,611],"react-native-vector-icons/lib/create-icon-set.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -71293,7 +71552,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
     });
   });
-},457,[66],"react-native-vector-icons/lib/react-native.js");
+},461,[66],"react-native-vector-icons/lib/react-native.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -71426,7 +71685,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       size: 20
     }, _temp;
   }
-},458,[459,461,586,12,24,457],"react-native-vector-icons/lib/icon-button.js");
+},462,[463,465,590,12,24,461],"react-native-vector-icons/lib/icon-button.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var baseGetTag = require(_dependencyMap[0], './_baseGetTag'),
         isArray = require(_dependencyMap[1], './isArray'),
@@ -71439,11 +71698,11 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     module.exports = isString;
-},459,[39,460,47],"lodash/isString.js");
+},463,[39,464,47],"lodash/isString.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isArray = Array.isArray;
   module.exports = isArray;
-},460,[],"lodash/isArray.js");
+},464,[],"lodash/isArray.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var arrayMap = require(_dependencyMap[0], './_arrayMap'),
       baseClone = require(_dependencyMap[1], './_baseClone'),
@@ -71485,7 +71744,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     return result;
   });
   module.exports = omit;
-},461,[462,463,560,561,507,574,575,540],"lodash/omit.js");
+},465,[466,467,564,565,511,578,579,544],"lodash/omit.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function arrayMap(array, iteratee) {
     var index = -1,
@@ -71500,7 +71759,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = arrayMap;
-},462,[],"lodash/_arrayMap.js");
+},466,[],"lodash/_arrayMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var Stack = require(_dependencyMap[0], './_Stack'),
       arrayEach = require(_dependencyMap[1], './_arrayEach'),
@@ -71643,7 +71902,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseClone;
-},463,[464,502,503,506,525,529,530,531,535,538,540,541,546,547,554,460,513,556,482,558,508],"lodash/_baseClone.js");
+},467,[468,506,507,510,529,533,534,535,539,542,544,545,550,551,558,464,517,560,486,562,512],"lodash/_baseClone.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var ListCache = require(_dependencyMap[0], './_ListCache'),
       stackClear = require(_dependencyMap[1], './_stackClear'),
@@ -71663,7 +71922,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   Stack.prototype.has = stackHas;
   Stack.prototype.set = stackSet;
   module.exports = Stack;
-},464,[465,473,474,475,476,477],"lodash/_Stack.js");
+},468,[469,477,478,479,480,481],"lodash/_Stack.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var listCacheClear = require(_dependencyMap[0], './_listCacheClear'),
         listCacheDelete = require(_dependencyMap[1], './_listCacheDelete'),
@@ -71688,7 +71947,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     ListCache.prototype.has = listCacheHas;
     ListCache.prototype.set = listCacheSet;
     module.exports = ListCache;
-},465,[466,467,470,471,472],"lodash/_ListCache.js");
+},469,[470,471,474,475,476],"lodash/_ListCache.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function listCacheClear() {
     this.__data__ = [];
@@ -71696,7 +71955,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = listCacheClear;
-},466,[],"lodash/_listCacheClear.js");
+},470,[],"lodash/_listCacheClear.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var assocIndexOf = require(_dependencyMap[0], './_assocIndexOf');
 
@@ -71724,7 +71983,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = listCacheDelete;
-},467,[468],"lodash/_listCacheDelete.js");
+},471,[472],"lodash/_listCacheDelete.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var eq = require(_dependencyMap[0], './eq');
 
@@ -71741,14 +72000,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = assocIndexOf;
-},468,[469],"lodash/_assocIndexOf.js");
+},472,[473],"lodash/_assocIndexOf.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function eq(value, other) {
     return value === other || value !== value && other !== other;
   }
 
   module.exports = eq;
-},469,[],"lodash/eq.js");
+},473,[],"lodash/eq.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var assocIndexOf = require(_dependencyMap[0], './_assocIndexOf');
 
@@ -71759,7 +72018,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = listCacheGet;
-},470,[468],"lodash/_listCacheGet.js");
+},474,[472],"lodash/_listCacheGet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var assocIndexOf = require(_dependencyMap[0], './_assocIndexOf');
 
@@ -71768,7 +72027,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = listCacheHas;
-},471,[468],"lodash/_listCacheHas.js");
+},475,[472],"lodash/_listCacheHas.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var assocIndexOf = require(_dependencyMap[0], './_assocIndexOf');
 
@@ -71787,7 +72046,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = listCacheSet;
-},472,[468],"lodash/_listCacheSet.js");
+},476,[472],"lodash/_listCacheSet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var ListCache = require(_dependencyMap[0], './_ListCache');
 
@@ -71797,7 +72056,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = stackClear;
-},473,[465],"lodash/_stackClear.js");
+},477,[469],"lodash/_stackClear.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function stackDelete(key) {
     var data = this.__data__,
@@ -71807,21 +72066,21 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = stackDelete;
-},474,[],"lodash/_stackDelete.js");
+},478,[],"lodash/_stackDelete.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function stackGet(key) {
     return this.__data__.get(key);
   }
 
   module.exports = stackGet;
-},475,[],"lodash/_stackGet.js");
+},479,[],"lodash/_stackGet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function stackHas(key) {
     return this.__data__.has(key);
   }
 
   module.exports = stackHas;
-},476,[],"lodash/_stackHas.js");
+},480,[],"lodash/_stackHas.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var ListCache = require(_dependencyMap[0], './_ListCache'),
       Map = require(_dependencyMap[1], './_Map'),
@@ -71850,14 +72109,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = stackSet;
-},477,[465,478,487],"lodash/_stackSet.js");
+},481,[469,482,491],"lodash/_stackSet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var getNative = require(_dependencyMap[0], './_getNative'),
         root = require(_dependencyMap[1], './_root');
 
     var Map = getNative(root, 'Map');
     module.exports = Map;
-},478,[479,41],"lodash/_Map.js");
+},482,[483,41],"lodash/_Map.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseIsNative = require(_dependencyMap[0], './_baseIsNative'),
       getValue = require(_dependencyMap[1], './_getValue');
@@ -71868,7 +72127,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = getNative;
-},479,[480,486],"lodash/_getNative.js");
+},483,[484,490],"lodash/_getNative.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isFunction = require(_dependencyMap[0], './isFunction'),
       isMasked = require(_dependencyMap[1], './_isMasked'),
@@ -71893,7 +72152,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseIsNative;
-},480,[481,483,482,485],"lodash/_baseIsNative.js");
+},484,[485,487,486,489],"lodash/_baseIsNative.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var baseGetTag = require(_dependencyMap[0], './_baseGetTag'),
         isObject = require(_dependencyMap[1], './isObject');
@@ -71913,7 +72172,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     module.exports = isFunction;
-},481,[39,482],"lodash/isFunction.js");
+},485,[39,486],"lodash/isFunction.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function isObject(value) {
     var type = typeof value;
@@ -71921,7 +72180,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isObject;
-},482,[],"lodash/isObject.js");
+},486,[],"lodash/isObject.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var coreJsData = require(_dependencyMap[0], './_coreJsData');
 
@@ -71935,13 +72194,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isMasked;
-},483,[484],"lodash/_isMasked.js");
+},487,[488],"lodash/_isMasked.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var root = require(_dependencyMap[0], './_root');
 
   var coreJsData = root['__core-js_shared__'];
   module.exports = coreJsData;
-},484,[41],"lodash/_coreJsData.js");
+},488,[41],"lodash/_coreJsData.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var funcProto = Function.prototype;
   var funcToString = funcProto.toString;
@@ -71961,14 +72220,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = toSource;
-},485,[],"lodash/_toSource.js");
+},489,[],"lodash/_toSource.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function getValue(object, key) {
     return object == null ? undefined : object[key];
   }
 
   module.exports = getValue;
-},486,[],"lodash/_getValue.js");
+},490,[],"lodash/_getValue.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var mapCacheClear = require(_dependencyMap[0], './_mapCacheClear'),
         mapCacheDelete = require(_dependencyMap[1], './_mapCacheDelete'),
@@ -71993,7 +72252,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     MapCache.prototype.has = mapCacheHas;
     MapCache.prototype.set = mapCacheSet;
     module.exports = MapCache;
-},487,[488,496,499,500,501],"lodash/_MapCache.js");
+},491,[492,500,503,504,505],"lodash/_MapCache.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var Hash = require(_dependencyMap[0], './_Hash'),
       ListCache = require(_dependencyMap[1], './_ListCache'),
@@ -72009,7 +72268,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = mapCacheClear;
-},488,[489,465,478],"lodash/_mapCacheClear.js");
+},492,[493,469,482],"lodash/_mapCacheClear.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var hashClear = require(_dependencyMap[0], './_hashClear'),
         hashDelete = require(_dependencyMap[1], './_hashDelete'),
@@ -72034,7 +72293,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     Hash.prototype.has = hashHas;
     Hash.prototype.set = hashSet;
     module.exports = Hash;
-},489,[490,492,493,494,495],"lodash/_Hash.js");
+},493,[494,496,497,498,499],"lodash/_Hash.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var nativeCreate = require(_dependencyMap[0], './_nativeCreate');
 
@@ -72044,13 +72303,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = hashClear;
-},490,[491],"lodash/_hashClear.js");
+},494,[495],"lodash/_hashClear.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var getNative = require(_dependencyMap[0], './_getNative');
 
   var nativeCreate = getNative(Object, 'create');
   module.exports = nativeCreate;
-},491,[479],"lodash/_nativeCreate.js");
+},495,[483],"lodash/_nativeCreate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function hashDelete(key) {
     var result = this.has(key) && delete this.__data__[key];
@@ -72059,7 +72318,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = hashDelete;
-},492,[],"lodash/_hashDelete.js");
+},496,[],"lodash/_hashDelete.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var nativeCreate = require(_dependencyMap[0], './_nativeCreate');
 
@@ -72079,7 +72338,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = hashGet;
-},493,[491],"lodash/_hashGet.js");
+},497,[495],"lodash/_hashGet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var nativeCreate = require(_dependencyMap[0], './_nativeCreate');
 
@@ -72092,7 +72351,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = hashHas;
-},494,[491],"lodash/_hashHas.js");
+},498,[495],"lodash/_hashHas.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var nativeCreate = require(_dependencyMap[0], './_nativeCreate');
 
@@ -72106,7 +72365,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = hashSet;
-},495,[491],"lodash/_hashSet.js");
+},499,[495],"lodash/_hashSet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var getMapData = require(_dependencyMap[0], './_getMapData');
 
@@ -72117,7 +72376,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = mapCacheDelete;
-},496,[497],"lodash/_mapCacheDelete.js");
+},500,[501],"lodash/_mapCacheDelete.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isKeyable = require(_dependencyMap[0], './_isKeyable');
 
@@ -72127,7 +72386,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = getMapData;
-},497,[498],"lodash/_getMapData.js");
+},501,[502],"lodash/_getMapData.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function isKeyable(value) {
     var type = typeof value;
@@ -72135,7 +72394,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isKeyable;
-},498,[],"lodash/_isKeyable.js");
+},502,[],"lodash/_isKeyable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var getMapData = require(_dependencyMap[0], './_getMapData');
 
@@ -72144,7 +72403,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = mapCacheGet;
-},499,[497],"lodash/_mapCacheGet.js");
+},503,[501],"lodash/_mapCacheGet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var getMapData = require(_dependencyMap[0], './_getMapData');
 
@@ -72153,7 +72412,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = mapCacheHas;
-},500,[497],"lodash/_mapCacheHas.js");
+},504,[501],"lodash/_mapCacheHas.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var getMapData = require(_dependencyMap[0], './_getMapData');
 
@@ -72166,7 +72425,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = mapCacheSet;
-},501,[497],"lodash/_mapCacheSet.js");
+},505,[501],"lodash/_mapCacheSet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function arrayEach(array, iteratee) {
     var index = -1,
@@ -72182,7 +72441,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = arrayEach;
-},502,[],"lodash/_arrayEach.js");
+},506,[],"lodash/_arrayEach.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseAssignValue = require(_dependencyMap[0], './_baseAssignValue'),
       eq = require(_dependencyMap[1], './eq');
@@ -72199,7 +72458,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = assignValue;
-},503,[504,469],"lodash/_assignValue.js");
+},507,[508,473],"lodash/_assignValue.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var defineProperty = require(_dependencyMap[0], './_defineProperty');
 
@@ -72217,7 +72476,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseAssignValue;
-},504,[505],"lodash/_baseAssignValue.js");
+},508,[509],"lodash/_baseAssignValue.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var getNative = require(_dependencyMap[0], './_getNative');
 
@@ -72230,7 +72489,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }();
 
   module.exports = defineProperty;
-},505,[479],"lodash/_defineProperty.js");
+},509,[483],"lodash/_defineProperty.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var copyObject = require(_dependencyMap[0], './_copyObject'),
       keys = require(_dependencyMap[1], './keys');
@@ -72240,7 +72499,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseAssign;
-},506,[507,508],"lodash/_baseAssign.js");
+},510,[511,512],"lodash/_baseAssign.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var assignValue = require(_dependencyMap[0], './_assignValue'),
       baseAssignValue = require(_dependencyMap[1], './_baseAssignValue');
@@ -72270,7 +72529,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = copyObject;
-},507,[503,504],"lodash/_copyObject.js");
+},511,[507,508],"lodash/_copyObject.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var arrayLikeKeys = require(_dependencyMap[0], './_arrayLikeKeys'),
       baseKeys = require(_dependencyMap[1], './_baseKeys'),
@@ -72281,7 +72540,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = keys;
-},508,[509,521,524],"lodash/keys.js");
+},512,[513,525,528],"lodash/keys.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseTimes = require(_dependencyMap[0], './_baseTimes'),
       isArguments = require(_dependencyMap[1], './isArguments'),
@@ -72312,7 +72571,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = arrayLikeKeys;
-},509,[510,511,460,513,515,516],"lodash/_arrayLikeKeys.js");
+},513,[514,515,464,517,519,520],"lodash/_arrayLikeKeys.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function baseTimes(n, iteratee) {
     var index = -1,
@@ -72326,7 +72585,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseTimes;
-},510,[],"lodash/_baseTimes.js");
+},514,[],"lodash/_baseTimes.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var baseIsArguments = require(_dependencyMap[0], './_baseIsArguments'),
         isObjectLike = require(_dependencyMap[1], './isObjectLike');
@@ -72340,7 +72599,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         return isObjectLike(value) && hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
     };
     module.exports = isArguments;
-},511,[512,47],"lodash/isArguments.js");
+},515,[516,47],"lodash/isArguments.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseGetTag = require(_dependencyMap[0], './_baseGetTag'),
       isObjectLike = require(_dependencyMap[1], './isObjectLike');
@@ -72352,7 +72611,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseIsArguments;
-},512,[39,47],"lodash/_baseIsArguments.js");
+},516,[39,47],"lodash/_baseIsArguments.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var root = require(_dependencyMap[0], './_root'),
       stubFalse = require(_dependencyMap[1], './stubFalse');
@@ -72364,14 +72623,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
   var isBuffer = nativeIsBuffer || stubFalse;
   module.exports = isBuffer;
-},513,[41,514],"lodash/isBuffer.js");
+},517,[41,518],"lodash/isBuffer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function stubFalse() {
     return false;
   }
 
   module.exports = stubFalse;
-},514,[],"lodash/stubFalse.js");
+},518,[],"lodash/stubFalse.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MAX_SAFE_INTEGER = 9007199254740991;
   var reIsUint = /^(?:0|[1-9]\d*)$/;
@@ -72383,7 +72642,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isIndex;
-},515,[],"lodash/_isIndex.js");
+},519,[],"lodash/_isIndex.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseIsTypedArray = require(_dependencyMap[0], './_baseIsTypedArray'),
       baseUnary = require(_dependencyMap[1], './_baseUnary'),
@@ -72392,7 +72651,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
   var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
   module.exports = isTypedArray;
-},516,[517,519,520],"lodash/isTypedArray.js");
+},520,[521,523,524],"lodash/isTypedArray.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var baseGetTag = require(_dependencyMap[0], './_baseGetTag'),
         isLength = require(_dependencyMap[1], './isLength'),
@@ -72431,7 +72690,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     module.exports = baseIsTypedArray;
-},517,[39,518,47],"lodash/_baseIsTypedArray.js");
+},521,[39,522,47],"lodash/_baseIsTypedArray.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MAX_SAFE_INTEGER = 9007199254740991;
 
@@ -72440,7 +72699,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isLength;
-},518,[],"lodash/isLength.js");
+},522,[],"lodash/isLength.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function baseUnary(func) {
     return function (value) {
@@ -72449,7 +72708,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseUnary;
-},519,[],"lodash/_baseUnary.js");
+},523,[],"lodash/_baseUnary.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var freeGlobal = require(_dependencyMap[0], './_freeGlobal');
 
@@ -72465,7 +72724,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }();
 
   module.exports = nodeUtil;
-},520,[42],"lodash/_nodeUtil.js");
+},524,[42],"lodash/_nodeUtil.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isPrototype = require(_dependencyMap[0], './_isPrototype'),
       nativeKeys = require(_dependencyMap[1], './_nativeKeys');
@@ -72490,7 +72749,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseKeys;
-},521,[522,523],"lodash/_baseKeys.js");
+},525,[526,527],"lodash/_baseKeys.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var objectProto = Object.prototype;
 
@@ -72501,13 +72760,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isPrototype;
-},522,[],"lodash/_isPrototype.js");
+},526,[],"lodash/_isPrototype.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var overArg = require(_dependencyMap[0], './_overArg');
 
   var nativeKeys = overArg(Object.keys, Object);
   module.exports = nativeKeys;
-},523,[46],"lodash/_nativeKeys.js");
+},527,[46],"lodash/_nativeKeys.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isFunction = require(_dependencyMap[0], './isFunction'),
       isLength = require(_dependencyMap[1], './isLength');
@@ -72517,7 +72776,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isArrayLike;
-},524,[481,518],"lodash/isArrayLike.js");
+},528,[485,522],"lodash/isArrayLike.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var copyObject = require(_dependencyMap[0], './_copyObject'),
       keysIn = require(_dependencyMap[1], './keysIn');
@@ -72527,7 +72786,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseAssignIn;
-},525,[507,526],"lodash/_baseAssignIn.js");
+},529,[511,530],"lodash/_baseAssignIn.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var arrayLikeKeys = require(_dependencyMap[0], './_arrayLikeKeys'),
       baseKeysIn = require(_dependencyMap[1], './_baseKeysIn'),
@@ -72538,7 +72797,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = keysIn;
-},526,[509,527,524],"lodash/keysIn.js");
+},530,[513,531,528],"lodash/keysIn.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isObject = require(_dependencyMap[0], './isObject'),
       isPrototype = require(_dependencyMap[1], './_isPrototype'),
@@ -72565,7 +72824,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseKeysIn;
-},527,[482,522,528],"lodash/_baseKeysIn.js");
+},531,[486,526,532],"lodash/_baseKeysIn.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function nativeKeysIn(object) {
     var result = [];
@@ -72580,7 +72839,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = nativeKeysIn;
-},528,[],"lodash/_nativeKeysIn.js");
+},532,[],"lodash/_nativeKeysIn.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var root = require(_dependencyMap[0], './_root');
 
@@ -72602,7 +72861,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = cloneBuffer;
-},529,[41],"lodash/_cloneBuffer.js");
+},533,[41],"lodash/_cloneBuffer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function copyArray(source, array) {
     var index = -1,
@@ -72617,7 +72876,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = copyArray;
-},530,[],"lodash/_copyArray.js");
+},534,[],"lodash/_copyArray.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var copyObject = require(_dependencyMap[0], './_copyObject'),
       getSymbols = require(_dependencyMap[1], './_getSymbols');
@@ -72627,7 +72886,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = copySymbols;
-},531,[507,532],"lodash/_copySymbols.js");
+},535,[511,536],"lodash/_copySymbols.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var arrayFilter = require(_dependencyMap[0], './_arrayFilter'),
       stubArray = require(_dependencyMap[1], './stubArray');
@@ -72646,7 +72905,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     });
   };
   module.exports = getSymbols;
-},532,[533,534],"lodash/_getSymbols.js");
+},536,[537,538],"lodash/_getSymbols.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function arrayFilter(array, predicate) {
     var index = -1,
@@ -72666,14 +72925,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = arrayFilter;
-},533,[],"lodash/_arrayFilter.js");
+},537,[],"lodash/_arrayFilter.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function stubArray() {
     return [];
   }
 
   module.exports = stubArray;
-},534,[],"lodash/stubArray.js");
+},538,[],"lodash/stubArray.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var copyObject = require(_dependencyMap[0], './_copyObject'),
       getSymbolsIn = require(_dependencyMap[1], './_getSymbolsIn');
@@ -72683,7 +72942,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = copySymbolsIn;
-},535,[507,536],"lodash/_copySymbolsIn.js");
+},539,[511,540],"lodash/_copySymbolsIn.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var arrayPush = require(_dependencyMap[0], './_arrayPush'),
       getPrototype = require(_dependencyMap[1], './_getPrototype'),
@@ -72702,7 +72961,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     return result;
   };
   module.exports = getSymbolsIn;
-},536,[537,45,532,534],"lodash/_getSymbolsIn.js");
+},540,[541,45,536,538],"lodash/_getSymbolsIn.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function arrayPush(array, values) {
     var index = -1,
@@ -72717,7 +72976,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = arrayPush;
-},537,[],"lodash/_arrayPush.js");
+},541,[],"lodash/_arrayPush.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseGetAllKeys = require(_dependencyMap[0], './_baseGetAllKeys'),
       getSymbols = require(_dependencyMap[1], './_getSymbols'),
@@ -72728,7 +72987,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = getAllKeys;
-},538,[539,532,508],"lodash/_getAllKeys.js");
+},542,[543,536,512],"lodash/_getAllKeys.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var arrayPush = require(_dependencyMap[0], './_arrayPush'),
       isArray = require(_dependencyMap[1], './isArray');
@@ -72739,7 +72998,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseGetAllKeys;
-},539,[537,460],"lodash/_baseGetAllKeys.js");
+},543,[541,464],"lodash/_baseGetAllKeys.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseGetAllKeys = require(_dependencyMap[0], './_baseGetAllKeys'),
       getSymbolsIn = require(_dependencyMap[1], './_getSymbolsIn'),
@@ -72750,7 +73009,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = getAllKeysIn;
-},540,[539,536,526],"lodash/_getAllKeysIn.js");
+},544,[543,540,530],"lodash/_getAllKeysIn.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var DataView = require(_dependencyMap[0], './_DataView'),
         Map = require(_dependencyMap[1], './_Map'),
@@ -72803,35 +73062,35 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     module.exports = getTag;
-},541,[542,478,543,544,545,39,485],"lodash/_getTag.js");
+},545,[546,482,547,548,549,39,489],"lodash/_getTag.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var getNative = require(_dependencyMap[0], './_getNative'),
         root = require(_dependencyMap[1], './_root');
 
     var DataView = getNative(root, 'DataView');
     module.exports = DataView;
-},542,[479,41],"lodash/_DataView.js");
+},546,[483,41],"lodash/_DataView.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var getNative = require(_dependencyMap[0], './_getNative'),
         root = require(_dependencyMap[1], './_root');
 
     var Promise = getNative(root, 'Promise');
     module.exports = Promise;
-},543,[479,41],"lodash/_Promise.js");
+},547,[483,41],"lodash/_Promise.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var getNative = require(_dependencyMap[0], './_getNative'),
         root = require(_dependencyMap[1], './_root');
 
     var Set = getNative(root, 'Set');
     module.exports = Set;
-},544,[479,41],"lodash/_Set.js");
+},548,[483,41],"lodash/_Set.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var getNative = require(_dependencyMap[0], './_getNative'),
         root = require(_dependencyMap[1], './_root');
 
     var WeakMap = getNative(root, 'WeakMap');
     module.exports = WeakMap;
-},545,[479,41],"lodash/_WeakMap.js");
+},549,[483,41],"lodash/_WeakMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var objectProto = Object.prototype;
   var hasOwnProperty = objectProto.hasOwnProperty;
@@ -72849,7 +73108,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = initCloneArray;
-},546,[],"lodash/_initCloneArray.js");
+},550,[],"lodash/_initCloneArray.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var cloneArrayBuffer = require(_dependencyMap[0], './_cloneArrayBuffer'),
       cloneDataView = require(_dependencyMap[1], './_cloneDataView'),
@@ -72921,7 +73180,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = initCloneByTag;
-},547,[548,550,551,552,553],"lodash/_initCloneByTag.js");
+},551,[552,554,555,556,557],"lodash/_initCloneByTag.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var Uint8Array = require(_dependencyMap[0], './_Uint8Array');
 
@@ -72932,13 +73191,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = cloneArrayBuffer;
-},548,[549],"lodash/_cloneArrayBuffer.js");
+},552,[553],"lodash/_cloneArrayBuffer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var root = require(_dependencyMap[0], './_root');
 
   var Uint8Array = root.Uint8Array;
   module.exports = Uint8Array;
-},549,[41],"lodash/_Uint8Array.js");
+},553,[41],"lodash/_Uint8Array.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var cloneArrayBuffer = require(_dependencyMap[0], './_cloneArrayBuffer');
 
@@ -72948,7 +73207,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = cloneDataView;
-},550,[548],"lodash/_cloneDataView.js");
+},554,[552],"lodash/_cloneDataView.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var reFlags = /\w*$/;
 
@@ -72959,7 +73218,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = cloneRegExp;
-},551,[],"lodash/_cloneRegExp.js");
+},555,[],"lodash/_cloneRegExp.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var Symbol = require(_dependencyMap[0], './_Symbol');
 
@@ -72971,7 +73230,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = cloneSymbol;
-},552,[40],"lodash/_cloneSymbol.js");
+},556,[40],"lodash/_cloneSymbol.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var cloneArrayBuffer = require(_dependencyMap[0], './_cloneArrayBuffer');
 
@@ -72981,7 +73240,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = cloneTypedArray;
-},553,[548],"lodash/_cloneTypedArray.js");
+},557,[552],"lodash/_cloneTypedArray.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var baseCreate = require(_dependencyMap[0], './_baseCreate'),
         getPrototype = require(_dependencyMap[1], './_getPrototype'),
@@ -72992,7 +73251,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     module.exports = initCloneObject;
-},554,[555,45,522],"lodash/_initCloneObject.js");
+},558,[559,45,526],"lodash/_initCloneObject.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isObject = require(_dependencyMap[0], './isObject');
 
@@ -73018,7 +73277,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }();
 
   module.exports = baseCreate;
-},555,[482],"lodash/_baseCreate.js");
+},559,[486],"lodash/_baseCreate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseIsMap = require(_dependencyMap[0], './_baseIsMap'),
       baseUnary = require(_dependencyMap[1], './_baseUnary'),
@@ -73027,7 +73286,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var nodeIsMap = nodeUtil && nodeUtil.isMap;
   var isMap = nodeIsMap ? baseUnary(nodeIsMap) : baseIsMap;
   module.exports = isMap;
-},556,[557,519,520],"lodash/isMap.js");
+},560,[561,523,524],"lodash/isMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var getTag = require(_dependencyMap[0], './_getTag'),
       isObjectLike = require(_dependencyMap[1], './isObjectLike');
@@ -73039,7 +73298,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseIsMap;
-},557,[541,47],"lodash/_baseIsMap.js");
+},561,[545,47],"lodash/_baseIsMap.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseIsSet = require(_dependencyMap[0], './_baseIsSet'),
       baseUnary = require(_dependencyMap[1], './_baseUnary'),
@@ -73048,7 +73307,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var nodeIsSet = nodeUtil && nodeUtil.isSet;
   var isSet = nodeIsSet ? baseUnary(nodeIsSet) : baseIsSet;
   module.exports = isSet;
-},558,[559,519,520],"lodash/isSet.js");
+},562,[563,523,524],"lodash/isSet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var getTag = require(_dependencyMap[0], './_getTag'),
       isObjectLike = require(_dependencyMap[1], './isObjectLike');
@@ -73060,7 +73319,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseIsSet;
-},559,[541,47],"lodash/_baseIsSet.js");
+},563,[545,47],"lodash/_baseIsSet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var castPath = require(_dependencyMap[0], './_castPath'),
       last = require(_dependencyMap[1], './last'),
@@ -73074,7 +73333,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseUnset;
-},560,[561,569,570,572],"lodash/_baseUnset.js");
+},564,[565,573,574,576],"lodash/_baseUnset.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isArray = require(_dependencyMap[0], './isArray'),
       isKey = require(_dependencyMap[1], './_isKey'),
@@ -73090,7 +73349,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = castPath;
-},561,[460,562,564,567],"lodash/_castPath.js");
+},565,[464,566,568,571],"lodash/_castPath.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isArray = require(_dependencyMap[0], './isArray'),
       isSymbol = require(_dependencyMap[1], './isSymbol');
@@ -73113,7 +73372,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isKey;
-},562,[460,563],"lodash/_isKey.js");
+},566,[464,567],"lodash/_isKey.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var baseGetTag = require(_dependencyMap[0], './_baseGetTag'),
         isObjectLike = require(_dependencyMap[1], './isObjectLike');
@@ -73125,7 +73384,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     module.exports = isSymbol;
-},563,[39,47],"lodash/isSymbol.js");
+},567,[39,47],"lodash/isSymbol.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var memoizeCapped = require(_dependencyMap[0], './_memoizeCapped');
 
@@ -73144,7 +73403,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     return result;
   });
   module.exports = stringToPath;
-},564,[565],"lodash/_stringToPath.js");
+},568,[569],"lodash/_stringToPath.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var memoize = require(_dependencyMap[0], './memoize');
 
@@ -73163,7 +73422,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = memoizeCapped;
-},565,[566],"lodash/_memoizeCapped.js");
+},569,[570],"lodash/_memoizeCapped.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MapCache = require(_dependencyMap[0], './_MapCache');
 
@@ -73194,7 +73453,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   memoize.Cache = MapCache;
   module.exports = memoize;
-},566,[487],"lodash/memoize.js");
+},570,[491],"lodash/memoize.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseToString = require(_dependencyMap[0], './_baseToString');
 
@@ -73203,7 +73462,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = toString;
-},567,[568],"lodash/toString.js");
+},571,[572],"lodash/toString.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var Symbol = require(_dependencyMap[0], './_Symbol'),
       arrayMap = require(_dependencyMap[1], './_arrayMap'),
@@ -73232,7 +73491,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseToString;
-},568,[40,462,460,563],"lodash/_baseToString.js");
+},572,[40,466,464,567],"lodash/_baseToString.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function last(array) {
     var length = array == null ? 0 : array.length;
@@ -73240,7 +73499,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = last;
-},569,[],"lodash/last.js");
+},573,[],"lodash/last.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseGet = require(_dependencyMap[0], './_baseGet'),
       baseSlice = require(_dependencyMap[1], './_baseSlice');
@@ -73250,7 +73509,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = parent;
-},570,[571,573],"lodash/_parent.js");
+},574,[575,577],"lodash/_parent.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var castPath = require(_dependencyMap[0], './_castPath'),
       toKey = require(_dependencyMap[1], './_toKey');
@@ -73268,7 +73527,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseGet;
-},571,[561,572],"lodash/_baseGet.js");
+},575,[565,576],"lodash/_baseGet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isSymbol = require(_dependencyMap[0], './isSymbol');
 
@@ -73284,7 +73543,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = toKey;
-},572,[563],"lodash/_toKey.js");
+},576,[567],"lodash/_toKey.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function baseSlice(array, start, end) {
     var index = -1,
@@ -73312,7 +73571,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseSlice;
-},573,[],"lodash/_baseSlice.js");
+},577,[],"lodash/_baseSlice.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var isPlainObject = require(_dependencyMap[0], './isPlainObject');
 
@@ -73321,7 +73580,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = customOmitClone;
-},574,[38],"lodash/_customOmitClone.js");
+},578,[38],"lodash/_customOmitClone.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var flatten = require(_dependencyMap[0], './flatten'),
       overRest = require(_dependencyMap[1], './_overRest'),
@@ -73332,7 +73591,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = flatRest;
-},575,[576,579,581],"lodash/_flatRest.js");
+},579,[580,583,585],"lodash/_flatRest.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseFlatten = require(_dependencyMap[0], './_baseFlatten');
 
@@ -73342,7 +73601,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = flatten;
-},576,[577],"lodash/flatten.js");
+},580,[581],"lodash/flatten.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var arrayPush = require(_dependencyMap[0], './_arrayPush'),
       isFlattenable = require(_dependencyMap[1], './_isFlattenable');
@@ -73371,7 +73630,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseFlatten;
-},577,[537,578],"lodash/_baseFlatten.js");
+},581,[541,582],"lodash/_baseFlatten.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var Symbol = require(_dependencyMap[0], './_Symbol'),
         isArguments = require(_dependencyMap[1], './isArguments'),
@@ -73384,7 +73643,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     module.exports = isFlattenable;
-},578,[40,511,460],"lodash/_isFlattenable.js");
+},582,[40,515,464],"lodash/_isFlattenable.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var apply = require(_dependencyMap[0], './_apply');
 
@@ -73415,7 +73674,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = overRest;
-},579,[580],"lodash/_overRest.js");
+},583,[584],"lodash/_overRest.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function apply(func, thisArg, args) {
     switch (args.length) {
@@ -73436,14 +73695,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = apply;
-},580,[],"lodash/_apply.js");
+},584,[],"lodash/_apply.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseSetToString = require(_dependencyMap[0], './_baseSetToString'),
       shortOut = require(_dependencyMap[1], './_shortOut');
 
   var setToString = shortOut(baseSetToString);
   module.exports = setToString;
-},581,[582,585],"lodash/_setToString.js");
+},585,[586,589],"lodash/_setToString.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var constant = require(_dependencyMap[0], './constant'),
       defineProperty = require(_dependencyMap[1], './_defineProperty'),
@@ -73458,7 +73717,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     });
   };
   module.exports = baseSetToString;
-},582,[583,505,584],"lodash/_baseSetToString.js");
+},586,[587,509,588],"lodash/_baseSetToString.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function constant(value) {
     return function () {
@@ -73467,14 +73726,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = constant;
-},583,[],"lodash/constant.js");
+},587,[],"lodash/constant.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function identity(value) {
     return value;
   }
 
   module.exports = identity;
-},584,[],"lodash/identity.js");
+},588,[],"lodash/identity.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var HOT_COUNT = 800,
       HOT_SPAN = 16;
@@ -73501,7 +73760,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = shortOut;
-},585,[],"lodash/_shortOut.js");
+},589,[],"lodash/_shortOut.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var basePick = require(_dependencyMap[0], './_basePick'),
       flatRest = require(_dependencyMap[1], './_flatRest');
@@ -73510,7 +73769,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     return object == null ? {} : basePick(object, paths);
   });
   module.exports = pick;
-},586,[587,575],"lodash/pick.js");
+},590,[591,579],"lodash/pick.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var basePickBy = require(_dependencyMap[0], './_basePickBy'),
       hasIn = require(_dependencyMap[1], './hasIn');
@@ -73522,7 +73781,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = basePick;
-},587,[588,590],"lodash/_basePick.js");
+},591,[592,594],"lodash/_basePick.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var baseGet = require(_dependencyMap[0], './_baseGet'),
         baseSet = require(_dependencyMap[1], './_baseSet'),
@@ -73546,7 +73805,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
 
     module.exports = basePickBy;
-},588,[571,589,561],"lodash/_basePickBy.js");
+},592,[575,593,565],"lodash/_basePickBy.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var assignValue = require(_dependencyMap[0], './_assignValue'),
       castPath = require(_dependencyMap[1], './_castPath'),
@@ -73586,7 +73845,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseSet;
-},589,[503,561,515,482,572],"lodash/_baseSet.js");
+},593,[507,565,519,486,576],"lodash/_baseSet.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseHasIn = require(_dependencyMap[0], './_baseHasIn'),
       hasPath = require(_dependencyMap[1], './_hasPath');
@@ -73596,14 +73855,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = hasIn;
-},590,[591,592],"lodash/hasIn.js");
+},594,[595,596],"lodash/hasIn.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function baseHasIn(object, key) {
     return object != null && key in Object(object);
   }
 
   module.exports = baseHasIn;
-},591,[],"lodash/_baseHasIn.js");
+},595,[],"lodash/_baseHasIn.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var castPath = require(_dependencyMap[0], './_castPath'),
       isArguments = require(_dependencyMap[1], './isArguments'),
@@ -73637,7 +73896,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = hasPath;
-},592,[561,511,460,515,518,572],"lodash/_hasPath.js");
+},596,[565,515,464,519,522,576],"lodash/_hasPath.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -73733,7 +73992,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       iconSize: 30
     }, _temp;
   }
-},593,[594,586,12,24,457],"react-native-vector-icons/lib/tab-bar-item-ios.js");
+},597,[598,590,12,24,461],"react-native-vector-icons/lib/tab-bar-item-ios.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseIsEqual = require(_dependencyMap[0], './_baseIsEqual');
 
@@ -73742,7 +74001,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isEqual;
-},594,[595],"lodash/isEqual.js");
+},598,[599],"lodash/isEqual.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var baseIsEqualDeep = require(_dependencyMap[0], './_baseIsEqualDeep'),
       isObjectLike = require(_dependencyMap[1], './isObjectLike');
@@ -73760,7 +74019,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseIsEqual;
-},595,[596,47],"lodash/_baseIsEqual.js");
+},599,[600,47],"lodash/_baseIsEqual.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var Stack = require(_dependencyMap[0], './_Stack'),
       equalArrays = require(_dependencyMap[1], './_equalArrays'),
@@ -73824,7 +74083,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = baseIsEqualDeep;
-},596,[464,597,603,606,541,460,513,516],"lodash/_baseIsEqualDeep.js");
+},600,[468,601,607,610,545,464,517,520],"lodash/_baseIsEqualDeep.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var SetCache = require(_dependencyMap[0], './_SetCache'),
       arraySome = require(_dependencyMap[1], './_arraySome'),
@@ -73892,7 +74151,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = equalArrays;
-},597,[598,601,602],"lodash/_equalArrays.js");
+},601,[602,605,606],"lodash/_equalArrays.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     var MapCache = require(_dependencyMap[0], './_MapCache'),
         setCacheAdd = require(_dependencyMap[1], './_setCacheAdd'),
@@ -73911,7 +74170,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
     SetCache.prototype.has = setCacheHas;
     module.exports = SetCache;
-},598,[487,599,600],"lodash/_SetCache.js");
+},602,[491,603,604],"lodash/_SetCache.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
 
@@ -73922,14 +74181,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = setCacheAdd;
-},599,[],"lodash/_setCacheAdd.js");
+},603,[],"lodash/_setCacheAdd.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function setCacheHas(value) {
     return this.__data__.has(value);
   }
 
   module.exports = setCacheHas;
-},600,[],"lodash/_setCacheHas.js");
+},604,[],"lodash/_setCacheHas.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function arraySome(array, predicate) {
     var index = -1,
@@ -73945,14 +74204,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = arraySome;
-},601,[],"lodash/_arraySome.js");
+},605,[],"lodash/_arraySome.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function cacheHas(cache, key) {
     return cache.has(key);
   }
 
   module.exports = cacheHas;
-},602,[],"lodash/_cacheHas.js");
+},606,[],"lodash/_cacheHas.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var Symbol = require(_dependencyMap[0], './_Symbol'),
       Uint8Array = require(_dependencyMap[1], './_Uint8Array'),
@@ -74040,7 +74299,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = equalByTag;
-},603,[40,549,469,597,604,605],"lodash/_equalByTag.js");
+},607,[40,553,473,601,608,609],"lodash/_equalByTag.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function mapToArray(map) {
     var index = -1,
@@ -74052,7 +74311,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = mapToArray;
-},604,[],"lodash/_mapToArray.js");
+},608,[],"lodash/_mapToArray.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   function setToArray(set) {
     var index = -1,
@@ -74064,7 +74323,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = setToArray;
-},605,[],"lodash/_setToArray.js");
+},609,[],"lodash/_setToArray.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var getAllKeys = require(_dependencyMap[0], './_getAllKeys');
 
@@ -74136,7 +74395,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = equalObjects;
-},606,[538],"lodash/_equalObjects.js");
+},610,[542],"lodash/_equalObjects.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -74287,7 +74546,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       iconSize: 24
     }, _temp;
   }
-},607,[594,586,12,24,457],"react-native-vector-icons/lib/toolbar-android.js");
+},611,[598,590,12,24,461],"react-native-vector-icons/lib/toolbar-android.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   module.exports = {
     "activity": 59648,
@@ -74531,7 +74790,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     "zoom-in": 59886,
     "zoom-out": 59887
   };
-},608,[],"react-native-vector-icons/glyphmaps/Feather.json");
+},612,[],"react-native-vector-icons/glyphmaps/Feather.json");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -74720,7 +74979,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(mapStateToProps)(AppWithNavigationState);
-},609,[12,61,610,625,631,376,22,634,66,62,455,454,627],"LBRYApp/src/component/AppNavigator.js");
+},613,[12,61,614,629,633,378,22,636,66,62,459,458,375],"LBRYApp/src/component/AppNavigator.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -74760,7 +75019,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},610,[22,62,611],"LBRYApp/src/page/file/index.js");
+},614,[22,62,615],"LBRYApp/src/page/file/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75018,7 +75277,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     title: ''
   };
   exports.default = FilePage;
-},611,[12,62,66,449,612,616,618,624],"LBRYApp/src/page/file/view.js");
+},615,[12,62,66,451,616,620,622,628],"LBRYApp/src/page/file/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75055,7 +75314,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},612,[22,62,613,614],"LBRYApp/src/component/fileDownloadButton/index.js");
+},616,[22,62,617,618],"LBRYApp/src/component/fileDownloadButton/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75257,7 +75516,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
     };
   }
-},613,[62,66],"LBRYApp/src/redux/actions/file.js");
+},617,[62,66],"LBRYApp/src/redux/actions/file.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75433,7 +75692,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }(_react2.default.PureComponent);
 
   exports.default = FileDownloadButton;
-},614,[12,66,615],"LBRYApp/src/component/fileDownloadButton/view.js");
+},618,[12,66,619],"LBRYApp/src/component/fileDownloadButton/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75458,7 +75717,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = fileDownloadButtonStyle;
-},615,[66],"LBRYApp/src/styles/fileDownloadButton.js");
+},619,[66],"LBRYApp/src/styles/fileDownloadButton.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75479,7 +75738,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},616,[22,617],"LBRYApp/src/component/mediaPlayer/index.js");
+},620,[22,621],"LBRYApp/src/component/mediaPlayer/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75999,7 +76258,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   MediaPlayer.ControlsTimeout = 3000;
   exports.default = MediaPlayer;
-},617,[12,62,66,618,621,449,623],"LBRYApp/src/component/mediaPlayer/view.js");
+},621,[12,62,66,622,625,451,627],"LBRYApp/src/component/mediaPlayer/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76364,7 +76623,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       fullscreen: true
     }
   });
-},618,[12,24,66,201,619],"react-native-video/Video.js");
+},622,[12,24,66,201,623],"react-native-video/Video.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76379,7 +76638,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     cover: null,
     stretch: null
   });
-},619,[620],"react-native-video/VideoResizeMode.js");
+},623,[624],"react-native-video/VideoResizeMode.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -76403,7 +76662,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   module.exports = keyMirror;
-},620,[],"keymirror/index.js");
+},624,[],"keymirror/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76425,7 +76684,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var TabBarItemIOS = exports.TabBarItemIOS = iconSet.TabBarItemIOS;
   var ToolbarAndroid = exports.ToolbarAndroid = iconSet.ToolbarAndroid;
   var getImageSource = exports.getImageSource = iconSet.getImageSource;
-},621,[456,622],"react-native-vector-icons/FontAwesome.js");
+},625,[460,626],"react-native-vector-icons/FontAwesome.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   module.exports = {
     "glass": 61440,
@@ -77215,7 +77474,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     "wpexplorer": 62174,
     "meetup": 62176
   };
-},622,[],"react-native-vector-icons/glyphmaps/FontAwesome.json");
+},626,[],"react-native-vector-icons/glyphmaps/FontAwesome.json");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77325,7 +77584,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = mediaPlayerStyle;
-},623,[66],"LBRYApp/src/styles/mediaPlayer.js");
+},627,[66],"LBRYApp/src/styles/mediaPlayer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77411,7 +77670,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = filePageStyle;
-},624,[66],"LBRYApp/src/styles/filePage.js");
+},628,[66],"LBRYApp/src/styles/filePage.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77445,7 +77704,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},625,[22,62,626,627,629],"LBRYApp/src/page/settings/index.js");
+},629,[22,62,630,375,631],"LBRYApp/src/page/settings/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77463,159 +77722,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
     };
   }
-},626,[62],"LBRYApp/src/redux/actions/settings.js");
-__d(function (global, require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.selectKeepDaemonRunning = exports.selectShowNsfw = exports.makeSelectClientSetting = exports.selectClientSettings = exports.selectDaemonSettings = undefined;
-
-  var _lbryRedux = require(_dependencyMap[0], "lbry-redux");
-
-  var _reselect = require(_dependencyMap[1], "reselect");
-
-  var selectState = function selectState(state) {
-    return state.settings || {};
-  };
-
-  var selectDaemonSettings = exports.selectDaemonSettings = (0, _reselect.createSelector)(selectState, function (state) {
-    return state.daemonSettings;
-  });
-  var selectClientSettings = exports.selectClientSettings = (0, _reselect.createSelector)(selectState, function (state) {
-    return state.clientSettings || {};
-  });
-
-  var makeSelectClientSetting = exports.makeSelectClientSetting = function makeSelectClientSetting(setting) {
-    return (0, _reselect.createSelector)(selectClientSettings, function (settings) {
-      return settings ? settings[setting] : undefined;
-    });
-  };
-
-  var selectShowNsfw = exports.selectShowNsfw = makeSelectClientSetting(_lbryRedux.SETTINGS.SHOW_NSFW);
-  var selectKeepDaemonRunning = exports.selectKeepDaemonRunning = makeSelectClientSetting(_lbryRedux.SETTINGS.KEEP_DAEMON_RUNNING);
-},627,[62,628],"LBRYApp/src/redux/selectors/settings.js");
-__d(function (global, require, module, exports, _dependencyMap) {
-  'use strict';
-
-  exports.__esModule = true;
-  exports.defaultMemoize = defaultMemoize;
-  exports.createSelectorCreator = createSelectorCreator;
-  exports.createStructuredSelector = createStructuredSelector;
-
-  function defaultEqualityCheck(a, b) {
-    return a === b;
-  }
-
-  function areArgumentsShallowlyEqual(equalityCheck, prev, next) {
-    if (prev === null || next === null || prev.length !== next.length) {
-      return false;
-    }
-
-    var length = prev.length;
-
-    for (var i = 0; i < length; i++) {
-      if (!equalityCheck(prev[i], next[i])) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  function defaultMemoize(func) {
-    var equalityCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultEqualityCheck;
-    var lastArgs = null;
-    var lastResult = null;
-    return function () {
-      if (!areArgumentsShallowlyEqual(equalityCheck, lastArgs, arguments)) {
-        lastResult = func.apply(null, arguments);
-      }
-
-      lastArgs = arguments;
-      return lastResult;
-    };
-  }
-
-  function getDependencies(funcs) {
-    var dependencies = Array.isArray(funcs[0]) ? funcs[0] : funcs;
-
-    if (!dependencies.every(function (dep) {
-      return typeof dep === 'function';
-    })) {
-      var dependencyTypes = dependencies.map(function (dep) {
-        return typeof dep;
-      }).join(', ');
-      throw new Error('Selector creators expect all input-selectors to be functions, ' + ('instead received the following types: [' + dependencyTypes + ']'));
-    }
-
-    return dependencies;
-  }
-
-  function createSelectorCreator(memoize) {
-    for (var _len = arguments.length, memoizeOptions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      memoizeOptions[_key - 1] = arguments[_key];
-    }
-
-    return function () {
-      for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        funcs[_key2] = arguments[_key2];
-      }
-
-      var recomputations = 0;
-      var resultFunc = funcs.pop();
-      var dependencies = getDependencies(funcs);
-      var memoizedResultFunc = memoize.apply(undefined, [function () {
-        recomputations++;
-        return resultFunc.apply(null, arguments);
-      }].concat(memoizeOptions));
-      var selector = defaultMemoize(function () {
-        var params = [];
-        var length = dependencies.length;
-
-        for (var i = 0; i < length; i++) {
-          params.push(dependencies[i].apply(null, arguments));
-        }
-
-        return memoizedResultFunc.apply(null, params);
-      });
-      selector.resultFunc = resultFunc;
-
-      selector.recomputations = function () {
-        return recomputations;
-      };
-
-      selector.resetRecomputations = function () {
-        return recomputations = 0;
-      };
-
-      return selector;
-    };
-  }
-
-  var createSelector = exports.createSelector = createSelectorCreator(defaultMemoize);
-
-  function createStructuredSelector(selectors) {
-    var selectorCreator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : createSelector;
-
-    if (typeof selectors !== 'object') {
-      throw new Error('createStructuredSelector expects first argument to be an object ' + ('where each property is a selector, instead received a ' + typeof selectors));
-    }
-
-    var objectKeys = Object.keys(selectors);
-    return selectorCreator(objectKeys.map(function (key) {
-      return selectors[key];
-    }), function () {
-      for (var _len3 = arguments.length, values = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        values[_key3] = arguments[_key3];
-      }
-
-      return values.reduce(function (composition, value, index) {
-        composition[objectKeys[index]] = value;
-        return composition;
-      }, {});
-    });
-  }
-},628,[],"reselect/lib/index.js");
+},630,[62],"LBRYApp/src/redux/actions/settings.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77750,7 +77857,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     title: 'Settings'
   };
   exports.default = SettingsPage;
-},629,[12,62,66,630],"LBRYApp/src/page/settings/view.js");
+},631,[12,62,66,632],"LBRYApp/src/page/settings/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77793,7 +77900,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = settingsStyle;
-},630,[66],"LBRYApp/src/styles/settings.js");
+},632,[66],"LBRYApp/src/styles/settings.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77814,7 +77921,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},631,[22,632],"LBRYApp/src/page/splash/index.js");
+},633,[22,634],"LBRYApp/src/page/splash/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77984,7 +78091,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     title: 'Splash'
   };
   exports.default = SplashScreen;
-},632,[12,62,66,24,633],"LBRYApp/src/page/splash/view.js");
+},634,[12,62,66,24,635],"LBRYApp/src/page/splash/view.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -78025,7 +78132,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
 
   exports.default = splashStyle;
-},633,[66],"LBRYApp/src/styles/splash.js");
+},635,[66],"LBRYApp/src/styles/splash.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -78040,7 +78147,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var addListener = (0, _reactNavigationReduxHelpers.createReduxBoundAddListener)("root");
   exports.reactNavigationMiddleware = reactNavigationMiddleware;
   exports.addListener = addListener;
-},634,[635],"LBRYApp/src/utils/redux.js");
+},636,[637],"LBRYApp/src/utils/redux.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -78074,8 +78181,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var _reducer = require(_dependencyMap[2], "./reducer");
 
   exports.createNavigationReducer = _reducer.createNavigationReducer;
-},635,[636,637,638],"react-navigation-redux-helpers/src/index.js");
-__d(function (global, require, module, exports, _dependencyMap) {},636,[],"react-navigation-redux-helpers/src/types.js");
+},637,[638,639,640],"react-navigation-redux-helpers/src/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {},638,[],"react-navigation-redux-helpers/src/types.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -78152,7 +78259,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.createReactNavigationReduxMiddleware = createReactNavigationReduxMiddleware;
   exports.createReduxBoundAddListener = createReduxBoundAddListener;
   exports.initializeListeners = initializeListeners;
-},637,[31,638],"react-navigation-redux-helpers/src/middleware.js");
+},639,[31,640],"react-navigation-redux-helpers/src/middleware.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -78175,7 +78282,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   ;
   exports.createNavigationReducer = createNavigationReducer;
   exports.initAction = initAction;
-},638,[376],"react-navigation-redux-helpers/src/reducer.js");
+},640,[378],"react-navigation-redux-helpers/src/reducer.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78236,7 +78343,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.persistStore = _persistStore2.default;
   exports.purgeStoredState = _purgeStoredState2.default;
   exports.storages = storages;
-},639,[640,643,648,649,650,646],"redux-persist/lib/index.js");
+},641,[642,645,650,651,652,648],"redux-persist/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78338,14 +78445,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
     });
     return newState;
   }
-},640,[641,642],"redux-persist/lib/autoRehydrate.js");
+},642,[643,644],"redux-persist/lib/autoRehydrate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
   exports.__esModule = true;
   var KEY_PREFIX = exports.KEY_PREFIX = 'reduxPersist:';
   var REHYDRATE = exports.REHYDRATE = 'persist/REHYDRATE';
-},641,[],"redux-persist/lib/constants.js");
+},643,[],"redux-persist/lib/constants.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78376,7 +78483,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     if (!(0, _isPlainObject2.default)(a)) return false;
     return true;
   }
-},642,[38],"redux-persist/lib/utils/isStatePlainEnough.js");
+},644,[38],"redux-persist/lib/utils/isStatePlainEnough.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78549,7 +78656,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     state[key] = value;
     return state;
   }
-},643,[641,644,646,647],"redux-persist/lib/createPersistor.js");
+},645,[643,646,648,649],"redux-persist/lib/createPersistor.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78695,7 +78802,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       };
     }
   }
-},644,[645],"redux-persist/lib/defaults/asyncLocalStorage.js");
+},646,[647],"redux-persist/lib/defaults/asyncLocalStorage.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78707,7 +78814,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     return setTimeout(fn, ms);
   };
   exports.default = setImmediate;
-},645,[],"redux-persist/lib/utils/setImmediate.js");
+},647,[],"redux-persist/lib/utils/setImmediate.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78751,7 +78858,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
     };
   }
-},646,[641],"redux-persist/lib/purgeStoredState.js");
+},648,[643],"redux-persist/lib/purgeStoredState.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   exports = module.exports = stringify;
   exports.getSerialize = serializer;
@@ -78778,7 +78885,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       return replacer == null ? value : replacer.call(this, key, value);
     };
   }
-},647,[],"json-stringify-safe/stringify.js");
+},649,[],"json-stringify-safe/stringify.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -78806,7 +78913,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   exports.default = createTransform;
-},648,[],"redux-persist/lib/createTransform.js");
+},650,[],"redux-persist/lib/createTransform.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -78918,7 +79025,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   function defaultDeserializer(serial) {
     return JSON.parse(serial);
   }
-},649,[641,644],"redux-persist/lib/getStoredState.js");
+},651,[643,646],"redux-persist/lib/getStoredState.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -79013,7 +79120,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       error: error
     };
   }
-},650,[641,649,643,645],"redux-persist/lib/persistStore.js");
+},652,[643,651,645,647],"redux-persist/lib/persistStore.js");
 __d(function (global, require, module, exports, _dependencyMap) {
     "use strict";
 
@@ -79063,7 +79170,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             }
         }, config);
     }
-},651,[639,652,647],"redux-persist-transform-compress/lib/index.js");
+},653,[641,654,649],"redux-persist-transform-compress/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var LZString = function () {
     var f = String.fromCharCode;
@@ -79640,7 +79747,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   } else if (typeof module !== 'undefined' && module != null) {
     module.exports = LZString;
   }
-},652,[],"lz-string/libs/lz-string.js");
+},654,[],"lz-string/libs/lz-string.js");
 __d(function (global, require, module, exports, _dependencyMap) {
 	'use strict';
 
@@ -79772,7 +79879,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
 		return subset;
 	}
-},653,[639,654,655,656,657,658,659],"redux-persist-transform-filter/dist/index.js");
+},655,[641,656,657,658,659,660,661],"redux-persist-transform-filter/dist/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -80159,7 +80266,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = get;
-},654,[],"lodash.get/index.js");
+},656,[],"lodash.get/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -80579,7 +80686,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = set;
-},655,[],"lodash.set/index.js");
+},657,[],"lodash.set/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var FUNC_ERROR_TEXT = 'Expected a function';
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -81006,7 +81113,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = unset;
-},656,[],"lodash.unset/index.js");
+},658,[],"lodash.unset/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var LARGE_ARRAY_SIZE = 200;
   var FUNC_ERROR_TEXT = 'Expected a function';
@@ -82168,7 +82275,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = pickBy;
-},657,[],"lodash.pickby/index.js");
+},659,[],"lodash.pickby/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MAX_SAFE_INTEGER = 9007199254740991;
   var argsTag = '[object Arguments]',
@@ -82378,7 +82485,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = isEmpty;
-},658,[],"lodash.isempty/index.js");
+},660,[],"lodash.isempty/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   var MAX_SAFE_INTEGER = 9007199254740991;
   var argsTag = '[object Arguments]',
@@ -82522,7 +82629,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 
   module.exports = forIn;
-},659,[],"lodash.forin/index.js");
+},661,[],"lodash.forin/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -82547,7 +82654,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   var thunk = createThunkMiddleware();
   thunk.withExtraArgument = createThunkMiddleware;
   exports['default'] = thunk;
-},660,[],"redux-thunk/lib/index.js");
+},662,[],"redux-thunk/lib/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -82582,6 +82689,6 @@ __d(function (global, require, module, exports, _dependencyMap) {
     if (handler) return handler(state, action);
     return state;
   }
-},661,[62],"LBRYApp/src/redux/reducers/settings.js");
+},663,[62],"LBRYApp/src/redux/reducers/settings.js");
 require(76);
 require(11);

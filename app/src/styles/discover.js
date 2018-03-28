@@ -56,6 +56,25 @@ const discoverStyle = StyleSheet.create({
   },
   drawerHamburger: {
     marginLeft: 8
+  },
+  overlay: {
+    flex: 1,
+    opacity: 1,
+    backgroundColor: '#222222',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 32,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%'
+  },
+  overlayText: {
+    color: '#ffffff',
+    fontSize: 14,
+    textAlign: 'center',
+    fontFamily: 'Metropolis-Regular'
   }
 });
 
