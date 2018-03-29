@@ -9,7 +9,7 @@ import {
   selectRewardContentClaimIds,
   makeSelectCostInfoForUri
 } from 'lbry-redux';
-//import { selectShowNsfw } from 'redux/selectors/settings';
+import { doDeleteFile } from '../../redux/actions/file';
 import FilePage from './view';
 
 const select = (state, props) => {
@@ -29,6 +29,9 @@ const select = (state, props) => {
 const perform = dispatch => ({
   fetchFileInfo: uri => dispatch(doFetchFileInfo(uri)),
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
+  deleteFile: (fileInfo, deleteFromDevice, abandonClaim) => {
+    dispatch(doDeleteFile(fileInfo, deleteFromDevice, abandonClaim));
+  },
 });
 
 export default connect(select, perform)(FilePage);

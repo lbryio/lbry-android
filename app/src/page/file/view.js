@@ -1,6 +1,16 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import { Text, View, ScrollView, StatusBar, TouchableOpacity, NativeModules } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Button,
+  Text,
+  View,
+  ScrollView,
+  StatusBar,
+  TouchableOpacity,
+  NativeModules
+} from 'react-native';
 import FileItemMedia from '../../component/fileItemMedia';
 import FileDownloadButton from '../../component/fileDownloadButton';
 import MediaPlayer from '../../component/mediaPlayer';
@@ -52,6 +62,20 @@ class FilePage extends React.PureComponent {
     }
   }
   
+  onDeletePressed = () => {
+    const { deleteFile, fileInfo } = this.props;
+    
+    Alert.alert(
+      'Delete file',
+      'Are you sure you want to remove this file from your device?',
+      [
+        { text: 'No' },
+        { text: 'Yes', onPress: () => { deleteFile(fileInfo.outpoint, true); } }
+      ],
+      { cancelable: true }
+    );
+  }
+  
   componentWillUnmount() {
     StatusBar.setHidden(false);
     if (NativeModules.ScreenOrientation) {
@@ -85,21 +109,30 @@ class FilePage extends React.PureComponent {
     const mediaType = Lbry.getMediaType(contentType);
     const isPlayable = mediaType === 'video' || mediaType === 'audio';
     const { height, channel_name: channelName, value } = claim;
+    const showActions = (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
     const channelClaimId =
       value && value.publisherSignature && value.publisherSignature.certificateId;
     
     return (
       <View style={filePageStyle.pageContainer}>
-        <View style={this.state.fullscreenMode ? filePageStyle.fullscreenMedia : filePageStyle.mediaContainer}>
+        <View style={this.state.fullscreenMode ? filePageStyle.fullscreenMedia : filePageStyle.mediaContainer}>  
           {(!fileInfo || (isPlayable && !this.state.mediaLoaded)) &&
             <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
+          {isPlayable && !this.state.mediaLoaded && <ActivityIndicator size="large" color="#40b89a" style={filePageStyle.loading} />}
           {!completed && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
           {fileInfo && isPlayable && <MediaPlayer fileInfo={fileInfo}
                                                   style={filePageStyle.player}
                                                   onFullscreenToggled={this.handleFullscreenToggle} 
                                                   onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
         </View>
-        <ScrollView style={filePageStyle.scrollContainer}>
+        { showActions &&
+        <View style={filePageStyle.actions}>
+          {completed && <Button color="red" title="Delete" onPress={this.onDeletePressed} />}
+          {fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes &&
+            <Button color="red" title="Stop Download" onPress={this.onStopDownloadPressed} />
+          }
+        </View>}
+        <ScrollView style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}>
           <Text style={filePageStyle.title}>{title}</Text>
           {channelName && <Text style={filePageStyle.channelName}>{channelName}</Text>}
           {description && <Text style={filePageStyle.description}>{description}</Text>}

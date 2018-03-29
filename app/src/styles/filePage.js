@@ -24,6 +24,12 @@ const filePageStyle = StyleSheet.create({
     marginRight: 16
   },
   scrollContainer: {
+    flex: 1,
+    marginTop: -20,
+    marginBottom: -4,
+    paddingTop: 10
+  },
+  scrollContainerActions: {
     flex: 1
   },
   title: {
@@ -47,7 +53,7 @@ const filePageStyle = StyleSheet.create({
     fontSize: 16,
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 20,
+    marginBottom: 40,
     color: '#999999'
   },
   thumbnail: {
@@ -56,7 +62,7 @@ const filePageStyle = StyleSheet.create({
   },
   downloadButton: {
     position: 'absolute',
-    top: '50%'
+    top: '40%'
   },
   player: {
     flex: 1,
@@ -73,6 +79,22 @@ const filePageStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
     zIndex: 100
+  },
+  actions: {
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 16,
+    paddingBottom: 8,
+    marginTop: -14,
+    width: '50%',
+  },
+  deleteButton: {
+    backgroundColor: '#ff0000',
+    width: 80
+  },
+  loading: {
+    position: 'absolute',
+    top: '40%'
   }
 });
 

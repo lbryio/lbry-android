@@ -74730,7 +74730,9 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
 
-  var _view = require(_dependencyMap[2], "./view");
+  var _file = require(_dependencyMap[2], "../../redux/actions/file");
+
+  var _view = require(_dependencyMap[3], "./view");
 
   var _view2 = babelHelpers.interopRequireDefault(_view);
 
@@ -74755,307 +74757,15 @@ __d(function (global, require, module, exports, _dependencyMap) {
       },
       fetchCostInfo: function fetchCostInfo(uri) {
         return dispatch((0, _lbryRedux.doFetchCostInfoForUri)(uri));
-      }
-    };
-  };
-
-  exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},610,[22,62,611],"LBRYApp/src/page/file/index.js");
-__d(function (global, require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  var _jsxFileName = "/home/akinwale/Dev/Python/lbry-android/app/src/page/file/view.js";
-
-  var _react = require(_dependencyMap[0], "react");
-
-  var _react2 = babelHelpers.interopRequireDefault(_react);
-
-  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
-
-  var _reactNative = require(_dependencyMap[2], "react-native");
-
-  var _fileItemMedia = require(_dependencyMap[3], "../../component/fileItemMedia");
-
-  var _fileItemMedia2 = babelHelpers.interopRequireDefault(_fileItemMedia);
-
-  var _fileDownloadButton = require(_dependencyMap[4], "../../component/fileDownloadButton");
-
-  var _fileDownloadButton2 = babelHelpers.interopRequireDefault(_fileDownloadButton);
-
-  var _mediaPlayer = require(_dependencyMap[5], "../../component/mediaPlayer");
-
-  var _mediaPlayer2 = babelHelpers.interopRequireDefault(_mediaPlayer);
-
-  var _reactNativeVideo = require(_dependencyMap[6], "react-native-video");
-
-  var _reactNativeVideo2 = babelHelpers.interopRequireDefault(_reactNativeVideo);
-
-  var _filePage = require(_dependencyMap[7], "../../styles/filePage");
-
-  var _filePage2 = babelHelpers.interopRequireDefault(_filePage);
-
-  var FilePage = function (_React$PureComponent) {
-    babelHelpers.inherits(FilePage, _React$PureComponent);
-
-    function FilePage() {
-      var _ref;
-
-      var _temp, _this, _ret;
-
-      babelHelpers.classCallCheck(this, FilePage);
-
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = FilePage.__proto__ || Object.getPrototypeOf(FilePage)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-        mediaLoaded: false,
-        fullscreenMode: false
-      }, _this.handleFullscreenToggle = function (mode) {
-        _this.setState({
-          fullscreenMode: mode
-        });
-
-        _reactNative.StatusBar.setHidden(mode);
-
-        if (_reactNative.NativeModules.ScreenOrientation) {
-          if (mode) {
-            _reactNative.NativeModules.ScreenOrientation.lockOrientationLandscape();
-          } else {
-            _reactNative.NativeModules.ScreenOrientation.unlockOrientation();
-          }
-        }
-      }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
-    }
-
-    babelHelpers.createClass(FilePage, [{
-      key: "componentDidMount",
-      value: function componentDidMount() {
-        _reactNative.StatusBar.setHidden(false);
-
-        this.fetchFileInfo(this.props);
-        this.fetchCostInfo(this.props);
-      }
-    }, {
-      key: "componentWillReceiveProps",
-      value: function componentWillReceiveProps(nextProps) {
-        this.fetchFileInfo(nextProps);
-      }
-    }, {
-      key: "fetchFileInfo",
-      value: function fetchFileInfo(props) {
-        if (props.fileInfo === undefined) {
-          props.fetchFileInfo(props.navigation.state.params.uri);
-        }
-      }
-    }, {
-      key: "fetchCostInfo",
-      value: function fetchCostInfo(props) {
-        if (props.costInfo === undefined) {
-          props.fetchCostInfo(props.navigation.state.params.uri);
-        }
-      }
-    }, {
-      key: "componentWillUnmount",
-      value: function componentWillUnmount() {
-        _reactNative.StatusBar.setHidden(false);
-
-        if (_reactNative.NativeModules.ScreenOrientation) {
-          _reactNative.NativeModules.ScreenOrientation.unlockOrientation();
-        }
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        var _this2 = this;
-
-        var _props = this.props,
-            claim = _props.claim,
-            fileInfo = _props.fileInfo,
-            metadata = _props.metadata,
-            contentType = _props.contentType,
-            tab = _props.tab,
-            rewardedContentClaimIds = _props.rewardedContentClaimIds,
-            navigation = _props.navigation;
-
-        if (!claim || !metadata) {
-          return _react2.default.createElement(
-            _reactNative.View,
-            {
-              style: _filePage2.default.container,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 75
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: _filePage2.default.emptyClaimText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 76
-                }
-              },
-              "Empty claim or metadata info."
-            )
-          );
-        }
-
-        var completed = fileInfo && fileInfo.completed;
-        var title = metadata.title;
-        var isRewardContent = rewardedContentClaimIds.includes(claim.claim_id);
-        var description = metadata.description ? metadata.description : null;
-
-        var mediaType = _lbryRedux.Lbry.getMediaType(contentType);
-
-        var isPlayable = mediaType === 'video' || mediaType === 'audio';
-        var height = claim.height,
-            channelName = claim.channel_name,
-            value = claim.value;
-        var channelClaimId = value && value.publisherSignature && value.publisherSignature.certificateId;
-        return _react2.default.createElement(
-          _reactNative.View,
-          {
-            style: _filePage2.default.pageContainer,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 92
-            }
-          },
-          _react2.default.createElement(
-            _reactNative.View,
-            {
-              style: this.state.fullscreenMode ? _filePage2.default.fullscreenMedia : _filePage2.default.mediaContainer,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 93
-              }
-            },
-            (!fileInfo || isPlayable && !this.state.mediaLoaded) && _react2.default.createElement(_fileItemMedia2.default, {
-              style: _filePage2.default.thumbnail,
-              title: title,
-              thumbnail: metadata.thumbnail,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 95
-              }
-            }),
-            !completed && _react2.default.createElement(_fileDownloadButton2.default, {
-              uri: navigation.state.params.uri,
-              style: _filePage2.default.downloadButton,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 96
-              }
-            }),
-            fileInfo && isPlayable && _react2.default.createElement(_mediaPlayer2.default, {
-              fileInfo: fileInfo,
-              style: _filePage2.default.player,
-              onFullscreenToggled: this.handleFullscreenToggle,
-              onMediaLoaded: function onMediaLoaded() {
-                _this2.setState({
-                  mediaLoaded: true
-                });
-              },
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 97
-              }
-            })
-          ),
-          _react2.default.createElement(
-            _reactNative.ScrollView,
-            {
-              style: _filePage2.default.scrollContainer,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 102
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: _filePage2.default.title,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 103
-                }
-              },
-              title
-            ),
-            channelName && _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: _filePage2.default.channelName,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 104
-                }
-              },
-              channelName
-            ),
-            description && _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: _filePage2.default.description,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 105
-                }
-              },
-              description
-            )
-          )
-        );
-      }
-    }]);
-    return FilePage;
-  }(_react2.default.PureComponent);
-
-  FilePage.navigationOptions = {
-    title: ''
-  };
-  exports.default = FilePage;
-},611,[12,62,66,449,612,616,618,624],"LBRYApp/src/page/file/view.js");
-__d(function (global, require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _reactRedux = require(_dependencyMap[0], "react-redux");
-
-  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
-
-  var _file = require(_dependencyMap[2], "../../redux/actions/file");
-
-  var _view = require(_dependencyMap[3], "./view");
-
-  var _view2 = babelHelpers.interopRequireDefault(_view);
-
-  var select = function select(state, props) {
-    return {
-      fileInfo: (0, _lbryRedux.makeSelectFileInfoForUri)(props.uri)(state),
-      downloading: (0, _lbryRedux.makeSelectDownloadingForUri)(props.uri)(state),
-      costInfo: (0, _lbryRedux.makeSelectCostInfoForUri)(props.uri)(state),
-      loading: (0, _lbryRedux.makeSelectLoadingForUri)(props.uri)(state)
-    };
-  };
-
-  var perform = function perform(dispatch) {
-    return {
-      purchaseUri: function purchaseUri(uri) {
-        return dispatch((0, _file.doPurchaseUri)(uri));
       },
-      restartDownload: function restartDownload(uri, outpoint) {
-        return dispatch((0, _file.doStartDownload)(uri, outpoint));
+      deleteFile: function deleteFile(fileInfo, deleteFromDevice, abandonClaim) {
+        dispatch((0, _file.doDeleteFile)(fileInfo, deleteFromDevice, abandonClaim));
       }
     };
   };
 
   exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
-},612,[22,62,613,614],"LBRYApp/src/component/fileDownloadButton/index.js");
+},610,[22,62,611,612],"LBRYApp/src/page/file/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -75066,6 +74776,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   exports.doSetPlayingUri = doSetPlayingUri;
   exports.doLoadVideo = doLoadVideo;
   exports.doPurchaseUri = doPurchaseUri;
+  exports.doDeleteFile = doDeleteFile;
 
   var _lbryRedux = require(_dependencyMap[0], "lbry-redux");
 
@@ -75257,7 +74968,336 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
     };
   }
-},613,[62,66],"LBRYApp/src/redux/actions/file.js");
+
+  function doDeleteFile(outpoint, deleteFromComputer, abandonClaim) {
+    return function (dispatch, getState) {
+      _lbryRedux.Lbry.file_delete({
+        outpoint: outpoint,
+        delete_from_download_dir: deleteFromComputer
+      });
+
+      dispatch({
+        type: _lbryRedux.ACTIONS.FILE_DELETE,
+        data: {
+          outpoint: outpoint
+        }
+      });
+    };
+  }
+},611,[62,66],"LBRYApp/src/redux/actions/file.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/home/akinwale/Dev/Python/lbry-android/app/src/page/file/view.js";
+
+  var _react = require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
+
+  var _reactNative = require(_dependencyMap[2], "react-native");
+
+  var _fileItemMedia = require(_dependencyMap[3], "../../component/fileItemMedia");
+
+  var _fileItemMedia2 = babelHelpers.interopRequireDefault(_fileItemMedia);
+
+  var _fileDownloadButton = require(_dependencyMap[4], "../../component/fileDownloadButton");
+
+  var _fileDownloadButton2 = babelHelpers.interopRequireDefault(_fileDownloadButton);
+
+  var _mediaPlayer = require(_dependencyMap[5], "../../component/mediaPlayer");
+
+  var _mediaPlayer2 = babelHelpers.interopRequireDefault(_mediaPlayer);
+
+  var _reactNativeVideo = require(_dependencyMap[6], "react-native-video");
+
+  var _reactNativeVideo2 = babelHelpers.interopRequireDefault(_reactNativeVideo);
+
+  var _filePage = require(_dependencyMap[7], "../../styles/filePage");
+
+  var _filePage2 = babelHelpers.interopRequireDefault(_filePage);
+
+  var FilePage = function (_React$PureComponent) {
+    babelHelpers.inherits(FilePage, _React$PureComponent);
+
+    function FilePage() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
+      babelHelpers.classCallCheck(this, FilePage);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = FilePage.__proto__ || Object.getPrototypeOf(FilePage)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+        mediaLoaded: false,
+        fullscreenMode: false
+      }, _this.handleFullscreenToggle = function (mode) {
+        _this.setState({
+          fullscreenMode: mode
+        });
+
+        _reactNative.StatusBar.setHidden(mode);
+
+        if (_reactNative.NativeModules.ScreenOrientation) {
+          if (mode) {
+            _reactNative.NativeModules.ScreenOrientation.lockOrientationLandscape();
+          } else {
+            _reactNative.NativeModules.ScreenOrientation.unlockOrientation();
+          }
+        }
+      }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+    }
+
+    babelHelpers.createClass(FilePage, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        _reactNative.StatusBar.setHidden(false);
+
+        this.fetchFileInfo(this.props);
+        this.fetchCostInfo(this.props);
+      }
+    }, {
+      key: "componentWillReceiveProps",
+      value: function componentWillReceiveProps(nextProps) {
+        this.fetchFileInfo(nextProps);
+      }
+    }, {
+      key: "fetchFileInfo",
+      value: function fetchFileInfo(props) {
+        if (props.fileInfo === undefined) {
+          props.fetchFileInfo(props.navigation.state.params.uri);
+        }
+      }
+    }, {
+      key: "fetchCostInfo",
+      value: function fetchCostInfo(props) {
+        if (props.costInfo === undefined) {
+          props.fetchCostInfo(props.navigation.state.params.uri);
+        }
+      }
+    }, {
+      key: "componentWillUnmount",
+      value: function componentWillUnmount() {
+        _reactNative.StatusBar.setHidden(false);
+
+        if (_reactNative.NativeModules.ScreenOrientation) {
+          _reactNative.NativeModules.ScreenOrientation.unlockOrientation();
+        }
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        var _props = this.props,
+            claim = _props.claim,
+            fileInfo = _props.fileInfo,
+            metadata = _props.metadata,
+            contentType = _props.contentType,
+            tab = _props.tab,
+            rewardedContentClaimIds = _props.rewardedContentClaimIds,
+            navigation = _props.navigation;
+
+        if (!claim || !metadata) {
+          return _react2.default.createElement(
+            _reactNative.View,
+            {
+              style: _filePage2.default.container,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 84
+              }
+            },
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _filePage2.default.emptyClaimText,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 85
+                }
+              },
+              "Empty claim or metadata info."
+            )
+          );
+        }
+
+        var completed = fileInfo && fileInfo.completed;
+        var title = metadata.title;
+        var isRewardContent = rewardedContentClaimIds.includes(claim.claim_id);
+        var description = metadata.description ? metadata.description : null;
+
+        var mediaType = _lbryRedux.Lbry.getMediaType(contentType);
+
+        var isPlayable = mediaType === 'video' || mediaType === 'audio';
+        var height = claim.height,
+            channelName = claim.channel_name,
+            value = claim.value;
+        var channelClaimId = value && value.publisherSignature && value.publisherSignature.certificateId;
+        return _react2.default.createElement(
+          _reactNative.View,
+          {
+            style: _filePage2.default.pageContainer,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 101
+            }
+          },
+          _react2.default.createElement(
+            _reactNative.View,
+            {
+              style: this.state.fullscreenMode ? _filePage2.default.fullscreenMedia : _filePage2.default.mediaContainer,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 102
+              }
+            },
+            (!fileInfo || isPlayable && !this.state.mediaLoaded) && _react2.default.createElement(_fileItemMedia2.default, {
+              style: _filePage2.default.thumbnail,
+              title: title,
+              thumbnail: metadata.thumbnail,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 104
+              }
+            }),
+            !completed && _react2.default.createElement(_fileDownloadButton2.default, {
+              uri: navigation.state.params.uri,
+              style: _filePage2.default.downloadButton,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 105
+              }
+            }),
+            fileInfo && isPlayable && _react2.default.createElement(_mediaPlayer2.default, {
+              fileInfo: fileInfo,
+              style: _filePage2.default.player,
+              onFullscreenToggled: this.handleFullscreenToggle,
+              onMediaLoaded: function onMediaLoaded() {
+                _this2.setState({
+                  mediaLoaded: true
+                });
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 106
+              }
+            })
+          ),
+          _react2.default.createElement(
+            _reactNative.View,
+            {
+              style: _filePage2.default.actions,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 111
+              }
+            },
+            completed && _react2.default.createElement(_reactNative.Button, {
+              title: "Delete",
+              onPress: function onPress() {},
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 112
+              }
+            })
+          ),
+          _react2.default.createElement(
+            _reactNative.ScrollView,
+            {
+              style: _filePage2.default.scrollContainer,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 114
+              }
+            },
+            _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _filePage2.default.title,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 115
+                }
+              },
+              title
+            ),
+            channelName && _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _filePage2.default.channelName,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 116
+                }
+              },
+              channelName
+            ),
+            description && _react2.default.createElement(
+              _reactNative.Text,
+              {
+                style: _filePage2.default.description,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 117
+                }
+              },
+              description
+            )
+          )
+        );
+      }
+    }]);
+    return FilePage;
+  }(_react2.default.PureComponent);
+
+  FilePage.navigationOptions = {
+    title: ''
+  };
+  exports.default = FilePage;
+},612,[12,62,66,449,613,616,618,624],"LBRYApp/src/page/file/view.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactRedux = require(_dependencyMap[0], "react-redux");
+
+  var _lbryRedux = require(_dependencyMap[1], "lbry-redux");
+
+  var _file = require(_dependencyMap[2], "../../redux/actions/file");
+
+  var _view = require(_dependencyMap[3], "./view");
+
+  var _view2 = babelHelpers.interopRequireDefault(_view);
+
+  var select = function select(state, props) {
+    return {
+      fileInfo: (0, _lbryRedux.makeSelectFileInfoForUri)(props.uri)(state),
+      downloading: (0, _lbryRedux.makeSelectDownloadingForUri)(props.uri)(state),
+      costInfo: (0, _lbryRedux.makeSelectCostInfoForUri)(props.uri)(state),
+      loading: (0, _lbryRedux.makeSelectLoadingForUri)(props.uri)(state)
+    };
+  };
+
+  var perform = function perform(dispatch) {
+    return {
+      purchaseUri: function purchaseUri(uri) {
+        return dispatch((0, _file.doPurchaseUri)(uri));
+      },
+      restartDownload: function restartDownload(uri, outpoint) {
+        return dispatch((0, _file.doStartDownload)(uri, outpoint));
+      }
+    };
+  };
+
+  exports.default = (0, _reactRedux.connect)(select, perform)(_view2.default);
+},613,[22,62,611,614],"LBRYApp/src/component/fileDownloadButton/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true

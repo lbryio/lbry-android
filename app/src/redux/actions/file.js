@@ -220,3 +220,36 @@ export function doPurchaseUri(uri, specificCostInfo) {
     }*/
   };
 }
+
+export function doDeleteFile(outpoint, deleteFromComputer, abandonClaim) {
+  return (dispatch, getState) => {
+    Lbry.file_delete({
+      outpoint,
+      delete_from_download_dir: deleteFromComputer,
+    });
+
+    // If the file is for a claim we published then also abandon the claim
+    /*const myClaimsOutpoints = selectMyClaimsOutpoints(state);
+    if (abandonClaim && myClaimsOutpoints.indexOf(outpoint) !== -1) {
+      const byOutpoint = selectFileInfosByOutpoint(state);
+      const fileInfo = byOutpoint[outpoint];
+
+      if (fileInfo) {
+        const txid = fileInfo.outpoint.slice(0, -2);
+        const nout = Number(fileInfo.outpoint.slice(-1));
+
+        dispatch(doAbandonClaim(txid, nout));
+      }
+    }*/
+
+    dispatch({
+      type: ACTIONS.FILE_DELETE,
+      data: {
+        outpoint,
+      },
+    });
+
+    //const totalProgress = selectTotalDownloadProgress(getState());
+    //setProgressBar(totalProgress);
+  };
+}
