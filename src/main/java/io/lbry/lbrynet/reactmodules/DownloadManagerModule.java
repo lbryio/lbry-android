@@ -49,8 +49,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentTitle(String.format("Downloading %s...", fileName))
                 .setSmallIcon(R.drawable.ic_file_download_black_24dp)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setOngoing(true);
+                .setPriority(NotificationCompat.PRIORITY_LOW);
 
         builder.setProgress(MAX_PROGRESS, 0, false);
 
@@ -99,6 +98,8 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         }
         
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        NotificationCompat.Builder builder = builders.get(notificationId);
+        builder.setOngoing(false);
         notificationManager.cancel(notificationId);
 
         downloadIdNotificationIdMap.remove(id);

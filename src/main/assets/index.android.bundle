@@ -75189,6 +75189,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
       });
 
       _reactNative.NativeModules.LbryDownloadManager.stopDownload(uri, fileInfo.file_name);
+
+      dispatch(doDeleteFile(fileInfo.outpoint, uri));
     };
   }
 
@@ -75390,6 +75392,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         });
       }, _this.onStopDownloadPressed = function () {
         var _this$props2 = _this.props,
+            deleteFile = _this$props2.deleteFile,
             stopDownload = _this$props2.stopDownload,
             fileInfo = _this$props2.fileInfo,
             navigation = _this$props2.navigation;
