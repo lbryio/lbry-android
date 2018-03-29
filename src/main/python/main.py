@@ -1,3 +1,5 @@
+__version__ = "0.1.0"
+
 class ServiceApp(App):
     def build(self):
         from jnius import autoclass
