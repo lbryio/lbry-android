@@ -199,6 +199,7 @@ class MediaPlayer extends React.PureComponent {
   }
   
   componentWillUnmount() {
+    this.clearControlsTimeout();
     this.setState({ paused: true, fullscreenMode: false });
     const { onFullscreenToggled } = this.props;
     if (onFullscreenToggled) {

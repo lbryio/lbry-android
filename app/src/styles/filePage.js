@@ -58,7 +58,7 @@ const filePageStyle = StyleSheet.create({
   },
   thumbnail: {
     width: screenWidth,
-    height: 200
+    height: 204
   },
   downloadButton: {
     position: 'absolute',

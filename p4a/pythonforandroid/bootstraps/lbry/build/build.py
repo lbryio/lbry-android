@@ -255,7 +255,7 @@ main.py that loads it.''')
     url_scheme = 'kivy'
 
     # Prepare some variables for templating process
-    default_icon = 'templates/kivy-icon.png'
+    default_icon = 'templates/lbry-icon.png'
     default_presplash = 'templates/kivy-presplash.jpg'
     shutil.copy(args.icon or default_icon, 'src/main/res/drawable/icon.png')
     shutil.copy(args.presplash or default_presplash,

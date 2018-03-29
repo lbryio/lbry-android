@@ -28,7 +28,7 @@ class FileItemMedia extends React.PureComponent {
 
   render() {
     let style = this.props.style;
-    const { title, thumbnail, resizeMode } = this.props;
+    const { title, thumbnail, blurRadius, resizeMode } = this.props;
     const atStyle = this.state.autoThumbStyle;
 
     if (thumbnail && ((typeof thumbnail) === 'string')) {
@@ -37,7 +37,10 @@ class FileItemMedia extends React.PureComponent {
       }
       
       return (
-        <Image source={{uri: thumbnail}} resizeMode={resizeMode ? resizeMode : "cover"} style={style} />
+        <Image source={{uri: thumbnail}}
+               blurRadius={blurRadius}
+               resizeMode={resizeMode ? resizeMode : "cover"}
+               style={style} />
       );
     }
         
