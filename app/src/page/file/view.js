@@ -76,6 +76,20 @@ class FilePage extends React.PureComponent {
     );
   }
   
+  onStopDownloadPressed = () => {
+    const { deleteFile, stopDownload, fileInfo, navigation } = this.props;
+    
+    Alert.alert(
+      'Stop download',
+      'Are you sure you want to stop downloading this file?',
+      [
+        { text: 'No' },
+        { text: 'Yes', onPress: () => { stopDownload(navigation.state.params.uri, fileInfo); } }
+      ],
+      { cancelable: true }
+    );
+  }
+  
   componentWillUnmount() {
     StatusBar.setHidden(false);
     if (NativeModules.ScreenOrientation) {
@@ -128,7 +142,7 @@ class FilePage extends React.PureComponent {
         { showActions &&
         <View style={filePageStyle.actions}>
           {completed && <Button color="red" title="Delete" onPress={this.onDeletePressed} />}
-          {fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes &&
+          {!completed && fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes &&
             <Button color="red" title="Stop Download" onPress={this.onStopDownloadPressed} />
           }
         </View>}

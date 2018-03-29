@@ -5667,7 +5667,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       };
 
       __webpack_require__.p = "";
-      return __webpack_require__(__webpack_require__.s = 14);
+      return __webpack_require__(__webpack_require__.s = 15);
     }([function (module, exports, __webpack_require__) {
       "use strict";
 
@@ -5700,6 +5700,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
       var UPDATE_REMOTE_VERSION = exports.UPDATE_REMOTE_VERSION = 'UPDATE_REMOTE_VERSION';
       var SKIP_UPGRADE = exports.SKIP_UPGRADE = 'SKIP_UPGRADE';
       var START_UPGRADE = exports.START_UPGRADE = 'START_UPGRADE';
+      var AUTO_UPDATE_DECLINED = exports.AUTO_UPDATE_DECLINED = 'AUTO_UPDATE_DECLINED';
+      var AUTO_UPDATE_DOWNLOADED = exports.AUTO_UPDATE_DOWNLOADED = 'AUTO_UPDATE_DOWNLOADED';
       var GET_NEW_ADDRESS_STARTED = exports.GET_NEW_ADDRESS_STARTED = 'GET_NEW_ADDRESS_STARTED';
       var GET_NEW_ADDRESS_COMPLETED = exports.GET_NEW_ADDRESS_COMPLETED = 'GET_NEW_ADDRESS_COMPLETED';
       var FETCH_TRANSACTIONS_STARTED = exports.FETCH_TRANSACTIONS_STARTED = 'FETCH_TRANSACTIONS_STARTED';
@@ -5707,8 +5709,6 @@ __d(function (global, require, module, exports, _dependencyMap) {
       var UPDATE_BALANCE = exports.UPDATE_BALANCE = 'UPDATE_BALANCE';
       var CHECK_ADDRESS_IS_MINE_STARTED = exports.CHECK_ADDRESS_IS_MINE_STARTED = 'CHECK_ADDRESS_IS_MINE_STARTED';
       var CHECK_ADDRESS_IS_MINE_COMPLETED = exports.CHECK_ADDRESS_IS_MINE_COMPLETED = 'CHECK_ADDRESS_IS_MINE_COMPLETED';
-      var SET_DRAFT_TRANSACTION_AMOUNT = exports.SET_DRAFT_TRANSACTION_AMOUNT = 'SET_DRAFT_TRANSACTION_AMOUNT';
-      var SET_DRAFT_TRANSACTION_ADDRESS = exports.SET_DRAFT_TRANSACTION_ADDRESS = 'SET_DRAFT_TRANSACTION_ADDRESS';
       var SEND_TRANSACTION_STARTED = exports.SEND_TRANSACTION_STARTED = 'SEND_TRANSACTION_STARTED';
       var SEND_TRANSACTION_COMPLETED = exports.SEND_TRANSACTION_COMPLETED = 'SEND_TRANSACTION_COMPLETED';
       var SEND_TRANSACTION_FAILED = exports.SEND_TRANSACTION_FAILED = 'SEND_TRANSACTION_FAILED';
@@ -5728,8 +5728,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
       var FETCH_CLAIM_LIST_MINE_COMPLETED = exports.FETCH_CLAIM_LIST_MINE_COMPLETED = 'FETCH_CLAIM_LIST_MINE_COMPLETED';
       var ABANDON_CLAIM_STARTED = exports.ABANDON_CLAIM_STARTED = 'ABANDON_CLAIM_STARTED';
       var ABANDON_CLAIM_SUCCEEDED = exports.ABANDON_CLAIM_SUCCEEDED = 'ABANDON_CLAIM_SUCCEEDED';
-      var FETCH_CHANNEL_LIST_MINE_STARTED = exports.FETCH_CHANNEL_LIST_MINE_STARTED = 'FETCH_CHANNEL_LIST_MINE_STARTED';
-      var FETCH_CHANNEL_LIST_MINE_COMPLETED = exports.FETCH_CHANNEL_LIST_MINE_COMPLETED = 'FETCH_CHANNEL_LIST_MINE_COMPLETED';
+      var FETCH_CHANNEL_LIST_STARTED = exports.FETCH_CHANNEL_LIST_STARTED = 'FETCH_CHANNEL_LIST_STARTED';
+      var FETCH_CHANNEL_LIST_COMPLETED = exports.FETCH_CHANNEL_LIST_COMPLETED = 'FETCH_CHANNEL_LIST_COMPLETED';
       var CREATE_CHANNEL_STARTED = exports.CREATE_CHANNEL_STARTED = 'CREATE_CHANNEL_STARTED';
       var CREATE_CHANNEL_COMPLETED = exports.CREATE_CHANNEL_COMPLETED = 'CREATE_CHANNEL_COMPLETED';
       var PUBLISH_STARTED = exports.PUBLISH_STARTED = 'PUBLISH_STARTED';
@@ -5748,15 +5748,19 @@ __d(function (global, require, module, exports, _dependencyMap) {
       var DOWNLOADING_STARTED = exports.DOWNLOADING_STARTED = 'DOWNLOADING_STARTED';
       var DOWNLOADING_PROGRESSED = exports.DOWNLOADING_PROGRESSED = 'DOWNLOADING_PROGRESSED';
       var DOWNLOADING_COMPLETED = exports.DOWNLOADING_COMPLETED = 'DOWNLOADING_COMPLETED';
+      var DOWNLOADING_CANCELED = exports.DOWNLOADING_CANCELED = 'DOWNLOADING_CANCELED';
       var PLAY_VIDEO_STARTED = exports.PLAY_VIDEO_STARTED = 'PLAY_VIDEO_STARTED';
       var FETCH_AVAILABILITY_STARTED = exports.FETCH_AVAILABILITY_STARTED = 'FETCH_AVAILABILITY_STARTED';
       var FETCH_AVAILABILITY_COMPLETED = exports.FETCH_AVAILABILITY_COMPLETED = 'FETCH_AVAILABILITY_COMPLETED';
       var FILE_DELETE = exports.FILE_DELETE = 'FILE_DELETE';
-      var SEARCH_STARTED = exports.SEARCH_STARTED = 'SEARCH_STARTED';
-      var SEARCH_COMPLETED = exports.SEARCH_COMPLETED = 'SEARCH_COMPLETED';
-      var SEARCH_CANCELLED = exports.SEARCH_CANCELLED = 'SEARCH_CANCELLED';
+      var SEARCH_START = exports.SEARCH_START = 'SEARCH_START';
+      var SEARCH_SUCCESS = exports.SEARCH_SUCCESS = 'SEARCH_SUCCESS';
+      var SEARCH_FAIL = exports.SEARCH_FAIL = 'SEARCH_FAIL';
+      var UPDATE_SEARCH_QUERY = exports.UPDATE_SEARCH_QUERY = 'UPDATE_SEARCH_QUERY';
+      var UPDATE_SEARCH_SUGGESTIONS = exports.UPDATE_SEARCH_SUGGESTIONS = 'UPDATE_SEARCH_SUGGESTIONS';
       var DAEMON_SETTINGS_RECEIVED = exports.DAEMON_SETTINGS_RECEIVED = 'DAEMON_SETTINGS_RECEIVED';
       var CLIENT_SETTING_CHANGED = exports.CLIENT_SETTING_CHANGED = 'CLIENT_SETTING_CHANGED';
+      var UPDATE_IS_NIGHT = exports.UPDATE_IS_NIGHT = 'UPDATE_IS_NIGHT';
       var AUTHENTICATION_STARTED = exports.AUTHENTICATION_STARTED = 'AUTHENTICATION_STARTED';
       var AUTHENTICATION_SUCCESS = exports.AUTHENTICATION_SUCCESS = 'AUTHENTICATION_SUCCESS';
       var AUTHENTICATION_FAILURE = exports.AUTHENTICATION_FAILURE = 'AUTHENTICATION_FAILURE';
@@ -5768,6 +5772,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
       var USER_EMAIL_VERIFY_STARTED = exports.USER_EMAIL_VERIFY_STARTED = 'USER_EMAIL_VERIFY_STARTED';
       var USER_EMAIL_VERIFY_SUCCESS = exports.USER_EMAIL_VERIFY_SUCCESS = 'USER_EMAIL_VERIFY_SUCCESS';
       var USER_EMAIL_VERIFY_FAILURE = exports.USER_EMAIL_VERIFY_FAILURE = 'USER_EMAIL_VERIFY_FAILURE';
+      var USER_PHONE_RESET = exports.USER_PHONE_RESET = 'USER_PHONE_RESET';
+      var USER_PHONE_NEW_STARTED = exports.USER_PHONE_NEW_STARTED = 'USER_PHONE_NEW_STARTED';
+      var USER_PHONE_NEW_SUCCESS = exports.USER_PHONE_NEW_SUCCESS = 'USER_PHONE_NEW_SUCCESS';
+      var USER_PHONE_NEW_FAILURE = exports.USER_PHONE_NEW_FAILURE = 'USER_PHONE_NEW_FAILURE';
+      var USER_PHONE_VERIFY_STARTED = exports.USER_PHONE_VERIFY_STARTED = 'USER_PHONE_VERIFY_STARTED';
+      var USER_PHONE_VERIFY_SUCCESS = exports.USER_PHONE_VERIFY_SUCCESS = 'USER_PHONE_VERIFY_SUCCESS';
+      var USER_PHONE_VERIFY_FAILURE = exports.USER_PHONE_VERIFY_FAILURE = 'USER_PHONE_VERIFY_FAILURE';
       var USER_IDENTITY_VERIFY_STARTED = exports.USER_IDENTITY_VERIFY_STARTED = 'USER_IDENTITY_VERIFY_STARTED';
       var USER_IDENTITY_VERIFY_SUCCESS = exports.USER_IDENTITY_VERIFY_SUCCESS = 'USER_IDENTITY_VERIFY_SUCCESS';
       var USER_IDENTITY_VERIFY_FAILURE = exports.USER_IDENTITY_VERIFY_FAILURE = 'USER_IDENTITY_VERIFY_FAILURE';
@@ -5806,12 +5817,24 @@ __d(function (global, require, module, exports, _dependencyMap) {
       var CHANNEL_SUBSCRIBE = exports.CHANNEL_SUBSCRIBE = 'CHANNEL_SUBSCRIBE';
       var CHANNEL_UNSUBSCRIBE = exports.CHANNEL_UNSUBSCRIBE = 'CHANNEL_UNSUBSCRIBE';
       var HAS_FETCHED_SUBSCRIPTIONS = exports.HAS_FETCHED_SUBSCRIPTIONS = 'HAS_FETCHED_SUBSCRIPTIONS';
+      var SET_SUBSCRIPTION_LATEST = exports.SET_SUBSCRIPTION_LATEST = 'SET_SUBSCRIPTION_LATEST';
+      var SET_SUBSCRIPTION_NOTIFICATION = exports.SET_SUBSCRIPTION_NOTIFICATION = 'SET_SUBSCRIPTION_NOTIFICATION';
+      var SET_SUBSCRIPTION_NOTIFICATIONS = exports.SET_SUBSCRIPTION_NOTIFICATIONS = 'SET_SUBSCRIPTION_NOTIFICATIONS';
+      var CHECK_SUBSCRIPTION_STARTED = exports.CHECK_SUBSCRIPTION_STARTED = 'CHECK_SUBSCRIPTION_STARTED';
+      var CHECK_SUBSCRIPTION_COMPLETED = exports.CHECK_SUBSCRIPTION_COMPLETED = 'CHECK_SUBSCRIPTION_COMPLETED';
+      var CHECK_SUBSCRIPTIONS_SUBSCRIBE = exports.CHECK_SUBSCRIPTIONS_SUBSCRIBE = 'CHECK_SUBSCRIPTIONS_SUBSCRIBE';
       var SET_VIDEO_PAUSE = exports.SET_VIDEO_PAUSE = 'SET_VIDEO_PAUSE';
       var MEDIA_PLAY = exports.MEDIA_PLAY = 'MEDIA_PLAY';
       var MEDIA_PAUSE = exports.MEDIA_PAUSE = 'MEDIA_PAUSE';
       var MEDIA_POSITION = exports.MEDIA_POSITION = 'MEDIA_POSITION';
-      var NOTIFICATION_CREATED = exports.NOTIFICATION_CREATED = 'NOTIFICATION_CREATED';
-      var NOTIFICATION_DISPLAYED = exports.NOTIFICATION_DISPLAYED = 'NOTIFICATION_DISPLAYED';
+      var CLEAR_PUBLISH = exports.CLEAR_PUBLISH = 'CLEAR_PUBLISH';
+      var UPDATE_PUBLISH_FORM = exports.UPDATE_PUBLISH_FORM = 'UPDATE_PUBLISH_FORM';
+      var PUBLISH_START = exports.PUBLISH_START = 'PUBLISH_START';
+      var PUBLISH_SUCCESS = exports.PUBLISH_SUCCESS = 'PUBLISH_SUCCESS';
+      var PUBLISH_FAIL = exports.PUBLISH_FAIL = 'PUBLISH_FAIL';
+      var CLEAR_PUBLISH_ERROR = exports.CLEAR_PUBLISH_ERROR = 'CLEAR_PUBLISH_ERROR';
+      var REMOVE_PENDING_PUBLISH = exports.REMOVE_PENDING_PUBLISH = 'REMOVE_PENDING_PUBLISH';
+      var DO_PREPARE_EDIT = exports.DO_PREPARE_EDIT = 'DO_PREPARE_EDIT';
     }, function (module, exports, __webpack_require__) {
       "use strict";
 
@@ -6012,7 +6035,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }),
             _componentsRegex$exec2 = _slicedToArray(_componentsRegex$exec, 6),
             proto = _componentsRegex$exec2[0],
-            name = _componentsRegex$exec2[1],
+            claimName = _componentsRegex$exec2[1],
             modSep = _componentsRegex$exec2[2],
             modVal = _componentsRegex$exec2[3],
             pathSep = _componentsRegex$exec2[4],
@@ -6024,12 +6047,12 @@ __d(function (global, require, module, exports, _dependencyMap) {
           throw new Error(__('LBRY URIs must include a protocol prefix (lbry://).'));
         }
 
-        if (!name) {
+        if (!claimName) {
           throw new Error(__('URI does not include name.'));
         }
 
-        var isChannel = name.startsWith('@');
-        var channelName = isChannel ? name.slice(1) : name;
+        var isChannel = claimName.startsWith('@');
+        var channelName = isChannel ? claimName.slice(1) : claimName;
 
         if (isChannel) {
           if (!channelName) {
@@ -6043,7 +6066,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
           contentName = path;
         }
 
-        var nameBadChars = (channelName || name).match(regexInvalidURI);
+        var nameBadChars = (channelName || claimName).match(regexInvalidURI);
 
         if (nameBadChars) {
           throw new Error(__('Invalid character %s in name: %s.', nameBadChars.length === 1 ? '' : 's', nameBadChars.join(', ')));
@@ -6096,7 +6119,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
 
         return _extends({
-          name: name,
+          claimName: claimName,
           path: path,
           isChannel: isChannel
         }, contentName ? {
@@ -6121,22 +6144,22 @@ __d(function (global, require, module, exports, _dependencyMap) {
             bidPosition = URIObj.bidPosition,
             contentName = URIObj.contentName,
             channelName = URIObj.channelName;
-        var name = URIObj.name,
+        var claimName = URIObj.claimName,
             path = URIObj.path;
 
         if (channelName) {
           var channelNameFormatted = channelName.startsWith('@') ? channelName : '@' + channelName;
 
-          if (!name) {
-            name = channelNameFormatted;
-          } else if (name !== channelNameFormatted) {
-            throw new Error(__('Received a channel content URI, but name and channelName do not match. "name" represents the value in the name position of the URI (lbry://name...), which for channel content will be the channel name. In most cases, to construct a channel URI you should just pass channelName and contentName.'));
+          if (!claimName) {
+            claimName = channelNameFormatted;
+          } else if (claimName !== channelNameFormatted) {
+            throw new Error(__('Received a channel content URI, but claim name and channelName do not match. "name" represents the value in the name position of the URI (lbry://name...), which for channel content will be the channel name. In most cases, to construct a channel URI you should just pass channelName and contentName.'));
           }
         }
 
         if (contentName) {
-          if (!name) {
-            name = contentName;
+          if (!claimName) {
+            claimName = contentName;
           } else if (!path) {
             path = contentName;
           }
@@ -6146,21 +6169,21 @@ __d(function (global, require, module, exports, _dependencyMap) {
           }
         }
 
-        return (includeProto ? 'lbry://' : '') + name + (claimId ? '#' + claimId : '') + (claimSequence ? ':' + claimSequence : '') + (bidPosition ? '' + bidPosition : '') + (path ? '/' + path : '');
+        return (includeProto ? 'lbry://' : '') + claimName + (claimId ? '#' + claimId : '') + (claimSequence ? ':' + claimSequence : '') + (bidPosition ? '' + bidPosition : '') + (path ? '/' + path : '');
       }
 
       function normalizeURI(URI) {
         if (URI.match(/pending_claim/)) return URI;
 
         var _parseURI = parseURI(URI),
-            name = _parseURI.name,
+            claimName = _parseURI.claimName,
             path = _parseURI.path,
             bidPosition = _parseURI.bidPosition,
             claimSequence = _parseURI.claimSequence,
             claimId = _parseURI.claimId;
 
         return buildURI({
-          name: name,
+          claimName: claimName,
           path: path,
           claimSequence: claimSequence,
           bidPosition: bidPosition,
@@ -6177,13 +6200,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
           return false;
         }
 
-        return parts && parts.name;
+        return parts && parts.claimName;
       }
 
-      function isNameValid(name) {
+      function isNameValid(claimName) {
         var checkCase = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         var regexp = new RegExp('^[a-z0-9-]+$', checkCase ? '' : 'i');
-        return regexp.test(name);
+        return regexp.test(claimName);
       }
 
       function isURIClaimable(URI) {
@@ -6195,7 +6218,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
           return false;
         }
 
-        return parts && parts.name && !parts.claimId && !parts.bidPosition && !parts.claimSequence && !parts.isChannel && !parts.path;
+        return parts && parts.claimName && !parts.claimId && !parts.bidPosition && !parts.claimSequence && !parts.isChannel && !parts.path;
       }
     }, function (module, exports, __webpack_require__) {
       "use strict";
@@ -6207,7 +6230,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
       var _lbryURI = __webpack_require__(2);
 
-      var _navigation = __webpack_require__(4);
+      var _navigation = __webpack_require__(5);
 
       var _reselect = __webpack_require__(1);
 
@@ -6405,183 +6428,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.selectActiveHistoryEntry = exports.selectHistoryStack = exports.selectHistoryIndex = exports.selectIsForwardDisabled = exports.selectIsBackDisabled = exports.selectPathAfterAuth = exports.selectPageTitle = exports.selectHeaderLinks = exports.makeSelectCurrentParam = exports.selectCurrentParams = exports.selectCurrentPage = exports.computePageFromPath = exports.selectCurrentPath = exports.selectState = undefined;
 
-      var _reselect = __webpack_require__(1);
-
-      var _lbryURI = __webpack_require__(2);
-
-      var _query_params = __webpack_require__(11);
-
-      var selectState = exports.selectState = function selectState(state) {
-        return state.navigation || {};
-      };
-
-      var selectCurrentPath = exports.selectCurrentPath = (0, _reselect.createSelector)(selectState, function (state) {
-        return state.currentPath;
-      });
-
-      var computePageFromPath = exports.computePageFromPath = function computePageFromPath(path) {
-        return path.replace(/^\//, '').split('?')[0];
-      };
-
-      var selectCurrentPage = exports.selectCurrentPage = (0, _reselect.createSelector)(selectCurrentPath, function (path) {
-        return computePageFromPath(path);
-      });
-      var selectCurrentParams = exports.selectCurrentParams = (0, _reselect.createSelector)(selectCurrentPath, function (path) {
-        if (path === undefined) return {};
-        if (!path.match(/\?/)) return {};
-        return (0, _query_params.parseQueryParams)(path.split('?')[1]);
-      });
-
-      var makeSelectCurrentParam = exports.makeSelectCurrentParam = function makeSelectCurrentParam(param) {
-        return (0, _reselect.createSelector)(selectCurrentParams, function (params) {
-          return params ? params[param] : undefined;
-        });
-      };
-
-      var selectHeaderLinks = exports.selectHeaderLinks = (0, _reselect.createSelector)(selectCurrentPage, function (page) {
-        switch (page) {
-          case 'wallet':
-          case 'history':
-          case 'send':
-          case 'getcredits':
-          case 'invite':
-          case 'rewards':
-          case 'backup':
-            return {
-              wallet: __('Overview'),
-              getcredits: __('Get Credits'),
-              send: __('Send / Receive'),
-              rewards: __('Rewards'),
-              invite: __('Invites'),
-              history: __('History')
-            };
-
-          case 'downloaded':
-          case 'published':
-            return {
-              downloaded: __('Downloaded'),
-              published: __('Published')
-            };
-
-          case 'settings':
-          case 'help':
-            return {
-              settings: __('Settings'),
-              help: __('Help')
-            };
-
-          case 'discover':
-          case 'subscriptions':
-            return {
-              discover: __('Discover'),
-              subscriptions: __('Subscriptions')
-            };
-
-          default:
-            return null;
-        }
-      });
-      var selectPageTitle = exports.selectPageTitle = (0, _reselect.createSelector)(selectCurrentPage, selectCurrentParams, function (page, params) {
-        switch (page) {
-          case 'settings':
-            return __('Settings');
-
-          case 'report':
-            return __('Report');
-
-          case 'wallet':
-            return __('Wallet');
-
-          case 'send':
-            return __('Send or Receive LBRY Credits');
-
-          case 'getcredits':
-            return __('Get LBRY Credits');
-
-          case 'backup':
-            return __('Backup Your Wallet');
-
-          case 'rewards':
-            return __('Rewards');
-
-          case 'invite':
-            return __('Invites');
-
-          case 'start':
-            return __('Start');
-
-          case 'publish':
-            return params.id ? __('Edit') : __('Publish');
-
-          case 'help':
-            return __('Help');
-
-          case 'developer':
-            return __('Developer');
-
-          case 'show':
-            {
-              var parts = [(0, _lbryURI.normalizeURI)(params.uri)];
-
-              if (Object.keys(params).length > 1) {
-                parts.push((0, _query_params.toQueryString)(babelHelpers.extends({}, params, {
-                  uri: null
-                })));
-              }
-
-              return parts.join('?');
-            }
-
-          case 'downloaded':
-            return __('Downloads & Purchases');
-
-          case 'published':
-            return __('Publications');
-
-          case 'search':
-            return params.query ? __('Search results for %s', params.query) : __('Search');
-
-          case 'subscriptions':
-            return __('Your Subscriptions');
-
-          case 'discover':
-          case false:
-          case null:
-          case '':
-            return '';
-
-          default:
-            return page[0].toUpperCase() + (page.length > 0 ? page.substr(1) : '');
-        }
-      });
-      var selectPathAfterAuth = exports.selectPathAfterAuth = (0, _reselect.createSelector)(selectState, function (state) {
-        return state.pathAfterAuth;
-      });
-      var selectIsBackDisabled = exports.selectIsBackDisabled = (0, _reselect.createSelector)(selectState, function (state) {
-        return state.index === 0;
-      });
-      var selectIsForwardDisabled = exports.selectIsForwardDisabled = (0, _reselect.createSelector)(selectState, function (state) {
-        return state.index === state.stack.length - 1;
-      });
-      var selectHistoryIndex = exports.selectHistoryIndex = (0, _reselect.createSelector)(selectState, function (state) {
-        return state.index;
-      });
-      var selectHistoryStack = exports.selectHistoryStack = (0, _reselect.createSelector)(selectState, function (state) {
-        return state.stack;
-      });
-      var selectActiveHistoryEntry = exports.selectActiveHistoryEntry = (0, _reselect.createSelector)(selectState, function (state) {
-        return state.stack[state.index];
-      });
-    }, function (module, exports, __webpack_require__) {
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      __webpack_require__(16);
+      __webpack_require__(17);
 
       function _toConsumableArray(arr) {
         if (Array.isArray(arr)) {
@@ -6737,6 +6585,20 @@ __d(function (global, require, module, exports, _dependencyMap) {
           apiCall('status', {}, function (status) {
             resolve(status);
           }, reject);
+        });
+      };
+
+      Lbry.file_delete = function () {
+        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        return new Promise(function (resolve, reject) {
+          apiCall('file_delete', params, resolve, reject);
+        });
+      };
+
+      Lbry.file_set_status = function () {
+        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        return new Promise(function (resolve, reject) {
+          apiCall('file_set_status', params, resolve, reject);
         });
       };
 
@@ -6915,6 +6777,191 @@ __d(function (global, require, module, exports, _dependencyMap) {
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
+      exports.selectNavLinks = exports.selectPageTitle = exports.selectActiveHistoryEntry = exports.selectHistoryStack = exports.selectHistoryIndex = exports.selectIsHome = exports.selectIsForwardDisabled = exports.selectIsBackDisabled = exports.selectPathAfterAuth = exports.makeSelectCurrentParam = exports.selectCurrentParams = exports.selectCurrentPage = exports.computePageFromPath = exports.selectCurrentPath = exports.selectState = undefined;
+
+      var _reselect = __webpack_require__(1);
+
+      var _query_params = __webpack_require__(11);
+
+      var selectState = exports.selectState = function selectState(state) {
+        return state.navigation || {};
+      };
+
+      var selectCurrentPath = exports.selectCurrentPath = (0, _reselect.createSelector)(selectState, function (state) {
+        return state.currentPath;
+      });
+
+      var computePageFromPath = exports.computePageFromPath = function computePageFromPath(path) {
+        return path.replace(/^\//, '').split('?')[0];
+      };
+
+      var selectCurrentPage = exports.selectCurrentPage = (0, _reselect.createSelector)(selectCurrentPath, function (path) {
+        return computePageFromPath(path);
+      });
+      var selectCurrentParams = exports.selectCurrentParams = (0, _reselect.createSelector)(selectCurrentPath, function (path) {
+        if (path === undefined) return {};
+        if (!path.match(/\?/)) return {};
+        return (0, _query_params.parseQueryParams)(path.split('?')[1]);
+      });
+
+      var makeSelectCurrentParam = exports.makeSelectCurrentParam = function makeSelectCurrentParam(param) {
+        return (0, _reselect.createSelector)(selectCurrentParams, function (params) {
+          return params ? params[param] : undefined;
+        });
+      };
+
+      var selectPathAfterAuth = exports.selectPathAfterAuth = (0, _reselect.createSelector)(selectState, function (state) {
+        return state.pathAfterAuth;
+      });
+      var selectIsBackDisabled = exports.selectIsBackDisabled = (0, _reselect.createSelector)(selectState, function (state) {
+        return state.index === 0;
+      });
+      var selectIsForwardDisabled = exports.selectIsForwardDisabled = (0, _reselect.createSelector)(selectState, function (state) {
+        return state.index === state.stack.length - 1;
+      });
+      var selectIsHome = exports.selectIsHome = (0, _reselect.createSelector)(selectCurrentPage, function (page) {
+        return page === 'discover';
+      });
+      var selectHistoryIndex = exports.selectHistoryIndex = (0, _reselect.createSelector)(selectState, function (state) {
+        return state.index;
+      });
+      var selectHistoryStack = exports.selectHistoryStack = (0, _reselect.createSelector)(selectState, function (state) {
+        return state.stack;
+      });
+      var selectActiveHistoryEntry = exports.selectActiveHistoryEntry = (0, _reselect.createSelector)(selectState, function (state) {
+        return state.stack[state.index];
+      });
+      var selectPageTitle = exports.selectPageTitle = (0, _reselect.createSelector)(selectCurrentPage, function (page) {
+        switch (page) {
+          default:
+            return '';
+        }
+      });
+      var selectNavLinks = exports.selectNavLinks = (0, _reselect.createSelector)(selectCurrentPage, selectHistoryStack, function (currentPage, historyStack) {
+        var isWalletPage = function isWalletPage(page) {
+          return page === 'wallet' || page === 'send' || page === 'getcredits' || page === 'rewards' || page === 'history' || page === 'invite';
+        };
+
+        var isMyLbryPage = function isMyLbryPage(page) {
+          return page === 'downloaded' || page === 'published' || page === 'settings';
+        };
+
+        var previousStack = historyStack.slice().reverse();
+
+        var getPreviousSubLinkPath = function getPreviousSubLinkPath(checkIfValidPage) {
+          for (var i = 0; i < previousStack.length; i += 1) {
+            var currentStackItem = previousStack[i];
+            var pageInStack = currentStackItem.path.slice(1);
+
+            if (checkIfValidPage(pageInStack)) {
+              return currentStackItem.path;
+            }
+          }
+
+          return undefined;
+        };
+
+        var getActiveSublink = function getActiveSublink(category) {
+          if (category === 'wallet') {
+            var previousPath = getPreviousSubLinkPath(isWalletPage);
+            return previousPath || '/wallet';
+          } else if (category === 'myLbry') {
+            var _previousPath = getPreviousSubLinkPath(isMyLbryPage);
+
+            return _previousPath || '/downloaded';
+          }
+
+          return undefined;
+        };
+
+        var isCurrentlyWalletPage = isWalletPage(currentPage);
+        var isCurrentlyMyLbryPage = isMyLbryPage(currentPage);
+        var walletSubLinks = [{
+          label: 'Overview',
+          path: '/wallet',
+          active: currentPage === 'wallet'
+        }, {
+          label: 'Send & Recieve',
+          path: '/send',
+          active: currentPage === 'send'
+        }, {
+          label: 'Get Credits',
+          path: '/getcredits',
+          active: currentPage === 'getcredits'
+        }, {
+          label: 'Rewards',
+          path: '/rewards',
+          active: currentPage === 'rewards'
+        }, {
+          label: 'Invites',
+          path: '/invite',
+          active: currentPage === 'invite'
+        }, {
+          label: 'Transactions',
+          path: '/history',
+          active: currentPage === 'history'
+        }];
+        var myLbrySubLinks = [{
+          label: 'Downloads',
+          path: '/downloaded',
+          active: currentPage === 'downloaded'
+        }, {
+          label: 'Publishes',
+          path: '/published',
+          active: currentPage === 'published'
+        }, {
+          label: 'Settings',
+          path: '/settings',
+          active: currentPage === 'settings'
+        }, {
+          label: 'Backup',
+          path: '/backup',
+          active: currentPage === 'backup'
+        }];
+        var navLinks = {
+          primary: [{
+            label: 'Explore',
+            path: '/discover',
+            active: currentPage === 'discover',
+            icon: 'Compass'
+          }, {
+            label: 'Subscriptions',
+            path: '/subscriptions',
+            active: currentPage === 'subscriptions',
+            icon: 'AtSign'
+          }],
+          secondary: [{
+            label: 'Wallet',
+            icon: 'CreditCard',
+            subLinks: walletSubLinks,
+            path: isCurrentlyWalletPage ? '/wallet' : getActiveSublink('wallet'),
+            active: isWalletPage(currentPage)
+          }, {
+            label: 'My LBRY',
+            icon: 'Settings',
+            subLinks: myLbrySubLinks,
+            path: isCurrentlyMyLbryPage ? '/downloaded' : getActiveSublink('myLbry'),
+            active: isMyLbryPage(currentPage)
+          }, {
+            label: 'Publish',
+            icon: 'UploadCloud',
+            path: '/publish',
+            active: currentPage === 'publish'
+          }, {
+            label: 'Help',
+            path: '/help',
+            active: currentPage === 'help',
+            icon: 'HelpCircle'
+          }]
+        };
+        return navLinks;
+      });
+    }, function (module, exports, __webpack_require__) {
+      "use strict";
+
+      Object.defineProperty(exports, "__esModule", {
+        value: true
+      });
 
       var _slicedToArray = function () {
         function sliceIterator(arr, i) {
@@ -6965,7 +7012,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
       var ACTIONS = _interopRequireWildcard(_action_types);
 
-      var _lbry = __webpack_require__(5);
+      var _lbry = __webpack_require__(4);
 
       var _lbry2 = _interopRequireDefault(_lbry);
 
@@ -7216,7 +7263,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
           return target;
         };
 
-        var _querystring = __webpack_require__(19);
+        var _querystring = __webpack_require__(20);
 
         var _querystring2 = _interopRequireDefault(_querystring);
 
@@ -7316,7 +7363,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         };
 
         exports.default = Lbryapi;
-      }).call(exports, __webpack_require__(18));
+      }).call(exports, __webpack_require__(19));
     }, function (module, exports, __webpack_require__) {
       "use strict";
 
@@ -7471,9 +7518,11 @@ __d(function (global, require, module, exports, _dependencyMap) {
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.selectTotalDownloadProgress = exports.selectDownloadingFileInfos = exports.selectFileInfosDownloaded = exports.makeSelectLoadingForUri = exports.selectUrisLoading = exports.makeSelectDownloadingForUri = exports.selectDownloadingByOutpoint = exports.makeSelectFileInfoForUri = exports.selectIsFetchingFileListDownloadedOrPublished = exports.selectIsFetchingFileList = exports.selectFileInfosByOutpoint = exports.selectState = undefined;
+      exports.selectSearchDownloadUris = exports.selectTotalDownloadProgress = exports.selectDownloadingFileInfos = exports.selectFileInfosDownloaded = exports.makeSelectLoadingForUri = exports.selectUrisLoading = exports.makeSelectDownloadingForUri = exports.selectDownloadingByOutpoint = exports.makeSelectFileInfoForUri = exports.selectIsFetchingFileListDownloadedOrPublished = exports.selectIsFetchingFileList = exports.selectFileInfosByOutpoint = exports.selectState = undefined;
 
       var _claims = __webpack_require__(3);
+
+      var _lbryURI = __webpack_require__(2);
 
       var _reselect = __webpack_require__(1);
 
@@ -7547,6 +7596,143 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }, 0);
         if (fileInfos.length > 0) return totalProgress / fileInfos.length / 100.0;
         return -1;
+      });
+
+      var selectSearchDownloadUris = exports.selectSearchDownloadUris = function selectSearchDownloadUris(query) {
+        return (0, _reselect.createSelector)(selectFileInfosDownloaded, function (fileInfos) {
+          if (!query || !fileInfos.length) {
+            return null;
+          }
+
+          var queryParts = query.toLowerCase().split(' ');
+          var searchQueryDictionary = {};
+          queryParts.forEach(function (subQuery) {
+            searchQueryDictionary[subQuery] = subQuery;
+          });
+
+          var arrayContainsQueryPart = function arrayContainsQueryPart(array) {
+            for (var i = 0; i < array.length; i += 1) {
+              var subQuery = array[i];
+
+              if (searchQueryDictionary[subQuery]) {
+                return true;
+              }
+            }
+
+            return false;
+          };
+
+          var downloadResultsFromQuery = [];
+          fileInfos.forEach(function (fileInfo) {
+            var channel_name = fileInfo.channel_name,
+                claim_name = fileInfo.claim_name,
+                metadata = fileInfo.metadata;
+            var author = metadata.author,
+                description = metadata.description,
+                title = metadata.title;
+
+            if (channel_name) {
+              var channelName = channel_name.toLowerCase();
+              var strippedOutChannelName = channelName.slice(1);
+
+              if (searchQueryDictionary[channel_name] || searchQueryDictionary[strippedOutChannelName]) {
+                downloadResultsFromQuery.push(fileInfo);
+                return;
+              }
+            }
+
+            var nameParts = claim_name.toLowerCase().split('-');
+
+            if (arrayContainsQueryPart(nameParts)) {
+              downloadResultsFromQuery.push(fileInfo);
+              return;
+            }
+
+            var titleParts = title.toLowerCase().split(' ');
+
+            if (arrayContainsQueryPart(titleParts)) {
+              downloadResultsFromQuery.push(fileInfo);
+              return;
+            }
+
+            if (author) {
+              var authorParts = author.toLowerCase().split(' ');
+
+              if (arrayContainsQueryPart(authorParts)) {
+                downloadResultsFromQuery.push(fileInfo);
+                return;
+              }
+            }
+
+            if (description) {
+              var descriptionParts = description.toLowerCase().split(' ');
+
+              if (arrayContainsQueryPart(descriptionParts)) {
+                downloadResultsFromQuery.push(fileInfo);
+              }
+            }
+          });
+          return downloadResultsFromQuery.length ? downloadResultsFromQuery.map(function (fileInfo) {
+            var channelName = fileInfo.channel_name,
+                claimId = fileInfo.claim_id,
+                claimName = fileInfo.claim_name,
+                value = fileInfo.value,
+                metadata = fileInfo.metadata;
+            var uriParams = {};
+
+            if (channelName) {
+              uriParams.channelName = channelName;
+            }
+
+            uriParams.claimId = claimId;
+            uriParams.claimId = claimId;
+            uriParams.contentName = claimName;
+            var uri = (0, _lbryURI.buildURI)(uriParams);
+            return uri;
+          }) : null;
+        });
+      };
+    }, function (module, exports, __webpack_require__) {
+      "use strict";
+
+      Object.defineProperty(exports, "__esModule", {
+        value: true
+      });
+      exports.selectWunderBarAddress = exports.makeSelectSearchUris = exports.selectSearchUrisByQuery = exports.selectIsSearching = exports.selectSearchQuery = exports.selectSearchValue = exports.selectState = undefined;
+
+      var _navigation = __webpack_require__(5);
+
+      var _reselect = __webpack_require__(1);
+
+      var selectState = exports.selectState = function selectState(state) {
+        return state.search || {};
+      };
+
+      var selectSearchValue = exports.selectSearchValue = (0, _reselect.createSelector)(selectState, function (state) {
+        return state.searchQuery;
+      });
+      var selectSearchQuery = exports.selectSearchQuery = (0, _reselect.createSelector)(_navigation.selectCurrentPage, _navigation.selectCurrentParams, function (page, params) {
+        return page === 'search' ? params && params.query : null;
+      });
+      var selectIsSearching = exports.selectIsSearching = (0, _reselect.createSelector)(selectState, function (state) {
+        return state.searching;
+      });
+      var selectSearchUrisByQuery = exports.selectSearchUrisByQuery = (0, _reselect.createSelector)(selectState, function (state) {
+        return state.urisByQuery;
+      });
+
+      var makeSelectSearchUris = exports.makeSelectSearchUris = function makeSelectSearchUris(query) {
+        return (0, _reselect.createSelector)(selectSearchUrisByQuery, function (byQuery) {
+          return byQuery[query ? query.replace(/^lbry:\/\//i, '') : query];
+        });
+      };
+
+      var selectWunderBarAddress = exports.selectWunderBarAddress = (0, _reselect.createSelector)(_navigation.selectCurrentPage, selectSearchQuery, _navigation.selectCurrentParams, function (page, query, params) {
+        if (page === 'show') {
+          return params.uri;
+        }
+
+        return query;
       });
     }, function (module, exports, __webpack_require__) {
       "use strict";
@@ -7677,8 +7863,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.selectBlocks = exports.selectDraftTransactionError = exports.selectDraftTransactionAddress = exports.selectDraftTransactionAmount = exports.selectDraftTransaction = exports.selectGettingNewAddress = exports.selectReceiveAddress = exports.selectIsSendingSupport = exports.selectIsFetchingTransactions = exports.selectHasTransactions = exports.selectRecentTransactions = exports.selectTransactionItems = exports.selectTransactionsById = exports.selectBalance = exports.makeSelectBlockDate = exports.selectWunderBarIcon = exports.selectWunderBarAddress = exports.selectSearchUrisByQuery = exports.selectIsSearching = exports.selectSearchQuery = exports.makeSelectSearchUris = exports.selectActiveHistoryEntry = exports.selectHistoryStack = exports.selectHistoryIndex = exports.selectIsForwardDisabled = exports.selectIsBackDisabled = exports.selectPathAfterAuth = exports.selectPageTitle = exports.selectHeaderLinks = exports.selectCurrentParams = undefined;
-      exports.selectCurrentPage = exports.selectCurrentPath = exports.makeSelectCurrentParam = exports.computePageFromPath = exports.selectTotalDownloadProgress = exports.selectDownloadingFileInfos = exports.selectFileInfosDownloaded = exports.selectUrisLoading = exports.selectDownloadingByOutpoint = exports.selectIsFetchingFileListDownloadedOrPublished = exports.selectIsFetchingFileList = exports.selectFileInfosByOutpoint = exports.makeSelectLoadingForUri = exports.makeSelectDownloadingForUri = exports.makeSelectFileInfoForUri = exports.selectFetchingCostInfo = exports.selectCostForCurrentPageUri = exports.selectAllCostInfoByUri = exports.makeSelectCostInfoForUri = exports.makeSelectFetchingCostInfoForUri = exports.selectRewardContentClaimIds = exports.selectChannelClaimCounts = exports.selectPlayingUri = exports.selectFetchingFeaturedUris = exports.selectFeaturedUris = exports.selectResolvingUris = exports.selectMyChannelClaims = exports.selectFetchingMyChannels = exports.selectMyClaimsOutpoints = exports.selectAllMyClaimsByOutpoint = exports.selectMyClaimsWithoutChannels = exports.selectMyClaims = exports.selectPendingClaims = exports.selectIsFetchingClaimListMine = exports.selectAllFetchingChannelClaims = exports.selectMyActiveClaims = exports.selectAbandoningIds = exports.selectMyClaimsRaw = exports.selectAllClaimsByChannel = exports.selectClaimsByUri = exports.selectClaimsById = exports.makeSelectTotalPagesForChannel = exports.makeSelectTotalItemsForChannel = exports.makeSelectIsUriResolving = exports.makeSelectContentTypeForUri = exports.makeSelectTitleForUri = exports.makeSelectMetadataForUri = exports.makeSelectClaimsInChannelForCurrentPage = exports.makeSelectFetchingChannelClaims = exports.makeSelectClaimIsMine = exports.makeSelectClaimForUri = exports.selectNotification = exports.walletReducer = exports.searchReducer = exports.notificationsReducer = exports.fileInfoReducer = exports.costInfoReducer = exports.claimsReducer = exports.formatFullPrice = exports.formatCredits = exports.toQueryString = exports.parseQueryParams = exports.batchActions = exports.doSendSupport = exports.doSetDraftTransactionAddress = exports.doSetDraftTransactionAmount = exports.doSendDraftTransaction = exports.doCheckAddressIsMine = exports.doGetNewAddress = exports.doFetchBlock = exports.doFetchTransactions = exports.doBalanceSubscribe = exports.doUpdateBalance = exports.doSearch = exports.doFetchFileInfosAndPublishedClaims = exports.doFileList = exports.doFetchFileInfo = exports.doFetchCostInfoForUri = exports.doFetchRewardedContent = exports.doFetchFeaturedUris = exports.doResolveUri = exports.doResolveUris = exports.doAbandonClaim = exports.doFetchClaimListMine = exports.doShowSnackBar = exports.doCloseModal = exports.doOpenModal = exports.doNotify = exports.isURIClaimable = exports.isURIValid = exports.normalizeURI = exports.buildURI = exports.parseURI = exports.regexAddress = exports.regexInvalidURI = exports.Lbryapi = exports.Lbry = exports.SETTINGS = exports.ACTIONS = exports.Notification = undefined;
+      exports.selectBlocks = exports.selectDraftTransactionError = exports.selectDraftTransactionAddress = exports.selectDraftTransactionAmount = exports.selectDraftTransaction = exports.selectGettingNewAddress = exports.selectReceiveAddress = exports.selectIsSendingSupport = exports.selectIsFetchingTransactions = exports.selectHasTransactions = exports.selectRecentTransactions = exports.selectTransactionItems = exports.selectTransactionsById = exports.selectBalance = exports.makeSelectBlockDate = exports.selectWunderBarAddress = exports.selectSearchUrisByQuery = exports.selectIsSearching = exports.selectSearchValue = exports.selectSearchQuery = exports.makeSelectSearchUris = exports.selectSearchState = exports.selectNavLinks = exports.selectActiveHistoryEntry = exports.selectHistoryStack = exports.selectHistoryIndex = exports.selectIsForwardDisabled = exports.selectIsBackDisabled = exports.selectPathAfterAuth = exports.selectPageTitle = exports.selectHeaderLinks = exports.selectCurrentParams = exports.selectCurrentPage = exports.selectCurrentPath = undefined;
+      exports.makeSelectCurrentParam = exports.computePageFromPath = exports.selectSearchDownloadUris = exports.selectTotalDownloadProgress = exports.selectDownloadingFileInfos = exports.selectFileInfosDownloaded = exports.selectUrisLoading = exports.selectDownloadingByOutpoint = exports.selectIsFetchingFileListDownloadedOrPublished = exports.selectIsFetchingFileList = exports.selectFileInfosByOutpoint = exports.makeSelectLoadingForUri = exports.makeSelectDownloadingForUri = exports.makeSelectFileInfoForUri = exports.selectFetchingCostInfo = exports.selectCostForCurrentPageUri = exports.selectAllCostInfoByUri = exports.makeSelectCostInfoForUri = exports.makeSelectFetchingCostInfoForUri = exports.selectRewardContentClaimIds = exports.selectChannelClaimCounts = exports.selectPlayingUri = exports.selectFetchingFeaturedUris = exports.selectFeaturedUris = exports.selectResolvingUris = exports.selectMyChannelClaims = exports.selectFetchingMyChannels = exports.selectMyClaimsOutpoints = exports.selectAllMyClaimsByOutpoint = exports.selectMyClaimsWithoutChannels = exports.selectMyClaims = exports.selectPendingClaims = exports.selectIsFetchingClaimListMine = exports.selectAllFetchingChannelClaims = exports.selectMyActiveClaims = exports.selectAbandoningIds = exports.selectMyClaimsRaw = exports.selectAllClaimsByChannel = exports.selectClaimsByUri = exports.selectClaimsById = exports.makeSelectTotalPagesForChannel = exports.makeSelectTotalItemsForChannel = exports.makeSelectIsUriResolving = exports.makeSelectContentTypeForUri = exports.makeSelectTitleForUri = exports.makeSelectMetadataForUri = exports.makeSelectClaimsInChannelForCurrentPage = exports.makeSelectFetchingChannelClaims = exports.makeSelectClaimIsMine = exports.makeSelectClaimForUri = exports.selectNotification = exports.walletReducer = exports.searchReducer = exports.notificationsReducer = exports.fileInfoReducer = exports.costInfoReducer = exports.claimsReducer = exports.formatFullPrice = exports.formatCredits = exports.toQueryString = exports.parseQueryParams = exports.batchActions = exports.doSendSupport = exports.doSetDraftTransactionAddress = exports.doSetDraftTransactionAmount = exports.doSendDraftTransaction = exports.doCheckAddressIsMine = exports.doGetNewAddress = exports.doFetchBlock = exports.doFetchTransactions = exports.doBalanceSubscribe = exports.doUpdateBalance = exports.doUpdateSearchQuery = exports.doSearch = exports.doFetchFileInfosAndPublishedClaims = exports.doFileList = exports.doFetchFileInfo = exports.doFetchCostInfoForUri = exports.doFetchRewardedContent = exports.doFetchFeaturedUris = exports.doResolveUri = exports.doResolveUris = exports.doAbandonClaim = exports.doFetchClaimListMine = exports.doShowSnackBar = exports.doCloseModal = exports.doOpenModal = exports.doNotify = exports.isURIClaimable = exports.isURIValid = exports.normalizeURI = exports.buildURI = exports.parseURI = exports.regexAddress = exports.regexInvalidURI = exports.Lbryapi = exports.Lbry = exports.SETTINGS = exports.ACTIONS = exports.Notification = undefined;
 
       var _Notification = __webpack_require__(9);
 
@@ -7734,7 +7920,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _notifications = __webpack_require__(15);
+      var _notifications = __webpack_require__(16);
 
       Object.defineProperty(exports, 'doNotify', {
         enumerable: true,
@@ -7803,7 +7989,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _cost_info = __webpack_require__(22);
+      var _cost_info = __webpack_require__(23);
 
       Object.defineProperty(exports, 'doFetchCostInfoForUri', {
         enumerable: true,
@@ -7812,7 +7998,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _file_info = __webpack_require__(23);
+      var _file_info = __webpack_require__(24);
 
       Object.defineProperty(exports, 'doFetchFileInfo', {
         enumerable: true,
@@ -7833,7 +8019,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _search = __webpack_require__(24);
+      var _search = __webpack_require__(25);
 
       Object.defineProperty(exports, 'doSearch', {
         enumerable: true,
@@ -7841,8 +8027,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
           return _search.doSearch;
         }
       });
+      Object.defineProperty(exports, 'doUpdateSearchQuery', {
+        enumerable: true,
+        get: function get() {
+          return _search.doUpdateSearchQuery;
+        }
+      });
 
-      var _wallet = __webpack_require__(25);
+      var _wallet = __webpack_require__(28);
 
       Object.defineProperty(exports, 'doUpdateBalance', {
         enumerable: true,
@@ -7929,7 +8121,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _formatCredits = __webpack_require__(27);
+      var _formatCredits = __webpack_require__(30);
 
       Object.defineProperty(exports, 'formatCredits', {
         enumerable: true,
@@ -7944,7 +8136,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _claims2 = __webpack_require__(28);
+      var _claims2 = __webpack_require__(31);
 
       Object.defineProperty(exports, 'claimsReducer', {
         enumerable: true,
@@ -7953,7 +8145,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _cost_info2 = __webpack_require__(29);
+      var _cost_info2 = __webpack_require__(32);
 
       Object.defineProperty(exports, 'costInfoReducer', {
         enumerable: true,
@@ -7962,7 +8154,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _file_info2 = __webpack_require__(30);
+      var _file_info2 = __webpack_require__(33);
 
       Object.defineProperty(exports, 'fileInfoReducer', {
         enumerable: true,
@@ -7971,7 +8163,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _notifications2 = __webpack_require__(31);
+      var _notifications2 = __webpack_require__(34);
 
       Object.defineProperty(exports, 'notificationsReducer', {
         enumerable: true,
@@ -7980,7 +8172,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _search2 = __webpack_require__(32);
+      var _search2 = __webpack_require__(35);
 
       Object.defineProperty(exports, 'searchReducer', {
         enumerable: true,
@@ -7989,7 +8181,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _wallet2 = __webpack_require__(33);
+      var _wallet2 = __webpack_require__(37);
 
       Object.defineProperty(exports, 'walletReducer', {
         enumerable: true,
@@ -7998,7 +8190,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _notifications3 = __webpack_require__(34);
+      var _notifications3 = __webpack_require__(38);
 
       Object.defineProperty(exports, 'selectNotification', {
         enumerable: true,
@@ -8196,7 +8388,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       });
 
-      var _cost_info3 = __webpack_require__(35);
+      var _cost_info3 = __webpack_require__(39);
 
       Object.defineProperty(exports, 'makeSelectFetchingCostInfoForUri', {
         enumerable: true,
@@ -8297,8 +8489,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
           return _file_info3.selectTotalDownloadProgress;
         }
       });
+      Object.defineProperty(exports, 'selectSearchDownloadUris', {
+        enumerable: true,
+        get: function get() {
+          return _file_info3.selectSearchDownloadUris;
+        }
+      });
 
-      var _navigation = __webpack_require__(4);
+      var _navigation = __webpack_require__(5);
 
       Object.defineProperty(exports, 'computePageFromPath', {
         enumerable: true,
@@ -8378,8 +8576,14 @@ __d(function (global, require, module, exports, _dependencyMap) {
           return _navigation.selectActiveHistoryEntry;
         }
       });
+      Object.defineProperty(exports, 'selectNavLinks', {
+        enumerable: true,
+        get: function get() {
+          return _navigation.selectNavLinks;
+        }
+      });
 
-      var _search3 = __webpack_require__(36);
+      var _search3 = __webpack_require__(13);
 
       Object.defineProperty(exports, 'makeSelectSearchUris', {
         enumerable: true,
@@ -8391,6 +8595,12 @@ __d(function (global, require, module, exports, _dependencyMap) {
         enumerable: true,
         get: function get() {
           return _search3.selectSearchQuery;
+        }
+      });
+      Object.defineProperty(exports, 'selectSearchValue', {
+        enumerable: true,
+        get: function get() {
+          return _search3.selectSearchValue;
         }
       });
       Object.defineProperty(exports, 'selectIsSearching', {
@@ -8411,14 +8621,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
           return _search3.selectWunderBarAddress;
         }
       });
-      Object.defineProperty(exports, 'selectWunderBarIcon', {
-        enumerable: true,
-        get: function get() {
-          return _search3.selectWunderBarIcon;
-        }
-      });
 
-      var _wallet3 = __webpack_require__(13);
+      var _wallet3 = __webpack_require__(14);
 
       Object.defineProperty(exports, 'makeSelectBlockDate', {
         enumerable: true,
@@ -8515,11 +8719,11 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
       var ACTIONS = _interopRequireWildcard(_action_types);
 
-      var _settings = __webpack_require__(37);
+      var _settings = __webpack_require__(40);
 
       var SETTINGS = _interopRequireWildcard(_settings);
 
-      var _lbry = __webpack_require__(5);
+      var _lbry = __webpack_require__(4);
 
       var _lbry2 = _interopRequireDefault(_lbry);
 
@@ -8554,6 +8758,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       exports.SETTINGS = SETTINGS;
       exports.Lbry = _lbry2.default;
       exports.Lbryapi = _lbryapi2.default;
+      exports.selectSearchState = _search3.selectState;
     }, function (module, exports, __webpack_require__) {
       "use strict";
 
@@ -8747,7 +8952,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
           scope.Proxy['revocable'] = scope.Proxy.revocable;
           scope['Proxy'] = scope.Proxy;
         })(typeof module !== 'undefined' && module['exports'] ? global : window);
-      }).call(exports, __webpack_require__(17));
+      }).call(exports, __webpack_require__(18));
     }, function (module, exports) {
       var g;
 
@@ -8956,8 +9161,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }, function (module, exports, __webpack_require__) {
       "use strict";
 
-      exports.decode = exports.parse = __webpack_require__(20);
-      exports.encode = exports.stringify = __webpack_require__(21);
+      exports.decode = exports.parse = __webpack_require__(21);
+      exports.encode = exports.stringify = __webpack_require__(22);
     }, function (module, exports, __webpack_require__) {
       "use strict";
 
@@ -9185,7 +9390,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
       var ACTIONS = _interopRequireWildcard(_action_types);
 
-      var _lbry = __webpack_require__(5);
+      var _lbry = __webpack_require__(4);
 
       var _lbry2 = _interopRequireDefault(_lbry);
 
@@ -9286,19 +9491,35 @@ __d(function (global, require, module, exports, _dependencyMap) {
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.doSearch = doSearch;
+      exports.getSearchSuggestions = exports.doUpdateSearchQuery = exports.doSearch = undefined;
 
       var _action_types = __webpack_require__(0);
 
       var ACTIONS = _interopRequireWildcard(_action_types);
 
+      var _search = __webpack_require__(26);
+
+      var SEARCH_TYPES = _interopRequireWildcard(_search);
+
       var _lbryURI = __webpack_require__(2);
 
       var _claims = __webpack_require__(6);
 
-      var _navigation = __webpack_require__(4);
+      var _search2 = __webpack_require__(13);
 
       var _batchActions = __webpack_require__(8);
+
+      var _batchActions2 = _interopRequireDefault(_batchActions);
+
+      var _handleFetch = __webpack_require__(27);
+
+      var _handleFetch2 = _interopRequireDefault(_handleFetch);
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+          default: obj
+        };
+      }
 
       function _interopRequireWildcard(obj) {
         if (obj && obj.__esModule) {
@@ -9317,59 +9538,184 @@ __d(function (global, require, module, exports, _dependencyMap) {
         }
       }
 
-      function doSearch(rawQuery, currentPageNotSearchHandler) {
+      var doSearch = exports.doSearch = function doSearch(rawQuery) {
         return function (dispatch, getState) {
           var state = getState();
-          var page = (0, _navigation.selectCurrentPage)(state);
           var query = rawQuery.replace(/^lbry:\/\//i, '');
 
           if (!query) {
             dispatch({
-              type: ACTIONS.SEARCH_CANCELLED
+              type: ACTIONS.SEARCH_FAIL
             });
             return;
           }
 
+          var urisForQuery = (0, _search2.makeSelectSearchUris)(query)(state);
+
+          if (urisForQuery && !!urisForQuery.length) {
+            return;
+          }
+
           dispatch({
-            type: ACTIONS.SEARCH_STARTED,
+            type: ACTIONS.SEARCH_START
+          });
+
+          if (!state.search.searchQuery) {
+            dispatch({
+              type: ACTIONS.UPDATE_SEARCH_QUERY,
+              data: {
+                searchQuery: query
+              }
+            });
+          }
+
+          fetch('https://lighthouse.lbry.io/search?s=' + query).then(_handleFetch2.default).then(function (data) {
+            var uris = [];
+            var actions = [];
+            data.forEach(function (result) {
+              var uri = (0, _lbryURI.buildURI)({
+                claimName: result.name,
+                claimId: result.claimId
+              });
+              actions.push((0, _claims.doResolveUri)(uri));
+              uris.push(uri);
+            });
+            actions.push({
+              type: ACTIONS.SEARCH_SUCCESS,
+              data: {
+                query: query,
+                uris: uris
+              }
+            });
+            dispatch(_batchActions2.default.apply(undefined, actions));
+          }).catch(function () {
+            dispatch({
+              type: ACTIONS.SEARCH_FAIL
+            });
+          });
+        };
+      };
+
+      var doUpdateSearchQuery = exports.doUpdateSearchQuery = function doUpdateSearchQuery(query, shouldSkipSuggestions) {
+        return function (dispatch) {
+          dispatch({
+            type: ACTIONS.UPDATE_SEARCH_QUERY,
             data: {
               query: query
             }
           });
 
-          if (page !== 'search') {
-            if (currentPageNotSearchHandler) {
-              currentPageNotSearchHandler();
-            }
-          } else {
-            fetch('https://lighthouse.lbry.io/search?s=' + query).then(function (response) {
-              return response.status === 200 ? Promise.resolve(response.json()) : Promise.reject(new Error(response.statusText));
-            }).then(function (data) {
-              var uris = [];
-              var actions = [];
-              data.forEach(function (result) {
-                var uri = (0, _lbryURI.buildURI)({
-                  name: result.name,
-                  claimId: result.claimId
-                });
-                actions.push((0, _claims.doResolveUri)(uri));
-                uris.push(uri);
-              });
-              actions.push({
-                type: ACTIONS.SEARCH_COMPLETED,
-                data: {
-                  query: query,
-                  uris: uris
-                }
-              });
-              dispatch(_batchActions.batchActions.apply(undefined, actions));
-            }).catch(function () {
-              dispatch({
-                type: ACTIONS.SEARCH_CANCELLED
-              });
-            });
+          if (!query.endsWith(' ') || !shouldSkipSuggestions) {
+            dispatch(getSearchSuggestions(query));
           }
         };
+      };
+
+      var getSearchSuggestions = exports.getSearchSuggestions = function getSearchSuggestions(value) {
+        return function (dispatch) {
+          var query = value.trim();
+
+          var isPrefix = function isPrefix() {
+            return query === '@' || query === 'lbry:' || query === 'lbry:/' || query === 'lbry://';
+          };
+
+          if (!query || isPrefix()) {
+            dispatch({
+              type: ACTIONS.UPDATE_SEARCH_SUGGESTIONS,
+              data: {
+                suggestions: []
+              }
+            });
+            return;
+          }
+
+          var suggestions = [];
+
+          try {
+            var uriQuery = query;
+
+            if (uriQuery.endsWith('#')) {
+              uriQuery = uriQuery.slice(0, -1);
+            }
+
+            var uri = (0, _lbryURI.normalizeURI)(uriQuery);
+
+            var _parseURI = (0, _lbryURI.parseURI)(uri),
+                claimName = _parseURI.claimName,
+                isChannel = _parseURI.isChannel;
+
+            suggestions.push({
+              value: uri,
+              shorthand: isChannel ? claimName.slice(1) : claimName,
+              type: isChannel ? SEARCH_TYPES.CHANNEL : SEARCH_TYPES.FILE
+            }, {
+              value: claimName,
+              type: SEARCH_TYPES.SEARCH
+            });
+            return dispatch({
+              type: ACTIONS.UPDATE_SEARCH_SUGGESTIONS,
+              data: {
+                suggestions: suggestions
+              }
+            });
+          } catch (e) {
+            suggestions.push({
+              value: query,
+              type: SEARCH_TYPES.SEARCH
+            });
+          }
+
+          dispatch({
+            type: ACTIONS.UPDATE_SEARCH_SUGGESTIONS,
+            data: {
+              suggestions: suggestions
+            }
+          });
+          var searchValue = value.replace(/lbry:\/\//g, '').replace(/-/g, ' ');
+
+          if (searchValue.includes('#')) {
+            searchValue = searchValue.substring(0, searchValue.indexOf('#'));
+          }
+
+          return fetch('https://lighthouse.lbry.io/autocomplete?s=' + searchValue).then(_handleFetch2.default).then(function (apiSuggestions) {
+            var formattedSuggestions = apiSuggestions.slice(0, 6).map(function (suggestion) {
+              var isChannel = suggestion.startsWith('@');
+              var suggestionObj = {
+                value: isChannel ? 'lbry://' + suggestion : suggestion,
+                shorthand: isChannel ? suggestion.slice(1) : '',
+                type: isChannel ? 'channel' : 'search'
+              };
+              return suggestionObj;
+            });
+            suggestions = suggestions.concat(formattedSuggestions);
+            dispatch({
+              type: ACTIONS.UPDATE_SEARCH_SUGGESTIONS,
+              data: {
+                suggestions: suggestions
+              }
+            });
+          }).catch(function () {});
+        };
+      };
+    }, function (module, exports, __webpack_require__) {
+      "use strict";
+
+      Object.defineProperty(exports, "__esModule", {
+        value: true
+      });
+      var FILE = exports.FILE = 'file';
+      var CHANNEL = exports.CHANNEL = 'channel';
+      var SEARCH = exports.SEARCH = 'search';
+    }, function (module, exports, __webpack_require__) {
+      "use strict";
+
+      Object.defineProperty(exports, "__esModule", {
+        value: true
+      });
+      exports.default = handleFetchResponse;
+
+      function handleFetchResponse(response) {
+        return response.status === 200 ? Promise.resolve(response.json()) : Promise.reject(new Error(response.statusText));
       }
     }, function (module, exports, __webpack_require__) {
       "use strict";
@@ -9392,17 +9738,17 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
       var ACTIONS = _interopRequireWildcard(_action_types);
 
-      var _modal_types = __webpack_require__(26);
+      var _modal_types = __webpack_require__(29);
 
       var MODALS = _interopRequireWildcard(_modal_types);
 
-      var _lbry = __webpack_require__(5);
+      var _lbry = __webpack_require__(4);
 
       var _lbry2 = _interopRequireDefault(_lbry);
 
       var _app = __webpack_require__(10);
 
-      var _wallet = __webpack_require__(13);
+      var _wallet = __webpack_require__(14);
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -9455,9 +9801,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             type: ACTIONS.FETCH_TRANSACTIONS_STARTED
           });
 
-          _lbry2.default.transaction_list({
-            include_tip_info: true
-          }).then(function (results) {
+          _lbry2.default.transaction_list().then(function (results) {
             dispatch({
               type: ACTIONS.FETCH_TRANSACTIONS_COMPLETED,
               data: {
@@ -10281,11 +10625,29 @@ __d(function (global, require, module, exports, _dependencyMap) {
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.searchReducer = searchReducer;
+      exports.searchReducer = undefined;
+
+      var _handleActions;
+
+      var _extends = Object.assign || function (target) {
+        for (var i = 1; i < arguments.length; i++) {
+          var source = arguments[i];
+
+          for (var key in source) {
+            if (Object.prototype.hasOwnProperty.call(source, key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+
+        return target;
+      };
 
       var _action_types = __webpack_require__(0);
 
       var ACTIONS = _interopRequireWildcard(_action_types);
+
+      var _reduxUtils = __webpack_require__(36);
 
       function _interopRequireWildcard(obj) {
         if (obj && obj.__esModule) {
@@ -10319,41 +10681,69 @@ __d(function (global, require, module, exports, _dependencyMap) {
         return obj;
       }
 
-      var reducers = {};
       var defaultState = {
-        urisByQuery: {},
-        searching: false
+        isActive: false,
+        searchQuery: '',
+        suggestions: [],
+        urisByQuery: {}
       };
-
-      reducers[ACTIONS.SEARCH_STARTED] = function (state) {
-        return babelHelpers.extends({}, state, {
+      var searchReducer = exports.searchReducer = (0, _reduxUtils.handleActions)((_handleActions = {}, _defineProperty(_handleActions, ACTIONS.SEARCH_START, function (state) {
+        return _extends({}, state, {
           searching: true
         });
-      };
-
-      reducers[ACTIONS.SEARCH_COMPLETED] = function (state, action) {
+      }), _defineProperty(_handleActions, ACTIONS.SEARCH_SUCCESS, function (state, action) {
         var _action$data = action.data,
             query = _action$data.query,
             uris = _action$data.uris;
-        return babelHelpers.extends({}, state, {
+        return _extends({}, state, {
           searching: false,
           urisByQuery: babelHelpers.extends({}, state.urisByQuery, _defineProperty({}, query, uris))
         });
-      };
-
-      reducers[ACTIONS.SEARCH_CANCELLED] = function (state) {
-        return babelHelpers.extends({}, state, {
+      }), _defineProperty(_handleActions, ACTIONS.SEARCH_FAIL, function (state) {
+        return _extends({}, state, {
           searching: false
         });
-      };
+      }), _defineProperty(_handleActions, ACTIONS.UPDATE_SEARCH_QUERY, function (state, action) {
+        return _extends({}, state, {
+          searchQuery: action.data.query,
+          isActive: true
+        });
+      }), _defineProperty(_handleActions, ACTIONS.UPDATE_SEARCH_SUGGESTIONS, function (state, action) {
+        return _extends({}, state, {
+          suggestions: action.data.suggestions
+        });
+      }), _defineProperty(_handleActions, ACTIONS.HISTORY_NAVIGATE, function (state) {
+        return _extends({}, state, {
+          searchQuery: '',
+          suggestions: [],
+          isActive: false
+        });
+      }), _defineProperty(_handleActions, ACTIONS.CLOSE_MODAL, function (state) {
+        return _extends({}, state, {
+          isActive: false
+        });
+      }), _handleActions), defaultState);
+    }, function (module, exports, __webpack_require__) {
+      "use strict";
 
-      function searchReducer() {
-        var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
-        var action = arguments[1];
-        var handler = reducers[action.type];
-        if (handler) return handler(state, action);
-        return state;
-      }
+      Object.defineProperty(exports, "__esModule", {
+        value: true
+      });
+
+      var handleActions = exports.handleActions = function handleActions(actionMap, defaultState) {
+        return function () {
+          var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+          var action = arguments[1];
+          var handler = actionMap[action.type];
+
+          if (handler) {
+            var newState = handler(state, action);
+            return babelHelpers.extends({}, state, newState);
+          }
+
+          return state;
+        };
+      };
     }, function (module, exports, __webpack_require__) {
       "use strict";
 
@@ -10384,7 +10774,6 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
 
       var reducers = {};
-      var receiveAddress = null;
 
       var buildDraftTransaction = function buildDraftTransaction() {
         return {
@@ -10398,7 +10787,6 @@ __d(function (global, require, module, exports, _dependencyMap) {
         blocks: {},
         transactions: {},
         fetchingTransactions: false,
-        receiveAddress: receiveAddress,
         gettingNewAddress: false,
         draftTransaction: buildDraftTransaction(),
         sendingSupport: false
@@ -10563,7 +10951,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
       var _reselect = __webpack_require__(1);
 
-      var _navigation = __webpack_require__(4);
+      var _navigation = __webpack_require__(5);
 
       var selectState = exports.selectState = function selectState(state) {
         return state.costInfo || {};
@@ -10591,100 +10979,6 @@ __d(function (global, require, module, exports, _dependencyMap) {
           return fetchingByUri && fetchingByUri[uri];
         });
       };
-    }, function (module, exports, __webpack_require__) {
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.selectWunderBarIcon = exports.selectWunderBarAddress = exports.makeSelectSearchUris = exports.selectSearchUrisByQuery = exports.selectIsSearching = exports.selectSearchQuery = exports.selectState = undefined;
-
-      var _navigation = __webpack_require__(4);
-
-      var _reselect = __webpack_require__(1);
-
-      var selectState = exports.selectState = function selectState(state) {
-        return state.search || {};
-      };
-
-      var selectSearchQuery = exports.selectSearchQuery = (0, _reselect.createSelector)(_navigation.selectCurrentPage, _navigation.selectCurrentParams, function (page, params) {
-        return page === 'search' ? params && params.query : null;
-      });
-      var selectIsSearching = exports.selectIsSearching = (0, _reselect.createSelector)(selectState, function (state) {
-        return state.searching;
-      });
-      var selectSearchUrisByQuery = exports.selectSearchUrisByQuery = (0, _reselect.createSelector)(selectState, function (state) {
-        return state.urisByQuery;
-      });
-
-      var makeSelectSearchUris = exports.makeSelectSearchUris = function makeSelectSearchUris(query) {
-        return (0, _reselect.createSelector)(selectSearchUrisByQuery, function (byQuery) {
-          return byQuery[query ? query.replace(/^lbry:\/\//i, '') : query];
-        });
-      };
-
-      var selectWunderBarAddress = exports.selectWunderBarAddress = (0, _reselect.createSelector)(_navigation.selectCurrentPage, _navigation.selectPageTitle, selectSearchQuery, function (page, title, query) {
-        return page !== 'search' ? title : query || title;
-      });
-      var selectWunderBarIcon = exports.selectWunderBarIcon = (0, _reselect.createSelector)(_navigation.selectCurrentPage, _navigation.selectCurrentParams, function (page, params) {
-        switch (page) {
-          case 'auth':
-            return 'icon-user';
-
-          case 'settings':
-            return 'icon-gear';
-
-          case 'help':
-            return 'icon-question';
-
-          case 'report':
-            return 'icon-file';
-
-          case 'downloaded':
-            return 'icon-folder';
-
-          case 'published':
-            return 'icon-folder';
-
-          case 'history':
-            return 'icon-history';
-
-          case 'send':
-            return 'icon-send';
-
-          case 'rewards':
-            return 'icon-rocket';
-
-          case 'invite':
-            return 'icon-envelope-open';
-
-          case 'getcredits':
-            return 'icon-shopping-cart';
-
-          case 'wallet':
-          case 'backup':
-            return 'icon-bank';
-
-          case 'show':
-            return 'icon-file';
-
-          case 'publish':
-            return params.id ? __('icon-pencil') : __('icon-upload');
-
-          case 'developer':
-            return 'icon-code';
-
-          case 'discover':
-          case 'search':
-            return 'icon-search';
-
-          case 'subscriptions':
-            return 'icon-th-list';
-
-          default:
-            return 'icon-file';
-        }
-      });
     }, function (module, exports, __webpack_require__) {
       "use strict";
 
@@ -74758,6 +75052,9 @@ __d(function (global, require, module, exports, _dependencyMap) {
       fetchCostInfo: function fetchCostInfo(uri) {
         return dispatch((0, _lbryRedux.doFetchCostInfoForUri)(uri));
       },
+      stopDownload: function stopDownload(uri, fileInfo) {
+        return dispatch((0, _file.doStopDownloadingFile)(uri, fileInfo));
+      },
       deleteFile: function deleteFile(fileInfo, deleteFromDevice, abandonClaim) {
         dispatch((0, _file.doDeleteFile)(fileInfo, deleteFromDevice, abandonClaim));
       }
@@ -74772,6 +75069,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
   exports.doUpdateLoadStatus = doUpdateLoadStatus;
   exports.doStartDownload = doStartDownload;
+  exports.doStopDownloadingFile = doStopDownloadingFile;
   exports.doDownloadFile = doDownloadFile;
   exports.doSetPlayingUri = doSetPlayingUri;
   exports.doLoadVideo = doLoadVideo;
@@ -74866,6 +75164,31 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
         dispatch(doUpdateLoadStatus(uri, outpoint));
       });
+    };
+  }
+
+  function doStopDownloadingFile(uri, fileInfo) {
+    return function (dispatch) {
+      var params = {
+        status: 'stop'
+      };
+
+      if (fileInfo.sd_hash) {
+        params.sd_hash = fileInfo.sd_hash;
+      }
+
+      if (fileInfo.stream_hash) {
+        params.stream_hash = fileInfo.stream_hash;
+      }
+
+      _lbryRedux.Lbry.file_set_status(params).then(function () {
+        dispatch({
+          type: _lbryRedux.ACTIONS.DOWNLOADING_CANCELED,
+          data: {}
+        });
+      });
+
+      _reactNative.NativeModules.LbryDownloadManager.stopDownload(uri, fileInfo.file_name);
     };
   }
 
@@ -75050,6 +75373,37 @@ __d(function (global, require, module, exports, _dependencyMap) {
             _reactNative.NativeModules.ScreenOrientation.unlockOrientation();
           }
         }
+      }, _this.onDeletePressed = function () {
+        var _this$props = _this.props,
+            deleteFile = _this$props.deleteFile,
+            fileInfo = _this$props.fileInfo;
+
+        _reactNative.Alert.alert('Delete file', 'Are you sure you want to remove this file from your device?', [{
+          text: 'No'
+        }, {
+          text: 'Yes',
+          onPress: function onPress() {
+            deleteFile(fileInfo.outpoint, true);
+          }
+        }], {
+          cancelable: true
+        });
+      }, _this.onStopDownloadPressed = function () {
+        var _this$props2 = _this.props,
+            stopDownload = _this$props2.stopDownload,
+            fileInfo = _this$props2.fileInfo,
+            navigation = _this$props2.navigation;
+
+        _reactNative.Alert.alert('Stop download', 'Are you sure you want to stop downloading this file?', [{
+          text: 'No'
+        }, {
+          text: 'Yes',
+          onPress: function onPress() {
+            stopDownload(navigation.state.params.uri, fileInfo);
+          }
+        }], {
+          cancelable: true
+        });
       }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
     }
 
@@ -75110,7 +75464,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: _filePage2.default.container,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 84
+                lineNumber: 113
               }
             },
             _react2.default.createElement(
@@ -75119,7 +75473,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.emptyClaimText,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 85
+                  lineNumber: 114
                 }
               },
               "Empty claim or metadata info."
@@ -75138,6 +75492,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         var height = claim.height,
             channelName = claim.channel_name,
             value = claim.value;
+        var showActions = completed || fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes;
         var channelClaimId = value && value.publisherSignature && value.publisherSignature.certificateId;
         return _react2.default.createElement(
           _reactNative.View,
@@ -75145,7 +75500,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             style: _filePage2.default.pageContainer,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 101
+              lineNumber: 131
             }
           },
           _react2.default.createElement(
@@ -75154,7 +75509,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: this.state.fullscreenMode ? _filePage2.default.fullscreenMedia : _filePage2.default.mediaContainer,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 102
+                lineNumber: 132
               }
             },
             (!fileInfo || isPlayable && !this.state.mediaLoaded) && _react2.default.createElement(_fileItemMedia2.default, {
@@ -75163,7 +75518,16 @@ __d(function (global, require, module, exports, _dependencyMap) {
               thumbnail: metadata.thumbnail,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 104
+                lineNumber: 134
+              }
+            }),
+            isPlayable && !this.state.mediaLoaded && _react2.default.createElement(_reactNative.ActivityIndicator, {
+              size: "large",
+              color: "#40b89a",
+              style: _filePage2.default.loading,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 135
               }
             }),
             !completed && _react2.default.createElement(_fileDownloadButton2.default, {
@@ -75171,7 +75535,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: _filePage2.default.downloadButton,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 105
+                lineNumber: 136
               }
             }),
             fileInfo && isPlayable && _react2.default.createElement(_mediaPlayer2.default, {
@@ -75185,35 +75549,45 @@ __d(function (global, require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 106
+                lineNumber: 137
               }
             })
           ),
-          _react2.default.createElement(
+          showActions && _react2.default.createElement(
             _reactNative.View,
             {
               style: _filePage2.default.actions,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 111
+                lineNumber: 143
               }
             },
             completed && _react2.default.createElement(_reactNative.Button, {
+              color: "red",
               title: "Delete",
-              onPress: function onPress() {},
+              onPress: this.onDeletePressed,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 112
+                lineNumber: 144
+              }
+            }),
+            !completed && fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes && _react2.default.createElement(_reactNative.Button, {
+              color: "red",
+              title: "Stop Download",
+              onPress: this.onStopDownloadPressed,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 146
               }
             })
           ),
           _react2.default.createElement(
             _reactNative.ScrollView,
             {
-              style: _filePage2.default.scrollContainer,
+              style: showActions ? _filePage2.default.scrollContainerActions : _filePage2.default.scrollContainer,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 114
+                lineNumber: 149
               }
             },
             _react2.default.createElement(
@@ -75222,7 +75596,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.title,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 115
+                  lineNumber: 150
                 }
               },
               title
@@ -75233,7 +75607,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.channelName,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 116
+                  lineNumber: 151
                 }
               },
               channelName
@@ -75244,7 +75618,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 style: _filePage2.default.description,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 117
+                  lineNumber: 152
                 }
               },
               description
@@ -77398,6 +77772,12 @@ __d(function (global, require, module, exports, _dependencyMap) {
       marginRight: 16
     },
     scrollContainer: {
+      flex: 1,
+      marginTop: -20,
+      marginBottom: -4,
+      paddingTop: 10
+    },
+    scrollContainerActions: {
       flex: 1
     },
     title: {
@@ -77421,7 +77801,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
       fontSize: 16,
       marginLeft: 20,
       marginRight: 20,
-      marginBottom: 20,
+      marginBottom: 40,
       color: '#999999'
     },
     thumbnail: {
@@ -77430,7 +77810,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
     },
     downloadButton: {
       position: 'absolute',
-      top: '50%'
+      top: '40%'
     },
     player: {
       flex: 1,
@@ -77447,6 +77827,22 @@ __d(function (global, require, module, exports, _dependencyMap) {
       flex: 1,
       backgroundColor: '#000000',
       zIndex: 100
+    },
+    actions: {
+      paddingLeft: 16,
+      paddingRight: 16,
+      paddingTop: 16,
+      paddingBottom: 8,
+      marginTop: -14,
+      width: '50%'
+    },
+    deleteButton: {
+      backgroundColor: '#ff0000',
+      width: 80
+    },
+    loading: {
+      position: 'absolute',
+      top: '40%'
     }
   });
 

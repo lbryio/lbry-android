@@ -49,7 +49,8 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentTitle(String.format("Downloading %s...", fileName))
                 .setSmallIcon(R.drawable.ic_file_download_black_24dp)
-                .setPriority(NotificationCompat.PRIORITY_LOW);
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setOngoing(true);
 
         builder.setProgress(MAX_PROGRESS, 0, false);
 
@@ -75,13 +76,33 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         NotificationCompat.Builder builder = builders.get(notificationId);
         builder.setProgress(MAX_PROGRESS, new Double(progress).intValue(), false);
         builder.setContentText(String.format("%.0f%% (%s / %s)", progress, formatBytes(writtenBytes), formatBytes(totalBytes)));
+        builder.setOngoing(true);
         notificationManager.notify(notificationId, builder.build());
 
         if (progress == MAX_PROGRESS) {
             builder.setContentTitle(String.format("Downloaded %s.", fileName));
+            builder.setOngoing(false);
             downloadIdNotificationIdMap.remove(id);
             builders.remove(notificationId);
         }
+    }
+    
+    @ReactMethod
+    public void stopDownload(String id, String filename) {
+        if (!downloadIdNotificationIdMap.containsKey(id)) {
+            return;
+        }
+
+        int notificationId = downloadIdNotificationIdMap.get(id);
+        if (!builders.containsKey(notificationId)) {
+            return;
+        }
+        
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.cancel(notificationId);
+
+        downloadIdNotificationIdMap.remove(id);
+        builders.remove(notificationId);
     }
 
     private String formatBytes(double bytes)

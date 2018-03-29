@@ -97,6 +97,30 @@ export function doStartDownload(uri, outpoint) {
   };
 }
 
+export function doStopDownloadingFile(uri, fileInfo) {
+  return dispatch  => {
+    let params = { status: 'stop' };
+    if (fileInfo.sd_hash) {
+      params.sd_hash = fileInfo.sd_hash; 
+    }
+    if (fileInfo.stream_hash) {
+      params.stream_hash = fileInfo.stream_hash;
+    }
+
+    Lbry.file_set_status(params).then(() => {
+      dispatch({
+        type: ACTIONS.DOWNLOADING_CANCELED,
+        data: {}
+      });
+    });
+    
+    NativeModules.LbryDownloadManager.stopDownload(uri, fileInfo.file_name);
+    
+    // Should also delete the file after the user stops downloading
+    dispatch(doDeleteFile(fileInfo.outpoint, uri));
+  };
+}
+
 export function doDownloadFile(uri, streamInfo) {
   return dispatch => {
     dispatch(doStartDownload(uri, streamInfo.outpoint));
