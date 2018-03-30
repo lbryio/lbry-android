@@ -1,4 +1,4 @@
-package io.lbry.lbrynet;
+package io.lbry.browser;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -27,7 +27,7 @@ public class ServiceControlActivity extends Activity {
 
     private IntentFilter intentFilter;
 
-    public static String TEST_RUNNER_OUTPUT = "io.lbry.lbrynet.TEST_RUNNER_OUTPUT";
+    public static String TEST_RUNNER_OUTPUT = "io.lbry.browser.TEST_RUNNER_OUTPUT";
 
     /**
      * Flag which indicates whether or not the service is running. Will be updated in the

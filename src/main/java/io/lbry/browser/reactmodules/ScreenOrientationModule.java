@@ -1,4 +1,4 @@
-package io.lbry.lbrynet.reactmodules;
+package io.lbry.browser.reactmodules;
 
 import android.app.Activity;
 import android.content.Context;

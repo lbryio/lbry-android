@@ -1,4 +1,4 @@
-package io.lbry.lbrynet.reactmodules;
+package io.lbry.browser.reactmodules;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,8 +8,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
-import io.lbry.lbrynet.LbrynetService;
-import io.lbry.lbrynet.ServiceHelper;
+import io.lbry.browser.LbrynetService;
+import io.lbry.browser.ServiceHelper;
 
 public class DaemonServiceControlModule extends ReactContextBaseJavaModule {
     private Context context;

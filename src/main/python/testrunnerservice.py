@@ -13,7 +13,7 @@ from os import listdir
 
 str_stream = StringIO.StringIO()
 
-serviceClass = autoclass('io.lbry.lbrynet.LbrynetTestRunnerService')
+serviceClass = autoclass('io.lbry.browser.LbrynetTestRunnerService')
 
 def update_output_in_activity(str):
     service = serviceClass.serviceInstance

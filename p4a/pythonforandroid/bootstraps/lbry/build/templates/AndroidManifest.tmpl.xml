@@ -69,7 +69,7 @@
         
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
 
-        <activity android:name="io.lbry.lbrynet.MainActivity"
+        <activity android:name="io.lbry.browser.MainActivity"
                   android:label="@string/app_name"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
                   android:configChanges="keyboardHidden|orientation{% if args.min_sdk_version >= 13 %}|screenSize{% endif %}"

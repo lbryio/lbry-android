@@ -1,4 +1,4 @@
-package io.lbry.lbrynet;
+package io.lbry.browser;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +22,7 @@ import com.facebook.react.ReactRootView;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.shell.MainReactPackage;
 
-import io.lbry.lbrynet.reactpackages.LbryReactPackage;
+import io.lbry.browser.reactpackages.LbryReactPackage;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
     

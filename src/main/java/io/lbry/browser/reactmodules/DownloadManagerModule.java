@@ -1,4 +1,4 @@
-package io.lbry.lbrynet.reactmodules;
+package io.lbry.browser.reactmodules;
 
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
@@ -8,7 +8,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
-import io.lbry.lbrynet.R;
+import io.lbry.browser.R;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;

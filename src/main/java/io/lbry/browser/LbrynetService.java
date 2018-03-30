@@ -1,4 +1,4 @@
-package io.lbry.lbrynet;
+package io.lbry.browser;
 
 import android.app.Activity;
 import android.app.Notification;

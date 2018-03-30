@@ -1,4 +1,4 @@
-package io.lbry.lbrynet;
+package io.lbry.browser;
 
 import android.content.Intent;
 import android.os.Binder;

@@ -5,8 +5,8 @@ import ssl
 # Fixes / patches / overrides
 # platform.platform() in libc_ver: IOError: [Errno 21] Is a directory
 from jnius import autoclass
-lbrynet_utils = autoclass('io.lbry.lbrynet.Utils')
-service = autoclass('io.lbry.lbrynet.LbrynetService').serviceInstance
+lbrynet_utils = autoclass('io.lbry.browser.Utils')
+service = autoclass('io.lbry.browser.LbrynetService').serviceInstance
 platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_utils.getAndroidRelease(), lbrynet_utils.getAndroidSdk())
 
 import lbrynet.androidhelpers

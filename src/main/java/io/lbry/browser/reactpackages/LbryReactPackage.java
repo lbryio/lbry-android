@@ -1,13 +1,13 @@
-package io.lbry.lbrynet.reactpackages;
+package io.lbry.browser.reactpackages;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
-import io.lbry.lbrynet.reactmodules.DaemonServiceControlModule;
-import io.lbry.lbrynet.reactmodules.DownloadManagerModule;
-import io.lbry.lbrynet.reactmodules.ScreenOrientationModule;
+import io.lbry.browser.reactmodules.DaemonServiceControlModule;
+import io.lbry.browser.reactmodules.DownloadManagerModule;
+import io.lbry.browser.reactmodules.ScreenOrientationModule;
 
 import java.util.ArrayList;
 import java.util.Collections;
