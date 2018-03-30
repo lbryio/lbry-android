@@ -7,7 +7,7 @@ import {
   makeSelectIsUriResolving,
   selectRewardContentClaimIds
 } from 'lbry-redux';
-/*import { selectShowNsfw } from 'redux/selectors/settings';*/
+import { selectShowNsfw } from '../../redux/selectors/settings';
 import FileItem from './view';
 
 const select = (state, props) => ({
@@ -16,6 +16,7 @@ const select = (state, props) => ({
   metadata: makeSelectMetadataForUri(props.uri)(state),
   rewardedContentClaimIds: selectRewardContentClaimIds(state, props),
   isResolvingUri: makeSelectIsUriResolving(props.uri)(state),
+  obscureNsfw: !selectShowNsfw(state)
 });
 
 const perform = dispatch => ({

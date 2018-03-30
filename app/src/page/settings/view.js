@@ -21,6 +21,15 @@ class SettingsPage extends React.PureComponent {
         <ScrollView style={settingsStyle.scrollContainer}>
           <View style={settingsStyle.row}>
             <View style={settingsStyle.switchText}>
+              <Text style={settingsStyle.label}>Show NSFW content</Text>
+            </View>
+            <View style={settingsStyle.switchContainer}>
+              <Switch value={showNsfw} onValueChange={(value) => setClientSetting(SETTINGS.SHOW_NSFW, value)} />
+            </View>
+          </View>
+          
+          <View style={settingsStyle.row}>
+            <View style={settingsStyle.switchText}>
               <Text style={settingsStyle.label}>Keep the daemon background service running when the app is suspended.</Text>
               <Text style={settingsStyle.description}>Enable this option for quicker app launch and to keep the synchronisation with the blockchain up to date.</Text>
             </View>
