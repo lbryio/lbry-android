@@ -4,6 +4,7 @@ import { NavigationActions } from 'react-navigation';
 import { Text, View, TouchableOpacity } from 'react-native';
 import FileItemMedia from '../fileItemMedia';
 import FilePrice from '../filePrice';
+import NsfwOverlay from '../nsfwOverlay';
 import discoverStyle from '../../styles/discover';
 
 class FileItem extends React.PureComponent {
@@ -34,7 +35,8 @@ class FileItem extends React.PureComponent {
       metadata,
       isResolvingUri,
       rewardedContentClaimIds,
-      style
+      style,
+      navigation
     } = this.props;
 
     const uri = normalizeURI(this.props.uri);
@@ -52,18 +54,21 @@ class FileItem extends React.PureComponent {
     } else if (claim === null) {
       description = 'This address contains no content.';
     }
-    
+
     return (
-      <TouchableOpacity style={style} onPress={() => {
-            this.props.navigation.navigate('File', { uri: uri });
-          }
-        }>
-        <FileItemMedia title={title} thumbnail={thumbnail} resizeMode="cover" />
-        <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />
-        <Text style={discoverStyle.fileItemName}>{title}</Text>
-        {channelName &&
-          <Text style={discoverStyle.channelName}>{channelName}</Text>}
-      </TouchableOpacity>
+      <View style={style}>
+        <TouchableOpacity style={discoverStyle.container} onPress={() => {
+              navigation.navigate('File', { uri: uri });
+            }
+          }>
+          <FileItemMedia title={title} thumbnail={thumbnail} blurRadius={obscureNsfw ? 15 : 0} resizeMode="cover" />
+          <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />
+          <Text style={discoverStyle.fileItemName}>{title}</Text>
+          {channelName &&
+            <Text style={discoverStyle.channelName}>{channelName}</Text>}
+        </TouchableOpacity>
+        {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate('Settings')} />}
+      </View>
     );
   }
 }

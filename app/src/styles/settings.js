@@ -12,16 +12,18 @@ const settingsStyle = StyleSheet.create({
     paddingBottom: 16
   },
   row: {
-    marginBottom: 12,
+    marginBottom: 24,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
   switchText: {
-    width: '70%'
+    width: '70%',
+    justifyContent: 'center'
   },
   switchContainer: {
-    width: '25%'
+    width: '25%',
+    justifyContent: 'center'
   },
   label: {
     fontSize: 14,
