@@ -6,3 +6,4 @@ build.log
 recipes/**/*.pyc
 src/main/assets/index.android.bundle
 src/main/assets/index.android.bundle.meta
+
