@@ -45,7 +45,7 @@ class FileItemMedia extends React.PureComponent {
     }
         
     return (
-      <View style={[fileItemMediaStyle.autothumb, atStyle]}>
+      <View style={[style ? style : fileItemMediaStyle.autothumb, atStyle]}>
         <Text style={fileItemMediaStyle.autothumbText}>{title &&
             title
               .replace(/\s+/g, '')
