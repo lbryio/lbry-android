@@ -2,10 +2,7 @@ import { ACTIONS } from 'lbry-redux';
 
 const reducers = {};
 const defaultState = {
-  clientSettings: {
-    keepDaemonRunning: true,
-    showNsfw: false
-  }
+  clientSettings: {}
 };
 
 reducers[ACTIONS.CLIENT_SETTING_CHANGED] = (state, action) => {
