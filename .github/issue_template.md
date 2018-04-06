@@ -27,14 +27,6 @@ Tell us what happens instead
 - Device:
 - Android version:
 
-<!-- For the app, the following info is in the About section. 
-     You can include a screenshot instead of typing it out --> 
-
-- LBRY Daemon version:
-- LBRY Browser version:
-- LBRY Installation ID:
-
-
 
 ## Anything Else
 <!-- Include anything else that does not fit into the above sections -->
