@@ -55,7 +55,10 @@ const discoverStyle = StyleSheet.create({
     color: '#0c604b'
   },
   drawerHamburger: {
-    marginLeft: 8
+    marginLeft: 16
+  },
+  rightHeaderIcon: {
+    marginRight: 16
   },
   overlay: {
     flex: 1,

@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   NativeModules
 } from 'react-native';
+import Colors from '../../styles/colors';
 import FileItemMedia from '../../component/fileItemMedia';
 import FileDownloadButton from '../../component/fileDownloadButton';
 import MediaPlayer from '../../component/mediaPlayer';
@@ -132,7 +133,7 @@ class FilePage extends React.PureComponent {
         <View style={this.state.fullscreenMode ? filePageStyle.fullscreenMedia : filePageStyle.mediaContainer}>  
           {(!fileInfo || (isPlayable && !this.state.mediaLoaded)) &&
             <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
-          {isPlayable && !this.state.mediaLoaded && <ActivityIndicator size="large" color="#40b89a" style={filePageStyle.loading} />}
+          {isPlayable && !this.state.mediaLoaded && <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
           {!completed && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
           {fileInfo && isPlayable && <MediaPlayer fileInfo={fileInfo}
                                                   style={filePageStyle.player}
