@@ -92,7 +92,9 @@
             {{- args.intent_filters -}}
             {%- endif -%}
         </activity>
-
+        
+        <receiver android:name="io.lbry.browser.receivers.NotificationDeletedReceiver" />
+        
         {% if args.launcher %}
         <activity android:name="org.kivy.android.launcher.ProjectChooser"
                   android:icon="@drawable/icon"

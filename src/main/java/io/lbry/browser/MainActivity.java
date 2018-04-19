@@ -6,8 +6,9 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.SharedPreferences;
 import android.Manifest;
@@ -23,6 +24,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.shell.MainReactPackage;
 
 import io.lbry.browser.reactpackages.LbryReactPackage;
+import io.lbry.browser.reactmodules.DownloadManagerModule;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
     
@@ -156,7 +158,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                ServiceHelper.stop(this, LbrynetService.class);
             }
         }
-      
+
         super.onDestroy();
         
         if (mReactInstanceManager != null) {
