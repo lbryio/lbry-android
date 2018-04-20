@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { NativeModules, Text, View, TouchableOpacity } from 'react-native';
 import fileDownloadButtonStyle from '../../styles/fileDownloadButton';
 
 class FileDownloadButton extends React.PureComponent {
@@ -60,6 +60,9 @@ class FileDownloadButton extends React.PureComponent {
       }
       return (
         <TouchableOpacity style={[style, fileDownloadButtonStyle.container]} onPress={() => {
+            if (NativeModules.Mixpanel) {
+              NativeModules.Mixpanel.track('Purchase Uri', { uri });
+            }
             purchaseUri(uri);
           }}>
           <Text style={fileDownloadButtonStyle.text}>Download</Text>
