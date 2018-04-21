@@ -7,9 +7,7 @@ const settingsStyle = StyleSheet.create({
     margin: 16
   },
   scrollContainer: {
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingBottom: 16
+    padding: 16
   },
   row: {
     marginBottom: 24,

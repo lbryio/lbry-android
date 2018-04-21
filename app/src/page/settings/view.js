@@ -1,6 +1,7 @@
 import React from 'react';
 import { SETTINGS } from 'lbry-redux';
 import { Text, View, ScrollView, Switch } from 'react-native';
+import PageHeader from '../../component/pageHeader';
 import settingsStyle from '../../styles/settings';
 
 class SettingsPage extends React.PureComponent {
@@ -17,7 +18,8 @@ class SettingsPage extends React.PureComponent {
        
     return (
       <View>
-      <Text style={settingsStyle.title}>Settings</Text>
+        <PageHeader title={"Settings"}
+          onBackPressed={() => { this.props.navigation.goBack(); }} />
         <ScrollView style={settingsStyle.scrollContainer}>
           <View style={settingsStyle.row}>
             <View style={settingsStyle.switchText}>

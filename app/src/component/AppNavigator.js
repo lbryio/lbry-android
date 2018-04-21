@@ -77,10 +77,19 @@ class AppWithNavigationState extends React.Component {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
       const { dispatch, navigation, nav } = this.props;
-      if (nav.routes.length === 2 && nav.routes[1].routeName === 'Main') {
-        if (nav.routes[1].routes[0].routes[0].index > 0) {    
+      // There should be a better way to check this
+      if (nav.routes.length > 1) {
+        const subRoutes = nav.routes[1].routes[0].routes;
+        const lastRoute = subRoutes[subRoutes.length - 1];
+        if (['Settings'].indexOf(lastRoute.key) > -1) {
           dispatch({ type: 'Navigation/BACK' });
           return true;
+        }
+        if (nav.routes[1].routeName === 'Main') {
+          if (nav.routes[1].routes[0].routes[0].index > 0) {    
+            dispatch({ type: 'Navigation/BACK' });
+            return true;
+          }
         }
       }
       return false;
