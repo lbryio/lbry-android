@@ -3,6 +3,7 @@ import DiscoverPage from '../page/discover';
 import FilePage from '../page/file';
 import SearchPage from '../page/search';
 import SettingsPage from '../page/settings';
+import AboutPage from '../page/about';
 import SplashScreen from '../page/splash';
 import SearchInput from '../component/searchInput';
 import {
@@ -49,10 +50,8 @@ const discoverStack = StackNavigator({
 
 const drawer = DrawerNavigator({
   Discover: { screen: discoverStack },
-  Settings: {
-    screen: SettingsPage,
-    headerMode: 'screen'
-  }
+  Settings: { screen: SettingsPage },
+  About: { screen: AboutPage }
 }, {
   drawerWidth: 300,
   headerMode: 'none'

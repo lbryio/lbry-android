@@ -9,7 +9,7 @@ import {
   View
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import pageHeaderStyles from '../../styles/pageHeader';
+import pageHeaderStyle from '../../styles/pageHeader';
 
 const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 const AnimatedText = Animated.Text;
@@ -18,24 +18,24 @@ class PageHeader extends React.PureComponent {
   render() {
     const { title, onBackPressed } = this.props;
     const containerStyles = [
-      pageHeaderStyles.container,
+      pageHeaderStyle.container,
       { height: APPBAR_HEIGHT }
     ];
     
     return (
       <View style={containerStyles}>
-        <View style={pageHeaderStyles.flexOne}>
-          <View style={pageHeaderStyles.header}>
-            <View style={pageHeaderStyles.title}>
+        <View style={pageHeaderStyle.flexOne}>
+          <View style={pageHeaderStyle.header}>
+            <View style={pageHeaderStyle.title}>
               <AnimatedText
                 numberOfLines={1}
-                style={pageHeaderStyles.titleText}
+                style={pageHeaderStyle.titleText}
                 accessibilityTraits="header">
                 {title}
               </AnimatedText>
             </View>
-            <TouchableOpacity style={pageHeaderStyles.left}>
-              <Feather name="arrow-left" size={24} onPress={onBackPressed} style={pageHeaderStyles.backIcon} />
+            <TouchableOpacity style={pageHeaderStyle.left}>
+              <Feather name="arrow-left" size={24} onPress={onBackPressed} style={pageHeaderStyle.backIcon} />
             </TouchableOpacity>
           </View>
         </View>

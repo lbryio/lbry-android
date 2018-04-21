@@ -7,7 +7,7 @@
         "postinstall": "cp ./patch/ReactNativeRenderer-dev.js.patch ./node_modules/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js; rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
     },
     "dependencies": {
-        "lbry-redux": "lbryio/lbry-redux#common-components-refactor",
+        "lbry-redux": "lbryio/lbry-redux",
         "react": "16.2.0",
         "react-native": "0.52.0",
         "react-native-vector-icons": "^4.5.0",
@@ -21,5 +21,10 @@
         "redux-persist-transform-compress": "^4.2.0",
         "redux-persist-transform-filter": "0.0.10",
         "redux-thunk": "^2.2.0"
+    },
+    "devDependencies": {
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-stage-2": "^6.18.0",
+        "flow-babel-webpack-plugin": "^1.1.1"
     }
 }
