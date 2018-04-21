@@ -86,7 +86,7 @@ class SplashScreen extends React.PureComponent {
     
     return (
       <View style={splashStyle.container}>
-        <Text style={splashStyle.title}>Lbry.</Text>
+        <Text style={splashStyle.title}>LBRY</Text>
         <Text style={splashStyle.message}>{message}</Text>
         <Text style={splashStyle.details}>{details}</Text>
       </View>
