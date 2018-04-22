@@ -1,23 +1,32 @@
 import React from 'react';
 import DiscoverPage from '../page/discover';
 import FilePage from '../page/file';
+import SearchPage from '../page/search';
 import SettingsPage from '../page/settings';
 import SplashScreen from '../page/splash';
-import { addNavigationHelpers, DrawerNavigator, StackNavigator } from 'react-navigation';
+import SearchInput from '../component/searchInput';
+import {
+  addNavigationHelpers,
+  DrawerNavigator,
+  StackNavigator,
+  NavigationActions
+} from 'react-navigation';
 import { connect } from 'react-redux';
 import { addListener } from '../utils/redux';
-import { AppState, BackHandler, NativeModules } from 'react-native';
+import { AppState, BackHandler, NativeModules, TextInput } from 'react-native';
 import { SETTINGS } from 'lbry-redux';
+import { makeSelectClientSetting } from '../redux/selectors/settings';
 import Feather from 'react-native-vector-icons/Feather';
 import discoverStyle from '../styles/discover';
-import { makeSelectClientSetting } from '../redux/selectors/settings';
+import searchStyle from '../styles/search';
 
 const discoverStack = StackNavigator({
   Discover: {
     screen: DiscoverPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Discover',
-      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />
+      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerRight: <Feather name="search" size={24} style={discoverStyle.rightHeaderIcon} onPress={() => navigation.navigate('Search')} />
     })
   },
   File: {
@@ -26,6 +35,13 @@ const discoverStack = StackNavigator({
       header: null,
       drawerLockMode: 'locked-closed'
     }
+  },
+  Search: {
+    screen: SearchPage,
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: <SearchInput style={searchStyle.searchInput} />,
+      headerRight: <Feather name="x" size={24} style={discoverStyle.rightHeaderIcon} onPress={() => navigation.dispatch(NavigationActions.back())} />
+    })
   }
 }, {
   headerMode: 'screen',
@@ -41,7 +57,10 @@ const drawer = DrawerNavigator({
 
 export const AppNavigator = new StackNavigator({
   Splash: {
-    screen: SplashScreen
+    screen: SplashScreen,
+    navigationOptions: {
+      drawerLockMode: 'locked-closed'
+    }
   },
   Main: {
     screen: drawer
@@ -55,10 +74,19 @@ class AppWithNavigationState extends React.Component {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
       const { dispatch, navigation, nav } = this.props;
-      if (nav.routes.length === 2 && nav.routes[1].routeName === 'Main') {
-        if (nav.routes[1].routes[0].routes[0].index > 0) {    
+      // There should be a better way to check this
+      if (nav.routes.length > 1) {
+        const subRoutes = nav.routes[1].routes[0].routes;
+        const lastRoute = subRoutes[subRoutes.length - 1];
+        if (['Settings'].indexOf(lastRoute.key) > -1) {
           dispatch({ type: 'Navigation/BACK' });
           return true;
+        }
+        if (nav.routes[1].routeName === 'Main') {
+          if (nav.routes[1].routes[0].routes[0].index > 0) {    
+            dispatch({ type: 'Navigation/BACK' });
+            return true;
+          }
         }
       }
       return false;
@@ -71,15 +99,16 @@ class AppWithNavigationState extends React.Component {
   }
 
   _handleAppStateChange = (nextAppState) => {
-    const { keepDaemonRunning } = this.props;
+    // this is properly handled in native code at the moment
+    /*const { keepDaemonRunning } = this.props;
     if (AppState.currentState &&
         AppState.currentState.match(/inactive|background/) &&
         NativeModules.DaemonServiceControl) {
       if (!keepDaemonRunning) {
         // terminate the daemon background service when is suspended / inactive 
-        // NativeModules.DaemonServiceControl.stopService(); // moved to onDestory in activity for better handling
+        //NativeModules.DaemonServiceControl.stopService();
       }
-    }
+    }*/
   }
   
   render() {
