@@ -50,8 +50,8 @@ const discoverStack = StackNavigator({
 
 const drawer = DrawerNavigator({
   Discover: { screen: discoverStack },
-  Settings: { screen: SettingsPage },
-  About: { screen: AboutPage }
+  Settings: { screen: SettingsPage, navigationOptions: { drawerLockMode: 'locked-closed' } },
+  About: { screen: AboutPage, navigationOptions: { drawerLockMode: 'locked-closed' } }
 }, {
   drawerWidth: 300,
   headerMode: 'none'
@@ -80,7 +80,7 @@ class AppWithNavigationState extends React.Component {
       if (nav.routes.length > 1) {
         const subRoutes = nav.routes[1].routes[0].routes;
         const lastRoute = subRoutes[subRoutes.length - 1];
-        if (['Settings'].indexOf(lastRoute.key) > -1) {
+        if (['About', 'Settings'].indexOf(lastRoute.key) > -1) {
           dispatch({ type: 'Navigation/BACK' });
           return true;
         }
