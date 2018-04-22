@@ -8,7 +8,7 @@ const aboutStyle = StyleSheet.create({
   row: {
     marginBottom: 1,
     backgroundColor: '#f9f9f9',
-    padding: 12,
+    padding: 16,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
@@ -18,10 +18,10 @@ const aboutStyle = StyleSheet.create({
   },
   releaseInfoTitle: {
     fontFamily: 'Metropolis-Regular',
-    marginLeft: 16,
-    marginRight: 16,
-    marginBottom: 16,
-    fontSize: 15
+    marginLeft: 12,
+    marginRight: 12,
+    marginBottom: 12,
+    fontSize: 14
   },
   text: {
     fontFamily: 'Metropolis-SemiBold',
