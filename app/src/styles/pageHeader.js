@@ -21,7 +21,7 @@ if (Platform.OS === 'ios') {
   };
 }
 
-const pageHeaderStyles = StyleSheet.create({
+const pageHeaderStyle = StyleSheet.create({
   container: {
     backgroundColor: Platform.OS === 'ios' ? '#F7F7F7' : '#FFF',
     ...platformContainerStyles,
@@ -78,4 +78,4 @@ const pageHeaderStyles = StyleSheet.create({
   }
 });
 
-export default pageHeaderStyles;
+export default pageHeaderStyle;
