@@ -49,10 +49,7 @@ const discoverStack = StackNavigator({
 
 const drawer = DrawerNavigator({
   Discover: { screen: discoverStack },
-  Settings: {
-    screen: SettingsPage,
-    headerMode: 'screen'
-  }
+  Settings: { screen: SettingsPage, navigationOptions: { drawerLockMode: 'locked-closed' } }
 }, {
   drawerWidth: 300,
   headerMode: 'none'
@@ -77,10 +74,19 @@ class AppWithNavigationState extends React.Component {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
       const { dispatch, navigation, nav } = this.props;
-      if (nav.routes.length === 2 && nav.routes[1].routeName === 'Main') {
-        if (nav.routes[1].routes[0].routes[0].index > 0) {    
+      // There should be a better way to check this
+      if (nav.routes.length > 1) {
+        const subRoutes = nav.routes[1].routes[0].routes;
+        const lastRoute = subRoutes[subRoutes.length - 1];
+        if (['Settings'].indexOf(lastRoute.key) > -1) {
           dispatch({ type: 'Navigation/BACK' });
           return true;
+        }
+        if (nav.routes[1].routeName === 'Main') {
+          if (nav.routes[1].routes[0].routes[0].index > 0) {    
+            dispatch({ type: 'Navigation/BACK' });
+            return true;
+          }
         }
       }
       return false;
@@ -93,15 +99,16 @@ class AppWithNavigationState extends React.Component {
   }
 
   _handleAppStateChange = (nextAppState) => {
-    const { keepDaemonRunning } = this.props;
+    // this is properly handled in native code at the moment
+    /*const { keepDaemonRunning } = this.props;
     if (AppState.currentState &&
         AppState.currentState.match(/inactive|background/) &&
         NativeModules.DaemonServiceControl) {
       if (!keepDaemonRunning) {
         // terminate the daemon background service when is suspended / inactive 
-        NativeModules.DaemonServiceControl.stopService();
+        //NativeModules.DaemonServiceControl.stopService();
       }
-    }
+    }*/
   }
   
   render() {
