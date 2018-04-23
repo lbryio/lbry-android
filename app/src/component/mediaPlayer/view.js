@@ -1,6 +1,13 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import { PanResponder, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  NativeModules,
+  PanResponder,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FileItemMedia from '../fileItemMedia';
@@ -76,6 +83,10 @@ class MediaPlayer extends React.PureComponent {
     }
     
     if (this.state.firstPlay) {
+      if (NativeModules.Mixpanel) {
+        const { uri } = this.props;
+        NativeModules.Mixpanel.track('Play', { uri });
+      }
       this.setState({ firstPlay: false });
       this.hidePlayerControls();
     }
@@ -232,7 +243,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   render() {
-    const { fileInfo, title, thumbnail, style, fullScreenStyle } = this.props;
+    const { fileInfo, thumbnail, style, fullScreenStyle } = this.props;
     const flexCompleted = this.getCurrentTimePercentage() * 100;
     const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
     
