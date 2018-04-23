@@ -11,6 +11,7 @@ class SettingsPage extends React.PureComponent {
   
   render() {
     const {
+      backgroundPlayEnabled,
       keepDaemonRunning,
       showNsfw,
       setClientSetting
@@ -21,6 +22,16 @@ class SettingsPage extends React.PureComponent {
         <PageHeader title={"Settings"}
           onBackPressed={() => { this.props.navigation.goBack(); }} />
         <ScrollView style={settingsStyle.scrollContainer}>
+          <View style={settingsStyle.row}>
+            <View style={settingsStyle.switchText}>
+              <Text style={settingsStyle.label}>Enable background media playback</Text>
+              <Text style={settingsStyle.description}>Enable this option to play audio or video in the background when the app is suspended.</Text>
+            </View>
+            <View style={settingsStyle.switchContainer}>
+              <Switch value={backgroundPlayEnabled} onValueChange={(value) => setClientSetting(SETTINGS.BACKGROUND_PLAY_ENABLED, value)} />
+            </View>
+          </View>
+          
           <View style={settingsStyle.row}>
             <View style={settingsStyle.switchText}>
               <Text style={settingsStyle.label}>Show NSFW content</Text>

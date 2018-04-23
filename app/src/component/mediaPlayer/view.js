@@ -243,7 +243,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   render() {
-    const { fileInfo, thumbnail, style, fullScreenStyle } = this.props;
+    const { backgroundPlayEnabled, fileInfo, thumbnail, style, fullScreenStyle } = this.props;
     const flexCompleted = this.getCurrentTimePercentage() * 100;
     const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
     
@@ -252,7 +252,7 @@ class MediaPlayer extends React.PureComponent {
         <Video source={{ uri: 'file:///' + fileInfo.download_path }}
                ref={(ref: Video) => { this.video = ref }}
                resizeMode={this.state.resizeMode}
-               playInBackground={true}
+               playInBackground={backgroundPlayEnabled}
                style={mediaPlayerStyle.player}
                rate={this.state.rate}
                volume={this.state.volume}

@@ -5,6 +5,7 @@ import { makeSelectClientSetting } from '../../redux/selectors/settings';
 import SettingsPage from './view';
 
 const select = state => ({
+  backgroundPlayEnabled: makeSelectClientSetting(SETTINGS.BACKGROUND_PLAY_ENABLED)(state),
   keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
   showNsfw: makeSelectClientSetting(SETTINGS.SHOW_NSFW)(state),
 });
