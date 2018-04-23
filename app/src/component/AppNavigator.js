@@ -40,6 +40,7 @@ const discoverStack = StackNavigator({
   Search: {
     screen: SearchPage,
     navigationOptions: ({ navigation }) => ({
+      drawerLockMode: 'locked-closed',
       headerTitle: <SearchInput style={searchStyle.searchInput} />,
       headerRight: <Feather name="x" size={24} style={discoverStyle.rightHeaderIcon} onPress={() => navigation.dispatch(NavigationActions.back())} />
     })
