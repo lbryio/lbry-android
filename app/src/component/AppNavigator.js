@@ -101,15 +101,16 @@ class AppWithNavigationState extends React.Component {
   }
 
   _handleAppStateChange = (nextAppState) => {
-    const { keepDaemonRunning } = this.props;
+    // this is properly handled in native code at the moment
+    /*const { keepDaemonRunning } = this.props;
     if (AppState.currentState &&
         AppState.currentState.match(/inactive|background/) &&
         NativeModules.DaemonServiceControl) {
       if (!keepDaemonRunning) {
         // terminate the daemon background service when is suspended / inactive 
-        NativeModules.DaemonServiceControl.stopService();
+        //NativeModules.DaemonServiceControl.stopService();
       }
-    }
+    }*/
   }
   
   render() {

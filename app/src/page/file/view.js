@@ -32,6 +32,9 @@ class FilePage extends React.PureComponent {
     StatusBar.setHidden(false);
     this.fetchFileInfo(this.props);
     this.fetchCostInfo(this.props);
+    if (NativeModules.Mixpanel) {
+      NativeModules.Mixpanel.track('Open File Page', { uri: this.props.navigation.state.params.uri });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -136,6 +139,7 @@ class FilePage extends React.PureComponent {
           {isPlayable && !this.state.mediaLoaded && <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
           {!completed && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
           {fileInfo && isPlayable && <MediaPlayer fileInfo={fileInfo}
+                                                  uri={navigation.state.params.uri}
                                                   style={filePageStyle.player}
                                                   onFullscreenToggled={this.handleFullscreenToggle} 
                                                   onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}

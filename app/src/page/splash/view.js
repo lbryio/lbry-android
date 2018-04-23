@@ -1,6 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import { View, Text } from 'react-native';
+import { View, Text, NativeModules } from 'react-native';
 import PropTypes from 'prop-types';
 import splashStyle from '../../styles/splash';
 
@@ -66,6 +66,10 @@ class SplashScreen extends React.PureComponent {
   }
   
   componentDidMount() {
+    if (NativeModules.Mixpanel) {
+      NativeModules.Mixpanel.track('App Launch', null);
+    }
+    
     Lbry
       .connect()
       .then(() => {
@@ -86,7 +90,7 @@ class SplashScreen extends React.PureComponent {
     
     return (
       <View style={splashStyle.container}>
-        <Text style={splashStyle.title}>Lbry.</Text>
+        <Text style={splashStyle.title}>LBRY</Text>
         <Text style={splashStyle.message}>{message}</Text>
         <Text style={splashStyle.details}>{details}</Text>
       </View>

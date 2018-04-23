@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.ViewManager;
 
 import io.lbry.browser.reactmodules.DaemonServiceControlModule;
 import io.lbry.browser.reactmodules.DownloadManagerModule;
+import io.lbry.browser.reactmodules.MixpanelModule;
 import io.lbry.browser.reactmodules.ScreenOrientationModule;
 import io.lbry.browser.reactmodules.VersionInfoModule;
 
@@ -26,6 +27,7 @@ public class LbryReactPackage implements ReactPackage {
 
         modules.add(new DaemonServiceControlModule(reactContext));
         modules.add(new DownloadManagerModule(reactContext));
+        modules.add(new MixpanelModule(reactContext));
         modules.add(new ScreenOrientationModule(reactContext));
         modules.add(new VersionInfoModule(reactContext));
         

@@ -1,7 +1,7 @@
 import React from 'react';
 import { normalizeURI } from 'lbry-redux';
 import { NavigationActions } from 'react-navigation';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { NativeModules, Text, View, TouchableOpacity } from 'react-native';
 import FileItemMedia from '../fileItemMedia';
 import FilePrice from '../filePrice';
 import NsfwOverlay from '../nsfwOverlay';
@@ -58,6 +58,9 @@ class FileItem extends React.PureComponent {
     return (
       <View style={style}>
         <TouchableOpacity style={discoverStyle.container} onPress={() => {
+              if (NativeModules.Mixpanel) {
+                NativeModules.Mixpanel.track('Tap', { uri });
+              }
               navigation.navigate('File', { uri: uri });
             }
           }>
