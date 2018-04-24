@@ -11,8 +11,8 @@ class DiscoverPage extends React.PureComponent {
     // Track the total time taken if this is the first launch
     AsyncStorage.getItem('firstLaunchTime').then(startTime => {
       if (startTime !== null && !isNaN(parseInt(startTime, 10))) {
-        const start = parseInt(startTime, 10);
         // We know this is the first app launch because firstLaunchTime is set and it's a valid number
+        const start = parseInt(startTime, 10);
         const now = moment().unix();
         const delta = now - start;
         AsyncStorage.getItem('firstLaunchSuspended').then(suspended => {
