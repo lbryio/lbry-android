@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.receivers.NotificationDeletedReceiver;
 
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class DownloadManagerModule extends ReactContextBaseJavaModule {
+
     private Context context;
 
     private HashMap<Integer, NotificationCompat.Builder> builders = new HashMap<Integer, NotificationCompat.Builder>();
@@ -71,6 +73,13 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
             groupCreated = true;
         }
     }
+    
+    private PendingIntent getLaunchPendingIntent() {
+        Intent launchIntent = new Intent(context, MainActivity.class);
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent intent = PendingIntent.getActivity(context, 0, launchIntent, 0);
+        return intent;
+    }
 
     @ReactMethod
     public void startDownload(String id, String fileName) {
@@ -78,12 +87,12 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setContentTitle(String.format("Downloading %s...", fileName))
-               .setSmallIcon(R.drawable.ic_file_download_black_24dp)
+        builder.setContentIntent(getLaunchPendingIntent())
+               .setContentTitle(String.format("Downloading %s...", fileName))
+               .setGroup(GROUP_DOWNLOADS)
                .setPriority(NotificationCompat.PRIORITY_LOW)
-               .setGroup(GROUP_DOWNLOADS);
-
-        builder.setProgress(MAX_PROGRESS, 0, false);
+               .setProgress(MAX_PROGRESS, 0, false)
+               .setSmallIcon(R.drawable.ic_file_download_black_24dp);
 
         int notificationId = generateNotificationId();
         downloadIdNotificationIdMap.put(id, notificationId);
@@ -106,9 +115,10 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         createNotificationGroup();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = builders.get(notificationId);
-        builder.setProgress(MAX_PROGRESS, new Double(progress).intValue(), false);
-        builder.setContentText(String.format("%.0f%% (%s / %s)", progress, formatBytes(writtenBytes), formatBytes(totalBytes)));
-        builder.setGroup(GROUP_DOWNLOADS);
+        builder.setContentIntent(getLaunchPendingIntent())
+               .setContentText(String.format("%.0f%% (%s / %s)", progress, formatBytes(writtenBytes), formatBytes(totalBytes)))
+               .setGroup(GROUP_DOWNLOADS)
+               .setProgress(MAX_PROGRESS, new Double(progress).intValue(), false);
         notificationManager.notify(notificationId, builder.build());
 
         if (progress == MAX_PROGRESS) {

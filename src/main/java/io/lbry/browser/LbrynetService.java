@@ -35,6 +35,11 @@ public class LbrynetService extends PythonService {
     public static LbrynetService serviceInstance;
 
     @Override
+    public boolean canDisplayNotification() {
+        return false;
+    }
+    
+    @Override
     public int startType() {
         return START_STICKY;
     }
