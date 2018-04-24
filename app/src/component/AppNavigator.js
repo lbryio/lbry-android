@@ -14,7 +14,13 @@ import {
 } from 'react-navigation';
 import { connect } from 'react-redux';
 import { addListener } from '../utils/redux';
-import { AppState, BackHandler, NativeModules, TextInput } from 'react-native';
+import {
+  AppState,
+  AsyncStorage,
+  BackHandler,
+  NativeModules,
+  TextInput
+} from 'react-native';
 import { SETTINGS } from 'lbry-redux';
 import { makeSelectClientSetting } from '../redux/selectors/settings';
 import Feather from 'react-native-vector-icons/Feather';
@@ -102,16 +108,16 @@ class AppWithNavigationState extends React.Component {
   }
 
   _handleAppStateChange = (nextAppState) => {
-    // this is properly handled in native code at the moment
-    /*const { keepDaemonRunning } = this.props;
-    if (AppState.currentState &&
-        AppState.currentState.match(/inactive|background/) &&
-        NativeModules.DaemonServiceControl) {
-      if (!keepDaemonRunning) {
-        // terminate the daemon background service when is suspended / inactive 
-        //NativeModules.DaemonServiceControl.stopService();
-      }
-    }*/
+    // Check if the app was suspended
+    if (AppState.currentState && AppState.currentState.match(/inactive|background/)) {
+      AsyncStorage.getItem('firstLaunchTime').then(start => {
+        if (start !== null && !isNaN(parseInt(start, 10))) {
+          // App suspended during first launch?
+          // If so, this needs to be included as a property when tracking
+          AsyncStorage.setItem('firstLaunchSuspended', 'true');
+        }
+      });
+    }
   }
   
   render() {

@@ -1,7 +1,14 @@
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import DiscoverPage from './page/discover';
-import { AppRegistry, AppState, StyleSheet, Text, View, AsyncStorage, NativeModules } from 'react-native';
+import {
+  AppRegistry,
+  AppState,
+  AsyncStorage,
+  Text,
+  View,
+  NativeModules
+} from 'react-native';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import {
   StackNavigator, addNavigationHelpers
@@ -21,6 +28,7 @@ import {
   walletReducer
 } from 'lbry-redux';
 import settingsReducer from './redux/reducers/settings';
+import moment from 'moment';
 import { reactNavigationMiddleware } from './utils/redux';
 
 function isFunction(object) {
@@ -105,6 +113,16 @@ persistStore(store, persistOptions, err => {
 });
 
 class LBRYApp extends React.Component {
+  componentDidMount() {
+    AsyncStorage.getItem('hasLaunched').then(value => {
+      if (value == null || value !== 'true') {
+        AsyncStorage.setItem('hasLaunched', 'true');
+        // only set firstLaunchTime since we've determined that this is the first app launch ever
+        AsyncStorage.setItem('firstLaunchTime', String(moment().unix()));
+      }
+    });
+  }
+  
   render() {
     return (
       <Provider store={store}>

@@ -33,7 +33,7 @@ class FilePage extends React.PureComponent {
     this.fetchFileInfo(this.props);
     this.fetchCostInfo(this.props);
     if (NativeModules.Mixpanel) {
-      NativeModules.Mixpanel.track('Open File Page', { uri: this.props.navigation.state.params.uri });
+      NativeModules.Mixpanel.track('Open File Page', { Uri: this.props.navigation.state.params.uri });
     }
   }
 
