@@ -59,7 +59,7 @@ class FileItem extends React.PureComponent {
       <View style={style}>
         <TouchableOpacity style={discoverStyle.container} onPress={() => {
               if (NativeModules.Mixpanel) {
-                NativeModules.Mixpanel.track('Tap', { uri });
+                NativeModules.Mixpanel.track('Discover Tap', { Uri: uri });
               }
               navigation.navigate('File', { uri: uri });
             }

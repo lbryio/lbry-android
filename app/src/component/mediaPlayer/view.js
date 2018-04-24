@@ -85,7 +85,7 @@ class MediaPlayer extends React.PureComponent {
     if (this.state.firstPlay) {
       if (NativeModules.Mixpanel) {
         const { uri } = this.props;
-        NativeModules.Mixpanel.track('Play', { uri });
+        NativeModules.Mixpanel.track('Play', { Uri: uri });
       }
       this.setState({ firstPlay: false });
       this.hidePlayerControls();

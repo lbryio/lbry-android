@@ -114,11 +114,11 @@ persistStore(store, persistOptions, err => {
 
 class LBRYApp extends React.Component {
   componentDidMount() {
-    AsyncStorage.getItem('isFirstLaunch').then(value => {
-      if (value == null || !value) {
-        AsyncStorage.setItem('isFirstLaunch', true);
+    AsyncStorage.getItem('hasLaunched').then(value => {
+      if (value == null || value !== 'true') {
+        AsyncStorage.setItem('hasLaunched', 'true');
         // only set firstLaunchTime since we've determined that this is the first app launch ever
-        AsyncStorage.setItem('firstLaunchTime', moment().unix());
+        AsyncStorage.setItem('firstLaunchTime', String(moment().unix()));
       }
     });
   }

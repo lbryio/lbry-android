@@ -111,10 +111,10 @@ class AppWithNavigationState extends React.Component {
     // Check if the app was suspended
     if (AppState.currentState && AppState.currentState.match(/inactive|background/)) {
       AsyncStorage.getItem('firstLaunchTime').then(start => {
-        if (start !== null && !isNaN(start)) {
+        if (start !== null && !isNaN(parseInt(start, 10))) {
           // App suspended during first launch?
           // If so, this needs to be included as a property when tracking
-          AsyncStorage.setItem('firstLaunchSuspended', true);
+          AsyncStorage.setItem('firstLaunchSuspended', 'true');
         }
       });
     }

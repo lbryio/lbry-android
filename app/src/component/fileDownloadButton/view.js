@@ -61,7 +61,7 @@ class FileDownloadButton extends React.PureComponent {
       return (
         <TouchableOpacity style={[style, fileDownloadButtonStyle.container]} onPress={() => {
             if (NativeModules.Mixpanel) {
-              NativeModules.Mixpanel.track('Purchase Uri', { uri });
+              NativeModules.Mixpanel.track('Purchase Uri', { Uri: uri });
             }
             purchaseUri(uri);
           }}>
