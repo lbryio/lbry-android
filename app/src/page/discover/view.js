@@ -19,6 +19,7 @@ class DiscoverPage extends React.PureComponent {
         const now = moment().unix();
         const delta = now - start;
         AsyncStorage.getItem('firstLaunchSuspended').then(suspended => {
+          AsyncStorage.removeItem('firstLaunchSuspended');
           const appSuspended = (suspended === 'true');
           if (NativeModules.Mixpanel) {
             NativeModules.Mixpanel.track('First Run Time', {
