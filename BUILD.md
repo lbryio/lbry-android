@@ -8,6 +8,8 @@ While these instructions are for Ubuntu 16.04, the same steps have also been con
 * Android SDK
 * Android NDK
 * Buildozer
+* Node.js
+* npm
 
 #### Apt Packages
 Based on the quickstart instructions at http://buildozer.readthedocs.io/en/latest/installation.html
@@ -56,6 +58,8 @@ Assuming `lbry-android` as the current working folder:
 | p4a.local_recipes   | Path to a folder containing python_for_android recipes to be used in the build. The included `recipes` folder includes recipes for a successful build |
 
 #### Build and deploy the APK
+Run `npm i` in the `lbry-android/app` folder to install the necessary modules required by the React Native user interface.
+
 Run `./build.sh` in `lbry-android` to build the APK. The output can be found in the `bin` subdirectory.
 
 To build and deploy, you can run `./deploy.sh`. This requires a connected device or running Android emulator.
