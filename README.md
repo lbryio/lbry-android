@@ -1,5 +1,6 @@
 # LBRY Android
 [![Build Status](https://travis-ci.org/lbryio/lbry-android.svg?branch=master)](https://travis-ci.org/lbryio/lbry-android)
+
 The LBRY Android app running the Python lbrynet-daemon as a background service and a UI layer built with React Native. The APK is built using buildozer and the Gradle build tool.
 
 ## Installation
