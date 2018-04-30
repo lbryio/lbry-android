@@ -1,5 +1,6 @@
-## 64-bit Ubuntu 16.04 LTS build instructions
-While these instructions are for Ubuntu 16.04, the same steps have also been confirmed to work on 14.04 (which is the Travis CI environment), 17.10 and 18.04. 
+## Linux Build Instructions
+
+This app has currently only been built on Ubuntu 14.04, 16.04, 17.10, and 18.04, but these instructions, or an analog of them, should work on most Linux or macOS environments.
 
 ### Install Prerequisites
 
@@ -57,7 +58,7 @@ Assuming `lbry-android` as the current working folder:
 | p4a.source_dir      | Path to the python-for-android repository folder. Currently set to the included `p4a` folder |
 | p4a.local_recipes   | Path to a folder containing python_for_android recipes to be used in the build. The included `recipes` folder includes recipes for a successful build |
 
-#### Build and deploy the APK
+#### Build and Deploy
 Run `npm i` in the `lbry-android/app` folder to install the necessary modules required by the React Native user interface.
 
 Run `./build.sh` in `lbry-android` to build the APK. The output can be found in the `bin` subdirectory.
