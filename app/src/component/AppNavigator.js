@@ -1,10 +1,11 @@
 import React from 'react';
+import AboutPage from '../page/about';
 import DiscoverPage from '../page/discover';
 import FilePage from '../page/file';
 import SearchPage from '../page/search';
 import SettingsPage from '../page/settings';
-import AboutPage from '../page/about';
 import SplashScreen from '../page/splash';
+import WalletPage from '../page/wallet';
 import SearchInput from '../component/searchInput';
 import {
   addNavigationHelpers,
@@ -55,8 +56,22 @@ const discoverStack = StackNavigator({
   headerMode: 'screen',
 });
 
+const walletStack = StackNavigator({
+  Wallet: {
+    screen: WalletPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Wallet',
+      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerRight: <Feather name="search" size={24} style={discoverStyle.rightHeaderIcon} onPress={() => navigation.navigate('Search')} />
+    })
+  }
+}, {
+  headerMode: 'screen'
+});
+
 const drawer = DrawerNavigator({
   Discover: { screen: discoverStack },
+  Wallet: { screen: walletStack },
   Settings: { screen: SettingsPage, navigationOptions: { drawerLockMode: 'locked-closed' } },
   About: { screen: AboutPage, navigationOptions: { drawerLockMode: 'locked-closed' } }
 }, {

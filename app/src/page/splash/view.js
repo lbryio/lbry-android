@@ -40,7 +40,8 @@ class SplashScreen extends React.PureComponent {
 
       Lbry.resolve({ uri: 'lbry://one' }).then(() => {
         // Leave the splash screen
-        const { navigation } = this.props;
+        const { balanceSubscribe, navigation } = this.props;
+        balanceSubscribe();
         navigation.navigate('Main');
       });
       return;

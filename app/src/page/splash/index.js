@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
+import { doBalanceSubscribe } from 'lbry-redux';
 import SplashScreen from './view';
 
-const select = state => ({});
-const perform = dispatch => ({});
+const perform = dispatch => ({
+    balanceSubscribe: () => dispatch(doBalanceSubscribe())
+});
 
-export default connect(select, perform)(SplashScreen);
+export default connect(null, perform)(SplashScreen);

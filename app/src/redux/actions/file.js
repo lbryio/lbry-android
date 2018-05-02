@@ -1,9 +1,9 @@
 import {
     ACTIONS,
     Lbry,
+    selectBalance,
     makeSelectCostInfoForUri,
     makeSelectFileInfoForUri,
-    selectTotalDownloadProgress,
     selectDownloadingByOutpoint,
 } from 'lbry-redux';
 import { NativeModules } from 'react-native';
@@ -187,7 +187,7 @@ export function doLoadVideo(uri) {
 export function doPurchaseUri(uri, specificCostInfo) {
   return (dispatch, getState) => {
     const state = getState();
-    const balance = 0;//selectBalance(state);
+    const balance = selectBalance(state);
     const fileInfo = makeSelectFileInfoForUri(uri)(state);
     const downloadingByOutpoint = selectDownloadingByOutpoint(state);
     const alreadyDownloading = fileInfo && !!downloadingByOutpoint[fileInfo.outpoint];
