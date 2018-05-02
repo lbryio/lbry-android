@@ -7,6 +7,9 @@ const buttonStyle = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 12
   },
+  disabled: {
+    backgroundColor: '#999999'
+  },
   row: {
     alignSelf: 'flex-start',
     flexDirection: 'row',
@@ -17,7 +20,9 @@ const buttonStyle = StyleSheet.create({
   text: {
     color: '#ffffff',
     fontFamily: 'Metropolis-Regular',
-    fontSize: 14,
+    fontSize: 14
+  },
+  textWithIcon: {
     marginLeft: 8
   }
 });

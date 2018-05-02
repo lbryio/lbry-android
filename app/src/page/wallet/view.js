@@ -1,15 +1,19 @@
 import React from 'react';
-import { View } from 'react-native';
-import WalletBalance from '../../component/walletBalance';
+import { ScrollView } from 'react-native';
+import TransactionListRecent from '../../component/transactionListRecent';
 import WalletAddress from '../../component/walletAddress';
+import WalletBalance from '../../component/walletBalance';
+import WalletSend from '../../component/walletSend';
 
 class WalletPage extends React.PureComponent {
   render() {
     return (
-      <View>
+      <ScrollView>
         <WalletBalance />
         <WalletAddress />
-      </View>
+        <WalletSend />
+        <TransactionListRecent />
+      </ScrollView>
     );
   }
 }

@@ -20,10 +20,19 @@ export default class Button extends React.PureComponent<Props> {
       styles.push(style);
     }
     
+    if (disabled) {
+      styles.push(buttonStyle.disabled);
+    }
+    
+    const textStyles = [buttonStyle.text];
+    if (icon && icon.trim().length > 0) {
+      textStyles.push(buttonStyle.textWithIcon);
+    }
+    
     return (
       <TouchableOpacity disabled={disabled} style={styles} onPress={onPress}>
         {icon && <Icon name={icon} size={18} color='#ffffff' class={buttonStyle.icon} /> }
-        {text && (text.trim().length > 0) && <Text style={buttonStyle.text}>{text}</Text>}
+        {text && (text.trim().length > 0) && <Text style={textStyles}>{text}</Text>}
       </TouchableOpacity>
     );
   }

@@ -20,9 +20,10 @@ import {
   AsyncStorage,
   BackHandler,
   NativeModules,
-  TextInput
+  TextInput,
+  ToastAndroid
 } from 'react-native';
-import { SETTINGS } from 'lbry-redux';
+import { SETTINGS, doHideNotification, selectNotification } from 'lbry-redux';
 import { makeSelectClientSetting } from '../redux/selectors/settings';
 import Feather from 'react-native-vector-icons/Feather';
 import discoverStyle from '../styles/discover';
@@ -94,6 +95,8 @@ export const AppNavigator = new StackNavigator({
 });
 
 class AppWithNavigationState extends React.Component {
+  static supportedDisplayTypes = ['toast'];
+  
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
@@ -121,7 +124,33 @@ class AppWithNavigationState extends React.Component {
     AppState.removeEventListener('change', this._handleAppStateChange);
     BackHandler.removeEventListener('hardwareBackPress');
   }
-
+  
+  componentWillUpdate(nextProps) {
+    const { dispatch } = this.props;
+    const { notification } = nextProps;
+    if (notification) {
+      const { displayType, message } = notification;
+      let currentDisplayType;
+      if (displayType.length) {
+        for (let i = 0; i < displayType.length; i++) {
+          const type = displayType[i];
+          if (AppWithNavigationState.supportedDisplayTypes.indexOf(type) > -1) {
+            currentDisplayType = type;
+            break;
+          }
+        }
+      } else if (AppWithNavigationState.supportedDisplayTypes.indexOf(displayType) > -1) {
+        currentDisplayType = displayType;
+      }
+      
+      if ('toast' === currentDisplayType) {
+        ToastAndroid.show(message, ToastAndroid.SHORT);
+      }
+      
+      dispatch(doHideNotification());
+    }
+  }
+  
   _handleAppStateChange = (nextAppState) => {
     // Check if the app was suspended
     if (AppState.currentState && AppState.currentState.match(/inactive|background/)) {
@@ -151,6 +180,7 @@ class AppWithNavigationState extends React.Component {
 
 const mapStateToProps = state => ({
   nav: state.nav,
+  notification: selectNotification(state),
   keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
   showNsfw: makeSelectClientSetting(SETTINGS.SHOW_NSFW)(state)
 });

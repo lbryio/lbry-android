@@ -7,7 +7,7 @@ import discoverStyle from '../../styles/discover';
 import Feather from 'react-native-vector-icons/Feather';
 
 class DiscoverPage extends React.PureComponent {
-  componentWillMount() {
+  componentDidMount() {
     // Track the total time taken if this is the first launch
     AsyncStorage.getItem('firstLaunchTime').then(startTime => {
       if (startTime !== null && !isNaN(parseInt(startTime, 10))) {

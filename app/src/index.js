@@ -24,6 +24,7 @@ import {
   claimsReducer,
   costInfoReducer,
   fileInfoReducer,
+  notificationsReducer,
   searchReducer,
   walletReducer
 } from 'lbry-redux';
@@ -71,6 +72,7 @@ const reducers = combineReducers({
   claims: claimsReducer,
   costInfo: costInfoReducer,
   fileInfo: fileInfoReducer,
+  notifications: notificationsReducer,
   search: searchReducer,
   wallet: walletReducer,
   nav: navigatorReducer,
@@ -96,12 +98,13 @@ const compressor = createCompressor();
 const saveClaimsFilter = createFilter('claims', ['byId', 'claimsByUri']);
 const subscriptionsFilter = createFilter('subscriptions', ['subscriptions']);
 const settingsFilter = createFilter('settings', ['clientSettings']);
+const walletFilter = createFilter('wallet', ['receiveAddress']);
 
 const persistOptions = {
-  whitelist: ['claims', 'subscriptions', 'settings'],
+  whitelist: ['claims', 'subscriptions', 'settings', 'wallet'],
   // Order is important. Needs to be compressed last or other transforms can't
   // read the data
-  transforms: [saveClaimsFilter, subscriptionsFilter, settingsFilter, compressor],
+  transforms: [saveClaimsFilter, subscriptionsFilter, settingsFilter, walletFilter, compressor],
   debounce: 10000,
   storage: AsyncStorage
 };
