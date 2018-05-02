@@ -22,6 +22,9 @@ const walletStyle = StyleSheet.create({
   button: {
     backgroundColor: Colors.LbryGreen
   },
+  historyList: {
+    backgroundColor: '#ffffff'
+  },
   card: {
     backgroundColor: '#ffffff',
     marginTop: 16,
@@ -40,10 +43,13 @@ const walletStyle = StyleSheet.create({
   },
   transactionsTitle: {
     fontFamily: 'Metropolis-Bold',
-    fontSize: 20,
-    paddingTop: 16,
+    fontSize: 20
+  },
+  transactionsHeader: {
+    paddingTop: 12,
+    paddingBottom: 12,
     paddingLeft: 16,
-    paddingBottom: 8,
+    paddingRight: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#eeeeee'
   },

@@ -12,7 +12,7 @@ class WalletPage extends React.PureComponent {
         <WalletBalance />
         <WalletAddress />
         <WalletSend />
-        <TransactionListRecent />
+        <TransactionListRecent navigation={this.props.navigation} />
       </ScrollView>
     );
   }

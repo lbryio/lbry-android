@@ -5,6 +5,7 @@ import FilePage from '../page/file';
 import SearchPage from '../page/search';
 import SettingsPage from '../page/settings';
 import SplashScreen from '../page/splash';
+import TransactionHistoryPage from '../page/transactionHistory';
 import WalletPage from '../page/wallet';
 import SearchInput from '../component/searchInput';
 import {
@@ -65,6 +66,13 @@ const walletStack = StackNavigator({
       headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
       headerRight: <Feather name="search" size={24} style={discoverStyle.rightHeaderIcon} onPress={() => navigation.navigate('Search')} />
     })
+  },
+  TransactionHistory: {
+    screen: TransactionHistoryPage,
+    navigationOptions: {
+      title: 'Transaction History',
+      drawerLockMode: 'locked-closed'
+    }
   }
 }, {
   headerMode: 'screen'

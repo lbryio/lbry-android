@@ -20,11 +20,15 @@ class TransactionListRecent extends React.PureComponent<Props> {
   }
 
   render() {
-    const { fetchingTransactions, hasTransactions, transactions } = this.props;
+    const { fetchingTransactions, hasTransactions, transactions, navigation } = this.props;
 
     return (
       <View style={walletStyle.transactionsCard}>
-        <Text style={walletStyle.transactionsTitle}>Recent Transactions</Text>
+        <View style={[walletStyle.row, walletStyle.transactionsHeader]}>
+          <Text style={walletStyle.transactionsTitle}>Recent Transactions</Text>
+          <Button style={walletStyle.button} text={'View All'}
+            onPress={() => navigation.navigate('TransactionHistory')} />
+        </View>
         {fetchingTransactions && (
           <Text style={walletStyle.infoText}>Fetching transactions...</Text>  
         )}
