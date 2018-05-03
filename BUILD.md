@@ -29,7 +29,7 @@ sudo pip install --upgrade cython==0.25.2
 #### Install buildozer
 A forked version of `buildozer` needs to be installed in order to copy the React Native UI source files into the corresponding directories.
 ```
-git clone https://github.com/akinwale/buildozer.git
+git clone https://github.com/lbryio/buildozer.git
 cd buildozer
 sudo python2.7 setup.py install
 ```
