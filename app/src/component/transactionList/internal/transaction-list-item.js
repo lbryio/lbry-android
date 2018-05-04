@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
-import { Text, View } from 'react-native';
-import { formatCredits } from 'lbry-redux';
+import { Text, View, Linking } from 'react-native';
+import { buildURI, formatCredits } from 'lbry-redux';
+import Link from '../../link';
 import moment from 'moment';
 import transactionListStyle from '../../../styles/transactionList';
 
@@ -11,14 +12,20 @@ class TransactionListItem extends React.PureComponent {
   }
   
   render() {
-    const { transaction } = this.props;
+    const { transaction, navigation, notify } = this.props;
     const { amount, claim_id: claimId, claim_name: name, date, fee, txid, type } = transaction;
-    
+            
     return (
       <View style={transactionListStyle.listItem}>
         <View style={[transactionListStyle.row, transactionListStyle.topRow]}>
           <View style={transactionListStyle.col}>
             <Text style={transactionListStyle.text}>{this.capitalize(type)}</Text>
+            {name && claimId && (
+              <Link
+                style={transactionListStyle.link}
+                onPress={() => navigation && navigation.navigate('File', { uri: buildURI({ claimName: name, claimId }) })}
+                text={name} />
+            )}      
           </View>
           <View style={transactionListStyle.col}>
             <Text style={[transactionListStyle.amount, transactionListStyle.text]}>{formatCredits(amount, 8)}</Text>
@@ -27,7 +34,12 @@ class TransactionListItem extends React.PureComponent {
         </View>
         <View style={transactionListStyle.row}>
           <View style={transactionListStyle.col}>
-            <Text style={[transactionListStyle.smallText, transactionListStyle.txid]}>{txid.substring(0, 8)}</Text>
+            <Link text={txid.substring(0, 8)} style={transactionListStyle.smallLink} onPress={() =>
+              Linking.openURL(`https://explorer.lbry.io/tx/${txid}`).catch(err => notify({
+                message: 'The transaction URL could not be opened',
+                displayType: ['toast']
+              }))
+            }/>
           </View>
           <View style={transactionListStyle.col}>
             {date ? (

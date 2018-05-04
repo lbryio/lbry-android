@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 //import { selectClaimedRewardsByTransactionId } from 'redux/selectors/rewards';
-import { selectAllMyClaimsByOutpoint } from 'lbry-redux';
+import { doNotify, selectAllMyClaimsByOutpoint } from 'lbry-redux';
 import TransactionList from './view';
 
 const select = state => ({
@@ -8,6 +8,8 @@ const select = state => ({
   myClaims: selectAllMyClaimsByOutpoint(state),
 });
 
-const perform = dispatch => ({});
+const perform = dispatch => ({
+  notify: (data) => dispatch(doNotify(data))
+});
 
 export default connect(select, perform)(TransactionList);

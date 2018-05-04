@@ -9,7 +9,7 @@ class TransactionHistoryPage extends React.PureComponent {
   }
 
   render() {
-    const { fetchingTransactions, transactions } = this.props;
+    const { fetchingTransactions, transactions, navigation } = this.props;
 
     return (
       <ScrollView>
@@ -18,7 +18,7 @@ class TransactionHistoryPage extends React.PureComponent {
             <Text style={walletStyle.infoText}>Loading transactions...</Text>
           )}
           {transactions && transactions.length && (
-            <TransactionList transactions={transactions} />
+            <TransactionList navigation={navigation} transactions={transactions} />
           )}
         </View>
       </ScrollView>

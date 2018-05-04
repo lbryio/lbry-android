@@ -24,16 +24,23 @@ const transactionListStyle = StyleSheet.create({
     fontFamily: 'Metropolis-Regular',
     fontSize: 14
   },
+  link: {
+    color: Colors.LbryGreen,
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14
+  },
   amount: {
     textAlign: 'right'
-  },
-  txid: {
-    color: Colors.LbryGreen
   },
   smallText: {
     fontFamily: 'Metropolis-Regular',
     fontSize: 12,
     color: '#aaaaaa'
+  },
+  smallLink: {
+    color: Colors.LbryGreen,
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 12
   },
   noTransactions: {
     fontFamily: 'Metropolis-Regular',
