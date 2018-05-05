@@ -8,8 +8,4 @@ const select = state => ({
   myClaims: selectAllMyClaimsByOutpoint(state),
 });
 
-const perform = dispatch => ({
-  notify: (data) => dispatch(doNotify(data))
-});
-
-export default connect(select, perform)(TransactionList);
+export default connect(select, null)(TransactionList);

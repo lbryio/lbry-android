@@ -1,7 +1,20 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Linking, Text, TouchableOpacity } from 'react-native';
 
 export default class Link extends React.PureComponent {
+  handlePress = () => {
+    const { error, href, navigation, notify } = this.props;
+    
+    if (navigation && href.startsWith('#')) {
+      navigation.navigate(href.substring(1));
+    } else {
+      Linking.openURL(href).catch(err => notify({
+        message: error,
+        displayType: ['toast']
+      }));
+    }
+  }
+  
   render() {
     const {
       onPress,
@@ -17,7 +30,7 @@ export default class Link extends React.PureComponent {
     }
     
     return (
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onPress ? onPress : this.handlePress}>
         <Text style={styles}>{text}</Text>
       </TouchableOpacity>
     );

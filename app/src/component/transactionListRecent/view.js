@@ -27,8 +27,10 @@ class TransactionListRecent extends React.PureComponent<Props> {
       <View style={walletStyle.transactionsCard}>
         <View style={[walletStyle.row, walletStyle.transactionsHeader]}>
           <Text style={walletStyle.transactionsTitle}>Recent Transactions</Text>
-          <Link style={walletStyle.link} text={'View All'}
-            onPress={() => navigation.navigate('TransactionHistory')} />
+          <Link style={walletStyle.link}
+                navigation={navigation}
+                text={'View All'}
+                href={'#TransactionHistory'} />
         </View>
         {fetchingTransactions && (
           <Text style={walletStyle.infoText}>Fetching transactions...</Text>  
