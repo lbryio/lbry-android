@@ -12,7 +12,7 @@ class TransactionListItem extends React.PureComponent {
   }
   
   render() {
-    const { transaction, navigation, notify } = this.props;
+    const { transaction, navigation } = this.props;
     const { amount, claim_id: claimId, claim_name: name, date, fee, txid, type } = transaction;
             
     return (
