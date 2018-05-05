@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 //import { selectClaimedRewardsByTransactionId } from 'redux/selectors/rewards';
-import { doNotify, selectAllMyClaimsByOutpoint } from 'lbry-redux';
+import { selectAllMyClaimsByOutpoint } from 'lbry-redux';
 import TransactionList from './view';
 
 const select = state => ({
