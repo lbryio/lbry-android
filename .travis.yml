@@ -50,7 +50,8 @@ before_deploy:
 - cp browser-$BUILD_VERSION-release.apk latest.apk
 deploy:
   - provider: releases
-    api_key: $GITHUB_TOKEN
+    api_key:
+      secure: m+FYX7vHZoiLSHHiJ2d3y8Fm4qSRoIVjEei+5BV17awiow/U8UKvy/5J1n8qfBdq+dpst5z58pTHCKWPbJz84C3z/posJ5mwEcOAaD/kxSAMHbtlaPW90pRWHUu3aW86UM/ggqtljE9Qz8KS/9a0xNUDfcXLkLgxuxgwodMcacEulAAc9TIOCUeR3IFI+KN0ptTCVahCu2JN8DCHKomaR+yKZHdo/9v9XCAcvmImSDu9nUDLH3+A7xQeRpPJqSspk1dadgdXP76kU8t3OKsYuM7DS5AoKvMIc9lZot4UYYKAx7/zavbzeEmqnyskULgsmV8/UDI1AV9U7uFBdrR6dSjISA1k6EHnCgqzasF+lp0hz5iE/0yPxlE9Z1kLW9gZgxSJtjr6Kv2uqAjHYYmpkjtTwHPwBugRM7PWMTxHNcPwkIHpBSRkXjpyDjkWd/LY4X866Y1g2BdIhbGshjy/9Fb2vnYxNZW6drLHn+wWeHJ41Vfgtg1cn01yZGJqgIkcTkhzNL6Bi++y8EBJXDr4L870s336SpbqRuIrO/C16ZFB+XnOg4Ty50Fk5zkbySMHII58iWqSyDYWNvhqo9zU9jn1XQQeok12129Y4t9TUOcJRbxhQ+511lCmVcFIkWHsXDK2QSZ7TeMK5GQUA8OvcNe+WLCJaQ/YD7OZvwlPTvc=
     file_glob: true
     file: browser-*-release.apk
     overwrite: true
@@ -68,10 +69,9 @@ deploy:
     overwrite: true
     skip_cleanup: true
     on:
-      branch: deployment
+      tags: true
 env:
   global:
-  - secure: pX8umVv4qNWteoG+nvjO+wpuhWfCnxA2cEXvR7Ir4oGU+Hr+6fExEsXZwPqLXfMMl5HixSaeekM7vTJG/smhQrjVuDr1aKzEHyzinc+25RNkHe1E50KzgMtitdz16xIpUd2GtAG9VGZVi5RPRUPFO0NAoTiO5WYcBipoRoUhUFiaq0ND8r1knwmA5cbw+iQpQzMtCXIcNduixFnUKY7nOEnS5rhnRucwSjM36tPtJR/TTrB8KiiUKFAbLb+YATGztipZoM3a46Xw27TCZGaJi53xADQ6hHu20NxGdpApA/gEnAeG4ybLpkHJoW+3l0B8rnN9AXHon923fZ+y3k5qSXO+iRxMiZOidm5ubWFxoTf1lYQg4jz899kSoEg82e6Qjw40s53dc+uyZOMAVF4E14vvKVgfKGFFzxbaa8EZrZjxtfsCGpvgma1AM/r8TZ3SPky1by+/bW8d0sbH5oI+88TeUFf9ZqzjolQJpwCULQW/9kvRD8f9XN8WwkSoq6XQMsiMongO67bEzcoqF5LZ/gDGNJN6Zn/voptcNfUq8q5urr0pJcVj7adUNVY+mXMM4GN8M8VbvKliFgf6oyBoU8XgxTRa/NKoqEDA5ujqyKokR9h7gkSlnkDLmYlajvBE0hAwFIW+bqxV1ajQd2ymzuXjaSR8U5A8/4yZUTX9qow=
   - secure: GS3Cp1QXiX8UPye3kdk2A2f3iFRr02sHKpY+RE+Zvx3Q7GDmhDuepHKzx6Hq5Os5fZN9Y/Bdds+XH+vLIRtT6XsWR7AONPhSifVY3XB5/2F+lDcZ538W8P8GZvXejpY4VecMUWHoWbuyt0s3PpaGXZJcHp8ir+CUJ0NUmU3I9w449pqj9/de2LHtG3qKH1lG0Xz58iOC0mmEeH451cQv3dDw851ihA4ak9vCTV1KKuMJUcv+2u6PxXGVX0mrJLEssjL6ze6G5iZUB4PM1vUpe3HqcVw8CSOa8O79BQxoB00qyA3WD+LpZDPpI0wh6gmBsR/2nCFyMJndJr3CjyB6lHdK7PgBoK0CJjszKawiZqg74O9DOjzTJTO2v9bnkfPrNxu4/3D/tbDg+whY8k5oV1sgDue9KAo/2aEEO0LGlKP4W3Qqt/lzRKsfpMVrMTdCNKJ8rG/wUFWw8ehOCmAsJaQ1saDOZDMNPLLuYpxFgmXFqWV5ThbUHgEJVj+G7qt6CMEussKvuZJoJZx24Pdk5Prr7ENzTyPmE5gk4b8WNfVNleOEC09xu5tFk2yOdzF1dawKsa1Mog6gImirTQ/INC/3BANdKoG9/cLJEIt9boJaFDXE1dpqoLVzoez9znHKOGSAU/1PaH3thjVnbUyO5z24PpPZ12zM3+3P8DbI454=
 before_install:
 - openssl aes-256-cbc -K $encrypted_b4c9b905b12e_key -iv $encrypted_b4c9b905b12e_iv
