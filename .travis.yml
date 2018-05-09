@@ -46,7 +46,7 @@ script:
 - "./build.sh | grep -Fv -e 'working:' -e 'copy' --line-buffered"
 - "source ./release.sh | grep -Fv -e 'working:' -e 'copy' --line-buffered"
 after_script:
-- echo "Build Version: $BUILD_VERSION"
+- "echo Build Version: $BUILD_VERSION"
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
