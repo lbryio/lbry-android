@@ -2,38 +2,59 @@ sudo: required
 dist: trusty
 language: python
 python:
-      - "2.7"
+- '2.7'
 install:
-      - deactivate
-      - export PATH=/usr/bin:$PATH
-      - sudo dpkg --add-architecture i386
-      - sudo apt-get -qq update
-      - sudo apt-get -qq install build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386 npm nodejs
-      - sudo pip install --upgrade cython==0.25.2 pip setuptools
-      - git clone https://github.com/akinwale/buildozer.git
-      - cd app
-      - npm config set registry="http://registry.npmjs.org/"
-      - npm install --silent --save react@16.2.0 react-native@0.52.0 react-native-video@2.0.0
-      - cd ..
-      - cd buildozer
-      - sudo python setup.py install
-      - cd ..
-      - mv buildozer.spec.travis buildozer.spec
-      - mkdir -p cd ~/.buildozer/android/platform/
-      - wget 'https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip' -P ~/.buildozer/android/platform/
-      - wget 'https://dl.google.com/android/android-sdk_r23-linux.tgz' -P ~/.buildozer/android/platform/
-      - wget 'https://dl.google.com/android/repository/android-23_r02.zip' -P ~/.buildozer/android/platform/
-      - wget 'https://dl.google.com/android/repository/build-tools_r26.0.1-linux.zip' -P ~/.buildozer/android/platform/
-      - unzip -qq ~/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip -d ~/.buildozer/android/platform/
-      - tar -xf ~/.buildozer/android/platform/android-sdk_r23-linux.tgz -C ~/.buildozer/android/platform/
-      - mv ~/.buildozer/android/platform/android-sdk-linux ~/.buildozer/android/platform/android-sdk-23
-      - unzip -qq ~/.buildozer/android/platform/android-23_r02.zip -d ~/.buildozer/android/platform/android-sdk-23/platforms
-      - mv ~/.buildozer/android/platform/android-sdk-23/platforms/android-6.0 ~/.buildozer/android/platform/android-sdk-23/platforms/android-23
-      - mkdir -p ~/.buildozer/android/platform/android-sdk-23/build-tools
-      - unzip -qq ~/.buildozer/android/platform/build-tools_r26.0.1-linux.zip -d ~/.buildozer/android/platform/android-sdk-23/build-tools
-      - mv ~/.buildozer/android/platform/android-sdk-23/build-tools/android-8.0.0 ~/.buildozer/android/platform/android-sdk-23/build-tools/26.0.1
-      - mkdir -p ~/.buildozer/android/platform/android-sdk-23/licenses
-      - echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license
+- deactivate
+- export PATH=/usr/bin:$PATH
+- sudo dpkg --add-architecture i386
+- sudo apt-get -qq update
+- sudo apt-get -qq install build-essential ccache git libncurses5:i386 libstdc++6:i386
+  libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7
+  python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386 npm nodejs
+- sudo pip install --upgrade cython==0.25.2 pip setuptools
+- git clone https://github.com/akinwale/buildozer.git
+- cd app
+- npm config set registry="http://registry.npmjs.org/"
+- npm install --silent --save react@16.2.0 react-native@0.52.0 react-native-video@2.0.0
+- cd ..
+- cd buildozer
+- sudo python setup.py install
+- cd ..
+- mv buildozer.spec.travis buildozer.spec
+- mkdir -p cd ~/.buildozer/android/platform/
+- wget 'https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip'
+  -P ~/.buildozer/android/platform/
+- wget 'https://dl.google.com/android/android-sdk_r23-linux.tgz' -P ~/.buildozer/android/platform/
+- wget 'https://dl.google.com/android/repository/android-23_r02.zip' -P ~/.buildozer/android/platform/
+- wget 'https://dl.google.com/android/repository/build-tools_r26.0.1-linux.zip' -P
+  ~/.buildozer/android/platform/
+- unzip -qq ~/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip -d ~/.buildozer/android/platform/
+- tar -xf ~/.buildozer/android/platform/android-sdk_r23-linux.tgz -C ~/.buildozer/android/platform/
+- mv ~/.buildozer/android/platform/android-sdk-linux ~/.buildozer/android/platform/android-sdk-23
+- unzip -qq ~/.buildozer/android/platform/android-23_r02.zip -d ~/.buildozer/android/platform/android-sdk-23/platforms
+- mv ~/.buildozer/android/platform/android-sdk-23/platforms/android-6.0 ~/.buildozer/android/platform/android-sdk-23/platforms/android-23
+- mkdir -p ~/.buildozer/android/platform/android-sdk-23/build-tools
+- unzip -qq ~/.buildozer/android/platform/build-tools_r26.0.1-linux.zip -d ~/.buildozer/android/platform/android-sdk-23/build-tools
+- mv ~/.buildozer/android/platform/android-sdk-23/build-tools/android-8.0.0 ~/.buildozer/android/platform/android-sdk-23/build-tools/26.0.1
+- mkdir -p ~/.buildozer/android/platform/android-sdk-23/licenses
+- echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license
 script:
-      - ./build.sh | grep -Fv -e 'working:' -e 'copy' --line-buffered
-      - cp bin/*.apk /dev/null
+- "./build.sh | grep -Fv -e 'working:' -e 'copy' --line-buffered"
+- source ./release.sh | grep -Fv -e 'working:' -e 'copy' --line-buffered"
+after_script:
+- echo "Build Version: $BUILD_VERSION"
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file: "bin/browser-$BUILD_VERSION-release.apk"
+  overwrite: true
+  skip_cleanup: true
+  on:
+    branch: deployment
+env:
+  global:
+  - secure: pX8umVv4qNWteoG+nvjO+wpuhWfCnxA2cEXvR7Ir4oGU+Hr+6fExEsXZwPqLXfMMl5HixSaeekM7vTJG/smhQrjVuDr1aKzEHyzinc+25RNkHe1E50KzgMtitdz16xIpUd2GtAG9VGZVi5RPRUPFO0NAoTiO5WYcBipoRoUhUFiaq0ND8r1knwmA5cbw+iQpQzMtCXIcNduixFnUKY7nOEnS5rhnRucwSjM36tPtJR/TTrB8KiiUKFAbLb+YATGztipZoM3a46Xw27TCZGaJi53xADQ6hHu20NxGdpApA/gEnAeG4ybLpkHJoW+3l0B8rnN9AXHon923fZ+y3k5qSXO+iRxMiZOidm5ubWFxoTf1lYQg4jz899kSoEg82e6Qjw40s53dc+uyZOMAVF4E14vvKVgfKGFFzxbaa8EZrZjxtfsCGpvgma1AM/r8TZ3SPky1by+/bW8d0sbH5oI+88TeUFf9ZqzjolQJpwCULQW/9kvRD8f9XN8WwkSoq6XQMsiMongO67bEzcoqF5LZ/gDGNJN6Zn/voptcNfUq8q5urr0pJcVj7adUNVY+mXMM4GN8M8VbvKliFgf6oyBoU8XgxTRa/NKoqEDA5ujqyKokR9h7gkSlnkDLmYlajvBE0hAwFIW+bqxV1ajQd2ymzuXjaSR8U5A8/4yZUTX9qow=
+  - secure: GS3Cp1QXiX8UPye3kdk2A2f3iFRr02sHKpY+RE+Zvx3Q7GDmhDuepHKzx6Hq5Os5fZN9Y/Bdds+XH+vLIRtT6XsWR7AONPhSifVY3XB5/2F+lDcZ538W8P8GZvXejpY4VecMUWHoWbuyt0s3PpaGXZJcHp8ir+CUJ0NUmU3I9w449pqj9/de2LHtG3qKH1lG0Xz58iOC0mmEeH451cQv3dDw851ihA4ak9vCTV1KKuMJUcv+2u6PxXGVX0mrJLEssjL6ze6G5iZUB4PM1vUpe3HqcVw8CSOa8O79BQxoB00qyA3WD+LpZDPpI0wh6gmBsR/2nCFyMJndJr3CjyB6lHdK7PgBoK0CJjszKawiZqg74O9DOjzTJTO2v9bnkfPrNxu4/3D/tbDg+whY8k5oV1sgDue9KAo/2aEEO0LGlKP4W3Qqt/lzRKsfpMVrMTdCNKJ8rG/wUFWw8ehOCmAsJaQ1saDOZDMNPLLuYpxFgmXFqWV5ThbUHgEJVj+G7qt6CMEussKvuZJoJZx24Pdk5Prr7ENzTyPmE5gk4b8WNfVNleOEC09xu5tFk2yOdzF1dawKsa1Mog6gImirTQ/INC/3BANdKoG9/cLJEIt9boJaFDXE1dpqoLVzoez9znHKOGSAU/1PaH3thjVnbUyO5z24PpPZ12zM3+3P8DbI454=
+before_install:
+- openssl aes-256-cbc -K $encrypted_b4c9b905b12e_key -iv $encrypted_b4c9b905b12e_iv
+  -in lbry-android.keystore.enc -out lbry-android.keystore -d
