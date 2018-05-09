@@ -44,7 +44,8 @@ install:
 - echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license
 script:
 #- "./build.sh | grep -Fv -e 'working:' -e 'copy' --line-buffered"
-- "source ./release.sh | grep -Fv -e 'working:' -e 'copy' --line-buffered"
+- "./release.sh | grep -Fv -e 'working:' -e 'copy' --line-buffered"
+- "export BUILD_VERSION=$(cat src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')"
 after_script:
 - "echo Build Version: $BUILD_VERSION"
 deploy:
