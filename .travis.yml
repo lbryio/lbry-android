@@ -49,14 +49,26 @@ before_deploy:
 - export BUILD_VERSION=$(cat ../src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
 - cp browser-$BUILD_VERSION-release.apk latest.apk
 deploy:
-  provider: releases
-  api_key: $GITHUB_TOKEN
-  file_glob: true
-  file: browser-*-release.apk
-  overwrite: true
-  skip_cleanup: true
-  on:
-    branch: deployment
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file: browser-*-release.apk
+    overwrite: true
+    skip_cleanup: true
+    on:
+      tags: true
+  - provider: s3
+    access_key_id:
+      secure: qEZZ73DWBn9+M2pS4VwsyX8YZjZOENIMP/eoU1A9Vbn155oZpbUaJ7k+4cAXqmBm0WBMKZDqpzCRSGehLAxHFH5rjkj9gLSgd8fY9cveABHkl50HeuxxNsQM+ytk9sCtP8bWOqf7rT/iCgM1soyF2pYmfHM3tU9l0fWK8oZ7pFRIg91hXxUvhvYY2u6B9D1NqSN9T3xtrwEkVjvmkmyKMLCtoIdyB7QdeQciFdGFhZC9DYJVRLxa3BlzZ1T8Qv4MCyIxPjxIugNvVR64VgGjdBdq0BEIyoRqbeIvtqQjlnne4DfJFeCmbDrSva1wDP1UyFoxsRhiWQ/jXXgIyN2CisI6QRD0J+a2LgmbmtkUzhRMuVQJmBrIauulOzcowwRV2J4TtUaAJK9iSHT9D3RLzpazCOnjvJZV9CK5w252Vs5eHnisCSCQk8Ozox96Sg6XW580NEXfkYoGzXLSGiy9zrZs813blUjssEY+jIQmJEby80C3guK7/G4lzthv57psqBWcYd0tFR+vTestS+EFlC02ToUngJhW7I7lPA2G2yrJ5319jFxUSniijb1n72TQthnbqTBahepvKvuG1iWZnCKxS5sWkutFoqEcpQyhXdf7QdR/VrOr8N5xrhK1B8dCYZM6h8eMZbBvOLH49+N6L9jiJz5x+Lk32wcssv1oOgI=
+    secret_access_key:
+      secure: lPygaaJdjFgWY4GcXUXC4Oc5op/TE85Md8lX2bzW19058lbcqYSdM0WySQCxoU/4rlM4Q0N8du0qQ3kZXDpP9XSqvFTVnTGTuB4yghUR1yXcpt6u3JOeOX+YAc3wyQ/pmod6VGO0n8pm8hBVsSFXufdBTjD2W+tNrDoa8RYnlWrt7BbICGltB7PcqYh1Qw6S1wDyZt8I4B5JHDhyJmX6FT5KfOb5cJyynpxlKUstUfy1rh81KuGkEcuEVOLg1s7HE1/IUkVIgezAuCrMHjc86qbNcHULJMFCVYntvvs07+tctrPxA/cfS24WkW7smyij+gdZAZWNNgkIDCuwqpex1v1nKn56mC8xXyUl4CnSCuubQtqUBzTmd4T5sF7trTtpVr9NInwy+4mUoCpz2UKZekTjZkqpzCAuC/cBVWE1/k3wsNat6dGyc9QnKXBqLVhuwYsCOteqLW50ToMMMW0ccDV6FXodwZmrunGd5wIX+UgZkf4l32vzKUxHtIupfYbsjylcPc3VO0OzMMKP/3sYLAN6QntVDFc30k1uqqpgJN4t0nV7vvjMI+b0Qr+o7GzUV2d+QulQXOySJgB2pH0kV1EoPAJ8KbqDOy8KgCJl0YIbOaz14+SiRQhotJ2hrLdtsvyVYXMX+d/CKHJSWa2MQq+jD7lMCwVaGg82PFN1gI4=
+    bucket: "build.lbry.io"
+    upload-dir: android
+    region: us-east-1
+    overwrite: true
+    skip_cleanup: true
+    on:
+      branch: deployment
 env:
   global:
   - secure: pX8umVv4qNWteoG+nvjO+wpuhWfCnxA2cEXvR7Ir4oGU+Hr+6fExEsXZwPqLXfMMl5HixSaeekM7vTJG/smhQrjVuDr1aKzEHyzinc+25RNkHe1E50KzgMtitdz16xIpUd2GtAG9VGZVi5RPRUPFO0NAoTiO5WYcBipoRoUhUFiaq0ND8r1knwmA5cbw+iQpQzMtCXIcNduixFnUKY7nOEnS5rhnRucwSjM36tPtJR/TTrB8KiiUKFAbLb+YATGztipZoM3a46Xw27TCZGaJi53xADQ6hHu20NxGdpApA/gEnAeG4ybLpkHJoW+3l0B8rnN9AXHon923fZ+y3k5qSXO+iRxMiZOidm5ubWFxoTf1lYQg4jz899kSoEg82e6Qjw40s53dc+uyZOMAVF4E14vvKVgfKGFFzxbaa8EZrZjxtfsCGpvgma1AM/r8TZ3SPky1by+/bW8d0sbH5oI+88TeUFf9ZqzjolQJpwCULQW/9kvRD8f9XN8WwkSoq6XQMsiMongO67bEzcoqF5LZ/gDGNJN6Zn/voptcNfUq8q5urr0pJcVj7adUNVY+mXMM4GN8M8VbvKliFgf6oyBoU8XgxTRa/NKoqEDA5ujqyKokR9h7gkSlnkDLmYlajvBE0hAwFIW+bqxV1ajQd2ymzuXjaSR8U5A8/4yZUTX9qow=
