@@ -117,6 +117,20 @@ const walletStyle = StyleSheet.create({
   addressInput: {
     width: '80%'
   },
+  warning: {
+    backgroundColor: Colors.Orange,
+    padding: 16,
+    margin: 16
+  },
+  warningText: {
+    color: '#ffffff',
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    lineHeight: 30
+  },
+  understand: {
+    marginLeft: 16
+  },
   currency: {
     alignSelf: 'flex-start',
     marginTop: 17
