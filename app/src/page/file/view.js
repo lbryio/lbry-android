@@ -5,6 +5,7 @@ import {
   Alert,
   Button,
   Text,
+  TextInput,
   View,
   ScrollView,
   StatusBar,
@@ -156,6 +157,12 @@ class FilePage extends React.PureComponent {
           {channelName && <Text style={filePageStyle.channelName}>{channelName}</Text>}
           {description && <Text style={filePageStyle.description}>{description}</Text>}
         </ScrollView>
+        <View style={filePageStyle.uriContainer}>
+          <TextInput style={filePageStyle.uriText}
+                     underlineColorAndroid={'transparent'}
+                     numberOfLines={1}
+                     value={navigation.state.params.uri} />
+        </View>
       </View>
     );
   }

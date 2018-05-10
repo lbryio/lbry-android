@@ -25,7 +25,7 @@ const filePageStyle = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-    marginTop: -20,
+    marginTop: -16,
     marginBottom: -4,
     paddingTop: 10
   },
@@ -97,6 +97,20 @@ const filePageStyle = StyleSheet.create({
   loading: {
     position: 'absolute',
     top: '40%'
+  },
+  uriContainer: {
+    padding: 8,
+    backgroundColor: '#f1f1f1',
+    alignSelf: 'flex-end'
+  },
+  uriText: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    padding: 8,
+    borderRadius: 4,
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16
   }
 });
 
