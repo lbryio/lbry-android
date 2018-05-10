@@ -14,10 +14,12 @@ export default class Button extends React.PureComponent {
     } = this.props;
     
     let styles = [buttonStyle.button, buttonStyle.row];
-    if (style.length) {
-      styles = styles.concat(style);
-    } else {
-      styles.push(style);
+    if (style) {
+      if (style.length) {
+        styles = styles.concat(style);
+      } else {
+        styles.push(style);
+      }
     }
     
     if (disabled) {
