@@ -57,6 +57,11 @@ const walletStyle = StyleSheet.create({
     fontFamily: 'Metropolis-Regular',
     fontSize: 14
   },
+  link: {
+    color: Colors.LbryGreen,
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14
+  },
   smallText: {
     fontFamily: 'Metropolis-Regular',
     fontSize: 12

@@ -3,7 +3,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import buttonStyle from '../../styles/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class Button extends React.PureComponent<Props> {
+export default class Button extends React.PureComponent {
   render() {
     const {
       disabled,

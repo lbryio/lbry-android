@@ -8,6 +8,4 @@ const select = state => ({
   myClaims: selectAllMyClaimsByOutpoint(state),
 });
 
-const perform = dispatch => ({});
-
-export default connect(select, perform)(TransactionList);
+export default connect(select, null)(TransactionList);

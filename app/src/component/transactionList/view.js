@@ -40,7 +40,7 @@ class TransactionList extends React.PureComponent {
   }
   
   render() {
-    const { emptyMessage, rewards, transactions } = this.props;
+    const { emptyMessage, rewards, transactions, navigation } = this.props;
     const { filter } = this.state;
     const transactionList = transactions.filter(this.filterTransaction);
     
@@ -56,6 +56,7 @@ class TransactionList extends React.PureComponent {
               <TransactionListItem
                 key={`${t.txid}:${t.nout}`}
                 transaction={t}
+                navigation={navigation}
                 reward={rewards && rewards[t.txid]}
               />
             ))}
