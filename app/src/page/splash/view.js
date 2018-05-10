@@ -1,6 +1,7 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
 import { View, Text, NativeModules } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
 import splashStyle from '../../styles/splash';
 
@@ -42,7 +43,14 @@ class SplashScreen extends React.PureComponent {
         // Leave the splash screen
         const { balanceSubscribe, navigation } = this.props;
         balanceSubscribe();
-        navigation.navigate('Main');
+        
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Main'})
+          ]
+        });
+        navigation.dispatch(resetAction);
       });
       return;
     }
