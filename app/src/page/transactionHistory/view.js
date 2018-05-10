@@ -17,7 +17,10 @@ class TransactionHistoryPage extends React.PureComponent {
           {fetchingTransactions && !transactions.length && (
             <Text style={walletStyle.infoText}>Loading transactions...</Text>
           )}
-          {transactions && transactions.length && (
+          {!fetchingTransactions && transactions.length === 0 && (
+            <Text style={walletStyle.infoText}>No transactions to list.</Text>
+          )}
+          {!fetchingTransactions && transactions && (transactions.length > 0) && (
             <TransactionList navigation={navigation} transactions={transactions} />
           )}
         </View>
