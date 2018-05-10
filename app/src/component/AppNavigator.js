@@ -79,8 +79,8 @@ const walletStack = StackNavigator({
 });
 
 const drawer = DrawerNavigator({
-  Discover: { screen: discoverStack },
-  Wallet: { screen: walletStack },
+  DiscoverStack: { screen: discoverStack },
+  WalletStack: { screen: walletStack },
   Settings: { screen: SettingsPage, navigationOptions: { drawerLockMode: 'locked-closed' } },
   About: { screen: AboutPage, navigationOptions: { drawerLockMode: 'locked-closed' } }
 }, {
@@ -110,16 +110,17 @@ class AppWithNavigationState extends React.Component {
     BackHandler.addEventListener('hardwareBackPress', function() {
       const { dispatch, navigation, nav } = this.props;
       // There should be a better way to check this
-      if (nav.routes.length > 1) {
-        const subRoutes = nav.routes[1].routes[0].routes;
+      if (nav.routes.length > 0) {
+        const subRoutes = nav.routes[0].routes[0].routes;
         const lastRoute = subRoutes[subRoutes.length - 1];
-        if (['About', 'Settings'].indexOf(lastRoute.key) > -1) {
-          dispatch({ type: 'Navigation/BACK' });
+        if (nav.routes[0].routes[0].index > 0 &&
+            ['About', 'Settings'].indexOf(lastRoute.key) > -1) {
+          dispatch(NavigationActions.back());
           return true;
         }
-        if (nav.routes[1].routeName === 'Main') {
-          if (nav.routes[1].routes[0].routes[0].index > 0) {    
-            dispatch({ type: 'Navigation/BACK' });
+        if (nav.routes[0].routeName === 'Main') {
+          if (nav.routes[0].routes[0].routes[0].index > 0) {    
+            dispatch(NavigationActions.back());
             return true;
           }
         }
