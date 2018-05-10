@@ -119,7 +119,6 @@ class AppWithNavigationState extends React.Component {
           return true;
         }
         if (nav.routes[0].routeName === 'Main') {
-          console.log(nav.routes[0].routes[0].routes[0]);
           if (nav.routes[0].routes[0].routes[0].index > 0) {    
             dispatch(NavigationActions.back());
             return true;
