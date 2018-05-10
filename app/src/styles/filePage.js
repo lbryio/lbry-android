@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import Colors from './colors';
 
 const screenDimension = Dimensions.get('window'); 
 const screenWidth = screenDimension.width;
@@ -46,7 +47,7 @@ const filePageStyle = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 20,
-    color: '#9b9b9b'
+    color: Colors.ChannelGrey
   },
   description: {
     fontFamily: 'Metropolis-Regular',
@@ -54,7 +55,7 @@ const filePageStyle = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 40,
-    color: '#999999'
+    color: Colors.DescriptionGrey
   },
   thumbnail: {
     width: screenWidth,
@@ -79,7 +80,7 @@ const filePageStyle = StyleSheet.create({
     right: 0,
     bottom: 0,
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: Colors.Black,
     zIndex: 100
   },
   actions: {
@@ -91,7 +92,7 @@ const filePageStyle = StyleSheet.create({
     width: '50%',
   },
   deleteButton: {
-    backgroundColor: '#ff0000',
+    backgroundColor: Colors.Red,
     width: 80
   },
   loading: {
@@ -100,13 +101,13 @@ const filePageStyle = StyleSheet.create({
   },
   uriContainer: {
     padding: 8,
-    backgroundColor: '#f1f1f1',
+    backgroundColor: Colors.VeryLightGrey,
     alignSelf: 'flex-end'
   },
   uriText: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.White,
     borderWidth: 1,
-    borderColor: '#cccccc',
+    borderColor: Colors.LightGrey,
     padding: 8,
     borderRadius: 4,
     fontFamily: 'Metropolis-Regular',
