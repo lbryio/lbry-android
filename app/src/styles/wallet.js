@@ -118,7 +118,7 @@ const walletStyle = StyleSheet.create({
     width: '80%'
   },
   warning: {
-    backgroundColor: '#ffbb00',
+    backgroundColor: Colors.Orange,
     padding: 16,
     margin: 16
   },

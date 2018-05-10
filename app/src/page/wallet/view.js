@@ -5,6 +5,7 @@ import WalletAddress from '../../component/walletAddress';
 import WalletBalance from '../../component/walletBalance';
 import WalletSend from '../../component/walletSend';
 import Button from '../../component/button';
+import Constants from '../../constants';
 import walletStyle from '../../styles/wallet';
 
 class WalletPage extends React.PureComponent {
@@ -20,7 +21,7 @@ class WalletPage extends React.PureComponent {
             </Text>
           </View>
           <Button text={'I understand the risks'} style={[walletStyle.button, walletStyle.understand]}
-                  onPress={() => setClientSetting("alphaUnderstandsRisks", true)}/>
+                  onPress={() => setClientSetting(Constants.SETTING_ALPHA_UNDERSTANDS_RISKS, true)}/>
         </View>
       );
     }
