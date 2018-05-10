@@ -23,7 +23,7 @@ Alternatively, the JDK available from http://www.oracle.com/technetwork/java/jav
 
 #### Install Cython
 ```
-sudo pip install --upgrade cython==0.25.2
+sudo pip install --upgrade cython==0.25.2 setuptools
 ```
 
 #### Install buildozer
