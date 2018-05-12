@@ -2,7 +2,6 @@ import React from 'react';
 
 import { NavigationActions } from 'react-navigation';
 import Feather from "react-native-vector-icons/Feather";
-import discoverStyle from "../../styles/discover";
 
 class SearchRightHeaderIcon extends React.PureComponent {
   
