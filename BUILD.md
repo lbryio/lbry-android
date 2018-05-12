@@ -64,3 +64,13 @@ Run `npm i` in the `lbry-android/app` folder to install the necessary modules re
 Run `./build.sh` in `lbry-android` to build the APK. The output can be found in the `bin` subdirectory.
 
 To build and deploy, you can run `./deploy.sh`. This requires a connected device or running Android emulator.
+
+#### Development
+If you already installed `Android SDK` and `adb`
+
+* Run `adb reverse tcp:8081 tcp:8081`
+* Then go to the `lbry-android/app` folder and run `npm start` 
+
+Note: You need to have your device connected with USB debugging.
+
+Once the bundler is ready, run the LBRY Browser app on your device and then shake it device violently until you see the React Native dev menu. You can enable "Hot Reloading" and "Live Reloading" from this menu, so any changes you make to the React Native code will be visible as you save. This will only reload React Native Javascript files. Native Java code needs to be re-deployed `./deploy.sh`
