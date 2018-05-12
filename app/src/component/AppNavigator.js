@@ -29,6 +29,7 @@ import { makeSelectClientSetting } from '../redux/selectors/settings';
 import Feather from 'react-native-vector-icons/Feather';
 import discoverStyle from '../styles/discover';
 import searchStyle from '../styles/search';
+import SearchRightHeaderIcon from "../component/searchRightHeaderIcon";
 
 const discoverStack = StackNavigator({
   Discover: {
@@ -51,7 +52,7 @@ const discoverStack = StackNavigator({
     navigationOptions: ({ navigation }) => ({
       drawerLockMode: 'locked-closed',
       headerTitle: <SearchInput style={searchStyle.searchInput} />,
-      headerRight: <Feather name="x" size={24} style={discoverStyle.rightHeaderIcon} onPress={() => navigation.dispatch(NavigationActions.back())} />
+      headerRight: <SearchRightHeaderIcon style={discoverStyle.rightHeaderIcon} size={24} navigation={navigation} />
     })
   }
 }, {
