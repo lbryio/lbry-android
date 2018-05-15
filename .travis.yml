@@ -10,7 +10,7 @@ install:
 - sudo apt-get -qq update
 - sudo apt-get -qq install build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386
 - sudo pip install --upgrade cython==0.25.2 pip setuptools
-- wget https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.xz
+- wget -q https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.xz
 - tar -xf node-v8.11.1-linux-x64.tar.xz
 - sudo ln -s $TRAVIS_BUILD_DIR/node-v8.11.1-linux-x64/bin/node /usr/bin/node
 - sudo ln -s $TRAVIS_BUILD_DIR/node-v8.11.1-linux-x64/bin/npm /usr/bin/npm
@@ -25,10 +25,10 @@ install:
 - cd ..
 - mv buildozer.spec.travis buildozer.spec
 - mkdir -p cd ~/.buildozer/android/platform/
-- wget 'https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip' -P ~/.buildozer/android/platform/
-- wget 'https://dl.google.com/android/android-sdk_r23-linux.tgz' -P ~/.buildozer/android/platform/
-- wget 'https://dl.google.com/android/repository/android-23_r02.zip' -P ~/.buildozer/android/platform/
-- wget 'https://dl.google.com/android/repository/build-tools_r26.0.1-linux.zip' -P ~/.buildozer/android/platform/
+- wget -q 'https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip' -P ~/.buildozer/android/platform/
+- wget -q 'https://dl.google.com/android/android-sdk_r23-linux.tgz' -P ~/.buildozer/android/platform/
+- wget -q 'https://dl.google.com/android/repository/android-23_r02.zip' -P ~/.buildozer/android/platform/
+- wget -q 'https://dl.google.com/android/repository/build-tools_r26.0.1-linux.zip' -P ~/.buildozer/android/platform/
 - unzip -qq ~/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip -d ~/.buildozer/android/platform/
 - tar -xf ~/.buildozer/android/platform/android-sdk_r23-linux.tgz -C ~/.buildozer/android/platform/
 - mv ~/.buildozer/android/platform/android-sdk-linux ~/.buildozer/android/platform/android-sdk-23
