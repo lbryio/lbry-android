@@ -20,7 +20,7 @@ install:
 - cd app
 - npm config set registry="http://registry.npmjs.org/"
 - npm install
-- sudo /usr/bin/npm install -g react-native-cli
+- sudo ~/node-v8.11.1-linux-x64/bin/npm install -g react-native-cli
 - cd ..
 - cd buildozer
 - sudo python setup.py install
