@@ -19,6 +19,7 @@ install:
 - npm config set registry="http://registry.npmjs.org/"
 - npm install
 - sudo npm install -g react-native-cli
+- sudo ln -s $TRAVIS_BUILD_DIR/node-v8.11.1-linux-x64/bin/react-native /usr/bin/react-native
 - cd ..
 - cd buildozer
 - sudo python setup.py install
