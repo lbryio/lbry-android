@@ -4,13 +4,13 @@
     "private": "true",
     "scripts": {
         "start": "node node_modules/react-native/local-cli/cli.js start",
-        "postinstall": "cp ./patch/ReactNativeRenderer-dev.js.patch ./node_modules/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js; rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
+        "postinstall": "cp ./patch/ReactNativeRenderer-dev.js.patch ./node_modules/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js"
     },
     "dependencies": {
         "lbry-redux": "lbryio/lbry-redux",
         "moment": "^2.22.1",
         "react": "16.2.0",
-        "react-native": "0.52.0",
+        "react-native": "0.55.3",
         "react-native-vector-icons": "^4.5.0",
         "react-native-video": "2.0.0",
         "react-navigation": "^1.0.3",
