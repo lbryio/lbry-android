@@ -100,8 +100,7 @@ const mediaPlayerStyle = StyleSheet.create({
     height: 36,
     width: 36,
     bottom: 0,
-    marginLeft: -8,
-    zIndex: 102
+    marginLeft: -8
   },
   bigSeekerCircle: {
     borderRadius: 24,
