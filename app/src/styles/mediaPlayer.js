@@ -3,12 +3,17 @@ import Colors from './colors';
 
 const mediaPlayerStyle = StyleSheet.create({
   player: {
-    flex: 1
+    flex: 1,
+    width: '100%',
+    height: '100%'
   },
   container: {
     flex: 1,
-    backgroundColor: Colors.Black,
     paddingBottom: 16
+  },
+  fullscreenContainer: {
+    flex: 1,
+    justifyContent: 'center'
   },
   progress: {
     flex: 1,
@@ -25,10 +30,16 @@ const mediaPlayerStyle = StyleSheet.create({
   },
   trackingControls: {
     height: 3,
-    width: '100%',
     position: 'absolute',
-    bottom: 14,
+    bottom: 14
+  },
+  containedTrackingControls: {
     left: 0,
+    width: '100%'
+  },
+  fullscreenTrackingControls: {
+    alignSelf: 'center',
+    width: '70%'
   },
   playerControls: {
     position: 'absolute',
@@ -89,7 +100,8 @@ const mediaPlayerStyle = StyleSheet.create({
     height: 36,
     width: 36,
     bottom: 0,
-    marginLeft: -8
+    marginLeft: -8,
+    zIndex: 102
   },
   bigSeekerCircle: {
     borderRadius: 24,

@@ -20,6 +20,8 @@ class MediaPlayer extends React.PureComponent {
   
   seekerWidth = 0;
   
+  trackingOffset = 0;
+  
   video = null;
   
   constructor(props) {
@@ -126,7 +128,6 @@ class MediaPlayer extends React.PureComponent {
     this.showPlayerControls();
     const { onFullscreenToggled } = this.props;
     this.setState({ fullscreenMode: !this.state.fullscreenMode }, () => {
-      console.log(this.state);
       this.setState({ resizeMode: this.state.fullscreenMode ? 'contain' : 'stretch' });
       if (onFullscreenToggled) {
         onFullscreenToggled(this.state.fullscreenMode);
@@ -150,8 +151,8 @@ class MediaPlayer extends React.PureComponent {
   checkSeekerPosition(val = 0) {
     if (val < 0) {
       val = 0;
-    } else if (val >= this.seekerWidth) {
-      return this.seekerWidth;
+    } else if (val >= (this.trackingOffset + this.seekerWidth)) {
+      return this.trackingOffset + this.seekerWidth;
     }
     
     return val;
@@ -199,7 +200,7 @@ class MediaPlayer extends React.PureComponent {
   }
   
   calculateSeekerPosition() {
-    return this.seekerWidth * this.getCurrentTimePercentage();
+    return this.trackingOffset + (this.seekerWidth * this.getCurrentTimePercentage());
   }
   
   getCurrentTimePercentage() {
@@ -250,7 +251,7 @@ class MediaPlayer extends React.PureComponent {
     const { backgroundPlayEnabled, fileInfo, thumbnail, style } = this.props;
     const flexCompleted = this.getCurrentTimePercentage() * 100;
     const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
-    let styles = [mediaPlayerStyle.container];
+    let styles = [this.state.fullscreenMode ? mediaPlayerStyle.fullscreenContainer : mediaPlayerStyle.container];
     if (style) {
       if (style.length) {
         styles = styles.concat(style);
@@ -258,6 +259,9 @@ class MediaPlayer extends React.PureComponent {
         styles.push(style);
       }
     }
+    
+    const trackingStyle = [mediaPlayerStyle.trackingControls, this.state.fullscreenMode ?
+      mediaPlayerStyle.fullscreenTrackingControls : mediaPlayerStyle.containedTrackingControls];
     
     return (
       <View style={styles}>
@@ -278,7 +282,7 @@ class MediaPlayer extends React.PureComponent {
           {this.renderPlayerControls()}
         </TouchableOpacity>
         
-        <View style={mediaPlayerStyle.trackingControls}>
+        <View style={trackingStyle} onLayout={(evt) => this.trackingOffset = evt.nativeEvent.layout.x }>
           <View style={mediaPlayerStyle.progress} onLayout={(evt) => this.seekerWidth = evt.nativeEvent.layout.width}>
             <View style={[mediaPlayerStyle.innerProgressCompleted, { flex: flexCompleted }]} />
             <View style={[mediaPlayerStyle.innerProgressRemaining, { flex: flexRemaining }]} />

@@ -131,25 +131,33 @@ class FilePage extends React.PureComponent {
     const mediaType = Lbry.getMediaType(contentType);
     const isPlayable = mediaType === 'video' || mediaType === 'audio';
     const { height, channel_name: channelName, value } = claim;
-    const showActions = !this.state.fullscreenMode && (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
+    const showActions = !this.state.fullscreenMode &&
+      (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
     const channelClaimId =
       value && value.publisherSignature && value.publisherSignature.certificateId;
     
-    const playerStyle = [filePageStyle.player, this.state.fullscreenMode ? filePageStyle.fullscreenPlayer : filePageStyle.containedPlayer];
-    
+    const playerStyle = [filePageStyle.player, this.state.fullscreenMode ?
+      filePageStyle.fullscreenPlayer : filePageStyle.containedPlayer];
+    const playerBgStyle = [filePageStyle.playerBackground, this.state.fullscreenMode ?
+      filePageStyle.fullscreenPlayerBackground : filePageStyle.containedPlayerBackground]; 
+    // at least 2MB (or the full download) before media can be loaded
+    const canLoadMedia = fileInfo &&
+      (fileInfo.written_bytes >= 2097152 || fileInfo.written_bytes == fileInfo.total_bytes); // 2MB = 1024*1024*2
+        
     return (
       <View style={filePageStyle.pageContainer}>
-        <View style={filePageStyle.mediaContainer}>  
-          {(!fileInfo || (isPlayable && !this.state.mediaLoaded)) &&
+        <View style={this.state.fullscreenMode ? filePageStyle.fullscreenMedia : filePageStyle.mediaContainer}>  
+          {(!fileInfo || (isPlayable && !canLoadMedia)) &&
             <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
           {isPlayable && !this.state.mediaLoaded && <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
-          {!completed && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
+          {!completed && !canLoadMedia && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
         </View>
-        {fileInfo && isPlayable && <MediaPlayer fileInfo={fileInfo}
-                                                uri={navigation.state.params.uri}
-                                                style={playerStyle}
-                                                onFullscreenToggled={this.handleFullscreenToggle}
-                                                onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
+        {canLoadMedia && <View style={playerBgStyle} />}
+        {canLoadMedia && <MediaPlayer fileInfo={fileInfo}
+                                        uri={navigation.state.params.uri}
+                                        style={playerStyle}
+                                        onFullscreenToggled={this.handleFullscreenToggle} 
+                                        onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
         
         { showActions &&
         <View style={filePageStyle.actions}>
