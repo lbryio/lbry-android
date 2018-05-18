@@ -20,15 +20,18 @@ import Video from 'react-native-video';
 import filePageStyle from '../../styles/filePage';
 
 class FilePage extends React.PureComponent {
-  state = {
-    mediaLoaded: false,
-    fullscreenMode: false
-  };
-  
   static navigationOptions = {
     title: ''
   };
-    
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      mediaLoaded: false,
+      fullscreenMode: false
+    };
+  }
+  
   componentDidMount() {
     StatusBar.setHidden(false);
     this.fetchFileInfo(this.props);
@@ -132,19 +135,22 @@ class FilePage extends React.PureComponent {
     const channelClaimId =
       value && value.publisherSignature && value.publisherSignature.certificateId;
     
+    const playerStyle = [filePageStyle.player, this.state.fullscreenMode ? filePageStyle.fullscreenPlayer : filePageStyle.containedPlayer];
+    
     return (
       <View style={filePageStyle.pageContainer}>
-        <View style={this.state.fullscreenMode ? filePageStyle.fullscreenMedia : filePageStyle.mediaContainer}>  
+        <View style={filePageStyle.mediaContainer}>  
           {(!fileInfo || (isPlayable && !this.state.mediaLoaded)) &&
             <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
           {isPlayable && !this.state.mediaLoaded && <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
           {!completed && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
-          {fileInfo && isPlayable && <MediaPlayer fileInfo={fileInfo}
-                                                  uri={navigation.state.params.uri}
-                                                  style={filePageStyle.player}
-                                                  onFullscreenToggled={this.handleFullscreenToggle} 
-                                                  onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
         </View>
+        {fileInfo && isPlayable && <MediaPlayer fileInfo={fileInfo}
+                                                uri={navigation.state.params.uri}
+                                                style={playerStyle}
+                                                onFullscreenToggled={this.handleFullscreenToggle}
+                                                onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
+        
         { showActions &&
         <View style={filePageStyle.actions}>
           {completed && <Button color="red" title="Delete" onPress={this.onDeletePressed} />}

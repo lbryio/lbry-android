@@ -22,21 +22,24 @@ class MediaPlayer extends React.PureComponent {
   
   video = null;
   
-  state = {
-    rate: 1,
-    volume: 1,
-    muted: false,
-    resizeMode: 'stretch',
-    duration: 0.0,
-    currentTime: 0.0,
-    paused: true,
-    fullscreenMode: false,
-    areControlsVisible: true,
-    controlsTimeout: -1,
-    seekerOffset: 0,
-    seekerPosition: 0,
-    firstPlay: true
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      rate: 1,
+      volume: 1,
+      muted: false,
+      resizeMode: 'stretch',
+      duration: 0.0,
+      currentTime: 0.0,
+      paused: true,
+      fullscreenMode: false,
+      areControlsVisible: true,
+      controlsTimeout: -1,
+      seekerOffset: 0,
+      seekerPosition: 0,
+      firstPlay: true
+    };
+  }
   
   formatTime(time) {
     let str = '';
@@ -123,6 +126,7 @@ class MediaPlayer extends React.PureComponent {
     this.showPlayerControls();
     const { onFullscreenToggled } = this.props;
     this.setState({ fullscreenMode: !this.state.fullscreenMode }, () => {
+      console.log(this.state);
       this.setState({ resizeMode: this.state.fullscreenMode ? 'contain' : 'stretch' });
       if (onFullscreenToggled) {
         onFullscreenToggled(this.state.fullscreenMode);
@@ -243,12 +247,20 @@ class MediaPlayer extends React.PureComponent {
   }
 
   render() {
-    const { backgroundPlayEnabled, fileInfo, thumbnail, style, fullScreenStyle } = this.props;
+    const { backgroundPlayEnabled, fileInfo, thumbnail, style } = this.props;
     const flexCompleted = this.getCurrentTimePercentage() * 100;
     const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
+    let styles = [mediaPlayerStyle.container];
+    if (style) {
+      if (style.length) {
+        styles = styles.concat(style);
+      } else {
+        styles.push(style);
+      }
+    }
     
     return (
-      <View style={[style, mediaPlayerStyle.container]}>
+      <View style={styles}>
         <Video source={{ uri: 'file:///' + fileInfo.download_path }}
                ref={(ref: Video) => { this.video = ref }}
                resizeMode={this.state.resizeMode}
