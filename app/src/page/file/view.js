@@ -146,7 +146,7 @@ class FilePage extends React.PureComponent {
         
     return (
       <View style={filePageStyle.pageContainer}>
-        <View style={this.state.fullscreenMode ? filePageStyle.fullscreenMedia : filePageStyle.mediaContainer}>  
+        <View style={filePageStyle.mediaContainer}>  
           {(!fileInfo || (isPlayable && !canLoadMedia)) &&
             <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
           {isPlayable && !this.state.mediaLoaded && <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
