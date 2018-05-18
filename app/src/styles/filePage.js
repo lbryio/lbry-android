@@ -15,7 +15,16 @@ const filePageStyle = StyleSheet.create({
   mediaContainer: {
     alignItems: 'center',
     width: screenWidth,
-    height: 220,
+    height: 220
+  },
+  playerBackground: {
+    position: 'absolute',
+    flex: 1,
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 16,
+    backgroundColor: Colors.Black
   },
   emptyClaimText: {
     fontFamily: 'Metropolis-Regular',
@@ -71,7 +80,8 @@ const filePageStyle = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    marginBottom: 14
+    marginBottom: 14,
+    zIndex: 99
   },
   fullscreenMedia: {
     position: 'absolute',

@@ -1,13 +1,12 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
-const screenDimension = Dimensions.get('window'); 
-const screenWidth = screenDimension.width;
+import { StyleSheet } from 'react-native';
 
 const mediaPlayerStyle = StyleSheet.create({
   player: {
     flex: 1
   },
   container: {
+    marginBottom: 0,
+    paddingBottom: 16,
   },
   progress: {
     flex: 1,
@@ -26,7 +25,7 @@ const mediaPlayerStyle = StyleSheet.create({
     height: 3,
     width: '100%',
     position: 'absolute',
-    bottom: 0,
+    bottom: 14,
     left: 0,
   },
   playerControls: {
@@ -77,7 +76,7 @@ const mediaPlayerStyle = StyleSheet.create({
   seekerCircle: {
     borderRadius: 12,
     position: 'relative',
-    top: 16,
+    top: 14,
     left: 8,
     height: 12,
     width: 12,
@@ -87,13 +86,13 @@ const mediaPlayerStyle = StyleSheet.create({
     position: 'absolute',
     height: 36,
     width: 36,
-    bottom: -12,
+    bottom: 0,
     marginLeft: -8
   },
   bigSeekerCircle: {
     borderRadius: 24,
     position: 'relative',
-    top: 10,
+    top: 8,
     left: 8,
     height: 24,
     width: 24,
