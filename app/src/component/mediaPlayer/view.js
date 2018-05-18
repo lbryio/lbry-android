@@ -282,12 +282,13 @@ class MediaPlayer extends React.PureComponent {
           {this.renderPlayerControls()}
         </TouchableOpacity>
         
+        {!this.state.fullscreenMode || (this.state.fullscreenMode && this.state.areControlsVisible) &&
         <View style={trackingStyle} onLayout={(evt) => this.trackingOffset = evt.nativeEvent.layout.x }>
           <View style={mediaPlayerStyle.progress} onLayout={(evt) => this.seekerWidth = evt.nativeEvent.layout.width}>
             <View style={[mediaPlayerStyle.innerProgressCompleted, { flex: flexCompleted }]} />
             <View style={[mediaPlayerStyle.innerProgressRemaining, { flex: flexRemaining }]} />
           </View>
-        </View>
+        </View>}
         
         {this.state.areControlsVisible &&
         <View style={[mediaPlayerStyle.seekerHandle, { left: this.state.seekerPosition }]} { ...this.seekResponder.panHandlers }>
