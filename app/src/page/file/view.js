@@ -153,9 +153,9 @@ class FilePage extends React.PureComponent {
           }
         </View>}
         <ScrollView style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}>
-          <Text style={filePageStyle.title}>{title}</Text>
-          {channelName && <Text style={filePageStyle.channelName}>{channelName}</Text>}
-          {description && <Text style={filePageStyle.description}>{description}</Text>}
+          <Text style={filePageStyle.title} selectable={true}>{title}</Text>
+          {channelName && <Text style={filePageStyle.channelName} selectable={true}>{channelName}</Text>}
+          {description && <Text style={filePageStyle.description} selectable={true}>{description}</Text>}
         </ScrollView>
         <View style={filePageStyle.uriContainer}>
           <TextInput style={filePageStyle.uriText}
