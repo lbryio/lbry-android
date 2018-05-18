@@ -3,8 +3,7 @@
     "version": "0.0.1",
     "private": "true",
     "scripts": {
-        "start": "node node_modules/react-native/local-cli/cli.js start",
-        "postinstall": "cp ./patch/ReactNativeRenderer-dev.js.patch ./node_modules/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js"
+        "start": "node node_modules/react-native/local-cli/cli.js start"
     },
     "dependencies": {
         "lbry-redux": "lbryio/lbry-redux",
@@ -13,7 +12,7 @@
         "react-native": "0.55.3",
         "react-native-vector-icons": "^4.5.0",
         "react-native-video": "2.0.0",
-        "react-navigation": "^1.0.3",
+        "react-navigation": "^1.5.12",
         "react-navigation-redux-helpers": "^1.0.1",
         "react-redux": "^5.0.3",
         "redux": "^3.6.0",
