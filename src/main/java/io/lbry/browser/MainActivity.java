@@ -52,7 +52,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     Toast.makeText(this,
-                        "LBRY requires access to your device storage to be able to download files and media.", Toast.LENGTH_SHORT).show();
+                        "LBRY requires access to your device storage to be able to download files and media.", Toast.LENGTH_LONG).show();
                 } else {
                     ActivityCompat.requestPermissions(this,
                         new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, STORAGE_PERMISSION_REQ_CODE);
