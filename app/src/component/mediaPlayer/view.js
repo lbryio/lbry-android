@@ -249,6 +249,7 @@ class MediaPlayer extends React.PureComponent {
     
     return (
       <View style={[style, mediaPlayerStyle.container]}>
+        <View style={mediaPlayerStyle.playerBackground} />
         <Video source={{ uri: 'file:///' + fileInfo.download_path }}
                ref={(ref: Video) => { this.video = ref }}
                resizeMode={this.state.resizeMode}

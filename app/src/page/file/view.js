@@ -132,18 +132,22 @@ class FilePage extends React.PureComponent {
     const channelClaimId =
       value && value.publisherSignature && value.publisherSignature.certificateId;
     
+    // at least 2MB (or the full download) before media can be loaded
+    const canLoadMedia = fileInfo && (fileInfo.written_bytes >= 2097152 || fileInfo.written_bytes == fileInfo.total_bytes); // 2MB = 1024*1024*2
+    
     return (
       <View style={filePageStyle.pageContainer}>
         <View style={this.state.fullscreenMode ? filePageStyle.fullscreenMedia : filePageStyle.mediaContainer}>  
-          {(!fileInfo || (isPlayable && !this.state.mediaLoaded)) &&
+          {(!fileInfo || (isPlayable && !canLoadMedia)) &&
             <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
           {isPlayable && !this.state.mediaLoaded && <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
-          {!completed && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
-          {fileInfo && isPlayable && <MediaPlayer fileInfo={fileInfo}
-                                                  uri={navigation.state.params.uri}
-                                                  style={filePageStyle.player}
-                                                  onFullscreenToggled={this.handleFullscreenToggle} 
-                                                  onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
+          {!completed && !canLoadMedia && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
+          {canLoadMedia && <View style={filePageStyle.playerBackground} />}
+          {canLoadMedia && <MediaPlayer fileInfo={fileInfo}
+                                        uri={navigation.state.params.uri}
+                                        style={filePageStyle.player}
+                                        onFullscreenToggled={this.handleFullscreenToggle} 
+                                        onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
         </View>
         { showActions &&
         <View style={filePageStyle.actions}>
