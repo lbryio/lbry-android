@@ -152,11 +152,9 @@ class MediaPlayer extends React.PureComponent {
   
   checkSeekerPosition(val = 0) {
     const offset = this.getTrackingOffset();
-    console.log('val=' + val + '; offset=' + offset);
-    if (val < 0) {
-      val = 0;
+    if (val < offset) {
+      val = offset;
     } else if (val >= (offset + this.seekerWidth)) {
-      console.log('returning ' + (offset + this.seekerWidth));
       return offset + this.seekerWidth;
     }
     
@@ -212,7 +210,6 @@ class MediaPlayer extends React.PureComponent {
     if (this.state.fullscreenMode) {
       return this.getTrackingOffset() + (this.seekerWidth * this.getCurrentTimePercentage());
     }
-    console.log('seekerWidth=' + this.seekerWidth);
     return this.seekerWidth * this.getCurrentTimePercentage();
   }
   
@@ -299,12 +296,12 @@ class MediaPlayer extends React.PureComponent {
           {this.renderPlayerControls()}
         </TouchableOpacity>
         
-        {!this.state.fullscreenMode || (this.state.fullscreenMode && this.state.areControlsVisible) &&
-        <View style={trackingStyle} ref={(ref) => { this.tracking = ref }}>
-          <View style={mediaPlayerStyle.progress} onLayout={(evt) => {
+        {(!this.state.fullscreenMode || (this.state.fullscreenMode && this.state.areControlsVisible)) &&
+        <View style={trackingStyle} onLayout={(evt) => {
               this.trackingOffset = evt.nativeEvent.layout.x;
               this.seekerWidth = evt.nativeEvent.layout.width;
             }}>
+          <View style={mediaPlayerStyle.progress}>
             <View style={[mediaPlayerStyle.innerProgressCompleted, { flex: flexCompleted }]} />
             <View style={[mediaPlayerStyle.innerProgressRemaining, { flex: flexRemaining }]} />
           </View>

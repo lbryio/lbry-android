@@ -18,11 +18,12 @@ const mediaPlayerStyle = StyleSheet.create({
   progress: {
     flex: 1,
     flexDirection: 'row',
-    overflow: 'hidden',
+    width: '100%',
+    height: 3
   },
   innerProgressCompleted: {
     height: 4,
-    backgroundColor: '#40c0a9',
+    backgroundColor: Colors.LbryGreen,
   },
   innerProgressRemaining: {
     height: 4,
@@ -90,23 +91,24 @@ const mediaPlayerStyle = StyleSheet.create({
     borderRadius: 12,
     position: 'relative',
     top: 14,
-    left: 8,
+    left: 15,
     height: 12,
     width: 12,
     backgroundColor: '#40c0a9'
   },
   seekerHandle: {
+    backgroundColor: 'transparent',
     position: 'absolute',
     height: 36,
-    width: 36,
+    width: 48,
     bottom: 0,
-    marginLeft: -8
+    marginLeft: -16
   },
   bigSeekerCircle: {
     borderRadius: 24,
     position: 'relative',
     top: 8,
-    left: 8,
+    left: 15,
     height: 24,
     width: 24,
     backgroundColor: '#40c0a9'
