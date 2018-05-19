@@ -100,6 +100,22 @@ const filePageStyle = StyleSheet.create({
     right: 0,
     bottom: 0
   },
+  filePriceContainer: {
+    backgroundColor: '#61fcd8',
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 16,
+    top: 16,
+    width: 56,
+    height: 24,
+    borderRadius: 4 
+  },
+  filePriceText: {
+    fontFamily: 'Metropolis-Bold',
+    fontSize: 12,
+    textAlign: 'center',
+    color: '#0c604b'
+  },
   actions: {
     paddingLeft: 16,
     paddingRight: 16,
@@ -119,7 +135,8 @@ const filePageStyle = StyleSheet.create({
   uriContainer: {
     padding: 8,
     backgroundColor: Colors.VeryLightGrey,
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
+    width: '100%'
   },
   uriText: {
     backgroundColor: Colors.White,
@@ -128,7 +145,8 @@ const filePageStyle = StyleSheet.create({
     padding: 8,
     borderRadius: 4,
     fontFamily: 'Metropolis-Regular',
-    fontSize: 16
+    fontSize: 16,
+    width: '100%'
   }
 });
 

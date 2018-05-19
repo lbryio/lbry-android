@@ -13,8 +13,9 @@ import {
   NativeModules
 } from 'react-native';
 import Colors from '../../styles/colors';
-import FileItemMedia from '../../component/fileItemMedia';
 import FileDownloadButton from '../../component/fileDownloadButton';
+import FileItemMedia from '../../component/fileItemMedia';
+import FilePrice from '../../component/filePrice';
 import MediaPlayer from '../../component/mediaPlayer';
 import Video from 'react-native-video';
 import filePageStyle from '../../styles/filePage';
@@ -114,7 +115,8 @@ class FilePage extends React.PureComponent {
       tab,
       rewardedContentClaimIds,
       navigation
-    } = this.props; 
+    } = this.props;
+    const { uri } = navigation.state.params;
     
     if (!claim || !metadata) {
       return (
@@ -136,6 +138,7 @@ class FilePage extends React.PureComponent {
     const channelClaimId =
       value && value.publisherSignature && value.publisherSignature.certificateId;
     
+    
     const playerStyle = [filePageStyle.player, this.state.fullscreenMode ?
       filePageStyle.fullscreenPlayer : filePageStyle.containedPlayer];
     const playerBgStyle = [filePageStyle.playerBackground, this.state.fullscreenMode ?
@@ -150,11 +153,12 @@ class FilePage extends React.PureComponent {
           {(!fileInfo || (isPlayable && !canLoadMedia)) &&
             <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
           {isPlayable && !this.state.mediaLoaded && <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
-          {!completed && !canLoadMedia && <FileDownloadButton uri={navigation.state.params.uri} style={filePageStyle.downloadButton} />}
+          {!completed && !canLoadMedia && <FileDownloadButton uri={uri} style={filePageStyle.downloadButton} />}
+          {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
         </View>
         {canLoadMedia && <View style={playerBgStyle} />}
         {canLoadMedia && <MediaPlayer fileInfo={fileInfo}
-                                        uri={navigation.state.params.uri}
+                                        uri={uri}
                                         style={playerStyle}
                                         onFullscreenToggled={this.handleFullscreenToggle} 
                                         onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
@@ -175,7 +179,7 @@ class FilePage extends React.PureComponent {
           <TextInput style={filePageStyle.uriText}
                      underlineColorAndroid={'transparent'}
                      numberOfLines={1}
-                     value={navigation.state.params.uri} />
+                     value={uri} />
         </View>
       </View>
     );
