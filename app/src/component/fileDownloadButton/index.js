@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import {
+  doFetchCostInfoForUri,
   makeSelectFileInfoForUri,
   makeSelectDownloadingForUri,
   makeSelectLoadingForUri,
@@ -17,7 +18,8 @@ const select = (state, props) => ({
 
 const perform = dispatch => ({
   purchaseUri: uri => dispatch(doPurchaseUri(uri)),
-  restartDownload: (uri, outpoint) => dispatch(doStartDownload(uri, outpoint))
+  restartDownload: (uri, outpoint) => dispatch(doStartDownload(uri, outpoint)),
+  fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
 });
 
 export default connect(select, perform)(FileDownloadButton);

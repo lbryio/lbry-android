@@ -1,9 +1,18 @@
 import React from 'react';
 import FeaturedCategory from '../../component/featuredCategory';
 import NavigationActions from 'react-navigation';
-import { AsyncStorage, NativeModules, ScrollView, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  AsyncStorage,
+  NativeModules,
+  ScrollView,
+  Text,
+  View
+} from 'react-native';
 import moment from 'moment';
 import discoverStyle from '../../styles/discover';
+import Colors from '../../styles/colors';
+import UriBar from '../../component/uriBar';
 import Feather from 'react-native-vector-icons/Feather';
 
 class DiscoverPage extends React.PureComponent {
@@ -34,13 +43,18 @@ class DiscoverPage extends React.PureComponent {
   }
 
   render() {
-    const { featuredUris, fetchingFeaturedUris } = this.props;
+    const { featuredUris, fetchingFeaturedUris, navigation } = this.props;
     const hasContent = typeof featuredUris === 'object' && Object.keys(featuredUris).length,
       failedToLoad = !fetchingFeaturedUris && !hasContent;
 
     return (
       <View style={discoverStyle.container}>
-        {!hasContent && fetchingFeaturedUris && <Text style={discoverStyle.title}>Fetching content...</Text>}
+        {!hasContent && fetchingFeaturedUris && (
+          <View style={discoverStyle.busyContainer}>
+            <ActivityIndicator size="large" color={Colors.LbryGreen} />
+            <Text style={discoverStyle.title}>Fetching content...</Text>
+          </View>
+        )}
         {hasContent &&
           <ScrollView style={discoverStyle.scrollContainer}>
           {hasContent &&
@@ -51,7 +65,7 @@ class DiscoverPage extends React.PureComponent {
                       key={category}
                       category={category}
                       names={featuredUris[category]}
-                      navigation={this.props.navigation}
+                      navigation={navigation}
                     />
                 ) : (
                   ''
@@ -59,6 +73,7 @@ class DiscoverPage extends React.PureComponent {
             )}
           </ScrollView>
         }
+        <UriBar navigation={navigation} />
       </View>
     );
   }
