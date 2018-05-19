@@ -9,6 +9,8 @@ import com.facebook.react.bridge.ReadableMap;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
+import io.lbry.browser.BuildConfig;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONObject;
@@ -16,9 +18,9 @@ import org.json.JSONException;
 
 public class MixpanelModule extends ReactContextBaseJavaModule {
 
-    // TODO: Detect dev / debug and release mode and update value accordingly
-    private static final String MIXPANEL_TOKEN = "93b81fb957cb0ddcd3198c10853a6a95"; // Production
-    //private static final String MIXPANEL_TOKEN = "bc1630b8be64c5dfaa4700b3a62969f3"; // Dev Testing
+    private static final String MIXPANEL_TOKEN = BuildConfig.DEBUG ?
+        "bc1630b8be64c5dfaa4700b3a62969f3" /* Dev Testing */ :
+        "93b81fb957cb0ddcd3198c10853a6a95"; /* Production */
 
     private Context context;
     
