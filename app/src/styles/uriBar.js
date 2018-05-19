@@ -3,11 +3,11 @@ import Colors from './colors';
 
 const uriBarStyle = StyleSheet.create({
   uriContainer: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.White,
     padding: 8,
     alignSelf: 'flex-end',
     width: '100%',
-    shadowColor: 'black',
+    shadowColor: Colors.Black,
     shadowOpacity: 0.1,
     shadowRadius: StyleSheet.hairlineWidth,
     shadowOffset: {
