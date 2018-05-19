@@ -20,23 +20,30 @@ class MediaPlayer extends React.PureComponent {
   
   seekerWidth = 0;
   
+  trackingOffset = 0;
+  
+  tracking = null;
+  
   video = null;
   
-  state = {
-    rate: 1,
-    volume: 1,
-    muted: false,
-    resizeMode: 'stretch',
-    duration: 0.0,
-    currentTime: 0.0,
-    paused: true,
-    fullscreenMode: false,
-    areControlsVisible: true,
-    controlsTimeout: -1,
-    seekerOffset: 0,
-    seekerPosition: 0,
-    firstPlay: true
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      rate: 1,
+      volume: 1,
+      muted: false,
+      resizeMode: 'stretch',
+      duration: 0.0,
+      currentTime: 0.0,
+      paused: true,
+      fullscreenMode: false,
+      areControlsVisible: true,
+      controlsTimeout: -1,
+      seekerOffset: 0,
+      seekerPosition: 0,
+      firstPlay: true
+    };
+  }
   
   formatTime(time) {
     let str = '';
@@ -144,10 +151,11 @@ class MediaPlayer extends React.PureComponent {
   }
   
   checkSeekerPosition(val = 0) {
-    if (val < 0) {
-      val = 0;
-    } else if (val >= this.seekerWidth) {
-      return this.seekerWidth;
+    const offset = this.getTrackingOffset();
+    if (val < offset) {
+      val = offset;
+    } else if (val >= (offset + this.seekerWidth)) {
+      return offset + this.seekerWidth;
     }
     
     return val;
@@ -190,11 +198,18 @@ class MediaPlayer extends React.PureComponent {
     });
   }
   
+  getTrackingOffset() {
+    return this.state.fullscreenMode ? this.trackingOffset : 0;
+  }
+  
   getCurrentTimeForSeekerPosition() {
     return this.state.duration * (this.state.seekerPosition / this.seekerWidth);
   }
   
   calculateSeekerPosition() {
+    if (this.state.fullscreenMode) {
+      return this.getTrackingOffset() + (this.seekerWidth * this.getCurrentTimePercentage());
+    }
     return this.seekerWidth * this.getCurrentTimePercentage();
   }
   
@@ -207,6 +222,10 @@ class MediaPlayer extends React.PureComponent {
   
   componentWillMount() {
     this.initSeeker();
+  }
+  
+  componentDidMount() {
+    
   }
   
   componentWillUnmount() {
@@ -243,13 +262,23 @@ class MediaPlayer extends React.PureComponent {
   }
 
   render() {
-    const { backgroundPlayEnabled, fileInfo, thumbnail, style, fullScreenStyle } = this.props;
+    const { backgroundPlayEnabled, fileInfo, thumbnail, style } = this.props;
     const flexCompleted = this.getCurrentTimePercentage() * 100;
     const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
+    let styles = [this.state.fullscreenMode ? mediaPlayerStyle.fullscreenContainer : mediaPlayerStyle.container];
+    if (style) {
+      if (style.length) {
+        styles = styles.concat(style);
+      } else {
+        styles.push(style);
+      }
+    }
+    
+    const trackingStyle = [mediaPlayerStyle.trackingControls, this.state.fullscreenMode ?
+      mediaPlayerStyle.fullscreenTrackingControls : mediaPlayerStyle.containedTrackingControls];
     
     return (
-      <View style={[style, mediaPlayerStyle.container]}>
-        <View style={mediaPlayerStyle.playerBackground} />
+      <View style={styles}>
         <Video source={{ uri: 'file:///' + fileInfo.download_path }}
                ref={(ref: Video) => { this.video = ref }}
                resizeMode={this.state.resizeMode}
@@ -267,12 +296,16 @@ class MediaPlayer extends React.PureComponent {
           {this.renderPlayerControls()}
         </TouchableOpacity>
         
-        <View style={mediaPlayerStyle.trackingControls}>
-          <View style={mediaPlayerStyle.progress} onLayout={(evt) => this.seekerWidth = evt.nativeEvent.layout.width}>
+        {(!this.state.fullscreenMode || (this.state.fullscreenMode && this.state.areControlsVisible)) &&
+        <View style={trackingStyle} onLayout={(evt) => {
+              this.trackingOffset = evt.nativeEvent.layout.x;
+              this.seekerWidth = evt.nativeEvent.layout.width;
+            }}>
+          <View style={mediaPlayerStyle.progress}>
             <View style={[mediaPlayerStyle.innerProgressCompleted, { flex: flexCompleted }]} />
             <View style={[mediaPlayerStyle.innerProgressRemaining, { flex: flexRemaining }]} />
           </View>
-        </View>
+        </View>}
         
         {this.state.areControlsVisible &&
         <View style={[mediaPlayerStyle.seekerHandle, { left: this.state.seekerPosition }]} { ...this.seekResponder.panHandlers }>
