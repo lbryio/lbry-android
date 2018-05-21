@@ -1,8 +1,16 @@
 import React from 'react';
-import FeaturedCategory from '../../component/featuredCategory';
 import NavigationActions from 'react-navigation';
-import { AsyncStorage, NativeModules, ScrollView, Text, View } from 'react-native';
+import {
+  AsyncStorage,
+  NativeModules,
+  SectionList,
+  ScrollView,
+  Text,
+  View
+} from 'react-native';
+import { normalizeURI } from 'lbry-redux';
 import moment from 'moment';
+import FileItem from '../../component/fileItem';
 import discoverStyle from '../../styles/discover';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -34,7 +42,7 @@ class DiscoverPage extends React.PureComponent {
   }
 
   render() {
-    const { featuredUris, fetchingFeaturedUris } = this.props;
+    const { featuredUris, fetchingFeaturedUris, navigation } = this.props;
     const hasContent = typeof featuredUris === 'object' && Object.keys(featuredUris).length,
       failedToLoad = !fetchingFeaturedUris && !hasContent;
 
@@ -42,22 +50,21 @@ class DiscoverPage extends React.PureComponent {
       <View style={discoverStyle.container}>
         {!hasContent && fetchingFeaturedUris && <Text style={discoverStyle.title}>Fetching content...</Text>}
         {hasContent &&
-          <ScrollView style={discoverStyle.scrollContainer}>
-          {hasContent &&
-            Object.keys(featuredUris).map(
-              category =>
-                featuredUris[category].length ? (
-                  <FeaturedCategory
-                      key={category}
-                      category={category}
-                      names={featuredUris[category]}
-                      navigation={this.props.navigation}
-                    />
-                ) : (
-                  ''
-                )
-            )}
-          </ScrollView>
+          <SectionList style={discoverStyle.scrollContainer}
+            renderItem={ ({item, index, section}) => (
+                <FileItem
+                  style={discoverStyle.fileItem}
+                  key={item}
+                  uri={normalizeURI(item)}
+                  navigation={navigation} />
+              )
+            }
+            renderSectionHeader={
+              ({section: {title}}) => (<Text style={discoverStyle.categoryName}>{title}</Text>)
+            }
+            sections={Object.keys(featuredUris).map(category => ({ title: category, data: featuredUris[category] }))}
+            keyExtractor={(item, index) => item}
+          />
         }
       </View>
     );
