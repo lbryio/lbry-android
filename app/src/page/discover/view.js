@@ -1,15 +1,16 @@
 import React from 'react';
-import FeaturedCategory from '../../component/featuredCategory';
 import NavigationActions from 'react-navigation';
 import {
   ActivityIndicator,
   AsyncStorage,
   NativeModules,
-  ScrollView,
+  SectionList,
   Text,
   View
 } from 'react-native';
+import { normalizeURI } from 'lbry-redux';
 import moment from 'moment';
+import FileItem from '../../component/fileItem';
 import discoverStyle from '../../styles/discover';
 import Colors from '../../styles/colors';
 import UriBar from '../../component/uriBar';
@@ -56,22 +57,21 @@ class DiscoverPage extends React.PureComponent {
           </View>
         )}
         {hasContent &&
-          <ScrollView style={discoverStyle.scrollContainer}>
-          {hasContent &&
-            Object.keys(featuredUris).map(
-              category =>
-                featuredUris[category].length ? (
-                  <FeaturedCategory
-                      key={category}
-                      category={category}
-                      names={featuredUris[category]}
-                      navigation={navigation}
-                    />
-                ) : (
-                  ''
-                )
-            )}
-          </ScrollView>
+          <SectionList style={discoverStyle.scrollContainer}
+            renderItem={ ({item, index, section}) => (
+                <FileItem
+                  style={discoverStyle.fileItem}
+                  key={item}
+                  uri={normalizeURI(item)}
+                  navigation={navigation} />
+              )
+            }
+            renderSectionHeader={
+              ({section: {title}}) => (<Text style={discoverStyle.categoryName}>{title}</Text>)
+            }
+            sections={Object.keys(featuredUris).map(category => ({ title: category, data: featuredUris[category] }))}
+            keyExtractor={(item, index) => item}
+          />
         }
         <UriBar navigation={navigation} />
       </View>
