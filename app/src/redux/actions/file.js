@@ -216,7 +216,7 @@ export function doPurchaseUri(uri, specificCostInfo) {
 
     // we already fully downloaded the file.
     if (fileInfo && fileInfo.completed) {
-      // If written_bytes is false that means the user has deleted/m noved the
+      // If written_bytes is false that means the user has deleted/moved the
       // file manually on their file system, so we need to dispatch a
       // doLoadVideo action to reconstruct the file from the blobs
       if (!fileInfo.written_bytes) dispatch(doLoadVideo(uri));
