@@ -73,4 +73,4 @@ If you already installed `Android SDK` and `adb`
 
 Note: You need to have your device connected with USB debugging.
 
-Once the bundler is ready, run the LBRY Browser app on your device and then shake the device violently until you see the React Native dev menu. You can enable "Live Reloading" from this menu, "Hot Reloading" is not working at the moment, so any changes you make to the React Native code will be visible as you save. This will only reload React Native Javascript files. Native Java code needs to be redeployed by running the command `./deploy.sh`
+Once the bundler is ready, run the LBRY Browser app on your device and then shake the device violently until you see the React Native dev menu. You can enable "Live Reloading" and "Hot Reloading" from this menu, so any changes you make to the React Native code will be visible as you save. This will only reload React Native Javascript files. Native Java code needs to be redeployed by running the command `./deploy.sh`
