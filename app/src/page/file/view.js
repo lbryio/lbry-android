@@ -49,9 +49,9 @@ class FilePage extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.fetchFileInfo(nextProps);
-    const { isResolvingUri, resolveUri, claim, navigation } = nextProps;
+  componentDidUpdate() {
+    this.fetchFileInfo(this.props);
+    const { isResolvingUri, resolveUri, claim, navigation } = this.props;
     const { uri } = navigation.state.params;
 
     if (!isResolvingUri && claim === undefined && uri) {

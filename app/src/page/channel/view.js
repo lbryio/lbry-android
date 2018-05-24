@@ -5,9 +5,6 @@ import UriBar from '../../component/uriBar';
 import channelPageStyle from '../../styles/channelPage';
 
 class ChannelPage extends React.PureComponent {
-  componentDidMount() {
-  }
-  
   render() {
     const { claim, navigation, uri } = this.props;
     const { name } = claim;
