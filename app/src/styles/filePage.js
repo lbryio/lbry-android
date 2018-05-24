@@ -116,19 +116,17 @@ const filePageStyle = StyleSheet.create({
     position: 'absolute',
     top: '40%'
   },
-  uriContainer: {
-    padding: 8,
-    backgroundColor: Colors.VeryLightGrey,
-    alignSelf: 'flex-end'
+  busyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
   },
-  uriText: {
-    backgroundColor: Colors.White,
-    borderWidth: 1,
-    borderColor: Colors.LightGrey,
-    padding: 8,
-    borderRadius: 4,
+  infoText: {
     fontFamily: 'Metropolis-Regular',
-    fontSize: 16
+    fontSize: 20,
+    textAlign: 'center',
+    marginLeft: 10
   }
 });
 

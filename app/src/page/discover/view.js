@@ -1,10 +1,10 @@
 import React from 'react';
 import NavigationActions from 'react-navigation';
 import {
+  ActivityIndicator,
   AsyncStorage,
   NativeModules,
   SectionList,
-  ScrollView,
   Text,
   View
 } from 'react-native';
@@ -12,6 +12,8 @@ import { normalizeURI } from 'lbry-redux';
 import moment from 'moment';
 import FileItem from '../../component/fileItem';
 import discoverStyle from '../../styles/discover';
+import Colors from '../../styles/colors';
+import UriBar from '../../component/uriBar';
 import Feather from 'react-native-vector-icons/Feather';
 
 class DiscoverPage extends React.PureComponent {
@@ -48,7 +50,12 @@ class DiscoverPage extends React.PureComponent {
 
     return (
       <View style={discoverStyle.container}>
-        {!hasContent && fetchingFeaturedUris && <Text style={discoverStyle.title}>Fetching content...</Text>}
+        {!hasContent && fetchingFeaturedUris && (
+          <View style={discoverStyle.busyContainer}>
+            <ActivityIndicator size="large" color={Colors.LbryGreen} />
+            <Text style={discoverStyle.title}>Fetching content...</Text>
+          </View>
+        )}
         {hasContent &&
           <SectionList style={discoverStyle.scrollContainer}
             renderItem={ ({item, index, section}) => (
@@ -66,6 +73,7 @@ class DiscoverPage extends React.PureComponent {
             keyExtractor={(item, index) => item}
           />
         }
+        <UriBar navigation={navigation} />
       </View>
     );
   }
