@@ -52,7 +52,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     Toast.makeText(this,
-                        "LBRY requires access to your device storage to be able to download files and media.", Toast.LENGTH_SHORT).show();
+                        "LBRY requires access to your device storage to be able to download files and media.", Toast.LENGTH_LONG).show();
                 } else {
                     ActivityCompat.requestPermissions(this,
                         new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, STORAGE_PERMISSION_REQ_CODE);
@@ -100,7 +100,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         switch (requestCode) {
             case STORAGE_PERMISSION_REQ_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (!Settings.canDrawOverlays(this)) {
+                    if (BuildConfig.DEBUG && !Settings.canDrawOverlays(this)) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                                                    Uri.parse("package:" + getPackageName()));
                         startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);

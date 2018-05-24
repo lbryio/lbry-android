@@ -3,6 +3,13 @@ import { NativeModules, Text, View, TouchableOpacity } from 'react-native';
 import fileDownloadButtonStyle from '../../styles/fileDownloadButton';
 
 class FileDownloadButton extends React.PureComponent {
+  componentDidMount() {
+    const { costInfo, fetchCostInfo, uri } = this.props;
+    if (costInfo === undefined) {
+      fetchCostInfo(uri);
+    }  
+  }
+  
   componentWillReceiveProps(nextProps) {
     //this.checkAvailability(nextProps.uri);
     this.restartDownload(nextProps);
@@ -54,7 +61,7 @@ class FileDownloadButton extends React.PureComponent {
       if (!costInfo) {
         return (
           <View style={[style, fileDownloadButtonStyle.container]}>
-            <Text>Fetching cost info...</Text>
+            <Text style={fileDownloadButtonStyle.text}>Fetching cost info...</Text>
           </View>
         );
       }

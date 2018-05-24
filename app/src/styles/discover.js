@@ -2,17 +2,22 @@ import { StyleSheet } from 'react-native';
 
 const discoverStyle = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    flex: 1
   },
   scrollContainer: {
     flex: 1
+  },
+  busyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   title: {
     fontFamily: 'Metropolis-Regular',
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    marginLeft: 10
   },
   categoryName: {
     fontFamily: 'Metropolis-Regular',
