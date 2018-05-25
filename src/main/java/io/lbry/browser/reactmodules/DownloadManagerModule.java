@@ -124,7 +124,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         notificationManager.notify(notificationId, builder.build());
 
         if (progress == MAX_PROGRESS) {
-            builder.setContentTitle(String.format("Downloaded %s.", fileName))
+            builder.setContentTitle(String.format("Downloaded %s", fileName))
                    .setContentText(String.format("%s", formatBytes(totalBytes)))
                    .setProgress(0, 0, false);
             notificationManager.notify(notificationId, builder.build());
