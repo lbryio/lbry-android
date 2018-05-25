@@ -9,12 +9,14 @@ import channelPageStyle from '../../styles/channelPage';
 
 class ChannelPage extends React.PureComponent {
   componentDidMount() {
-    const { uri, page, fetchClaims, fetchClaimCount } = this.props;
+    const { uri, page, claimsInChannel, fetchClaims, fetchClaimCount } = this.props;
 
-    fetchClaims(uri, page || 1);
-    fetchClaimCount(uri);
+    if (!claimsInChannel || !claimsInChannel.length) {
+      fetchClaims(uri, page || 1);
+      fetchClaimCount(uri);
+    }
   }
-  
+
   render() {
     const { fetching, claimsInChannel, claim, navigation, uri } = this.props;
     const { name, permanent_url: permanentUrl } = claim;
