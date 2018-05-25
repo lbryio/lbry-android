@@ -5,7 +5,8 @@ const discoverStyle = StyleSheet.create({
     flex: 1
   },
   scrollContainer: {
-    flex: 1
+    flex: 1,
+    marginBottom: 60
   },
   busyContainer: {
     flex: 1,

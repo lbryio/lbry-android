@@ -11,7 +11,8 @@ const channelPageStyle = StyleSheet.create({
   },
   fileList: {
     paddingTop: 30,
-    flex: 1
+    flex: 1,
+    marginBottom: 60
   },
   title: {
     color: Colors.LbryGreen,

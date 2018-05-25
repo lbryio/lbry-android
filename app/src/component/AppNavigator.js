@@ -38,7 +38,6 @@ const discoverStack = StackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Discover',
       headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
-      headerRight: <Feather name="search" size={24} style={discoverStyle.rightHeaderIcon} onPress={() => navigation.navigate('Search')} />
     })
   },
   File: {
@@ -51,9 +50,7 @@ const discoverStack = StackNavigator({
   Search: {
     screen: SearchPage,
     navigationOptions: ({ navigation }) => ({
-      drawerLockMode: 'locked-closed',
-      headerTitle: <SearchInput style={searchStyle.searchInput} />,
-      headerRight: <SearchRightHeaderIcon style={discoverStyle.rightHeaderIcon} size={24} navigation={navigation} />
+      drawerLockMode: 'locked-closed'
     })
   }
 }, {
@@ -66,7 +63,6 @@ const walletStack = StackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Wallet',
       headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
-      headerRight: <Feather name="search" size={24} style={discoverStyle.rightHeaderIcon} onPress={() => navigation.navigate('Search')} />
     })
   },
   TransactionHistory: {
@@ -185,6 +181,7 @@ class AppWithNavigationState extends React.Component {
     if (evt.url) {
       const navigateAction = NavigationActions.navigate({
         routeName: 'File',
+        key: 'filePage',
         params: { uri: evt.url }
       });
       dispatch(navigateAction);
