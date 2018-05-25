@@ -100,6 +100,22 @@ const filePageStyle = StyleSheet.create({
     right: 0,
     bottom: 0
   },
+  filePriceContainer: {
+    backgroundColor: '#61fcd8',
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 16,
+    top: 16,
+    width: 56,
+    height: 24,
+    borderRadius: 4 
+  },
+  filePriceText: {
+    fontFamily: 'Metropolis-Bold',
+    fontSize: 12,
+    textAlign: 'center',
+    color: '#0c604b'
+  },
   actions: {
     paddingLeft: 16,
     paddingRight: 16,

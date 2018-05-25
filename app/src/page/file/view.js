@@ -14,8 +14,9 @@ import {
 } from 'react-native';
 import Colors from '../../styles/colors';
 import ChannelPage from '../channel';
-import FileItemMedia from '../../component/fileItemMedia';
 import FileDownloadButton from '../../component/fileDownloadButton';
+import FileItemMedia from '../../component/fileItemMedia';
+import FilePrice from '../../component/filePrice';
 import MediaPlayer from '../../component/mediaPlayer';
 import UriBar from '../../component/uriBar';
 import Video from 'react-native-video';
@@ -182,6 +183,7 @@ class FilePage extends React.PureComponent {
               <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
             {isPlayable && !this.state.mediaLoaded && <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
             {!completed && !canLoadMedia && <FileDownloadButton uri={uri} style={filePageStyle.downloadButton} />}
+            {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
           </View>
           {canLoadMedia && <View style={playerBgStyle} />}
           {canLoadMedia && <MediaPlayer fileInfo={fileInfo}

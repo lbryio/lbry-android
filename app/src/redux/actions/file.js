@@ -1,12 +1,15 @@
 import {
     ACTIONS,
     Lbry,
+    doNotify,
+    formatCredits,
     selectBalance,
     makeSelectCostInfoForUri,
     makeSelectFileInfoForUri,
+    makeSelectMetadataForUri,
     selectDownloadingByOutpoint,
 } from 'lbry-redux';
-import { NativeModules } from 'react-native';
+import { Alert, NativeModules } from 'react-native';
 
 const DOWNLOAD_POLL_INTERVAL = 250;
 
@@ -169,8 +172,10 @@ export function doLoadVideo(uri) {
             data: { uri },
           });
 
-          console.log(`File timeout for uri ${uri}`);
-          //dispatch(doOpenModal(MODALS.FILE_TIMEOUT, { uri }));
+          dispatch(doNotify({
+            message: `File timeout for uri ${uri}`,
+            displayType: ['toast']
+          }));
         } else {
           dispatch(doDownloadFile(uri, streamInfo));
         }
@@ -182,12 +187,10 @@ export function doLoadVideo(uri) {
           data: { uri },
         });
         
-        console.log(`Failed to download ${uri}`);
-        /*dispatch(
-          doAlertError(
-            `Failed to download ${uri}, please try again. If this problem persists, visit https://lbry.io/faq/support for support.`
-          )
-        );*/
+        dispatch(doNotify({
+          message: `Failed to download ${uri}, please try again. If this problem persists, visit https://lbry.io/faq/support for support.`,
+          displayType: ['toast']
+        }));
       });
   };
 }
@@ -197,13 +200,23 @@ export function doPurchaseUri(uri, specificCostInfo) {
     const state = getState();
     const balance = selectBalance(state);
     const fileInfo = makeSelectFileInfoForUri(uri)(state);
+    const metadata = makeSelectMetadataForUri(uri)(state);
+    const title = metadata ? metadata.title : uri;
     const downloadingByOutpoint = selectDownloadingByOutpoint(state);
     const alreadyDownloading = fileInfo && !!downloadingByOutpoint[fileInfo.outpoint];
 
     function attemptPlay(cost, instantPurchaseMax = null) {
       if (cost > 0 && (!instantPurchaseMax || cost > instantPurchaseMax)) {
-        //dispatch(doOpenModal(MODALS.AFFIRM_PURCHASE, { uri }));
-        console.log('Affirm purchase...');
+        // display alert
+        const formattedCost = formatCredits(cost, 2);
+        const unit = cost === 1 ? 'credit' : 'credits';
+        Alert.alert('Confirm purchase',
+          `This will purchase "${title}" for ${formattedCost} ${unit}`,
+          [
+            { text: 'OK', onPress: () => dispatch(doLoadVideo(uri)) },
+            { text: 'Cancel', style: 'cancel' }
+          ],
+          { cancelable: true });
       } else {
         dispatch(doLoadVideo(uri));
       }
@@ -231,15 +244,18 @@ export function doPurchaseUri(uri, specificCostInfo) {
 
     if (cost > balance) {
       dispatch(doSetPlayingUri(null));
-      //dispatch(doOpenModal(MODALS.INSUFFICIENT_CREDITS));
+      dispatch(doNotify({
+        message: 'Insufficient credits',
+        displayType: ['toast']
+      }));
       Promise.resolve();
       return;
     }
 
-    if (cost === 0/* || !makeSelectClientSetting(SETTINGS.INSTANT_PURCHASE_ENABLED)(state)*/) {
+    attemptPlay(cost);
+    /*if (cost === 0 || !makeSelectClientSetting(SETTINGS.INSTANT_PURCHASE_ENABLED)(state)) {
       attemptPlay(cost);
-    }
-    /*} else {
+    } else {
       const instantPurchaseMax = makeSelectClientSetting(SETTINGS.INSTANT_PURCHASE_MAX)(state);
       if (instantPurchaseMax.currency === 'LBC') {
         attemptPlay(cost, instantPurchaseMax.amount);
