@@ -72,8 +72,15 @@
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
                   android:configChanges="keyboardHidden|orientation{% if args.min_sdk_version >= 13 %}|screenSize{% endif %}"
                   android:screenOrientation="{{ args.orientation }}"
+                  android:launchMode="singleInstance"
                   >
-          
+            
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="lbry" />
+            </intent-filter>
 
             {% if args.launcher %}
             <intent-filter>

@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -27,7 +28,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     private HashMap<String, Integer> downloadIdNotificationIdMap = new HashMap<String, Integer>();
 
-    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");    
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#");    
     
     private static final int MAX_PROGRESS = 100;
 
@@ -74,8 +75,8 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         }
     }
     
-    private PendingIntent getLaunchPendingIntent() {
-        Intent launchIntent = new Intent(context, MainActivity.class);
+    private PendingIntent getLaunchPendingIntent(String uri) {
+        Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent intent = PendingIntent.getActivity(context, 0, launchIntent, 0);
         return intent;
@@ -87,7 +88,8 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setContentIntent(getLaunchPendingIntent())
+        // The file URI is used as the unique ID
+        builder.setContentIntent(getLaunchPendingIntent(id))
                .setContentTitle(String.format("Downloading %s...", fileName))
                .setGroup(GROUP_DOWNLOADS)
                .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -115,14 +117,18 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         createNotificationGroup();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = builders.get(notificationId);
-        builder.setContentIntent(getLaunchPendingIntent())
+        builder.setContentIntent(getLaunchPendingIntent(id))
                .setContentText(String.format("%.0f%% (%s / %s)", progress, formatBytes(writtenBytes), formatBytes(totalBytes)))
                .setGroup(GROUP_DOWNLOADS)
                .setProgress(MAX_PROGRESS, new Double(progress).intValue(), false);
         notificationManager.notify(notificationId, builder.build());
 
         if (progress == MAX_PROGRESS) {
-            builder.setContentTitle(String.format("Downloaded %s.", fileName));
+            builder.setContentTitle(String.format("Downloaded %s", fileName))
+                   .setContentText(String.format("%s", formatBytes(totalBytes)))
+                   .setProgress(0, 0, false);
+            notificationManager.notify(notificationId, builder.build());
+            
             downloadIdNotificationIdMap.remove(id);
             builders.remove(notificationId);
         }

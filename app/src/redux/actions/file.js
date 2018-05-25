@@ -34,7 +34,9 @@ export function doUpdateLoadStatus(uri, outpoint) {
           },
         });
 
-        NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, 100, writtenBytes, totalBytes);
+        if (NativeModules.LbryDownloadManager) {
+          NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, 100, writtenBytes, totalBytes);
+        }
         
         /*const notif = new window.Notification('LBRY Download Complete', {
           body: fileInfo.metadata.stream.metadata.title,
@@ -58,7 +60,9 @@ export function doUpdateLoadStatus(uri, outpoint) {
           },
         });
 
-        NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, progress, writtenBytes, totalBytes);
+        if (NativeModules.LbryDownloadManager) {
+          NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, progress, writtenBytes, totalBytes);
+        }
         
         setTimeout(() => {
           dispatch(doUpdateLoadStatus(uri, outpoint));
@@ -90,7 +94,9 @@ export function doStartDownload(uri, outpoint) {
         },
       });
       
-      NativeModules.LbryDownloadManager.startDownload(uri, fileInfo.file_name);
+      if (NativeModules.LbryDownloadManager) {
+        NativeModules.LbryDownloadManager.startDownload(uri, fileInfo.file_name);
+      }
 
       dispatch(doUpdateLoadStatus(uri, outpoint));
     });
@@ -114,7 +120,9 @@ export function doStopDownloadingFile(uri, fileInfo) {
       });
     });
     
-    NativeModules.LbryDownloadManager.stopDownload(uri, fileInfo.file_name);
+    if (NativeModules.LbryDownloadManager) {
+      NativeModules.LbryDownloadManager.stopDownload(uri, fileInfo.file_name);
+    }
     
     // Should also delete the file after the user stops downloading
     dispatch(doDeleteFile(fileInfo.outpoint, uri));

@@ -20,6 +20,7 @@ import {
   AppState,
   AsyncStorage,
   BackHandler,
+  Linking,
   NativeModules,
   TextInput,
   ToastAndroid
@@ -109,7 +110,7 @@ class AppWithNavigationState extends React.Component {
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
-      const { dispatch, navigation, nav } = this.props;
+      const { dispatch, nav } = this.props;
       // There should be a better way to check this
       if (nav.routes.length > 0) {
         const subRoutes = nav.routes[0].routes[0].routes;
@@ -130,9 +131,14 @@ class AppWithNavigationState extends React.Component {
     }.bind(this));
   }
   
+  componentDidMount() {
+    Linking.addEventListener('url', this._handleUrl);
+  }
+  
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
     BackHandler.removeEventListener('hardwareBackPress');
+    Linking.removeEventListener('url', this._handleUrl);
   }
   
   componentWillUpdate(nextProps) {
@@ -171,6 +177,17 @@ class AppWithNavigationState extends React.Component {
           AsyncStorage.setItem('firstLaunchSuspended', 'true');
         }
       });
+    }
+  }
+  
+  _handleUrl = (evt) => {
+    const { dispatch } = this.props;
+    if (evt.url) {
+      const navigateAction = NavigationActions.navigate({
+        routeName: 'File',
+        params: { uri: evt.url }
+      });
+      dispatch(navigateAction);
     }
   }
   

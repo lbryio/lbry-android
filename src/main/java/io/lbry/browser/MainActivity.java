@@ -31,7 +31,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     private static final int OVERLAY_PERMISSION_REQ_CODE = 101;
     
     private static final int STORAGE_PERMISSION_REQ_CODE = 201;    
-
+    
     private ReactRootView mReactRootView;
     
     private ReactInstanceManager mReactInstanceManager;
@@ -43,7 +43,11 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
      * onResume method.
      */
     private boolean serviceRunning;
-
+    
+    protected String getMainComponentName() {
+        return "LBRYApp";
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -173,6 +177,14 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         } else {
             super.onBackPressed();
         }
+    }
+    
+    @Override
+    public void onNewIntent(Intent intent) {
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onNewIntent(intent);
+        }
+        super.onNewIntent(intent);
     }
    
     private boolean isServiceRunning(Class<?> serviceClass) {
