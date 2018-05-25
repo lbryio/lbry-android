@@ -1,6 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import { View, Text, NativeModules } from 'react-native';
+import { View, Text, Linking, NativeModules } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
 import splashStyle from '../../styles/splash';
@@ -16,6 +16,7 @@ class SplashScreen extends React.PureComponent {
       message: 'Connecting',
       isRunning: false,
       isLagging: false,
+      launchUrl: null
     });
   }
 
@@ -51,6 +52,10 @@ class SplashScreen extends React.PureComponent {
           ]
         });
         navigation.dispatch(resetAction);
+        
+        if (this.state.launchUrl) {
+          navigation.navigate('File', { uri: this.state.launchUrl });
+        }
       });
       return;
     }
@@ -78,6 +83,12 @@ class SplashScreen extends React.PureComponent {
     if (NativeModules.Mixpanel) {
       NativeModules.Mixpanel.track('App Launch', null);
     }
+
+    Linking.getInitialURL().then((url) => {
+      if (url) {
+        this.setState({ launchUrl: url });
+      }
+    });
     
     Lbry
       .connect()
