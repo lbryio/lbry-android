@@ -156,7 +156,7 @@ class FilePage extends React.PureComponent {
             <ActivityIndicator size="large" color={Colors.LbryGreen} />
             <Text style={filePageStyle.infoText}>Loading decentralized data...</Text>
           </View>}
-          { claim === null && !isResolvingUri &&
+          {claim === null && !isResolvingUri &&
             <View style={filePageStyle.container}>
               <Text style={filePageStyle.emptyClaimText}>There's nothing at this location.</Text>
             </View>
@@ -220,7 +220,7 @@ class FilePage extends React.PureComponent {
                                                       renderIndicator={() => null} />}
                                                     
           {!this.state.showWebView && (
-            <View style={filePageStyle.pageContainer}>
+            <View style={filePageStyle.innerPageContainer}>
               <View style={filePageStyle.mediaContainer}>  
                 {(canOpen || (!fileInfo || (isPlayable && !canLoadMedia))) &&
                   <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}

@@ -23,7 +23,11 @@ class TransactionListItem extends React.PureComponent {
             {name && claimId && (
               <Link
                 style={transactionListStyle.link}
-                onPress={() => navigation && navigation.navigate('File', { uri: buildURI({ claimName: name, claimId }) })}
+                onPress={() => navigation && navigation.navigate({
+                  routeName: 'File',
+                  key: 'filePage',
+                  params: { uri: buildURI({ claimName: name, claimId }) }})
+                }
                 text={name} />
             )}      
           </View>

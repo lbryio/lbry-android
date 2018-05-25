@@ -6,6 +6,7 @@ const uriBarStyle = StyleSheet.create({
     backgroundColor: Colors.White,
     padding: 8,
     alignSelf: 'flex-end',
+    height: 60,
     width: '100%',
     shadowColor: Colors.Black,
     shadowOpacity: 0.1,
@@ -24,6 +25,32 @@ const uriBarStyle = StyleSheet.create({
     fontFamily: 'Metropolis-Regular',
     fontSize: 16,
     width: '100%'
+  },
+  overlay: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    bottom: 0,
+    width: '100%',
+    zIndex: 200,
+    elevation: 16
+  },
+  inFocus: {
+    height: '100%'
+  },
+  suggestions: {
+    backgroundColor: 'white',
+    flex: 1
+  },
+  item: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    padding: 12
+  },
+  itemText: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    marginLeft: 12,
+    marginRight: 12
   }
 });
 

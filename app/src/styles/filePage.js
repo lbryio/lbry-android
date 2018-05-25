@@ -12,6 +12,10 @@ const filePageStyle = StyleSheet.create({
   pageContainer: {
     flex: 1
   },
+  innerPageContainer: {
+    flex: 1,
+    marginBottom: 60
+  },
   mediaContainer: {
     alignItems: 'center',
     width: screenWidth,
@@ -150,7 +154,7 @@ const filePageStyle = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    bottom: 0,
+    bottom: 60,
     zIndex: 100
   }
 });
