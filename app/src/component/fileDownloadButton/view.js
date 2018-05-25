@@ -39,13 +39,9 @@ class FileDownloadButton extends React.PureComponent {
       loading,
       doPause,
       style,
+      openFile
     } = this.props;
 
-    const openFile = () => {
-      //openInShell(fileInfo.download_path);
-      //doPause();
-    };
-    
     if (loading || downloading) {
       const progress =
           fileInfo && fileInfo.written_bytes ? fileInfo.written_bytes / fileInfo.total_bytes * 100 : 0,
@@ -77,7 +73,7 @@ class FileDownloadButton extends React.PureComponent {
       );
     } else if (fileInfo && fileInfo.download_path) {
       return (
-        <TouchableOpacity style={[style, fileDownloadButtonStyle.container]} onPress={() => openFile()}>
+        <TouchableOpacity style={[style, fileDownloadButtonStyle.container]} onPress={openFile}>
           <Text style={fileDownloadButtonStyle.text}>Open</Text>
         </TouchableOpacity>
       );
