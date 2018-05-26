@@ -89,6 +89,8 @@ Vagrant.configure("2") do |config|
 	
 	echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > $HOME/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license
 	
+	sudo chown -r vagrant $HOME
+	
 	echo "Installing React Native via NPM..."
 	sudo npm install -g react-native-cli
   SHELL
