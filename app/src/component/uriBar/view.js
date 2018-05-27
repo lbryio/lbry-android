@@ -8,6 +8,20 @@ import uriBarStyle from '../../styles/uriBar';
 class UriBar extends React.PureComponent {
   static INPUT_TIMEOUT = 500;
   
+  textInput = null;
+
+  keyboardDidHideListener = null;
+  
+  componentDidMount () {
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+  
+  componentWillUnmount() {
+    if (this.keyboardDidHideListener) {
+      this.keyboardDidHideListener.remove();
+    }
+  }
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -41,6 +55,13 @@ class UriBar extends React.PureComponent {
       navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri: normalizeURI(value) }});
     }
   }
+  
+  _keyboardDidHide = () => {
+    if (this.textInput) {
+      this.textInput.blur();
+    }
+    this.setState({ focused: false });
+  }
 
   render() {
     const { navigation, suggestions, updateSearchQuery, value } = this.props;
@@ -66,7 +87,8 @@ class UriBar extends React.PureComponent {
                                                         onPress={() => this.handleItemPress(item)} />} />
         </View>)}
         <View style={uriBarStyle.uriContainer}>
-          <TextInput style={uriBarStyle.uriText}
+          <TextInput ref={(ref) => { this.textInput = ref }}
+                     style={uriBarStyle.uriText}
                      selectTextOnFocus={true}
                      placeholder={'Search for videos, music, games and more'}
                      underlineColorAndroid={'transparent'}
