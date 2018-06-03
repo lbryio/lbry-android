@@ -112,10 +112,14 @@ const walletStyle = StyleSheet.create({
   },
   amountInput: {
     alignSelf: 'flex-start',
-    width: 80
+    width: 100,
+    fontSize: 16,
+    letterSpacing: 1
   },
   addressInput: {
-    flex: 1
+    flex: 1,
+    fontSize: 16,
+    letterSpacing: 1.5
   },
   warning: {
     backgroundColor: Colors.Orange,
