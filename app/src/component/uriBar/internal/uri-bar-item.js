@@ -22,7 +22,7 @@ class UriBarItem extends React.PureComponent {
       
       case SEARCH_TYPES.FILE:
       default:
-        icon = <Feather name="compass" size={18} />
+        icon = <Feather name="file" size={18} />
         break;
     }
     
