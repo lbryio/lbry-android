@@ -8,7 +8,7 @@ import uriBarStyle from '../../../styles/uriBar';
 class UriBarItem extends React.PureComponent {
   render() {
     const { item, onPress } = this.props;
-    const { type, value } = item;
+    const { shorthand, type, value } = item;
     
     let icon;
     switch (type) {
@@ -29,7 +29,7 @@ class UriBarItem extends React.PureComponent {
     return (
       <TouchableOpacity style={uriBarStyle.item} onPress={onPress}>
         {icon}
-        <Text style={uriBarStyle.itemText} numberOfLines={1}>{value}</Text>
+        <Text style={uriBarStyle.itemText} numberOfLines={1}>{shorthand || value} - {type === 'search' ? 'Search' : value}</Text>
       </TouchableOpacity>
     )
   }                                                      

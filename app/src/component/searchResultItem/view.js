@@ -1,6 +1,7 @@
 import React from 'react';
 import { normalizeURI, parseURI } from 'lbry-redux';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import Colors from '../../styles/colors';
 import FileItemMedia from '../fileItemMedia';
 import NsfwOverlay from '../../component/nsfwOverlay';
 import searchStyle from '../../styles/search';
@@ -39,7 +40,13 @@ class SearchResultItem extends React.PureComponent {
                            thumbnail={metadata ? metadata.thumbnail : null} />
           </View>
           <View style={searchStyle.detailsContainer}>
-            {isResolvingUri && <Text style={searchStyle.loading}>Loading...</Text>} 
+            {isResolvingUri && (
+            <View>
+              <Text style={searchStyle.uri}>{uri}</Text>
+              <View style={searchStyle.row}>
+                <ActivityIndicator size={"small"} color={Colors.LbryGreen} />
+              </View>
+            </View>)} 
             {!isResolvingUri && <Text style={searchStyle.title}>{title || name}</Text>}
             {!isResolvingUri && channel && <Text style={searchStyle.publisher}>{channel}</Text>}
           </View>
