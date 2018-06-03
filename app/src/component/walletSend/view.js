@@ -16,9 +16,13 @@ type Props = {
 };
 
 class WalletSend extends React.PureComponent<Props> {
+  amountInput = null;
+  
   state = {
     amount: null,
-    address: null
+    address: null,
+    addressChanged: false,
+    addressValid: false
   };
   
   componentWillUpdate(nextProps) {
@@ -52,6 +56,22 @@ class WalletSend extends React.PureComponent<Props> {
       this.setState({ address: null, amount: null });
     }
   }
+  
+  handleAddressInputBlur = () => {
+    if (this.state.addressChanged && !this.state.addressValid) {
+      const { notify } = this.props;
+      notify({
+        message: 'The recipient address is not a valid LBRY address.',
+        displayType: ['toast']
+      });
+    }
+  }
+  
+  handleAddressInputSubmit = () => {
+    if (this.amountInput) {
+      this.amountInput.focus();
+    }
+  }
 
   render() {
     const { balance } = this.props;
@@ -62,20 +82,30 @@ class WalletSend extends React.PureComponent<Props> {
     return (
       <View style={walletStyle.card}>
         <Text style={walletStyle.title}>Send Credits</Text>
-        <Text style={walletStyle.text}>Amount</Text>
-        <View style={[walletStyle.amountRow, walletStyle.bottomMarginMedium]}>
-          <TextInput onChangeText={value => this.setState({amount: value})}
-                     keyboardType={'numeric'}
-                     value={this.state.amount}
-                     style={[walletStyle.input, walletStyle.amountInput]} />
-          <Text style={[walletStyle.text, walletStyle.currency]}>LBC</Text>
-        </View>
         <Text style={walletStyle.text}>Recipient address</Text>
-        <View style={walletStyle.row}>
-          <TextInput onChangeText={value => this.setState({address: value})}
+        <View style={[walletStyle.row, walletStyle.bottomMarginMedium]}>
+          <TextInput onChangeText={value => this.setState({
+                       address: value,
+                       addressChanged: true,
+                       addressValid: (value.trim().length == 0 || regexAddress.test(value))
+                     })}
+                     onBlur={this.handleAddressInputBlur}
+                     onSubmitEditing={this.handleAddressInputSubmit}
                      placeholder={'bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs'}
                      value={this.state.address}
+                     returnKeyType={'next'}
                      style={[walletStyle.input, walletStyle.addressInput, walletStyle.bottomMarginMedium]} />
+        </View>
+        <Text style={walletStyle.text}>Amount</Text>
+        <View style={walletStyle.row}>
+          <View style={walletStyle.amountRow}>
+            <TextInput ref={ref => this.amountInput = ref}
+                       onChangeText={value => this.setState({amount: value})}
+                       keyboardType={'numeric'}
+                       value={this.state.amount}
+                       style={[walletStyle.input, walletStyle.amountInput]} />
+            <Text style={[walletStyle.text, walletStyle.currency]}>LBC</Text>
+          </View>
           <Button text={'Send'}
                   style={[walletStyle.button, walletStyle.sendButton]}
                   disabled={!canSend}
