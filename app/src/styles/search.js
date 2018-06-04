@@ -42,6 +42,11 @@ const searchStyle = StyleSheet.create({
     fontFamily: 'Metropolis-SemiBold',
     fontSize: 16
   },
+  uri: {
+    fontFamily: 'Metropolis-SemiBold',
+    fontSize: 14,
+    marginBottom: 8
+  },
   publisher: {
     fontFamily: 'Metropolis-SemiBold',
     fontSize: 12,
