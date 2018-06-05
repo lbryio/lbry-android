@@ -54,12 +54,13 @@ const filePageStyle = StyleSheet.create({
     color: Colors.ChannelGrey
   },
   description: {
+    color: Colors.DescriptionGrey,
     fontFamily: 'Metropolis-Regular',
     fontSize: 16,
+    lineHeight: 20,
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 40,
-    color: Colors.DescriptionGrey
+    marginBottom: 40
   },
   thumbnail: {
     width: screenWidth,
@@ -156,6 +157,9 @@ const filePageStyle = StyleSheet.create({
     top: 0,
     bottom: 60,
     zIndex: 100
+  },
+  link: {
+    color: Colors.LbryGreen
   }
 });
 

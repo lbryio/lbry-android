@@ -20,6 +20,7 @@ import ChannelPage from '../channel';
 import FileDownloadButton from '../../component/fileDownloadButton';
 import FileItemMedia from '../../component/fileItemMedia';
 import FilePrice from '../../component/filePrice';
+import Link from '../../component/link';
 import MediaPlayer from '../../component/mediaPlayer';
 import UriBar from '../../component/uriBar';
 import Video from 'react-native-video';
@@ -131,6 +132,34 @@ class FilePage extends React.PureComponent {
       return null;
     }
     return 'file:///' + fileInfo.download_path;
+  }
+  
+  linkify = (text) => {
+    let linkifiedContent = [];
+    let lines = text.split(/\n/g);
+    linkifiedContent = lines.map((line, i) => {
+      let tokens = line.split(/\s/g);
+      let lineContent = tokens.length === 0 ? '' : tokens.map((token, j) => {
+        let hasSpace = j !== (tokens.length - 1);
+        let maybeSpace = hasSpace ? ' ' : '';
+        
+        if (token.match(/^(lbry|https?):\/\//g)) {
+          return (
+            <Link key={j}
+                  style={filePageStyle.link}
+                  href={token}
+                  text={token} />
+          );
+        } else {
+          return token + maybeSpace;
+        }
+      });
+      
+      lineContent.push("\n");
+      return (<Text key={i}>{lineContent}</Text>);
+    });
+    
+    return linkifiedContent;
   }
   
   render() {
@@ -246,7 +275,7 @@ class FilePage extends React.PureComponent {
               <ScrollView style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}>
                 <Text style={filePageStyle.title} selectable={true}>{title}</Text>
                 {channelName && <Text style={filePageStyle.channelName} selectable={true}>{channelName}</Text>}
-                {description && <Text style={filePageStyle.description} selectable={true}>{description}</Text>}
+                {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
               </ScrollView>
             </View>
           )}
