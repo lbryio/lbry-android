@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import Colors from './colors';
 
 const aboutStyle = StyleSheet.create({
   scrollContainer: {
@@ -13,6 +14,33 @@ const aboutStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+  title: {
+    color: Colors.LbryGreen,
+    fontSize: 24,
+    fontFamily: 'Metropolis-SemiBold',
+    marginLeft: 12,
+    marginRight: 12,
+    marginBottom: 8
+  },
+  paragraph: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    lineHeight: 24,
+    marginLeft: 12,
+    marginRight: 12,
+    marginBottom: 24
+  },
+  links: {
+    marginLeft: 12,
+    marginRight: 12,
+    marginBottom: 12
+  },
+  link: {
+    color: Colors.LbryGreen,
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    marginBottom: 24
+  },
   col: {
     alignSelf: 'stretch'
   },
@@ -21,7 +49,7 @@ const aboutStyle = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
     marginBottom: 12,
-    fontSize: 14
+    fontSize: 20
   },
   text: {
     fontFamily: 'Metropolis-SemiBold',

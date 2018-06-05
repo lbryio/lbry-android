@@ -23,10 +23,12 @@ export default class Link extends React.PureComponent {
     } = this.props;
     
     let styles = [];
-    if (style.length) {
-      styles = styles.concat(style);
-    } else {
-      styles.push(style);
+    if (style) {
+      if (style.length) {
+        styles = styles.concat(style);
+      } else {
+        styles.push(style);
+      }
     }
     
     return (
