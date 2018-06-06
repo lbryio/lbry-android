@@ -193,7 +193,7 @@ class AppWithNavigationState extends React.Component {
     if (evt.url) {
       const navigateAction = NavigationActions.navigate({
         routeName: 'File',
-        key: 'filePage',
+        key: evt.url,
         params: { uri: evt.url }
       });
       dispatch(navigateAction);

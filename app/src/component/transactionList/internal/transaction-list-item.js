@@ -25,7 +25,7 @@ class TransactionListItem extends React.PureComponent {
                 style={transactionListStyle.link}
                 onPress={() => navigation && navigation.navigate({
                   routeName: 'File',
-                  key: 'filePage',
+                  key: evt.Url,
                   params: { uri: buildURI({ claimName: name, claimId }) }})
                 }
                 text={name} />

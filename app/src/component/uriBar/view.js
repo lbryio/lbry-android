@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { SEARCH_TYPES, isNameValid, normalizeURI } from 'lbry-redux';
+import { SEARCH_TYPES, isNameValid, isURIValid, normalizeURI } from 'lbry-redux';
 import { FlatList, Keyboard, TextInput, View } from 'react-native';
 import UriBarItem from './internal/uri-bar-item';
 import uriBarStyle from '../../styles/uriBar';
@@ -52,7 +52,8 @@ class UriBar extends React.PureComponent {
     if (SEARCH_TYPES.SEARCH === type) {
       navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: value }});
     } else {
-      navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri: normalizeURI(value) }});
+      const uri = normalizeURI(value);
+      navigation.navigate({ routeName: 'File', key: uri, params: { uri }});
     }
   }
   
@@ -104,8 +105,9 @@ class UriBar extends React.PureComponent {
                      onSubmitEditing={() => {
                       if (this.state.inputText) {
                         let inputText = this.state.inputText;
-                        if (isNameValid(inputText)) {
-                          navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri: normalizeURI(inputText) }});  
+                        if (isNameValid(inputText) || isURIValid(inputText)) {
+                          const uri = normalizeURI(inputText);
+                          navigation.navigate({ routeName: 'File', key: uri, params: { uri }});  
                         } else {
                           // Open the search page with the query populated
                           navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: inputText }});

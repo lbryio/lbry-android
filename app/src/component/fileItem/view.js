@@ -61,7 +61,7 @@ class FileItem extends React.PureComponent {
               if (NativeModules.Mixpanel) {
                 NativeModules.Mixpanel.track('Discover Tap', { Uri: uri });
               }
-              navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri } });
+              navigation.navigate({ routeName: 'File', key: uri, params: { uri } });
             }
           }>
           <FileItemMedia title={title} thumbnail={thumbnail} blurRadius={obscureNsfw ? 15 : 0} resizeMode="cover" />

@@ -54,7 +54,7 @@ class SplashScreen extends React.PureComponent {
         navigation.dispatch(resetAction);
         
         if (this.state.launchUrl) {
-          navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri: this.state.launchUrl } });
+          navigation.navigate({ routeName: 'File', key: this.state.launchUrl, params: { uri: this.state.launchUrl } });
         }
       });
       return;
