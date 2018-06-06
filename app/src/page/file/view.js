@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lbry } from 'lbry-redux';
+import { Lbry, normalizeURI } from 'lbry-redux';
 import {
   ActivityIndicator,
   Alert,
@@ -20,6 +20,7 @@ import ChannelPage from '../channel';
 import FileDownloadButton from '../../component/fileDownloadButton';
 import FileItemMedia from '../../component/fileItemMedia';
 import FilePrice from '../../component/filePrice';
+import Link from '../../component/link';
 import MediaPlayer from '../../component/mediaPlayer';
 import UriBar from '../../component/uriBar';
 import Video from 'react-native-video';
@@ -245,7 +246,13 @@ class FilePage extends React.PureComponent {
               </View>}
               <ScrollView style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}>
                 <Text style={filePageStyle.title} selectable={true}>{title}</Text>
-                {channelName && <Text style={filePageStyle.channelName} selectable={true}>{channelName}</Text>}
+                {channelName && <Link style={filePageStyle.channelName}
+                                      selectable={true}
+                                      text={channelName}
+                                      onPress={() => {
+                                        const channelUri = normalizeURI(channelName);
+                                        navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
+                                      }} />}
                 {description && <Text style={filePageStyle.description} selectable={true}>{description}</Text>}
               </ScrollView>
             </View>
