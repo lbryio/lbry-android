@@ -3,6 +3,7 @@ import AboutPage from '../page/about';
 import DiscoverPage from '../page/discover';
 import FilePage from '../page/file';
 import SearchPage from '../page/search';
+import TrendingPage from '../page/trending';
 import SettingsPage from '../page/settings';
 import SplashScreen from '../page/splash';
 import TransactionHistoryPage from '../page/transactionHistory';
@@ -57,6 +58,16 @@ const discoverStack = StackNavigator({
   headerMode: 'screen',
 });
 
+const trendingStack = StackNavigator({
+  Trending: {
+    screen: TrendingPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Trending',
+      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+    })
+  }
+});
+
 const walletStack = StackNavigator({
   Wallet: {
     screen: WalletPage,
@@ -78,6 +89,7 @@ const walletStack = StackNavigator({
 
 const drawer = DrawerNavigator({
   DiscoverStack: { screen: discoverStack },
+  TrendingStack: { screen: trendingStack },
   WalletStack: { screen: walletStack },
   Settings: { screen: SettingsPage, navigationOptions: { drawerLockMode: 'locked-closed' } },
   About: { screen: AboutPage, navigationOptions: { drawerLockMode: 'locked-closed' } }
