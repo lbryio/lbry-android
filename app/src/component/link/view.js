@@ -23,16 +23,18 @@ export default class Link extends React.PureComponent {
     } = this.props;
     
     let styles = [];
-    if (style.length) {
-      styles = styles.concat(style);
-    } else {
-      styles.push(style);
+    if (style) {
+      if (style.length) {
+        styles = styles.concat(style);
+      } else {
+        styles.push(style);
+      }
     }
     
     return (
-      <TouchableOpacity onPress={onPress ? onPress : this.handlePress}>
-        <Text style={styles}>{text}</Text>
-      </TouchableOpacity>
+      <Text style={styles} onPress={onPress ? onPress : this.handlePress}>
+        {text}
+      </Text>
     );
   }
 };
