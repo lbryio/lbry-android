@@ -4,6 +4,7 @@ import { NavigationActions } from 'react-navigation';
 import { NativeModules, Text, View, TouchableOpacity } from 'react-native';
 import FileItemMedia from '../fileItemMedia';
 import FilePrice from '../filePrice';
+import Link from '../link';
 import NsfwOverlay from '../nsfwOverlay';
 import discoverStyle from '../../styles/discover';
 
@@ -68,7 +69,10 @@ class FileItem extends React.PureComponent {
           <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />
           <Text style={discoverStyle.fileItemName}>{title}</Text>
           {channelName &&
-            <Text style={discoverStyle.channelName}>{channelName}</Text>}
+            <Link style={discoverStyle.channelName} text={channelName} onPress={() => {
+              const channelUri = normalizeURI(channelName); 
+              navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
+            }} />}
         </TouchableOpacity>
         {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate('Settings')} />}
       </View>

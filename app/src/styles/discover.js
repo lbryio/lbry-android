@@ -42,11 +42,11 @@ const discoverStyle = StyleSheet.create({
   fileItemName: {
     fontFamily: 'Metropolis-Bold',
     marginTop: 8,
-    fontSize: 16
+    fontSize: 18
   },
   channelName: {
     fontFamily: 'Metropolis-SemiBold',
-    fontSize: 14,
+    fontSize: 16,
     marginTop: 4,
     color: '#c0c0c0'
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lbry } from 'lbry-redux';
+import { Lbry, normalizeURI } from 'lbry-redux';
 import {
   ActivityIndicator,
   Alert,
@@ -141,7 +141,7 @@ class FilePage extends React.PureComponent {
       let tokens = line.split(/\s/g);
       let lineContent = tokens.length === 0 ? '' : tokens.map((token, j) => {
         let hasSpace = j !== (tokens.length - 1);
-        let maybeSpace = hasSpace ? ' ' : '';
+        let space = hasSpace ? ' ' : '';
         
         if (token.match(/^(lbry|https?):\/\//g)) {
           return (
@@ -151,7 +151,7 @@ class FilePage extends React.PureComponent {
                   text={token} />
           );
         } else {
-          return token + maybeSpace;
+          return token + space;
         }
       });
       
@@ -274,7 +274,13 @@ class FilePage extends React.PureComponent {
               </View>}
               <ScrollView style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}>
                 <Text style={filePageStyle.title} selectable={true}>{title}</Text>
-                {channelName && <Text style={filePageStyle.channelName} selectable={true}>{channelName}</Text>}
+                {channelName && <Link style={filePageStyle.channelName}
+                                      selectable={true}
+                                      text={channelName}
+                                      onPress={() => {
+                                        const channelUri = normalizeURI(channelName);
+                                        navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
+                                      }} />}
                 {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
               </ScrollView>
             </View>
