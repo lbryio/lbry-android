@@ -134,6 +134,34 @@ class FilePage extends React.PureComponent {
     return 'file:///' + fileInfo.download_path;
   }
   
+  linkify = (text) => {
+    let linkifiedContent = [];
+    let lines = text.split(/\n/g);
+    linkifiedContent = lines.map((line, i) => {
+      let tokens = line.split(/\s/g);
+      let lineContent = tokens.length === 0 ? '' : tokens.map((token, j) => {
+        let hasSpace = j !== (tokens.length - 1);
+        let space = hasSpace ? ' ' : '';
+        
+        if (token.match(/^(lbry|https?):\/\//g)) {
+          return (
+            <Link key={j}
+                  style={filePageStyle.link}
+                  href={token}
+                  text={token} />
+          );
+        } else {
+          return token + space;
+        }
+      });
+      
+      lineContent.push("\n");
+      return (<Text key={i}>{lineContent}</Text>);
+    });
+    
+    return linkifiedContent;
+  }
+  
   render() {
     const {
       claim,
@@ -253,7 +281,7 @@ class FilePage extends React.PureComponent {
                                         const channelUri = normalizeURI(channelName);
                                         navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
                                       }} />}
-                {description && <Text style={filePageStyle.description} selectable={true}>{description}</Text>}
+                {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
               </ScrollView>
             </View>
           )}
