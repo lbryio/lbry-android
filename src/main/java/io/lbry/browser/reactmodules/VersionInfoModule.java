@@ -1,14 +1,13 @@
 package io.lbry.browser.reactmodules;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 public class VersionInfoModule extends ReactContextBaseJavaModule {
     private Context context;

@@ -61,7 +61,7 @@ function enableBatching(reducer) {
 }
 
 const router = AppNavigator.router;
-const navAction = router.getActionForPathAndParams('Splash');
+const navAction = router.getActionForPathAndParams('FirstRun');
 const initialNavState = router.getStateForAction(navAction);
 const navigatorReducer = (state = initialNavState, action) => {
   const nextState = AppNavigator.router.getStateForAction(action, state);
@@ -116,21 +116,11 @@ persistStore(store, persistOptions, err => {
 });
 
 class LBRYApp extends React.Component {
-  componentDidMount() {
-    AsyncStorage.getItem('hasLaunched').then(value => {
-      if (value == null || value !== 'true') {
-        AsyncStorage.setItem('hasLaunched', 'true');
-        // only set firstLaunchTime since we've determined that this is the first app launch ever
-        AsyncStorage.setItem('firstLaunchTime', String(moment().unix()));
-      }
-    });
-  }
-  
   render() {
     return (
       <Provider store={store}>
-        <AppWithNavigationState />  
-      </Provider> 
+        <AppWithNavigationState />
+      </Provider>
     );
   }
 }

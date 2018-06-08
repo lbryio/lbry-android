@@ -1,15 +1,16 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import { View, Text, Linking, NativeModules } from 'react-native';
+import { ActivityIndicator, View, Text, Linking, NativeModules } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
+import Colors from '../../styles/colors';
 import splashStyle from '../../styles/splash';
 
 class SplashScreen extends React.PureComponent {
   static navigationOptions = {
     title: 'Splash'
   };
-  
+
   componentWillMount() {
     this.setState({
       details: 'Starting daemon',
@@ -18,6 +19,21 @@ class SplashScreen extends React.PureComponent {
       isLagging: false,
       launchUrl: null
     });
+
+    if (NativeModules.DaemonServiceControl) {
+      NativeModules.DaemonServiceControl.startService();
+    }
+  }
+
+  componentDidMount() {
+    // Start measuring the first launch time from the splash screen (time from daemon start to user interaction)
+    AsyncStorage.getItem('hasLaunched').then(value => {
+      if (value == null || value !== 'true') {
+        AsyncStorage.setItem('hasLaunched', 'true');
+        // only set firstLaunchTime since we've determined that this is the first app launch ever
+        AsyncStorage.setItem('firstLaunchTime', String(moment().unix()));
+      }
+    });
   }
 
   updateStatus() {
@@ -25,7 +41,7 @@ class SplashScreen extends React.PureComponent {
       this._updateStatusCallback(status);
     });
   }
-  
+
   _updateStatusCallback(status) {
     const startupStatus = status.startup_status;
     if (startupStatus.code == 'started') {
@@ -44,7 +60,7 @@ class SplashScreen extends React.PureComponent {
         // Leave the splash screen
         const { balanceSubscribe, navigation } = this.props;
         balanceSubscribe();
-        
+
         const resetAction = NavigationActions.reset({
           index: 0,
           actions: [
@@ -52,9 +68,10 @@ class SplashScreen extends React.PureComponent {
           ]
         });
         navigation.dispatch(resetAction);
-        
-        if (this.state.launchUrl) {
-          navigation.navigate({ routeName: 'File', key: this.state.launchUrl, params: { uri: this.state.launchUrl } });
+
+        const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
+        if (launchUrl) {
+          navigation.navigate({ routeName: 'File', key: launchUrl, params: { uri: launchUrl } });
         }
       });
       return;
@@ -78,7 +95,7 @@ class SplashScreen extends React.PureComponent {
       this.updateStatus();
     }, 500);
   }
-  
+
   componentDidMount() {
     if (NativeModules.Mixpanel) {
       NativeModules.Mixpanel.track('App Launch', null);
@@ -89,7 +106,7 @@ class SplashScreen extends React.PureComponent {
         this.setState({ launchUrl: url });
       }
     });
-    
+
     Lbry
       .connect()
       .then(() => {
@@ -107,10 +124,11 @@ class SplashScreen extends React.PureComponent {
 
   render() {
     const { message, details, isLagging, isRunning } = this.state;
-    
+
     return (
       <View style={splashStyle.container}>
         <Text style={splashStyle.title}>LBRY</Text>
+        <ActivityIndicator color={Colors.White} style={splashStyle.loading} size={"small"} />
         <Text style={splashStyle.message}>{message}</Text>
         <Text style={splashStyle.details}>{details}</Text>
       </View>

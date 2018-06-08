@@ -2,6 +2,7 @@ import React from 'react';
 import AboutPage from '../page/about';
 import DiscoverPage from '../page/discover';
 import FilePage from '../page/file';
+import FirstRunScreen from '../page/firstRun';
 import SearchPage from '../page/search';
 import TrendingPage from '../page/trending';
 import SettingsPage from '../page/settings';
@@ -99,6 +100,12 @@ const drawer = DrawerNavigator({
 });
 
 export const AppNavigator = new StackNavigator({
+  FirstRun: {
+    screen: FirstRunScreen,
+    navigationOptions: {
+      drawerLockMode: 'locked-closed'
+    }
+  },
   Splash: {
     screen: SplashScreen,
     navigationOptions: {
@@ -114,7 +121,7 @@ export const AppNavigator = new StackNavigator({
 
 class AppWithNavigationState extends React.Component {
   static supportedDisplayTypes = ['toast'];
-  
+
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
@@ -129,7 +136,7 @@ class AppWithNavigationState extends React.Component {
           return true;
         }
         if (nav.routes[0].routeName === 'Main') {
-          if (nav.routes[0].routes[0].routes[0].index > 0) {    
+          if (nav.routes[0].routes[0].routes[0].index > 0) {
             dispatch(NavigationActions.back());
             return true;
           }
@@ -138,17 +145,17 @@ class AppWithNavigationState extends React.Component {
       return false;
     }.bind(this));
   }
-  
+
   componentDidMount() {
     Linking.addEventListener('url', this._handleUrl);
   }
-  
+
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
     BackHandler.removeEventListener('hardwareBackPress');
     Linking.removeEventListener('url', this._handleUrl);
   }
-  
+
   componentWillUpdate(nextProps) {
     const { dispatch } = this.props;
     const { notification } = nextProps;
@@ -166,15 +173,15 @@ class AppWithNavigationState extends React.Component {
       } else if (AppWithNavigationState.supportedDisplayTypes.indexOf(displayType) > -1) {
         currentDisplayType = displayType;
       }
-      
+
       if ('toast' === currentDisplayType) {
         ToastAndroid.show(message, ToastAndroid.SHORT);
       }
-      
+
       dispatch(doHideNotification());
     }
   }
-  
+
   _handleAppStateChange = (nextAppState) => {
     // Check if the app was suspended
     if (AppState.currentState && AppState.currentState.match(/inactive|background/)) {
@@ -187,7 +194,7 @@ class AppWithNavigationState extends React.Component {
       });
     }
   }
-  
+
   _handleUrl = (evt) => {
     const { dispatch } = this.props;
     if (evt.url) {
@@ -199,7 +206,7 @@ class AppWithNavigationState extends React.Component {
       dispatch(navigateAction);
     }
   }
-  
+
   render() {
     const { dispatch, nav } = this.props;
     return (
@@ -220,5 +227,5 @@ const mapStateToProps = state => ({
   keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
   showNsfw: makeSelectClientSetting(SETTINGS.SHOW_NSFW)(state)
 });
-  
+
 export default connect(mapStateToProps)(AppWithNavigationState);

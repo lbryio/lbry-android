@@ -52,7 +52,7 @@
     <application android:label="@string/app_name"
                  android:icon="@drawable/icon"
                  android:allowBackup="true"
-                 android:theme="@android:style/Theme.Material.Light"
+                 android:theme="@style/LbryAppTheme"
                  android:hardwareAccelerated="true">
 
         {% for m in args.meta_data %}
@@ -64,7 +64,7 @@
                   android:configChanges="keyboardHidden|orientation{% if args.min_sdk_version >= 13 %}|screenSize{% endif %}"
                   android:screenOrientation="{{ args.orientation }}"
 				  -->
-        
+
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
 
         <activity android:name="io.lbry.browser.MainActivity"
@@ -74,7 +74,7 @@
                   android:screenOrientation="{{ args.orientation }}"
                   android:launchMode="singleInstance"
                   >
-            
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -99,9 +99,9 @@
             {{- args.intent_filters -}}
             {%- endif -%}
         </activity>
-        
+
         <receiver android:name="io.lbry.browser.receivers.NotificationDeletedReceiver" />
-        
+
         {% if args.launcher %}
         <activity android:name="org.kivy.android.launcher.ProjectChooser"
                   android:icon="@drawable/icon"

@@ -1,30 +1,34 @@
 import { StyleSheet } from 'react-native';
+import Colors from './colors';
 
 const splashStyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#40b89a'
+    backgroundColor: Colors.LbryGreen
   },
   title: {
     fontFamily: 'Metropolis-Bold',
     fontSize: 64,
     textAlign: 'center',
     marginBottom: 48,
-    color: '#ffffff'
+    color: Colors.White
+  },
+  loading: {
+    marginBottom: 36
   },
   details: {
     fontFamily: 'Metropolis-Regular',
     fontSize: 14,
     marginLeft: 16,
     marginRight: 16,
-    color: '#ffffff',
+    color: Colors.White,
     textAlign: 'center'
   },
   message: {
     fontFamily: 'Metropolis-Bold',
     fontSize: 18,
-    color: '#ffffff',
+    color: Colors.White,
     marginLeft: 16,
     marginRight: 16,
     marginBottom: 4,
