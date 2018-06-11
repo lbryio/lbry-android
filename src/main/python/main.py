@@ -1,4 +1,4 @@
-__version__ = "0.1.7"
+__version__ = "0.1.8"
 
 class ServiceApp(App):
     def build(self):
