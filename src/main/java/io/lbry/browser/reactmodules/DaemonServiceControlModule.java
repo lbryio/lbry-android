@@ -25,6 +25,11 @@ public class DaemonServiceControlModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void startService() {
+        ServiceHelper.start(context, "", LbrynetService.class, "lbrynetservice");
+    }
+
+    @ReactMethod
     public void stopService() {
         ServiceHelper.stop(context, LbrynetService.class);
     }

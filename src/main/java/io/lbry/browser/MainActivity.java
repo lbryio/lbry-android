@@ -27,27 +27,27 @@ import io.lbry.browser.reactpackages.LbryReactPackage;
 import io.lbry.browser.reactmodules.DownloadManagerModule;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
-    
+
     private static final int OVERLAY_PERMISSION_REQ_CODE = 101;
-    
-    private static final int STORAGE_PERMISSION_REQ_CODE = 201;    
-    
+
+    private static final int STORAGE_PERMISSION_REQ_CODE = 201;
+
     private ReactRootView mReactRootView;
-    
+
     private ReactInstanceManager mReactInstanceManager;
-    
+
     public static final String SHARED_PREFERENCES_NAME = "LBRY";
-    
+
     /**
      * Flag which indicates whether or not the service is running. Will be updated in the
      * onResume method.
      */
     private boolean serviceRunning;
-    
+
     protected String getMainComponentName() {
         return "LBRYApp";
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -63,15 +63,15 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 }
             }
         }
-      
+
         super.onCreate(savedInstanceState);
-        
+
         // Start the daemon service if it is not started
         serviceRunning = isServiceRunning(LbrynetService.class);
         if (!serviceRunning) {
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
-        
+
         mReactRootView = new ReactRootView(this);
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         setContentView(mReactRootView);
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
@@ -98,7 +98,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             }
         }
     }
-    
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -127,30 +127,35 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     public void invokeDefaultOnBackPressed() {
         super.onBackPressed();
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
-    
+
         if (mReactInstanceManager != null) {
             mReactInstanceManager.onHostPause(this);
         }
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
-    
-        serviceRunning = isServiceRunning(LbrynetService.class);
-        if (!serviceRunning) {
-            ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
+
+        SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        if (!sp.getBoolean("firstRun", true)) {
+            // We're not showing the welcome page, so it's okay to start the daemon service
+            // because this is not the first run experience
+            serviceRunning = isServiceRunning(LbrynetService.class);
+            if (!serviceRunning) {
+                ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
+            }
         }
-    
+
         if (mReactInstanceManager != null) {
             mReactInstanceManager.onHostResume(this, this);
         }
     }
-    
+
     @Override
     protected void onDestroy() {
         // check service running setting and end it here
@@ -164,7 +169,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         }
 
         super.onDestroy();
-        
+
         if (mReactInstanceManager != null) {
             mReactInstanceManager.onHostDestroy(this);
         }
@@ -178,7 +183,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             super.onBackPressed();
         }
     }
-    
+
     @Override
     public void onNewIntent(Intent intent) {
         if (mReactInstanceManager != null) {
@@ -186,7 +191,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         }
         super.onNewIntent(intent);
     }
-   
+
     private boolean isServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(Integer.MAX_VALUE)) {

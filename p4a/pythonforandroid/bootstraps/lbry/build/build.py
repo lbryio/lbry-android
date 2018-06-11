@@ -371,11 +371,19 @@ main.py that loads it.''')
         args=args,
         url_scheme=url_scheme,
         private_version=str(time.time()))
-    
+
     # add colors.xml
     render(
         'colors.tmpl.xml',
         'src/main/res/values/colors.xml',
+        args=args,
+        url_scheme=url_scheme,
+        )
+
+    # add themes.xml
+    render(
+        'themes.tmpl.xml',
+        'src/main/res/values/themes.xml',
         args=args,
         url_scheme=url_scheme,
         )
@@ -396,12 +404,12 @@ main.py that loads it.''')
         aars=aars,
         android_api=android_api,
         build_tools_version=build_tools_version)
-    
+
     render(
         'settings.tmpl.gradle',
         'settings.gradle'
     )
-    
+
     # copy icon drawables
     for folder in ('drawable-hdpi', 'drawable-mdpi', 'drawable-xhdpi', 'drawable-xxhdpi', 'drawable-xxxhdpi'):
         shutil.copy(
