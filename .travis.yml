@@ -75,7 +75,7 @@ deploy:
     secret_access_key:
       secure: lPygaaJdjFgWY4GcXUXC4Oc5op/TE85Md8lX2bzW19058lbcqYSdM0WySQCxoU/4rlM4Q0N8du0qQ3kZXDpP9XSqvFTVnTGTuB4yghUR1yXcpt6u3JOeOX+YAc3wyQ/pmod6VGO0n8pm8hBVsSFXufdBTjD2W+tNrDoa8RYnlWrt7BbICGltB7PcqYh1Qw6S1wDyZt8I4B5JHDhyJmX6FT5KfOb5cJyynpxlKUstUfy1rh81KuGkEcuEVOLg1s7HE1/IUkVIgezAuCrMHjc86qbNcHULJMFCVYntvvs07+tctrPxA/cfS24WkW7smyij+gdZAZWNNgkIDCuwqpex1v1nKn56mC8xXyUl4CnSCuubQtqUBzTmd4T5sF7trTtpVr9NInwy+4mUoCpz2UKZekTjZkqpzCAuC/cBVWE1/k3wsNat6dGyc9QnKXBqLVhuwYsCOteqLW50ToMMMW0ccDV6FXodwZmrunGd5wIX+UgZkf4l32vzKUxHtIupfYbsjylcPc3VO0OzMMKP/3sYLAN6QntVDFc30k1uqqpgJN4t0nV7vvjMI+b0Qr+o7GzUV2d+QulQXOySJgB2pH0kV1EoPAJ8KbqDOy8KgCJl0YIbOaz14+SiRQhotJ2hrLdtsvyVYXMX+d/CKHJSWa2MQq+jD7lMCwVaGg82PFN1gI4=
     bucket: "build.lbry.io"
-    upload-dir: "android/build-${TRAVIS_BUILD_NUMBER}_commit-${TRAVIS_COMMIT}"
+    upload-dir: "android/build-${TRAVIS_BUILD_NUMBER}_commit-${TRAVIS_COMMIT:0:7}"
     region: us-east-1
     overwrite: true
     skip_cleanup: true
