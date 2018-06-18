@@ -142,13 +142,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         super.onResume();
 
         SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        if (!sp.getBoolean("firstRun", true)) {
-            // We're not showing the welcome page, so it's okay to start the daemon service
-            // because this is not the first run experience
-            serviceRunning = isServiceRunning(LbrynetService.class);
-            if (!serviceRunning) {
-                ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
-            }
+        serviceRunning = isServiceRunning(LbrynetService.class);
+        if (!serviceRunning) {
+            ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
 
         if (mReactInstanceManager != null) {
