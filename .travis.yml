@@ -33,7 +33,7 @@ install:
 - unzip -qq ~/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip -d ~/.buildozer/android/platform/
 - tar -xf ~/.buildozer/android/platform/android-sdk_r23-linux.tgz -C ~/.buildozer/android/platform/
 - mv ~/.buildozer/android/platform/android-sdk-linux ~/.buildozer/android/platform/android-sdk-23
-- unzip -qq ~/.buildozer/android/platform/android-23_r02.zip -d ~/.buildozer/android/platform/android-sdk-23/platforms
+- unzip -qq ~/.buildozer/android/platform/platform-26_r02.zip -d ~/.buildozer/android/platform/android-sdk-23/platforms
 - mv ~/.buildozer/android/platform/android-sdk-23/platforms/android-8.0.0 ~/.buildozer/android/platform/android-sdk-23/platforms/android-26
 - mkdir -p ~/.buildozer/android/platform/android-sdk-23/build-tools
 - unzip -qq ~/.buildozer/android/platform/build-tools_r26.0.1-linux.zip -d ~/.buildozer/android/platform/android-sdk-23/build-tools
