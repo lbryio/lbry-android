@@ -148,7 +148,8 @@ class FilePage extends React.PureComponent {
             <Link key={j}
                   style={filePageStyle.link}
                   href={token}
-                  text={token} />
+                  text={token}
+                  effectOnTap={filePageStyle.linkTapped} />
           );
         } else {
           return token + space;
