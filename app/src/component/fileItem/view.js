@@ -23,7 +23,7 @@ class FileItem extends React.PureComponent {
 
   resolve(props) {
     const { isResolvingUri, resolveUri, claim, uri } = props;
-    
+
     if (!isResolvingUri && claim === undefined && uri) {
       resolveUri(uri);
     }
@@ -47,15 +47,6 @@ class FileItem extends React.PureComponent {
     const isRewardContent = claim && rewardedContentClaimIds.includes(claim.claim_id);
     const channelName = claim ? claim.channel_name : null;
 
-    let description = '';
-    if (isResolvingUri && !claim) {
-      description = 'Loading...';
-    } else if (metadata && metadata.description) {
-      description = metadata.description;
-    } else if (claim === null) {
-      description = 'This address contains no content.';
-    }
-
     return (
       <View style={style}>
         <TouchableOpacity style={discoverStyle.container} onPress={() => {
@@ -65,12 +56,16 @@ class FileItem extends React.PureComponent {
               navigation.navigate({ routeName: 'File', key: uri, params: { uri } });
             }
           }>
-          <FileItemMedia title={title} thumbnail={thumbnail} blurRadius={obscureNsfw ? 15 : 0} resizeMode="cover" />
+          <FileItemMedia title={title}
+                         thumbnail={thumbnail}
+                         blurRadius={obscureNsfw ? 15 : 0}
+                         resizeMode="cover"
+                         isResolvingUri={isResolvingUri} />
           <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />
           <Text style={discoverStyle.fileItemName}>{title}</Text>
           {channelName &&
             <Link style={discoverStyle.channelName} text={channelName} onPress={() => {
-              const channelUri = normalizeURI(channelName); 
+              const channelUri = normalizeURI(channelName);
               navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
             }} />}
         </TouchableOpacity>

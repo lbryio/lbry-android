@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const screenDimension = Dimensions.get('window'); 
+const screenDimension = Dimensions.get('window');
 const width = screenDimension.width - 48; // screen width minus combined left and right margins
 
 const fileItemMediaStyle = StyleSheet.create({
@@ -48,6 +48,17 @@ const fileItemMediaStyle = StyleSheet.create({
   },
   autothumbOrange: {
     backgroundColor: '#ffa726'
+  },
+  resolving: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center'
+  },
+  text: {
+    color: '#ffffff',
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    marginTop: 8
   },
   thumbnail: {
     flex: 1,
