@@ -4,8 +4,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -14,6 +12,9 @@ import android.content.SharedPreferences;
 import android.Manifest;
 import android.net.Uri;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.brentvatne.react.ReactVideoPackage;
@@ -26,17 +27,29 @@ import com.facebook.react.shell.MainReactPackage;
 import io.lbry.browser.reactpackages.LbryReactPackage;
 import io.lbry.browser.reactmodules.DownloadManagerModule;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Random;
+
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
     private static final int OVERLAY_PERMISSION_REQ_CODE = 101;
 
     private static final int STORAGE_PERMISSION_REQ_CODE = 201;
 
+    private static final int PHONE_STATE_PERMISSION_REQ_CODE = 202;
+
     private ReactRootView mReactRootView;
 
     private ReactInstanceManager mReactInstanceManager;
 
     public static final String SHARED_PREFERENCES_NAME = "LBRY";
+
+    public static final String SALT_KEY = "salt";
+
+    public static final String DEVICE_ID_KEY = "deviceId";
 
     /**
      * Flag which indicates whether or not the service is running. Will be updated in the
@@ -52,16 +65,11 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Request external storage permission on Android version >= 6
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                // Should we show an explanation?
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    Toast.makeText(this,
-                        "LBRY requires access to your device storage to be able to download files and media.", Toast.LENGTH_LONG).show();
-                } else {
-                    ActivityCompat.requestPermissions(this,
-                        new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, STORAGE_PERMISSION_REQ_CODE);
-                }
-            }
+            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            STORAGE_PERMISSION_REQ_CODE,
+                            "LBRY requires access to your device storage to be able to download files and media.",
+                            this);
+            checkPhoneStatePermission(this);
         }
 
         super.onCreate(savedInstanceState);
@@ -120,7 +128,59 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                     finish();
                 }
                 break;
+
+            case PHONE_STATE_PERMISSION_REQ_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted
+                    acquireDeviceId(this);
+                } else {
+                    // Permission not granted. Simply show a message.
+                    Toast.makeText(this,
+                        "No permission granted to read your device state. Rewards cannot be claimed.", Toast.LENGTH_LONG).show();
+                }
+                break;
         }
+    }
+
+    public static String acquireDeviceId(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String id = null;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                id = telephonyManager.getImei(); // GSM
+                if (id == null) {
+                    id = telephonyManager.getMeid(); // CDMA
+                }
+            } else {
+                id = telephonyManager.getDeviceId();
+            }
+
+        } catch (SecurityException ex) {
+            // Maybe the permission was not granted? Try to acquire permission
+            checkPhoneStatePermission(context);
+        } catch (Exception ex) {
+            // id could not be obtained. Display a warning that rewards cannot be claimed.
+        }
+
+        if (id == null || id.trim().length() == 0) {
+            Toast.makeText(context, "Rewards cannot be claimed because we could not identify your device.", Toast.LENGTH_LONG).show();
+        }
+
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-384");
+            md.update(id.getBytes("UTF-8"));
+            String hash = new BigInteger(1, md.digest()).toString(16);
+
+            SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(DEVICE_ID_KEY, hash);
+            editor.commit();
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            // SHA-384 not found, UTF-8 encoding not supported
+            Toast.makeText(context, "Rewards cannot be claimed because we could not identify your device.", Toast.LENGTH_LONG).show();
+        }
+
+        return id;
     }
 
     @Override
@@ -186,6 +246,26 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             mReactInstanceManager.onNewIntent(intent);
         }
         super.onNewIntent(intent);
+    }
+
+    private static void checkPermission(String permission, int requestCode, String rationale, Context context) {
+        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
+                Toast.makeText(context, rationale, Toast.LENGTH_LONG).show();
+            } else {
+                ActivityCompat.requestPermissions((Activity) context, new String[] { permission }, requestCode);
+            }
+        }
+    }
+
+    private static void checkPhoneStatePermission(Context context) {
+        // Request read phone state permission
+        checkPermission(Manifest.permission.READ_PHONE_STATE,
+                        PHONE_STATE_PERMISSION_REQ_CODE,
+                        "LBRY requires optional access to be able to identify your device for rewards. " +
+                        "You cannot claim rewards without this permission.",
+                        context);
     }
 
     private boolean isServiceRunning(Class<?> serviceClass) {
