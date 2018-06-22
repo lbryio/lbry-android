@@ -69,7 +69,6 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                             STORAGE_PERMISSION_REQ_CODE,
                             "LBRY requires access to your device storage to be able to download files and media.",
                             this);
-            checkPhoneStatePermission(this);
         }
 
         super.onCreate(savedInstanceState);
@@ -112,6 +111,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         switch (requestCode) {
             case STORAGE_PERMISSION_REQ_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Request for the READ_PHONE_STATE permission
+                    checkPhoneStatePermission(this);
+
                     if (BuildConfig.DEBUG && !Settings.canDrawOverlays(this)) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                                                    Uri.parse("package:" + getPackageName()));
