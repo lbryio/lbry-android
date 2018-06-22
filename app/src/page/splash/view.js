@@ -1,6 +1,14 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import { ActivityIndicator, View, Text, Linking, NativeModules } from 'react-native';
+import {
+  ActivityIndicator,
+  Linking,
+  NativeModules,
+  Platform,
+  ProgressBarAndroid,
+  Text,
+  View
+} from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
 import Colors from '../../styles/colors';
@@ -17,7 +25,10 @@ class SplashScreen extends React.PureComponent {
       message: 'Connecting',
       isRunning: false,
       isLagging: false,
-      launchUrl: null
+      launchUrl: null,
+      didDownloadHeaders: false,
+      isDownloadingHeaders: false,
+      headersDownloadProgress: 0
     });
 
     if (NativeModules.DaemonServiceControl) {
@@ -76,8 +87,27 @@ class SplashScreen extends React.PureComponent {
       });
       return;
     }
-    if (status.blockchain_status && status.blockchain_status.blocks_behind > 0) {
-      const behind = status.blockchain_status.blocks_behind;
+
+    const blockchainStatus = status.blockchain_status;
+    if (blockchainStatus) {
+      this.setState({
+        isDownloadingHeaders: blockchainStatus.is_downloading_headers,
+        headersDownloadProgress: blockchainStatus.headers_download_progress
+      });
+    }
+
+    if (blockchainStatus && (blockchainStatus.is_downloading_headers ||
+      (this.state.didDownloadHeaders && 'loading_wallet' === startupStatus.code))) {
+      if (!this.state.didDownloadHeaders) {
+        this.setState({ didDownloadHeaders: true });
+      }
+      this.setState({
+        message: 'Blockchain Sync',
+        details: `Catching up with the blockchain (${blockchainStatus.headers_download_progress}%)`,
+        isLagging: startupStatus.is_lagging
+      });
+    } else if (blockchainStatus && blockchainStatus.blocks_behind > 0) {
+      const behind = blockchainStatus.blocks_behind;
       const behindText = behind + ' block' + (behind == 1 ? '' : 's') + ' behind';
       this.setState({
         message: 'Blockchain Sync',
@@ -128,7 +158,13 @@ class SplashScreen extends React.PureComponent {
     return (
       <View style={splashStyle.container}>
         <Text style={splashStyle.title}>LBRY</Text>
-        <ActivityIndicator color={Colors.White} style={splashStyle.loading} size={"small"} />
+        {'android' === Platform.OS && this.state.isDownloadingHeaders &&
+        <ProgressBarAndroid color={Colors.White}
+                            indeterminate={false}
+                            styleAttr={"Horizontal"}
+                            style={splashStyle.progress}
+                            progress={this.state.headersDownloadProgress/100.0} />}
+        {!this.state.isDownloadingHeaders && <ActivityIndicator color={Colors.White} style={splashStyle.loading} size={"small"} />}
         <Text style={splashStyle.message}>{message}</Text>
         <Text style={splashStyle.details}>{details}</Text>
       </View>
