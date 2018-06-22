@@ -17,6 +17,11 @@ const splashStyle = StyleSheet.create({
   loading: {
     marginBottom: 36
   },
+  progress: {
+    alignSelf: 'center',
+    marginBottom: 36,
+    width: '50%'
+  },
   details: {
     fontFamily: 'Metropolis-Regular',
     fontSize: 14,
