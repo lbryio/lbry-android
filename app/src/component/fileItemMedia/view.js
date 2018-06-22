@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, Image, View } from 'react-native';
-import fileItemMediaStyle from '../../styles/fileItemMedia'; 
+import { ActivityIndicator, Image, Text, View } from 'react-native';
+import Colors from '../../styles/colors';
+import fileItemMediaStyle from '../../styles/fileItemMedia';
 
 class FileItemMedia extends React.PureComponent {
   static AUTO_THUMB_STYLES = [
@@ -28,14 +29,14 @@ class FileItemMedia extends React.PureComponent {
 
   render() {
     let style = this.props.style;
-    const { title, thumbnail, blurRadius, resizeMode } = this.props;
+    const { blurRadius, isResolvingUri, thumbnail, title, resizeMode } = this.props;
     const atStyle = this.state.autoThumbStyle;
 
     if (thumbnail && ((typeof thumbnail) === 'string')) {
       if (style == null) {
         style = fileItemMediaStyle.thumbnail;
       }
-      
+
       return (
         <Image source={{uri: thumbnail}}
                blurRadius={blurRadius}
@@ -43,14 +44,20 @@ class FileItemMedia extends React.PureComponent {
                style={style} />
       );
     }
-        
+
     return (
       <View style={[style ? style : fileItemMediaStyle.autothumb, atStyle]}>
-        <Text style={fileItemMediaStyle.autothumbText}>{title &&
+        {isResolvingUri && (
+          <View style={fileItemMediaStyle.resolving}>
+            <ActivityIndicator color={Colors.White} size={"large"} />
+            <Text style={fileItemMediaStyle.text}>Resolving...</Text>
+          </View>
+        )}
+        {!isResolvingUri && <Text style={fileItemMediaStyle.autothumbText}>{title &&
             title
               .replace(/\s+/g, '')
               .substring(0, Math.min(title.replace(' ', '').length, 5))
-              .toUpperCase()}</Text>
+              .toUpperCase()}</Text>}
       </View>
     );
   }
