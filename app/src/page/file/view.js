@@ -30,25 +30,26 @@ class FilePage extends React.PureComponent {
   static navigationOptions = {
     title: ''
   };
-  
+
   constructor(props) {
     super(props);
     this.state = {
       mediaLoaded: false,
+      autoplayMedia: false,
       fullscreenMode: false,
       showImageViewer: false,
       showWebView: false,
       imageUrls: null
     };
   }
-  
+
   componentDidMount() {
     StatusBar.setHidden(false);
-    
+
     const { isResolvingUri, resolveUri, navigation } = this.props;
     const { uri } = navigation.state.params;
     if (!isResolvingUri) resolveUri(uri);
-    
+
     this.fetchFileInfo(this.props);
     this.fetchCostInfo(this.props);
 
@@ -78,7 +79,7 @@ class FilePage extends React.PureComponent {
       props.fetchCostInfo(props.navigation.state.params.uri);
     }
   }
-  
+
   handleFullscreenToggle = (mode) => {
     this.setState({ fullscreenMode: mode });
     StatusBar.setHidden(mode);
@@ -91,10 +92,10 @@ class FilePage extends React.PureComponent {
       }
     }
   }
-  
+
   onDeletePressed = () => {
     const { deleteFile, fileInfo } = this.props;
-    
+
     Alert.alert(
       'Delete file',
       'Are you sure you want to remove this file from your device?',
@@ -105,10 +106,10 @@ class FilePage extends React.PureComponent {
       { cancelable: true }
     );
   }
-  
+
   onStopDownloadPressed = () => {
     const { deleteFile, stopDownload, fileInfo, navigation } = this.props;
-    
+
     Alert.alert(
       'Stop download',
       'Are you sure you want to stop downloading this file?',
@@ -119,21 +120,21 @@ class FilePage extends React.PureComponent {
       { cancelable: true }
     );
   }
-  
+
   componentWillUnmount() {
     StatusBar.setHidden(false);
     if (NativeModules.ScreenOrientation) {
       NativeModules.ScreenOrientation.unlockOrientation();
     }
   }
-  
+
   localUriForFileInfo = (fileInfo) => {
     if (!fileInfo) {
       return null;
     }
     return 'file:///' + fileInfo.download_path;
   }
-  
+
   linkify = (text) => {
     let linkifiedContent = [];
     let lines = text.split(/\n/g);
@@ -142,7 +143,7 @@ class FilePage extends React.PureComponent {
       let lineContent = tokens.length === 0 ? '' : tokens.map((token, j) => {
         let hasSpace = j !== (tokens.length - 1);
         let space = hasSpace ? ' ' : '';
-        
+
         if (token.match(/^(lbry|https?):\/\//g)) {
           return (
             <Link key={j}
@@ -154,14 +155,14 @@ class FilePage extends React.PureComponent {
           return token + space;
         }
       });
-      
+
       lineContent.push("\n");
       return (<Text key={i}>{lineContent}</Text>);
     });
-    
+
     return linkifiedContent;
   }
-  
+
   render() {
     const {
       claim,
@@ -175,12 +176,12 @@ class FilePage extends React.PureComponent {
       navigation
     } = this.props;
     const { uri } = navigation.state.params;
-    
+
     let innerContent = null;
     if ((isResolvingUri && !claim) || !claim) {
       innerContent = (
         <View style={filePageStyle.container}>
-          {isResolvingUri && 
+          {isResolvingUri &&
           <View style={filePageStyle.busyContainer}>
             <ActivityIndicator size="large" color={Colors.LbryGreen} />
             <Text style={filePageStyle.infoText}>Loading decentralized data...</Text>
@@ -198,7 +199,7 @@ class FilePage extends React.PureComponent {
         <ChannelPage uri={uri} navigation={navigation} />
       );
     } else if (claim) {
-      const completed = fileInfo && fileInfo.completed;  
+      const completed = fileInfo && fileInfo.completed;
       const title = metadata.title;
       const isRewardContent = rewardedContentClaimIds.includes(claim.claim_id);
       const description = metadata.description ? metadata.description : null;
@@ -209,18 +210,18 @@ class FilePage extends React.PureComponent {
         (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
       const channelClaimId =
         value && value.publisherSignature && value.publisherSignature.certificateId;
-      
+
       const playerStyle = [filePageStyle.player, this.state.fullscreenMode ?
         filePageStyle.fullscreenPlayer : filePageStyle.containedPlayer];
       const playerBgStyle = [filePageStyle.playerBackground, this.state.fullscreenMode ?
-        filePageStyle.fullscreenPlayerBackground : filePageStyle.containedPlayerBackground]; 
+        filePageStyle.fullscreenPlayerBackground : filePageStyle.containedPlayerBackground];
       // at least 2MB (or the full download) before media can be loaded
       const canLoadMedia = fileInfo &&
         (fileInfo.written_bytes >= 2097152 || fileInfo.written_bytes == fileInfo.total_bytes); // 2MB = 1024*1024*2
       const canOpen = (mediaType === 'image' || mediaType === 'text') && completed;
       const isWebViewable = mediaType === 'text';
       const localFileUri = this.localUriForFileInfo(fileInfo);
-      
+
       const openFile = () => {
         if (mediaType === 'image') {
           // use image viewer
@@ -243,28 +244,33 @@ class FilePage extends React.PureComponent {
         <View style={filePageStyle.pageContainer}>
           {this.state.showWebView && isWebViewable && <WebView source={{ uri: localFileUri }}
                                                                style={filePageStyle.viewer} />}
-                                                               
+
           {this.state.showImageViewer && <ImageViewer style={StyleSheet.flatten(filePageStyle.viewer)}
                                                       imageUrls={this.state.imageUrls}
                                                       renderIndicator={() => null} />}
-                                                    
+
           {!this.state.showWebView && (
             <View style={filePageStyle.innerPageContainer}>
-              <View style={filePageStyle.mediaContainer}>  
+              <View style={filePageStyle.mediaContainer}>
                 {(canOpen || (!fileInfo || (isPlayable && !canLoadMedia))) &&
                   <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
                 {(canOpen || (isPlayable && !this.state.mediaLoaded)) && <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
                 {((isPlayable && !completed && !canLoadMedia) || !completed || canOpen) &&
-                  <FileDownloadButton uri={uri} style={filePageStyle.downloadButton} openFile={openFile} />}
+                  <FileDownloadButton uri={uri}
+                                      style={filePageStyle.downloadButton}
+                                      openFile={openFile}
+                                      isPlayable={isPlayable}
+                                      onPlay={() => this.setState({ autoPlayMedia: true })} />}
                 {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
               </View>
               {canLoadMedia && <View style={playerBgStyle} />}
               {canLoadMedia && <MediaPlayer fileInfo={fileInfo}
-                                              uri={uri}
-                                              style={playerStyle}
-                                              onFullscreenToggled={this.handleFullscreenToggle} 
-                                              onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
-              
+                                            uri={uri}
+                                            style={playerStyle}
+                                            autoPlay={this.state.autoPlayMedia}
+                                            onFullscreenToggled={this.handleFullscreenToggle}
+                                            onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
+
               { showActions &&
               <View style={filePageStyle.actions}>
                 {completed && <Button color="red" title="Delete" onPress={this.onDeletePressed} />}
@@ -290,7 +296,7 @@ class FilePage extends React.PureComponent {
         </View>
       );
     }
-    
+
     return innerContent;
   }
 }
