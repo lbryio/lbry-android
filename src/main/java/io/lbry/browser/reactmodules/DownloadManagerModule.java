@@ -1,10 +1,13 @@
 package io.lbry.browser.reactmodules;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -28,18 +31,22 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     private HashMap<String, Integer> downloadIdNotificationIdMap = new HashMap<String, Integer>();
 
-    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#");    
-    
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#");
+
     private static final int MAX_PROGRESS = 100;
 
     private static final String GROUP_DOWNLOADS = "io.lbry.browser.GROUP_DOWNLOADS";
-    
+
+    private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.DOWNLOADS_NOTIFICATION_CHANNEL";
+
+    private static boolean channelCreated = false;
+
     public static final String NOTIFICATION_ID_KEY = "io.lbry.browser.notificationId";
-    
+
     public static final int GROUP_ID = 0;
-    
+
     public static boolean groupCreated = false;
-    
+
     public DownloadManagerModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.context = reactContext;
@@ -53,15 +60,27 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "LbryDownloadManager";
     }
-    
+
+    private void createNotificationChannel() {
+        // Only applies to Android 8.0 Oreo (API Level 26) or higher
+        if (!channelCreated && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel channel = new NotificationChannel(
+                NOTIFICATION_CHANNEL_ID, "LBRY Downloads", NotificationManager.IMPORTANCE_LOW);
+            channel.setDescription("LBRY file downloads");
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     private void createNotificationGroup() {
         if (!groupCreated) {
             Intent intent = new Intent(context, NotificationDeletedReceiver.class);
             intent.putExtra(NOTIFICATION_ID_KEY, GROUP_ID);
-            
+
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, GROUP_ID, intent, 0);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
             builder.setContentTitle("Active downloads")
                    .setContentText("Active downloads")
                    .setSmallIcon(R.drawable.ic_file_download_black_24dp)
@@ -70,11 +89,11 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
                    .setGroupSummary(true)
                    .setDeleteIntent(pendingIntent);
             notificationManager.notify(GROUP_ID, builder.build());
-        
+
             groupCreated = true;
         }
     }
-    
+
     private PendingIntent getLaunchPendingIntent(String uri) {
         Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -84,10 +103,11 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startDownload(String id, String fileName) {
+        createNotificationChannel();
         createNotificationGroup();
-        
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         // The file URI is used as the unique ID
         builder.setContentIntent(getLaunchPendingIntent(id))
                .setContentTitle(String.format("Downloading %s...", fileName))
@@ -114,6 +134,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
             return;
         }
 
+        createNotificationChannel();
         createNotificationGroup();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = builders.get(notificationId);
@@ -128,12 +149,12 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
                    .setContentText(String.format("%s", formatBytes(totalBytes)))
                    .setProgress(0, 0, false);
             notificationManager.notify(notificationId, builder.build());
-            
+
             downloadIdNotificationIdMap.remove(id);
             builders.remove(notificationId);
         }
     }
-    
+
     @ReactMethod
     public void stopDownload(String id, String filename) {
         if (!downloadIdNotificationIdMap.containsKey(id)) {
@@ -144,14 +165,14 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         if (!builders.containsKey(notificationId)) {
             return;
         }
-        
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = builders.get(notificationId);
         notificationManager.cancel(notificationId);
-        
+
         downloadIdNotificationIdMap.remove(id);
         builders.remove(notificationId);
-        
+
         if (builders.values().size() == 0) {
             notificationManager.cancel(GROUP_ID);
             groupCreated = false;
