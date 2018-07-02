@@ -162,8 +162,8 @@ const filePageStyle = StyleSheet.create({
     color: Colors.LbryGreen
   },
   linkTapped: {
-    backgroundColor: '#0c604b',
-  },
+    color: "rgba(64, 184, 154, .2)"
+  }
 });
 
 export default filePageStyle;
