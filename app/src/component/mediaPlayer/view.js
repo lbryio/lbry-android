@@ -41,7 +41,8 @@ class MediaPlayer extends React.PureComponent {
       controlsTimeout: -1,
       seekerOffset: 0,
       seekerPosition: 0,
-      firstPlay: true
+      firstPlay: true,
+      seekTimeout: -1
     };
   }
 
@@ -176,6 +177,9 @@ class MediaPlayer extends React.PureComponent {
 
       onPanResponderGrant: (evt, gestureState) => {
         this.clearControlsTimeout();
+        if (this.state.seekTimeout > 0) {
+          clearTimeout(this.state.seekTimeout);
+        }
         this.setState({ seeking: true });
       },
 
@@ -191,7 +195,7 @@ class MediaPlayer extends React.PureComponent {
           this.onEnd();
         } else {
           this.seekTo(time);
-          this.setState({ seeking: false });
+          this.setState({ seekTimeout: setTimeout(() => { this.setState({ seeking: false }); }, 100) });
         }
         this.hidePlayerControls();
       }
