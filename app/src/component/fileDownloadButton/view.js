@@ -7,14 +7,14 @@ class FileDownloadButton extends React.PureComponent {
     const { costInfo, fetchCostInfo, uri } = this.props;
     if (costInfo === undefined) {
       fetchCostInfo(uri);
-    }  
+    }
   }
-  
+
   componentWillReceiveProps(nextProps) {
     //this.checkAvailability(nextProps.uri);
     this.restartDownload(nextProps);
   }
-  
+
   restartDownload(props) {
     const { downloading, fileInfo, uri, restartDownload } = props;
 
@@ -28,7 +28,7 @@ class FileDownloadButton extends React.PureComponent {
       restartDownload(uri, fileInfo.outpoint);
     }
   }
-  
+
   render() {
     const {
       fileInfo,
@@ -36,6 +36,8 @@ class FileDownloadButton extends React.PureComponent {
       uri,
       purchaseUri,
       costInfo,
+      isPlayable,
+      onPlay,
       loading,
       doPause,
       style,
@@ -46,7 +48,7 @@ class FileDownloadButton extends React.PureComponent {
       const progress =
           fileInfo && fileInfo.written_bytes ? fileInfo.written_bytes / fileInfo.total_bytes * 100 : 0,
         label = fileInfo ? progress.toFixed(0) + '% complete' : 'Connecting...';
-        
+
       return (
         <View style={[style, fileDownloadButtonStyle.container]}>
           <View style={{ width: `${progress}%`, backgroundColor: '#ff0000', position: 'absolute', left: 0, top: 0 }}></View>
@@ -67,8 +69,11 @@ class FileDownloadButton extends React.PureComponent {
               NativeModules.Mixpanel.track('Purchase Uri', { Uri: uri });
             }
             purchaseUri(uri);
+            if (isPlayable && onPlay) {
+              this.props.onPlay();
+            }
           }}>
-          <Text style={fileDownloadButtonStyle.text}>Download</Text>
+          <Text style={fileDownloadButtonStyle.text}>{isPlayable ? 'Play' : 'Download'}</Text>
         </TouchableOpacity>
       );
     } else if (fileInfo && fileInfo.download_path) {

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import Colors from './colors';
 
 const discoverStyle = StyleSheet.create({
   container: {
@@ -27,12 +28,12 @@ const discoverStyle = StyleSheet.create({
     marginLeft: 10
   },
   categoryName: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Metropolis-SemiBold',
     fontSize: 20,
     marginLeft: 24,
     marginTop: 16,
     marginBottom: 16,
-    color: '#40b89a'
+    color: Colors.Black
   },
   fileItem: {
     marginLeft: 24,
@@ -48,7 +49,7 @@ const discoverStyle = StyleSheet.create({
     fontFamily: 'Metropolis-SemiBold',
     fontSize: 16,
     marginTop: 4,
-    color: '#c0c0c0'
+    color: Colors.LbryGreen
   },
   filePriceContainer: {
     backgroundColor: '#61fcd8',
@@ -58,7 +59,7 @@ const discoverStyle = StyleSheet.create({
     top: 16,
     width: 56,
     height: 24,
-    borderRadius: 4 
+    borderRadius: 4
   },
   filePriceText: {
     fontFamily: 'Metropolis-Bold',

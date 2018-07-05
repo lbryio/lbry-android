@@ -3,6 +3,8 @@
 
 An Android browser and wallet for the [LBRY](https://lbry.io) network. This app bundles [lbrynet-daemon](https://github.com/lbryio/lbry) as a background service with a UI layer built with React Native. The APK is built using buildozer and the Gradle build tool.
 
+<img src="https://spee.ch/8/lbry-android.png" alt="LBRY Android Screenshot" width="384px" />
+
 ## Installation
 The minimum supported Android version is 5.0 Lollipop. There are two ways to install:
 

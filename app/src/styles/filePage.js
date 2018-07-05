@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import Colors from './colors';
 
-const screenDimension = Dimensions.get('window'); 
+const screenDimension = Dimensions.get('window');
 const screenWidth = screenDimension.width;
 
 const filePageStyle = StyleSheet.create({
@@ -51,7 +51,7 @@ const filePageStyle = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 20,
-    color: Colors.ChannelGrey
+    color: Colors.LbryGreen
   },
   description: {
     color: Colors.DescriptionGrey,
@@ -113,7 +113,7 @@ const filePageStyle = StyleSheet.create({
     top: 16,
     width: 56,
     height: 24,
-    borderRadius: 4 
+    borderRadius: 4
   },
   filePriceText: {
     fontFamily: 'Metropolis-Bold',
