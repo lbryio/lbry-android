@@ -62,7 +62,6 @@ class WalletAddress extends React.PureComponent<Props> {
           />
 
           <Button style={walletStyle.button}
-            icon={'refresh'}
             text={qrButtonText}
             onPress={() => this.toggleQrView()}
             disabled={gettingNewAddress}
@@ -73,7 +72,7 @@ class WalletAddress extends React.PureComponent<Props> {
           <QRCode
             value={receiveAddress}
             size={200}
-            bgColor={Colors.LbryGreen}
+            bgColor={Colors.Black}
             fgColor='white' />
         </View>}
 
