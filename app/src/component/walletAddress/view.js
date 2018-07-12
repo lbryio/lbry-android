@@ -46,9 +46,9 @@ class WalletAddress extends React.PureComponent<Props> {
   render() {
     const { receiveAddress, getNewAddress, gettingNewAddress } = this.props;
     const { showQr } = this.state;
-    const qrButtonText = showQr ? "Hide QR Address" : "Show QR Address";
+    const qrButtonText = showQr ? "Hide QR" : "Show QR";
     return (
-      <View>
+      <View style={walletStyle.card}>
         <Text style={walletStyle.title}>Receive Credits</Text>
         <Text style={[walletStyle.text, walletStyle.bottomMarginMedium]}>Use this wallet address to receive credits sent by another user (or yourself).</Text>
         <Address address={receiveAddress} style={walletStyle.bottomMarginSmall} />
