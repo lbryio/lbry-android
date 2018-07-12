@@ -3,46 +3,46 @@ import Colors from './colors';
 
 const walletStyle = StyleSheet.create({
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   amountRow: {
-    flexDirection: 'row'
+    flexDirection: "row"
   },
   address: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: "Metropolis-Regular",
     borderWidth: 1,
-    borderStyle: 'dashed',
-    borderColor: '#cccccc',
-    backgroundColor: '#f9f9f9',
+    borderStyle: "dashed",
+    borderColor: "#cccccc",
+    backgroundColor: "#f9f9f9",
     padding: 8,
-    width: '85%'
+    width: "85%"
   },
   button: {
     backgroundColor: Colors.LbryGreen
   },
   historyList: {
-    backgroundColor: '#ffffff'
+    backgroundColor: "#ffffff"
   },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     marginTop: 16,
     marginLeft: 16,
     marginRight: 16,
     padding: 16
   },
   transactionsCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     margin: 16
   },
   title: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: "Metropolis-Bold",
     fontSize: 20,
     marginBottom: 24
   },
   transactionsTitle: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: "Metropolis-Bold",
     fontSize: 20
   },
   transactionsHeader: {
@@ -51,19 +51,19 @@ const walletStyle = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#eeeeee'
+    borderBottomColor: "#eeeeee"
   },
   text: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: "Metropolis-Regular",
     fontSize: 14
   },
   link: {
     color: Colors.LbryGreen,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: "Metropolis-Regular",
     fontSize: 14
   },
   smallText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: "Metropolis-Regular",
     fontSize: 12
   },
   balanceCard: {
@@ -72,46 +72,46 @@ const walletStyle = StyleSheet.create({
     marginRight: 16
   },
   balanceBackground: {
-    position: 'absolute',
-    alignSelf: 'stretch',
-    width: '100%',
-    height: '100%',
+    position: "absolute",
+    alignSelf: "stretch",
+    width: "100%",
+    height: "100%"
   },
   balanceTitle: {
-    color: '#ffffff',
-    fontFamily: 'Metropolis-Bold',
+    color: "#ffffff",
+    fontFamily: "Metropolis-Bold",
     fontSize: 18,
     marginLeft: 16,
     marginTop: 16
   },
   balanceCaption: {
-    color: '#caedB9',
-    fontFamily: 'Metropolis-Medium',
+    color: "#caedB9",
+    fontFamily: "Metropolis-Medium",
     fontSize: 14,
     marginLeft: 16,
     marginTop: 8,
     marginBottom: 96
   },
   balance: {
-    color: '#ffffff',
-    fontFamily: 'Metropolis-Bold',
+    color: "#ffffff",
+    fontFamily: "Metropolis-Bold",
     fontSize: 36,
     marginLeft: 16,
     marginBottom: 16
   },
   infoText: {
-    color: '#aaaaaa',
-    fontFamily: 'Metropolis-Regular',
+    color: "#aaaaaa",
+    fontFamily: "Metropolis-Regular",
     fontSize: 14,
     padding: 16,
-    textAlign: 'center'
+    textAlign: "center"
   },
   input: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: "Metropolis-Regular",
     fontSize: 14
   },
   amountInput: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     width: 100,
     fontSize: 16,
     letterSpacing: 1
@@ -127,8 +127,8 @@ const walletStyle = StyleSheet.create({
     margin: 16
   },
   warningText: {
-    color: '#ffffff',
-    fontFamily: 'Metropolis-Regular',
+    color: "#ffffff",
+    fontFamily: "Metropolis-Regular",
     fontSize: 16,
     lineHeight: 30
   },
@@ -136,7 +136,7 @@ const walletStyle = StyleSheet.create({
     marginLeft: 16
   },
   currency: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     marginTop: 17
   },
   sendButton: {
@@ -150,6 +150,10 @@ const walletStyle = StyleSheet.create({
   },
   bottomMarginLarge: {
     marginBottom: 24
+  },
+  qrContainer: {
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 
