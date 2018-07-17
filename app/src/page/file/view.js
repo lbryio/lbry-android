@@ -26,6 +26,7 @@ import MediaPlayer from '../../component/mediaPlayer';
 import UriBar from '../../component/uriBar';
 import Video from 'react-native-video';
 import filePageStyle from '../../styles/filePage';
+import uriBarStyle from '../../styles/uriBar';
 
 class FilePage extends React.PureComponent {
   static navigationOptions = {
@@ -184,7 +185,7 @@ class FilePage extends React.PureComponent {
     this.setState({ isLandscape });
 
     if (isLandscape) {
-      this.playerBackground.setNativeProps({ height: screenHeight - 60 });
+      this.playerBackground.setNativeProps({ height: screenHeight - StyleSheet.flatten(uriBarStyle.uriContainer).height });
     } else if (this.state.playerBgHeight > 0) {
       this.playerBackground.setNativeProps({ height: this.state.playerBgHeight });
     }
