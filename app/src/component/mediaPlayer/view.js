@@ -154,7 +154,7 @@ class MediaPlayer extends React.PureComponent {
     const offset = this.getTrackingOffset();
     if (val < offset) {
       val = offset;
-    } else if (val >= (offset + this.seekerWidth)) {
+    } else if (val >= (offset + this.seekerWidth) || (val + offset) >= this.seekerWidth) {
       return offset + this.seekerWidth;
     }
 
@@ -203,14 +203,16 @@ class MediaPlayer extends React.PureComponent {
   }
 
   getCurrentTimeForSeekerPosition() {
-    return this.state.duration * (this.state.seekerPosition / this.seekerWidth);
+    return this.state.duration * ((this.state.seekerPosition - this.getTrackingOffset()) / this.seekerWidth);
   }
 
   calculateSeekerPosition() {
-    if (this.state.fullscreenMode) {
-      return this.getTrackingOffset() + (this.seekerWidth * this.getCurrentTimePercentage());
+    const position = this.seekerWidth * this.getCurrentTimePercentage();
+    if (position === 0 && this.state.fullscreenMode) {
+      return this.getTrackingOffset();
     }
-    return this.seekerWidth * this.getCurrentTimePercentage();
+
+    return position;
   }
 
   getCurrentTimePercentage() {
@@ -225,7 +227,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   componentDidMount() {
-
+    this.setSeekerPosition(this.calculateSeekerPosition());
   }
 
   componentWillUnmount() {

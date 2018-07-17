@@ -18,7 +18,6 @@ const mediaPlayerStyle = StyleSheet.create({
   progress: {
     flex: 1,
     flexDirection: 'row',
-    width: '100%',
     height: 3
   },
   innerProgressCompleted: {
