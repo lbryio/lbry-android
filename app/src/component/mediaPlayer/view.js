@@ -266,7 +266,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   render() {
-    const { backgroundPlayEnabled, fileInfo, thumbnail, style } = this.props;
+    const { backgroundPlayEnabled, fileInfo, thumbnail, onLayout, style } = this.props;
     const flexCompleted = this.getCurrentTimePercentage() * 100;
     const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
     let styles = [this.state.fullscreenMode ? mediaPlayerStyle.fullscreenContainer : mediaPlayerStyle.container];
@@ -282,7 +282,7 @@ class MediaPlayer extends React.PureComponent {
       mediaPlayerStyle.fullscreenTrackingControls : mediaPlayerStyle.containedTrackingControls];
 
     return (
-      <View style={styles}>
+      <View style={styles} onLayout={onLayout}>
         <Video source={{ uri: 'file:///' + fileInfo.download_path }}
                ref={(ref: Video) => { this.video = ref }}
                resizeMode={this.state.resizeMode}

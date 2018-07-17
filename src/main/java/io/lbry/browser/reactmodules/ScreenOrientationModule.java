@@ -36,4 +36,12 @@ public class ScreenOrientationModule extends ReactContextBaseJavaModule {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
     }
+
+    @ReactMethod
+    public void lockOrientationPortrait() {
+        Activity activity = getCurrentActivity();
+        if (activity != null) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+    }
 }
