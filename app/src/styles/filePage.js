@@ -16,6 +16,10 @@ const filePageStyle = StyleSheet.create({
     flex: 1,
     marginBottom: 60
   },
+  innerPageContainerFsMode: {
+    flex: 1,
+    marginBottom: 0
+  },
   mediaContainer: {
     alignItems: 'center',
     width: screenWidth,
@@ -76,11 +80,16 @@ const filePageStyle = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 0,
-    zIndex: 101
+    zIndex: 301,
+    elevation: 21
   },
   containedPlayer: {
     width: '100%',
     height: 220,
+  },
+  containedPlayerLandscape: {
+    width: '100%',
+    height: '100%'
   },
   fullscreenPlayer: {
     width: '100%',
@@ -92,7 +101,8 @@ const filePageStyle = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 0,
-    zIndex: 100,
+    zIndex: 300,
+    elevation: 20,
     backgroundColor: Colors.Black
   },
   containedPlayerBackground: {
