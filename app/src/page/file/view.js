@@ -65,6 +65,9 @@ class FilePage extends React.PureComponent {
     if (NativeModules.Mixpanel) {
       NativeModules.Mixpanel.track('Open File Page', { Uri: uri });
     }
+    if (NativeModules.UtilityModule) {
+      NativeModules.UtilityModule.keepAwakeOn();
+    }
   }
 
   componentDidUpdate() {
@@ -135,6 +138,9 @@ class FilePage extends React.PureComponent {
     StatusBar.setHidden(false);
     if (NativeModules.ScreenOrientation) {
       NativeModules.ScreenOrientation.unlockOrientation();
+    }    
+    if (NativeModules.UtilityModule) {
+      NativeModules.UtilityModule.keepAwakeOff();
     }
   }
 
