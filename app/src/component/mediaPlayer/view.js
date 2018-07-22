@@ -41,7 +41,8 @@ class MediaPlayer extends React.PureComponent {
       controlsTimeout: -1,
       seekerOffset: 0,
       seekerPosition: 0,
-      firstPlay: true
+      firstPlay: true,
+      seekTimeout: -1
     };
   }
 
@@ -175,6 +176,9 @@ class MediaPlayer extends React.PureComponent {
 
       onPanResponderGrant: (evt, gestureState) => {
         this.clearControlsTimeout();
+        if (this.state.seekTimeout > 0) {
+          clearTimeout(this.state.seekTimeout);
+        }
         this.setState({ seeking: true });
       },
 
@@ -190,7 +194,7 @@ class MediaPlayer extends React.PureComponent {
           this.onEnd();
         } else {
           this.seekTo(time);
-          this.setState({ seeking: false });
+          this.setState({ seekTimeout: setTimeout(() => { this.setState({ seeking: false }); }, 100) });
         }
         this.hidePlayerControls();
       }
@@ -258,7 +262,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   render() {
-    const { backgroundPlayEnabled, fileInfo, thumbnail, style } = this.props;
+    const { backgroundPlayEnabled, fileInfo, thumbnail, onLayout, style } = this.props;
     const completedWidth = this.getCurrentTimePercentage() * this.seekerWidth;
     const remainingWidth = this.seekerWidth - completedWidth;
     let styles = [this.state.fullscreenMode ? mediaPlayerStyle.fullscreenContainer : mediaPlayerStyle.container];
@@ -274,7 +278,7 @@ class MediaPlayer extends React.PureComponent {
       mediaPlayerStyle.fullscreenTrackingControls : mediaPlayerStyle.containedTrackingControls];
 
     return (
-      <View style={styles}>
+      <View style={styles} onLayout={onLayout}>
         <Video source={{ uri: 'file:///' + fileInfo.download_path }}
                ref={(ref: Video) => { this.video = ref }}
                resizeMode={this.state.resizeMode}

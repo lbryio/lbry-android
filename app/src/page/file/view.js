@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Alert,
   Button,
+  Dimensions,
   NativeModules,
   ScrollView,
   StatusBar,
@@ -25,11 +26,16 @@ import MediaPlayer from '../../component/mediaPlayer';
 import UriBar from '../../component/uriBar';
 import Video from 'react-native-video';
 import filePageStyle from '../../styles/filePage';
+import uriBarStyle from '../../styles/uriBar';
 
 class FilePage extends React.PureComponent {
   static navigationOptions = {
     title: ''
   };
+
+  playerBackground = null;
+
+  player = null;
 
   constructor(props) {
     super(props);
@@ -39,7 +45,10 @@ class FilePage extends React.PureComponent {
       fullscreenMode: false,
       showImageViewer: false,
       showWebView: false,
-      imageUrls: null
+      imageUrls: null,
+      playerBgHeight: 0,
+      playerHeight: 0,
+      isLandscape: false,
     };
   }
 
@@ -55,6 +64,9 @@ class FilePage extends React.PureComponent {
 
     if (NativeModules.Mixpanel) {
       NativeModules.Mixpanel.track('Open File Page', { Uri: uri });
+    }
+    if (NativeModules.UtilityModule) {
+      NativeModules.UtilityModule.keepAwakeOn();
     }
   }
 
@@ -88,7 +100,8 @@ class FilePage extends React.PureComponent {
         // fullscreen, so change orientation to landscape mode
         NativeModules.ScreenOrientation.lockOrientationLandscape();
       } else {
-        NativeModules.ScreenOrientation.unlockOrientation();
+        // Switch back to portrait mode when the media is not fullscreen
+        NativeModules.ScreenOrientation.lockOrientationPortrait();
       }
     }
   }
@@ -125,6 +138,9 @@ class FilePage extends React.PureComponent {
     StatusBar.setHidden(false);
     if (NativeModules.ScreenOrientation) {
       NativeModules.ScreenOrientation.unlockOrientation();
+    }    
+    if (NativeModules.UtilityModule) {
+      NativeModules.UtilityModule.keepAwakeOff();
     }
   }
 
@@ -162,6 +178,24 @@ class FilePage extends React.PureComponent {
     });
 
     return linkifiedContent;
+  }
+
+  checkOrientation = () => {
+    if (this.state.fullscreenMode) {
+      return;
+    }
+
+    const screenDimension = Dimensions.get('window');
+    const screenWidth = screenDimension.width;
+    const screenHeight = screenDimension.height;
+    const isLandscape = screenWidth > screenHeight;
+    this.setState({ isLandscape });
+
+    if (isLandscape) {
+      this.playerBackground.setNativeProps({ height: screenHeight - StyleSheet.flatten(uriBarStyle.uriContainer).height });
+    } else if (this.state.playerBgHeight > 0) {
+      this.playerBackground.setNativeProps({ height: this.state.playerBgHeight });
+    }
   }
 
   render() {
@@ -212,8 +246,9 @@ class FilePage extends React.PureComponent {
       const channelClaimId =
         value && value.publisherSignature && value.publisherSignature.certificateId;
 
-      const playerStyle = [filePageStyle.player, this.state.fullscreenMode ?
-        filePageStyle.fullscreenPlayer : filePageStyle.containedPlayer];
+      const playerStyle = [filePageStyle.player,
+        this.state.isLandscape ? filePageStyle.containedPlayerLandscape :
+        (this.state.fullscreenMode ? filePageStyle.fullscreenPlayer : filePageStyle.containedPlayer)];
       const playerBgStyle = [filePageStyle.playerBackground, this.state.fullscreenMode ?
         filePageStyle.fullscreenPlayerBackground : filePageStyle.containedPlayerBackground];
       // at least 2MB (or the full download) before media can be loaded
@@ -251,7 +286,8 @@ class FilePage extends React.PureComponent {
                                                       renderIndicator={() => null} />}
 
           {!this.state.showWebView && (
-            <View style={filePageStyle.innerPageContainer}>
+            <View style={this.state.fullscreenMode ? filePageStyle.innerPageContainerFsMode : filePageStyle.innerPageContainer}
+                  onLayout={this.checkOrientation}>
               <View style={filePageStyle.mediaContainer}>
                 {(canOpen || (!fileInfo || (isPlayable && !canLoadMedia))) &&
                   <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
@@ -264,13 +300,25 @@ class FilePage extends React.PureComponent {
                                       onPlay={() => this.setState({ autoPlayMedia: true })} />}
                 {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
               </View>
-              {canLoadMedia && <View style={playerBgStyle} />}
+              {canLoadMedia && <View style={playerBgStyle} ref={(ref) => { this.playerBackground = ref; }}
+                                     onLayout={(evt) => {
+                                       if (!this.state.playerBgHeight) {
+                                         this.setState({ playerBgHeight: evt.nativeEvent.layout.height });
+                                       }
+                                     }} />}
               {canLoadMedia && <MediaPlayer fileInfo={fileInfo}
+                                            ref={(ref) => { this.player = ref; }}
                                             uri={uri}
                                             style={playerStyle}
                                             autoPlay={this.state.autoPlayMedia}
                                             onFullscreenToggled={this.handleFullscreenToggle}
-                                            onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}/>}
+                                            onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}
+                                            onLayout={(evt) => {
+                                              if (!this.state.playerHeight) {
+                                                this.setState({ playerHeight: evt.nativeEvent.layout.height });
+                                              }
+                                            }}
+                                            />}
 
               { showActions &&
               <View style={filePageStyle.actions}>
@@ -293,7 +341,7 @@ class FilePage extends React.PureComponent {
             </View>
           )}
 
-          <UriBar value={uri} navigation={navigation} />
+          {!this.state.fullscreenMode && <UriBar value={uri} navigation={navigation} />}
         </View>
       );
     }
