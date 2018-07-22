@@ -3,8 +3,9 @@ import AboutPage from '../page/about';
 import DiscoverPage from '../page/discover';
 import FilePage from '../page/file';
 import FirstRunScreen from '../page/firstRun';
-import SearchPage from '../page/search';
+import RewardsPage from '../page/rewards';
 import TrendingPage from '../page/trending';
+import SearchPage from '../page/search';
 import SettingsPage from '../page/settings';
 import SplashScreen from '../page/splash';
 import TransactionHistoryPage from '../page/transactionHistory';
@@ -88,10 +89,21 @@ const walletStack = StackNavigator({
   headerMode: 'screen'
 });
 
+const rewardsStack = StackNavigator({
+  Rewards: {
+    screen: RewardsPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Rewards',
+      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+    })
+  }
+});
+
 const drawer = DrawerNavigator({
   DiscoverStack: { screen: discoverStack },
   TrendingStack: { screen: trendingStack },
   WalletStack: { screen: walletStack },
+  Rewards: { screen: rewardsStack },
   Settings: { screen: SettingsPage, navigationOptions: { drawerLockMode: 'locked-closed' } },
   About: { screen: AboutPage, navigationOptions: { drawerLockMode: 'locked-closed' } }
 }, {
