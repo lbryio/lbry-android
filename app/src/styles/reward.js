@@ -2,10 +2,23 @@ import { StyleSheet } from 'react-native';
 import Colors from './colors';
 
 const walletStyle = StyleSheet.create({
+  scrollContainer: {
+    flex: 1
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  busyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  infoText: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 18
   },
   card: {
     backgroundColor: Colors.White,

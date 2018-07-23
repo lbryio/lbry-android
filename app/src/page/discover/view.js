@@ -23,7 +23,7 @@ class DiscoverPage extends React.PureComponent {
       if (startTime !== null && !isNaN(parseInt(startTime, 10))) {
         // We don't need this value anymore once we've retrieved it
         AsyncStorage.removeItem('firstLaunchTime');
-        
+
         // We know this is the first app launch because firstLaunchTime is set and it's a valid number
         const start = parseInt(startTime, 10);
         const now = moment().unix();
@@ -39,7 +39,7 @@ class DiscoverPage extends React.PureComponent {
         });
       }
     });
-    
+
     this.props.fetchFeaturedUris();
   }
 
