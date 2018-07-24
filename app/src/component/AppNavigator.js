@@ -128,12 +128,14 @@ class AppWithNavigationState extends React.Component {
       const { dispatch, nav } = this.props;
       // There should be a better way to check this
       if (nav.routes.length > 0) {
-        const subRoutes = nav.routes[0].routes[0].routes;
-        const lastRoute = subRoutes[subRoutes.length - 1];
-        if (nav.routes[0].routes[0].index > 0 &&
-            ['About', 'Settings'].indexOf(lastRoute.key) > -1) {
-          dispatch(NavigationActions.back());
-          return true;
+        if (nav.routes[0].routes && nav.routes[0].routes.length > 0) {
+          const subRoutes = nav.routes[0].routes[0].routes;
+          const lastRoute = subRoutes[subRoutes.length - 1];
+          if (nav.routes[0].routes[0].index > 0 &&
+              ['About', 'Settings'].indexOf(lastRoute.key) > -1) {
+            dispatch(NavigationActions.back());
+            return true;
+          }
         }
         if (nav.routes[0].routeName === 'Main') {
           if (nav.routes[0].routes[0].routes[0].index > 0) {
