@@ -99,9 +99,17 @@ class FilePage extends React.PureComponent {
       if (mode) {
         // fullscreen, so change orientation to landscape mode
         NativeModules.ScreenOrientation.lockOrientationLandscape();
+        if (NativeModules.UtilityModule) {
+          // hide the navigation bar (on devices that use have soft navigation bar)
+          NativeModules.UtilityModule.hideNavigationBar();
+        }
       } else {
         // Switch back to portrait mode when the media is not fullscreen
         NativeModules.ScreenOrientation.lockOrientationPortrait();
+        if (NativeModules.UtilityModule) {
+          // hide the navigation bar (on devices that use have soft navigation bar)
+          NativeModules.UtilityModule.showNavigationBar();
+        }
       }
     }
   }
@@ -138,9 +146,11 @@ class FilePage extends React.PureComponent {
     StatusBar.setHidden(false);
     if (NativeModules.ScreenOrientation) {
       NativeModules.ScreenOrientation.unlockOrientation();
-    }    
+    }
     if (NativeModules.UtilityModule) {
-      NativeModules.UtilityModule.keepAwakeOff();
+      const utility = NativeModules.UtilityModule;
+      utility.keepAwakeOff();
+      utility.showNavigationBar();
     }
   }
 
