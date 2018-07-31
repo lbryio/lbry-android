@@ -33,7 +33,7 @@ const aboutStyle = StyleSheet.create({
   links: {
     marginLeft: 12,
     marginRight: 12,
-    marginBottom: 12
+    marginBottom: 18
   },
   link: {
     color: Colors.LbryGreen,
@@ -43,6 +43,13 @@ const aboutStyle = StyleSheet.create({
   },
   col: {
     alignSelf: 'stretch'
+  },
+  socialTitle: {
+    fontFamily: 'Metropolis-Regular',
+    marginLeft: 12,
+    marginRight: 12,
+    marginBottom: 8,
+    fontSize: 20
   },
   releaseInfoTitle: {
     fontFamily: 'Metropolis-Regular',
