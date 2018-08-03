@@ -11,6 +11,7 @@
         "react": "16.2.0",
         "react-native": "0.55.3",
         "react-native-image-zoom-viewer": "^2.2.5",
+        "react-native-qrcode": "^0.2.6",
         "react-native-vector-icons": "^4.5.0",
         "react-native-video": "2.0.0",
         "react-navigation": "^1.5.12",
