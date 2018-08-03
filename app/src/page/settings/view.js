@@ -1,6 +1,6 @@
 import React from 'react';
 import { SETTINGS } from 'lbry-redux';
-import { Text, View, ScrollView, Switch } from 'react-native';
+import { Text, View, ScrollView, Switch, NativeModules } from 'react-native';
 import PageHeader from '../../component/pageHeader';
 import settingsStyle from '../../styles/settings';
 
@@ -8,7 +8,7 @@ class SettingsPage extends React.PureComponent {
   static navigationOptions = {
     title: 'Settings'
   }
-  
+
   render() {
     const {
       backgroundPlayEnabled,
@@ -16,10 +16,7 @@ class SettingsPage extends React.PureComponent {
       showNsfw,
       setClientSetting
     } = this.props;
-    
-    // If no true / false value set, default to true
-    const actualKeepDaemonRunning = (keepDaemonRunning === undefined || keepDaemonRunning === null) ? true : keepDaemonRunning;
-    
+
     return (
       <View>
         <PageHeader title={"Settings"}
@@ -34,7 +31,7 @@ class SettingsPage extends React.PureComponent {
               <Switch value={backgroundPlayEnabled} onValueChange={(value) => setClientSetting(SETTINGS.BACKGROUND_PLAY_ENABLED, value)} />
             </View>
           </View>
-          
+
           <View style={settingsStyle.row}>
             <View style={settingsStyle.switchText}>
               <Text style={settingsStyle.label}>Show NSFW content</Text>
@@ -43,14 +40,19 @@ class SettingsPage extends React.PureComponent {
               <Switch value={showNsfw} onValueChange={(value) => setClientSetting(SETTINGS.SHOW_NSFW, value)} />
             </View>
           </View>
-          
+
           <View style={settingsStyle.row}>
             <View style={settingsStyle.switchText}>
               <Text style={settingsStyle.label}>Keep the daemon background service running when the app is suspended.</Text>
               <Text style={settingsStyle.description}>Enable this option for quicker app launch and to keep the synchronisation with the blockchain up to date.</Text>
             </View>
             <View style={settingsStyle.switchContainer}>
-              <Switch value={actualKeepDaemonRunning} onValueChange={(value) => setClientSetting(SETTINGS.KEEP_DAEMON_RUNNING, value)} />
+              <Switch value={keepDaemonRunning} onValueChange={(value) => {
+                setClientSetting(SETTINGS.KEEP_DAEMON_RUNNING, value);
+                if (NativeModules.DaemonServiceControl) {
+                  NativeModules.DaemonServiceControl.setKeepDaemonRunning(value);
+                }
+              }} />
             </View>
           </View>
         </ScrollView>
