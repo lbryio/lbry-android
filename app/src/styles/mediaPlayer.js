@@ -18,7 +18,6 @@ const mediaPlayerStyle = StyleSheet.create({
   progress: {
     flex: 1,
     flexDirection: 'row',
-    width: '100%',
     height: 3
   },
   innerProgressCompleted: {
@@ -101,8 +100,13 @@ const mediaPlayerStyle = StyleSheet.create({
     position: 'absolute',
     height: 36,
     width: 48,
-    bottom: 0,
-    marginLeft: -16
+    marginLeft: -18
+  },
+  seekerHandleContained: {
+    bottom: -17
+  },
+  seekerHandleFs: {
+    bottom: 0
   },
   bigSeekerCircle: {
     borderRadius: 24,

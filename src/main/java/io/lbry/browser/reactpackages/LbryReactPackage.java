@@ -11,6 +11,7 @@ import io.lbry.browser.reactmodules.FirstRunModule;
 import io.lbry.browser.reactmodules.MixpanelModule;
 import io.lbry.browser.reactmodules.ScreenOrientationModule;
 import io.lbry.browser.reactmodules.VersionInfoModule;
+import io.lbry.browser.reactmodules.UtilityModule;;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +32,7 @@ public class LbryReactPackage implements ReactPackage {
         modules.add(new FirstRunModule(reactContext));
         modules.add(new MixpanelModule(reactContext));
         modules.add(new ScreenOrientationModule(reactContext));
+        modules.add(new UtilityModule(reactContext));
         modules.add(new VersionInfoModule(reactContext));
 
         return modules;
