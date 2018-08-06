@@ -2,12 +2,15 @@ package io.lbry.browser;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.io.File;
@@ -29,16 +32,46 @@ import org.renpy.android.ResourceManager;
  * @version 0.1
  */
 public class LbrynetService extends PythonService {
-    
+
+    private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.DAEMON_NOTIFICATION_CHANNEL";
+
     public static String TAG = "LbrynetService";
 
     public static LbrynetService serviceInstance;
 
     @Override
     public boolean canDisplayNotification() {
-        return false;
+        return true;
     }
-    
+
+    @Override
+    protected void doStartForeground(Bundle extras) {
+        String serviceTitle = extras.getString("serviceTitle");
+        String serviceDescription = "The LBRY Browser daemon service is running in the background.";
+
+        Context context = getApplicationContext();
+
+        NotificationManager notificationManager =
+            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel channel = new NotificationChannel(
+            NOTIFICATION_CHANNEL_ID, "LBRY Browser", NotificationManager.IMPORTANCE_LOW);
+        channel.setDescription("LBRY Broswer daemon service notification channel");
+        channel.setShowBadge(false);
+        notificationManager.createNotificationChannel(channel);
+
+        Intent contextIntent = new Intent(context, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+        Notification notification = builder.setContentTitle(serviceTitle)
+                                           .setContentText(serviceDescription)
+                                           .setContentIntent(pIntent)
+                                           .setWhen(System.currentTimeMillis())
+                                           .setSmallIcon(R.drawable.ic_lbry)
+                                           .setOngoing(true)
+                                           .build();
+        startForeground(1, notification);
+    }
+
     @Override
     public int startType() {
         return START_STICKY;
@@ -66,7 +99,7 @@ public class LbrynetService extends PythonService {
         super.onDestroy();
         serviceInstance = null;
     }
-    
+
     public String getAppRoot() {
         String app_root = getApplicationContext().getFilesDir().getAbsolutePath() + "/app";
         return app_root;

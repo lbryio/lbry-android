@@ -3,10 +3,10 @@ echoed=false
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64"
   #config.disksize.size = "20GB"
-  
+
   config.vm.provider "virtualbox" do |v|
     host = RbConfig::CONFIG['host_os']
-    
+
     # Give VM 1/4 system memory & access to all cpu cores on the host
     if host =~ /darwin/
       cpus = `sysctl -n hw.ncpu`.to_i
@@ -20,25 +20,25 @@ Vagrant.configure("2") do |config|
       cpus = `wmic cpu get NumberOfCores`.split("\n")[2].to_i
       mem = `wmic OS get TotalVisibleMemorySize`.split("\n")[2].to_i / 1024 /4
     end
-    
+
     mem = mem / 1024 / 4
     mem = [mem, 2048].max # Minimum 2048
-    
+
 	if echoed === false
 	  echoed=true
       puts("Memory", mem)
       puts("CPUs", cpus)
 	end
-	
+
 	#v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/home_vagrant_lbry-android", "1"]
 	#v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"]
     v.customize ["modifyvm", :id, "--memory", mem]
     v.customize ["modifyvm", :id, "--cpus", cpus]
   end
-  
+
   config.vm.synced_folder "./", "/home/vagrant/lbry-android"
-  
-  
+
+
   config.vm.provision "shell", inline: <<-SHELL
     dpkg --add-architecture i386
 	apt-get update
@@ -50,22 +50,22 @@ Vagrant.configure("2") do |config|
     python2.7 setup.py install
 	cd ../
 	rm -rf ./buildozer
-	
+
 	# Install additonal buildozer dependencies
 	sudo apt-get install cython
-	
+
 	# Install node
 	curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 	sudo apt-get install -y nodejs
-	
+
 	export HOME=/home/vagrant
-	
+
 	cp $HOME/lbry-android/buildozer.spec.vagrant $HOME/lbry-android/buildozer.spec
-	
+
 	mkdir -p cd $HOME/.buildozer/android/platform/
 	wget -q 'https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip' -P $HOME/.buildozer/android/platform/
 	wget -q 'https://dl.google.com/android/android-sdk_r23-linux.tgz' -P $HOME/.buildozer/android/platform/
-	wget -q 'https://dl.google.com/android/repository/android-23_r02.zip' -P $HOME/.buildozer/android/platform/
+	wget -q 'https://dl.google.com/android/repository/platform-26_r02.zip' -P $HOME/.buildozer/android/platform/
 	wget -q 'https://dl.google.com/android/repository/build-tools_r26.0.1-linux.zip' -P $HOME/.buildozer/android/platform/
 	unzip -qq $HOME/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip -d $HOME/.buildozer/android/platform/
 	rm $HOME/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip
@@ -73,24 +73,24 @@ Vagrant.configure("2") do |config|
 	rm $HOME/.buildozer/android/platform/android-sdk_r23-linux.tgz
 	mv $HOME/.buildozer/android/platform/android-sdk-linux $HOME/.buildozer/android/platform/android-sdk-23
 	unzip -qq $HOME/.buildozer/android/platform/android-23_r02.zip -d $HOME/.buildozer/android/platform/android-sdk-23/platforms
-	rm $HOME/.buildozer/android/platform/android-23_r02.zip
-	mv $HOME/.buildozer/android/platform/android-sdk-23/platforms/android-6.0 $HOME/.buildozer/android/platform/android-sdk-23/platforms/android-23
+	rm $HOME/.buildozer/android/platform/platform-26_r02.zip
+	mv $HOME/.buildozer/android/platform/android-sdk-23/platforms/android-8.0.0 $HOME/.buildozer/android/platform/android-sdk-23/platforms/android-26
 	mkdir -p $HOME/.buildozer/android/platform/android-sdk-23/build-tools
 	unzip -qq $HOME/.buildozer/android/platform/build-tools_r26.0.1-linux.zip -d $HOME/.buildozer/android/platform/android-sdk-23/build-tools
 	rm $HOME/.buildozer/android/platform/build-tools_r26.0.1-linux.zip
 	mv $HOME/.buildozer/android/platform/android-sdk-23/build-tools/android-8.0.0 $HOME/.buildozer/android/platform/android-sdk-23/build-tools/26.0.1
 	mkdir -p $HOME/.buildozer/android/platform/android-sdk-23/licenses
-	
+
 	rm -rf $HOME/.buildozer/android/platform/android-sdk-23/tools
 	#  https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
 	wget -q https://dl.google.com/android/repository/tools_r25.2.5-linux.zip
 	unzip -o -q ./tools_r25.2.5-linux.zip -d $HOME/.buildozer/android/platform/android-sdk-23/
 	rm sdk-tools-linux-3859397.zip
-	
+
 	echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > $HOME/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license
-	
+
 	sudo chown -r vagrant $HOME
-	
+
 	echo "Installing React Native via NPM..."
 	sudo npm install -g react-native-cli
   SHELL

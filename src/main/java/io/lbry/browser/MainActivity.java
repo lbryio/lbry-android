@@ -51,6 +51,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     public static final String DEVICE_ID_KEY = "deviceId";
 
+    public static final String SETTING_KEEP_DAEMON_RUNNING = "keepDaemonRunning";
+
     /**
      * Flag which indicates whether or not the service is running. Will be updated in the
      * onResume method.
@@ -218,7 +220,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     protected void onDestroy() {
         // check service running setting and end it here
         SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        boolean shouldKeepDaemonRunning = sp.getBoolean("keepDaemonRunning", true);
+        boolean shouldKeepDaemonRunning = sp.getBoolean(SETTING_KEEP_DAEMON_RUNNING, true);
         if (!shouldKeepDaemonRunning) {
             serviceRunning = isServiceRunning(LbrynetService.class);
             if (serviceRunning) {
