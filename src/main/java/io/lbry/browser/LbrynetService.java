@@ -47,7 +47,7 @@ public class LbrynetService extends PythonService {
     @Override
     protected void doStartForeground(Bundle extras) {
         String serviceTitle = extras.getString("serviceTitle");
-        String serviceDescription = "The LBRY Browser daemon service is running in the background.";
+        String serviceDescription = "The LBRY service is running in the background.";
 
         Context context = getApplicationContext();
 
@@ -55,7 +55,7 @@ public class LbrynetService extends PythonService {
             (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel channel = new NotificationChannel(
             NOTIFICATION_CHANNEL_ID, "LBRY Browser", NotificationManager.IMPORTANCE_LOW);
-        channel.setDescription("LBRY Broswer daemon service notification channel");
+        channel.setDescription("LBRY service notification channel");
         channel.setShowBadge(false);
         notificationManager.createNotificationChannel(channel);
 
