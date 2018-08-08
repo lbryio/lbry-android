@@ -12,6 +12,13 @@ const filePageStyle = StyleSheet.create({
   pageContainer: {
     flex: 1
   },
+  divider: {
+    backgroundColor: Colors.LighterGrey,
+    width: '100%',
+    height: 1,
+    marginTop: 4,
+    marginBottom: 20
+  },
   innerPageContainer: {
     flex: 1,
     marginBottom: 60
