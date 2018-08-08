@@ -346,6 +346,9 @@ class FilePage extends React.PureComponent {
                                         const channelUri = normalizeURI(channelName);
                                         navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
                                       }} />}
+
+                {description && description.length > 0 && <View style={filePageStyle.divider} />}
+
                 {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
               </ScrollView>
             </View>
