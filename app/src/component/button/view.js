@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import buttonStyle from '../../styles/button';
 import Colors from '../../styles/colors';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default class Button extends React.PureComponent {
   render() {
@@ -32,6 +32,7 @@ export default class Button extends React.PureComponent {
     if (icon && icon.trim().length > 0) {
       textStyles.push(buttonStyle.textWithIcon);
     }
+
     if (theme === 'light') {
       textStyles.push(buttonStyle.textDark);
     } else {

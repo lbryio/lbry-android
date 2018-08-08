@@ -9,7 +9,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Video from 'react-native-video';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import FileItemMedia from '../fileItemMedia';
 import mediaPlayerStyle from '../../styles/mediaPlayer';
 
