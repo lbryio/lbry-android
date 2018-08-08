@@ -5,13 +5,14 @@ const buttonStyle = StyleSheet.create({
     borderRadius: 24,
     padding: 8,
     paddingLeft: 12,
-    paddingRight: 12
+    paddingRight: 12,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   disabled: {
     backgroundColor: '#999999'
   },
   row: {
-    alignSelf: 'flex-start',
     flexDirection: 'row',
   },
   icon: {
