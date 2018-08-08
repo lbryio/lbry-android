@@ -146,9 +146,9 @@ const filePageStyle = StyleSheet.create({
     marginTop: -14,
     width: '50%',
   },
-  deleteButton: {
-    backgroundColor: Colors.Red,
-    width: 80
+  actionButton: {
+    backgroundColor: Colors.White,
+    width: 160
   },
   loading: {
     position: 'absolute',

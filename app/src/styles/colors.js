@@ -1,6 +1,7 @@
 const Colors = {
   Black: '#000000',
   ChannelGrey: '#9b9b9b',
+  DarkGrey: '#555555',
   DescriptionGrey: '#999999',
   LbryGreen: '#40b89a',
   LightGrey: '#cccccc',
