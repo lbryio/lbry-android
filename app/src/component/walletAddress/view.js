@@ -24,14 +24,14 @@ class WalletAddress extends React.PureComponent<Props> {
 
   render() {
     const { receiveAddress, getNewAddress, gettingNewAddress } = this.props;
-    
+
     return (
       <View style={walletStyle.card}>
         <Text style={walletStyle.title}>Receive Credits</Text>
         <Text style={[walletStyle.text, walletStyle.bottomMarginMedium]}>Use this wallet address to receive credits sent by another user (or yourself).</Text>
         <Address address={receiveAddress} style={walletStyle.bottomMarginSmall} />
         <Button style={[walletStyle.button, walletStyle.bottomMarginLarge]}
-                icon={'refresh'}
+                icon={'sync'}
                 text={'Get New Address'}
                 onPress={getNewAddress}
                 disabled={gettingNewAddress}

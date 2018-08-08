@@ -14,7 +14,6 @@ import FileItem from '../../component/fileItem';
 import discoverStyle from '../../styles/discover';
 import Colors from '../../styles/colors';
 import UriBar from '../../component/uriBar';
-import Feather from 'react-native-vector-icons/Feather';
 
 class DiscoverPage extends React.PureComponent {
   componentDidMount() {
@@ -23,7 +22,7 @@ class DiscoverPage extends React.PureComponent {
       if (startTime !== null && !isNaN(parseInt(startTime, 10))) {
         // We don't need this value anymore once we've retrieved it
         AsyncStorage.removeItem('firstLaunchTime');
-        
+
         // We know this is the first app launch because firstLaunchTime is set and it's a valid number
         const start = parseInt(startTime, 10);
         const now = moment().unix();
@@ -39,7 +38,7 @@ class DiscoverPage extends React.PureComponent {
         });
       }
     });
-    
+
     this.props.fetchFeaturedUris();
   }
 

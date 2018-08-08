@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import pageHeaderStyle from '../../styles/pageHeader';
 
 const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
@@ -21,7 +21,7 @@ class PageHeader extends React.PureComponent {
       pageHeaderStyle.container,
       { height: APPBAR_HEIGHT }
     ];
-    
+
     return (
       <View style={containerStyles}>
         <View style={pageHeaderStyle.flexOne}>
@@ -35,7 +35,7 @@ class PageHeader extends React.PureComponent {
               </AnimatedText>
             </View>
             <TouchableOpacity style={pageHeaderStyle.left}>
-              <Feather name="arrow-left" size={24} onPress={onBackPressed} style={pageHeaderStyle.backIcon} />
+              <Icon name="arrow-left" size={24} onPress={onBackPressed} style={pageHeaderStyle.backIcon} />
             </TouchableOpacity>
           </View>
         </View>

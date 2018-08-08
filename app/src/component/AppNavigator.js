@@ -29,7 +29,7 @@ import {
 } from 'react-native';
 import { SETTINGS, doHideNotification, selectNotification } from 'lbry-redux';
 import { makeSelectClientSetting } from '../redux/selectors/settings';
-import Feather from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import discoverStyle from '../styles/discover';
 import searchStyle from '../styles/search';
 import SearchRightHeaderIcon from "../component/searchRightHeaderIcon";
@@ -39,7 +39,7 @@ const discoverStack = StackNavigator({
     screen: DiscoverPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Discover',
-      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
     })
   },
   File: {
@@ -64,7 +64,7 @@ const trendingStack = StackNavigator({
     screen: TrendingPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Trending',
-      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
     })
   }
 });
@@ -74,7 +74,7 @@ const walletStack = StackNavigator({
     screen: WalletPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Wallet',
-      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
     })
   },
   TransactionHistory: {
@@ -144,7 +144,7 @@ class AppWithNavigationState extends React.Component {
           }
         }
       }
-      return false;
+      return false;fo
     }.bind(this));
   }
 
