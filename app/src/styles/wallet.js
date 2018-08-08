@@ -20,7 +20,8 @@ const walletStyle = StyleSheet.create({
     width: '85%'
   },
   button: {
-    backgroundColor: Colors.LbryGreen
+    backgroundColor: Colors.LbryGreen,
+    alignSelf: 'flex-start'
   },
   historyList: {
     backgroundColor: '#ffffff'
