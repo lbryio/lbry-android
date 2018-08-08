@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import Colors from './colors';
 
 const buttonStyle = StyleSheet.create({
   button: {
@@ -13,13 +14,21 @@ const buttonStyle = StyleSheet.create({
     backgroundColor: '#999999'
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
-  icon: {
-    color: '#ffffff',
+  iconLight: {
+    color: Colors.White,
+  },
+  iconDark: {
+    color: Colors.DarkGrey,
+  },
+  textLight: {
+    color: Colors.White,
+  },
+  textDark: {
+    color: Colors.DarkGrey
   },
   text: {
-    color: '#ffffff',
     fontFamily: 'Metropolis-Regular',
     fontSize: 14
   },

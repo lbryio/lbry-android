@@ -17,21 +17,21 @@ type Props = {
 
 class WalletSend extends React.PureComponent<Props> {
   amountInput = null;
-  
+
   state = {
     amount: null,
     address: null,
     addressChanged: false,
     addressValid: false
   };
-  
+
   componentWillUpdate(nextProps) {
     const { draftTransaction, transactionError } = nextProps;
     if (transactionError && transactionError.trim().length > 0) {
       this.setState({ address: draftTransaction.address, amount: draftTransaction.amount });
     }
   }
-  
+
   handleSend = () => {
     const { balance, sendToAddress, notify } = this.props;
     const { address, amount } = this.state;
@@ -42,7 +42,7 @@ class WalletSend extends React.PureComponent<Props> {
       });
       return;
     }
-    
+
     if (amount > balance) {
       notify({
         message: 'Insufficient credits',
@@ -50,13 +50,13 @@ class WalletSend extends React.PureComponent<Props> {
       });
       return;
     }
-    
+
     if (amount && address) {
       sendToAddress(address, parseFloat(amount));
       this.setState({ address: null, amount: null });
     }
   }
-  
+
   handleAddressInputBlur = () => {
     if (this.state.addressChanged && !this.state.addressValid) {
       const { notify } = this.props;
@@ -66,7 +66,7 @@ class WalletSend extends React.PureComponent<Props> {
       });
     }
   }
-  
+
   handleAddressInputSubmit = () => {
     if (this.amountInput) {
       this.amountInput.focus();

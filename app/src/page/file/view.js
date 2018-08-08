@@ -3,7 +3,6 @@ import { Lbry, normalizeURI } from 'lbry-redux';
 import {
   ActivityIndicator,
   Alert,
-  Button,
   Dimensions,
   NativeModules,
   ScrollView,
@@ -16,6 +15,7 @@ import {
   WebView
 } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import Button from '../../component/button';
 import Colors from '../../styles/colors';
 import ChannelPage from '../channel';
 import FileDownloadButton from '../../component/fileDownloadButton';
@@ -332,9 +332,16 @@ class FilePage extends React.PureComponent {
 
               { showActions &&
               <View style={filePageStyle.actions}>
-                {completed && <Button color="red" title="Delete" onPress={this.onDeletePressed} />}
+                {completed && <Button style={filePageStyle.actionButton}
+                                      theme={"light"}
+                                      icon={"trash"}
+                                      text={"Delete"}
+                                      onPress={this.onDeletePressed} />}
                 {!completed && fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes &&
-                  <Button color="red" title="Stop Download" onPress={this.onStopDownloadPressed} />
+                  <Button style={filePageStyle.actionButton}
+                          theme={"light"}
+                          text={"Stop Download"}
+                          onPress={this.onStopDownloadPressed} />
                 }
               </View>}
               <ScrollView style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}>
