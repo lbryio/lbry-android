@@ -138,7 +138,7 @@ def start():
         daemon.start_listening()
         reactor.run()
     else:
-        log.info("Not connected to internet, unable to start")
+        log.info("Not connected to the Internet. Unable to start.")
 
 
 if __name__ == '__main__':
