@@ -81,6 +81,7 @@ from jsonrpc.proxy import JSONRPCProxy
 from lbrynet import analytics
 from lbrynet import conf
 from lbrynet.core import utils, system_info
+from lbrynet.daemon.Components import PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT
 from lbrynet.daemon.Daemon import Daemon
 
 # https certificate verification
@@ -126,7 +127,7 @@ def start():
 
     # TODO: specify components, initialise auth
     conf.settings.update({
-        'components_to_skip': ['peer_protocol_server', 'reflector'],
+        'components_to_skip': [PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT],
         'concurrent_announcers': 0
     })
 
