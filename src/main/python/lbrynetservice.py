@@ -126,7 +126,8 @@ def start():
 
     # TODO: specify components, initialise auth
     conf.settings.update({
-        'components_to_skip': ['peer_protocol_server']
+        'components_to_skip': ['peer_protocol_server', 'reflector'],
+        'concurrent_announcers': 0
     })
 
     log.info('Final Settings: %s', conf.settings.get_current_settings_dict())

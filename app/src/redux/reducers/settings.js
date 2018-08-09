@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { ACTIONS, SETTINGS } from 'lbry-redux';
+import { ACTIONS } from 'lbry-redux';
 
 
 const reducers = {};
@@ -17,6 +17,7 @@ reducers[ACTIONS.CLIENT_SETTING_CHANGED] = (state, action) => {
     clientSettings,
   });
 };
+
 
 export default function reducer(state = defaultState, action) {
   const handler = reducers[action.type];

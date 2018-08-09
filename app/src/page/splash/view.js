@@ -49,18 +49,14 @@ class SplashScreen extends React.PureComponent {
 
   updateStatus() {
     Lbry.status().then(status => {
-      console.log(status);
       this._updateStatusCallback(status);
     });
   }
 
   _updateStatusCallback(status) {
     const startupStatus = status.startup_status;
-    // At the minimum, database, stream_identifier and wallet should be started before calling resolve
-    const hasStarted = startupStatus.database &&
-      startupStatus.wallet &&
-      startupStatus.stream_identifier &&
-      status.wallet.blocks_behind == 0;
+    // At the minimum, wallet should be started and blocks_behind equal to 0 before calling resolve
+    const hasStarted = startupStatus.wallet && status.wallet.blocks_behind <= 0;
     if (hasStarted) {
       // Wait until we are able to resolve a name before declaring
       // that we are done.
