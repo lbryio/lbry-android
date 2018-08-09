@@ -83,7 +83,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
             builder.setContentTitle("Active downloads")
                    .setContentText("Active downloads")
-                   .setSmallIcon(R.drawable.ic_file_download_black_24dp)
+                   .setSmallIcon(android.R.drawable.stat_sys_download)
                    .setPriority(NotificationCompat.PRIORITY_LOW)
                    .setGroup(GROUP_DOWNLOADS)
                    .setGroupSummary(true)
@@ -114,7 +114,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
                .setGroup(GROUP_DOWNLOADS)
                .setPriority(NotificationCompat.PRIORITY_LOW)
                .setProgress(MAX_PROGRESS, 0, false)
-               .setSmallIcon(R.drawable.ic_file_download_black_24dp);
+               .setSmallIcon(android.R.drawable.stat_sys_download);
 
         int notificationId = generateNotificationId();
         downloadIdNotificationIdMap.put(id, notificationId);
