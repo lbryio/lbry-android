@@ -65,7 +65,7 @@ Vagrant.configure("2") do |config|
 	mkdir -p cd $HOME/.buildozer/android/platform/
 	wget -q 'https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip' -P $HOME/.buildozer/android/platform/
 	wget -q 'https://dl.google.com/android/android-sdk_r23-linux.tgz' -P $HOME/.buildozer/android/platform/
-	wget -q 'https://dl.google.com/android/repository/platform-26_r02.zip' -P $HOME/.buildozer/android/platform/
+	wget -q 'https://dl.google.com/android/repository/platform-27_r01.zip' -P $HOME/.buildozer/android/platform/
 	wget -q 'https://dl.google.com/android/repository/build-tools_r26.0.1-linux.zip' -P $HOME/.buildozer/android/platform/
 	unzip -qq $HOME/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip -d $HOME/.buildozer/android/platform/
 	rm $HOME/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip
@@ -73,8 +73,8 @@ Vagrant.configure("2") do |config|
 	rm $HOME/.buildozer/android/platform/android-sdk_r23-linux.tgz
 	mv $HOME/.buildozer/android/platform/android-sdk-linux $HOME/.buildozer/android/platform/android-sdk-23
 	unzip -qq $HOME/.buildozer/android/platform/android-23_r02.zip -d $HOME/.buildozer/android/platform/android-sdk-23/platforms
-	rm $HOME/.buildozer/android/platform/platform-26_r02.zip
-	mv $HOME/.buildozer/android/platform/android-sdk-23/platforms/android-8.0.0 $HOME/.buildozer/android/platform/android-sdk-23/platforms/android-26
+	rm $HOME/.buildozer/android/platform/platform-27_r01.zip
+	mv $HOME/.buildozer/android/platform/android-sdk-23/platforms/android-8.1.0 $HOME/.buildozer/android/platform/android-sdk-23/platforms/android-27
 	mkdir -p $HOME/.buildozer/android/platform/android-sdk-23/build-tools
 	unzip -qq $HOME/.buildozer/android/platform/build-tools_r26.0.1-linux.zip -d $HOME/.buildozer/android/platform/android-sdk-23/build-tools
 	rm $HOME/.buildozer/android/platform/build-tools_r26.0.1-linux.zip
