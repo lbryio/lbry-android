@@ -12,7 +12,7 @@
         "react-native": "0.55.3",
         "react-native-image-zoom-viewer": "^2.2.5",
         "react-native-vector-icons": "^5.0.0",
-        "react-native-video": "2.0.0",
+        "react-native-video": "lbryio/react-native-video#exoplayer-lbry-android",
         "react-navigation": "^1.5.12",
         "react-navigation-redux-helpers": "^1.0.1",
         "react-redux": "^5.0.3",
