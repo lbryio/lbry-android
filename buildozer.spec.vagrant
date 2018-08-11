@@ -148,7 +148,7 @@ android.react_src = ./app
 
 # (list) Gradle dependencies to add (currently works only with sdl2_gradle
 # bootstrap)
-android.gradle_dependencies = com.android.support:appcompat-v7:27.1.0, com.facebook.react:react-native:0.55.3, com.mixpanel.android:mixpanel-android:5+, com.google.android.gms:play-services-gcm:11.0.4+
+android.gradle_dependencies = com.android.support:appcompat-v7:27.1.1, com.facebook.react:react-native:0.55.3, com.mixpanel.android:mixpanel-android:5+, com.google.android.gms:play-services-gcm:11.0.4+
 
 # (str) python-for-android branch to use, defaults to master
 #p4a.branch = stable
