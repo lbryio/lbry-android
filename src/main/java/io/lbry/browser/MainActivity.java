@@ -23,6 +23,7 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.shell.MainReactPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 
 import io.lbry.browser.reactpackages.LbryReactPackage;
 import io.lbry.browser.reactmodules.DownloadManagerModule;
@@ -88,6 +89,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .setJSMainModulePath("index")
                 .addPackage(new MainReactPackage())
                 .addPackage(new ReactVideoPackage())
+                .addPackage(new RNFetchBlobPackage())
                 .addPackage(new LbryReactPackage())
                 .setUseDeveloperSupport(true)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
