@@ -17,6 +17,9 @@ class SettingsPage extends React.PureComponent {
       setClientSetting
     } = this.props;
 
+    // default to true if the setting is null or undefined
+    const actualKeepDaemonRunning = (keepDaemonRunning === null || keepDaemonRunning === undefined) ? true : keepDaemonRunning;
+
     return (
       <View>
         <PageHeader title={"Settings"}
@@ -47,7 +50,7 @@ class SettingsPage extends React.PureComponent {
               <Text style={settingsStyle.description}>Enable this option for quicker app launch and to keep the synchronisation with the blockchain up to date.</Text>
             </View>
             <View style={settingsStyle.switchContainer}>
-              <Switch value={keepDaemonRunning} onValueChange={(value) => {
+              <Switch value={actualKeepDaemonRunning} onValueChange={(value) => {
                 setClientSetting(SETTINGS.KEEP_DAEMON_RUNNING, value);
                 if (NativeModules.DaemonServiceControl) {
                   NativeModules.DaemonServiceControl.setKeepDaemonRunning(value);

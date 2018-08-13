@@ -10,9 +10,8 @@ import {
   NativeModules
 } from 'react-native';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import {
-  StackNavigator, addNavigationHelpers
-} from 'react-navigation';
+import { createLogger } from 'redux-logger';
+import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 import { AppNavigator } from './component/AppNavigator';
 import AppWithNavigationState from './component/AppNavigator';
 import { persistStore, autoRehydrate } from 'redux-persist';
@@ -80,6 +79,7 @@ const reducers = combineReducers({
 });
 
 const bulkThunk = createBulkThunkMiddleware();
+const logger = createLogger({ collapsed: true });
 const middleware = [thunk, bulkThunk, reactNavigationMiddleware];
 
 // eslint-disable-next-line no-underscore-dangle
