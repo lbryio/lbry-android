@@ -26,7 +26,6 @@ class SplashScreen extends React.PureComponent {
       isRunning: false,
       isLagging: false,
       launchUrl: null,
-      didDownloadHeaders: false,
       isDownloadingHeaders: false,
       headersDownloadProgress: 0
     });
@@ -55,7 +54,9 @@ class SplashScreen extends React.PureComponent {
 
   _updateStatusCallback(status) {
     const startupStatus = status.startup_status;
-    if (startupStatus.code == 'started') {
+    // At the minimum, wallet should be started and blocks_behind equal to 0 before calling resolve
+    const hasStarted = startupStatus.wallet && status.wallet.blocks_behind <= 0;
+    if (hasStarted) {
       // Wait until we are able to resolve a name before declaring
       // that we are done.
       // TODO: This is a hack, and the logic should live in the daemon
@@ -88,37 +89,33 @@ class SplashScreen extends React.PureComponent {
       return;
     }
 
-    const blockchainStatus = status.blockchain_status;
-    if (blockchainStatus) {
+    const blockchainHeaders = status.blockchain_headers;
+    const walletStatus = status.wallet;
+
+    if (blockchainHeaders) {
       this.setState({
-        isDownloadingHeaders: blockchainStatus.is_downloading_headers,
-        headersDownloadProgress: blockchainStatus.headers_download_progress
+        isDownloadingHeaders: blockchainHeaders.downloading_headers,
+        headersDownloadProgress: blockchainHeaders.download_progress
       });
     }
 
-    if (blockchainStatus && (blockchainStatus.is_downloading_headers ||
-      (this.state.didDownloadHeaders && 'loading_wallet' === startupStatus.code))) {
-      if (!this.state.didDownloadHeaders) {
-        this.setState({ didDownloadHeaders: true });
-      }
+    if (blockchainHeaders && blockchainHeaders.downloading_headers) {
+      const downloadProgress = blockchainHeaders.download_progress ? blockchainHeaders.download_progress : 0;
       this.setState({
         message: 'Blockchain Sync',
-        details: `Catching up with the blockchain (${blockchainStatus.headers_download_progress}%)`,
-        isLagging: startupStatus.is_lagging
+        details: `Catching up with the blockchain (${downloadProgress}%)`,
       });
-    } else if (blockchainStatus && blockchainStatus.blocks_behind > 0) {
-      const behind = blockchainStatus.blocks_behind;
+    } else if (walletStatus && walletStatus.blocks_behind > 0) {
+      const behind = walletStatus.blocks_behind;
       const behindText = behind + ' block' + (behind == 1 ? '' : 's') + ' behind';
       this.setState({
         message: 'Blockchain Sync',
         details: behindText,
-        isLagging: startupStatus.is_lagging,
       });
     } else {
       this.setState({
         message: 'Network Loading',
-        details: startupStatus.message + (startupStatus.is_lagging ? '' : '...'),
-        isLagging: startupStatus.is_lagging,
+        details: 'Initializing LBRY service...'
       });
     }
     setTimeout(() => {

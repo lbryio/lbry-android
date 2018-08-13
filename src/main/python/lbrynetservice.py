@@ -81,8 +81,8 @@ from jsonrpc.proxy import JSONRPCProxy
 from lbrynet import analytics
 from lbrynet import conf
 from lbrynet.core import utils, system_info
-from lbrynet.daemon.auth.client import LBRYAPIClient
-from lbrynet.daemon.DaemonServer import DaemonServer
+from lbrynet.daemon.Components import PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT
+from lbrynet.daemon.Daemon import Daemon
 
 # https certificate verification
 # TODO: this is bad. Need to find a way to properly verify https requests
@@ -124,33 +124,22 @@ def start():
 
     lbrynet_log = conf.settings.get_log_filename()
     log_support.configure_logging(lbrynet_log, True, [])
-    log.debug('Final Settings: %s', conf.settings.get_current_settings_dict())
+
+    # TODO: specify components, initialise auth
+    conf.settings.update({
+        'components_to_skip': [PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT],
+        'concurrent_announcers': 0
+    })
+
+    log.info('Final Settings: %s', conf.settings.get_current_settings_dict())
     log.info("Starting lbrynet-daemon")
 
     if test_internet_connection():
-        analytics_manager = analytics.Manager.new_instance()
-        start_server_and_listen(False, analytics_manager)
+        daemon = Daemon()
+        daemon.start_listening()
         reactor.run()
     else:
-        log.info("Not connected to internet, unable to start")
-
-@defer.inlineCallbacks
-def start_server_and_listen(use_auth, analytics_manager, max_tries=5):
-    """The primary entry point for launching the daemon.
-    Args:
-        use_auth: set to true to enable http authentication
-        analytics_manager: to send analytics
-    """
-    analytics_manager.send_server_startup()
-    daemon_server = DaemonServer(analytics_manager)
-    try:
-        yield daemon_server.start(use_auth)
-        analytics_manager.send_server_startup_success()
-    except Exception as e:
-        log.exception('Failed to startup')
-        yield daemon_server.stop()
-        analytics_manager.send_server_startup_error(str(e))
-        reactor.fireSystemEvent("shutdown")
+        log.info("Not connected to the Internet. Unable to start.")
 
 
 if __name__ == '__main__':

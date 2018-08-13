@@ -26,9 +26,9 @@ import AppWithNavigationState from './component/AppNavigator';
 import FilesystemStorage from 'redux-persist-filesystem-storage';
 import createCompressor from 'redux-persist-transform-compress';
 import createFilter from 'redux-persist-transform-filter';
-import thunk from 'redux-thunk';
-import settingsReducer from './redux/reducers/settings';
 import moment from 'moment';
+import settingsReducer from './redux/reducers/settings';
+import thunk from 'redux-thunk';
 
 function isFunction(object) {
   return typeof object === 'function';
@@ -78,6 +78,7 @@ const reducers = combineReducers({
 });
 
 const bulkThunk = createBulkThunkMiddleware();
+const logger = createLogger({ collapsed: true });
 const middleware = [thunk, bulkThunk, reactNavigationMiddleware];
 
 // eslint-disable-next-line no-underscore-dangle
