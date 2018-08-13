@@ -2,9 +2,11 @@ import { StyleSheet } from 'react-native';
 import Colors from './colors';
 
 const aboutStyle = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   scrollContainer: {
-    paddingTop: 16,
-    paddingBottom: 16
+    flex: 1
   },
   row: {
     marginBottom: 1,
@@ -18,6 +20,7 @@ const aboutStyle = StyleSheet.create({
     color: Colors.LbryGreen,
     fontSize: 24,
     fontFamily: 'Metropolis-SemiBold',
+    marginTop: 16,
     marginLeft: 12,
     marginRight: 12,
     marginBottom: 8
