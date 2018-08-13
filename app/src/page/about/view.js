@@ -23,9 +23,10 @@ class AboutPage extends React.PureComponent {
         versionInfo: info,
       });
     });
-    Lbry.status({ session_status: true }).then(info => {
+    Lbry.status().then(info => {
+      console.log(info);
       this.setState({
-        lbryId: info.lbry_id,
+        lbryId: info.installation_id,
       });
     });
   }
@@ -35,7 +36,7 @@ class AboutPage extends React.PureComponent {
     const ver = this.state.versionInfo ? this.state.versionInfo : null;
 
     return (
-      <View>
+      <View style={aboutStyle.container}>
         <PageHeader title={"About LBRY"}
           onBackPressed={() => { this.props.navigation.goBack(); }} />
         <ScrollView style={aboutStyle.scrollContainer}>
