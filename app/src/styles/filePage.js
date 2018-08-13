@@ -30,7 +30,7 @@ const filePageStyle = StyleSheet.create({
   mediaContainer: {
     alignItems: 'center',
     width: screenWidth,
-    height: 220
+    height: 240
   },
   emptyClaimText: {
     fontFamily: 'Metropolis-Regular',
@@ -75,7 +75,7 @@ const filePageStyle = StyleSheet.create({
   },
   thumbnail: {
     width: screenWidth,
-    height: 204,
+    height: 224,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -92,7 +92,7 @@ const filePageStyle = StyleSheet.create({
   },
   containedPlayer: {
     width: '100%',
-    height: 220,
+    height: 240,
   },
   containedPlayerLandscape: {
     width: '100%',
