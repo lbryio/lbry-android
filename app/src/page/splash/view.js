@@ -97,6 +97,11 @@ class SplashScreen extends React.PureComponent {
         isDownloadingHeaders: blockchainHeaders.downloading_headers,
         headersDownloadProgress: blockchainHeaders.download_progress
       });
+    } else {
+      // set downloading flag to false if blockchain_headers isn't in the status response
+      this.setState({
+        isDownloadingHeaders: false,
+      });
     }
 
     if (blockchainHeaders && blockchainHeaders.downloading_headers) {
