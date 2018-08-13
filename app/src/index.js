@@ -18,6 +18,7 @@ import {
   walletReducer
 } from 'lbry-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { createLogger } from 'redux-logger';
 import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 import { AppNavigator } from './component/AppNavigator';
 import { persistStore, autoRehydrate } from 'redux-persist';
