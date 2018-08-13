@@ -26,7 +26,6 @@ class SplashScreen extends React.PureComponent {
       isRunning: false,
       isLagging: false,
       launchUrl: null,
-      didDownloadHeaders: false,
       isDownloadingHeaders: false,
       headersDownloadProgress: 0
     });
@@ -100,10 +99,7 @@ class SplashScreen extends React.PureComponent {
       });
     }
 
-    if (blockchainHeaders && blockchainHeaders.downloading_headers && blockchainHeaders.download_progress < 100) {
-      if (!this.state.didDownloadHeaders) {
-        this.setState({ didDownloadHeaders: true });
-      }
+    if (blockchainHeaders && blockchainHeaders.downloading_headers) {
       const downloadProgress = blockchainHeaders.download_progress ? blockchainHeaders.download_progress : 0;
       this.setState({
         message: 'Blockchain Sync',
