@@ -1,6 +1,5 @@
 import React from 'react';
 import { Provider, connect } from 'react-redux';
-import DiscoverPage from './page/discover';
 import {
   AppRegistry,
   AppState,
@@ -9,15 +8,6 @@ import {
   View,
   NativeModules
 } from 'react-native';
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import { createLogger } from 'redux-logger';
-import { StackNavigator, addNavigationHelpers } from 'react-navigation';
-import { AppNavigator } from './component/AppNavigator';
-import AppWithNavigationState from './component/AppNavigator';
-import { persistStore, autoRehydrate } from 'redux-persist';
-import createCompressor from 'redux-persist-transform-compress';
-import createFilter from 'redux-persist-transform-filter';
-import thunk from 'redux-thunk';
 import {
   Lbry,
   claimsReducer,
@@ -27,9 +17,19 @@ import {
   searchReducer,
   walletReducer
 } from 'lbry-redux';
-import settingsReducer from './redux/reducers/settings';
-import moment from 'moment';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { createLogger } from 'redux-logger';
+import { StackNavigator, addNavigationHelpers } from 'react-navigation';
+import { AppNavigator } from './component/AppNavigator';
+import { persistStore, autoRehydrate } from 'redux-persist';
 import { reactNavigationMiddleware } from './utils/redux';
+import AppWithNavigationState from './component/AppNavigator';
+import FilesystemStorage from 'redux-persist-filesystem-storage';
+import createCompressor from 'redux-persist-transform-compress';
+import createFilter from 'redux-persist-transform-filter';
+import moment from 'moment';
+import settingsReducer from './redux/reducers/settings';
+import thunk from 'redux-thunk';
 
 function isFunction(object) {
   return typeof object === 'function';
@@ -106,7 +106,7 @@ const persistOptions = {
   // read the data
   transforms: [saveClaimsFilter, subscriptionsFilter, settingsFilter, walletFilter, compressor],
   debounce: 10000,
-  storage: AsyncStorage
+  storage: FilesystemStorage
 };
 
 persistStore(store, persistOptions, err => {

@@ -68,8 +68,20 @@ android {
     }
 }
 
+subprojects {
+    afterEvaluate {project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion {{ android_api }}
+                buildToolsVersion '{{ build_tools_version }}'
+            }
+        }
+    }
+}
+
 dependencies {
     compile project(':react-native-video')
+    compile project(':react-native-fetch-blob')
 	{%- for aar in aars %}
 	compile(name: '{{ aar }}', ext: 'aar')
 	{%- endfor -%}
