@@ -261,6 +261,12 @@ class MediaPlayer extends React.PureComponent {
     return null;
   }
 
+  getEncodedDownloadPath = (fileInfo) => {
+    const { file_name: fileName } = fileInfo;
+    const encodedFileName = encodeURIComponent(fileName).replace(/!/g, '%21');
+    return fileInfo.download_path.replace(new RegExp(fileName, 'g'), encodedFileName);
+  }
+
   render() {
     const { backgroundPlayEnabled, fileInfo, thumbnail, onLayout, style } = this.props;
     const completedWidth = this.getCurrentTimePercentage() * this.seekerWidth;
@@ -279,7 +285,7 @@ class MediaPlayer extends React.PureComponent {
 
     return (
       <View style={styles} onLayout={onLayout}>
-        <Video source={{ uri: 'file:///' + fileInfo.download_path }}
+        <Video source={{ uri: 'file:///' + this.getEncodedDownloadPath(fileInfo) }}
                ref={(ref: Video) => { this.video = ref }}
                resizeMode={this.state.resizeMode}
                playInBackground={backgroundPlayEnabled}
