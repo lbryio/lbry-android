@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Binder;
 import android.os.IBinder;
@@ -53,11 +54,13 @@ public class LbrynetService extends PythonService {
 
         NotificationManager notificationManager =
             (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel channel = new NotificationChannel(
-            NOTIFICATION_CHANNEL_ID, "LBRY Browser", NotificationManager.IMPORTANCE_LOW);
-        channel.setDescription("LBRY service notification channel");
-        channel.setShowBadge(false);
-        notificationManager.createNotificationChannel(channel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                NOTIFICATION_CHANNEL_ID, "LBRY Browser", NotificationManager.IMPORTANCE_LOW);
+            channel.setDescription("LBRY service notification channel");
+            channel.setShowBadge(false);
+            notificationManager.createNotificationChannel(channel);
+        }
 
         Intent contextIntent = new Intent(context, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);

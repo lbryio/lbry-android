@@ -81,8 +81,8 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, GROUP_ID, intent, 0);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-            builder.setContentTitle("Active downloads")
-                   .setContentText("Active downloads")
+            builder.setContentTitle("Active LBRY downloads")
+                   .setContentText("Active LBRY downloads")
                    .setSmallIcon(android.R.drawable.stat_sys_download)
                    .setPriority(NotificationCompat.PRIORITY_LOW)
                    .setGroup(GROUP_DOWNLOADS)
