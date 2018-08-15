@@ -10,6 +10,7 @@ import {
     selectDownloadingByOutpoint,
 } from 'lbry-redux';
 import { Alert, NativeModules } from 'react-native';
+import Constants from '../../constants';
 
 const DOWNLOAD_POLL_INTERVAL = 250;
 
@@ -40,14 +41,18 @@ export function doUpdateLoadStatus(uri, outpoint) {
         if (NativeModules.LbryDownloadManager) {
           NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, 100, writtenBytes, totalBytes);
         }
-        
+
+        // Once a download has been completed, delete the individual blob files to save space
+        Lbry.blob_list({ sd_hash: fileInfo.sd_hash }).then(hashes => {
+          hashes.forEach(hash => {
+            Lbry.blob_delete({ blob_hash: hash });
+          });
+        });
+
         /*const notif = new window.Notification('LBRY Download Complete', {
           body: fileInfo.metadata.stream.metadata.title,
           silent: false,
-        });
-        notif.onclick = () => {
-          ipcRenderer.send('focusWindow', 'main');
-        };*/
+        });*/
       } else {
         // ready to play
         const { total_bytes: totalBytes, written_bytes: writtenBytes } = fileInfo;
@@ -66,7 +71,7 @@ export function doUpdateLoadStatus(uri, outpoint) {
         if (NativeModules.LbryDownloadManager) {
           NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, progress, writtenBytes, totalBytes);
         }
-        
+
         setTimeout(() => {
           dispatch(doUpdateLoadStatus(uri, outpoint));
         }, DOWNLOAD_POLL_INTERVAL);
@@ -96,7 +101,7 @@ export function doStartDownload(uri, outpoint) {
           fileInfo,
         },
       });
-      
+
       if (NativeModules.LbryDownloadManager) {
         NativeModules.LbryDownloadManager.startDownload(uri, fileInfo.file_name);
       }
@@ -110,7 +115,7 @@ export function doStopDownloadingFile(uri, fileInfo) {
   return dispatch  => {
     let params = { status: 'stop' };
     if (fileInfo.sd_hash) {
-      params.sd_hash = fileInfo.sd_hash; 
+      params.sd_hash = fileInfo.sd_hash;
     }
     if (fileInfo.stream_hash) {
       params.stream_hash = fileInfo.stream_hash;
@@ -122,11 +127,11 @@ export function doStopDownloadingFile(uri, fileInfo) {
         data: {}
       });
     });
-    
+
     if (NativeModules.LbryDownloadManager) {
       NativeModules.LbryDownloadManager.stopDownload(uri, fileInfo.file_name);
     }
-    
+
     // Should also delete the file after the user stops downloading
     dispatch(doDeleteFile(fileInfo.outpoint, uri));
   };
@@ -159,7 +164,7 @@ export function doLoadVideo(uri) {
         uri,
       },
     });
-    
+
     Lbry.get({ uri })
       .then(streamInfo => {
         const timeout =
@@ -186,7 +191,7 @@ export function doLoadVideo(uri) {
           type: ACTIONS.LOADING_VIDEO_FAILED,
           data: { uri },
         });
-        
+
         dispatch(doNotify({
           message: `Failed to download ${uri}, please try again. If this problem persists, visit https://lbry.io/faq/support for support.`,
           displayType: ['toast']
@@ -299,5 +304,26 @@ export function doDeleteFile(outpoint, deleteFromComputer, abandonClaim) {
 
     //const totalProgress = selectTotalDownloadProgress(getState());
     //setProgressBar(totalProgress);
+  };
+}
+
+export function doDeleteCompleteBlobs() {
+  return dispatch => {
+    dispatch({
+      type: Constants.ACTION_DELETE_COMPLETED_BLOBS,
+      data: {},
+    });
+
+    Lbry.file_list().then(files => {
+      files.forEach(fileInfo => {
+        if (fileInfo.completed) {
+          Lbry.blob_list({ sd_hash: fileInfo.sd_hash }).then(hashes => {
+            hashes.forEach(hash => {
+              Lbry.blob_delete({ blob_hash: hash });
+            });
+          });
+        }
+      });
+    });
   };
 }
