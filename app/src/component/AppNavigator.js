@@ -27,8 +27,17 @@ import {
   TextInput,
   ToastAndroid
 } from 'react-native';
-import { SETTINGS, doHideNotification, selectNotification } from 'lbry-redux';
+import { SETTINGS, doHideNotification, doNotify, selectNotification } from 'lbry-redux';
+import {
+  doUserEmailVerify,
+  doUserEmailVerifyFailure,
+  selectEmailToVerify,
+  selectEmailVerifyIsPending,
+  selectEmailVerifyErrorMessage,
+  selectUser
+} from 'lbryinc';
 import { makeSelectClientSetting } from '../redux/selectors/settings';
+import { decode as atob } from 'base-64';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import discoverStyle from '../styles/discover';
 import searchStyle from '../styles/search';
@@ -122,6 +131,13 @@ export const AppNavigator = new StackNavigator({
 class AppWithNavigationState extends React.Component {
   static supportedDisplayTypes = ['toast'];
 
+  constructor() {
+    super();
+    this.state = {
+      emailVerifyDone: false
+    };
+  }
+
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
@@ -144,7 +160,7 @@ class AppWithNavigationState extends React.Component {
           }
         }
       }
-      return false;fo
+      return false;
     }.bind(this));
   }
 
@@ -160,7 +176,14 @@ class AppWithNavigationState extends React.Component {
 
   componentWillUpdate(nextProps) {
     const { dispatch } = this.props;
-    const { notification } = nextProps;
+    const {
+      notification,
+      emailToVerify,
+      emailVerifyPending,
+      emailVerifyErrorMessage,
+      user
+    } = nextProps;
+
     if (notification) {
       const { displayType, message } = notification;
       let currentDisplayType;
@@ -182,6 +205,16 @@ class AppWithNavigationState extends React.Component {
 
       dispatch(doHideNotification());
     }
+
+    if (user &&
+        !emailVerifyPending &&
+        !this.state.emailVerifyDone &&
+        (emailToVerify || emailVerifyErrorMessage)) {
+      this.setState({ emailVerifyDone: true });
+      const message = emailVerifyErrorMessage ?
+        String(emailVerifyErrorMessage) : 'Your email address was successfully verified.';
+      dispatch(doNotify({ message, displayType: ['toast'] }));
+    }
   }
 
   _handleAppStateChange = (nextAppState) => {
@@ -200,12 +233,37 @@ class AppWithNavigationState extends React.Component {
   _handleUrl = (evt) => {
     const { dispatch } = this.props;
     if (evt.url) {
-      const navigateAction = NavigationActions.navigate({
-        routeName: 'File',
-        key: evt.url,
-        params: { uri: evt.url }
-      });
-      dispatch(navigateAction);
+      if (evt.url.startsWith('lbry://?verify=')) {
+        this.setState({ emailVerifyDone: false });
+        let verification = {};
+        try {
+          verification = JSON.parse(atob(evt.url.substring(15)));
+        } catch (error) {
+          console.log(error);
+        }
+
+        if (verification.token && verification.recaptcha) {
+          try {
+            dispatch(doUserEmailVerify(verification.token, verification.recaptcha));
+          } catch (error) {
+            const message = 'Invalid Verification Token';
+            dispatch(doUserEmailVerifyFailure(message));
+            dispatch(doNotify({ message, displayType: ['toast'] }));
+          }
+        } else {
+          dispatch(doNotify({
+            message: 'Invalid Verification URI',
+            displayType: ['toast'],
+          }));
+        }
+      } else {
+        const navigateAction = NavigationActions.navigate({
+          routeName: 'File',
+          key: evt.url,
+          params: { uri: evt.url }
+        });
+        dispatch(navigateAction);
+      }
     }
   }
 
@@ -224,10 +282,14 @@ class AppWithNavigationState extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
   nav: state.nav,
   notification: selectNotification(state),
-  keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
-  showNsfw: makeSelectClientSetting(SETTINGS.SHOW_NSFW)(state)
+  emailToVerify: selectEmailToVerify(state),
+  emailVerifyPending: selectEmailVerifyIsPending(state),
+  emailVerifyErrorMessage: selectEmailVerifyErrorMessage(state),
+  showNsfw: makeSelectClientSetting(SETTINGS.SHOW_NSFW)(state),
+  user: selectUser(state),
 });
 
 export default connect(mapStateToProps)(AppWithNavigationState);

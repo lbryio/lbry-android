@@ -6,7 +6,9 @@
         "start": "node node_modules/react-native/local-cli/cli.js start"
     },
     "dependencies": {
+        "base-64": "^0.1.0",
         "lbry-redux": "lbryio/lbry-redux",
+        "lbryinc": "lbryio/lbryinc#authentication-flow",
         "moment": "^2.22.1",
         "react": "16.2.0",
         "react-native": "0.55.3",

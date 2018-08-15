@@ -28,16 +28,48 @@ const firstRunStyle = StyleSheet.create({
     marginBottom: 20,
     color: Colors.White
   },
-  button: {
+  infoParagraph: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14,
+    lineHeight: 20,
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 20,
+    color: Colors.White
+  },
+  emailInput: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 24,
+    lineHeight: 24,
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 20,
+    textAlign: 'center'
+  },
+  leftButton: {
     flex: 1,
+    alignSelf: 'flex-start',
+    marginLeft: 32,
+    marginRight: 32
+  },
+  bottomContainer: {
+    flex: 1
+  },
+  button: {
     alignSelf: 'flex-end',
     marginLeft: 32,
     marginRight: 32
   },
   buttonText: {
     fontFamily: 'Metropolis-Regular',
-    fontSize: 28,
+    fontSize: 24,
     color: Colors.White
+  },
+  waiting: {
+    marginBottom: 24
+  },
+  pageWaiting: {
+    alignSelf:  'center'
   }
 });
 

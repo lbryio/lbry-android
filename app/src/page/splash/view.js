@@ -10,6 +10,7 @@ import {
   View
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import { decode as atob } from 'base-64';
 import PropTypes from 'prop-types';
 import Colors from '../../styles/colors';
 import splashStyle from '../../styles/splash';
@@ -52,6 +53,49 @@ class SplashScreen extends React.PureComponent {
     });
   }
 
+  componentWillUpdate(nextProps) {
+    const { navigation, verifyUserEmail, verifyUserEmailFailure } = this.props;
+    const { user } = nextProps;
+    if (user && user.id) {
+      // user is authenticated, navigate to the main view
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Main'})
+        ]
+      });
+      navigation.dispatch(resetAction);
+
+      const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
+      if (launchUrl) {
+        if (launchUrl.startsWith('lbry://?verify=')) {
+          let verification = {};
+          try {
+            verification = JSON.parse(atob(launchUrl.substring(15)));
+          } catch (error) {
+            console.log(error);
+          }
+          if (verification.token && verification.recaptcha) {
+            try {
+              verifyUserEmail(verification.token, verification.recaptcha);
+            } catch (error) {
+              const message = 'Invalid Verification Token';
+              verifyUserEmailFailure(message);
+              notify({ message, displayType: ['toast'] });
+            }
+          } else {
+            notify({
+              message: 'Invalid Verification URI',
+              displayType: ['toast'],
+            });
+          }
+        } else {
+          navigation.navigate({ routeName: 'File', key: launchUrl, params: { uri: launchUrl } });
+        }
+      }
+    }
+  }
+
   _updateStatusCallback(status) {
     const startupStatus = status.startup_status;
     // At the minimum, wallet should be started and blocks_behind equal to 0 before calling resolve
@@ -70,21 +114,15 @@ class SplashScreen extends React.PureComponent {
 
       Lbry.resolve({ uri: 'lbry://one' }).then(() => {
         // Leave the splash screen
-        const { balanceSubscribe, navigation } = this.props;
+        const {
+          authenticate,
+          balanceSubscribe,
+          navigation,
+          notify
+        } = this.props;
+
+        authenticate(null);
         balanceSubscribe();
-
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Main'})
-          ]
-        });
-        navigation.dispatch(resetAction);
-
-        const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
-        if (launchUrl) {
-          navigation.navigate({ routeName: 'File', key: launchUrl, params: { uri: launchUrl } });
-        }
       });
       return;
     }
