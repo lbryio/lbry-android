@@ -169,7 +169,7 @@ class FirstRunScreen extends React.PureComponent {
           </TouchableOpacity>}
         </View>}
       </View>
-    )
+    );
   }
 }
 
