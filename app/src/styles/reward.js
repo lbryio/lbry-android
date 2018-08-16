@@ -83,7 +83,7 @@ const rewardStyle = StyleSheet.create({
   },
   rewardAmount: {
     fontFamily: 'Metropolis-Regular',
-    fontSize: 24,
+    fontSize: 26,
     textAlign: 'center'
   },
   rewardCurrency: {
