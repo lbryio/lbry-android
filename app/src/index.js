@@ -17,6 +17,7 @@ import {
   searchReducer,
   walletReducer
 } from 'lbry-redux';
+import { authReducer, userReducer } from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
 import { StackNavigator, addNavigationHelpers } from 'react-navigation';
@@ -68,6 +69,7 @@ const navigatorReducer = (state = initialNavState, action) => {
 };
 
 const reducers = combineReducers({
+  auth: authReducer,
   claims: claimsReducer,
   costInfo: costInfoReducer,
   fileInfo: fileInfoReducer,
@@ -75,7 +77,8 @@ const reducers = combineReducers({
   search: searchReducer,
   wallet: walletReducer,
   nav: navigatorReducer,
-  settings: settingsReducer
+  settings: settingsReducer,
+  user: userReducer
 });
 
 const bulkThunk = createBulkThunkMiddleware();
@@ -93,18 +96,20 @@ const store = createStore(
     applyMiddleware(...middleware)
   )
 );
+window.store = store;
 
 const compressor = createCompressor();
+const authFilter = createFilter('auth', ['authToken']);
 const saveClaimsFilter = createFilter('claims', ['byId', 'claimsByUri']);
 const subscriptionsFilter = createFilter('subscriptions', ['subscriptions']);
 const settingsFilter = createFilter('settings', ['clientSettings']);
 const walletFilter = createFilter('wallet', ['receiveAddress']);
 
 const persistOptions = {
-  whitelist: ['claims', 'subscriptions', 'settings', 'wallet'],
+  whitelist: ['auth', 'claims', 'subscriptions', 'settings', 'wallet'],
   // Order is important. Needs to be compressed last or other transforms can't
   // read the data
-  transforms: [saveClaimsFilter, subscriptionsFilter, settingsFilter, walletFilter, compressor],
+  transforms: [authFilter, saveClaimsFilter, subscriptionsFilter, settingsFilter, walletFilter, compressor],
   debounce: 10000,
   storage: FilesystemStorage
 };

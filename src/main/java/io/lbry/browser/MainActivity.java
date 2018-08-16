@@ -172,19 +172,10 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             Toast.makeText(context, "Rewards cannot be claimed because we could not identify your device.", Toast.LENGTH_LONG).show();
         }
 
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-384");
-            md.update(id.getBytes("UTF-8"));
-            String hash = new BigInteger(1, md.digest()).toString(16);
-
-            SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString(DEVICE_ID_KEY, hash);
-            editor.commit();
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            // SHA-384 not found, UTF-8 encoding not supported
-            Toast.makeText(context, "Rewards cannot be claimed because we could not identify your device.", Toast.LENGTH_LONG).show();
-        }
+        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(DEVICE_ID_KEY, id);
+        editor.commit();
 
         return id;
     }

@@ -24,7 +24,6 @@ class AboutPage extends React.PureComponent {
       });
     });
     Lbry.status().then(info => {
-      console.log(info);
       this.setState({
         lbryId: info.installation_id,
       });
