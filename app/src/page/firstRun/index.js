@@ -7,8 +7,6 @@ import {
   selectEmailNewErrorMessage,
   selectEmailNewIsPending,
   selectEmailToVerify,
-  selectEmailVerifyErrorMessage,
-  selectEmailVerifyIsPending,
   selectIsAuthenticating
 } from 'lbryinc';
 import FirstRun from './view';
@@ -19,8 +17,6 @@ const select = (state) => ({
   emailToVerify: selectEmailToVerify(state),
   emailNewErrorMessage: selectEmailNewErrorMessage(state),
   emailNewPending: selectEmailNewIsPending(state),
-  emailVerifyErrorMessage: selectEmailVerifyErrorMessage(state),
-  emailVerifyPending: selectEmailVerifyIsPending(state)
 });
 
 const perform = dispatch => ({

@@ -55,6 +55,14 @@ const firstRunStyle = StyleSheet.create({
   bottomContainer: {
     flex: 1
   },
+  actionButton: {
+    backgroundColor: Colors.White,
+    alignSelf: 'center',
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 12,
+    paddingLeft: 16,
+    paddingRight: 16
+  },
   button: {
     alignSelf: 'flex-end',
     marginLeft: 32,

@@ -14,7 +14,6 @@ import Colors from '../../styles/colors';
 import Constants from '../../constants';
 import WelcomePage from './internal/welcome-page';
 import EmailCollectPage from './internal/email-collect-page';
-//import EmailVerifyPage from '../internal/email-verify-page';
 import firstRunStyle from '../../styles/firstRun';
 
 class FirstRunScreen extends React.PureComponent {
@@ -27,8 +26,9 @@ class FirstRunScreen extends React.PureComponent {
     super();
     this.state = {
       currentPage: null,
-      launchUrl: null,
+      emailSubmitted: false,
       isFirstRun: false,
+      launchUrl: null,
       showBottomContainer: true
     };
   }
@@ -53,6 +53,21 @@ class FirstRunScreen extends React.PureComponent {
     } else {
       // The first run module was not detected. Go straight to the splash screen.
       this.launchSplashScreen();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { emailNewErrorMessage, emailNewPending } = nextProps;
+    const { notify } = this.props;
+
+    if (this.state.emailSubmitted && !emailNewPending) {
+      this.setState({ emailSubmitted: false });
+      if (emailNewErrorMessage) {
+        notify ({ message: String(emailNewErrorMessage), displayType: ['toast']});
+      } else {
+        // Request successful. Navigate to discover.
+        this.closeFinalPage();
+      }
     }
   }
 
@@ -95,9 +110,7 @@ class FirstRunScreen extends React.PureComponent {
       }
 
       addUserEmail(email);
-
-      // treat as the final page
-      this.closeFinalPage();
+      this.setState({ emailSubmitted: true });
     });
   }
 
