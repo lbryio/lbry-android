@@ -216,6 +216,10 @@ class AppWithNavigationState extends React.Component {
           this.setState({ emailVerifyDone: true });
           const message = emailVerifyErrorMessage ?
             String(emailVerifyErrorMessage) : 'Your email address was successfully verified.';
+          if (!emailVerifyErrorMessage) {
+            AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
+          }
+          AsyncStorage.removeItem(Constants.KEY_SHOULD_VERIFY_EMAIL);
           dispatch(doNotify({ message, displayType: ['toast'] }));
         }
       });
