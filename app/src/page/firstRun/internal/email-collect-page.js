@@ -8,7 +8,6 @@ import {
   TextInput,
   View
 } from 'react-native';
-import Button from '../../../component/button';
 import Colors from '../../../styles/colors';
 import Constants from '../../../constants';
 import firstRunStyle from '../../../styles/firstRun';
