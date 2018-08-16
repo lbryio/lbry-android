@@ -10,15 +10,19 @@ import {
 } from 'react-native';
 import Button from '../../../component/button';
 import Colors from '../../../styles/colors';
+import Constants from '../../../constants';
 import firstRunStyle from '../../../styles/firstRun';
 
 class EmailCollectPage extends React.PureComponent {
+  static MAX_STATUS_TRIES = 15;
+
   constructor() {
     super();
     this.state = {
       email: null,
       authenticationStarted: false,
-      authenticationFailed: false
+      authenticationFailed: false,
+      statusTries: 0
     };
   }
 
@@ -34,7 +38,7 @@ class EmailCollectPage extends React.PureComponent {
     // call user/new
     const { generateAuthToken, authenticating, authToken } = this.props;
     if (!authToken && !authenticating) {
-      this.startAuthenticating(true);
+      this.startAuthenticating();
     }
 
     AsyncStorage.getItem('firstRunEmail').then(email => {
@@ -44,22 +48,27 @@ class EmailCollectPage extends React.PureComponent {
     });
   }
 
-  startAuthenticating = (useTimeout) => {
+  startAuthenticating = () => {
     const { generateAuthToken } = this.props;
     this.setState({ authenticationStarted: true, authenticationFailed: false });
-    setTimeout(() => {
-      Lbry.status().then(info => {
+    Lbry.status().then(info => {
         generateAuthToken(info.installation_id)
-      }).catch(error => {
+    }).catch(error => {
+      if (this.state.statusTries >= EmailCollectPage.MAX_STATUS_TRIES) {
         this.setState({ authenticationFailed: true });
-      });
-    }, useTimeout ? 10000 : 0); // if useTimeout is set, wait 10s to give the daemon some time to start
+      } else {
+        setTimeout(() => {
+          this.startAuthenticating();
+          this.setState({ statusTries: this.state.statusTries + 1 });
+        }, 1000); // Retry every second for a maximum of MAX_STATUS_TRIES tries (15 seconds)
+      }
+    });
   }
 
   handleChangeText = (text) => {
     // save the value to the state email
     this.setState({ email: text });
-    AsyncStorage.setItem('firstRunEmail', text);
+    AsyncStorage.setItem(Constants.KEY_FIRST_RUN_EMAIL, text);
   }
 
   render() {

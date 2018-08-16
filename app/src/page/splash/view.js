@@ -13,6 +13,7 @@ import { NavigationActions } from 'react-navigation';
 import { decode as atob } from 'base-64';
 import PropTypes from 'prop-types';
 import Colors from '../../styles/colors';
+import Constants from '../../constants';
 import splashStyle from '../../styles/splash';
 
 class SplashScreen extends React.PureComponent {
@@ -78,6 +79,7 @@ class SplashScreen extends React.PureComponent {
             console.log(error);
           }
           if (verification.token && verification.recaptcha) {
+            AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
             try {
               verifyUserEmail(verification.token, verification.recaptcha);
             } catch (error) {

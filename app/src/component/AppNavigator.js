@@ -39,9 +39,10 @@ import {
 import { makeSelectClientSetting } from '../redux/selectors/settings';
 import { decode as atob } from 'base-64';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Constants from '../constants';
 import discoverStyle from '../styles/discover';
 import searchStyle from '../styles/search';
-import SearchRightHeaderIcon from "../component/searchRightHeaderIcon";
+import SearchRightHeaderIcon from '../component/searchRightHeaderIcon';
 
 const discoverStack = StackNavigator({
   Discover: {
@@ -210,10 +211,14 @@ class AppWithNavigationState extends React.Component {
         !emailVerifyPending &&
         !this.state.emailVerifyDone &&
         (emailToVerify || emailVerifyErrorMessage)) {
-      this.setState({ emailVerifyDone: true });
-      const message = emailVerifyErrorMessage ?
-        String(emailVerifyErrorMessage) : 'Your email address was successfully verified.';
-      dispatch(doNotify({ message, displayType: ['toast'] }));
+      AsyncStorage.getItem(Constants.KEY_SHOULD_VERIFY_EMAIL).then(shouldVerify => {
+        if ('true' === shouldVerify) {
+          this.setState({ emailVerifyDone: true });
+          const message = emailVerifyErrorMessage ?
+            String(emailVerifyErrorMessage) : 'Your email address was successfully verified.';
+          dispatch(doNotify({ message, displayType: ['toast'] }));
+        }
+      });
     }
   }
 
@@ -243,6 +248,7 @@ class AppWithNavigationState extends React.Component {
         }
 
         if (verification.token && verification.recaptcha) {
+          AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
           try {
             dispatch(doUserEmailVerify(verification.token, verification.recaptcha));
           } catch (error) {
