@@ -53,7 +53,7 @@ class EmailCollectPage extends React.PureComponent {
       }).catch(error => {
         this.setState({ authenticationFailed: true });
       });
-    }, useTimeout ? 5000 : 0); // if useTimeout is set, wait 5s to give the daemon some time to start
+    }, useTimeout ? 10000 : 0); // if useTimeout is set, wait 10s to give the daemon some time to start
   }
 
   handleChangeText = (text) => {

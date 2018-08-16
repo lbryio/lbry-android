@@ -22,13 +22,15 @@ class SplashScreen extends React.PureComponent {
 
   componentWillMount() {
     this.setState({
+      daemonReady: false,
       details: 'Starting daemon',
       message: 'Connecting',
       isRunning: false,
       isLagging: false,
       launchUrl: null,
       isDownloadingHeaders: false,
-      headersDownloadProgress: 0
+      headersDownloadProgress: 0,
+      shouldAuthenticate: false
     });
 
     if (NativeModules.DaemonServiceControl) {
@@ -56,7 +58,7 @@ class SplashScreen extends React.PureComponent {
   componentWillUpdate(nextProps) {
     const { navigation, verifyUserEmail, verifyUserEmailFailure } = this.props;
     const { user } = nextProps;
-    if (user && user.id) {
+    if (this.state.daemonReady && this.state.shouldAuthenticate && user && user.id) {
       // user is authenticated, navigate to the main view
       const resetAction = NavigationActions.reset({
         index: 0,
@@ -106,6 +108,7 @@ class SplashScreen extends React.PureComponent {
       // TODO: This is a hack, and the logic should live in the daemon
       // to give us a better sense of when we are actually started
       this.setState({
+        daemonReady: true,
         message: 'Testing Network',
         details: 'Waiting for name resolution',
         isLagging: false,
@@ -121,8 +124,18 @@ class SplashScreen extends React.PureComponent {
           notify
         } = this.props;
 
-        authenticate(null);
         balanceSubscribe();
+        NativeModules.VersionInfo.getAppVersion().then(appVersion => {
+          if (NativeModules.UtilityModule) {
+            // authenticate with the device ID if the method is available
+            NativeModules.UtilityModule.getDeviceId().then(deviceId => {
+              authenticate(`android-${appVersion}`, deviceId);
+            });
+          } else {
+            authenticate(appVersion);
+          }
+          this.setState({ shouldAuthenticate: true });
+        });
       });
       return;
     }
