@@ -32,7 +32,7 @@ class MediaPlayer extends React.PureComponent {
       rate: 1,
       volume: 1,
       muted: false,
-      resizeMode: 'stretch',
+      resizeMode: 'contain',
       duration: 0.0,
       currentTime: 0.0,
       paused: !props.autoPlay,
@@ -131,7 +131,6 @@ class MediaPlayer extends React.PureComponent {
     this.showPlayerControls();
     const { onFullscreenToggled } = this.props;
     this.setState({ fullscreenMode: !this.state.fullscreenMode }, () => {
-      this.setState({ resizeMode: this.state.fullscreenMode ? 'contain' : 'stretch' });
       if (onFullscreenToggled) {
         onFullscreenToggled(this.state.fullscreenMode);
       }
