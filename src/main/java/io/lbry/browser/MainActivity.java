@@ -36,6 +36,8 @@ import java.util.Random;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
+    private static Activity currentActivity = null;
+
     private static final int OVERLAY_PERMISSION_REQ_CODE = 101;
 
     private static final int STORAGE_PERMISSION_REQ_CODE = 201;
@@ -75,6 +77,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         }
 
         super.onCreate(savedInstanceState);
+        currentActivity = this;
 
         // Start the daemon service if it is not started
         serviceRunning = isServiceRunning(LbrynetService.class);
@@ -108,6 +111,12 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 }
             }
         }
+    }
+
+    public static Activity getActivity() {
+        Activity activity = new Activity();
+        activity = currentActivity;
+        return activity;
     }
 
     @Override

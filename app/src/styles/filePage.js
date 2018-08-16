@@ -3,6 +3,8 @@ import Colors from './colors';
 
 const screenDimension = Dimensions.get('window');
 const screenWidth = screenDimension.width;
+const containedMediaHeight = ((screenWidth * 9) / 16); // 16:9 display ratio
+const containedMediaHeightWithControls = containedMediaHeight + 17;
 
 const filePageStyle = StyleSheet.create({
   container: {
@@ -30,7 +32,7 @@ const filePageStyle = StyleSheet.create({
   mediaContainer: {
     alignItems: 'center',
     width: screenWidth,
-    height: 240
+    height: containedMediaHeightWithControls
   },
   emptyClaimText: {
     fontFamily: 'Metropolis-Regular',
@@ -75,7 +77,7 @@ const filePageStyle = StyleSheet.create({
   },
   thumbnail: {
     width: screenWidth,
-    height: 224,
+    height: containedMediaHeight,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -92,7 +94,7 @@ const filePageStyle = StyleSheet.create({
   },
   containedPlayer: {
     width: '100%',
-    height: 240,
+    height: containedMediaHeightWithControls,
   },
   containedPlayerLandscape: {
     width: '100%',
@@ -114,7 +116,7 @@ const filePageStyle = StyleSheet.create({
   },
   containedPlayerBackground: {
     width: '100%',
-    height: 206,
+    height: containedMediaHeight,
   },
   fullscreenPlayerBackground: {
     width: '100%',
