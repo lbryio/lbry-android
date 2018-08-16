@@ -22,16 +22,13 @@ class FirstRunScreen extends React.PureComponent {
     'email-collect'
   ];
 
-  constructor() {
-    super();
-    this.state = {
-      currentPage: null,
-      emailSubmitted: false,
-      isFirstRun: false,
-      launchUrl: null,
-      showBottomContainer: true
-    };
-  }
+  state = {
+    currentPage: null,
+    emailSubmitted: false,
+    isFirstRun: false,
+    launchUrl: null,
+    showBottomContainer: true
+  };
 
   componentDidMount() {
     Linking.getInitialURL().then((url) => {

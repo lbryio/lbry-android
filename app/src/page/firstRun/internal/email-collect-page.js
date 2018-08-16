@@ -16,15 +16,12 @@ import firstRunStyle from '../../../styles/firstRun';
 class EmailCollectPage extends React.PureComponent {
   static MAX_STATUS_TRIES = 15;
 
-  constructor() {
-    super();
-    this.state = {
-      email: null,
-      authenticationStarted: false,
-      authenticationFailed: false,
-      statusTries: 0
-    };
-  }
+  state = {
+    email: null,
+    authenticationStarted: false,
+    authenticationFailed: false,
+    statusTries: 0
+  };
 
   componentWillReceiveProps(nextProps) {
     const { authenticating, authToken } = this.props;
