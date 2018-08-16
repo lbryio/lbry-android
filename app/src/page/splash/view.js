@@ -2,6 +2,7 @@ import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
   ActivityIndicator,
+  AsyncStorage,
   Linking,
   NativeModules,
   Platform,
