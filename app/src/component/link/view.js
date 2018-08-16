@@ -10,10 +10,10 @@ export default class Link extends React.PureComponent {
     }
     this.addTappedStyle = this.addTappedStyle.bind(this)
   }
-  
+
   handlePress = () => {
     const { error, href, navigation, notify } = this.props;
-    
+
     if (navigation && href.startsWith('#')) {
       navigation.navigate(href.substring(1));
     } else {
@@ -32,14 +32,14 @@ export default class Link extends React.PureComponent {
     this.setState({ tappedStyle: true });
     setTimeout(() => { this.setState({ tappedStyle: false }); }, 2000);
   }
-  
+
   render() {
     const {
       onPress,
       style,
       text
     } = this.props;
-    
+
     let styles = [];
     if (style) {
       if (style.length) {
@@ -52,11 +52,9 @@ export default class Link extends React.PureComponent {
     if (this.props.effectOnTap && this.state.tappedStyle) {
       styles.push(this.props.effectOnTap);
     }
-    
+
     return (
-      <Text style={styles} onPress={onPress ? onPress : this.handlePress}>
-        {text}
-      </Text>
+      <Text style={styles} onPress={onPress ? onPress : this.handlePress}>{text}</Text>
     );
   }
 };

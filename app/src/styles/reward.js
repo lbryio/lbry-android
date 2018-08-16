@@ -12,8 +12,10 @@ const rewardStyle = StyleSheet.create({
   },
   busyContainer: {
     flex: 1,
-    justifyContent: 'center',
+    marginTop: 32,
+    marginBottom: 16,
     alignItems: 'center',
+    justifyContent: 'center',
     flexDirection: 'row'
   },
   rewardsContainer: {
@@ -28,6 +30,14 @@ const rewardStyle = StyleSheet.create({
     marginLeft: 16,
     marginRight: 16,
     padding: 16
+  },
+  rewardCard: {
+    backgroundColor: Colors.White,
+    marginTop: 16,
+    marginLeft: 16,
+    marginRight: 16,
+    paddingTop: 16,
+    paddingBottom: 16
   },
   text: {
     fontFamily: 'Metropolis-Regular',
@@ -54,16 +64,22 @@ const rewardStyle = StyleSheet.create({
   bottomMarginLarge: {
     marginBottom: 24
   },
+  link: {
+    color: Colors.LbryGreen,
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14,
+  },
   leftCol: {
-    width: '10%'
+    width: '15%',
+    alignItems: 'center',
+    paddingLeft: 6
   },
   midCol: {
     width: '65%'
   },
   rightCol: {
-    width: '15%',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: '18%',
+    alignItems: 'center'
   },
   rewardAmount: {
     fontFamily: 'Metropolis-Regular',
@@ -82,7 +98,8 @@ const rewardStyle = StyleSheet.create({
   rewardDescription: {
     fontFamily: 'Metropolis-Regular',
     fontSize: 14,
-    lineHeight: 18
+    lineHeight: 18,
+    marginBottom: 4
   },
   claimed: {
     color: Colors.LbryGreen,

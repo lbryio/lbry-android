@@ -34,6 +34,16 @@ class RewardsPage extends React.PureComponent {
     return null;
   }
 
+  onClaimRewardPress = () => {
+    const { notify, user } = this.props;
+    console.log(user);
+    const isNotEligible = !user || !user.primary_email || !user.has_verified_email || !user.is_reward_approved;
+    if (isNotEligible) {
+      notify({ message: 'Unfortunately, you are not eligible to claim this reward at this time.', displayType: ['toast'] });
+      return;
+    }
+  }
+
   renderUnclaimedRewards() {
     const { fetching, rewards, user, claimed } = this.props;
 
@@ -61,13 +71,26 @@ class RewardsPage extends React.PureComponent {
       );
     }
 
-    const isNotEligible =
-      !user || !user.primary_email || !user.has_verified_email || !user.is_reward_approved;
+    const isNotEligible = !user || !user.primary_email || !user.has_verified_email || !user.is_reward_approved;
     return (
-      <ScrollView contentContainerStyle={rewardStyle.scrollContentContainer}>
-        {rewards.map(reward => <RewardCard key={reward.reward_type} reward={reward} />)}
-      </ScrollView>
+      <View>
+        {rewards.map(reward => <RewardCard key={reward.reward_type}
+                                           canClaim={!isNotEligible}
+                                           reward={reward}
+                                           onClaimPress={this.onClaimRewardPress} />)}
+      </View>
     );
+  }
+
+  renderClaimedRewards() {
+    const { claimed } = this.props;
+    if (claimed && claimed.length) {
+      return (
+        <View>
+          {claimed.map(reward => <RewardCard key={reward.reward_type} reward={reward} />)}
+        </View>
+      );
+    }
   }
 
   render() {
@@ -75,7 +98,10 @@ class RewardsPage extends React.PureComponent {
       <View style={rewardStyle.container}>
         {this.renderVerification()}
         <View style={rewardStyle.rewardsContainer}>
-          {this.renderUnclaimedRewards()}
+          <ScrollView style={rewardStyle.scrollContainer} contentContainerStyle={rewardStyle.scrollContentContainer}>
+            {this.renderUnclaimedRewards()}
+            {this.renderClaimedRewards()}
+          </ScrollView>
         </View>
       </View>
     );
