@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 import Colors from './colors';
 
-const walletStyle = StyleSheet.create({
-  scrollContainer: {
+const rewardStyle = StyleSheet.create({
+  container: {
     flex: 1
   },
   row: {
@@ -16,9 +16,11 @@ const walletStyle = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row'
   },
-  infoText: {
-    fontFamily: 'Metropolis-Regular',
-    fontSize: 18
+  rewardsContainer: {
+    flex: 1
+  },
+  scrollContentContainer: {
+    paddingBottom: 16
   },
   card: {
     backgroundColor: Colors.White,
@@ -27,10 +29,21 @@ const walletStyle = StyleSheet.create({
     marginRight: 16,
     padding: 16
   },
+  text: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    lineHeight: 24
+  },
+  infoText: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 18,
+    marginLeft: 12
+  },
   title: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Metropolis-SemiBold',
     fontSize: 20,
-    marginBottom: 24
+    marginBottom: 8,
+    color: Colors.LbryGreen
   },
   bottomMarginSmall: {
     marginBottom: 8
@@ -40,7 +53,43 @@ const walletStyle = StyleSheet.create({
   },
   bottomMarginLarge: {
     marginBottom: 24
+  },
+  leftCol: {
+    width: '10%'
+  },
+  midCol: {
+    width: '65%'
+  },
+  rightCol: {
+    width: '15%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  rewardAmount: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 24,
+    textAlign: 'center'
+  },
+  rewardCurrency: {
+    fontFamily: 'Metropolis-Regular'
+  },
+  rewardTitle: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    color: Colors.LbryGreen,
+    marginBottom: 4,
+  },
+  rewardDescription: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14,
+    lineHeight: 18
+  },
+  claimed: {
+    color: Colors.LbryGreen,
+  },
+  disabled: {
+    color: Colors.LightGrey
   }
 });
 
-export default walletStyle;
+export default rewardStyle;

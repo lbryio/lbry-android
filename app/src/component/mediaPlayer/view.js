@@ -9,7 +9,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Video from 'react-native-video';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import FileItemMedia from '../fileItemMedia';
 import mediaPlayerStyle from '../../styles/mediaPlayer';
 
@@ -152,11 +152,10 @@ class MediaPlayer extends React.PureComponent {
   }
 
   checkSeekerPosition(val = 0) {
-    const offset = this.getTrackingOffset();
-    if (val < offset) {
-      val = offset;
-    } else if (val >= (offset + this.seekerWidth)) {
-      return offset + this.seekerWidth;
+    if (val < 0) {
+      val = 0;
+    } else if (val >= this.seekerWidth) {
+      return this.seekerWidth;
     }
 
     return val;
@@ -211,9 +210,6 @@ class MediaPlayer extends React.PureComponent {
   }
 
   calculateSeekerPosition() {
-    if (this.state.fullscreenMode) {
-      return this.getTrackingOffset() + (this.seekerWidth * this.getCurrentTimePercentage());
-    }
     return this.seekerWidth * this.getCurrentTimePercentage();
   }
 
@@ -229,7 +225,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   componentDidMount() {
-
+    this.setSeekerPosition(this.calculateSeekerPosition());
   }
 
   componentWillUnmount() {
@@ -265,10 +261,16 @@ class MediaPlayer extends React.PureComponent {
     return null;
   }
 
+  getEncodedDownloadPath = (fileInfo) => {
+    const { file_name: fileName } = fileInfo;
+    const encodedFileName = encodeURIComponent(fileName).replace(/!/g, '%21');
+    return fileInfo.download_path.replace(new RegExp(fileName, 'g'), encodedFileName);
+  }
+
   render() {
     const { backgroundPlayEnabled, fileInfo, thumbnail, onLayout, style } = this.props;
-    const flexCompleted = this.getCurrentTimePercentage() * 100;
-    const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
+    const completedWidth = this.getCurrentTimePercentage() * this.seekerWidth;
+    const remainingWidth = this.seekerWidth - completedWidth;
     let styles = [this.state.fullscreenMode ? mediaPlayerStyle.fullscreenContainer : mediaPlayerStyle.container];
     if (style) {
       if (style.length) {
@@ -283,7 +285,7 @@ class MediaPlayer extends React.PureComponent {
 
     return (
       <View style={styles} onLayout={onLayout}>
-        <Video source={{ uri: 'file:///' + fileInfo.download_path }}
+        <Video source={{ uri: 'file:///' + this.getEncodedDownloadPath(fileInfo) }}
                ref={(ref: Video) => { this.video = ref }}
                resizeMode={this.state.resizeMode}
                playInBackground={backgroundPlayEnabled}
@@ -306,14 +308,18 @@ class MediaPlayer extends React.PureComponent {
               this.seekerWidth = evt.nativeEvent.layout.width;
             }}>
           <View style={mediaPlayerStyle.progress}>
-            <View style={[mediaPlayerStyle.innerProgressCompleted, { flex: flexCompleted }]} />
-            <View style={[mediaPlayerStyle.innerProgressRemaining, { flex: flexRemaining }]} />
+            <View style={[mediaPlayerStyle.innerProgressCompleted, { width: completedWidth }]} />
+            <View style={[mediaPlayerStyle.innerProgressRemaining, { width: remainingWidth }]} />
           </View>
         </View>}
 
         {this.state.areControlsVisible &&
-        <View style={[mediaPlayerStyle.seekerHandle, { left: this.state.seekerPosition }]} { ...this.seekResponder.panHandlers }>
-          <View style={this.state.seeking ? mediaPlayerStyle.bigSeekerCircle : mediaPlayerStyle.seekerCircle} />
+        <View style={{ left: this.getTrackingOffset(), width: this.seekerWidth }}>
+          <View style={[mediaPlayerStyle.seekerHandle,
+                        (this.state.fullscreenMode ? mediaPlayerStyle.seekerHandleFs : mediaPlayerStyle.seekerHandleContained),
+                        { left: this.state.seekerPosition }]} { ...this.seekResponder.panHandlers }>
+            <View style={this.state.seeking ? mediaPlayerStyle.bigSeekerCircle : mediaPlayerStyle.seekerCircle} />
+          </View>
         </View>}
       </View>
     );

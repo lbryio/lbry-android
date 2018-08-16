@@ -10,7 +10,8 @@ const searchStyle = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    padding: 16,
+    paddingLeft: 16,
+    paddingRight: 16,
     marginBottom: 60
   },
   scrollPadding: {
@@ -20,14 +21,14 @@ const searchStyle = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 16
+    marginTop: 16
   },
   thumbnail: {
     width: '100%',
     height: 80
   },
   thumbnailContainer: {
-    width: '25%' 
+    width: '25%'
   },
   detailsContainer: {
     width: '70%'

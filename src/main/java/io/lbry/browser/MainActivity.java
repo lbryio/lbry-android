@@ -23,6 +23,7 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.shell.MainReactPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 
 import io.lbry.browser.reactpackages.LbryReactPackage;
 import io.lbry.browser.reactmodules.DownloadManagerModule;
@@ -50,6 +51,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     public static final String SALT_KEY = "salt";
 
     public static final String DEVICE_ID_KEY = "deviceId";
+
+    public static final String SETTING_KEEP_DAEMON_RUNNING = "keepDaemonRunning";
 
     /**
      * Flag which indicates whether or not the service is running. Will be updated in the
@@ -86,6 +89,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .setJSMainModulePath("index")
                 .addPackage(new MainReactPackage())
                 .addPackage(new ReactVideoPackage())
+                .addPackage(new RNFetchBlobPackage())
                 .addPackage(new LbryReactPackage())
                 .setUseDeveloperSupport(true)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
@@ -168,19 +172,10 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             Toast.makeText(context, "Rewards cannot be claimed because we could not identify your device.", Toast.LENGTH_LONG).show();
         }
 
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-384");
-            md.update(id.getBytes("UTF-8"));
-            String hash = new BigInteger(1, md.digest()).toString(16);
-
-            SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString(DEVICE_ID_KEY, hash);
-            editor.commit();
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            // SHA-384 not found, UTF-8 encoding not supported
-            Toast.makeText(context, "Rewards cannot be claimed because we could not identify your device.", Toast.LENGTH_LONG).show();
-        }
+        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(DEVICE_ID_KEY, id);
+        editor.commit();
 
         return id;
     }
@@ -218,7 +213,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     protected void onDestroy() {
         // check service running setting and end it here
         SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        boolean shouldKeepDaemonRunning = sp.getBoolean("keepDaemonRunning", true);
+        boolean shouldKeepDaemonRunning = sp.getBoolean(SETTING_KEEP_DAEMON_RUNNING, true);
         if (!shouldKeepDaemonRunning) {
             serviceRunning = isServiceRunning(LbrynetService.class);
             if (serviceRunning) {

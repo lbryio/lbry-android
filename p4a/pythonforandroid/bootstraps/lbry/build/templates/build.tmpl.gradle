@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
-       jcenter()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.1'
@@ -11,6 +11,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url 'https://maven.google.com'
+        }
         maven {
             // All of React Native (JS, Android binaries) is installed from npm
             url "$rootDir/react/node_modules/react-native/android"
@@ -26,14 +29,14 @@ apply plugin: 'com.android.application'
 android {
 	compileSdkVersion {{ android_api }}
 	buildToolsVersion '{{ build_tools_version }}'
-	defaultConfig {
+ 	defaultConfig {
 		minSdkVersion {{ args.min_sdk_version }}
 		targetSdkVersion {{ android_api }}
 		versionCode {{ args.numeric_version }}
 		versionName '{{ args.version }}'
-        
-        ndk {  
-            abiFilters "armeabi-v7a", "x86"  
+
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
         }
 	}
 
@@ -60,14 +63,25 @@ android {
 
     sourceSets {
         main {
-            jniLibs.srcDir 'libs' 
+            jniLibs.srcDir 'libs'
         }
     }
+}
 
+subprojects {
+    afterEvaluate {project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion {{ android_api }}
+                buildToolsVersion '{{ build_tools_version }}'
+            }
+        }
+    }
 }
 
 dependencies {
     compile project(':react-native-video')
+    compile project(':react-native-fetch-blob')
 	{%- for aar in aars %}
 	compile(name: '{{ aar }}', ext: 'aar')
 	{%- endfor -%}

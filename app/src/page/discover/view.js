@@ -14,7 +14,6 @@ import FileItem from '../../component/fileItem';
 import discoverStyle from '../../styles/discover';
 import Colors from '../../styles/colors';
 import UriBar from '../../component/uriBar';
-import Feather from 'react-native-vector-icons/Feather';
 
 class DiscoverPage extends React.PureComponent {
   componentDidMount() {

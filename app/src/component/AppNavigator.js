@@ -28,19 +28,29 @@ import {
   TextInput,
   ToastAndroid
 } from 'react-native';
-import { SETTINGS, doHideNotification, selectNotification } from 'lbry-redux';
+import { SETTINGS, doHideNotification, doNotify, selectNotification } from 'lbry-redux';
+import {
+  doUserEmailVerify,
+  doUserEmailVerifyFailure,
+  selectEmailToVerify,
+  selectEmailVerifyIsPending,
+  selectEmailVerifyErrorMessage,
+  selectUser
+} from 'lbryinc';
 import { makeSelectClientSetting } from '../redux/selectors/settings';
-import Feather from 'react-native-vector-icons/Feather';
+import { decode as atob } from 'base-64';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import Constants from '../constants';
 import discoverStyle from '../styles/discover';
 import searchStyle from '../styles/search';
-import SearchRightHeaderIcon from "../component/searchRightHeaderIcon";
+import SearchRightHeaderIcon from '../component/searchRightHeaderIcon';
 
 const discoverStack = StackNavigator({
   Discover: {
     screen: DiscoverPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Discover',
-      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
     })
   },
   File: {
@@ -65,7 +75,7 @@ const trendingStack = StackNavigator({
     screen: TrendingPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Trending',
-      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
     })
   }
 });
@@ -75,7 +85,7 @@ const walletStack = StackNavigator({
     screen: WalletPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Wallet',
-      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
     })
   },
   TransactionHistory: {
@@ -94,7 +104,7 @@ const rewardsStack = StackNavigator({
     screen: RewardsPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Rewards',
-      headerLeft: <Feather name="menu" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
     })
   }
 });
@@ -134,18 +144,27 @@ export const AppNavigator = new StackNavigator({
 class AppWithNavigationState extends React.Component {
   static supportedDisplayTypes = ['toast'];
 
+  constructor() {
+    super();
+    this.state = {
+      emailVerifyDone: false
+    };
+  }
+
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
       const { dispatch, nav } = this.props;
       // There should be a better way to check this
       if (nav.routes.length > 0) {
-        const subRoutes = nav.routes[0].routes[0].routes;
-        const lastRoute = subRoutes[subRoutes.length - 1];
-        if (nav.routes[0].routes[0].index > 0 &&
-            ['About', 'Settings'].indexOf(lastRoute.key) > -1) {
-          dispatch(NavigationActions.back());
-          return true;
+        if (nav.routes[0].routes && nav.routes[0].routes.length > 0) {
+          const subRoutes = nav.routes[0].routes[0].routes;
+          const lastRoute = subRoutes[subRoutes.length - 1];
+          if (nav.routes[0].routes[0].index > 0 &&
+              ['About', 'Settings'].indexOf(lastRoute.key) > -1) {
+            dispatch(NavigationActions.back());
+            return true;
+          }
         }
         if (nav.routes[0].routeName === 'Main') {
           if (nav.routes[0].routes[0].routes[0].index > 0) {
@@ -170,7 +189,14 @@ class AppWithNavigationState extends React.Component {
 
   componentWillUpdate(nextProps) {
     const { dispatch } = this.props;
-    const { notification } = nextProps;
+    const {
+      notification,
+      emailToVerify,
+      emailVerifyPending,
+      emailVerifyErrorMessage,
+      user
+    } = nextProps;
+
     if (notification) {
       const { displayType, message } = notification;
       let currentDisplayType;
@@ -192,6 +218,20 @@ class AppWithNavigationState extends React.Component {
 
       dispatch(doHideNotification());
     }
+
+    if (user &&
+        !emailVerifyPending &&
+        !this.state.emailVerifyDone &&
+        (emailToVerify || emailVerifyErrorMessage)) {
+      AsyncStorage.getItem(Constants.KEY_SHOULD_VERIFY_EMAIL).then(shouldVerify => {
+        if ('true' === shouldVerify) {
+          this.setState({ emailVerifyDone: true });
+          const message = emailVerifyErrorMessage ?
+            String(emailVerifyErrorMessage) : 'Your email address was successfully verified.';
+          dispatch(doNotify({ message, displayType: ['toast'] }));
+        }
+      });
+    }
   }
 
   _handleAppStateChange = (nextAppState) => {
@@ -210,12 +250,38 @@ class AppWithNavigationState extends React.Component {
   _handleUrl = (evt) => {
     const { dispatch } = this.props;
     if (evt.url) {
-      const navigateAction = NavigationActions.navigate({
-        routeName: 'File',
-        key: evt.url,
-        params: { uri: evt.url }
-      });
-      dispatch(navigateAction);
+      if (evt.url.startsWith('lbry://?verify=')) {
+        this.setState({ emailVerifyDone: false });
+        let verification = {};
+        try {
+          verification = JSON.parse(atob(evt.url.substring(15)));
+        } catch (error) {
+          console.log(error);
+        }
+
+        if (verification.token && verification.recaptcha) {
+          AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
+          try {
+            dispatch(doUserEmailVerify(verification.token, verification.recaptcha));
+          } catch (error) {
+            const message = 'Invalid Verification Token';
+            dispatch(doUserEmailVerifyFailure(message));
+            dispatch(doNotify({ message, displayType: ['toast'] }));
+          }
+        } else {
+          dispatch(doNotify({
+            message: 'Invalid Verification URI',
+            displayType: ['toast'],
+          }));
+        }
+      } else {
+        const navigateAction = NavigationActions.navigate({
+          routeName: 'File',
+          key: evt.url,
+          params: { uri: evt.url }
+        });
+        dispatch(navigateAction);
+      }
     }
   }
 
@@ -234,10 +300,14 @@ class AppWithNavigationState extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
   nav: state.nav,
   notification: selectNotification(state),
-  keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
-  showNsfw: makeSelectClientSetting(SETTINGS.SHOW_NSFW)(state)
+  emailToVerify: selectEmailToVerify(state),
+  emailVerifyPending: selectEmailVerifyIsPending(state),
+  emailVerifyErrorMessage: selectEmailVerifyErrorMessage(state),
+  showNsfw: makeSelectClientSetting(SETTINGS.SHOW_NSFW)(state),
+  user: selectUser(state),
 });
 
 export default connect(mapStateToProps)(AppWithNavigationState);

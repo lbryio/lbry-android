@@ -16,6 +16,7 @@ reducers[ACTIONS.CLIENT_SETTING_CHANGED] = (state, action) => {
   });
 };
 
+
 export default function reducer(state = defaultState, action) {
   const handler = reducers[action.type];
   if (handler) return handler(state, action);

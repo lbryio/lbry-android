@@ -11,11 +11,11 @@ class AboutPage extends React.PureComponent {
     lbryId: null,
     versionInfo: null
   };
-  
+
   componentDidMount() {
     if (NativeModules.VersionInfo) {
       NativeModules.VersionInfo.getAppVersion().then(version => {
-        this.setState({appVersion: version});  
+        this.setState({appVersion: version});
       });
     }
     Lbry.version().then(info => {
@@ -23,19 +23,19 @@ class AboutPage extends React.PureComponent {
         versionInfo: info,
       });
     });
-    Lbry.status({ session_status: true }).then(info => {
+    Lbry.status().then(info => {
       this.setState({
-        lbryId: info.lbry_id,
+        lbryId: info.installation_id,
       });
     });
   }
-  
+
   render() {
     const loading = 'Loading...';
     const ver = this.state.versionInfo ? this.state.versionInfo : null;
-    
+
     return (
-      <View>
+      <View style={aboutStyle.container}>
         <PageHeader title={"About LBRY"}
           onBackPressed={() => { this.props.navigation.goBack(); }} />
         <ScrollView style={aboutStyle.scrollContainer}>
@@ -50,27 +50,38 @@ class AboutPage extends React.PureComponent {
             <Link style={aboutStyle.link} href="https://lbry.io/faq/what-is-lbry" text="What is LBRY?" />
             <Link style={aboutStyle.link} href="https://lbry.io/faq" text="Frequently Asked Questions" />
           </View>
+          <Text style={aboutStyle.socialTitle}>Get Social</Text>
+          <Text style={aboutStyle.paragraph}>
+            You can interact with the LBRY team and members of the community on Discord, Facebook, Instagram, Twitter or Reddit.
+          </Text>
+          <View style={aboutStyle.links}>
+            <Link style={aboutStyle.link} href="https://discordapp.com/invite/Z3bERWA" text="Discord" />
+            <Link style={aboutStyle.link} href="https://www.facebook.com/LBRYio" text="Facebook" />
+            <Link style={aboutStyle.link} href="https://www.instagram.com/LBRYio/" text="Instagram" />
+            <Link style={aboutStyle.link} href="https://twitter.com/LBRYio" text="Twitter" />
+            <Link style={aboutStyle.link} href="https://reddit.com/r/lbry" text="Reddit" />
+          </View>
           <Text style={aboutStyle.releaseInfoTitle}>Release information</Text>
           <View style={aboutStyle.row}>
             <View style={aboutStyle.col}><Text style={aboutStyle.text}>App version</Text></View>
             <View style={aboutStyle.col}><Text selectable={true} style={aboutStyle.valueText}>{this.state.appVersion}</Text></View>
           </View>
-          
+
           <View style={aboutStyle.row}>
             <View style={aboutStyle.col}><Text style={aboutStyle.text}>Daemon (lbrynet)</Text></View>
             <View style={aboutStyle.col}><Text selectable={true} style={aboutStyle.valueText}>{ver ? ver.lbrynet_version : loading }</Text></View>
           </View>
-          
+
           <View style={aboutStyle.row}>
             <View style={aboutStyle.col}><Text style={aboutStyle.text}>Wallet (lbryum)</Text></View>
             <View style={aboutStyle.col}><Text selectable={true} style={aboutStyle.valueText}>{ver ? ver.lbryum_version : loading }</Text></View>
           </View>
-        
+
           <View style={aboutStyle.row}>
             <View style={aboutStyle.col}><Text style={aboutStyle.text}>Platform</Text></View>
             <View style={aboutStyle.col}><Text selectable={true} style={aboutStyle.valueText}>{ver ? ver.platform : loading }</Text></View>
           </View>
-          
+
           <View style={aboutStyle.row}>
             <View style={aboutStyle.col}>
               <Text style={aboutStyle.text}>Installation ID</Text>

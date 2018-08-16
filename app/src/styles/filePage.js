@@ -12,6 +12,13 @@ const filePageStyle = StyleSheet.create({
   pageContainer: {
     flex: 1
   },
+  divider: {
+    backgroundColor: Colors.LighterGrey,
+    width: '100%',
+    height: 1,
+    marginTop: 4,
+    marginBottom: 20
+  },
   innerPageContainer: {
     flex: 1,
     marginBottom: 60
@@ -23,7 +30,7 @@ const filePageStyle = StyleSheet.create({
   mediaContainer: {
     alignItems: 'center',
     width: screenWidth,
-    height: 220
+    height: 240
   },
   emptyClaimText: {
     fontFamily: 'Metropolis-Regular',
@@ -68,7 +75,7 @@ const filePageStyle = StyleSheet.create({
   },
   thumbnail: {
     width: screenWidth,
-    height: 204,
+    height: 224,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -85,7 +92,7 @@ const filePageStyle = StyleSheet.create({
   },
   containedPlayer: {
     width: '100%',
-    height: 220,
+    height: 240,
   },
   containedPlayerLandscape: {
     width: '100%',
@@ -139,9 +146,9 @@ const filePageStyle = StyleSheet.create({
     marginTop: -14,
     width: '50%',
   },
-  deleteButton: {
-    backgroundColor: Colors.Red,
-    width: 80
+  actionButton: {
+    backgroundColor: Colors.White,
+    width: 160
   },
   loading: {
     position: 'absolute',

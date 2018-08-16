@@ -1,9 +1,11 @@
 const Colors = {
   Black: '#000000',
   ChannelGrey: '#9b9b9b',
+  DarkGrey: '#555555',
   DescriptionGrey: '#999999',
   LbryGreen: '#40b89a',
   LightGrey: '#cccccc',
+  LighterGrey: '#e5e5e5',
   Orange: '#ffbb00',
   Red: '#ff0000',
   VeryLightGrey: '#f1f1f1',

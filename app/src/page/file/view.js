@@ -3,7 +3,6 @@ import { Lbry, normalizeURI } from 'lbry-redux';
 import {
   ActivityIndicator,
   Alert,
-  Button,
   Dimensions,
   NativeModules,
   ScrollView,
@@ -16,6 +15,7 @@ import {
   WebView
 } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import Button from '../../component/button';
 import Colors from '../../styles/colors';
 import ChannelPage from '../channel';
 import FileDownloadButton from '../../component/fileDownloadButton';
@@ -99,9 +99,17 @@ class FilePage extends React.PureComponent {
       if (mode) {
         // fullscreen, so change orientation to landscape mode
         NativeModules.ScreenOrientation.lockOrientationLandscape();
+        if (NativeModules.UtilityModule) {
+          // hide the navigation bar (on devices that use have soft navigation bar)
+          NativeModules.UtilityModule.hideNavigationBar();
+        }
       } else {
         // Switch back to portrait mode when the media is not fullscreen
         NativeModules.ScreenOrientation.lockOrientationPortrait();
+        if (NativeModules.UtilityModule) {
+          // hide the navigation bar (on devices that use have soft navigation bar)
+          NativeModules.UtilityModule.showNavigationBar();
+        }
       }
     }
   }
@@ -138,9 +146,11 @@ class FilePage extends React.PureComponent {
     StatusBar.setHidden(false);
     if (NativeModules.ScreenOrientation) {
       NativeModules.ScreenOrientation.unlockOrientation();
-    }    
+    }
     if (NativeModules.UtilityModule) {
-      NativeModules.UtilityModule.keepAwakeOff();
+      const utility = NativeModules.UtilityModule;
+      utility.keepAwakeOff();
+      utility.showNavigationBar();
     }
   }
 
@@ -322,9 +332,16 @@ class FilePage extends React.PureComponent {
 
               { showActions &&
               <View style={filePageStyle.actions}>
-                {completed && <Button color="red" title="Delete" onPress={this.onDeletePressed} />}
+                {completed && <Button style={filePageStyle.actionButton}
+                                      theme={"light"}
+                                      icon={"trash"}
+                                      text={"Delete"}
+                                      onPress={this.onDeletePressed} />}
                 {!completed && fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes &&
-                  <Button color="red" title="Stop Download" onPress={this.onStopDownloadPressed} />
+                  <Button style={filePageStyle.actionButton}
+                          theme={"light"}
+                          text={"Stop Download"}
+                          onPress={this.onStopDownloadPressed} />
                 }
               </View>}
               <ScrollView style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}>
@@ -336,6 +353,9 @@ class FilePage extends React.PureComponent {
                                         const channelUri = normalizeURI(channelName);
                                         navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
                                       }} />}
+
+                {description && description.length > 0 && <View style={filePageStyle.divider} />}
+
                 {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
               </ScrollView>
             </View>

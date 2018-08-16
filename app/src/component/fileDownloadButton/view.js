@@ -1,5 +1,6 @@
 import React from 'react';
 import { NativeModules, Text, View, TouchableOpacity } from 'react-native';
+import Button from '../button';
 import fileDownloadButtonStyle from '../../styles/fileDownloadButton';
 
 class FileDownloadButton extends React.PureComponent {
@@ -64,17 +65,17 @@ class FileDownloadButton extends React.PureComponent {
         );
       }
       return (
-        <TouchableOpacity style={[style, fileDownloadButtonStyle.container]} onPress={() => {
-            if (NativeModules.Mixpanel) {
-              NativeModules.Mixpanel.track('Purchase Uri', { Uri: uri });
-            }
-            purchaseUri(uri);
-            if (isPlayable && onPlay) {
-              this.props.onPlay();
-            }
-          }}>
-          <Text style={fileDownloadButtonStyle.text}>{isPlayable ? 'Play' : 'Download'}</Text>
-        </TouchableOpacity>
+        <Button icon={isPlayable ? 'play' : null}
+                text={isPlayable ? 'Play' : 'Download'}
+                style={[style, fileDownloadButtonStyle.container]} onPress={() => {
+          if (NativeModules.Mixpanel) {
+            NativeModules.Mixpanel.track('Purchase Uri', { Uri: uri });
+          }
+          purchaseUri(uri);
+          if (isPlayable && onPlay) {
+            this.props.onPlay();
+          }
+        }} />
       );
     } else if (fileInfo && fileInfo.download_path) {
       return (
