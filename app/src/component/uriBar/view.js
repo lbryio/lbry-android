@@ -7,21 +7,22 @@ import uriBarStyle from '../../styles/uriBar';
 
 class UriBar extends React.PureComponent {
   static INPUT_TIMEOUT = 500;
-  
+
   textInput = null;
 
   keyboardDidHideListener = null;
-  
+
   componentDidMount () {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    this.setSelection();
   }
-  
+
   componentWillUnmount() {
     if (this.keyboardDidHideListener) {
       this.keyboardDidHideListener.remove();
     }
   }
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,24 +32,24 @@ class UriBar extends React.PureComponent {
       focused: false
     };
   }
-  
+
   handleChangeText = text => {
     const newValue = text ? text : '';
     clearTimeout(this.state.changeTextTimeout);
     const { updateSearchQuery } = this.props;
-    
+
     let timeout = setTimeout(() => {
       updateSearchQuery(text);
     }, UriBar.INPUT_TIMEOUT);
     this.setState({ inputText: newValue, currentValue: newValue, changeTextTimeout: timeout });
   }
-  
+
   handleItemPress = (item) => {
     const { navigation, updateSearchQuery } = this.props;
     const { type, value } = item;
-    
+
     Keyboard.dismiss();
-    
+
     if (SEARCH_TYPES.SEARCH === type) {
       navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: value }});
     } else {
@@ -56,7 +57,7 @@ class UriBar extends React.PureComponent {
       navigation.navigate({ routeName: 'File', key: uri, params: { uri }});
     }
   }
-  
+
   _keyboardDidHide = () => {
     if (this.textInput) {
       this.textInput.blur();
@@ -64,17 +65,23 @@ class UriBar extends React.PureComponent {
     this.setState({ focused: false });
   }
 
+  setSelection() {
+    if (this.textInput) {
+      this.textInput.setNativeProps({ selection: { start: 0, end: 0 }});
+    }
+  }
+
   render() {
     const { navigation, suggestions, updateSearchQuery, value } = this.props;
     if (this.state.currentValue === null) {
       this.setState({ currentValue: value });
     }
-    
+
     let style = [uriBarStyle.overlay];
     if (this.state.focused) {
       style.push(uriBarStyle.inFocus);
     }
-    
+
     return (
       <View style={style}>
         {this.state.focused && (
@@ -90,6 +97,7 @@ class UriBar extends React.PureComponent {
         <View style={uriBarStyle.uriContainer}>
           <TextInput ref={(ref) => { this.textInput = ref }}
                      style={uriBarStyle.uriText}
+                     onLayout={() => { this.setSelection(); }}
                      selectTextOnFocus={true}
                      placeholder={'Search for videos, music, games and more'}
                      underlineColorAndroid={'transparent'}
@@ -100,14 +108,17 @@ class UriBar extends React.PureComponent {
                      inlineImageLeft={'baseline_search_black_24'}
                      inlineImagePadding={16}
                      onFocus={() => this.setState({ focused: true })}
-                     onBlur={() => this.setState({ focused: false })}
+                     onBlur={() => {
+                       this.setState({ focused: false });
+                       this.setSelection();
+                     }}
                      onChangeText={this.handleChangeText}
                      onSubmitEditing={() => {
                       if (this.state.inputText) {
                         let inputText = this.state.inputText;
                         if (isNameValid(inputText) || isURIValid(inputText)) {
                           const uri = normalizeURI(inputText);
-                          navigation.navigate({ routeName: 'File', key: uri, params: { uri }});  
+                          navigation.navigate({ routeName: 'File', key: uri, params: { uri }});
                         } else {
                           // Open the search page with the query populated
                           navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: inputText }});
