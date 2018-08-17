@@ -5,13 +5,16 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Intent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.io.File;
@@ -36,13 +39,33 @@ public class LbrynetService extends PythonService {
 
     private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.DAEMON_NOTIFICATION_CHANNEL";
 
+    public static final String ACTION_STOP_SERVICE = "io.lbry.browser.ACTION_STOP_SERVICE";
+
     public static String TAG = "LbrynetService";
 
     public static LbrynetService serviceInstance;
 
+    private BroadcastReceiver stopServiceReceiver;
+
     @Override
     public boolean canDisplayNotification() {
         return true;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // Register the stop service receiver
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_STOP_SERVICE);
+        stopServiceReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LbrynetService.this.stopSelf();
+            }
+        };
+        registerReceiver(stopServiceReceiver, intentFilter);
     }
 
     @Override
@@ -64,13 +87,19 @@ public class LbrynetService extends PythonService {
 
         Intent contextIntent = new Intent(context, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent stopIntent = new Intent(ACTION_STOP_SERVICE);
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(context, 0, stopIntent, 0);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-        Notification notification = builder.setContentTitle(serviceTitle)
+        Notification notification = builder.setColor(ContextCompat.getColor(context, R.color.lbrygreen))
+                                           .setContentTitle(serviceTitle)
                                            .setContentText(serviceDescription)
                                            .setContentIntent(pIntent)
                                            .setWhen(System.currentTimeMillis())
                                            .setSmallIcon(R.drawable.ic_lbry)
                                            .setOngoing(true)
+                                           .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Stop", stopPendingIntent)
                                            .build();
         startForeground(1, notification);
     }
@@ -94,12 +123,18 @@ public class LbrynetService extends PythonService {
                 getApplicationContext(), "", LbrynetService.class, "lbrynetservice");
         }
 
+        // Register broadcast receiver
+
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (stopServiceReceiver != null) {
+            unregisterReceiver(stopServiceReceiver);
+            stopServiceReceiver = null;
+        }
         serviceInstance = null;
     }
 

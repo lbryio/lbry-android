@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -44,6 +45,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     private static final int PHONE_STATE_PERMISSION_REQ_CODE = 202;
 
+    private BroadcastReceiver stopServiceReceiver;
+
     private ReactRootView mReactRootView;
 
     private ReactInstanceManager mReactInstanceManager;
@@ -78,6 +81,17 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         super.onCreate(savedInstanceState);
         currentActivity = this;
+
+        // Register the stop service receiver (so that we close the activity if the user requests the service to stop)
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(LbrynetService.ACTION_STOP_SERVICE);
+        stopServiceReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                MainActivity.this.finish();
+            }
+        };
+        registerReceiver(stopServiceReceiver, intentFilter);
 
         // Start the daemon service if it is not started
         serviceRunning = isServiceRunning(LbrynetService.class);
@@ -228,6 +242,11 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             if (serviceRunning) {
                ServiceHelper.stop(this, LbrynetService.class);
             }
+        }
+
+        if (stopServiceReceiver != null) {
+            unregisterReceiver(stopServiceReceiver);
+            stopServiceReceiver = null;
         }
 
         super.onDestroy();
