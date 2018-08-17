@@ -57,47 +57,62 @@ class SplashScreen extends React.PureComponent {
     });
   }
 
-  componentWillUpdate(nextProps) {
-    const { navigation, verifyUserEmail, verifyUserEmailFailure } = this.props;
+  componentWillReceiveProps(nextProps) {
+    const {
+      emailToVerify,
+      navigation,
+      setEmailToVerify,
+      verifyUserEmail,
+      verifyUserEmailFailure
+    } = this.props;
     const { user } = nextProps;
-    if (this.state.daemonReady && this.state.shouldAuthenticate && user && user.id) {
-      // user is authenticated, navigate to the main view
-      const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'Main'})
-        ]
-      });
-      navigation.dispatch(resetAction);
 
-      const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
-      if (launchUrl) {
-        if (launchUrl.startsWith('lbry://?verify=')) {
-          let verification = {};
-          try {
-            verification = JSON.parse(atob(launchUrl.substring(15)));
-          } catch (error) {
-            console.log(error);
+    if (this.state.daemonReady && this.state.shouldAuthenticate && user && user.id) {
+      this.setState({ shouldAuthenticate: false }, () => {
+        AsyncStorage.getItem(Constants.KEY_FIRST_RUN_EMAIL).then(email => {
+          if (email) {
+            setEmailToVerify(email);
           }
-          if (verification.token && verification.recaptcha) {
-            AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
-            try {
-              verifyUserEmail(verification.token, verification.recaptcha);
-            } catch (error) {
-              const message = 'Invalid Verification Token';
-              verifyUserEmailFailure(message);
-              notify({ message, displayType: ['toast'] });
+
+          // user is authenticated, navigate to the main view
+          const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Main'})
+            ]
+          });
+          navigation.dispatch(resetAction);
+
+          const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
+          if (launchUrl) {
+            if (launchUrl.startsWith('lbry://?verify=')) {
+              let verification = {};
+              try {
+                verification = JSON.parse(atob(launchUrl.substring(15)));
+              } catch (error) {
+                console.log(error);
+              }
+              if (verification.token && verification.recaptcha) {
+                AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
+                try {
+                  verifyUserEmail(verification.token, verification.recaptcha);
+                } catch (error) {
+                  const message = 'Invalid Verification Token';
+                  verifyUserEmailFailure(message);
+                  notify({ message, displayType: ['toast'] });
+                }
+              } else {
+                notify({
+                  message: 'Invalid Verification URI',
+                  displayType: ['toast'],
+                });
+              }
+            } else {
+              navigation.navigate({ routeName: 'File', key: launchUrl, params: { uri: launchUrl } });
             }
-          } else {
-            notify({
-              message: 'Invalid Verification URI',
-              displayType: ['toast'],
-            });
           }
-        } else {
-          navigation.navigate({ routeName: 'File', key: launchUrl, params: { uri: launchUrl } });
-        }
-      }
+        });
+      });
     }
   }
 
@@ -132,6 +147,7 @@ class SplashScreen extends React.PureComponent {
 
         balanceSubscribe();
         NativeModules.VersionInfo.getAppVersion().then(appVersion => {
+          this.setState({ shouldAuthenticate: true });
           if (NativeModules.UtilityModule) {
             // authenticate with the device ID if the method is available
             NativeModules.UtilityModule.getDeviceId().then(deviceId => {
@@ -140,9 +156,9 @@ class SplashScreen extends React.PureComponent {
           } else {
             authenticate(appVersion);
           }
-          this.setState({ shouldAuthenticate: true });
         });
       });
+
       return;
     }
 
@@ -180,6 +196,7 @@ class SplashScreen extends React.PureComponent {
         details: 'Initializing LBRY service...'
       });
     }
+
     setTimeout(() => {
       this.updateStatus();
     }, 500);
