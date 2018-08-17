@@ -8,6 +8,7 @@ import {
   selectUser,
   selectEmailToVerify
 } from 'lbryinc';
+import { doDeleteCompleteBlobs } from '../../redux/actions/file';
 import SplashScreen from './view';
 
 const select = state => ({
@@ -17,6 +18,7 @@ const select = state => ({
 
 const perform = dispatch => ({
     authenticate: (appVersion, deviceId) => dispatch(doAuthenticate(appVersion, deviceId)),
+    deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
     balanceSubscribe: () => dispatch(doBalanceSubscribe()),
     notify: data => dispatch(doNotify(data)),
     setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),

@@ -27,6 +27,7 @@ import {
   TextInput,
   ToastAndroid
 } from 'react-native';
+import { doDeleteCompleteBlobs } from '../redux/actions/file';
 import { SETTINGS, doHideNotification, doNotify, selectNotification } from 'lbry-redux';
 import {
   doUserEmailVerify,
@@ -227,6 +228,7 @@ class AppWithNavigationState extends React.Component {
   }
 
   _handleAppStateChange = (nextAppState) => {
+    const { dispatch } = this.props;
     // Check if the app was suspended
     if (AppState.currentState && AppState.currentState.match(/inactive|background/)) {
       AsyncStorage.getItem('firstLaunchTime').then(start => {
@@ -236,6 +238,11 @@ class AppWithNavigationState extends React.Component {
           AsyncStorage.setItem('firstLaunchSuspended', 'true');
         }
       });
+    }
+
+    if (AppState.currentState && AppState.currentState.match(/active/)) {
+      // Cleanup blobs for completed files upon app resume to save space
+      dispatch(doDeleteCompleteBlobs());
     }
   }
 
