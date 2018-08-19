@@ -1,6 +1,7 @@
 package io.lbry.browser.reactmodules;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import io.lbry.browser.MainActivity;
 import io.lbry.browser.ServiceHelper;
 
 public class DaemonServiceControlModule extends ReactContextBaseJavaModule {
+
     private Context context;
 
     public DaemonServiceControlModule(ReactApplicationContext reactContext) {

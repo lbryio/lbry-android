@@ -1,6 +1,7 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
+  DeviceEventEmitter,
   NativeModules,
   PanResponder,
   Text,
@@ -225,14 +226,36 @@ class MediaPlayer extends React.PureComponent {
 
   componentDidMount() {
     this.setSeekerPosition(this.calculateSeekerPosition());
+    DeviceEventEmitter.addListener('onBackgroundPlayPressed', this.play);
+    DeviceEventEmitter.addListener('onBackgroundPausePressed', this.pause);
   }
 
   componentWillUnmount() {
+    DeviceEventEmitter.removeListener('onBackgroundPlayPressed', this.play);
+    DeviceEventEmitter.removeListener('onBackgroundPausePressed', this.pause);
     this.clearControlsTimeout();
     this.setState({ paused: true, fullscreenMode: false });
     const { onFullscreenToggled } = this.props;
     if (onFullscreenToggled) {
       onFullscreenToggled(false);
+    }
+  }
+
+  play = () => {
+    this.setState({ paused: false }, this.updateBackgroundMediaNotification);
+  }
+
+  pause = () => {
+    this.setState({ paused: true }, this.updateBackgroundMediaNotification);
+  }
+
+  updateBackgroundMediaNotification = () => {
+    const { backgroundPlayEnabled } = this.props;
+    if (backgroundPlayEnabled) {
+      if (NativeModules.BackgroundMedia && window.currentMediaInfo) {
+        const { title, channel } = window.currentMediaInfo;
+        NativeModules.BackgroundMedia.showPlaybackNotification(title, channel, null, this.state.paused);
+      }
     }
   }
 
@@ -285,7 +308,7 @@ class MediaPlayer extends React.PureComponent {
     return (
       <View style={styles} onLayout={onLayout}>
         <Video source={{ uri: 'file:///' + this.getEncodedDownloadPath(fileInfo) }}
-               ref={(ref: Video) => { this.video = ref }}
+               ref={(ref: Video) => { this.video = ref; }}
                resizeMode={this.state.resizeMode}
                playInBackground={backgroundPlayEnabled}
                style={mediaPlayerStyle.player}
