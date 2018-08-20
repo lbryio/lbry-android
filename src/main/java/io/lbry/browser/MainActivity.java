@@ -14,6 +14,7 @@ import android.Manifest;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
@@ -23,10 +24,13 @@ import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.shell.MainReactPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 
 import io.lbry.browser.reactpackages.LbryReactPackage;
+import io.lbry.browser.reactmodules.BackgroundMediaModule;
 import io.lbry.browser.reactmodules.DownloadManagerModule;
 
 import java.io.UnsupportedEncodingException;
@@ -46,6 +50,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     private static final int PHONE_STATE_PERMISSION_REQ_CODE = 202;
 
     private BroadcastReceiver stopServiceReceiver;
+
+    private BroadcastReceiver backgroundMediaReceiver;
 
     private ReactRootView mReactRootView;
 
@@ -83,15 +89,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         currentActivity = this;
 
         // Register the stop service receiver (so that we close the activity if the user requests the service to stop)
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(LbrynetService.ACTION_STOP_SERVICE);
-        stopServiceReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                MainActivity.this.finish();
-            }
-        };
-        registerReceiver(stopServiceReceiver, intentFilter);
+        registerStopReceiver();
 
         // Start the daemon service if it is not started
         serviceRunning = isServiceRunning(LbrynetService.class);
@@ -113,7 +111,46 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .build();
         mReactRootView.startReactApplication(mReactInstanceManager, "LBRYApp", null);
 
+        registerBackgroundMediaReceiver();
+
         setContentView(mReactRootView);
+    }
+
+    private void registerStopReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(LbrynetService.ACTION_STOP_SERVICE);
+        stopServiceReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                MainActivity.this.finish();
+            }
+        };
+        registerReceiver(stopServiceReceiver, intentFilter);
+    }
+
+    private void registerBackgroundMediaReceiver() {
+        // Background media receiver
+        IntentFilter backgroundMediaFilter = new IntentFilter();
+        backgroundMediaFilter.addAction(BackgroundMediaModule.ACTION_PLAY);
+        backgroundMediaFilter.addAction(BackgroundMediaModule.ACTION_PAUSE);
+        backgroundMediaReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+                if (reactContext != null) {
+                    if (BackgroundMediaModule.ACTION_PLAY.equals(action)) {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("onBackgroundPlayPressed", null);
+                    }
+                    if (BackgroundMediaModule.ACTION_PAUSE.equals(action)) {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("onBackgroundPausePressed", null);
+                    }
+                }
+            }
+        };
+        registerReceiver(backgroundMediaReceiver, backgroundMediaFilter);
     }
 
     @Override
@@ -244,11 +281,18 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             }
         }
 
+        if (backgroundMediaReceiver != null) {
+            unregisterReceiver(backgroundMediaReceiver);
+            backgroundMediaReceiver = null;
+        }
+
         if (stopServiceReceiver != null) {
             unregisterReceiver(stopServiceReceiver);
             stopServiceReceiver = null;
         }
 
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.cancelAll();
         super.onDestroy();
 
         if (mReactInstanceManager != null) {
