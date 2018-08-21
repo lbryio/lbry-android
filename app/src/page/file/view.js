@@ -152,6 +152,9 @@ class FilePage extends React.PureComponent {
       utility.keepAwakeOff();
       utility.showNavigationBar();
     }
+    if (window.currentMediaInfo) {
+      window.currentMediaInfo = null;
+    }
   }
 
   localUriForFileInfo = (fileInfo) => {
@@ -322,7 +325,13 @@ class FilePage extends React.PureComponent {
                                             style={playerStyle}
                                             autoPlay={this.state.autoPlayMedia}
                                             onFullscreenToggled={this.handleFullscreenToggle}
-                                            onMediaLoaded={() => { this.setState({ mediaLoaded: true }); }}
+                                            onMediaLoaded={() => {
+                                              this.setState({ mediaLoaded: true });
+                                              window.currentMediaInfo = {
+                                                title: title,
+                                                channel: channelName
+                                              };
+                                            }}
                                             onLayout={(evt) => {
                                               if (!this.state.playerHeight) {
                                                 this.setState({ playerHeight: evt.nativeEvent.layout.height });

@@ -28,6 +28,7 @@ import {
   TextInput,
   ToastAndroid
 } from 'react-native';
+import { doDeleteCompleteBlobs } from '../redux/actions/file';
 import { SETTINGS, doHideNotification, doNotify, selectNotification } from 'lbry-redux';
 import {
   doUserEmailVerify,
@@ -239,6 +240,7 @@ class AppWithNavigationState extends React.Component {
   }
 
   _handleAppStateChange = (nextAppState) => {
+    const { backgroundPlayEnabled, dispatch } = this.props;
     // Check if the app was suspended
     if (AppState.currentState && AppState.currentState.match(/inactive|background/)) {
       AsyncStorage.getItem('firstLaunchTime').then(start => {
@@ -247,7 +249,21 @@ class AppWithNavigationState extends React.Component {
           // If so, this needs to be included as a property when tracking
           AsyncStorage.setItem('firstLaunchSuspended', 'true');
         }
+
+        // Background media
+        if (backgroundPlayEnabled && NativeModules.BackgroundMedia && window.currentMediaInfo) {
+          const { title, channel } = window.currentMediaInfo;
+          NativeModules.BackgroundMedia.showPlaybackNotification(title, channel, null, false);
+        }
       });
+    }
+
+    if (AppState.currentState && AppState.currentState.match(/active/)) {
+      // Cleanup blobs for completed files upon app resume to save space
+      dispatch(doDeleteCompleteBlobs());
+      if (backgroundPlayEnabled || NativeModules.BackgroundMedia) {
+        NativeModules.BackgroundMedia.hidePlaybackNotification();
+      }
     }
   }
 
@@ -304,6 +320,7 @@ class AppWithNavigationState extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  backgroundPlayEnabled: makeSelectClientSetting(SETTINGS.BACKGROUND_PLAY_ENABLED)(state),
   keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
   nav: state.nav,
   notification: selectNotification(state),
