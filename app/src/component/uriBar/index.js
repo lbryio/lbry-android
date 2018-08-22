@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
-import { doUpdateSearchQuery, selectSearchState as selectSearch } from 'lbry-redux';
+import { doUpdateSearchQuery, selectSearchState as selectSearch, selectSearchSuggestions } from 'lbry-redux';
 import UriBar from './view';
 
 const select = state => {
   const { ...searchState } = selectSearch(state);
   
   return {
-    ...searchState
+    ...searchState,
+    suggestions: selectSearchSuggestions(state)
   };
 };
 
