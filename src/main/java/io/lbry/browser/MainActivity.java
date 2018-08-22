@@ -49,6 +49,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     private static final int PHONE_STATE_PERMISSION_REQ_CODE = 202;
 
+    private BroadcastReceiver stopServiceReceiver;
+
     private BroadcastReceiver backgroundMediaReceiver;
 
     private ReactRootView mReactRootView;
@@ -86,6 +88,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         super.onCreate(savedInstanceState);
         currentActivity = this;
 
+        // Register the stop service receiver (so that we close the activity if the user requests the service to stop)
+        registerStopReceiver();
+
         // Start the daemon service if it is not started
         serviceRunning = isServiceRunning(LbrynetService.class);
         if (!serviceRunning) {
@@ -109,6 +114,18 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         registerBackgroundMediaReceiver();
 
         setContentView(mReactRootView);
+    }
+
+    private void registerStopReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(LbrynetService.ACTION_STOP_SERVICE);
+        stopServiceReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                MainActivity.this.finish();
+            }
+        };
+        registerReceiver(stopServiceReceiver, intentFilter);
     }
 
     private void registerBackgroundMediaReceiver() {
@@ -266,6 +283,12 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         if (backgroundMediaReceiver != null) {
             unregisterReceiver(backgroundMediaReceiver);
+            backgroundMediaReceiver = null;
+        }
+
+        if (stopServiceReceiver != null) {
+            unregisterReceiver(stopServiceReceiver);
+            stopServiceReceiver = null;
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
