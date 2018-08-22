@@ -69,7 +69,7 @@ class FileItem extends React.PureComponent {
               navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
             }} />}
         </TouchableOpacity>
-        {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate('Settings')} />}
+        {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />}
       </View>
     );
   }

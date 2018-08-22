@@ -3,6 +3,9 @@ package io.lbry.browser.reactmodules;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.Manifest;
+import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -87,9 +90,49 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getDeviceId(final Promise promise) {
-        SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        String deviceId = sp.getString(MainActivity.DEVICE_ID_KEY, null);
-        promise.resolve(deviceId);
+    public void getDeviceId(boolean requestPermission, final Promise promise) {
+        // TODO: Check if this is an emulator and handle accordingly
+
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String id = null;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                id = telephonyManager.getImei(); // GSM
+                if (id == null) {
+                    id = telephonyManager.getMeid(); // CDMA
+                }
+            } else {
+                id = telephonyManager.getDeviceId();
+            }
+        } catch (SecurityException ex) {
+            // Maybe the permission was not granted? Try to acquire permission
+            if (requestPermission) {
+                requestPhoneStatePermission();
+            }
+        } catch (Exception ex) {
+            // id could not be obtained. Display a warning that rewards cannot be claimed.
+            promise.reject(ex.getMessage());
+        }
+
+        if (id == null || id.trim().length() == 0) {
+            promise.reject("Rewards cannot be claimed because your device could not be identified.");
+            return;
+        }
+
+        promise.resolve(id);
+    }
+
+    @ReactMethod
+    public void canAcquireDeviceId(final Promise promise) {
+        promise.resolve(MainActivity.hasPermission(Manifest.permission.READ_PHONE_STATE, MainActivity.getActivity()));
+    }
+
+    @ReactMethod
+    public void requestPhoneStatePermission() {
+        MainActivity activity = (MainActivity) MainActivity.getActivity();
+        if (activity != null) {
+            // Request for the READ_PHONE_STATE permission
+            MainActivity.checkPhoneStatePermission(activity);
+        }
     }
 }

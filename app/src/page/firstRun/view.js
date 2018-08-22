@@ -27,6 +27,7 @@ class FirstRunScreen extends React.PureComponent {
     emailSubmitted: false,
     isFirstRun: false,
     launchUrl: null,
+    showSkip: false,
     showBottomContainer: true
   };
 
@@ -97,9 +98,21 @@ class FirstRunScreen extends React.PureComponent {
 
   handleEmailCollectPageContinue() {
     const { notify, addUserEmail } = this.props;
-    // validate the email
+    const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
+
     AsyncStorage.getItem(Constants.KEY_FIRST_RUN_EMAIL).then(email => {
-      if (!email || email.trim().length === 0 || email.indexOf('@') === -1) {
+      if (!email || email.trim().length === 0) {
+        // no email provided. Skip.
+        if (this.state.currentPage === 'email-collect' && pageIndex === (FirstRunScreen.pages.length - 1)) {
+          this.closeFinalPage();
+        } else {
+          this.showNextPage();
+        }
+        return;
+      }
+
+      // validate the email
+      if (email.indexOf('@') === -1) {
         return notify({
           message: 'Please provide a valid email address to continue.',
           displayType: ['toast'],
@@ -131,6 +144,14 @@ class FirstRunScreen extends React.PureComponent {
     this.launchSplashScreen();
   }
 
+  onEmailChanged = (email) => {
+    if ('email-collect' == this.state.currentPage && (!email || email.trim().length === 0)) {
+      this.setState({ showSkip: true });
+    } else {
+      this.setState({ showSkip: false });
+    }
+  }
+
   render() {
     const {
       authenticating,
@@ -149,7 +170,8 @@ class FirstRunScreen extends React.PureComponent {
       page = (<EmailCollectPage authenticating={authenticating}
                                 authToken={authToken}
                                 generateAuthToken={generateAuthToken}
-                                onEmailViewLayout={() => this.setState({ showBottomContainer: true })} />);
+                                onEmailChanged={this.onEmailChanged}
+                                onEmailViewLayout={() => this.setState({ showBottomContainer: true, showSkip: true })} />);
     }
 
     return (
@@ -162,7 +184,7 @@ class FirstRunScreen extends React.PureComponent {
 
           {!emailNewPending &&
           <TouchableOpacity style={firstRunStyle.button} onPress={this.handleContinuePressed}>
-            <Text style={firstRunStyle.buttonText}>Continue</Text>
+            <Text style={firstRunStyle.buttonText}>{this.state.showSkip ? 'Skip': 'Continue'}</Text>
           </TouchableOpacity>}
         </View>}
       </View>

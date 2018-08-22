@@ -10,6 +10,14 @@ const rewardStyle = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
+  actionButton: {
+    backgroundColor: Colors.LbryGreen,
+    alignSelf: 'flex-start',
+    paddingTop: 9,
+    paddingBottom: 9,
+    paddingLeft: 24,
+    paddingRight: 24
+  },
   busyContainer: {
     flex: 1,
     marginTop: 32,
@@ -50,10 +58,29 @@ const rewardStyle = StyleSheet.create({
     marginLeft: 12
   },
   title: {
-    fontFamily: 'Metropolis-SemiBold',
-    fontSize: 20,
-    marginBottom: 8,
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 22,
+    marginBottom: 6,
     color: Colors.LbryGreen
+  },
+  subtitle: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 18,
+    marginBottom: 6,
+    color: Colors.LbryGreen
+  },
+  subcardText: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 15,
+    lineHeight: 20,
+    marginLeft: 2,
+    marginRight: 2
+  },
+  subcardTextInput: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    marginTop: 2,
+    marginBottom: 2
   },
   bottomMarginSmall: {
     marginBottom: 8
@@ -106,6 +133,26 @@ const rewardStyle = StyleSheet.create({
   },
   disabled: {
     color: Colors.LightGrey
+  },
+  subcard: {
+    borderTopColor: Colors.VeryLightGrey,
+    borderTopWidth: 1,
+    paddingTop: 16,
+    paddingLeft: 8,
+    paddingRight: 8,
+    marginTop: 16,
+    marginLeft: -8,
+    marginRight: -8
+  },
+  summaryContainer: {
+    backgroundColor: Colors.LbryGreen,
+    padding: 12
+  },
+  summaryText: {
+    color: Colors.White,
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14,
+    lineHeight: 22
   }
 });
 

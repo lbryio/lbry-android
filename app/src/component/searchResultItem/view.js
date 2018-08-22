@@ -18,18 +18,18 @@ class SearchResultItem extends React.PureComponent {
       onPress,
       navigation
     } = this.props;
-    
+
     const uri = normalizeURI(this.props.uri);
     const obscureNsfw = this.props.obscureNsfw && metadata && metadata.nsfw;
     const title = metadata && metadata.title ? metadata.title : parseURI(uri).contentName;
-    
+
     let name;
     let channel;
     if (claim) {
       name = claim.name;
       channel = claim.channel_name;
     }
-    
+
     return (
       <View style={style}>
         <TouchableOpacity style={style} onPress={onPress}>
@@ -46,12 +46,12 @@ class SearchResultItem extends React.PureComponent {
               <View style={searchStyle.row}>
                 <ActivityIndicator size={"small"} color={Colors.LbryGreen} />
               </View>
-            </View>)} 
+            </View>)}
             {!isResolvingUri && <Text style={searchStyle.title}>{title || name}</Text>}
             {!isResolvingUri && channel && <Text style={searchStyle.publisher}>{channel}</Text>}
           </View>
         </TouchableOpacity>
-        {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate('Settings')} />}
+        {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />}
       </View>
     );
   }

@@ -19,6 +19,7 @@ class EmailCollectPage extends React.PureComponent {
     email: null,
     authenticationStarted: false,
     authenticationFailed: false,
+    placeholder: 'you@example.com',
     statusTries: 0
   };
 
@@ -63,12 +64,16 @@ class EmailCollectPage extends React.PureComponent {
 
   handleChangeText = (text) => {
     // save the value to the state email
+    const { onEmailChanged } = this.props;
     this.setState({ email: text });
+    if (onEmailChanged) {
+      onEmailChanged(text);
+    }
     AsyncStorage.setItem(Constants.KEY_FIRST_RUN_EMAIL, text);
   }
 
   render() {
-    const { authenticating, authToken, onEmailViewLayout, emailToVerify } = this.props;
+    const { authenticating, authToken, onEmailChanged, onEmailViewLayout, emailToVerify } = this.props;
 
     let content;
     if (this.state.authenticationFailed) {
@@ -92,10 +97,20 @@ class EmailCollectPage extends React.PureComponent {
           <Text style={firstRunStyle.paragraph}>You can earn LBRY Credits (LBC) rewards by completing various tasks in the app.</Text>
           <Text style={firstRunStyle.paragraph}>Please provide a valid email address below to be able to claim your rewards.</Text>
           <TextInput style={firstRunStyle.emailInput}
-              placeholder="you@example.com"
+              placeholder={this.state.placeholder}
               underlineColorAndroid="transparent"
               value={this.state.email}
               onChangeText={text => this.handleChangeText(text)}
+              onFocus={() => {
+                if (!this.state.email || this.state.email.length === 0) {
+                  this.setState({ placeholder: '' });
+                }
+              }}
+              onBlur={() => {
+                if (!this.state.email || this.state.email.length === 0) {
+                  this.setState({ placeholder: 'you@example.com' });
+                }
+              }}
               />
           <Text style={firstRunStyle.infoParagraph}>This information is disclosed only to LBRY, Inc. and not to the LBRY network. It is only required to earn LBRY rewards and may be used to sync usage data across devices.</Text>
         </View>

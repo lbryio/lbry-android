@@ -1,32 +1,78 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import { ActivityIndicator, NativeModules, ScrollView, Text, View } from 'react-native';
+import {
+  DeviceEventEmitter,
+  ActivityIndicator,
+  NativeModules,
+  ScrollView,
+  Text,
+  View
+} from 'react-native';
 import Colors from '../../styles/colors';
 import Link from '../../component/link';
+import DeviceIdRewardSubcard from '../../component/deviceIdRewardSubcard';
+import EmailRewardSubcard from '../../component/emailRewardSubcard';
 import PageHeader from '../../component/pageHeader';
 import RewardCard from '../../component/rewardCard';
 import rewardStyle from '../../styles/reward';
 
 class RewardsPage extends React.PureComponent {
+  state = {
+    canAcquireDeviceId: false,
+    isEmailVerified: false,
+    isRewardApproved: false,
+    verifyRequestStarted: false,
+  };
+
   componentDidMount() {
+    DeviceEventEmitter.addListener('onPhoneStatePermissionGranted', this.phoneStatePermissionGranted);
+
     this.props.fetchRewards();
+
+    const { user } = this.props;
+    this.setState({
+      isEmailVerified: (user && user.primary_email && user.has_verified_email),
+      isRewardApproved: (user && user.is_reward_approved)
+    });
+
+    if (NativeModules.UtilityModule) {
+      const util = NativeModules.UtilityModule;
+      util.canAcquireDeviceId().then(canAcquireDeviceId => {
+        this.setState({ canAcquireDeviceId });
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    DeviceEventEmitter.removeListener('onPhoneStatePermissionGranted', this.phoneStatePermissionGranted);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { emailVerifyErrorMessage, emailVerifyPending } = nextProps;
+    if (emailVerifyPending) {
+      this.setState({ verifyRequestStarted: true });
+    }
+
+    if (this.state.verifyRequestStarted && !emailVerifyPending) {
+      const { user } = nextProps;
+      this.setState({ verifyRequestStarted: false });
+      if (!emailVerifyErrorMessage) {
+        this.setState({
+          isEmailVerified: true,
+          isRewardApproved: (user && user.is_reward_approved)
+        });
+      }
+    }
   }
 
   renderVerification() {
-    const { user } = this.props;
-    if (user && !user.is_reward_approved) {
-      if (!user.primary_email || !user.has_verified_email || !user.is_identity_verified) {
-        return (
-          <View style={[rewardStyle.card, rewardStyle.verification]}>
-            <Text style={rewardStyle.title}>Humans Only</Text>
-            <Text style={rewardStyle.text}>Rewards are for human beings only. You'll have to prove you're one of us before you can claim any rewards.</Text>
-          </View>
-        );
-      }
-
+    if (!this.state.isRewardApproved) {
       return (
         <View style={[rewardStyle.card, rewardStyle.verification]}>
-          <Text style={rewardStyle.text}>This account must undergo review.</Text>
+          <Text style={rewardStyle.title}>Humans Only</Text>
+          <Text style={rewardStyle.text}>Rewards are for human beings only. You'll have to prove you're one of us before you can claim any rewards.</Text>
+          {!this.state.canAcquireDeviceId && <DeviceIdRewardSubcard />}
+          {!this.state.isEmailVerified && <EmailRewardSubcard />}
         </View>
       );
     }
@@ -36,7 +82,6 @@ class RewardsPage extends React.PureComponent {
 
   onClaimRewardPress = () => {
     const { notify, user } = this.props;
-    console.log(user);
     const isNotEligible = !user || !user.primary_email || !user.has_verified_email || !user.is_reward_approved;
     if (isNotEligible) {
       notify({ message: 'Unfortunately, you are not eligible to claim this reward at this time.', displayType: ['toast'] });
@@ -44,8 +89,29 @@ class RewardsPage extends React.PureComponent {
     }
   }
 
+  phoneStatePermissionGranted = () => {
+    const { notify } = this.props;
+    if (NativeModules.UtilityModule) {
+      const util = NativeModules.UtilityModule;
+
+      // Double-check just to be sure
+      util.canAcquireDeviceId().then(canAcquireDeviceId => {
+        this.setState({ canAcquireDeviceId });
+        if (canAcquireDeviceId) {
+          util.getDeviceId(false).then(deviceId => {
+            // TODO: Send doInstallNew request with the device ID?
+
+          }).catch((error) => {
+            notify({ message: error, displayType: ['toast'] });
+            this.setState({ canAcquireDeviceId: false });
+          });
+        }
+      });
+    }
+  }
+
   renderUnclaimedRewards() {
-    const { fetching, rewards, user, claimed } = this.props;
+    const { claimed, fetching, rewards, user } = this.props;
 
     if (fetching) {
       return (
@@ -57,7 +123,7 @@ class RewardsPage extends React.PureComponent {
     } else if (user === null) {
       return (
         <View style={rewardStyle.busyContainer}>
-          <Text style={rewardStyle.infoText}>This application is unable to earn rewards due to an authentication failure.</Text>
+          <Text style={rewardStyle.infoText}>This app is unable to earn rewards due to an authentication failure.</Text>
         </View>
       );
     } else if (!rewards || rewards.length <= 0) {
@@ -94,6 +160,8 @@ class RewardsPage extends React.PureComponent {
   }
 
   render() {
+    const { user } = this.props;
+
     return (
       <View style={rewardStyle.container}>
         {this.renderVerification()}
