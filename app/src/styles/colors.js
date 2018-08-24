@@ -4,6 +4,7 @@ const Colors = {
   DarkGrey: '#555555',
   DescriptionGrey: '#999999',
   LbryGreen: '#40b89a',
+  BrighterLbryGreen: '#40b887',
   LightGrey: '#cccccc',
   LighterGrey: '#e5e5e5',
   Orange: '#ffbb00',

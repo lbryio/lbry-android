@@ -145,8 +145,8 @@ class FirstRunScreen extends React.PureComponent {
   }
 
   onEmailChanged = (email) => {
-    if ('email-collect' == this.state.currentPage && (!email || email.trim().length === 0)) {
-      this.setState({ showSkip: true });
+    if ('email-collect' == this.state.currentPage) {
+      this.setState({ showSkip: (!email || email.trim().length === 0) });
     } else {
       this.setState({ showSkip: false });
     }

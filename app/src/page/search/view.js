@@ -11,6 +11,7 @@ import {
 import Colors from '../../styles/colors';
 import PageHeader from '../../component/pageHeader';
 import SearchResultItem from '../../component/searchResultItem';
+import FloatingWalletBalance from '../../component/floatingWalletBalance';
 import UriBar from '../../component/uriBar';
 import searchStyle from '../../styles/search';
 
@@ -18,7 +19,7 @@ class SearchPage extends React.PureComponent {
   static navigationOptions = {
     title: 'Search Results'
   };
-  
+
   componentDidMount() {
     const { navigation, search } = this.props;
     const { searchQuery } = navigation.state.params;
@@ -26,11 +27,11 @@ class SearchPage extends React.PureComponent {
       search(searchQuery);
     }
   }
-  
+
   render() {
     const { isSearching, navigation, uris, query } = this.props;
     const { searchQuery } = navigation.state.params;
-    
+
     return (
       <View style={searchStyle.container}>
         {!isSearching && (!uris || uris.length === 0) &&
@@ -49,6 +50,7 @@ class SearchPage extends React.PureComponent {
               ) : null }
         </ScrollView>
         {isSearching && <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} /> }
+        <FloatingWalletBalance navigation={navigation} />
         <UriBar value={searchQuery} navigation={navigation} />
       </View>
     );

@@ -134,7 +134,10 @@ const walletStyle = StyleSheet.create({
     lineHeight: 24
   },
   understand: {
-    marginLeft: 16
+    marginLeft: 16,
+    padding: 12,
+    paddingLeft: 18,
+    paddingRight: 18
   },
   currency: {
     alignSelf: 'flex-start',

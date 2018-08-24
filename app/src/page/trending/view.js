@@ -13,6 +13,7 @@ import moment from 'moment';
 import FileItem from '../../component/fileItem';
 import discoverStyle from '../../styles/discover';
 import Colors from '../../styles/colors';
+import FloatingWalletBalance from '../../component/floatingWalletBalance';
 import UriBar from '../../component/uriBar';
 
 class TrendingPage extends React.PureComponent {
@@ -47,6 +48,7 @@ class TrendingPage extends React.PureComponent {
             keyExtractor={(item, index) => item}
           />
         }
+        <FloatingWalletBalance navigation={navigation} />
         <UriBar navigation={navigation} />
       </View>
     );

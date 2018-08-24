@@ -10,8 +10,9 @@ import {
 } from 'react-native';
 import { normalizeURI } from 'lbry-redux';
 import moment from 'moment';
-import discoverStyle from '../../styles/discover';
 import Colors from '../../styles/colors';
+import discoverStyle from '../../styles/discover';
+import FloatingWalletBalance from '../../component/floatingWalletBalance';
 import FileItem from '../../component/fileItem';
 import RewardSummary from '../../component/rewardSummary';
 import UriBar from '../../component/uriBar';
@@ -74,6 +75,7 @@ class DiscoverPage extends React.PureComponent {
             keyExtractor={(item, index) => item}
           />
         }
+        <FloatingWalletBalance navigation={navigation} />
         <UriBar navigation={navigation} />
       </View>
     );

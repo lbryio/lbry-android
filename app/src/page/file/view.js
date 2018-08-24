@@ -21,6 +21,7 @@ import ChannelPage from '../channel';
 import FileDownloadButton from '../../component/fileDownloadButton';
 import FileItemMedia from '../../component/fileItemMedia';
 import FilePrice from '../../component/filePrice';
+import FloatingWalletBalance from '../../component/floatingWalletBalance';
 import Link from '../../component/link';
 import MediaPlayer from '../../component/mediaPlayer';
 import UriBar from '../../component/uriBar';
@@ -369,7 +370,7 @@ class FilePage extends React.PureComponent {
               </ScrollView>
             </View>
           )}
-
+          {!this.state.fullscreenMode && <FloatingWalletBalance navigation={navigation} />}
           {!this.state.fullscreenMode && <UriBar value={uri} navigation={navigation} />}
         </View>
       );
