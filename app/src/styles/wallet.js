@@ -131,10 +131,13 @@ const walletStyle = StyleSheet.create({
     color: '#ffffff',
     fontFamily: 'Metropolis-Regular',
     fontSize: 16,
-    lineHeight: 30
+    lineHeight: 26
   },
   understand: {
-    marginLeft: 16
+    marginLeft: 16,
+    padding: 12,
+    paddingLeft: 18,
+    paddingRight: 18
   },
   currency: {
     alignSelf: 'flex-start',
