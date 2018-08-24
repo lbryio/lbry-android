@@ -8,6 +8,7 @@ import {
   Text,
   View
 } from 'react-native';
+import { doInstallNew } from 'lbryinc';
 import Colors from '../../styles/colors';
 import Link from '../../component/link';
 import DeviceIdRewardSubcard from '../../component/deviceIdRewardSubcard';
@@ -81,7 +82,7 @@ class RewardsPage extends React.PureComponent {
   }
 
   phoneStatePermissionGranted = () => {
-    const { notify } = this.props;
+    const { install, notify } = this.props;
     if (NativeModules.UtilityModule) {
       const util = NativeModules.UtilityModule;
 
@@ -90,8 +91,9 @@ class RewardsPage extends React.PureComponent {
         this.setState({ canAcquireDeviceId });
         if (canAcquireDeviceId) {
           util.getDeviceId(false).then(deviceId => {
-            // TODO: Send doInstallNew request with the device ID?
-
+            NativeModules.VersionInfo.getAppVersion().then(appVersion => {
+              doInstallNew(`android-${appVersion}`, deviceId);
+            });
           }).catch((error) => {
             notify({ message: error, displayType: ['toast'] });
             this.setState({ canAcquireDeviceId: false });
