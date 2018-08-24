@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import Colors from '../../styles/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Link from '../link';
 import rewardStyle from '../../styles/reward';
@@ -20,18 +21,59 @@ type Props = {
 };
 
 class RewardCard extends React.PureComponent<Props> {
+  state = {
+    claimStarted: false
+  };
+
+  componentWillReceiveProps(nextProps) {
+    const { errorMessage, isPending } = nextProps;
+    const { clearError, notify, reward } = this.props;
+    if (this.state.claimStarted && !isPending) {
+      if (errorMessage && errorMessage.trim().length > 0) {
+        notify({ message: errorMessage, displayType: ['toast'] });
+        clearError(reward);
+      } else {
+        notify({ message: 'Reward successfully claimed!', displayType: ['toast'] });
+      }
+      this.setState({ claimStarted: false });
+    }
+  }
+
+  onClaimPress = () => {
+    const {
+      canClaim,
+      claimReward,
+      notify,
+      reward
+    } = this.props;
+
+    if (!canClaim) {
+      notify({ message: 'Unfortunately, you are not eligible to claim this reward at this time.', displayType: ['toast'] });
+      return;
+    }
+
+    this.setState({ claimStarted: true }, () => {
+      claimReward(reward);
+    });
+  }
+
   render() {
-    const { canClaim, onClaimPress, reward } = this.props;
+    const { canClaim, isPending, onClaimPress, reward } = this.props;
     const claimed = !!reward.transaction_id;
 
     return (
       <View style={[rewardStyle.rewardCard, rewardStyle.row]}>
         <View style={rewardStyle.leftCol}>
-          <TouchableOpacity onPress={() => { if (!claimed && onClaimPress) { onClaimPress(); } }}>
+          {!isPending && <TouchableOpacity onPress={() => {
+              if (!claimed) {
+                this.onClaimPress();
+              }
+            }}>
             <Icon name={claimed ? "check-circle" : "circle"}
                   style={claimed ? rewardStyle.claimed : (canClaim ? rewardStyle.unclaimed : rewardStyle.disabled)}
                   size={20} />
-          </TouchableOpacity>
+          </TouchableOpacity>}
+          {isPending && <ActivityIndicator size="small" color={Colors.LbryGreen} />}
         </View>
         <View style={rewardStyle.midCol}>
           <Text style={rewardStyle.rewardTitle}>{reward.reward_title}</Text>

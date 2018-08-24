@@ -121,6 +121,9 @@ persistStore(store, persistOptions, err => {
   }
 });
 
+// TODO: Find i18n module that is compatible with react-native
+global.__ = (str) => str;
+
 class LBRYApp extends React.Component {
   render() {
     return (

@@ -80,15 +80,6 @@ class RewardsPage extends React.PureComponent {
     return null;
   }
 
-  onClaimRewardPress = () => {
-    const { notify, user } = this.props;
-    const isNotEligible = !user || !user.primary_email || !user.has_verified_email || !user.is_reward_approved;
-    if (isNotEligible) {
-      notify({ message: 'Unfortunately, you are not eligible to claim this reward at this time.', displayType: ['toast'] });
-      return;
-    }
-  }
-
   phoneStatePermissionGranted = () => {
     const { notify } = this.props;
     if (NativeModules.UtilityModule) {
@@ -143,7 +134,7 @@ class RewardsPage extends React.PureComponent {
         {rewards.map(reward => <RewardCard key={reward.reward_type}
                                            canClaim={!isNotEligible}
                                            reward={reward}
-                                           onClaimPress={this.onClaimRewardPress} />)}
+                                           reward_type={reward.reward_type} />)}
       </View>
     );
   }
