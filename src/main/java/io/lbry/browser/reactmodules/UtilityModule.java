@@ -91,7 +91,10 @@ public class UtilityModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getDeviceId(boolean requestPermission, final Promise promise) {
-        // TODO: Check if this is an emulator and handle accordingly
+        if (isEmulator()) {
+            promise.reject("Rewards cannot be claimed from an emulator nor virtual device.");
+            return;
+        }
 
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String id = null;
@@ -124,6 +127,10 @@ public class UtilityModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void canAcquireDeviceId(final Promise promise) {
+        if (isEmulator()) {
+            promise.resolve(false);
+        }
+
         promise.resolve(MainActivity.hasPermission(Manifest.permission.READ_PHONE_STATE, MainActivity.getActivity()));
     }
 
@@ -134,5 +141,37 @@ public class UtilityModule extends ReactContextBaseJavaModule {
             // Request for the READ_PHONE_STATE permission
             MainActivity.checkPhoneStatePermission(activity);
         }
+    }
+
+    private static boolean isEmulator() {
+        String buildModel = Build.MODEL.toLowerCase();
+        return (// Check FINGERPRINT
+                Build.FINGERPRINT.startsWith("generic") ||
+                Build.FINGERPRINT.startsWith("unknown") ||
+                Build.FINGERPRINT.contains("test-keys") ||
+
+                // Check MODEL
+                buildModel.contains("google_sdk") ||
+                buildModel.contains("emulator") ||
+                buildModel.contains("android sdk built for x86") ||
+
+                // Check MANUFACTURER
+                Build.MANUFACTURER.contains("Genymotion") ||
+                "unknown".equals(Build.MANUFACTURER) ||
+
+                // Check HARDWARE
+                Build.HARDWARE.contains("goldfish") ||
+                Build.HARDWARE.contains("vbox86") ||
+
+                // Check PRODUCT
+                "google_sdk".equals(Build.PRODUCT) ||
+                "sdk_google_phone_x86".equals(Build.PRODUCT) ||
+                "sdk".equals(Build.PRODUCT) ||
+                "sdk_x86".equals(Build.PRODUCT) ||
+                "vbox86p".equals(Build.PRODUCT) ||
+
+                // Check BRAND and DEVICE
+                (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+               );
     }
 }
