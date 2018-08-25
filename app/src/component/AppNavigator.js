@@ -201,7 +201,7 @@ class AppWithNavigationState extends React.Component {
     if (notification) {
       const { displayType, message } = notification;
       let currentDisplayType;
-      if (displayType.length) {
+      if (displayType && displayType.length) {
         for (let i = 0; i < displayType.length; i++) {
           const type = displayType[i];
           if (AppWithNavigationState.supportedDisplayTypes.indexOf(type) > -1) {
@@ -211,6 +211,11 @@ class AppWithNavigationState extends React.Component {
         }
       } else if (AppWithNavigationState.supportedDisplayTypes.indexOf(displayType) > -1) {
         currentDisplayType = displayType;
+      }
+
+      if (!currentDisplayType && message) {
+        // default to toast if no display type set and there is a message specified
+        currentDisplayType = 'toast';
       }
 
       if ('toast' === currentDisplayType) {
