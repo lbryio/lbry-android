@@ -43,6 +43,8 @@ class FilePage extends React.PureComponent {
     this.state = {
       mediaLoaded: false,
       autoplayMedia: false,
+      downloadButtonShown: false,
+      downloadPressed: false,
       fullscreenMode: false,
       showImageViewer: false,
       showWebView: false,
@@ -137,7 +139,10 @@ class FilePage extends React.PureComponent {
       'Are you sure you want to stop downloading this file?',
       [
         { text: 'No' },
-        { text: 'Yes', onPress: () => { stopDownload(navigation.state.params.uri, fileInfo); } }
+        { text: 'Yes', onPress: () => {
+          stopDownload(navigation.state.params.uri, fileInfo);
+          this.setState({ downloadPressed: false, mediaLoaded: false });
+        } }
       ],
       { cancelable: true }
     );
@@ -305,40 +310,43 @@ class FilePage extends React.PureComponent {
               <View style={filePageStyle.mediaContainer}>
                 {(canOpen || (!fileInfo || (isPlayable && !canLoadMedia))) &&
                   <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
-                {(canOpen || (isPlayable && !this.state.mediaLoaded)) && <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
-                {((isPlayable && !completed && !canLoadMedia) || !completed || canOpen) &&
+                {((!this.state.downloadButtonShown || this.state.downloadPressed) && !this.state.mediaLoaded) &&
+                    <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
+                {((isPlayable && !completed && !canLoadMedia) || !completed || canOpen) && (!this.state.downloadPressed) &&
                   <FileDownloadButton uri={uri}
                                       style={filePageStyle.downloadButton}
                                       openFile={openFile}
                                       isPlayable={isPlayable}
-                                      onPlay={() => this.setState({ autoPlayMedia: true })} />}
+                                      onPlay={() => this.setState({ downloadPressed: true, autoPlayMedia: true })}
+                                      onButtonLayout={() => this.setState({ downloadButtonShown: true })} />}
                 {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
               </View>
-              {canLoadMedia && <View style={playerBgStyle} ref={(ref) => { this.playerBackground = ref; }}
-                                     onLayout={(evt) => {
-                                       if (!this.state.playerBgHeight) {
-                                         this.setState({ playerBgHeight: evt.nativeEvent.layout.height });
-                                       }
-                                     }} />}
-              {canLoadMedia && <MediaPlayer fileInfo={fileInfo}
-                                            ref={(ref) => { this.player = ref; }}
-                                            uri={uri}
-                                            style={playerStyle}
-                                            autoPlay={this.state.autoPlayMedia}
-                                            onFullscreenToggled={this.handleFullscreenToggle}
-                                            onMediaLoaded={() => {
-                                              this.setState({ mediaLoaded: true });
-                                              window.currentMediaInfo = {
-                                                title: title,
-                                                channel: channelName
-                                              };
-                                            }}
-                                            onLayout={(evt) => {
-                                              if (!this.state.playerHeight) {
-                                                this.setState({ playerHeight: evt.nativeEvent.layout.height });
-                                              }
-                                            }}
-                                            />}
+              {canLoadMedia && fileInfo && <View style={playerBgStyle}
+                                                 ref={(ref) => { this.playerBackground = ref; }}
+                                                 onLayout={(evt) => {
+                                                  if (!this.state.playerBgHeight) {
+                                                    this.setState({ playerBgHeight: evt.nativeEvent.layout.height });
+                                                  }
+                                                }} />}
+              {canLoadMedia && fileInfo && <MediaPlayer fileInfo={fileInfo}
+                                                        ref={(ref) => { this.player = ref; }}
+                                                        uri={uri}
+                                                        style={playerStyle}
+                                                        autoPlay={this.state.autoPlayMedia}
+                                                        onFullscreenToggled={this.handleFullscreenToggle}
+                                                        onMediaLoaded={() => {
+                                                          this.setState({ mediaLoaded: true });
+                                                          window.currentMediaInfo = {
+                                                            title: title,
+                                                            channel: channelName
+                                                          };
+                                                        }}
+                                                        onLayout={(evt) => {
+                                                          if (!this.state.playerHeight) {
+                                                            this.setState({ playerHeight: evt.nativeEvent.layout.height });
+                                                          }
+                                                        }}
+                                                        />}
 
               { showActions &&
               <View style={filePageStyle.actions}>

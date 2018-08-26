@@ -12,7 +12,8 @@ export default class Button extends React.PureComponent {
       text,
       icon,
       theme,
-      onPress
+      onPress,
+      onLayout
     } = this.props;
 
     let styles = [buttonStyle.button, buttonStyle.row];
@@ -41,7 +42,7 @@ export default class Button extends React.PureComponent {
     }
 
     return (
-      <TouchableOpacity disabled={disabled} style={styles} onPress={onPress}>
+      <TouchableOpacity disabled={disabled} style={styles} onPress={onPress} onLayout={onLayout}>
         {icon && <Icon name={icon} size={18} color={'light' === theme ? Colors.DarkGrey : Colors.White} />}
         {text && (text.trim().length > 0) && <Text style={textStyles}>{text}</Text>}
       </TouchableOpacity>
