@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
@@ -33,6 +34,8 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#");
 
+    private static final int MAX_FILENAME_LENGTH = 20;
+
     private static final int MAX_PROGRESS = 100;
 
     private static final String GROUP_DOWNLOADS = "io.lbry.browser.GROUP_DOWNLOADS";
@@ -44,6 +47,8 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
     public static final String NOTIFICATION_ID_KEY = "io.lbry.browser.notificationId";
 
     public static final int GROUP_ID = 0;
+
+    private static NotificationCompat.Builder groupBuilder = null;
 
     public static boolean groupCreated = false;
 
@@ -80,15 +85,16 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, GROUP_ID, intent, 0);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-            builder.setContentTitle("Active LBRY downloads")
-                   .setContentText("Active LBRY downloads")
-                   .setSmallIcon(android.R.drawable.stat_sys_download)
-                   .setPriority(NotificationCompat.PRIORITY_LOW)
-                   .setGroup(GROUP_DOWNLOADS)
-                   .setGroupSummary(true)
-                   .setDeleteIntent(pendingIntent);
-            notificationManager.notify(GROUP_ID, builder.build());
+            groupBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+            groupBuilder.setContentTitle("Active LBRY downloads")
+                        // contentText will be displayed if there are no notifications in the group
+                        .setContentText("There are no active LBRY downloads.")
+                        .setSmallIcon(android.R.drawable.stat_sys_download)
+                        .setPriority(NotificationCompat.PRIORITY_LOW)
+                        .setGroup(GROUP_DOWNLOADS)
+                        .setGroupSummary(true)
+                        .setDeleteIntent(pendingIntent);
+            notificationManager.notify(GROUP_ID, groupBuilder.build());
 
             groupCreated = true;
         }
@@ -102,7 +108,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startDownload(String id, String fileName) {
+    public void startDownload(String id, String filename) {
         createNotificationChannel();
         createNotificationGroup();
 
@@ -110,34 +116,44 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         // The file URI is used as the unique ID
         builder.setContentIntent(getLaunchPendingIntent(id))
-               .setContentTitle(String.format("Downloading %s...", fileName))
+               .setContentTitle(String.format("Downloading %s", formatFilename(filename)))
                .setGroup(GROUP_DOWNLOADS)
                .setPriority(NotificationCompat.PRIORITY_LOW)
                .setProgress(MAX_PROGRESS, 0, false)
                .setSmallIcon(android.R.drawable.stat_sys_download);
 
-        int notificationId = generateNotificationId();
-        downloadIdNotificationIdMap.put(id, notificationId);
-
+        int notificationId = getNotificationId(id);
         builders.put(notificationId, builder);
         notificationManager.notify(notificationId, builder.build());
+
+        if (groupCreated && groupBuilder != null) {
+            groupBuilder.setSmallIcon(android.R.drawable.stat_sys_download);
+            notificationManager.notify(GROUP_ID, groupBuilder.build());
+        }
     }
 
     @ReactMethod
-    public void updateDownload(String id, String fileName, double progress, double writtenBytes, double totalBytes) {
-        if (!downloadIdNotificationIdMap.containsKey(id)) {
-            return;
-        }
-
-        int notificationId = downloadIdNotificationIdMap.get(id);
-        if (!builders.containsKey(notificationId)) {
+    public void updateDownload(String id, String filename, double progress, double writtenBytes, double totalBytes) {
+        int notificationId = getNotificationId(id);
+        if (notificationId == -1) {
             return;
         }
 
         createNotificationChannel();
         createNotificationGroup();
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        NotificationCompat.Builder builder = builders.get(notificationId);
+
+        NotificationCompat.Builder builder = null;
+        if (builders.containsKey(notificationId)) {
+            builder = builders.get(notificationId);
+        } else {
+            builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+            builder.setContentTitle(String.format("Downloading %s", formatFilename(filename)))
+                   .setPriority(NotificationCompat.PRIORITY_LOW);
+            builders.put(notificationId, builder);
+        }
+
         builder.setContentIntent(getLaunchPendingIntent(id))
                .setContentText(String.format("%.0f%% (%s / %s)", progress, formatBytes(writtenBytes), formatBytes(totalBytes)))
                .setGroup(GROUP_DOWNLOADS)
@@ -145,13 +161,31 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         notificationManager.notify(notificationId, builder.build());
 
         if (progress == MAX_PROGRESS) {
-            builder.setContentTitle(String.format("Downloaded %s", fileName))
+            builder.setContentTitle(String.format("Downloaded %s", formatFilename(filename, 30)))
                    .setContentText(String.format("%s", formatBytes(totalBytes)))
-                   .setProgress(0, 0, false);
+                   .setGroup(GROUP_DOWNLOADS)
+                   .setProgress(0, 0, false)
+                   .setSmallIcon(android.R.drawable.stat_sys_download_done);
             notificationManager.notify(notificationId, builder.build());
 
-            downloadIdNotificationIdMap.remove(id);
-            builders.remove(notificationId);
+            if (downloadIdNotificationIdMap.containsKey(id)) {
+                downloadIdNotificationIdMap.remove(id);
+            }
+            if (builders.containsKey(notificationId)) {
+                builders.remove(notificationId);
+            }
+
+            // If there are no more downloads and the group exists, set the icon to stop animating
+            if (groupCreated && groupBuilder != null && downloadIdNotificationIdMap.size() == 0) {
+                groupBuilder.setSmallIcon(android.R.drawable.stat_sys_download_done);
+                notificationManager.notify(GROUP_ID, groupBuilder.build());
+            }
+
+            String spKey = String.format("dl__%s", id);
+            SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.remove(spKey);
+            editor.apply();
         }
     }
 
@@ -179,7 +213,22 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private String formatBytes(double bytes)
+    private int getNotificationId(String id) {
+        String spKey = String.format("dl__%s", id);
+        SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        int notificationId = sp.getInt(spKey, -1);
+        if (notificationId == -1) {
+            notificationId = generateNotificationId();
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putInt(spKey, notificationId);
+            editor.apply();
+        }
+
+        downloadIdNotificationIdMap.put(id, notificationId);
+        return notificationId;
+    }
+
+    private static String formatBytes(double bytes)
     {
         if (bytes < 1048576) { // < 1MB
             return String.format("%s KB", DECIMAL_FORMAT.format(bytes / 1024.0));
@@ -190,5 +239,25 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         }
 
         return String.format("%s GB", DECIMAL_FORMAT.format(bytes / (1024.0 * 1024.0 * 1024.0)));
+    }
+
+    private static String formatFilename(String filename, int alternateMaxLength) {
+        int maxLength = alternateMaxLength > 0 ? alternateMaxLength : MAX_FILENAME_LENGTH;
+        if (filename.length() < maxLength) {
+            return filename;
+        }
+
+        // Get the extension
+        int dotIndex = filename.lastIndexOf(".");
+        if (dotIndex > -1) {
+            String extension = filename.substring(dotIndex);
+            return String.format("%s...%s", filename.substring(0, maxLength - extension.length() - 4), extension);
+        }
+
+        return String.format("%s...", filename.substring(0, maxLength - 3));
+    }
+
+    private static String formatFilename(String filename) {
+        return formatFilename(filename, 0);
     }
 }
