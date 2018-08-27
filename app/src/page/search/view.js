@@ -29,7 +29,7 @@ class SearchPage extends React.PureComponent {
   }
 
   render() {
-    const { isSearching, navigation, uris, query } = this.props;
+    const { isSearching, navigation, query, search, uris } = this.props;
     const { searchQuery } = navigation.state.params;
 
     return (
@@ -51,7 +51,9 @@ class SearchPage extends React.PureComponent {
         </ScrollView>
         {isSearching && <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} /> }
         <FloatingWalletBalance navigation={navigation} />
-        <UriBar value={searchQuery} navigation={navigation} />
+        <UriBar value={searchQuery}
+                navigation={navigation}
+                onSearchSubmitted={(keywords) => search(keywords)} />
       </View>
     );
   }

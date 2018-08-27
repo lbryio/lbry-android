@@ -72,7 +72,7 @@ class UriBar extends React.PureComponent {
   }
 
   render() {
-    const { navigation, suggestions, updateSearchQuery, value } = this.props;
+    const { navigation, onSearchSubmitted, suggestions, updateSearchQuery, value } = this.props;
     if (this.state.currentValue === null) {
       this.setState({ currentValue: value });
     }
@@ -116,10 +116,18 @@ class UriBar extends React.PureComponent {
                      onSubmitEditing={() => {
                       if (this.state.inputText) {
                         let inputText = this.state.inputText;
-                        if (isNameValid(inputText) || isURIValid(inputText)) {
+                        if (inputText.startsWith('lbry://') && isURIValid(inputText)) {
+                          // if it's a URI (lbry://...), open the file page
                           const uri = normalizeURI(inputText);
                           navigation.navigate({ routeName: 'File', key: uri, params: { uri }});
                         } else {
+                          // Not a URI, default to a search request
+                          if (onSearchSubmitted) {
+                            // Only the search page sets the onSearchSubmitted prop, so call this prop if set
+                            onSearchSubmitted(inputText);
+                            return;
+                          }
+
                           // Open the search page with the query populated
                           navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: inputText }});
                         }
