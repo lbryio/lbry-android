@@ -9,6 +9,7 @@ import {
     makeSelectMetadataForUri,
     selectDownloadingByOutpoint,
 } from 'lbry-redux';
+import { Lbryio, doClaimEligiblePurchaseRewards } from 'lbryinc';
 import { Alert, NativeModules } from 'react-native';
 import Constants from '../../constants';
 
@@ -139,11 +140,17 @@ export function doStopDownloadingFile(uri, fileInfo) {
 
 export function doDownloadFile(uri, streamInfo) {
   return dispatch => {
-    dispatch(doStartDownload(uri, streamInfo.outpoint));
+    const { outpoint, claim_id: claimId } = streamInfo;
+    dispatch(doStartDownload(uri, outpoint));
 
-    //analytics.apiLog(uri, streamInfo.output, streamInfo.claim_id);
+    // log the view
+    Lbryio.call('file', 'view', {
+      uri,
+      outpoint,
+      claim_id: claimId
+    }).catch(() => {});
 
-    //dispatch(doClaimEligiblePurchaseRewards());
+    dispatch(doClaimEligiblePurchaseRewards());
   };
 }
 
