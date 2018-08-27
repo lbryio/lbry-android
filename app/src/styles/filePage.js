@@ -146,11 +146,13 @@ const filePageStyle = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 8,
     marginTop: -14,
-    width: '50%',
+    width: '100%',
   },
   actionButton: {
+    alignSelf: 'flex-start',
     backgroundColor: Colors.White,
-    width: 160
+    paddingLeft: 24,
+    paddingRight: 24
   },
   loading: {
     position: 'absolute',
