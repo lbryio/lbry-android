@@ -125,7 +125,10 @@ class FilePage extends React.PureComponent {
       'Are you sure you want to remove this file from your device?',
       [
         { text: 'No' },
-        { text: 'Yes', onPress: () => { deleteFile(fileInfo.outpoint, true); } }
+        { text: 'Yes', onPress: () => {
+          deleteFile(fileInfo.outpoint, true);
+          this.setState({ downloadPressed: false, mediaLoaded: false });
+        }}
       ],
       { cancelable: true }
     );
