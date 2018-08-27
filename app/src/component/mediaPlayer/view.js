@@ -291,10 +291,7 @@ class MediaPlayer extends React.PureComponent {
 
     const { file_name: fileName } = fileInfo;
     const encodedFileName = encodeURIComponent(fileName).replace(/!/g, '%21');
-    const re = new RegExp(fileName.replace(/\-/g, '\\-')
-                                  .replace(/\(/g, '\\(')
-                                  .replace(/\)/g, '\\)'), 'g');
-    const encodedFilePath = fileInfo.download_path.replace(re, encodedFileName);
+    const encodedFilePath = fileInfo.download_path.replace(fileName, encodedFileName);
     this.setState({ encodedFilePath });
     return encodedFilePath;
   }
