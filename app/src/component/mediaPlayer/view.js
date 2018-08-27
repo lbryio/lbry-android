@@ -30,6 +30,7 @@ class MediaPlayer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      encodedFilePath: null,
       rate: 1,
       volume: 1,
       muted: false,
@@ -284,9 +285,18 @@ class MediaPlayer extends React.PureComponent {
   }
 
   getEncodedDownloadPath = (fileInfo) => {
+    if (this.state.encodedFilePath) {
+      return this.state.encodedFilePath;
+    }
+
     const { file_name: fileName } = fileInfo;
     const encodedFileName = encodeURIComponent(fileName).replace(/!/g, '%21');
-    return fileInfo.download_path.replace(new RegExp(fileName, 'g'), encodedFileName);
+    const re = new RegExp(fileName.replace(/\-/g, '\\-')
+                                  .replace(/\(/g, '\\(')
+                                  .replace(/\)/g, '\\)'), 'g');
+    const encodedFilePath = fileInfo.download_path.replace(re, encodedFileName);
+    this.setState({ encodedFilePath });
+    return encodedFilePath;
   }
 
   render() {
