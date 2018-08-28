@@ -3,6 +3,9 @@ package io.lbry.browser.reactmodules;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.Manifest;
+import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -87,9 +90,88 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getDeviceId(final Promise promise) {
-        SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        String deviceId = sp.getString(MainActivity.DEVICE_ID_KEY, null);
-        promise.resolve(deviceId);
+    public void getDeviceId(boolean requestPermission, final Promise promise) {
+        if (isEmulator()) {
+            promise.reject("Rewards cannot be claimed from an emulator nor virtual device.");
+            return;
+        }
+
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String id = null;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                id = telephonyManager.getImei(); // GSM
+                if (id == null) {
+                    id = telephonyManager.getMeid(); // CDMA
+                }
+            } else {
+                id = telephonyManager.getDeviceId();
+            }
+        } catch (SecurityException ex) {
+            // Maybe the permission was not granted? Try to acquire permission
+            if (requestPermission) {
+                requestPhoneStatePermission();
+            }
+        } catch (Exception ex) {
+            // id could not be obtained. Display a warning that rewards cannot be claimed.
+            promise.reject(ex.getMessage());
+        }
+
+        if (id == null || id.trim().length() == 0) {
+            promise.reject("Rewards cannot be claimed because your device could not be identified.");
+            return;
+        }
+
+        promise.resolve(id);
+    }
+
+    @ReactMethod
+    public void canAcquireDeviceId(final Promise promise) {
+        if (isEmulator()) {
+            promise.resolve(false);
+        }
+
+        promise.resolve(MainActivity.hasPermission(Manifest.permission.READ_PHONE_STATE, MainActivity.getActivity()));
+    }
+
+    @ReactMethod
+    public void requestPhoneStatePermission() {
+        MainActivity activity = (MainActivity) MainActivity.getActivity();
+        if (activity != null) {
+            // Request for the READ_PHONE_STATE permission
+            MainActivity.checkPhoneStatePermission(activity);
+        }
+    }
+
+    private static boolean isEmulator() {
+        String buildModel = Build.MODEL.toLowerCase();
+        return (// Check FINGERPRINT
+                Build.FINGERPRINT.startsWith("generic") ||
+                Build.FINGERPRINT.startsWith("unknown") ||
+                Build.FINGERPRINT.contains("test-keys") ||
+
+                // Check MODEL
+                buildModel.contains("google_sdk") ||
+                buildModel.contains("emulator") ||
+                buildModel.contains("android sdk built for x86") ||
+
+                // Check MANUFACTURER
+                Build.MANUFACTURER.contains("Genymotion") ||
+                "unknown".equals(Build.MANUFACTURER) ||
+
+                // Check HARDWARE
+                Build.HARDWARE.contains("goldfish") ||
+                Build.HARDWARE.contains("vbox86") ||
+
+                // Check PRODUCT
+                "google_sdk".equals(Build.PRODUCT) ||
+                "sdk_google_phone_x86".equals(Build.PRODUCT) ||
+                "sdk".equals(Build.PRODUCT) ||
+                "sdk_x86".equals(Build.PRODUCT) ||
+                "vbox86p".equals(Build.PRODUCT) ||
+
+                // Check BRAND and DEVICE
+                (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+               );
     }
 }

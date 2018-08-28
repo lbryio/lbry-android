@@ -128,10 +128,10 @@ const walletStyle = StyleSheet.create({
     margin: 16
   },
   warningText: {
-    color: '#ffffff',
+    color: Colors.White,
     fontFamily: 'Metropolis-Regular',
     fontSize: 16,
-    lineHeight: 26
+    lineHeight: 24
   },
   understand: {
     marginLeft: 16,

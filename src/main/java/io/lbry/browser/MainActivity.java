@@ -175,9 +175,6 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         switch (requestCode) {
             case STORAGE_PERMISSION_REQ_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Request for the READ_PHONE_STATE permission
-                    checkPhoneStatePermission(this);
-
                     if (BuildConfig.DEBUG && !Settings.canDrawOverlays(this)) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                                                    Uri.parse("package:" + getPackageName()));
@@ -197,8 +194,12 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
             case PHONE_STATE_PERMISSION_REQ_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted
-                    acquireDeviceId(this);
+                    // Permission granted. Emit an onPhoneStatePermissionGranted event
+                    ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+                    if (reactContext != null) {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("onPhoneStatePermissionGranted", null);
+                    }
                 } else {
                     // Permission not granted. Simply show a message.
                     Toast.makeText(this,
@@ -220,7 +221,6 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             } else {
                 id = telephonyManager.getDeviceId();
             }
-
         } catch (SecurityException ex) {
             // Maybe the permission was not granted? Try to acquire permission
             checkPhoneStatePermission(context);
@@ -317,10 +317,10 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         super.onNewIntent(intent);
     }
 
-    private static void checkPermission(String permission, int requestCode, String rationale, Context context) {
+    private static void checkPermission(String permission, int requestCode, String rationale, Context context, boolean forceRequest) {
         if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
+            if (!forceRequest && ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
                 Toast.makeText(context, rationale, Toast.LENGTH_LONG).show();
             } else {
                 ActivityCompat.requestPermissions((Activity) context, new String[] { permission }, requestCode);
@@ -328,13 +328,22 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         }
     }
 
-    private static void checkPhoneStatePermission(Context context) {
+    private static void checkPermission(String permission, int requestCode, String rationale, Context context) {
+        checkPermission(permission, requestCode, rationale, context, false);
+    }
+
+    public static boolean hasPermission(String permission, Context context) {
+        return (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    public static void checkPhoneStatePermission(Context context) {
         // Request read phone state permission
         checkPermission(Manifest.permission.READ_PHONE_STATE,
                         PHONE_STATE_PERMISSION_REQ_CODE,
                         "LBRY requires optional access to be able to identify your device for rewards. " +
                         "You cannot claim rewards without this permission.",
-                        context);
+                        context,
+                        true);
     }
 
     private boolean isServiceRunning(Class<?> serviceClass) {

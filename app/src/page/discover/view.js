@@ -11,9 +11,10 @@ import {
 import { normalizeURI } from 'lbry-redux';
 import moment from 'moment';
 import Colors from '../../styles/colors';
-import FileItem from '../../component/fileItem';
 import discoverStyle from '../../styles/discover';
 import FloatingWalletBalance from '../../component/floatingWalletBalance';
+import FileItem from '../../component/fileItem';
+import RewardSummary from '../../component/rewardSummary';
 import UriBar from '../../component/uriBar';
 
 class DiscoverPage extends React.PureComponent {
@@ -50,6 +51,7 @@ class DiscoverPage extends React.PureComponent {
 
     return (
       <View style={discoverStyle.container}>
+        <RewardSummary navigation={navigation} />
         {!hasContent && fetchingFeaturedUris && (
           <View style={discoverStyle.busyContainer}>
             <ActivityIndicator size="large" color={Colors.LbryGreen} />

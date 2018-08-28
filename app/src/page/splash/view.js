@@ -148,14 +148,7 @@ class SplashScreen extends React.PureComponent {
         balanceSubscribe();
         NativeModules.VersionInfo.getAppVersion().then(appVersion => {
           this.setState({ shouldAuthenticate: true });
-          if (NativeModules.UtilityModule) {
-            // authenticate with the device ID if the method is available
-            NativeModules.UtilityModule.getDeviceId().then(deviceId => {
-              authenticate(`android-${appVersion}`, deviceId);
-            });
-          } else {
-            authenticate(appVersion);
-          }
+          authenticate(`android-${appVersion}`);
         });
       });
 

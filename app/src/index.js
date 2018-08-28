@@ -17,7 +17,7 @@ import {
   searchReducer,
   walletReducer
 } from 'lbry-redux';
-import { authReducer, userReducer } from 'lbryinc';
+import { authReducer, rewardsReducer, userReducer } from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
 import { StackNavigator, addNavigationHelpers } from 'react-navigation';
@@ -73,12 +73,13 @@ const reducers = combineReducers({
   claims: claimsReducer,
   costInfo: costInfoReducer,
   fileInfo: fileInfoReducer,
-  notifications: notificationsReducer,
-  search: searchReducer,
-  wallet: walletReducer,
   nav: navigatorReducer,
+  notifications: notificationsReducer,
+  rewards: rewardsReducer,
   settings: settingsReducer,
-  user: userReducer
+  search: searchReducer,
+  user: userReducer,
+  wallet: walletReducer
 });
 
 const bulkThunk = createBulkThunkMiddleware();
@@ -119,6 +120,9 @@ persistStore(store, persistOptions, err => {
     console.log('Unable to load saved SETTINGS');
   }
 });
+
+// TODO: Find i18n module that is compatible with react-native
+global.__ = (str) => str;
 
 class LBRYApp extends React.Component {
   render() {

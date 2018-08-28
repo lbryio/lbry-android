@@ -17,13 +17,13 @@ const select = state => ({
 });
 
 const perform = dispatch => ({
-    authenticate: (appVersion, deviceId) => dispatch(doAuthenticate(appVersion, deviceId)),
-    deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
-    balanceSubscribe: () => dispatch(doBalanceSubscribe()),
-    notify: data => dispatch(doNotify(data)),
-    setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),
-    verifyUserEmail: (token, recaptcha) => dispatch(doUserEmailVerify(token, recaptcha)),
-    verifyUserEmailFailure: error => dispatch(doUserEmailVerifyFailure(error)),
+  authenticate: (appVersion, deviceId) => dispatch(doAuthenticate(appVersion, deviceId)),
+  deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
+  balanceSubscribe: () => dispatch(doBalanceSubscribe()),
+  notify: data => dispatch(doNotify(data)),
+  setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),
+  verifyUserEmail: (token, recaptcha) => dispatch(doUserEmailVerify(token, recaptcha)),
+  verifyUserEmailFailure: error => dispatch(doUserEmailVerifyFailure(error)),
 });
 
 export default connect(select, perform)(SplashScreen);

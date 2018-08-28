@@ -3,8 +3,9 @@ import AboutPage from '../page/about';
 import DiscoverPage from '../page/discover';
 import FilePage from '../page/file';
 import FirstRunScreen from '../page/firstRun';
-import SearchPage from '../page/search';
+import RewardsPage from '../page/rewards';
 import TrendingPage from '../page/trending';
+import SearchPage from '../page/search';
 import SettingsPage from '../page/settings';
 import SplashScreen from '../page/splash';
 import TransactionHistoryPage from '../page/transactionHistory';
@@ -99,10 +100,21 @@ const walletStack = StackNavigator({
   headerMode: 'screen'
 });
 
+const rewardsStack = StackNavigator({
+  Rewards: {
+    screen: RewardsPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Rewards',
+      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+    })
+  }
+});
+
 const drawer = DrawerNavigator({
   DiscoverStack: { screen: discoverStack },
   TrendingStack: { screen: trendingStack },
   WalletStack: { screen: walletStack },
+  Rewards: { screen: rewardsStack },
   Settings: { screen: SettingsPage, navigationOptions: { drawerLockMode: 'locked-closed' } },
   About: { screen: AboutPage, navigationOptions: { drawerLockMode: 'locked-closed' } }
 }, {
@@ -189,7 +201,7 @@ class AppWithNavigationState extends React.Component {
     if (notification) {
       const { displayType, message } = notification;
       let currentDisplayType;
-      if (displayType.length) {
+      if (displayType && displayType.length) {
         for (let i = 0; i < displayType.length; i++) {
           const type = displayType[i];
           if (AppWithNavigationState.supportedDisplayTypes.indexOf(type) > -1) {
@@ -199,6 +211,11 @@ class AppWithNavigationState extends React.Component {
         }
       } else if (AppWithNavigationState.supportedDisplayTypes.indexOf(displayType) > -1) {
         currentDisplayType = displayType;
+      }
+
+      if (!currentDisplayType && message) {
+        // default to toast if no display type set and there is a message specified
+        currentDisplayType = 'toast';
       }
 
       if ('toast' === currentDisplayType) {
