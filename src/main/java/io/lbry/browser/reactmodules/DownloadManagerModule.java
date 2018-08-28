@@ -116,7 +116,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         // The file URI is used as the unique ID
         builder.setContentIntent(getLaunchPendingIntent(id))
-               .setContentTitle(String.format("Downloading %s", formatFilename(filename)))
+               .setContentTitle(String.format("Downloading %s", truncateFilename(filename)))
                .setGroup(GROUP_DOWNLOADS)
                .setPriority(NotificationCompat.PRIORITY_LOW)
                .setProgress(MAX_PROGRESS, 0, false)
@@ -149,7 +149,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
             builder = builders.get(notificationId);
         } else {
             builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-            builder.setContentTitle(String.format("Downloading %s", formatFilename(filename)))
+            builder.setContentTitle(String.format("Downloading %s", truncateFilename(filename)))
                    .setPriority(NotificationCompat.PRIORITY_LOW);
             builders.put(notificationId, builder);
         }
@@ -161,7 +161,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         notificationManager.notify(notificationId, builder.build());
 
         if (progress == MAX_PROGRESS) {
-            builder.setContentTitle(String.format("Downloaded %s", formatFilename(filename, 30)))
+            builder.setContentTitle(String.format("Downloaded %s", truncateFilename(filename, 30)))
                    .setContentText(String.format("%s", formatBytes(totalBytes)))
                    .setGroup(GROUP_DOWNLOADS)
                    .setProgress(0, 0, false)
@@ -241,7 +241,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         return String.format("%s GB", DECIMAL_FORMAT.format(bytes / (1024.0 * 1024.0 * 1024.0)));
     }
 
-    private static String formatFilename(String filename, int alternateMaxLength) {
+    private static String truncateFilename(String filename, int alternateMaxLength) {
         int maxLength = alternateMaxLength > 0 ? alternateMaxLength : MAX_FILENAME_LENGTH;
         if (filename.length() < maxLength) {
             return filename;
@@ -257,7 +257,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         return String.format("%s...", filename.substring(0, maxLength - 3));
     }
 
-    private static String formatFilename(String filename) {
-        return formatFilename(filename, 0);
+    private static String truncateFilename(String filename) {
+        return truncateFilename(filename, 0);
     }
 }
