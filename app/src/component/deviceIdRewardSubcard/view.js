@@ -35,9 +35,11 @@ class DeviceIdRewardSubcard extends React.PureComponent {
         <Text style={[rewardStyle.bottomMarginMedium, rewardStyle.subcardText]}>
           The app requires the phone state permission in order to identify your device for reward eligibility.
         </Text>
-        <Button style={rewardStyle.actionButton}
-                text={"Allow Access"}
-                onPress={this.onAllowAccessPressed} />
+        <Button
+          style={rewardStyle.actionButton}
+          text={"Allow Access"}
+          onPress={this.onAllowAccessPressed}
+        />
       </View>
     );
   }
