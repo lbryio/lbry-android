@@ -37,6 +37,7 @@ class FileItem extends React.PureComponent {
       isResolvingUri,
       rewardedContentClaimIds,
       style,
+      mediaStyle,
       navigation
     } = this.props;
 
@@ -60,7 +61,8 @@ class FileItem extends React.PureComponent {
                          thumbnail={thumbnail}
                          blurRadius={obscureNsfw ? 15 : 0}
                          resizeMode="cover"
-                         isResolvingUri={isResolvingUri} />
+                         isResolvingUri={isResolvingUri}
+                         style={mediaStyle} />
           <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />
           <Text style={discoverStyle.fileItemName}>{title}</Text>
           {channelName &&

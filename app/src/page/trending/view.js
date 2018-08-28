@@ -39,6 +39,7 @@ class TrendingPage extends React.PureComponent {
             renderItem={ ({item}) => (
                 <FileItem
                   style={discoverStyle.fileItem}
+                  mediaStyle={discoverStyle.fileItemMedia}
                   key={item}
                   uri={normalizeURI(item)}
                   navigation={navigation} />

@@ -36,6 +36,7 @@ class SearchResultItem extends React.PureComponent {
           <View style={searchStyle.thumbnailContainer}>
             <FileItemMedia style={searchStyle.thumbnail}
                            blurRadius={obscureNsfw ? 15 : 0}
+                           resizeMode="cover"
                            title={title}
                            thumbnail={metadata ? metadata.thumbnail : null} />
           </View>

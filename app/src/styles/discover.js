@@ -1,5 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import Colors from './colors';
+
+const screenDimension = Dimensions.get('window');
+const screenWidth = screenDimension.width;
+const screenHeight = screenDimension.height;
+ // calculate thumbnail width and height based on device's aspect ratio
+const horizontalMargin = 48; // left and right margins (24 + 24)
+const verticalMargin = (screenWidth / screenHeight) * horizontalMargin;
+const mediaWidth = screenWidth - horizontalMargin;
+const mediaHeight = (screenWidth / (screenHeight - verticalMargin)) * mediaWidth;
 
 const discoverStyle = StyleSheet.create({
   container: {
@@ -39,6 +48,10 @@ const discoverStyle = StyleSheet.create({
     marginLeft: 24,
     marginRight: 24,
     marginBottom: 48
+  },
+  fileItemMedia: {
+    width: mediaWidth,
+    height: mediaHeight
   },
   fileItemName: {
     fontFamily: 'Metropolis-Bold',

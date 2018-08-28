@@ -63,6 +63,7 @@ class DiscoverPage extends React.PureComponent {
             renderItem={ ({item, index, section}) => (
                 <FileItem
                   style={discoverStyle.fileItem}
+                  mediaStyle={discoverStyle.fileItemMedia}
                   key={item}
                   uri={normalizeURI(item)}
                   navigation={navigation} />
