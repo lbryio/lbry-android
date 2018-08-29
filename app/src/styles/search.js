@@ -25,13 +25,13 @@ const searchStyle = StyleSheet.create({
   },
   thumbnail: {
     width: '100%',
-    height: 80
+    height: 72
   },
   thumbnailContainer: {
-    width: '25%'
+    width: '40%'
   },
   detailsContainer: {
-    width: '70%'
+    width: '55%'
   },
   searchInput: {
     width: '100%',
@@ -41,7 +41,7 @@ const searchStyle = StyleSheet.create({
   },
   title: {
     fontFamily: 'Metropolis-SemiBold',
-    fontSize: 16
+    fontSize: 14
   },
   uri: {
     fontFamily: 'Metropolis-SemiBold',
@@ -51,7 +51,7 @@ const searchStyle = StyleSheet.create({
   publisher: {
     fontFamily: 'Metropolis-SemiBold',
     fontSize: 12,
-    marginTop: 4,
+    marginTop: 3,
     color: '#c0c0c0'
   },
   noResultsText: {
