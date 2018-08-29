@@ -45,7 +45,7 @@ export function doUpdateLoadStatus(uri, outpoint) {
 
         // Once a download has been completed, delete the individual blob files to save space
         Lbry.blob_list({ sd_hash: fileInfo.sd_hash }).then(hashes => {
-          hashes.forEach(hash => {
+          hashes.filter(hash => hash != fileInfo.sd_hash).forEach(hash => {
             Lbry.blob_delete({ blob_hash: hash });
           });
         });
@@ -325,7 +325,7 @@ export function doDeleteCompleteBlobs() {
       files.forEach(fileInfo => {
         if (fileInfo.completed) {
           Lbry.blob_list({ sd_hash: fileInfo.sd_hash }).then(hashes => {
-            hashes.forEach(hash => {
+            hashes.filter(hash => hash != fileInfo.sd_hash).forEach(hash => {
               Lbry.blob_delete({ blob_hash: hash });
             });
           });
