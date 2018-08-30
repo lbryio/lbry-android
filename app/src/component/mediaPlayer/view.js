@@ -295,6 +295,17 @@ class MediaPlayer extends React.PureComponent {
     return encodedFilePath;
   }
 
+  onSeekerTouchAreaPressed = (evt) => {
+    if (evt && evt.nativeEvent) {
+      const newSeekerPosition = evt.nativeEvent.locationX;
+      if (!isNaN(newSeekerPosition)) {
+        const time = this.state.duration * (newSeekerPosition / this.seekerWidth);
+        this.setSeekerPosition(newSeekerPosition);
+        this.seekTo(time);
+      }
+    }
+  }
+
   render() {
     const { backgroundPlayEnabled, fileInfo, thumbnail, onLayout, style } = this.props;
     const completedWidth = this.getCurrentTimePercentage() * this.seekerWidth;
@@ -348,6 +359,10 @@ class MediaPlayer extends React.PureComponent {
                         { left: this.state.seekerPosition }]} { ...this.seekResponder.panHandlers }>
             <View style={this.state.seeking ? mediaPlayerStyle.bigSeekerCircle : mediaPlayerStyle.seekerCircle} />
           </View>
+          <TouchableOpacity
+            style={[mediaPlayerStyle.seekerTouchArea,
+                    (this.state.fullscreenMode ? mediaPlayerStyle.seekerTouchAreaFs : mediaPlayerStyle.seekerTouchAreaContained)]}
+            onPress={this.onSeekerTouchAreaPressed} />
         </View>}
       </View>
     );

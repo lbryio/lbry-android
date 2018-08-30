@@ -39,7 +39,7 @@ const mediaPlayerStyle = StyleSheet.create({
   },
   fullscreenTrackingControls: {
     alignSelf: 'center',
-    width: '70%'
+    width: '60%'
   },
   playerControls: {
     position: 'absolute',
@@ -75,7 +75,7 @@ const mediaPlayerStyle = StyleSheet.create({
     position: 'absolute',
     left: 8,
     bottom: 24,
-    fontSize: 12,
+    fontSize: 14,
     color: '#ffffff'
   },
   totalDuration: {
@@ -83,7 +83,7 @@ const mediaPlayerStyle = StyleSheet.create({
     position: 'absolute',
     right: 40,
     bottom: 24,
-    fontSize: 12,
+    fontSize: 14,
     color: '#ffffff'
   },
   seekerCircle: {
@@ -100,12 +100,25 @@ const mediaPlayerStyle = StyleSheet.create({
     position: 'absolute',
     height: 36,
     width: 48,
-    marginLeft: -18
+    marginLeft: -18,
+    zIndex: 20
   },
   seekerHandleContained: {
     bottom: -17
   },
   seekerHandleFs: {
+    bottom: 0
+  },
+  seekerTouchArea: {
+    position: 'absolute',
+    height: 30,
+    width: '100%',
+    zIndex: 10,
+  },
+  seekerTouchAreaContained: {
+    bottom: -15,
+  },
+  seekerTouchAreaFs: {
     bottom: 0
   },
   bigSeekerCircle: {

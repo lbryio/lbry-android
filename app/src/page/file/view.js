@@ -229,6 +229,10 @@ class FilePage extends React.PureComponent {
     const isLandscape = screenWidth > screenHeight;
     this.setState({ isLandscape });
 
+    if (!this.playerBackground) {
+      return;
+    }
+
     if (isLandscape) {
       this.playerBackground.setNativeProps({ height: screenHeight - StyleSheet.flatten(uriBarStyle.uriContainer).height });
     } else if (this.state.playerBgHeight > 0) {
