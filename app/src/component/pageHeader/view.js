@@ -9,6 +9,7 @@ import {
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import NavigationButton from '../navigationButton';
 import pageHeaderStyle from '../../styles/pageHeader';
 
 const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
@@ -34,9 +35,13 @@ class PageHeader extends React.PureComponent {
                 {title}
               </AnimatedText>
             </View>
-            <TouchableOpacity style={pageHeaderStyle.left}>
-              <Icon name="arrow-left" size={24} onPress={onBackPressed} style={pageHeaderStyle.backIcon} />
-            </TouchableOpacity>
+            <NavigationButton
+              name="arrow-left"
+              style={pageHeaderStyle.left}
+              size={24}
+              iconStyle={pageHeaderStyle.backIcon}
+              onPress={onBackPressed}
+            />
           </View>
         </View>
       </View>

@@ -34,7 +34,8 @@ const pageHeaderStyle = StyleSheet.create({
     ...platformContainerStyles,
   },
   backIcon: {
-    marginLeft: 16
+    marginLeft: 16,
+    marginRight: 16
   },
   header: {
     ...StyleSheet.absoluteFillObject,
@@ -61,6 +62,7 @@ const pageHeaderStyle = StyleSheet.create({
     left: 0,
     bottom: 0,
     top: 0,
+    height: '100%',
     position: 'absolute',
     alignItems: 'center',
     flexDirection: 'row',

@@ -40,18 +40,25 @@ import {
 } from 'lbryinc';
 import { makeSelectClientSetting } from '../redux/selectors/settings';
 import { decode as atob } from 'base-64';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import NavigationButton from '../component/navigationButton';
 import Constants from '../constants';
 import discoverStyle from '../styles/discover';
 import searchStyle from '../styles/search';
 import SearchRightHeaderIcon from '../component/searchRightHeaderIcon';
+
+const menuNavigationButton = (navigation) => <NavigationButton
+                                               name="bars"
+                                               size={24}
+                                               style={discoverStyle.drawerMenuButton}
+                                               iconStyle={discoverStyle.drawerHamburger}
+                                               onPress={() => navigation.navigate('DrawerOpen')} />
 
 const discoverStack = StackNavigator({
   Discover: {
     screen: DiscoverPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Discover',
-      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: menuNavigationButton(navigation),
     })
   },
   File: {
@@ -76,7 +83,7 @@ const trendingStack = StackNavigator({
     screen: TrendingPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Trending',
-      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: menuNavigationButton(navigation),
     })
   }
 });
@@ -86,7 +93,7 @@ const walletStack = StackNavigator({
     screen: WalletPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Wallet',
-      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: menuNavigationButton(navigation),
     })
   },
   TransactionHistory: {
@@ -105,7 +112,7 @@ const rewardsStack = StackNavigator({
     screen: RewardsPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Rewards',
-      headerLeft: <Icon name="bars" size={24} style={discoverStyle.drawerHamburger} onPress={() => navigation.navigate('DrawerOpen')} />,
+      headerLeft: menuNavigationButton(navigation),
     })
   }
 });
