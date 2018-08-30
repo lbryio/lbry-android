@@ -9,7 +9,7 @@ import {
     makeSelectMetadataForUri,
     selectDownloadingByOutpoint,
 } from 'lbry-redux';
-import { Lbryio, doClaimEligiblePurchaseRewards } from 'lbryinc';
+import { doClaimEligiblePurchaseRewards } from 'lbryinc';
 import { Alert, NativeModules } from 'react-native';
 import Constants from '../../constants';
 
