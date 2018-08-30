@@ -18,7 +18,7 @@ class FloatingWalletBalance extends React.PureComponent<Props> {
     return (
       <TouchableOpacity style={[floatingButtonStyle.container, floatingButtonStyle.bottomRight]}
                         onPress={() => navigation && navigation.navigate({ routeName: 'Wallet' })}>
-        {!balance && <ActivityIndicator size="small" color={Colors.White} />}
+        {isNaN(balance) && <ActivityIndicator size="small" color={Colors.White} />}
         <Text style={floatingButtonStyle.text}>
           {(balance || balance === 0) && (formatCredits(balance, 2) + ' LBC')}
         </Text>
