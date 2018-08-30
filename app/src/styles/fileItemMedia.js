@@ -1,14 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const screenDimension = Dimensions.get('window');
-const width = screenDimension.width - 48; // screen width minus combined left and right margins
-
 const fileItemMediaStyle = StyleSheet.create({
   autothumb: {
     flex: 1,
     width: '100%',
     height: 200,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   autothumbText: {
     fontFamily: 'Metropolis-SemiBold',
