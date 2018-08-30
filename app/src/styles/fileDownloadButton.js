@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native';
 
 const fileDownloadButtonStyle = StyleSheet.create({
   container: {
-    width: 160,
+    paddingLeft: 32,
+    paddingRight: 32,
     height: 36,
     borderRadius: 18,
     justifyContent: 'center',

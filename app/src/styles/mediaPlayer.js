@@ -49,7 +49,7 @@ const mediaPlayerStyle = StyleSheet.create({
     height: '100%',
   },
   playerControlsContainer: {
-    backgroundColor: 'transparent',
+    backgroundColor: '#00000020',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'

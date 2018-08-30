@@ -311,7 +311,7 @@ class FilePage extends React.PureComponent {
             <View style={this.state.fullscreenMode ? filePageStyle.innerPageContainerFsMode : filePageStyle.innerPageContainer}
                   onLayout={this.checkOrientation}>
               <View style={filePageStyle.mediaContainer}>
-                {(canOpen || (!fileInfo || (isPlayable && !canLoadMedia))) &&
+                {((canOpen || (!fileInfo || (isPlayable && !canLoadMedia))) || (!canOpen && fileInfo)) &&
                   <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
                 {((!this.state.downloadButtonShown || this.state.downloadPressed) && !this.state.mediaLoaded) &&
                     <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
