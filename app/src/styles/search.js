@@ -1,4 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+import Colors from './colors';
+
+const screenDimension = Dimensions.get('window');
+const screenWidth = screenDimension.width;
+const screenHeight = screenDimension.height;
+const thumbnailHeight = 100;
+const thumbnailWidth = (screenHeight / screenWidth) * thumbnailHeight;
 
 const searchStyle = StyleSheet.create({
   container: {
@@ -24,14 +31,13 @@ const searchStyle = StyleSheet.create({
     marginTop: 16
   },
   thumbnail: {
-    width: '100%',
-    height: 72
-  },
-  thumbnailContainer: {
-    width: '40%'
+    width: thumbnailWidth,
+    height: thumbnailHeight,
+    marginRight: 16,
+    justifyContent: 'center'
   },
   detailsContainer: {
-    width: '55%'
+    flex: 1
   },
   searchInput: {
     width: '100%',
@@ -41,7 +47,7 @@ const searchStyle = StyleSheet.create({
   },
   title: {
     fontFamily: 'Metropolis-SemiBold',
-    fontSize: 14
+    fontSize: 16
   },
   uri: {
     fontFamily: 'Metropolis-SemiBold',
@@ -50,9 +56,9 @@ const searchStyle = StyleSheet.create({
   },
   publisher: {
     fontFamily: 'Metropolis-SemiBold',
-    fontSize: 12,
+    fontSize: 14,
     marginTop: 3,
-    color: '#c0c0c0'
+    color: Colors.LbryGreen
   },
   noResultsText: {
     textAlign: 'center',

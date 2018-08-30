@@ -3,6 +3,7 @@ import { normalizeURI, parseURI } from 'lbry-redux';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import Colors from '../../styles/colors';
 import FileItemMedia from '../fileItemMedia';
+import Link from '../../component/link';
 import NsfwOverlay from '../../component/nsfwOverlay';
 import searchStyle from '../../styles/search';
 
@@ -33,13 +34,11 @@ class SearchResultItem extends React.PureComponent {
     return (
       <View style={style}>
         <TouchableOpacity style={style} onPress={onPress}>
-          <View style={searchStyle.thumbnailContainer}>
-            <FileItemMedia style={searchStyle.thumbnail}
-                           blurRadius={obscureNsfw ? 15 : 0}
-                           resizeMode="cover"
-                           title={title}
-                           thumbnail={metadata ? metadata.thumbnail : null} />
-          </View>
+          <FileItemMedia style={searchStyle.thumbnail}
+                         blurRadius={obscureNsfw ? 15 : 0}
+                         resizeMode="cover"
+                         title={title}
+                         thumbnail={metadata ? metadata.thumbnail : null} />
           <View style={searchStyle.detailsContainer}>
             {isResolvingUri && (
             <View>
@@ -49,7 +48,11 @@ class SearchResultItem extends React.PureComponent {
               </View>
             </View>)}
             {!isResolvingUri && <Text style={searchStyle.title}>{title || name}</Text>}
-            {!isResolvingUri && channel && <Text style={searchStyle.publisher}>{channel}</Text>}
+            {!isResolvingUri && channel &&
+              <Link style={searchStyle.publisher} text={channel} onPress={() => {
+                const channelUri = normalizeURI(channel);
+                navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
+              }} />}
           </View>
         </TouchableOpacity>
         {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />}
