@@ -140,16 +140,8 @@ export function doStopDownloadingFile(uri, fileInfo) {
 
 export function doDownloadFile(uri, streamInfo) {
   return dispatch => {
-    const { outpoint, claim_id: claimId } = streamInfo;
+    const { outpoint } = streamInfo;
     dispatch(doStartDownload(uri, outpoint));
-
-    // log the view
-    Lbryio.call('file', 'view', {
-      uri,
-      outpoint,
-      claim_id: claimId
-    }).catch(() => {});
-
     dispatch(doClaimEligiblePurchaseRewards());
   };
 }

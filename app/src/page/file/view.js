@@ -1,5 +1,6 @@
 import React from 'react';
 import { Lbry, normalizeURI } from 'lbry-redux';
+import { Lbryio } from 'lbryinc';
 import {
   ActivityIndicator,
   Alert,
@@ -43,6 +44,7 @@ class FilePage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      fileViewLogged: false,
       mediaLoaded: false,
       autoPlayMedia: false,
       downloadButtonShown: false,
@@ -75,13 +77,25 @@ class FilePage extends React.PureComponent {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     this.fetchFileInfo(this.props);
     const { isResolvingUri, resolveUri, claim, navigation } = this.props;
     const { uri } = navigation.state.params;
 
     if (!isResolvingUri && claim === undefined && uri) {
       resolveUri(uri);
+    }
+
+    const prevFileInfo = prevProps.fileInfo;
+    const { fileInfo, contentType } = this.props;
+    if (!prevFileInfo && fileInfo) {
+      // started downloading
+      const mediaType = Lbry.getMediaType(contentType);
+      const isPlayable = mediaType === 'video' || mediaType === 'audio';
+      // If the media is playable, file/view will be done in onPlaybackStarted
+      if (!isPlayable && !this.state.fileViewLogged) {
+        this.logFileView(uri, fileInfo);
+      }
     }
   }
 
@@ -129,7 +143,7 @@ class FilePage extends React.PureComponent {
         { text: 'No' },
         { text: 'Yes', onPress: () => {
           deleteFile(fileInfo.outpoint, true);
-          this.setState({ downloadPressed: false, mediaLoaded: false });
+          this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
         }}
       ],
       { cancelable: true }
@@ -146,7 +160,7 @@ class FilePage extends React.PureComponent {
         { text: 'No' },
         { text: 'Yes', onPress: () => {
           stopDownload(navigation.state.params.uri, fileInfo);
-          this.setState({ downloadPressed: false, mediaLoaded: false });
+          this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
         } }
       ],
       { cancelable: true }
@@ -231,20 +245,38 @@ class FilePage extends React.PureComponent {
   }
 
   onPlaybackStarted = () => {
-    let timeToStart = null;
+    let timeToStartMillis, timeToStart;
     if (this.startTime) {
-      timeToStart = Math.ceil((Date.now() - this.startTime) / 1000);
+      timeToStartMillis = Date.now() - this.startTime;
+      timeToStart = Math.ceil(timeToStartMillis / 1000);
       this.startTime = null;
     }
 
-    const { navigation } = this.props;
+    const { fileInfo, navigation } = this.props;
     const { uri } = navigation.state.params;
+    this.logFileView(uri, fileInfo, timeToStartMillis);
+
     let payload = { 'Uri': uri };
     if (!isNaN(timeToStart)) {
       payload['Time to Start (seconds)'] = timeToStart;
+      payload['Time to Start (ms)'] = timeToStartMillis;
+    }
+    NativeModules.Mixpanel.track('Play', payload);
+  }
+
+  logFileView = (uri, fileInfo, timeToStart) => {
+    const { outpoint, claim_id: claimId } = fileInfo;
+    const params = {
+      uri,
+      outpoint,
+      claim_id: claimId
+    };
+    if (!isNaN(timeToStart)) {
+      params.time_to_start = timeToStart;
     }
 
-    NativeModules.Mixpanel.track('Play', payload);
+    Lbryio.call('file', 'view', params).catch(() => {});
+    this.setState({ fileViewLogged: true });
   }
 
   render() {
