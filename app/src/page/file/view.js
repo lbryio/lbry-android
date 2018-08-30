@@ -1,5 +1,6 @@
 import React from 'react';
 import { Lbry, normalizeURI } from 'lbry-redux';
+import { Lbryio } from 'lbryinc';
 import {
   ActivityIndicator,
   Alert,
@@ -38,11 +39,14 @@ class FilePage extends React.PureComponent {
 
   player = null;
 
+  startTime = null;
+
   constructor(props) {
     super(props);
     this.state = {
+      fileViewLogged: false,
       mediaLoaded: false,
-      autoplayMedia: false,
+      autoPlayMedia: false,
       downloadButtonShown: false,
       downloadPressed: false,
       fullscreenMode: false,
@@ -73,13 +77,25 @@ class FilePage extends React.PureComponent {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     this.fetchFileInfo(this.props);
     const { isResolvingUri, resolveUri, claim, navigation } = this.props;
     const { uri } = navigation.state.params;
 
     if (!isResolvingUri && claim === undefined && uri) {
       resolveUri(uri);
+    }
+
+    const prevFileInfo = prevProps.fileInfo;
+    const { fileInfo, contentType } = this.props;
+    if (!prevFileInfo && fileInfo) {
+      // started downloading
+      const mediaType = Lbry.getMediaType(contentType);
+      const isPlayable = mediaType === 'video' || mediaType === 'audio';
+      // If the media is playable, file/view will be done in onPlaybackStarted
+      if (!isPlayable && !this.state.fileViewLogged) {
+        this.logFileView(uri, fileInfo);
+      }
     }
   }
 
@@ -127,7 +143,7 @@ class FilePage extends React.PureComponent {
         { text: 'No' },
         { text: 'Yes', onPress: () => {
           deleteFile(fileInfo.outpoint, true);
-          this.setState({ downloadPressed: false, mediaLoaded: false });
+          this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
         }}
       ],
       { cancelable: true }
@@ -144,7 +160,7 @@ class FilePage extends React.PureComponent {
         { text: 'No' },
         { text: 'Yes', onPress: () => {
           stopDownload(navigation.state.params.uri, fileInfo);
-          this.setState({ downloadPressed: false, mediaLoaded: false });
+          this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
         } }
       ],
       { cancelable: true }
@@ -218,6 +234,49 @@ class FilePage extends React.PureComponent {
     } else if (this.state.playerBgHeight > 0) {
       this.playerBackground.setNativeProps({ height: this.state.playerBgHeight });
     }
+  }
+
+  onMediaLoaded = (title, channelName) => {
+    this.setState({ mediaLoaded: true });
+    window.currentMediaInfo = {
+      title: title,
+      channel: channelName
+    };
+  }
+
+  onPlaybackStarted = () => {
+    let timeToStartMillis, timeToStart;
+    if (this.startTime) {
+      timeToStartMillis = Date.now() - this.startTime;
+      timeToStart = Math.ceil(timeToStartMillis / 1000);
+      this.startTime = null;
+    }
+
+    const { fileInfo, navigation } = this.props;
+    const { uri } = navigation.state.params;
+    this.logFileView(uri, fileInfo, timeToStartMillis);
+
+    let payload = { 'Uri': uri };
+    if (!isNaN(timeToStart)) {
+      payload['Time to Start (seconds)'] = timeToStart;
+      payload['Time to Start (ms)'] = timeToStartMillis;
+    }
+    NativeModules.Mixpanel.track('Play', payload);
+  }
+
+  logFileView = (uri, fileInfo, timeToStart) => {
+    const { outpoint, claim_id: claimId } = fileInfo;
+    const params = {
+      uri,
+      outpoint,
+      claim_id: claimId
+    };
+    if (!isNaN(timeToStart)) {
+      params.time_to_start = timeToStart;
+    }
+
+    Lbryio.call('file', 'view', params).catch(() => {});
+    this.setState({ fileViewLogged: true });
   }
 
   render() {
@@ -320,7 +379,10 @@ class FilePage extends React.PureComponent {
                                       style={filePageStyle.downloadButton}
                                       openFile={openFile}
                                       isPlayable={isPlayable}
-                                      onPlay={() => this.setState({ downloadPressed: true, autoPlayMedia: true })}
+                                      onPlay={() => {
+                                        this.startTime = Date.now();
+                                        this.setState({ downloadPressed: true, autoPlayMedia: true });
+                                      }}
                                       onButtonLayout={() => this.setState({ downloadButtonShown: true })} />}
                 {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
               </View>
@@ -331,25 +393,21 @@ class FilePage extends React.PureComponent {
                                                     this.setState({ playerBgHeight: evt.nativeEvent.layout.height });
                                                   }
                                                 }} />}
-              {canLoadMedia && fileInfo && <MediaPlayer fileInfo={fileInfo}
-                                                        ref={(ref) => { this.player = ref; }}
-                                                        uri={uri}
-                                                        style={playerStyle}
-                                                        autoPlay={this.state.autoPlayMedia}
-                                                        onFullscreenToggled={this.handleFullscreenToggle}
-                                                        onMediaLoaded={() => {
-                                                          this.setState({ mediaLoaded: true });
-                                                          window.currentMediaInfo = {
-                                                            title: title,
-                                                            channel: channelName
-                                                          };
-                                                        }}
-                                                        onLayout={(evt) => {
-                                                          if (!this.state.playerHeight) {
-                                                            this.setState({ playerHeight: evt.nativeEvent.layout.height });
-                                                          }
-                                                        }}
-                                                        />}
+              {canLoadMedia && fileInfo && <MediaPlayer
+                                             fileInfo={fileInfo}
+                                             ref={(ref) => { this.player = ref; }}
+                                             uri={uri}
+                                             style={playerStyle}
+                                             autoPlay={this.state.autoPlayMedia}
+                                             onFullscreenToggled={this.handleFullscreenToggle}
+                                             onLayout={(evt) => {
+                                               if (!this.state.playerHeight) {
+                                                 this.setState({ playerHeight: evt.nativeEvent.layout.height });
+                                               }
+                                             }}
+                                             onMediaLoaded={() => this.onMediaLoaded(title, channelName)}
+                                             onPlaybackStarted={this.onPlaybackStarted}
+                                            />}
 
               { showActions &&
               <View style={filePageStyle.actions}>
