@@ -64,6 +64,7 @@ class FilePage extends React.PureComponent {
 
     const { isResolvingUri, resolveUri, navigation } = this.props;
     const { uri } = navigation.state.params;
+
     if (!isResolvingUri) resolveUri(uri);
 
     this.fetchFileInfo(this.props);
@@ -295,7 +296,7 @@ class FilePage extends React.PureComponent {
       blackListedOutpoints,
       navigation
     } = this.props;
-    const { uri } = navigation.state.params;
+    const { uri, autoplay } = navigation.state.params;
 
     let innerContent = null;
     if ((isResolvingUri && !claim) || !claim) {
@@ -402,7 +403,7 @@ class FilePage extends React.PureComponent {
                                              ref={(ref) => { this.player = ref; }}
                                              uri={uri}
                                              style={playerStyle}
-                                             autoPlay={this.state.autoPlayMedia}
+                                             autoPlay={autoplay || this.state.autoPlayMedia}
                                              onFullscreenToggled={this.handleFullscreenToggle}
                                              onLayout={(evt) => {
                                                if (!this.state.playerHeight) {

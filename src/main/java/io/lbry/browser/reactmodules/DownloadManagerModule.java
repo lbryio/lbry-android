@@ -157,7 +157,8 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         builder.setContentIntent(getLaunchPendingIntent(id))
                .setContentText(String.format("%.0f%% (%s / %s)", progress, formatBytes(writtenBytes), formatBytes(totalBytes)))
                .setGroup(GROUP_DOWNLOADS)
-               .setProgress(MAX_PROGRESS, new Double(progress).intValue(), false);
+               .setProgress(MAX_PROGRESS, new Double(progress).intValue(), false)
+               .setSmallIcon(android.R.drawable.stat_sys_download);
         notificationManager.notify(notificationId, builder.build());
 
         if (progress == MAX_PROGRESS) {

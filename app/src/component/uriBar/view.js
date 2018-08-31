@@ -45,12 +45,20 @@ class UriBar extends React.PureComponent {
   }
 
   handleItemPress = (item) => {
-    const { navigation, updateSearchQuery } = this.props;
+    const { navigation, onSearchSubmitted, updateSearchQuery } = this.props;
     const { type, value } = item;
 
     Keyboard.dismiss();
 
     if (SEARCH_TYPES.SEARCH === type) {
+      this.setState({ currentValue: value });
+      updateSearchQuery(value);
+
+      if (onSearchSubmitted) {
+        onSearchSubmitted(value);
+        return;
+      }
+
       navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: value }});
     } else {
       const uri = normalizeURI(value);
