@@ -1,10 +1,13 @@
 import { StyleSheet } from 'react-native';
 
-const searchStyle = StyleSheet.create({
+const downloadsStyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  itemList: {
+    flex: 1,
   },
   scrollContainer: {
     flex: 1,
@@ -17,19 +20,7 @@ const searchStyle = StyleSheet.create({
   scrollPadding: {
     paddingBottom: 16
   },
-  resultItem: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16
-  },
-  searchInput: {
-    width: '100%',
-    height: '100%',
-    fontFamily: 'Metropolis-Regular',
-    fontSize: 16
-  },
-  noResultsText: {
+  noDownloadsText: {
     textAlign: 'center',
     fontFamily: 'Metropolis-Regular',
     fontSize: 14,
@@ -40,4 +31,4 @@ const searchStyle = StyleSheet.create({
   }
 });
 
-export default searchStyle;
+export default downloadsStyle;
