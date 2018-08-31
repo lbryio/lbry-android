@@ -1,7 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
-  DeviceEventEmitter,
   ActivityIndicator,
   NativeModules,
   ScrollView,
@@ -11,7 +10,7 @@ import {
 import { doInstallNew } from 'lbryinc';
 import Colors from '../../styles/colors';
 import Link from '../../component/link';
-import DeviceIdRewardSubcard from '../../component/deviceIdRewardSubcard';
+import PhoneNumberRewardSubcard from '../../component/phoneNumberRewardSubcard';
 import EmailRewardSubcard from '../../component/emailRewardSubcard';
 import PageHeader from '../../component/pageHeader';
 import RewardCard from '../../component/rewardCard';
@@ -19,33 +18,21 @@ import rewardStyle from '../../styles/reward';
 
 class RewardsPage extends React.PureComponent {
   state = {
-    canAcquireDeviceId: false,
     isEmailVerified: false,
+    isIdentityVerified: false,
     isRewardApproved: false,
     verifyRequestStarted: false,
   };
 
   componentDidMount() {
-    DeviceEventEmitter.addListener('onPhoneStatePermissionGranted', this.phoneStatePermissionGranted);
-
     this.props.fetchRewards();
 
     const { user } = this.props;
     this.setState({
       isEmailVerified: (user && user.primary_email && user.has_verified_email),
+      isIdentityVerified: (user && user.is_identity_verified),
       isRewardApproved: (user && user.is_reward_approved)
     });
-
-    if (NativeModules.UtilityModule) {
-      const util = NativeModules.UtilityModule;
-      util.canAcquireDeviceId().then(canAcquireDeviceId => {
-        this.setState({ canAcquireDeviceId });
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    DeviceEventEmitter.removeListener('onPhoneStatePermissionGranted', this.phoneStatePermissionGranted);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -67,40 +54,29 @@ class RewardsPage extends React.PureComponent {
   }
 
   renderVerification() {
-    if (!this.state.isRewardApproved) {
+    if (!this.state.isEmailVerified || !this.state.isIdentityVerified) {
       return (
         <View style={[rewardStyle.card, rewardStyle.verification]}>
           <Text style={rewardStyle.title}>Humans Only</Text>
           <Text style={rewardStyle.text}>Rewards are for human beings only. You'll have to prove you're one of us before you can claim any rewards.</Text>
-          {!this.state.canAcquireDeviceId && <DeviceIdRewardSubcard />}
           {!this.state.isEmailVerified && <EmailRewardSubcard />}
+          {!this.state.isIdentityVerified && <PhoneNumberRewardSubcard />}
+        </View>
+      );
+    }
+
+    if (this.state.isEmailVerified && this.state.isIdentityVerified && !this.state.isRewardApproved) {
+      return (
+        <View style={[rewardStyle.card, rewardStyle.verification]}>
+          <Text style={rewardStyle.title}>Manual Reward Verification</Text>
+          <Text style={rewardStyle.text}>
+            You need to be manually verified before you can start claiming rewards. Please request to be verified on the <Link style={rewardStyle.textLink} href="https://discordapp.com/invite/Z3bERWA" text="LBRY Discord server" />.
+          </Text>
         </View>
       );
     }
 
     return null;
-  }
-
-  phoneStatePermissionGranted = () => {
-    const { install, notify } = this.props;
-    if (NativeModules.UtilityModule) {
-      const util = NativeModules.UtilityModule;
-
-      // Double-check just to be sure
-      util.canAcquireDeviceId().then(canAcquireDeviceId => {
-        this.setState({ canAcquireDeviceId });
-        if (canAcquireDeviceId) {
-          util.getDeviceId(false).then(deviceId => {
-            NativeModules.VersionInfo.getAppVersion().then(appVersion => {
-              doInstallNew(`android-${appVersion}`, deviceId);
-            });
-          }).catch((error) => {
-            notify({ message: error, displayType: ['toast'] });
-            this.setState({ canAcquireDeviceId: false });
-          });
-        }
-      });
-    }
   }
 
   renderUnclaimedRewards() {
@@ -123,7 +99,8 @@ class RewardsPage extends React.PureComponent {
       return (
         <View style={rewardStyle.busyContainer}>
           <Text style={rewardStyle.infoText}>
-            {(claimed && claimed.length) ? "You have claimed all available rewards! We're regularly adding more so be sure to check back later." :
+            {(claimed && claimed.length) ?
+              "You have claimed all available rewards! We're regularly adding more so be sure to check back later." :
               "There are no rewards available at this time, please check back later."}
           </Text>
         </View>
@@ -157,13 +134,11 @@ class RewardsPage extends React.PureComponent {
 
     return (
       <View style={rewardStyle.container}>
-        {this.renderVerification()}
-        <View style={rewardStyle.rewardsContainer}>
-          <ScrollView style={rewardStyle.scrollContainer} contentContainerStyle={rewardStyle.scrollContentContainer}>
-            {this.renderUnclaimedRewards()}
-            {this.renderClaimedRewards()}
-          </ScrollView>
-        </View>
+        <ScrollView style={rewardStyle.scrollContainer} contentContainerStyle={rewardStyle.scrollContentContainer}>
+          {this.renderVerification()}
+          {this.renderUnclaimedRewards()}
+          {this.renderClaimedRewards()}
+        </ScrollView>
       </View>
     );
   }

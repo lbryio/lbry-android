@@ -86,9 +86,10 @@ class EmailRewardSubcard extends React.PureComponent {
                    value={this.state.email}
                    onChangeText={text => this.handleChangeText(text)} />
         {!this.state.verifyStarted && <Button style={rewardStyle.actionButton}
-                text={"Send Verification Email"}
+                text={"Send verification email"}
                 onPress={this.onSendVerificationPressed} />}
-        {this.state.verifyStarted && emailNewPending && <ActivityIndicator size={"small"} color={Colors.LbryGreen} />}
+        {this.state.verifyStarted && emailNewPending &&
+          <ActivityIndicator size={"small"} color={Colors.LbryGreen} style={rewardStyle.loading} />}
       </View>
     );
   }

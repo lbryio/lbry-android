@@ -16,6 +16,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
+import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
@@ -24,7 +25,9 @@ import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.shell.MainReactPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -49,9 +52,13 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     private static final int PHONE_STATE_PERMISSION_REQ_CODE = 202;
 
-    private BroadcastReceiver stopServiceReceiver;
+    private static final int RECEIVE_SMS_PERMISSION_REQ_CODE = 203;
 
     private BroadcastReceiver backgroundMediaReceiver;
+
+    private BroadcastReceiver smsReceiver;
+
+    private BroadcastReceiver stopServiceReceiver;
 
     private ReactRootView mReactRootView;
 
@@ -90,6 +97,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         // Register the stop service receiver (so that we close the activity if the user requests the service to stop)
         registerStopReceiver();
+
+        // Register SMS receiver for handling verification texts
+        registerSmsReceiver();
 
         // Start the daemon service if it is not started
         serviceRunning = isServiceRunning(LbrynetService.class);
@@ -153,6 +163,48 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         registerReceiver(backgroundMediaReceiver, backgroundMediaFilter);
     }
 
+    public void registerSmsReceiver() {
+        if (!hasPermission(Manifest.permission.RECEIVE_SMS, this)) {
+            // don't create the receiver if we don't have the read sms permission
+            return;
+        }
+
+        IntentFilter smsFilter = new IntentFilter();
+        smsFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
+        smsReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // Get the message
+                Bundle bundle = intent.getExtras();
+                if (bundle != null) {
+                    Object[] pdus = (Object[]) bundle.get("pdus");
+                    if (pdus != null && pdus.length > 0) {
+                        SmsMessage sms  = SmsMessage.createFromPdu((byte[]) pdus[0]);
+                        String text = sms.getMessageBody();
+                        if (text == null || text.trim().length() == 0) {
+                            return;
+                        }
+
+                        // Retrieve verification code from the text message if it contains
+                        // the strings "lbry", "verification code" and the colon (following the expected format)
+                        text = text.toLowerCase();
+                        if (text.indexOf("lbry") > -1 &&  text.indexOf("verification code") > -1 && text.indexOf(":") > -1) {
+                            String code = text.substring(text.lastIndexOf(":") + 1).trim();
+                            ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+                            if (reactContext != null) {
+                                WritableMap params = Arguments.createMap();
+                                params.putString("code", code);
+                                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                    .emit("onVerificationCodeReceived", params);
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        registerReceiver(smsReceiver, smsFilter);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
@@ -204,6 +256,27 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                     // Permission not granted. Simply show a message.
                     Toast.makeText(this,
                         "No permission granted to read your device state. Rewards cannot be claimed.", Toast.LENGTH_LONG).show();
+                }
+                break;
+
+            case RECEIVE_SMS_PERMISSION_REQ_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted. Emit an onPhoneStatePermissionGranted event
+                    ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+                    if (reactContext != null) {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("onReceiveSmsPermissionGranted", null);
+                    }
+
+                    // register the receiver
+                    if (smsReceiver == null) {
+                        registerSmsReceiver();
+                    }
+                } else {
+                    // Permission not granted. Simply show a message.
+                    Toast.makeText(this,
+                        "No permission granted to receive your SMS messages. You may have to enter the verification code manually.",
+                        Toast.LENGTH_LONG).show();
                 }
                 break;
         }
@@ -286,6 +359,11 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             backgroundMediaReceiver = null;
         }
 
+        if (smsReceiver != null) {
+            unregisterReceiver(smsReceiver);
+            smsReceiver = null;
+        }
+
         if (stopServiceReceiver != null) {
             unregisterReceiver(stopServiceReceiver);
             stopServiceReceiver = null;
@@ -342,6 +420,15 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                         PHONE_STATE_PERMISSION_REQ_CODE,
                         "LBRY requires optional access to be able to identify your device for rewards. " +
                         "You cannot claim rewards without this permission.",
+                        context,
+                        true);
+    }
+
+    public static void checkReceiveSmsPermission(Context context) {
+        // Request read phone state permission
+        checkPermission(Manifest.permission.RECEIVE_SMS,
+                        RECEIVE_SMS_PERMISSION_REQ_CODE,
+                        "LBRY requires access to be able to read a verification text message for rewards.",
                         context,
                         true);
     }

@@ -13,24 +13,14 @@ class RewardSummary extends React.Component {
     const { user } = this.props;
     let actionsLeft = 0;
     if (!user || !user.has_verified_email) {
-        actionsLeft++;
+      actionsLeft++;
     }
 
-    this.setState({ actionsLeft }, () => {
-      if (NativeModules.UtilityModule) {
-        NativeModules.UtilityModule.canAcquireDeviceId().then(canAcquire => {
-          if (!canAcquire) {
-            this.setState({ actionsLeft: this.state.actionsLeft + 1 });
-            return;
-          }
-        }).catch(err => {
-          this.setState({ actionsLeft: this.state.actionsLeft + 1 });
-        });
-      } else {
-        // unable to retrieve device ID because the native module is not present.
-        this.setState({ actionsLeft: this.state.actionsLeft + 1 });
-      }
-    });
+    if (!user || !user.is_identity_verified) {
+      actionsLeft++;
+    }
+
+    this.setState({ actionsLeft });
   }
 
   render() {

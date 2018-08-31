@@ -109,9 +109,9 @@ public class UtilityModule extends ReactContextBaseJavaModule {
             }
         } catch (SecurityException ex) {
             // Maybe the permission was not granted? Try to acquire permission
-            if (requestPermission) {
+            /*if (requestPermission) {
                 requestPhoneStatePermission();
-            }
+            }*/
         } catch (Exception ex) {
             // id could not be obtained. Display a warning that rewards cannot be claimed.
             promise.reject(ex.getMessage());
@@ -126,20 +126,16 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void canAcquireDeviceId(final Promise promise) {
-        if (isEmulator()) {
-            promise.resolve(false);
-        }
-
-        promise.resolve(MainActivity.hasPermission(Manifest.permission.READ_PHONE_STATE, MainActivity.getActivity()));
+    public void canReceiveSms(final Promise promise) {
+        promise.resolve(MainActivity.hasPermission(Manifest.permission.RECEIVE_SMS, MainActivity.getActivity()));
     }
 
     @ReactMethod
-    public void requestPhoneStatePermission() {
+    public void requestReceiveSmsPermission() {
         MainActivity activity = (MainActivity) MainActivity.getActivity();
         if (activity != null) {
-            // Request for the READ_PHONE_STATE permission
-            MainActivity.checkPhoneStatePermission(activity);
+            // Request for the RECEIVE_SMS permission
+            MainActivity.checkReceiveSmsPermission(activity);
         }
     }
 

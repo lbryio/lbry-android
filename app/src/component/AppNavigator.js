@@ -1,6 +1,7 @@
 import React from 'react';
 import AboutPage from '../page/about';
 import DiscoverPage from '../page/discover';
+import DownloadsPage from '../page/downloads';
 import FilePage from '../page/file';
 import FirstRunScreen from '../page/firstRun';
 import RewardsPage from '../page/rewards';
@@ -40,8 +41,10 @@ import {
 } from 'lbryinc';
 import { makeSelectClientSetting } from '../redux/selectors/settings';
 import { decode as atob } from 'base-64';
-import NavigationButton from '../component/navigationButton';
+import Colors from '../styles/colors';
 import Constants from '../constants';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import NavigationButton from '../component/navigationButton';
 import discoverStyle from '../styles/discover';
 import searchStyle from '../styles/search';
 import SearchRightHeaderIcon from '../component/searchRightHeaderIcon';
@@ -88,6 +91,26 @@ const trendingStack = StackNavigator({
   }
 });
 
+const myLbryStack = StackNavigator({
+  Downloads: {
+    screen: DownloadsPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'My LBRY',
+      headerLeft: menuNavigationButton(navigation),
+    })
+  }
+});
+
+const rewardsStack = StackNavigator({
+  Rewards: {
+    screen: RewardsPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Rewards',
+      headerLeft: menuNavigationButton(navigation),
+    })
+  }
+});
+
 const walletStack = StackNavigator({
   Wallet: {
     screen: WalletPage,
@@ -107,26 +130,36 @@ const walletStack = StackNavigator({
   headerMode: 'screen'
 });
 
-const rewardsStack = StackNavigator({
-  Rewards: {
-    screen: RewardsPage,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Rewards',
-      headerLeft: menuNavigationButton(navigation),
-    })
-  }
-});
-
 const drawer = DrawerNavigator({
-  DiscoverStack: { screen: discoverStack },
-  TrendingStack: { screen: trendingStack },
-  WalletStack: { screen: walletStack },
-  Rewards: { screen: rewardsStack },
-  Settings: { screen: SettingsPage, navigationOptions: { drawerLockMode: 'locked-closed' } },
-  About: { screen: AboutPage, navigationOptions: { drawerLockMode: 'locked-closed' } }
+  DiscoverStack: { screen: discoverStack, navigationOptions: {
+    drawerIcon: ({ tintColor }) => <Icon name="compass" size={20} style={{ color: tintColor }} />
+  }},
+  TrendingStack: { screen: trendingStack, navigationOptions: {
+    drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />
+  }},
+  MyLBRYStack: { screen: myLbryStack, navigationOptions: {
+    drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
+  }},
+  Rewards: { screen: rewardsStack, navigationOptions: {
+    drawerIcon: ({ tintColor }) => <Icon name="trophy" size={20} style={{ color: tintColor }} />
+  }},
+  WalletStack: { screen: walletStack, navigationOptions: {
+    drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
+  }},
+  Settings: { screen: SettingsPage, navigationOptions: {
+    drawerLockMode: 'locked-closed',
+    drawerIcon: ({ tintColor }) => <Icon name="cog" size={20} style={{ color: tintColor }} />
+  }},
+  About: { screen: AboutPage, navigationOptions: {
+    drawerLockMode: 'locked-closed',
+    drawerIcon: ({ tintColor }) => <Icon name="info" size={20} style={{ color: tintColor }} />
+  }}
 }, {
   drawerWidth: 300,
-  headerMode: 'none'
+  headerMode: 'none',
+  contentOptions: {
+    activeTintColor: Colors.LbryGreen
+  }
 });
 
 export const AppNavigator = new StackNavigator({
@@ -226,7 +259,7 @@ class AppWithNavigationState extends React.Component {
       }
 
       if ('toast' === currentDisplayType) {
-        ToastAndroid.show(message, ToastAndroid.SHORT);
+        ToastAndroid.show(message, ToastAndroid.LONG);
       }
 
       dispatch(doHideNotification());
