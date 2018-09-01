@@ -241,12 +241,9 @@ class FilePage extends React.PureComponent {
     }
   }
 
-  onMediaLoaded = (title, channelName) => {
+  onMediaLoaded = (channelName, title, uri) => {
     this.setState({ mediaLoaded: true });
-    window.currentMediaInfo = {
-      title: title,
-      channel: channelName
-    };
+    window.currentMediaInfo = { channel: channelName, title, uri };
   }
 
   onPlaybackStarted = () => {
@@ -410,7 +407,7 @@ class FilePage extends React.PureComponent {
                                                  this.setState({ playerHeight: evt.nativeEvent.layout.height });
                                                }
                                              }}
-                                             onMediaLoaded={() => this.onMediaLoaded(title, channelName)}
+                                             onMediaLoaded={() => this.onMediaLoaded(channelName, title, uri)}
                                              onPlaybackStarted={this.onPlaybackStarted}
                                             />}
 

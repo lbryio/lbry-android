@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -17,12 +18,13 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import io.lbry.browser.LbrynetService;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 
 public class BackgroundMediaModule extends ReactContextBaseJavaModule {
 
-    private static final int NOTIFICATION_ID = 900;
+    private static final int NOTIFICATION_ID = -2;
 
     private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.MEDIA_PLAYER_NOTIFICATION_CHANNEL";
 
@@ -58,6 +60,9 @@ public class BackgroundMediaModule extends ReactContextBaseJavaModule {
             channelCreated = true;
         }
 
+        Intent contextIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         Intent playIntent = new Intent();
         playIntent.setAction(ACTION_PLAY);
         PendingIntent playPendingIntent = PendingIntent.getBroadcast(context, 0, playIntent, 0);
@@ -69,8 +74,10 @@ public class BackgroundMediaModule extends ReactContextBaseJavaModule {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         builder.setColor(ContextCompat.getColor(context, R.color.lbrygreen))
+               .setContentIntent(pendingIntent)
                .setContentTitle(title)
                .setContentText(publisher)
+               .setGroup(LbrynetService.GROUP_SERVICE)
                .setOngoing(!paused)
                .setSmallIcon(paused ? android.R.drawable.ic_media_pause : android.R.drawable.ic_media_play)
                .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
