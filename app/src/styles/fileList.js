@@ -1,10 +1,11 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, PixelRatio, StyleSheet } from 'react-native';
 import Colors from './colors';
 
 const screenDimension = Dimensions.get('window');
 const screenWidth = screenDimension.width;
 const screenHeight = screenDimension.height;
-const thumbnailHeight = 100;
+const screenWidthPixels = PixelRatio.getPixelSizeForLayoutSize(screenWidth);
+const thumbnailHeight = (screenWidthPixels <= 720) ? 72 : 96;
 const thumbnailWidth = (screenHeight / screenWidth) * thumbnailHeight;
 
 const fileListStyle = StyleSheet.create({
@@ -20,21 +21,21 @@ const fileListStyle = StyleSheet.create({
   thumbnail: {
     width: thumbnailWidth,
     height: thumbnailHeight,
-    marginRight: 16,
+    marginRight: (screenWidthPixels <= 720) ? 10 : 12,
     justifyContent: 'center'
   },
   title: {
     fontFamily: 'Metropolis-SemiBold',
-    fontSize: 16
+    fontSize: (screenWidthPixels <= 720) ? 14 : 16
   },
   uri: {
     fontFamily: 'Metropolis-SemiBold',
-    fontSize: 14,
+    fontSize: (screenWidthPixels <= 720) ? 12 : 14,
     marginBottom: 8
   },
   publisher: {
     fontFamily: 'Metropolis-SemiBold',
-    fontSize: 14,
+    fontSize: (screenWidthPixels <= 720) ? 12 : 14,
     marginTop: 3,
     color: Colors.LbryGreen
   },
@@ -46,7 +47,7 @@ const fileListStyle = StyleSheet.create({
   },
   downloadStorage: {
     fontFamily: 'Metropolis-Regular',
-    fontSize: 14,
+    fontSize: (screenWidthPixels <= 720) ? 12 : 14,
     color: Colors.ChannelGrey
   },
   progress: {
