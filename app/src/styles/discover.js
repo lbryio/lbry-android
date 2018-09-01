@@ -7,7 +7,7 @@ const screenHeight = screenDimension.height;
  // calculate thumbnail width and height based on device's aspect ratio
 const horizontalMargin = 48; // left and right margins (24 + 24)
 const verticalMargin = (screenWidth / screenHeight) * horizontalMargin;
-const mediaWidth = screenWidth - horizontalMargin;
+const mediaWidth = screenWidth - 64;
 const mediaHeight = (screenWidth / (screenHeight - verticalMargin)) * mediaWidth;
 
 const discoverStyle = StyleSheet.create({
