@@ -40,6 +40,14 @@ class FileListItem extends React.PureComponent {
     return `${value} GB`;
   }
 
+  formatTitle = (title) => {
+    if (!title) {
+      return title;
+    }
+
+    return (title.length > 80) ? title.substring(0, 77).trim() + '...' : title;
+  }
+
   getDownloadProgress = (fileInfo) => {
     return Math.ceil((fileInfo.written_bytes / fileInfo.total_bytes) * 100);
   }
@@ -85,7 +93,7 @@ class FileListItem extends React.PureComponent {
               </View>
             </View>)}
 
-            {!isResolving && <Text style={fileListStyle.title}>{title || name}</Text>}
+            {!isResolving && <Text style={fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
             {!isResolving && channel &&
               <Link style={fileListStyle.publisher} text={channel} onPress={() => {
                 const channelUri = normalizeURI(channel);
