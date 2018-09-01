@@ -27,17 +27,25 @@ class FileListItem extends React.PureComponent {
 
   formatBytes = (bytes) => {
     if (bytes < 1048576) { // < 1MB
-      const value = (bytes / 1024.0).toFixed(2);
+      const value = (bytes / 1024.0).toFixed(0);
       return `${value} KB`;
     }
 
     if (bytes < 1073741824) { // < 1GB
-      const value = (bytes / (1024.0 * 1024.0)).toFixed(2);
+      const value = (bytes / (1024.0 * 1024.0)).toFixed(0);
       return `${value} MB`;
     }
 
-    const value = (bytes / (1024.0 * 1024.0 * 1024.0)).toFixed(2);
+    const value = (bytes / (1024.0 * 1024.0 * 1024.0)).toFixed(0);
     return `${value} GB`;
+  }
+
+  formatTitle = (title) => {
+    if (!title) {
+      return title;
+    }
+
+    return (title.length > 80) ? title.substring(0, 77).trim() + '...' : title;
   }
 
   getDownloadProgress = (fileInfo) => {
@@ -85,7 +93,7 @@ class FileListItem extends React.PureComponent {
               </View>
             </View>)}
 
-            {!isResolving && <Text style={fileListStyle.title}>{title || name}</Text>}
+            {!isResolving && <Text style={fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
             {!isResolving && channel &&
               <Link style={fileListStyle.publisher} text={channel} onPress={() => {
                 const channelUri = normalizeURI(channel);
