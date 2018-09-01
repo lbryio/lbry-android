@@ -27,16 +27,16 @@ class FileListItem extends React.PureComponent {
 
   formatBytes = (bytes) => {
     if (bytes < 1048576) { // < 1MB
-      const value = (bytes / 1024.0).toFixed(2);
+      const value = (bytes / 1024.0).toFixed(0);
       return `${value} KB`;
     }
 
     if (bytes < 1073741824) { // < 1GB
-      const value = (bytes / (1024.0 * 1024.0)).toFixed(2);
+      const value = (bytes / (1024.0 * 1024.0)).toFixed(0);
       return `${value} MB`;
     }
 
-    const value = (bytes / (1024.0 * 1024.0 * 1024.0)).toFixed(2);
+    const value = (bytes / (1024.0 * 1024.0 * 1024.0)).toFixed(0);
     return `${value} GB`;
   }
 
