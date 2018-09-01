@@ -5,15 +5,17 @@ const screenDimension = Dimensions.get('window');
 const screenWidth = screenDimension.width;
 const screenHeight = screenDimension.height;
 const screenWidthPixels = PixelRatio.getPixelSizeForLayoutSize(screenWidth);
-const thumbnailHeight = (screenWidthPixels <= 720) ? 72 : 96;
-const thumbnailWidth = (screenHeight / screenWidth) * thumbnailHeight;
+const screenHeightPixels = PixelRatio.getPixelSizeForLayoutSize(screenHeight);
+const verticalAdjust = (screenHeightPixels > 1280 && screenHeightPixels <= 1920) ? 6 : 0;
+const thumbnailWidth = (screenWidthPixels <= 720) ? 144 : 156;
+const thumbnailHeight = ((screenWidth / screenHeight) * thumbnailWidth) - verticalAdjust;
 
 const fileListStyle = StyleSheet.create({
   item: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 16
+    marginTop: 8
   },
   detailsContainer: {
     flex: 1
@@ -26,7 +28,7 @@ const fileListStyle = StyleSheet.create({
   },
   title: {
     fontFamily: 'Metropolis-SemiBold',
-    fontSize: (screenWidthPixels <= 720) ? 14 : 16
+    fontSize: (screenWidthPixels <= 720) ? 12 : 16
   },
   uri: {
     fontFamily: 'Metropolis-SemiBold',
@@ -36,14 +38,14 @@ const fileListStyle = StyleSheet.create({
   publisher: {
     fontFamily: 'Metropolis-SemiBold',
     fontSize: (screenWidthPixels <= 720) ? 12 : 14,
-    marginTop: 3,
+    marginTop: (screenWidthPixels <= 720) ? 1 : 3,
     color: Colors.LbryGreen
   },
   loading: {
     position: 'absolute'
   },
   downloadInfo: {
-    marginTop: 8
+    marginTop: (screenWidthPixels <= 720) ? 4 : 8
   },
   downloadStorage: {
     fontFamily: 'Metropolis-Regular',
@@ -51,7 +53,7 @@ const fileListStyle = StyleSheet.create({
     color: Colors.ChannelGrey
   },
   progress: {
-    marginTop: 4,
+    marginTop: (screenWidthPixels <= 720) ? 2 : 4,
     height: 3,
     flex: 1,
     flexDirection: 'row'
