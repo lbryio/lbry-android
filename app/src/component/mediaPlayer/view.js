@@ -253,8 +253,8 @@ class MediaPlayer extends React.PureComponent {
     const { backgroundPlayEnabled } = this.props;
     if (backgroundPlayEnabled) {
       if (NativeModules.BackgroundMedia && window.currentMediaInfo) {
-        const { title, channel } = window.currentMediaInfo;
-        NativeModules.BackgroundMedia.showPlaybackNotification(title, channel, null, this.state.paused);
+        const { title, channel, uri } = window.currentMediaInfo;
+        NativeModules.BackgroundMedia.showPlaybackNotification(title, channel, uri, this.state.paused);
       }
     }
   }

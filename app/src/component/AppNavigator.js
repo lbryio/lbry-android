@@ -297,8 +297,8 @@ class AppWithNavigationState extends React.Component {
 
         // Background media
         if (backgroundPlayEnabled && NativeModules.BackgroundMedia && window.currentMediaInfo) {
-          const { title, channel } = window.currentMediaInfo;
-          NativeModules.BackgroundMedia.showPlaybackNotification(title, channel, null, false);
+          const { title, channel, uri } = window.currentMediaInfo;
+          NativeModules.BackgroundMedia.showPlaybackNotification(title, channel, uri, false);
         }
       });
     }
