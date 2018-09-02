@@ -1,0 +1,68 @@
+import { StyleSheet } from 'react-native';
+import Colors from './colors';
+
+const storageStatsStyle = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  row: {
+    flexDirection: 'row'
+  },
+  card: {
+    backgroundColor: Colors.White,
+    marginTop: 16,
+    marginLeft: 16,
+    marginRight: 16,
+    padding: 16
+  },
+  totalSize: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 36
+  },
+  annotation: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14,
+    marginTop: -4
+  },
+  distributionBar: {
+    flexDirection: 'row',
+    width: '100%',
+    height: 8,
+    marginTop: 16,
+    marginBottom: 16
+  },
+  audioDistribution: {
+    backgroundColor: Colors.StatsAudio
+  },
+  imageDistribution: {
+    backgroundColor: Colors.StatsImage
+  },
+  videoDistribution: {
+    backgroundColor: Colors.LbryGreen
+  },
+  otherDistribution: {
+    backgroundColor: Colors.StatsOther
+  },
+  legendItem: {
+    alignItems: 'center',
+    marginBottom: 8,
+    justifyContent: 'space-between'
+  },
+  legendBox: {
+    width: 16,
+    height: 16,
+  },
+  legendText: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14,
+    flex: 0.3
+  },
+  legendSize: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14,
+    flex: 0.6,
+    textAlign: 'right'
+  }
+});
+
+export default storageStatsStyle;

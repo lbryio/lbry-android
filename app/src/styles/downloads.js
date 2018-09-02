@@ -2,22 +2,29 @@ import { StyleSheet } from 'react-native';
 
 const downloadsStyle = StyleSheet.create({
   container: {
+    flex: 1
+  },
+  busyContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  subContainer: {
+    flex: 1
   },
   itemList: {
     flex: 1,
   },
   scrollContainer: {
     flex: 1,
-    width: '100%',
-    height: '100%',
     paddingLeft: 16,
     paddingRight: 16,
+    marginTop: 16,
     marginBottom: 60
   },
   scrollPadding: {
+    marginTop: -16,
     paddingBottom: 16
   },
   noDownloadsText: {
