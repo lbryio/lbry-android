@@ -24,7 +24,7 @@ import io.lbry.browser.R;
 
 public class BackgroundMediaModule extends ReactContextBaseJavaModule {
 
-    private static final int NOTIFICATION_ID = -2;
+    public static final int NOTIFICATION_ID = 30;
 
     public static final String ACTION_PLAY = "io.lbry.browser.ACTION_MEDIA_PLAY";
 

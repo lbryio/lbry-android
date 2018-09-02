@@ -38,6 +38,8 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
@@ -65,6 +67,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     public static final String DEVICE_ID_KEY = "deviceId";
 
     public static final String SETTING_KEEP_DAEMON_RUNNING = "keepDaemonRunning";
+
+    public static List<Integer> downloadNotificationIds = new ArrayList<Integer>();
 
     /**
      * Flag which indicates whether or not the service is running. Will be updated in the
@@ -294,7 +298,13 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.cancelAll();
+        notificationManager.cancel(BackgroundMediaModule.NOTIFICATION_ID);
+        notificationManager.cancel(DownloadManagerModule.GROUP_ID);
+        if (downloadNotificationIds != null) {
+            for (int i = 0; i < downloadNotificationIds.size(); i++) {
+                notificationManager.cancel(downloadNotificationIds.get(i));
+            }
+        }
         super.onDestroy();
 
         if (mReactInstanceManager != null) {
