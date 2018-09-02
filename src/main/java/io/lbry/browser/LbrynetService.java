@@ -37,13 +37,13 @@ import org.renpy.android.ResourceManager;
  */
 public class LbrynetService extends PythonService {
 
-    private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.DAEMON_NOTIFICATION_CHANNEL";
-
     private static final int SERVICE_NOTIFICATION_GROUP_ID = -1;
 
     public static final String ACTION_STOP_SERVICE = "io.lbry.browser.ACTION_STOP_SERVICE";
 
     public static final String GROUP_SERVICE = "io.lbry.browser.GROUP_SERVICE";
+
+    public static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.DAEMON_NOTIFICATION_CHANNEL";
 
     public static String TAG = "LbrynetService";
 

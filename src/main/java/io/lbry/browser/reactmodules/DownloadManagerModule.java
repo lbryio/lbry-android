@@ -46,7 +46,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     public static final String NOTIFICATION_ID_KEY = "io.lbry.browser.notificationId";
 
-    public static final int GROUP_ID = 0;
+    public static final int GROUP_ID = 20;
 
     private static NotificationCompat.Builder groupBuilder = null;
 
@@ -58,7 +58,13 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
     }
 
     private int generateNotificationId() {
-        return new Random().nextInt();
+        int id = 0;
+        Random random = new Random();
+        do {
+            id = random.nextInt();
+        } while (id < 100);
+
+        return id;
     }
 
     @Override
@@ -225,6 +231,10 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
             editor.apply();
         }
 
+        if (MainActivity.downloadNotificationIds != null &&
+            !MainActivity.downloadNotificationIds.contains(notificationId)) {
+            MainActivity.downloadNotificationIds.add(notificationId);
+        }
         downloadIdNotificationIdMap.put(id, notificationId);
         return notificationId;
     }
