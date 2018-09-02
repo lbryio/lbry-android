@@ -70,7 +70,7 @@ class StorageStatsCard extends React.PureComponent {
       <View style={storageStatsStyle.card}>
         <View style={[storageStatsStyle.row, storageStatsStyle.totalSizeContainer]}>
           <View style={storageStatsStyle.summary}>
-            <Text style={storageStatsStyle.totalSize}>{formatBytes(this.state.totalBytes)}</Text>
+            <Text style={storageStatsStyle.totalSize}>{formatBytes(this.state.totalBytes, 2)}</Text>
             <Text style={storageStatsStyle.annotation}>used</Text>
           </View>
           <View style={[storageStatsStyle.row, storageStatsStyle.toggleStatsContainer]}>
@@ -94,28 +94,28 @@ class StorageStatsCard extends React.PureComponent {
               <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
                 <View style={[storageStatsStyle.legendBox, storageStatsStyle.audioDistribution]} />
                 <Text style={storageStatsStyle.legendText}>Audio</Text>
-                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalAudioBytes)}</Text>
+                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalAudioBytes, 2)}</Text>
               </View>
             }
             {this.state.totalImageBytes > 0 &&
               <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
                 <View style={[storageStatsStyle.legendBox, storageStatsStyle.imageDistribution]} />
                 <Text style={storageStatsStyle.legendText}>Images</Text>
-                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalImageBytes)}</Text>
+                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalImageBytes, 2)}</Text>
               </View>
             }
             {this.state.totalVideoBytes > 0 &&
               <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
                 <View style={[storageStatsStyle.legendBox, storageStatsStyle.videoDistribution]} />
                 <Text style={storageStatsStyle.legendText}>Videos</Text>
-                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalVideoBytes)}</Text>
+                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalVideoBytes, 2)}</Text>
               </View>
             }
             {this.state.totalOtherBytes > 0 &&
               <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
                 <View style={[storageStatsStyle.legendBox, storageStatsStyle.otherDistribution]} />
                 <Text style={storageStatsStyle.legendText}>Other</Text>
-                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalOtherBytes)}</Text>
+                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalOtherBytes, 2)}</Text>
               </View>
             }
           </View>

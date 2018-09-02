@@ -20,22 +20,22 @@ export function dispatchNavigateToUri(dispatch, nav, uri) {
   dispatch(navigateAction);
 }
 
-export function formatBytes(bytes) {
+export function formatBytes(bytes, decimalPoints = 0) {
   if (!bytes) {
     return '0 KB';
   }
 
   if (bytes < 1048576) { // < 1MB
-    const value = (bytes / 1024.0).toFixed(0);
+    const value = (bytes / 1024.0).toFixed(decimalPoints);
     return `${value} KB`;
   }
 
   if (bytes < 1073741824) { // < 1GB
-    const value = (bytes / (1024.0 * 1024.0)).toFixed(0);
+    const value = (bytes / (1024.0 * 1024.0)).toFixed(decimalPoints);
     return `${value} MB`;
   }
 
-  const value = (bytes / (1024.0 * 1024.0 * 1024.0)).toFixed(0);
+  const value = (bytes / (1024.0 * 1024.0 * 1024.0)).toFixed(decimalPoints);
   return `${value} GB`;
 }
 
