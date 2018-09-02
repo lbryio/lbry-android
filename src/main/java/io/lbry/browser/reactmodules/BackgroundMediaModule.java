@@ -26,15 +26,11 @@ public class BackgroundMediaModule extends ReactContextBaseJavaModule {
 
     private static final int NOTIFICATION_ID = -2;
 
-    private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.MEDIA_PLAYER_NOTIFICATION_CHANNEL";
-
     public static final String ACTION_PLAY = "io.lbry.browser.ACTION_MEDIA_PLAY";
 
     public static final String ACTION_PAUSE = "io.lbry.browser.ACTION_MEDIA_PAUSE";
 
     public static final String ACTION_STOP = "io.lbry.browser.ACTION_MEDIA_STOP";
-
-    private boolean channelCreated;
 
     private Context context;
 
@@ -50,16 +46,6 @@ public class BackgroundMediaModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void showPlaybackNotification(String title, String publisher, String uri, boolean paused) {
-        if (!channelCreated && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationChannel channel = new NotificationChannel(
-                NOTIFICATION_CHANNEL_ID, "LBRY Media", NotificationManager.IMPORTANCE_LOW);
-            channel.setDescription("LBRY media player");
-            notificationManager.createNotificationChannel(channel);
-            channelCreated = true;
-        }
-
         Intent contextIntent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -72,7 +58,7 @@ public class BackgroundMediaModule extends ReactContextBaseJavaModule {
         PendingIntent pausePendingIntent = PendingIntent.getBroadcast(context, 0, pauseIntent, 0);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, LbrynetService.NOTIFICATION_CHANNEL_ID);
         builder.setColor(ContextCompat.getColor(context, R.color.lbrygreen))
                .setContentIntent(pendingIntent)
                .setContentTitle(title)
