@@ -53,6 +53,13 @@ class FileListItem extends React.PureComponent {
     return Math.ceil((fileInfo.written_bytes / fileInfo.total_bytes) * 100);
   }
 
+  componentDidMount() {
+    const { claim, resolveUri, uri } = this.props;
+    if (!claim) {
+      resolveUri(uri);
+    }
+  }
+
   render() {
     const {
       claim,
