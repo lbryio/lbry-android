@@ -309,7 +309,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             }
         }
         if (receivedStopService || !isServiceRunning(LbrynetService.class)) {
-            notificationManager.cancel(LbrynetService.SERVICE_NOTIFICATION_GROUP_ID);
+            notificationManager.cancelAll();
         }
         super.onDestroy();
 
