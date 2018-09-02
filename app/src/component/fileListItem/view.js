@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { navigateToUri } from '../../utils/helper';
 import Colors from '../../styles/colors';
 import FileItemMedia from '../fileItemMedia';
 import Link from '../../component/link';
@@ -27,21 +28,36 @@ class FileListItem extends React.PureComponent {
 
   formatBytes = (bytes) => {
     if (bytes < 1048576) { // < 1MB
-      const value = (bytes / 1024.0).toFixed(2);
+      const value = (bytes / 1024.0).toFixed(0);
       return `${value} KB`;
     }
 
     if (bytes < 1073741824) { // < 1GB
-      const value = (bytes / (1024.0 * 1024.0)).toFixed(2);
+      const value = (bytes / (1024.0 * 1024.0)).toFixed(0);
       return `${value} MB`;
     }
 
-    const value = (bytes / (1024.0 * 1024.0 * 1024.0)).toFixed(2);
+    const value = (bytes / (1024.0 * 1024.0 * 1024.0)).toFixed(0);
     return `${value} GB`;
+  }
+
+  formatTitle = (title) => {
+    if (!title) {
+      return title;
+    }
+
+    return (title.length > 80) ? title.substring(0, 77).trim() + '...' : title;
   }
 
   getDownloadProgress = (fileInfo) => {
     return Math.ceil((fileInfo.written_bytes / fileInfo.total_bytes) * 100);
+  }
+
+  componentDidMount() {
+    const { claim, resolveUri, uri } = this.props;
+    if (!claim) {
+      resolveUri(uri);
+    }
   }
 
   render() {
@@ -85,11 +101,11 @@ class FileListItem extends React.PureComponent {
               </View>
             </View>)}
 
-            {!isResolving && <Text style={fileListStyle.title}>{title || name}</Text>}
+            {!isResolving && <Text style={fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
             {!isResolving && channel &&
               <Link style={fileListStyle.publisher} text={channel} onPress={() => {
                 const channelUri = normalizeURI(channel);
-                navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
+                navigateToUri(navigation, channelUri);
               }} />}
 
             {fileInfo &&

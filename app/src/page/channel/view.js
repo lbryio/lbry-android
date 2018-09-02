@@ -47,12 +47,12 @@ class ChannelPage extends React.PureComponent {
 
     return (
       <View style={channelPageStyle.container}>
-        <PageHeader title={name} onBackPressed={() => { this.props.navigation.goBack(); }} />
+        <PageHeader title={name} onBackPressed={() => navigation.goBack(navigation.state.key)} />
         {contentList}
         <UriBar value={uri} navigation={navigation} />
       </View>
     )
-  } 
+  }
 }
 
 export default ChannelPage;

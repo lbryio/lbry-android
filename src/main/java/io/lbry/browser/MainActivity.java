@@ -21,6 +21,7 @@ import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.brentvatne.react.ReactVideoPackage;
+import com.dylanvann.fastimage.FastImageViewPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.ReactRootView;
@@ -113,6 +114,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .setBundleAssetName("index.android.bundle")
                 .setJSMainModulePath("index")
                 .addPackage(new MainReactPackage())
+                .addPackage(new FastImageViewPackage())
                 .addPackage(new ReactVideoPackage())
                 .addPackage(new RNFetchBlobPackage())
                 .addPackage(new LbryReactPackage())

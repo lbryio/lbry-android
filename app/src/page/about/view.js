@@ -31,13 +31,14 @@ class AboutPage extends React.PureComponent {
   }
 
   render() {
+    const { navigation } = this.props;
     const loading = 'Loading...';
     const ver = this.state.versionInfo ? this.state.versionInfo : null;
 
     return (
       <View style={aboutStyle.container}>
         <PageHeader title={"About LBRY"}
-          onBackPressed={() => { this.props.navigation.goBack(); }} />
+          onBackPressed={() => navigation.goBack(navigation.state.key)} />
         <ScrollView style={aboutStyle.scrollContainer}>
           <Text style={aboutStyle.title}>Content Freedom</Text>
           <Text style={aboutStyle.paragraph}>

@@ -21,7 +21,7 @@ const searchStyle = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 16
+    marginTop: 8
   },
   searchInput: {
     width: '100%',

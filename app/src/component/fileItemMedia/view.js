@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, Image, Text, View } from 'react-native';
 import Colors from '../../styles/colors';
+import FastImage from 'react-native-fast-image'
 import fileItemMediaStyle from '../../styles/fileItemMedia';
 
 class FileItemMedia extends React.PureComponent {
@@ -18,6 +19,10 @@ class FileItemMedia extends React.PureComponent {
     fileItemMediaStyle.autothumbOrange,
   ];
 
+  state: {
+    imageLoadFailed: false
+  };
+
   componentWillMount() {
     this.setState({
       autoThumbStyle:
@@ -27,21 +32,46 @@ class FileItemMedia extends React.PureComponent {
     });
   }
 
+  getFastImageResizeMode(resizeMode) {
+    switch (resizeMode) {
+      case "contain":
+        return FastImage.resizeMode.contain;
+      case "stretch":
+        return FastImage.resizeMode.stretch;
+      case "center":
+        return FastImage.resizeMode.center;
+      default:
+        return FastImage.resizeMode.cover;
+    }
+  }
+
   render() {
     let style = this.props.style;
     const { blurRadius, isResolvingUri, thumbnail, title, resizeMode } = this.props;
     const atStyle = this.state.autoThumbStyle;
-
-    if (thumbnail && ((typeof thumbnail) === 'string')) {
+    if (thumbnail && ((typeof thumbnail) === 'string') && !this.state.imageLoadFailed) {
       if (style == null) {
         style = fileItemMediaStyle.thumbnail;
       }
 
+      if (blurRadius > 0) {
+        // No blur radius support in FastImage yet
+        return (
+          <Image
+            source={{uri: thumbnail}}
+            blurRadius={blurRadius}
+            resizeMode={resizeMode ? resizeMode : "cover"}
+            style={style}
+          />);
+      }
+
       return (
-        <Image source={{uri: thumbnail}}
-               blurRadius={blurRadius}
-               resizeMode={resizeMode ? resizeMode : "cover"}
-               style={style} />
+        <FastImage
+          source={{uri: thumbnail}}
+          onError={() => this.setState({ imageLoadFailed: true })}
+          resizeMode={this.getFastImageResizeMode(resizeMode)}
+          style={style}
+        />
       );
     }
 

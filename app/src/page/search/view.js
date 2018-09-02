@@ -8,6 +8,7 @@ import {
   View,
   ScrollView
 } from 'react-native';
+import { navigateToUri } from '../../utils/helper';
 import Colors from '../../styles/colors';
 import PageHeader from '../../component/pageHeader';
 import FileListItem from '../../component/fileListItem';
@@ -42,11 +43,7 @@ class SearchPage extends React.PureComponent {
                                               uri={uri}
                                               style={searchStyle.resultItem}
                                               navigation={navigation}
-                                              onPress={() => navigation.navigate({
-                                                routeName: 'File',
-                                                key: 'filePage',
-                                                params: { uri }})
-                                              }/>)
+                                              onPress={() => navigateToUri(navigation, uri)}/>)
               ) : null }
         </ScrollView>
         {isSearching && <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} /> }

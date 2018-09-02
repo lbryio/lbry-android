@@ -225,6 +225,11 @@ class MediaPlayer extends React.PureComponent {
   }
 
   componentDidMount() {
+    const { assignPlayer } = this.props;
+    if (assignPlayer) {
+      assignPlayer(this);
+    }
+
     this.setSeekerPosition(this.calculateSeekerPosition());
     DeviceEventEmitter.addListener('onBackgroundPlayPressed', this.play);
     DeviceEventEmitter.addListener('onBackgroundPausePressed', this.pause);
@@ -253,8 +258,8 @@ class MediaPlayer extends React.PureComponent {
     const { backgroundPlayEnabled } = this.props;
     if (backgroundPlayEnabled) {
       if (NativeModules.BackgroundMedia && window.currentMediaInfo) {
-        const { title, channel } = window.currentMediaInfo;
-        NativeModules.BackgroundMedia.showPlaybackNotification(title, channel, null, this.state.paused);
+        const { title, channel, uri } = window.currentMediaInfo;
+        NativeModules.BackgroundMedia.showPlaybackNotification(title, channel, uri, this.state.paused);
       }
     }
   }

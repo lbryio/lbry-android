@@ -39,7 +39,11 @@ public class LbrynetService extends PythonService {
 
     private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.DAEMON_NOTIFICATION_CHANNEL";
 
+    private static final int SERVICE_NOTIFICATION_GROUP_ID = -1;
+
     public static final String ACTION_STOP_SERVICE = "io.lbry.browser.ACTION_STOP_SERVICE";
+
+    public static final String GROUP_SERVICE = "io.lbry.browser.GROUP_SERVICE";
 
     public static String TAG = "LbrynetService";
 
@@ -86,16 +90,27 @@ public class LbrynetService extends PythonService {
         }
 
         Intent contextIntent = new Intent(context, MainActivity.class);
-        PendingIntent pIntent = PendingIntent.getActivity(context, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent stopIntent = new Intent(ACTION_STOP_SERVICE);
         PendingIntent stopPendingIntent = PendingIntent.getBroadcast(context, 0, stopIntent, 0);
 
+        // Create the notification group
+        NotificationCompat.Builder groupBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+        groupBuilder.setContentTitle("LBRY Browser")
+                    .setColor(ContextCompat.getColor(context, R.color.lbrygreen))
+                    .setSmallIcon(R.drawable.ic_lbry)
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .setGroup(GROUP_SERVICE)
+                    .setGroupSummary(true);
+        notificationManager.notify(SERVICE_NOTIFICATION_GROUP_ID, groupBuilder.build());
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         Notification notification = builder.setColor(ContextCompat.getColor(context, R.color.lbrygreen))
+                                           .setContentIntent(pendingIntent)
                                            .setContentTitle(serviceTitle)
                                            .setContentText(serviceDescription)
-                                           .setContentIntent(pIntent)
+                                           .setGroup(GROUP_SERVICE)
                                            .setWhen(System.currentTimeMillis())
                                            .setSmallIcon(R.drawable.ic_lbry)
                                            .setOngoing(true)
