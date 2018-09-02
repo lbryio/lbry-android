@@ -76,6 +76,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
      */
     private boolean serviceRunning;
 
+    private boolean receivedStopService;
+
     protected String getMainComponentName() {
         return "LBRYApp";
     }
@@ -128,6 +130,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         stopServiceReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                MainActivity.this.receivedStopService = true;
                 MainActivity.this.finish();
             }
         };
@@ -304,6 +307,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             for (int i = 0; i < downloadNotificationIds.size(); i++) {
                 notificationManager.cancel(downloadNotificationIds.get(i));
             }
+        }
+        if (receivedStopService || !isServiceRunning(LbrynetService.class)) {
+            notificationManager.cancel(LbrynetService.SERVICE_NOTIFICATION_GROUP_ID);
         }
         super.onDestroy();
 
