@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 import Colors from '../../styles/colors';
 import Constants from '../../constants';
 import WelcomePage from './internal/welcome-page';
@@ -71,7 +71,7 @@ class FirstRunScreen extends React.PureComponent {
 
   launchSplashScreen() {
     const { navigation } = this.props;
-    const resetAction = NavigationActions.reset({
+    const resetAction = StackActions.reset({
       index: 0,
       actions: [
         NavigationActions.navigate({ routeName: 'Splash', params: { launchUri: this.state.launchUri } })

@@ -20,11 +20,9 @@ import {
 import { authReducer, rewardsReducer, userReducer } from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
-import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 import { AppNavigator } from './component/AppNavigator';
 import { persistStore, autoRehydrate } from 'redux-persist';
-import { reactNavigationMiddleware } from './utils/redux';
-import AppWithNavigationState from './component/AppNavigator';
+import AppWithNavigationState, { reactNavigationMiddleware } from './component/AppNavigator';
 import FilesystemStorage from 'redux-persist-filesystem-storage';
 import createCompressor from 'redux-persist-transform-compress';
 import createFilter from 'redux-persist-transform-filter';

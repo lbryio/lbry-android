@@ -9,6 +9,7 @@ import {
   View,
   ScrollView
 } from 'react-native';
+import { navigateToUri } from '../../utils/helper';
 import Colors from '../../styles/colors';
 import PageHeader from '../../component/pageHeader';
 import FileListItem from '../../component/fileListItem';
@@ -51,11 +52,7 @@ class DownloadsPage extends React.PureComponent {
                   style={fileListStyle.item}
                   uri={this.uriFromFileInfo(item)}
                   navigation={navigation}
-                  onPress={() => navigation.navigate({
-                    routeName: 'File',
-                    key: 'filePage',
-                    params: { uri: this.uriFromFileInfo(item), autoplay: true }
-                  })} />
+                  onPress={() => navigateToUri(navigation, this.uriFromFileInfo(item), { autoplay: true })} />
               )
             }
             data={fileInfos.sort((a, b) => {

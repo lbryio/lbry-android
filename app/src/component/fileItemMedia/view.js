@@ -37,7 +37,6 @@ class FileItemMedia extends React.PureComponent {
       case "contain":
         return FastImage.resizeMode.contain;
       case "stretch":
-        console.log('using stretch resize mode...');
         return FastImage.resizeMode.stretch;
       case "center":
         return FastImage.resizeMode.center;

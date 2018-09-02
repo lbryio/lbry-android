@@ -6,7 +6,6 @@ const screenWidth = screenDimension.width;
 const screenHeight = screenDimension.height;
 const screenWidthPixels = PixelRatio.getPixelSizeForLayoutSize(screenWidth);
 const screenHeightPixels = PixelRatio.getPixelSizeForLayoutSize(screenHeight);
-console.log('screenHeightPixels=' + screenHeightPixels);
  // calculate thumbnail width and height based on device's aspect ratio
 const horizontalMargin = 48; // left and right margins (24 + 24)
 const verticalMargin = (screenWidthPixels > 720 && screenHeightPixels > 1920) ? 0 : ((screenWidthPixels <= 720) ? 20 : 16);

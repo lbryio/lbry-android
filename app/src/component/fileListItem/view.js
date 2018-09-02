@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { navigateToUri } from '../../utils/helper';
 import Colors from '../../styles/colors';
 import FileItemMedia from '../fileItemMedia';
 import Link from '../../component/link';
@@ -50,6 +51,13 @@ class FileListItem extends React.PureComponent {
 
   getDownloadProgress = (fileInfo) => {
     return Math.ceil((fileInfo.written_bytes / fileInfo.total_bytes) * 100);
+  }
+
+  componentDidMount() {
+    const { claim, resolveUri, uri } = this.props;
+    if (!claim) {
+      resolveUri(uri);
+    }
   }
 
   render() {
@@ -97,7 +105,7 @@ class FileListItem extends React.PureComponent {
             {!isResolving && channel &&
               <Link style={fileListStyle.publisher} text={channel} onPress={() => {
                 const channelUri = normalizeURI(channel);
-                navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
+                navigateToUri(navigation, channelUri);
               }} />}
 
             {fileInfo &&

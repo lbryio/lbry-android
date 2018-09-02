@@ -13,13 +13,16 @@ import TransactionHistoryPage from '../page/transactionHistory';
 import WalletPage from '../page/wallet';
 import SearchInput from '../component/searchInput';
 import {
-  addNavigationHelpers,
-  DrawerNavigator,
-  StackNavigator,
+  createDrawerNavigator,
+  createStackNavigator,
   NavigationActions
 } from 'react-navigation';
+import {
+  addListener,
+  reduxifyNavigator,
+  createReactNavigationReduxMiddleware,
+} from 'react-navigation-redux-helpers';
 import { connect } from 'react-redux';
-import { addListener } from '../utils/redux';
 import {
   AppState,
   AsyncStorage,
@@ -41,6 +44,7 @@ import {
 } from 'lbryinc';
 import { makeSelectClientSetting } from '../redux/selectors/settings';
 import { decode as atob } from 'base-64';
+import { dispatchNavigateToUri } from '../utils/helper';
 import Colors from '../styles/colors';
 import Constants from '../constants';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -56,7 +60,7 @@ const menuNavigationButton = (navigation) => <NavigationButton
                                                iconStyle={discoverStyle.drawerHamburger}
                                                onPress={() => navigation.navigate('DrawerOpen')} />
 
-const discoverStack = StackNavigator({
+const discoverStack = createStackNavigator({
   Discover: {
     screen: DiscoverPage,
     navigationOptions: ({ navigation }) => ({
@@ -78,10 +82,10 @@ const discoverStack = StackNavigator({
     })
   }
 }, {
-  headerMode: 'screen',
+  headerMode: 'screen'
 });
 
-const trendingStack = StackNavigator({
+const trendingStack = createStackNavigator({
   Trending: {
     screen: TrendingPage,
     navigationOptions: ({ navigation }) => ({
@@ -91,7 +95,7 @@ const trendingStack = StackNavigator({
   }
 });
 
-const myLbryStack = StackNavigator({
+const myLbryStack = createStackNavigator({
   Downloads: {
     screen: DownloadsPage,
     navigationOptions: ({ navigation }) => ({
@@ -101,7 +105,7 @@ const myLbryStack = StackNavigator({
   }
 });
 
-const rewardsStack = StackNavigator({
+const rewardsStack = createStackNavigator({
   Rewards: {
     screen: RewardsPage,
     navigationOptions: ({ navigation }) => ({
@@ -111,7 +115,7 @@ const rewardsStack = StackNavigator({
   }
 });
 
-const walletStack = StackNavigator({
+const walletStack = createStackNavigator({
   Wallet: {
     screen: WalletPage,
     navigationOptions: ({ navigation }) => ({
@@ -130,21 +134,21 @@ const walletStack = StackNavigator({
   headerMode: 'screen'
 });
 
-const drawer = DrawerNavigator({
+const drawer = createDrawerNavigator({
   DiscoverStack: { screen: discoverStack, navigationOptions: {
-    drawerIcon: ({ tintColor }) => <Icon name="compass" size={20} style={{ color: tintColor }} />
+    title: 'Discover', drawerIcon: ({ tintColor }) => <Icon name="compass" size={20} style={{ color: tintColor }} />
   }},
   TrendingStack: { screen: trendingStack, navigationOptions: {
-    drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />
+    title: 'Trending', drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />
   }},
   MyLBRYStack: { screen: myLbryStack, navigationOptions: {
-    drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
+    title: 'My LBRY', drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
   }},
   Rewards: { screen: rewardsStack, navigationOptions: {
     drawerIcon: ({ tintColor }) => <Icon name="trophy" size={20} style={{ color: tintColor }} />
   }},
   WalletStack: { screen: walletStack, navigationOptions: {
-    drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
+    title: 'Wallet', drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
   }},
   Settings: { screen: SettingsPage, navigationOptions: {
     drawerLockMode: 'locked-closed',
@@ -162,7 +166,7 @@ const drawer = DrawerNavigator({
   }
 });
 
-export const AppNavigator = new StackNavigator({
+export const AppNavigator = new createStackNavigator({
   FirstRun: {
     screen: FirstRunScreen,
     navigationOptions: {
@@ -182,6 +186,16 @@ export const AppNavigator = new StackNavigator({
   headerMode: 'none'
 });
 
+export const reactNavigationMiddleware = createReactNavigationReduxMiddleware(
+  "root",
+  state => state.nav,
+);
+const App = reduxifyNavigator(AppNavigator, "root");
+const appMapStateToProps = (state) => ({
+  state: state.nav,
+});
+const ReduxAppNavigator = connect(appMapStateToProps)(App);
+
 class AppWithNavigationState extends React.Component {
   static supportedDisplayTypes = ['toast'];
 
@@ -198,17 +212,11 @@ class AppWithNavigationState extends React.Component {
       const { dispatch, nav } = this.props;
       // There should be a better way to check this
       if (nav.routes.length > 0) {
-        if (nav.routes[0].routes && nav.routes[0].routes.length > 0) {
-          const subRoutes = nav.routes[0].routes[0].routes;
-          const lastRoute = subRoutes[subRoutes.length - 1];
-          if (nav.routes[0].routes[0].index > 0 &&
-              ['About', 'Settings'].indexOf(lastRoute.key) > -1) {
-            dispatch(NavigationActions.back());
-            return true;
-          }
-        }
         if (nav.routes[0].routeName === 'Main') {
-          if (nav.routes[0].routes[0].routes[0].index > 0) {
+          const mainRoute = nav.routes[0];
+          if (mainRoute.routes[0].index > 0 /* Discover stack index */ ||
+              mainRoute.routes[4].index > 0 /* Wallet stack index */ ||
+              mainRoute.index >= 5 /* Settings and About screens */) {
             dispatch(NavigationActions.back());
             return true;
           }
@@ -313,7 +321,7 @@ class AppWithNavigationState extends React.Component {
   }
 
   _handleUrl = (evt) => {
-    const { dispatch } = this.props;
+    const { dispatch, nav } = this.props;
     if (evt.url) {
       if (evt.url.startsWith('lbry://?verify=')) {
         this.setState({ emailVerifyDone: false });
@@ -340,27 +348,13 @@ class AppWithNavigationState extends React.Component {
           }));
         }
       } else {
-        const navigateAction = NavigationActions.navigate({
-          routeName: 'File',
-          key: evt.url,
-          params: { uri: evt.url }
-        });
-        dispatch(navigateAction);
+        dispatchNavigateToUri(dispatch, nav, evt.url);
       }
     }
   }
 
   render() {
-    const { dispatch, nav } = this.props;
-    return (
-      <AppNavigator
-        navigation={addNavigationHelpers({
-          dispatch,
-          state: nav,
-          addListener,
-        })}
-      />
-    );
+    return <ReduxAppNavigator />;
   }
 }
 
@@ -373,7 +367,7 @@ const mapStateToProps = state => ({
   emailVerifyPending: selectEmailVerifyIsPending(state),
   emailVerifyErrorMessage: selectEmailVerifyErrorMessage(state),
   showNsfw: makeSelectClientSetting(SETTINGS.SHOW_NSFW)(state),
-  user: selectUser(state),
+  user: selectUser(state)
 });
 
 export default connect(mapStateToProps)(AppWithNavigationState);

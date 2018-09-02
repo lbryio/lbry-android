@@ -13,6 +13,7 @@ class SettingsPage extends React.PureComponent {
     const {
       backgroundPlayEnabled,
       keepDaemonRunning,
+      navigation,
       showNsfw,
       setClientSetting
     } = this.props;
@@ -23,7 +24,7 @@ class SettingsPage extends React.PureComponent {
     return (
       <View>
         <PageHeader title={"Settings"}
-          onBackPressed={() => { this.props.navigation.goBack(); }} />
+          onBackPressed={() => navigation.goBack(navigation.state.key)} />
         <ScrollView style={settingsStyle.scrollContainer}>
           <View style={settingsStyle.row}>
             <View style={settingsStyle.switchText}>

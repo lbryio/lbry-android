@@ -10,8 +10,9 @@ import {
   Text,
   View
 } from 'react-native';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 import { decode as atob } from 'base-64';
+import { navigateToUri } from '../../utils/helper';
 import PropTypes from 'prop-types';
 import Colors from '../../styles/colors';
 import Constants from '../../constants';
@@ -75,7 +76,7 @@ class SplashScreen extends React.PureComponent {
           }
 
           // user is authenticated, navigate to the main view
-          const resetAction = NavigationActions.reset({
+          const resetAction = StackActions.reset({
             index: 0,
             actions: [
               NavigationActions.navigate({ routeName: 'Main'})
@@ -108,7 +109,7 @@ class SplashScreen extends React.PureComponent {
                 });
               }
             } else {
-              navigation.navigate({ routeName: 'File', key: launchUrl, params: { uri: launchUrl } });
+              navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri: launchUrl } });
             }
           }
         });

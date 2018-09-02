@@ -2,6 +2,7 @@
 import React from 'react';
 import { SEARCH_TYPES, isNameValid, isURIValid, normalizeURI } from 'lbry-redux';
 import { FlatList, Keyboard, TextInput, View } from 'react-native';
+import { navigateToUri } from '../../utils/helper';
 import UriBarItem from './internal/uri-bar-item';
 import uriBarStyle from '../../styles/uriBar';
 
@@ -62,7 +63,7 @@ class UriBar extends React.PureComponent {
       navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: value }});
     } else {
       const uri = normalizeURI(value);
-      navigation.navigate({ routeName: 'File', key: uri, params: { uri }});
+      navigateToUri(navigation, uri);
     }
   }
 
@@ -127,7 +128,7 @@ class UriBar extends React.PureComponent {
                         if (inputText.startsWith('lbry://') && isURIValid(inputText)) {
                           // if it's a URI (lbry://...), open the file page
                           const uri = normalizeURI(inputText);
-                          navigation.navigate({ routeName: 'File', key: uri, params: { uri }});
+                          navigateToUri(navigation, uri);
                         } else {
                           // Not a URI, default to a search request
                           if (onSearchSubmitted) {
