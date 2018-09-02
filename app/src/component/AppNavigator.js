@@ -58,7 +58,7 @@ const menuNavigationButton = (navigation) => <NavigationButton
                                                size={24}
                                                style={discoverStyle.drawerMenuButton}
                                                iconStyle={discoverStyle.drawerHamburger}
-                                               onPress={() => navigation.navigate('DrawerOpen')} />
+                                               onPress={() => navigation.openDrawer() } />
 
 const discoverStack = createStackNavigator({
   Discover: {
@@ -214,7 +214,8 @@ class AppWithNavigationState extends React.Component {
       if (nav.routes.length > 0) {
         if (nav.routes[0].routeName === 'Main') {
           const mainRoute = nav.routes[0];
-          if (mainRoute.routes[0].index > 0 /* Discover stack index */ ||
+          if (mainRoute.index > 0 ||
+              mainRoute.routes[0].index > 0 /* Discover stack index */ ||
               mainRoute.routes[4].index > 0 /* Wallet stack index */ ||
               mainRoute.index >= 5 /* Settings and About screens */) {
             dispatch(NavigationActions.back());
