@@ -2,6 +2,7 @@ import React from 'react';
 import { normalizeURI } from 'lbry-redux';
 import { NavigationActions } from 'react-navigation';
 import { NativeModules, Text, View, TouchableOpacity } from 'react-native';
+import { navigateToUri } from '../../utils/helper';
 import FileItemMedia from '../fileItemMedia';
 import FilePrice from '../filePrice';
 import Link from '../link';
@@ -54,7 +55,7 @@ class FileItem extends React.PureComponent {
               if (NativeModules.Mixpanel) {
                 NativeModules.Mixpanel.track('Discover Tap', { Uri: uri });
               }
-              navigation.navigate({ routeName: 'File', key: uri, params: { uri } });
+              navigateToUri(navigation, uri);
             }
           }>
           <FileItemMedia title={title}
@@ -68,7 +69,7 @@ class FileItem extends React.PureComponent {
           {channelName &&
             <Link style={discoverStyle.channelName} text={channelName} onPress={() => {
               const channelUri = normalizeURI(channelName);
-              navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
+              navigateToUri(navigation, channelUri);
             }} />}
         </TouchableOpacity>
         {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />}

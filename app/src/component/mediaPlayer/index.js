@@ -6,6 +6,5 @@ import MediaPlayer from './view';
 const select = state => ({
     backgroundPlayEnabled: makeSelectClientSetting(SETTINGS.BACKGROUND_PLAY_ENABLED)(state),
 });
-const perform = dispatch => ({});
 
-export default connect(select, perform)(MediaPlayer);
+export default connect(select, null)(MediaPlayer);

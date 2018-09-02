@@ -2,6 +2,7 @@
 import React from 'react';
 import { Text, View, Linking } from 'react-native';
 import { buildURI, formatCredits } from 'lbry-redux';
+import { navigateToUri } from '../../../utils/helper';
 import Link from '../../link';
 import moment from 'moment';
 import transactionListStyle from '../../../styles/transactionList';
@@ -10,11 +11,11 @@ class TransactionListItem extends React.PureComponent {
   capitalize(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-  
+
   render() {
     const { transaction, navigation } = this.props;
     const { amount, claim_id: claimId, claim_name: name, date, fee, txid, type } = transaction;
-            
+
     return (
       <View style={transactionListStyle.listItem}>
         <View style={[transactionListStyle.row, transactionListStyle.topRow]}>
@@ -23,13 +24,9 @@ class TransactionListItem extends React.PureComponent {
             {name && claimId && (
               <Link
                 style={transactionListStyle.link}
-                onPress={() => navigation && navigation.navigate({
-                  routeName: 'File',
-                  key: evt.Url,
-                  params: { uri: buildURI({ claimName: name, claimId }) }})
-                }
+                onPress={() => navigateToUri(navigation, buildURI({ claimName: name, claimId }))}
                 text={name} />
-            )}      
+            )}
           </View>
           <View style={transactionListStyle.col}>
             <Text style={[transactionListStyle.amount, transactionListStyle.text]}>{formatCredits(amount, 8)}</Text>
@@ -47,7 +44,7 @@ class TransactionListItem extends React.PureComponent {
             {date ? (
               <Text style={transactionListStyle.smallText}>{moment(date).format('MMM D')}</Text>
             ) : (
-              <Text style={transactionListStyle.smallText}>Pending</Text> 
+              <Text style={transactionListStyle.smallText}>Pending</Text>
             )}
           </View>
         </View>

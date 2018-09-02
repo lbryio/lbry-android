@@ -37,25 +37,25 @@ class FilePage extends React.PureComponent {
 
   playerBackground = null;
 
-  player = null;
-
   startTime = null;
 
   constructor(props) {
     super(props);
     this.state = {
-      fileViewLogged: false,
-      mediaLoaded: false,
       autoPlayMedia: false,
       downloadButtonShown: false,
       downloadPressed: false,
+      fileViewLogged: false,
       fullscreenMode: false,
+      imageUrls: null,
+      isLandscape: false,
+      mediaLoaded: false,
+      pageSuspended: false,
       showImageViewer: false,
       showWebView: false,
-      imageUrls: null,
       playerBgHeight: 0,
       playerHeight: 0,
-      isLandscape: false,
+      uri: null
     };
   }
 
@@ -64,6 +64,7 @@ class FilePage extends React.PureComponent {
 
     const { isResolvingUri, resolveUri, navigation } = this.props;
     const { uri } = navigation.state.params;
+    this.setState({ uri });
 
     if (!isResolvingUri) resolveUri(uri);
 
@@ -80,15 +81,23 @@ class FilePage extends React.PureComponent {
 
   componentDidUpdate(prevProps) {
     this.fetchFileInfo(this.props);
-    const { isResolvingUri, resolveUri, claim, navigation } = this.props;
-    const { uri } = navigation.state.params;
-
+    const { claim, contentType, fileInfo, isResolvingUri, resolveUri, navigation } = this.props;
+    const { uri } = this.state;
     if (!isResolvingUri && claim === undefined && uri) {
       resolveUri(uri);
     }
 
+    // Returned to the page. If mediaLoaded, and currentMediaInfo is different, update
+    if (this.state.mediaLoaded && window.currentMediaInfo && window.currentMediaInfo.uri !== this.state.uri) {
+      const { metadata } = this.props;
+      window.currentMediaInfo = {
+        channel: claim ? claim.channel_name : null,
+        title: metadata ? metadata.title : claim.name,
+        uri: this.state.uri
+      };
+    }
+
     const prevFileInfo = prevProps.fileInfo;
-    const { fileInfo, contentType } = this.props;
     if (!prevFileInfo && fileInfo) {
       // started downloading
       const mediaType = Lbry.getMediaType(contentType);
@@ -181,6 +190,7 @@ class FilePage extends React.PureComponent {
     if (window.currentMediaInfo) {
       window.currentMediaInfo = null;
     }
+    window.player = null;
   }
 
   localUriForFileInfo = (fileInfo) => {
@@ -397,7 +407,7 @@ class FilePage extends React.PureComponent {
                                                 }} />}
               {canLoadMedia && fileInfo && <MediaPlayer
                                              fileInfo={fileInfo}
-                                             ref={(ref) => { this.player = ref; }}
+                                             assignPlayer={(ref) => { this.player = ref; }}
                                              uri={uri}
                                              style={playerStyle}
                                              autoPlay={autoplay || this.state.autoPlayMedia}
@@ -432,7 +442,7 @@ class FilePage extends React.PureComponent {
                                       text={channelName}
                                       onPress={() => {
                                         const channelUri = normalizeURI(channelName);
-                                        navigation.navigate({ routeName: 'File', key: channelUri, params: { uri: channelUri }});
+                                        navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri: channelUri }});
                                       }} />}
 
                 {description && description.length > 0 && <View style={filePageStyle.divider} />}
