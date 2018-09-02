@@ -24,6 +24,10 @@ const storageStatsStyle = StyleSheet.create({
     fontSize: 14,
     marginTop: -4
   },
+  statsText: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14
+  },
   distributionBar: {
     flexDirection: 'row',
     width: '100%',
@@ -62,6 +66,18 @@ const storageStatsStyle = StyleSheet.create({
     fontSize: 14,
     flex: 0.6,
     textAlign: 'right'
+  },
+  statsToggle: {
+    marginLeft: 8,
+  },
+  summary: {
+    flex: 0.5,
+    alignSelf: 'flex-start'
+  },
+  toggleStatsContainer: {
+    flex: 0.5,
+    alignItems: 'center',
+    justifyContent: 'flex-end'
   }
 });
 

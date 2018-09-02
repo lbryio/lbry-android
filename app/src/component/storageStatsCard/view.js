@@ -3,7 +3,7 @@ import { normalizeURI, parseURI } from 'lbry-redux';
 import {
   ActivityIndicator,
   Platform,
-  ProgressBarAndroid,
+  Switch,
   Text,
   TouchableOpacity,
   View
@@ -23,6 +23,7 @@ class StorageStatsCard extends React.PureComponent {
     totalVideoPercent: 0,
     totalOtherBytes: 0,
     totalOtherPercent: 0,
+    showStats: false
   };
 
   componentDidMount() {
@@ -67,46 +68,58 @@ class StorageStatsCard extends React.PureComponent {
   render() {
     return (
       <View style={storageStatsStyle.card}>
-        <View style={storageStatsStyle.totalSizeContainer}>
-          <Text style={storageStatsStyle.totalSize}>{formatBytes(this.state.totalBytes)}</Text>
-          <Text style={storageStatsStyle.annotation}>used</Text>
+        <View style={[storageStatsStyle.row, storageStatsStyle.totalSizeContainer]}>
+          <View style={storageStatsStyle.summary}>
+            <Text style={storageStatsStyle.totalSize}>{formatBytes(this.state.totalBytes)}</Text>
+            <Text style={storageStatsStyle.annotation}>used</Text>
+          </View>
+          <View style={[storageStatsStyle.row, storageStatsStyle.toggleStatsContainer]}>
+            <Text style={storageStatsStyle.statsText}>Stats</Text>
+            <Switch
+              style={storageStatsStyle.statsToggle}
+              value={this.state.showStats}
+              onValueChange={(value) => this.setState({ showStats: value })} />
+          </View>
         </View>
-        <View style={storageStatsStyle.distributionBar}>
-          <View style={[storageStatsStyle.audioDistribution, { flex: parseFloat(this.state.totalAudioPercent) }]} />
-          <View style={[storageStatsStyle.imageDistribution, { flex: parseFloat(this.state.totalImagePercent) }]} />
-          <View style={[storageStatsStyle.videoDistribution, { flex: parseFloat(this.state.totalVideoPercent) }]} />
-          <View style={[storageStatsStyle.otherDistribution, { flex: parseFloat(this.state.totalOtherPercent) }]} />
-        </View>
-        <View style={storageStatsStyle.legend}>
-          {this.state.totalAudioBytes > 0 &&
-            <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
-              <View style={[storageStatsStyle.legendBox, storageStatsStyle.audioDistribution]} />
-              <Text style={storageStatsStyle.legendText}>Audio</Text>
-              <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalAudioBytes)}</Text>
-            </View>
-          }
-          {this.state.totalImageBytes > 0 &&
-            <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
-              <View style={[storageStatsStyle.legendBox, storageStatsStyle.imageDistribution]} />
-              <Text style={storageStatsStyle.legendText}>Images</Text>
-              <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalImageBytes)}</Text>
-            </View>
-          }
-          {this.state.totalVideoBytes > 0 &&
-            <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
-              <View style={[storageStatsStyle.legendBox, storageStatsStyle.videoDistribution]} />
-              <Text style={storageStatsStyle.legendText}>Videos</Text>
-              <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalVideoBytes)}</Text>
-            </View>
-          }
-          {this.state.totalOtherBytes > 0 &&
-            <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
-              <View style={[storageStatsStyle.legendBox, storageStatsStyle.otherDistribution]} />
-              <Text style={storageStatsStyle.legendText}>Other</Text>
-              <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalOtherBytes)}</Text>
-            </View>
-          }
-        </View>
+        {this.state.showStats &&
+        <View>
+          <View style={storageStatsStyle.distributionBar}>
+            <View style={[storageStatsStyle.audioDistribution, { flex: parseFloat(this.state.totalAudioPercent) }]} />
+            <View style={[storageStatsStyle.imageDistribution, { flex: parseFloat(this.state.totalImagePercent) }]} />
+            <View style={[storageStatsStyle.videoDistribution, { flex: parseFloat(this.state.totalVideoPercent) }]} />
+            <View style={[storageStatsStyle.otherDistribution, { flex: parseFloat(this.state.totalOtherPercent) }]} />
+          </View>
+          <View style={storageStatsStyle.legend}>
+            {this.state.totalAudioBytes > 0 &&
+              <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
+                <View style={[storageStatsStyle.legendBox, storageStatsStyle.audioDistribution]} />
+                <Text style={storageStatsStyle.legendText}>Audio</Text>
+                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalAudioBytes)}</Text>
+              </View>
+            }
+            {this.state.totalImageBytes > 0 &&
+              <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
+                <View style={[storageStatsStyle.legendBox, storageStatsStyle.imageDistribution]} />
+                <Text style={storageStatsStyle.legendText}>Images</Text>
+                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalImageBytes)}</Text>
+              </View>
+            }
+            {this.state.totalVideoBytes > 0 &&
+              <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
+                <View style={[storageStatsStyle.legendBox, storageStatsStyle.videoDistribution]} />
+                <Text style={storageStatsStyle.legendText}>Videos</Text>
+                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalVideoBytes)}</Text>
+              </View>
+            }
+            {this.state.totalOtherBytes > 0 &&
+              <View style={[storageStatsStyle.row, storageStatsStyle.legendItem]}>
+                <View style={[storageStatsStyle.legendBox, storageStatsStyle.otherDistribution]} />
+                <Text style={storageStatsStyle.legendText}>Other</Text>
+                <Text style={storageStatsStyle.legendSize}>{formatBytes(this.state.totalOtherBytes)}</Text>
+              </View>
+            }
+          </View>
+        </View>}
       </View>
     )
   }
