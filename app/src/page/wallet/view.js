@@ -11,13 +11,13 @@ import walletStyle from '../../styles/wallet';
 class WalletPage extends React.PureComponent {
   render() {
     const { understandsRisks, setClientSetting } = this.props;
-    
+
     if (!understandsRisks) {
       return (
         <View>
           <View style={walletStyle.warning}>
             <Text style={walletStyle.warningText}>
-              This is alpha software. You may lose any LBC that you send to your wallet due to uninstallation, software bugs, deleted files, or malicious third-party software. You should not use this wallet as your primary wallet. If you understand the risks and you wish to continue, please click the button below.
+              This is beta software. You may lose any LBC that you send to your wallet due to uninstallation, software bugs, deleted files, or malicious third-party software. You should not use this wallet as your primary wallet. If you understand the risks and you wish to continue, please click the button below.
             </Text>
           </View>
           <Button text={'I understand the risks'} style={[walletStyle.button, walletStyle.understand]}
