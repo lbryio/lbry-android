@@ -17,7 +17,7 @@ const select = state => ({
 });
 
 const perform = dispatch => ({
-  authenticate: (appVersion, deviceId) => dispatch(doAuthenticate(appVersion, deviceId)),
+  authenticate: (appVersion, os) => dispatch(doAuthenticate(appVersion, os)),
   deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
   balanceSubscribe: () => dispatch(doBalanceSubscribe()),
   notify: data => dispatch(doNotify(data)),

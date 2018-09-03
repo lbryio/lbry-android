@@ -7,7 +7,6 @@ import {
   Text,
   View
 } from 'react-native';
-import { doInstallNew } from 'lbryinc';
 import Colors from '../../styles/colors';
 import Link from '../../component/link';
 import PhoneNumberRewardSubcard from '../../component/phoneNumberRewardSubcard';
