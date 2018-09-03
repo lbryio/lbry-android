@@ -268,7 +268,7 @@ class AppWithNavigationState extends React.Component {
       }
 
       if ('toast' === currentDisplayType) {
-        ToastAndroid.show(message, ToastAndroid.SHORT);
+        ToastAndroid.show(message, ToastAndroid.LONG);
       }
 
       dispatch(doHideNotification());

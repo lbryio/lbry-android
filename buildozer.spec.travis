@@ -86,7 +86,7 @@ fullscreen = 0
 #android.presplash_color = #FFFFFF
 
 # (list) Permissions
-android.permissions = ACCESS_NETWORK_STATE,BLUETOOTH,INTERNET,READ_EXTERNAL_STORAGE,READ_PHONE_STATE,WRITE_EXTERNAL_STORAGE
+android.permissions = ACCESS_NETWORK_STATE,BLUETOOTH,INTERNET,READ_EXTERNAL_STORAGE,RECEIVE_SMS,WRITE_EXTERNAL_STORAGE
 
 # (int) Android API to use
 android.api = 27

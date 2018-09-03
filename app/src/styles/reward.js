@@ -82,6 +82,12 @@ const rewardStyle = StyleSheet.create({
     marginTop: 2,
     marginBottom: 2
   },
+  topMarginSmall: {
+    marginTop: 8
+  },
+  topMarginMedium: {
+    marginTop: 16
+  },
   bottomMarginSmall: {
     marginBottom: 8
   },
@@ -95,6 +101,9 @@ const rewardStyle = StyleSheet.create({
     color: Colors.LbryGreen,
     fontFamily: 'Metropolis-Regular',
     fontSize: 14,
+  },
+  textLink: {
+    color: Colors.LbryGreen
   },
   leftCol: {
     width: '15%',
@@ -153,6 +162,35 @@ const rewardStyle = StyleSheet.create({
     fontFamily: 'Metropolis-Regular',
     fontSize: 14,
     lineHeight: 22
+  },
+  phoneVerificationContainer: {
+    paddingLeft: 4,
+    paddingRight: 4
+  },
+  phoneInput: {
+    marginLeft: 8
+  },
+  phoneInputText: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    letterSpacing: 1.3
+  },
+  verifyingText: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14,
+    marginLeft: 12,
+    alignSelf: 'flex-start'
+  },
+  verificationCodeInput: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 24,
+    letterSpacing: 12
+  },
+  loading: {
+    alignSelf: 'flex-start'
+  },
+  smsPermissionContainer: {
+    marginBottom: 32
   }
 });
 
