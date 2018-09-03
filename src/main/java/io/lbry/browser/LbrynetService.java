@@ -37,7 +37,7 @@ import org.renpy.android.ResourceManager;
  */
 public class LbrynetService extends PythonService {
 
-    private static final int SERVICE_NOTIFICATION_GROUP_ID = -1;
+    public static final int SERVICE_NOTIFICATION_GROUP_ID = 5;
 
     public static final String ACTION_STOP_SERVICE = "io.lbry.browser.ACTION_STOP_SERVICE";
 

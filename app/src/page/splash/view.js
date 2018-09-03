@@ -121,7 +121,7 @@ class SplashScreen extends React.PureComponent {
     const { deleteCompleteBlobs } = this.props;
     const startupStatus = status.startup_status;
     // At the minimum, wallet should be started and blocks_behind equal to 0 before calling resolve
-    const hasStarted = startupStatus.wallet && status.wallet.blocks_behind <= 0;
+    const hasStarted = startupStatus.file_manager && startupStatus.wallet && status.wallet.blocks_behind <= 0;
     if (hasStarted) {
       deleteCompleteBlobs();
 

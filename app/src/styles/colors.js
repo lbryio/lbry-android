@@ -10,7 +10,11 @@ const Colors = {
   Orange: '#ffbb00',
   Red: '#ff0000',
   VeryLightGrey: '#f1f1f1',
-  White: '#ffffff'
+  White: '#ffffff',
+
+  StatsAudio: '#f6a637',
+  StatsImage: '#ff4a7d',
+  StatsOther: '#26bcf7'
 };
 
 export default Colors;
