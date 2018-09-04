@@ -50,6 +50,8 @@ class SplashScreen extends React.PureComponent {
         AsyncStorage.setItem('firstLaunchTime', String(moment().unix()));
       }
     });
+
+    this.props.fetchRewardedContent();
   }
 
   updateStatus() {

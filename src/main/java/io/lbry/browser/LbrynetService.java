@@ -78,7 +78,6 @@ public class LbrynetService extends PythonService {
         String serviceDescription = "The LBRY service is running in the background.";
 
         Context context = getApplicationContext();
-
         NotificationManager notificationManager =
             (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -145,11 +144,17 @@ public class LbrynetService extends PythonService {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (stopServiceReceiver != null) {
             unregisterReceiver(stopServiceReceiver);
             stopServiceReceiver = null;
         }
+
+        Context context = getApplicationContext();
+        NotificationManager notificationManager =
+            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+
+        super.onDestroy();
         serviceInstance = null;
     }
 

@@ -9,9 +9,9 @@ import {
   makeSelectClaimForUri,
   makeSelectContentTypeForUri,
   makeSelectMetadataForUri,
-  selectRewardContentClaimIds,
-  selectBlackListedOutpoints,  
+  selectBlackListedOutpoints,
 } from 'lbry-redux';
+import { selectRewardContentClaimIds } from 'lbryinc';
 import { doDeleteFile, doStopDownloadingFile } from '../../redux/actions/file';
 import FilePage from './view';
 

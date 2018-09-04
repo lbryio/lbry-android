@@ -107,10 +107,23 @@ const discoverStyle = StyleSheet.create({
     height: '100%'
   },
   overlayText: {
-    color: '#ffffff',
+    color: Colors.White,
     fontSize: 14,
     textAlign: 'center',
     fontFamily: 'Metropolis-Regular'
+  },
+  rewardTitleContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  rewardIcon: {
+    color: Colors.LbryGreen,
+    flex: 0.1,
+    textAlign: 'center'
+  },
+  rewardTitle: {
+    flex: 0.9
   }
 });
 

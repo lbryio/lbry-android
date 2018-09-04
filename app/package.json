@@ -16,7 +16,7 @@
         "react-native-fast-image": "^5.0.3",
         "react-native-fetch-blob": "^0.10.8",
         "react-native-image-zoom-viewer": "^2.2.5",
-        "react-native-phone-input": "^0.2.1",
+        "react-native-phone-input": "lbryio/react-native-phone-input",
         "react-native-vector-icons": "^5.0.0",
         "react-native-video": "lbryio/react-native-video#exoplayer-lbry-android",
         "react-navigation": "^2.12.1",
