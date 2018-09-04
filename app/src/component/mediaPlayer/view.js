@@ -115,12 +115,25 @@ class MediaPlayer extends React.PureComponent {
     this.hidePlayerControls();
   }
 
+  manualHidePlayerControls = () => {
+    this.clearControlsTimeout();
+    this.setState({ areControlsVisible: false });
+  }
+
   hidePlayerControls() {
     const player = this;
     let timeout = setTimeout(() => {
       player.setState({ areControlsVisible: false });
     }, MediaPlayer.ControlsTimeout);
     player.setState({ controlsTimeout: timeout });
+  }
+
+  togglePlayerControls = () => {
+    if (this.state.areControlsVisible) {
+      this.manualHidePlayerControls();
+    } else {
+      this.showPlayerControls();
+    }
   }
 
   togglePlay = () => {
@@ -342,7 +355,7 @@ class MediaPlayer extends React.PureComponent {
                onEnd={this.onEnd}
                />
 
-        <TouchableOpacity style={mediaPlayerStyle.playerControls} onPress={this.showPlayerControls}>
+        <TouchableOpacity style={mediaPlayerStyle.playerControls} onPress={this.togglePlayerControls}>
           {this.renderPlayerControls()}
         </TouchableOpacity>
 
