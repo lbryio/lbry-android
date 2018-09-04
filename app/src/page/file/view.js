@@ -26,6 +26,7 @@ import FilePrice from '../../component/filePrice';
 import FloatingWalletBalance from '../../component/floatingWalletBalance';
 import Link from '../../component/link';
 import MediaPlayer from '../../component/mediaPlayer';
+import RelatedContent from '../../component/relatedContent';
 import UriBar from '../../component/uriBar';
 import Video from 'react-native-video';
 import filePageStyle from '../../styles/filePage';
@@ -449,6 +450,8 @@ class FilePage extends React.PureComponent {
                 {description && description.length > 0 && <View style={filePageStyle.divider} />}
 
                 {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
+
+                <RelatedContent navigation={navigation} uri={uri} />
               </ScrollView>
             </View>
           )}
