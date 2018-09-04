@@ -15,6 +15,7 @@ import {
   View,
   WebView
 } from 'react-native';
+import { navigateToUri } from '../../utils/helper';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Button from '../../component/button';
 import Colors from '../../styles/colors';
@@ -442,7 +443,7 @@ class FilePage extends React.PureComponent {
                                       text={channelName}
                                       onPress={() => {
                                         const channelUri = normalizeURI(channelName);
-                                        navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri: channelUri }});
+                                        navigateToUri(navigation, channelUri);
                                       }} />}
 
                 {description && description.length > 0 && <View style={filePageStyle.divider} />}

@@ -111,7 +111,7 @@ class SplashScreen extends React.PureComponent {
                 });
               }
             } else {
-              navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri: launchUrl } });
+              navigateToUri(navigation, launchUrl);
             }
           }
         });
