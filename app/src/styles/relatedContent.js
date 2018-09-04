@@ -4,11 +4,12 @@ import Colors from './colors';
 const relatedContentStyle = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingTop: 16,
+    paddingBottom: 16,
     paddingLeft: 24,
     paddingRight: 24,
     borderTopColor: Colors.LighterGrey,
-    borderTopWidth: 1,
+    borderTopWidth: 1
   },
   title: {
     fontFamily: 'Metropolis-Regular',

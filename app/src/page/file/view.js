@@ -437,7 +437,9 @@ class FilePage extends React.PureComponent {
                           onPress={this.onStopDownloadPressed} />
                 }
               </View>}
-              <ScrollView style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}>
+              <ScrollView
+                style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
+                contentContainerstyle={showActions ? null : filePageStyle.scrollContent}>
                 <Text style={filePageStyle.title} selectable={true}>{title}</Text>
                 {channelName && <Link style={filePageStyle.channelName}
                                       selectable={true}
