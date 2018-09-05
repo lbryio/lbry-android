@@ -74,7 +74,7 @@ const filePageStyle = StyleSheet.create({
     lineHeight: 20,
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 40
+    marginBottom: 16
   },
   thumbnail: {
     width: screenWidth,

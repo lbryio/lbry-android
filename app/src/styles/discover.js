@@ -120,7 +120,8 @@ const discoverStyle = StyleSheet.create({
   rewardIcon: {
     color: Colors.LbryGreen,
     flex: 0.1,
-    textAlign: 'center'
+    textAlign: 'right',
+    marginTop: 6
   },
   rewardTitle: {
     flex: 0.9
