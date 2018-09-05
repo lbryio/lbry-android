@@ -14,7 +14,7 @@ const select = (state) => ({
 });
 
 const perform = dispatch => ({
-  search: (query) => dispatch(doSearch(query))
+  search: (query) => dispatch(doSearch(query, 25))
 });
 
 export default connect(select, perform)(SearchPage);

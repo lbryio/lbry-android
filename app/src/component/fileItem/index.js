@@ -5,8 +5,8 @@ import {
   makeSelectMetadataForUri,
   makeSelectFileInfoForUri,
   makeSelectIsUriResolving,
-  selectRewardContentClaimIds
 } from 'lbry-redux';
+import { selectRewardContentClaimIds } from 'lbryinc';
 import { selectShowNsfw } from '../../redux/selectors/settings';
 import FileItem from './view';
 

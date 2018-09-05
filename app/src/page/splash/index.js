@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { doBalanceSubscribe, doNotify } from 'lbry-redux';
 import {
   doAuthenticate,
+  doFetchRewardedContent,
   doUserEmailToVerify,
   doUserEmailVerify,
   doUserEmailVerifyFailure,
@@ -18,8 +19,9 @@ const select = state => ({
 
 const perform = dispatch => ({
   authenticate: (appVersion, os) => dispatch(doAuthenticate(appVersion, os)),
-  deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
   balanceSubscribe: () => dispatch(doBalanceSubscribe()),
+  deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
+  fetchRewardedContent: () => dispatch(doFetchRewardedContent()),
   notify: data => dispatch(doNotify(data)),
   setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),
   verifyUserEmail: (token, recaptcha) => dispatch(doUserEmailVerify(token, recaptcha)),

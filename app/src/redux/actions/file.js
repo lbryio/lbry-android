@@ -15,6 +15,14 @@ import Constants from '../../constants';
 
 const DOWNLOAD_POLL_INTERVAL = 250;
 
+const deleteBlobsForSdHash = (sdHash) => {
+  Lbry.blob_list({ sd_hash: sdHash }).then(hashes => {
+    hashes.filter(hash => hash != sdHash).forEach(hash => {
+      Lbry.blob_delete({ blob_hash: hash });
+    });
+  });
+};
+
 export function doUpdateLoadStatus(uri, outpoint) {
   return (dispatch, getState) => {
     Lbry.file_list({
@@ -44,10 +52,10 @@ export function doUpdateLoadStatus(uri, outpoint) {
         }
 
         // Once a download has been completed, delete the individual blob files to save space
-        Lbry.blob_list({ sd_hash: fileInfo.sd_hash }).then(hashes => {
-          hashes.filter(hash => hash != fileInfo.sd_hash).forEach(hash => {
-            Lbry.blob_delete({ blob_hash: hash });
-          });
+        Lbry.file_set_status({ status: 'stop', sd_hash: fileInfo.sd_hash }).then(() => {
+          deleteBlobsForSdHash(fileInfo.sd_hash);
+        }).catch(() => {
+          deleteBlobsForSdHash(fileInfo.sd_hash);
         });
 
         /*const notif = new window.Notification('LBRY Download Complete', {
@@ -316,10 +324,10 @@ export function doDeleteCompleteBlobs() {
     Lbry.file_list().then(files => {
       files.forEach(fileInfo => {
         if (fileInfo.completed) {
-          Lbry.blob_list({ sd_hash: fileInfo.sd_hash }).then(hashes => {
-            hashes.filter(hash => hash != fileInfo.sd_hash).forEach(hash => {
-              Lbry.blob_delete({ blob_hash: hash });
-            });
+          Lbry.file_set_status({ status: 'stop', sd_hash: fileInfo.sd_hash }).then(() => {
+            deleteBlobsForSdHash(fileInfo.sd_hash);
+          }).catch(() => {
+            deleteBlobsForSdHash(fileInfo.sd_hash);
           });
         }
       });

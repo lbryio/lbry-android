@@ -15,6 +15,7 @@ import {
   View,
   WebView
 } from 'react-native';
+import { navigateToUri } from '../../utils/helper';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Button from '../../component/button';
 import Colors from '../../styles/colors';
@@ -25,6 +26,7 @@ import FilePrice from '../../component/filePrice';
 import FloatingWalletBalance from '../../component/floatingWalletBalance';
 import Link from '../../component/link';
 import MediaPlayer from '../../component/mediaPlayer';
+import RelatedContent from '../../component/relatedContent';
 import UriBar from '../../component/uriBar';
 import Video from 'react-native-video';
 import filePageStyle from '../../styles/filePage';
@@ -435,19 +437,23 @@ class FilePage extends React.PureComponent {
                           onPress={this.onStopDownloadPressed} />
                 }
               </View>}
-              <ScrollView style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}>
+              <ScrollView
+                style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
+                contentContainerstyle={showActions ? null : filePageStyle.scrollContent}>
                 <Text style={filePageStyle.title} selectable={true}>{title}</Text>
                 {channelName && <Link style={filePageStyle.channelName}
                                       selectable={true}
                                       text={channelName}
                                       onPress={() => {
                                         const channelUri = normalizeURI(channelName);
-                                        navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri: channelUri }});
+                                        navigateToUri(navigation, channelUri);
                                       }} />}
 
                 {description && description.length > 0 && <View style={filePageStyle.divider} />}
 
                 {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
+
+                <RelatedContent navigation={navigation} uri={uri} />
               </ScrollView>
             </View>
           )}

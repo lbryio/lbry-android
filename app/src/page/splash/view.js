@@ -50,6 +50,8 @@ class SplashScreen extends React.PureComponent {
         AsyncStorage.setItem('firstLaunchTime', String(moment().unix()));
       }
     });
+
+    this.props.fetchRewardedContent();
   }
 
   updateStatus() {
@@ -109,7 +111,7 @@ class SplashScreen extends React.PureComponent {
                 });
               }
             } else {
-              navigation.navigate({ routeName: 'File', key: 'filePage', params: { uri: launchUrl } });
+              navigateToUri(navigation, launchUrl);
             }
           }
         });

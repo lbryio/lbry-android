@@ -43,8 +43,9 @@ const filePageStyle = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-    marginTop: -16,
-    marginBottom: -4,
+    marginTop: -16
+  },
+  scrollContent: {
     paddingTop: 10
   },
   scrollContainerActions: {
@@ -73,7 +74,7 @@ const filePageStyle = StyleSheet.create({
     lineHeight: 20,
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 40
+    marginBottom: 16
   },
   thumbnail: {
     width: screenWidth,

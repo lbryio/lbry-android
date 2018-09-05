@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { navigateToUri } from '../../utils/helper';
+import { navigateToUri, formatBytes } from '../../utils/helper';
 import Colors from '../../styles/colors';
 import FileItemMedia from '../fileItemMedia';
 import Link from '../../component/link';
@@ -18,27 +18,12 @@ import fileListStyle from '../../styles/fileList';
 class FileListItem extends React.PureComponent {
   getStorageForFileInfo = (fileInfo) => {
     if (!fileInfo.completed) {
-      const written = this.formatBytes(fileInfo.written_bytes);
-      const total = this.formatBytes(fileInfo.total_bytes);
+      const written = formatBytes(fileInfo.written_bytes);
+      const total = formatBytes(fileInfo.total_bytes);
       return `(${written} / ${total})`;
     }
 
-    return this.formatBytes(fileInfo.written_bytes);
-  }
-
-  formatBytes = (bytes) => {
-    if (bytes < 1048576) { // < 1MB
-      const value = (bytes / 1024.0).toFixed(0);
-      return `${value} KB`;
-    }
-
-    if (bytes < 1073741824) { // < 1GB
-      const value = (bytes / (1024.0 * 1024.0)).toFixed(0);
-      return `${value} MB`;
-    }
-
-    const value = (bytes / (1024.0 * 1024.0 * 1024.0)).toFixed(0);
-    return `${value} GB`;
+    return formatBytes(fileInfo.written_bytes);
   }
 
   formatTitle = (title) => {
@@ -90,19 +75,19 @@ class FileListItem extends React.PureComponent {
           <FileItemMedia style={fileListStyle.thumbnail}
                          blurRadius={obscureNsfw ? 15 : 0}
                          resizeMode="cover"
-                         title={title}
+                         title={(title || name)}
                          thumbnail={metadata ? metadata.thumbnail : null} />
           <View style={fileListStyle.detailsContainer}>
-            {isResolving && (
+            {!title && !name && !channel && isResolving && (
             <View>
-              <Text style={fileListStyle.uri}>{uri}</Text>
-              <View style={fileListStyle.row}>
+              {(!title && !name) && <Text style={fileListStyle.uri}>{uri}</Text>}
+              {(!title && !name) && <View style={fileListStyle.row}>
                 <ActivityIndicator size={"small"} color={Colors.LbryGreen} />
-              </View>
+              </View>}
             </View>)}
 
-            {!isResolving && <Text style={fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
-            {!isResolving && channel &&
+            {(title || name) && <Text style={fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
+            {channel &&
               <Link style={fileListStyle.publisher} text={channel} onPress={() => {
                 const channelUri = normalizeURI(channel);
                 navigateToUri(navigation, channelUri);
