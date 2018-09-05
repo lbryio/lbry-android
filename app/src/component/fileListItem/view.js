@@ -75,7 +75,7 @@ class FileListItem extends React.PureComponent {
           <FileItemMedia style={fileListStyle.thumbnail}
                          blurRadius={obscureNsfw ? 15 : 0}
                          resizeMode="cover"
-                         title={title}
+                         title={(title || name)}
                          thumbnail={metadata ? metadata.thumbnail : null} />
           <View style={fileListStyle.detailsContainer}>
             {!title && !name && !channel && isResolving && (
@@ -86,7 +86,7 @@ class FileListItem extends React.PureComponent {
               </View>}
             </View>)}
 
-            {title && <Text style={fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
+            {(title || name) && <Text style={fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
             {channel &&
               <Link style={fileListStyle.publisher} text={channel} onPress={() => {
                 const channelUri = normalizeURI(channel);
