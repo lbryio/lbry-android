@@ -397,7 +397,13 @@ class FilePage extends React.PureComponent {
                                         this.startTime = Date.now();
                                         this.setState({ downloadPressed: true, autoPlayMedia: true });
                                       }}
-                                      onButtonLayout={() => this.setState({ downloadButtonShown: true })} />}
+                                      onButtonLayout={() => this.setState({ downloadButtonShown: true })}
+                                      onStartDownloadFailed={() => {
+                                        this.startTime = null;
+                                        setTimeout(() => {
+                                          this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
+                                        }, 500);
+                                      }} />}
                 {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
               </View>
               {canLoadMedia && fileInfo && <View style={playerBgStyle}

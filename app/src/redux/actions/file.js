@@ -163,7 +163,7 @@ export function doSetPlayingUri(uri) {
   };
 }
 
-export function doLoadVideo(uri) {
+export function doLoadVideo(uri, failureCallback) {
   return dispatch => {
     dispatch({
       type: ACTIONS.LOADING_VIDEO_STARTED,
@@ -188,6 +188,10 @@ export function doLoadVideo(uri) {
             message: `File timeout for uri ${uri}`,
             displayType: ['toast']
           }));
+
+          if (failureCallback) {
+            failureCallback();
+          }
         } else {
           dispatch(doDownloadFile(uri, streamInfo));
         }
@@ -203,11 +207,15 @@ export function doLoadVideo(uri) {
           message: `Failed to download ${uri}, please try again. If this problem persists, visit https://lbry.io/faq/support for support.`,
           displayType: ['toast']
         }));
+
+        if (failureCallback) {
+          failureCallback();
+        }
       });
   };
 }
 
-export function doPurchaseUri(uri, specificCostInfo) {
+export function doPurchaseUri(uri, specificCostInfo, failureCallback) {
   return (dispatch, getState) => {
     const state = getState();
     const balance = selectBalance(state);
@@ -226,11 +234,11 @@ export function doPurchaseUri(uri, specificCostInfo) {
           `This will purchase "${title}" for ${formattedCost} ${unit}`,
           [
             { text: 'OK', onPress: () => dispatch(doLoadVideo(uri)) },
-            { text: 'Cancel', style: 'cancel' }
+            { text: 'Cancel', style: 'cancel', onPress: () => failureCallback && failureCallback() }
           ],
           { cancelable: true });
       } else {
-        dispatch(doLoadVideo(uri));
+        dispatch(doLoadVideo(uri, failureCallback));
       }
     }
 
@@ -260,6 +268,10 @@ export function doPurchaseUri(uri, specificCostInfo) {
         message: 'Insufficient credits',
         displayType: ['toast']
       }));
+      if (failureCallback) {
+        failureCallback();
+      }
+
       Promise.resolve();
       return;
     }

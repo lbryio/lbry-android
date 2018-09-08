@@ -17,7 +17,7 @@ const select = (state, props) => ({
 });
 
 const perform = dispatch => ({
-  purchaseUri: uri => dispatch(doPurchaseUri(uri)),
+  purchaseUri: (uri, failureCallback) => dispatch(doPurchaseUri(uri, null, failureCallback)),
   restartDownload: (uri, outpoint) => dispatch(doStartDownload(uri, outpoint)),
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
 });
