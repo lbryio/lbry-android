@@ -26,7 +26,7 @@ class RewardSummary extends React.Component {
   render() {
     const { fetching, navigation, unclaimedRewardAmount, user } = this.props;
 
-    if (this.state.actionsLeft === 0 || unclaimedRewardAmount === 0) {
+    if ((user && user.is_reward_approved) || this.state.actionsLeft === 0 || unclaimedRewardAmount === 0) {
       return null;
     }
 
