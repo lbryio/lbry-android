@@ -50,7 +50,7 @@ class RewardsPage extends React.PureComponent {
     if (user) {
       // update other checks (if new user data has been retrieved)
       this.setState({
-        isEmailVerified: (user && user.primary_email && user.has_verified_email)
+        isEmailVerified: (user && user.primary_email && user.has_verified_email),
         isIdentityVerified: (user && user.is_identity_verified),
         isRewardApproved: (user && user.is_reward_approved)
       });
