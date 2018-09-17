@@ -61,6 +61,7 @@ class AboutPage extends React.PureComponent {
             <Link style={aboutStyle.link} href="https://www.instagram.com/LBRYio/" text="Instagram" />
             <Link style={aboutStyle.link} href="https://twitter.com/LBRYio" text="Twitter" />
             <Link style={aboutStyle.link} href="https://reddit.com/r/lbry" text="Reddit" />
+            <Link style={aboutStyle.link} href="https://t.me/lbryofficial" text="Telegram" />
           </View>
           <Text style={aboutStyle.releaseInfoTitle}>Release information</Text>
           <View style={aboutStyle.row}>
