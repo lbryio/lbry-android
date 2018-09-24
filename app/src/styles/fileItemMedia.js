@@ -1,4 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
+import Colors from './colors';
 
 const fileItemMediaStyle = StyleSheet.create({
   autothumb: {
@@ -11,7 +12,7 @@ const fileItemMediaStyle = StyleSheet.create({
   autothumbText: {
     fontFamily: 'Metropolis-SemiBold',
     textAlign: 'center',
-    color: '#ffffff',
+    color: Colors.White,
     fontSize: 40
   },
   autothumbPurple: {
