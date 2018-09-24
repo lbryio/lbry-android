@@ -329,144 +329,170 @@ class FilePage extends React.PureComponent {
         <ChannelPage uri={uri} navigation={navigation} />
       );
     } else if (claim) {
-      const completed = fileInfo && fileInfo.completed;
-      const title = metadata.title;
-      const isRewardContent = rewardedContentClaimIds.includes(claim.claim_id);
-      const description = metadata.description ? metadata.description : null;
-      const mediaType = Lbry.getMediaType(contentType);
-      const isPlayable = mediaType === 'video' || mediaType === 'audio';
-      const { height, channel_name: channelName, value } = claim;
-      const showActions = !this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView &&
-        (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
-      const channelClaimId =
-        value && value.publisherSignature && value.publisherSignature.certificateId;
+      let isClaimBlackListed = false;
 
-      const playerStyle = [filePageStyle.player,
-        this.state.isLandscape ? filePageStyle.containedPlayerLandscape :
-        (this.state.fullscreenMode ? filePageStyle.fullscreenPlayer : filePageStyle.containedPlayer)];
-      const playerBgStyle = [filePageStyle.playerBackground, this.state.fullscreenMode ?
-        filePageStyle.fullscreenPlayerBackground : filePageStyle.containedPlayerBackground];
-      // at least 2MB (or the full download) before media can be loaded
-      const canLoadMedia = fileInfo &&
-        (fileInfo.written_bytes >= 2097152 || fileInfo.written_bytes == fileInfo.total_bytes); // 2MB = 1024*1024*2
-      const canOpen = (mediaType === 'image' || mediaType === 'text') && completed;
-      const isWebViewable = mediaType === 'text';
-      const localFileUri = this.localUriForFileInfo(fileInfo);
-
-      const openFile = () => {
-        if (mediaType === 'image') {
-          // use image viewer
-          this.setState({
-            imageUrls: [{
-              url: localFileUri
-            }],
-            showImageViewer: true
-          });
-        }
-        if (isWebViewable) {
-          // show webview
-          this.setState({
-            showWebView: true
-          });
+      if (blackListedOutpoints) {
+        for (let i = 0; i < blackListedOutpoints.length; i += 1) {
+          const outpoint = blackListedOutpoints[i];
+          if (outpoint.txid === claim.txid && outpoint.nout === claim.nout) {
+            isClaimBlackListed = true;
+            break;
+          }
         }
       }
 
-      innerContent = (
-        <View style={filePageStyle.pageContainer}>
-          {this.state.showWebView && isWebViewable && <WebView source={{ uri: localFileUri }}
-                                                               style={filePageStyle.viewer} />}
-
-          {this.state.showImageViewer && <ImageViewer style={StyleSheet.flatten(filePageStyle.viewer)}
-                                                      imageUrls={this.state.imageUrls}
-                                                      renderIndicator={() => null} />}
-
-          {!this.state.showWebView && (
-            <View style={this.state.fullscreenMode ? filePageStyle.innerPageContainerFsMode : filePageStyle.innerPageContainer}
-                  onLayout={this.checkOrientation}>
-              <View style={filePageStyle.mediaContainer}>
-                {((canOpen || (!fileInfo || (isPlayable && !canLoadMedia))) || (!canOpen && fileInfo)) &&
-                  <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
-                {((!this.state.downloadButtonShown || this.state.downloadPressed) && !this.state.mediaLoaded) &&
-                    <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
-                {((isPlayable && !completed && !canLoadMedia) || !completed || canOpen) && (!this.state.downloadPressed) &&
-                  <FileDownloadButton uri={uri}
-                                      style={filePageStyle.downloadButton}
-                                      openFile={openFile}
-                                      isPlayable={isPlayable}
-                                      onPlay={() => {
-                                        this.startTime = Date.now();
-                                        this.setState({ downloadPressed: true, autoPlayMedia: true });
-                                      }}
-                                      onButtonLayout={() => this.setState({ downloadButtonShown: true })}
-                                      onStartDownloadFailed={() => {
-                                        this.startTime = null;
-                                        setTimeout(() => {
-                                          this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
-                                        }, 500);
-                                      }} />}
-                {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
-              </View>
-              {canLoadMedia && fileInfo && <View style={playerBgStyle}
-                                                 ref={(ref) => { this.playerBackground = ref; }}
-                                                 onLayout={(evt) => {
-                                                  if (!this.state.playerBgHeight) {
-                                                    this.setState({ playerBgHeight: evt.nativeEvent.layout.height });
-                                                  }
-                                                }} />}
-              {canLoadMedia && fileInfo && <MediaPlayer
-                                             fileInfo={fileInfo}
-                                             assignPlayer={(ref) => { this.player = ref; }}
-                                             uri={uri}
-                                             style={playerStyle}
-                                             autoPlay={autoplay || this.state.autoPlayMedia}
-                                             onFullscreenToggled={this.handleFullscreenToggle}
-                                             onLayout={(evt) => {
-                                               if (!this.state.playerHeight) {
-                                                 this.setState({ playerHeight: evt.nativeEvent.layout.height });
-                                               }
-                                             }}
-                                             onMediaLoaded={() => this.onMediaLoaded(channelName, title, uri)}
-                                             onPlaybackStarted={this.onPlaybackStarted}
-                                            />}
-
-              { showActions &&
-              <View style={filePageStyle.actions}>
-                {completed && <Button style={filePageStyle.actionButton}
-                                      theme={"light"}
-                                      icon={"trash"}
-                                      text={"Delete"}
-                                      onPress={this.onDeletePressed} />}
-                {!completed && fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes &&
-                  <Button style={filePageStyle.actionButton}
-                          theme={"light"}
-                          text={"Stop Download"}
-                          onPress={this.onStopDownloadPressed} />
-                }
-              </View>}
-              <ScrollView
-                style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
-                contentContainerstyle={showActions ? null : filePageStyle.scrollContent}>
-                <Text style={filePageStyle.title} selectable={true}>{title}</Text>
-                {channelName && <Link style={filePageStyle.channelName}
-                                      selectable={true}
-                                      text={channelName}
-                                      onPress={() => {
-                                        const channelUri = normalizeURI(channelName);
-                                        navigateToUri(navigation, channelUri);
-                                      }} />}
-
-                {description && description.length > 0 && <View style={filePageStyle.divider} />}
-
-                {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
-
-                <RelatedContent navigation={navigation} uri={uri} />
-              </ScrollView>
+      if (isClaimBlackListed) {
+        innerContent = (
+          <View style={filePageStyle.pageContainer}>
+            <View style={filePageStyle.dmcaContainer}>
+              <Text style={filePageStyle.dmcaText}>
+                In response to a complaint we received under the US Digital Millennium Copyright Act, we have blocked access to this content from our applications.
+              </Text>
+              <Link style={filePageStyle.dmcaLink} href="https://lbry.io/faq/dmca" text="Read More" />
             </View>
-          )}
-          {!this.state.fullscreenMode && <FloatingWalletBalance navigation={navigation} />}
-          {!this.state.fullscreenMode && <UriBar value={uri} navigation={navigation} />}
-        </View>
-      );
+            <UriBar value={uri} navigation={navigation} />
+          </View>
+        );
+      } else {
+        const completed = fileInfo && fileInfo.completed;
+        const title = metadata.title;
+        const isRewardContent = rewardedContentClaimIds.includes(claim.claim_id);
+        const description = metadata.description ? metadata.description : null;
+        const mediaType = Lbry.getMediaType(contentType);
+        const isPlayable = mediaType === 'video' || mediaType === 'audio';
+        const { height, channel_name: channelName, value } = claim;
+        const showActions = !this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView &&
+          (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
+        const channelClaimId =
+          value && value.publisherSignature && value.publisherSignature.certificateId;
+
+        const playerStyle = [filePageStyle.player,
+          this.state.isLandscape ? filePageStyle.containedPlayerLandscape :
+          (this.state.fullscreenMode ? filePageStyle.fullscreenPlayer : filePageStyle.containedPlayer)];
+        const playerBgStyle = [filePageStyle.playerBackground, this.state.fullscreenMode ?
+          filePageStyle.fullscreenPlayerBackground : filePageStyle.containedPlayerBackground];
+        // at least 2MB (or the full download) before media can be loaded
+        const canLoadMedia = fileInfo &&
+          (fileInfo.written_bytes >= 2097152 || fileInfo.written_bytes == fileInfo.total_bytes); // 2MB = 1024*1024*2
+        const canOpen = (mediaType === 'image' || mediaType === 'text') && completed;
+        const isWebViewable = mediaType === 'text';
+        const localFileUri = this.localUriForFileInfo(fileInfo);
+
+        const openFile = () => {
+          if (mediaType === 'image') {
+            // use image viewer
+            this.setState({
+              imageUrls: [{
+                url: localFileUri
+              }],
+              showImageViewer: true
+            });
+          }
+          if (isWebViewable) {
+            // show webview
+            this.setState({
+              showWebView: true
+            });
+          }
+        }
+
+        innerContent = (
+          <View style={filePageStyle.pageContainer}>
+            {this.state.showWebView && isWebViewable && <WebView source={{ uri: localFileUri }}
+                                                                 style={filePageStyle.viewer} />}
+
+            {this.state.showImageViewer && <ImageViewer style={StyleSheet.flatten(filePageStyle.viewer)}
+                                                        imageUrls={this.state.imageUrls}
+                                                        renderIndicator={() => null} />}
+
+            {!this.state.showWebView && (
+              <View style={this.state.fullscreenMode ? filePageStyle.innerPageContainerFsMode : filePageStyle.innerPageContainer}
+                    onLayout={this.checkOrientation}>
+                <View style={filePageStyle.mediaContainer}>
+                  {((canOpen || (!fileInfo || (isPlayable && !canLoadMedia))) || (!canOpen && fileInfo)) &&
+                    <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
+                  {((!this.state.downloadButtonShown || this.state.downloadPressed) && !this.state.mediaLoaded) &&
+                      <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
+                  {((isPlayable && !completed && !canLoadMedia) || !completed || canOpen) && (!this.state.downloadPressed) &&
+                    <FileDownloadButton uri={uri}
+                                        style={filePageStyle.downloadButton}
+                                        openFile={openFile}
+                                        isPlayable={isPlayable}
+                                        onPlay={() => {
+                                          this.startTime = Date.now();
+                                          this.setState({ downloadPressed: true, autoPlayMedia: true });
+                                        }}
+                                        onButtonLayout={() => this.setState({ downloadButtonShown: true })}
+                                        onStartDownloadFailed={() => {
+                                          this.startTime = null;
+                                          setTimeout(() => {
+                                            this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
+                                          }, 500);
+                                        }} />}
+                  {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
+                </View>
+                {canLoadMedia && fileInfo && <View style={playerBgStyle}
+                                                   ref={(ref) => { this.playerBackground = ref; }}
+                                                   onLayout={(evt) => {
+                                                    if (!this.state.playerBgHeight) {
+                                                      this.setState({ playerBgHeight: evt.nativeEvent.layout.height });
+                                                    }
+                                                  }} />}
+                {canLoadMedia && fileInfo && <MediaPlayer
+                                               fileInfo={fileInfo}
+                                               assignPlayer={(ref) => { this.player = ref; }}
+                                               uri={uri}
+                                               style={playerStyle}
+                                               autoPlay={autoplay || this.state.autoPlayMedia}
+                                               onFullscreenToggled={this.handleFullscreenToggle}
+                                               onLayout={(evt) => {
+                                                 if (!this.state.playerHeight) {
+                                                   this.setState({ playerHeight: evt.nativeEvent.layout.height });
+                                                 }
+                                               }}
+                                               onMediaLoaded={() => this.onMediaLoaded(channelName, title, uri)}
+                                               onPlaybackStarted={this.onPlaybackStarted}
+                                              />}
+
+                { showActions &&
+                <View style={filePageStyle.actions}>
+                  {completed && <Button style={filePageStyle.actionButton}
+                                        theme={"light"}
+                                        icon={"trash"}
+                                        text={"Delete"}
+                                        onPress={this.onDeletePressed} />}
+                  {!completed && fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes &&
+                    <Button style={filePageStyle.actionButton}
+                            theme={"light"}
+                            text={"Stop Download"}
+                            onPress={this.onStopDownloadPressed} />
+                  }
+                </View>}
+                <ScrollView
+                  style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
+                  contentContainerstyle={showActions ? null : filePageStyle.scrollContent}>
+                  <Text style={filePageStyle.title} selectable={true}>{title}</Text>
+                  {channelName && <Link style={filePageStyle.channelName}
+                                        selectable={true}
+                                        text={channelName}
+                                        onPress={() => {
+                                          const channelUri = normalizeURI(channelName);
+                                          navigateToUri(navigation, channelUri);
+                                        }} />}
+
+                  {description && description.length > 0 && <View style={filePageStyle.divider} />}
+
+                  {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
+
+                  <RelatedContent navigation={navigation} uri={uri} />
+                </ScrollView>
+              </View>
+            )}
+            {!this.state.fullscreenMode && <FloatingWalletBalance navigation={navigation} />}
+            {!this.state.fullscreenMode && <UriBar value={uri} navigation={navigation} />}
+          </View>
+        );
+      }
     }
 
     return innerContent;
