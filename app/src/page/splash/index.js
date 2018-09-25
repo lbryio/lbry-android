@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { doBalanceSubscribe, doNotify } from 'lbry-redux';
+import { doBalanceSubscribe, doBlackListedOutpointsSubscribe, doNotify } from 'lbry-redux';
 import {
   doAuthenticate,
   doFetchRewardedContent,
@@ -20,6 +20,7 @@ const select = state => ({
 const perform = dispatch => ({
   authenticate: (appVersion, os) => dispatch(doAuthenticate(appVersion, os)),
   balanceSubscribe: () => dispatch(doBalanceSubscribe()),
+  blacklistedOutpointsSubscribe: () => dispatch(doBlackListedOutpointsSubscribe()),
   deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
   fetchRewardedContent: () => dispatch(doFetchRewardedContent()),
   notify: data => dispatch(doNotify(data)),
