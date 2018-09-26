@@ -1,0 +1,13 @@
+diff --git a/setup_support.py b/setup_support.py
+index e7a4f2e..72f0c4d 100644
+--- a/setup_support.py
++++ b/setup_support.py
+@@ -68,6 +69,8 @@ def build_flags(library, type_, path):
+ 
+ 
+ def _find_lib():
++    # we're picking up the recipe one
++    return True
+     from cffi import FFI
+     ffi = FFI()
+     try:

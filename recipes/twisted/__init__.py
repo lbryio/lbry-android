@@ -12,10 +12,10 @@ import sh
 
 
 class TwistedRecipe(CythonRecipe):
-    version = '16.6.0'
+    version = '18.7.0'
     url = 'https://github.com/twisted/twisted/archive/twisted-{version}.tar.gz'
 
-    depends = ['setuptools', 'zope_interface']
+    depends = ['setuptools', 'zope_interface', 'incremental', 'constantly']
 
     call_hostpython_via_targetpython = False
     install_in_hostpython = True
@@ -29,10 +29,10 @@ class TwistedRecipe(CythonRecipe):
         env = super(TwistedRecipe, self).get_recipe_env(arch)
 
         # TODO: Move this and others to base Recipe class for Cython and CompiledComponent recipes
-        target_python = Recipe.get_recipe('python2', self.ctx).get_build_dir(arch.arch)
+        target_python = Recipe.get_recipe('python3crystax', self.ctx).get_build_dir(arch.arch)
         env['PYTHON_ROOT'] = join(target_python, 'python-install')
-        env['CFLAGS'] += ' -I' + env['PYTHON_ROOT'] + '/include/python2.7'
-        env['LDFLAGS'] += ' -L' + env['PYTHON_ROOT'] + '/lib' + ' -lpython2.7'
+        env['CFLAGS'] += ' -I' + env['PYTHON_ROOT'] + '/include/python3.6'
+        env['LDFLAGS'] += ' -L' + env['PYTHON_ROOT'] + '/lib' + ' -lpython3.6m'
 
         # We add BUILDLIB_PATH to PYTHONPATH so twisted can find _io.so
         env['PYTHONPATH'] = ':'.join([

@@ -1,0 +1,12 @@
+diff --git a/setup.py b/setup.py
+index c224fb2..bf925bd 100644
+--- a/setup.py
++++ b/setup.py
+@@ -182,6 +182,7 @@ class build_clib(_build_clib):
+             '--disable-dependency-tracking',
+             '--with-pic',
+             '--enable-module-recovery',
++            "--host=%s" % os.environ['TOOLCHAIN_PREFIX'],
+             '--disable-jni',
+             '--prefix',
+             os.path.abspath(self.build_clib),

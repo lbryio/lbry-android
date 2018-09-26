@@ -1,0 +1,29 @@
+--- a/netifaces.c	2018-09-25 21:26:48.238476102 +0100
++++ b/netifaces.c	2018-09-25 21:55:14.201995669 +0100
+@@ -22,6 +22,10 @@
+   obj = Py_InitModule3((name), (methods), (doc));
+ #endif
+ 
++#ifndef HAVE_SOCKET_IOCTLS
++#define HAVE_SOCKET_IOCTLS 1
++#endif
++
+ #ifndef WIN32
+ 
+ #  include <sys/types.h>
+@@ -178,12 +182,12 @@
+ #    include <ifaddrs.h>
+ #  endif /* HAVE_GETIFADDRS */
+ 
+-#  if !HAVE_GETIFADDRS && (!HAVE_SOCKET_IOCTLS || !HAVE_SIOCGIFCONF)
++//#  if !HAVE_GETIFADDRS && (!HAVE_SOCKET_IOCTLS || !HAVE_SIOCGIFCONF)
+ /* If the platform doesn't define, what we need, barf.  If you're seeing this,
+    it means you need to write suitable code to retrieve interface information
+    on your system. */
+-#    error You need to add code for your platform.
+-#  endif
++//#    error You need to add code for your platform.
++//#  endif
+ 
+ #else /* defined(WIN32) */
+ 

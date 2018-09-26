@@ -76,7 +76,6 @@ keyring.set_keyring(LbryAndroidKeyring())
 import logging.handlers
 from lbrynet.core import log_support
 from twisted.internet import defer, reactor
-from jsonrpc.proxy import JSONRPCProxy
 
 from lbrynet import analytics
 from lbrynet import conf

@@ -3,6 +3,7 @@ from os.path import exists, join, realpath
 from os import uname
 import glob
 import sh
+import os
 
 
 class LibGMPRecipe(Recipe):
@@ -18,8 +19,20 @@ class LibGMPRecipe(Recipe):
         env = super(LibGMPRecipe, self).get_recipe_env(arch)
         env['LIBGMP_LDFLAGS'] = '-avoid-version'
 
-        return env
+        ndk_dir = self.ctx.ndk_platform
+        ndk_lib_dir = os.path.join(ndk_dir, 'usr', 'lib')
+        if self.ctx.ndk == 'crystax':
+            crystax_lib_dir = os.path.join(self.ctx.ndk_dir, 'sources/crystax/libs', arch.arch)
+            env['CFLAGS'] = '{} -L{} -L{}'.format(env.get('CFLAGS'), crystax_lib_dir, ndk_lib_dir);
 
+        env['LDFLAGS'] += ' -L{}'.format(ndk_lib_dir)
+        env['LDFLAGS'] += " --sysroot={}".format(self.ctx.ndk_platform)
+        env['PYTHONPATH'] = ':'.join([
+            self.ctx.get_site_packages_dir(),
+            env['BUILDLIB_PATH'],
+        ])
+
+        return env
 
     def build_arch(self, arch):
         with current_directory(self.get_build_dir(arch.arch)):

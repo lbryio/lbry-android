@@ -18,10 +18,10 @@ class PyjniusRecipe(CythonRecipe):
 
     def get_recipe_env(self, arch):
         env = super(PyjniusRecipe, self).get_recipe_env(arch)
-        target_python = Recipe.get_recipe('python2', self.ctx).get_build_dir(arch.arch)
+        target_python = Recipe.get_recipe('python3crystax', self.ctx).get_build_dir(arch.arch)
         env['PYTHON_ROOT'] = join(target_python, 'python-install')
-        env['CFLAGS'] += ' -I' + env['PYTHON_ROOT'] + '/include/python2.7'
-        env['LDFLAGS'] += ' -L' + env['PYTHON_ROOT'] + '/lib' + ' -lpython2.7'
+        env['CFLAGS'] += ' -I' + env['PYTHON_ROOT'] + '/include/python3.6'
+        env['LDFLAGS'] += ' -L' + env['PYTHON_ROOT'] + '/lib' + ' -lpython3.6m'
 
         return env
 
