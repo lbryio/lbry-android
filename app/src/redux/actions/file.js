@@ -135,14 +135,14 @@ export function doStopDownloadingFile(uri, fileInfo) {
         type: ACTIONS.DOWNLOADING_CANCELED,
         data: {}
       });
+
+      // Should also delete the file after the user stops downloading
+      dispatch(doDeleteFile(fileInfo.outpoint, uri));
+
+      if (NativeModules.LbryDownloadManager) {
+        NativeModules.LbryDownloadManager.stopDownload(uri, fileInfo.file_name);
+      }
     });
-
-    if (NativeModules.LbryDownloadManager) {
-      NativeModules.LbryDownloadManager.stopDownload(uri, fileInfo.file_name);
-    }
-
-    // Should also delete the file after the user stops downloading
-    dispatch(doDeleteFile(fileInfo.outpoint, uri));
   };
 }
 
