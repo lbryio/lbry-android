@@ -44,7 +44,7 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     DeviceEventEmitter.addListener('onVerificationCodeReceived', this.receiveVerificationCode);
 
     const { phone } = this.props;
-    if (phone && String(phone).trim().length() > 0) {
+    if (phone && String(phone).trim().length > 0) {
       this.setState({ newPhoneAdded: true });
     }
 
