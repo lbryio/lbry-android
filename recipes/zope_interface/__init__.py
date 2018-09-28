@@ -9,7 +9,7 @@ class ZopeInterfaceRecipe(PythonRecipe):
     url = 'https://pypi.python.org/packages/source/z/zope.interface/zope.interface-{version}.tar.gz'
     site_packages_name = 'zope.interface'
 
-    depends = [('python2', 'python3crystax')]
+    depends = [('python2', 'python3crystax'), 'setuptools']
     patches = ['no_tests.patch']
 
     def prebuild_arch(self, arch):
