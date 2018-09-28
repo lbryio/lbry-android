@@ -4,7 +4,7 @@ import os
 
 class CryptographyRecipe(CompiledComponentsPythonRecipe):
     name = 'cryptography'
-    version = '2.2.2'
+    version = '2.3.1'
     url = 'https://github.com/pyca/cryptography/archive/{version}.tar.gz'
     depends = [('python2', 'python3crystax'), 'openssl', 'idna', 'pyasn1', 'six', 'setuptools', 'ipaddress', 'cffi']
     call_hostpython_via_targetpython = False

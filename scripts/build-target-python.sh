@@ -670,6 +670,68 @@ build_python_for_abi ()
         fail_panic "Can't install python$PYTHON_ABI-$ABI module '_hashlib' in $PYBIN_INSTALLDIR_MODULES"
     fi
 
+# _blake2
+    if [ -n "$OPENSSL_HOME" ]; then
+        local BUILDDIR_BLAKE2="$BUILDDIR/blake2"
+        local OBJDIR_BLAKE2="$BUILDDIR_BLAKE2/obj/local/$ABI"
+
+        run mkdir -p "$BUILDDIR_BLAKE2/jni"
+        fail_panic "Can't create directory: $BUILDDIR_BLAKE2/jni"
+
+        {
+            echo 'LOCAL_PATH := $(call my-dir)'
+            echo 'include $(CLEAR_VARS)'
+            echo 'LOCAL_MODULE := _blake2'
+            echo "MY_PYTHON_SRC_ROOT := $PYTHON_SRCDIR"
+            echo 'LOCAL_SRC_FILES := \'
+            echo '  $(MY_PYTHON_SRC_ROOT)/Modules/_blake2/blake2module.c \'
+            echo '  $(MY_PYTHON_SRC_ROOT)/Modules/_blake2/blake2b_impl.c \'
+            echo '  $(MY_PYTHON_SRC_ROOT)/Modules/_blake2/blake2s_impl.c'
+            echo 'LOCAL_STATIC_LIBRARIES := python_shared'
+            echo 'include $(BUILD_SHARED_LIBRARY)'
+            echo "\$(call import-module,python/$PYTHON_ABI)"
+            echo "\$(call import-module,$OPENSSL_HOME)"
+        } >$BUILDDIR_BLAKE2/jni/Android.mk
+        fail_panic "Can't generate $BUILDDIR_BLAKE2/jni/Android.mk"
+
+        run $NDK_DIR/ndk-build -C $BUILDDIR_BLAKE2 -j$NUM_JOBS APP_ABI=$ABI V=1
+        fail_panic "Can't build python$PYTHON_ABI-$ABI module '_blake2'"
+
+        log "Install python$PYTHON_ABI-$ABI module '_blake2' in $PYBIN_INSTALLDIR_MODULES"
+        run cp -p -T $OBJDIR_BLAKE2/lib_blake2.so $PYBIN_INSTALLDIR_MODULES/_blake2.so
+        fail_panic "Can't install python$PYTHON_ABI-$ABI module '_blake2' in $PYBIN_INSTALLDIR_MODULES"
+    fi
+
+# _sha3
+    if [ -n "$OPENSSL_HOME" ]; then
+        local BUILDDIR_SHA3="$BUILDDIR/sha3"
+        local OBJDIR_SHA3="$BUILDDIR_SHA3/obj/local/$ABI"
+
+        run mkdir -p "$BUILDDIR_SHA3/jni"
+        fail_panic "Can't create directory: $BUILDDIR_SHA3/jni"
+
+        {
+            echo 'LOCAL_PATH := $(call my-dir)'
+            echo 'include $(CLEAR_VARS)'
+            echo 'LOCAL_MODULE := _sha3'
+            echo "MY_PYTHON_SRC_ROOT := $PYTHON_SRCDIR"
+            echo 'LOCAL_SRC_FILES := \'
+            echo '  $(MY_PYTHON_SRC_ROOT)/Modules/_sha3/sha3module.c'
+            echo 'LOCAL_STATIC_LIBRARIES := python_shared'
+            echo 'include $(BUILD_SHARED_LIBRARY)'
+            echo "\$(call import-module,python/$PYTHON_ABI)"
+            echo "\$(call import-module,$OPENSSL_HOME)"
+        } >$BUILDDIR_SHA3/jni/Android.mk
+        fail_panic "Can't generate $BUILDDIR_SHA3/jni/Android.mk"
+
+        run $NDK_DIR/ndk-build -C $BUILDDIR_SHA3 -j$NUM_JOBS APP_ABI=$ABI V=1
+        fail_panic "Can't build python$PYTHON_ABI-$ABI module '_sha3'"
+
+        log "Install python$PYTHON_ABI-$ABI module '_sha3' in $PYBIN_INSTALLDIR_MODULES"
+        run cp -p -T $OBJDIR_SHA3/lib_sha3.so $PYBIN_INSTALLDIR_MODULES/_sha3.so
+        fail_panic "Can't install python$PYTHON_ABI-$ABI module '_sha3' in $PYBIN_INSTALLDIR_MODULES"
+    fi
+
 # _sqlite3
     local BUILDDIR_SQLITE3="$BUILDDIR/sqlite3"
     local OBJDIR_SQLITE3="$BUILDDIR_SQLITE3/obj/local/$ABI"
