@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 import {
   doFetchFileInfo,
-  doResolveUri,
   doFetchCostInfoForUri,
+  doResolveUri,
+  doNotify,
   makeSelectIsUriResolving,
   makeSelectCostInfoForUri,
   makeSelectFileInfoForUri,
@@ -32,13 +33,14 @@ const select = (state, props) => {
 };
 
 const perform = dispatch => ({
-  fetchFileInfo: uri => dispatch(doFetchFileInfo(uri)),
-  fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
-  resolveUri: uri => dispatch(doResolveUri(uri)),
-  stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),
   deleteFile: (fileInfo, deleteFromDevice, abandonClaim) => {
     dispatch(doDeleteFile(fileInfo, deleteFromDevice, abandonClaim));
   },
+  fetchFileInfo: uri => dispatch(doFetchFileInfo(uri)),
+  fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
+  notify: data => dispatch(doNotify(data)),
+  resolveUri: uri => dispatch(doResolveUri(uri)),
+  stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),
 });
 
 export default connect(select, perform)(FilePage);

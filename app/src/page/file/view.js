@@ -57,7 +57,8 @@ class FilePage extends React.PureComponent {
       showWebView: false,
       playerBgHeight: 0,
       playerHeight: 0,
-      uri: null
+      uri: null,
+      stopDownloadConfirmed: false
     };
   }
 
@@ -155,7 +156,12 @@ class FilePage extends React.PureComponent {
         { text: 'No' },
         { text: 'Yes', onPress: () => {
           deleteFile(fileInfo.outpoint, true);
-          this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
+          this.setState({
+            downloadPressed: false,
+            fileViewLogged: false,
+            mediaLoaded: false,
+            stopDownloadConfirmed: false
+          });
         }}
       ],
       { cancelable: true }
@@ -163,7 +169,7 @@ class FilePage extends React.PureComponent {
   }
 
   onStopDownloadPressed = () => {
-    const { deleteFile, stopDownload, fileInfo, navigation } = this.props;
+    const { fileInfo, navigation, notify, stopDownload } = this.props;
 
     Alert.alert(
       'Stop download',
@@ -172,8 +178,20 @@ class FilePage extends React.PureComponent {
         { text: 'No' },
         { text: 'Yes', onPress: () => {
           stopDownload(navigation.state.params.uri, fileInfo);
-          this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
-        } }
+          this.setState({
+            downloadPressed: false,
+            fileViewLogged: false,
+            mediaLoaded: false,
+            stopDownloadConfirmed: true
+          });
+
+          // there can be a bit of lag between the user pressing Yes and the UI being updated
+          // after the file_set_status and file_delete operations, so let the user know
+          notify({
+            message: 'The download will stop momentarily. You do not need to wait to discover something else.',
+            displayType: ['toast']
+          });
+        }}
       ],
       { cancelable: true }
     );
@@ -361,7 +379,9 @@ class FilePage extends React.PureComponent {
         const mediaType = Lbry.getMediaType(contentType);
         const isPlayable = mediaType === 'video' || mediaType === 'audio';
         const { height, channel_name: channelName, value } = claim;
-        const showActions = !this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView &&
+        const showActions = !this.state.fullscreenMode &&
+          !this.state.showImageViewer &&
+          !this.state.showWebView &&
           (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
         const channelClaimId =
           value && value.publisherSignature && value.publisherSignature.certificateId;
@@ -420,7 +440,7 @@ class FilePage extends React.PureComponent {
                                         isPlayable={isPlayable}
                                         onPlay={() => {
                                           this.startTime = Date.now();
-                                          this.setState({ downloadPressed: true, autoPlayMedia: true });
+                                          this.setState({ downloadPressed: true, autoPlayMedia: true, stopDownloadConfirmed: false });
                                         }}
                                         onButtonLayout={() => this.setState({ downloadButtonShown: true })}
                                         onStartDownloadFailed={() => {
@@ -454,14 +474,16 @@ class FilePage extends React.PureComponent {
                                                onPlaybackStarted={this.onPlaybackStarted}
                                               />}
 
-                { showActions &&
+                {fileInfo && showActions &&
                 <View style={filePageStyle.actions}>
                   {completed && <Button style={filePageStyle.actionButton}
                                         theme={"light"}
                                         icon={"trash"}
                                         text={"Delete"}
                                         onPress={this.onDeletePressed} />}
-                  {!completed && fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes &&
+                  {!completed && fileInfo && !fileInfo.stopped &&
+                   fileInfo.written_bytes < fileInfo.total_bytes &&
+                   !this.state.stopDownloadConfirmed &&
                     <Button style={filePageStyle.actionButton}
                             theme={"light"}
                             text={"Stop Download"}
