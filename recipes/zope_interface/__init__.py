@@ -8,10 +8,9 @@ class ZopeInterfaceRecipe(PythonRecipe):
     version = '4.3.3'
     url = 'https://pypi.python.org/packages/source/z/zope.interface/zope.interface-{version}.tar.gz'
     site_packages_name = 'zope.interface'
-    call_hostpython_via_targetpython = True
 
     depends = [('python2', 'python3crystax'), 'setuptools']
-    patches = ['no_tests.patch']
+    patches = ['no_tests.patch', 'setuptools.patch']
 
     def prebuild_arch(self, arch):
         super(ZopeInterfaceRecipe, self).prebuild_arch(arch)
