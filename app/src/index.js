@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {
   Lbry,
+  blacklistReducer,
   claimsReducer,
   costInfoReducer,
   fileInfoReducer,
@@ -68,6 +69,7 @@ const navigatorReducer = (state = initialNavState, action) => {
 
 const reducers = combineReducers({
   auth: authReducer,
+  blacklist: blacklistReducer,
   claims: claimsReducer,
   costInfo: costInfoReducer,
   fileInfo: fileInfoReducer,

@@ -35,24 +35,33 @@ class RewardsPage extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { emailVerifyErrorMessage, emailVerifyPending } = nextProps;
+    const { emailVerifyErrorMessage, emailVerifyPending, user } = nextProps;
     if (emailVerifyPending) {
       this.setState({ verifyRequestStarted: true });
     }
 
     if (this.state.verifyRequestStarted && !emailVerifyPending) {
-      const { user } = nextProps;
       this.setState({ verifyRequestStarted: false });
       if (!emailVerifyErrorMessage) {
-        this.setState({
-          isEmailVerified: true,
-          isRewardApproved: (user && user.is_reward_approved)
-        });
+        this.setState({ isEmailVerified: true });
       }
+    }
+
+    if (user) {
+      // update other checks (if new user data has been retrieved)
+      this.setState({
+        isEmailVerified: (user && user.primary_email && user.has_verified_email),
+        isIdentityVerified: (user && user.is_identity_verified),
+        isRewardApproved: (user && user.is_reward_approved)
+      });
     }
   }
 
   renderVerification() {
+    if (this.state.isRewardApproved) {
+      return null;
+    }
+
     if (!this.state.isEmailVerified || !this.state.isIdentityVerified) {
       return (
         <View style={[rewardStyle.card, rewardStyle.verification]}>

@@ -53,7 +53,9 @@ const discoverStyle = StyleSheet.create({
   },
   fileItemMedia: {
     width: mediaWidth,
-    height: mediaHeight
+    height: mediaHeight,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   fileItemName: {
     fontFamily: 'Metropolis-Bold',

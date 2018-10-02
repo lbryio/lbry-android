@@ -165,6 +165,25 @@ const filePageStyle = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row'
   },
+  dmcaContainer: {
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingLeft: 24,
+    paddingRight: 24
+  },
+  dmcaText: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 18,
+    lineHeight: 24
+  },
+  dmcaLink: {
+    color: Colors.LbryGreen,
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 18,
+    lineHeight: 24,
+    marginTop: 24
+  },
   infoText: {
     fontFamily: 'Metropolis-Regular',
     fontSize: 20,

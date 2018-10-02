@@ -155,13 +155,17 @@ const rewardStyle = StyleSheet.create({
   },
   summaryContainer: {
     backgroundColor: Colors.LbryGreen,
-    padding: 12
+    padding: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   summaryText: {
     color: Colors.White,
     fontFamily: 'Metropolis-Regular',
     fontSize: 14,
-    lineHeight: 22
+    lineHeight: 20,
+    flex: 0.7
   },
   phoneVerificationContainer: {
     paddingLeft: 4,
@@ -191,6 +195,13 @@ const rewardStyle = StyleSheet.create({
   },
   smsPermissionContainer: {
     marginBottom: 32
+  },
+  dismissButton: {
+    alignSelf: 'center',
+    backgroundColor: Colors.White,
+    paddingLeft: 4,
+    paddingRight: 4,
+    flex: 0.2
   }
 });
 

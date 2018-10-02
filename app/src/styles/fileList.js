@@ -24,7 +24,8 @@ const fileListStyle = StyleSheet.create({
     width: thumbnailWidth,
     height: thumbnailHeight,
     marginRight: (screenWidthPixels <= 720) ? 10 : 12,
-    justifyContent: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontFamily: 'Metropolis-SemiBold',

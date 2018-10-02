@@ -43,10 +43,11 @@ class FileDownloadButton extends React.PureComponent {
       doPause,
       style,
       openFile,
-      onButtonLayout
+      onButtonLayout,
+      onStartDownloadFailed
     } = this.props;
 
-    if (loading || downloading) {
+    if ((fileInfo && !fileInfo.stopped) || loading || downloading) {
       const progress =
           fileInfo && fileInfo.written_bytes ? fileInfo.written_bytes / fileInfo.total_bytes * 100 : 0,
         label = fileInfo ? progress.toFixed(0) + '% complete' : 'Connecting...';
@@ -73,7 +74,7 @@ class FileDownloadButton extends React.PureComponent {
           if (NativeModules.Mixpanel) {
             NativeModules.Mixpanel.track('Purchase Uri', { Uri: uri });
           }
-          purchaseUri(uri);
+          purchaseUri(uri, onStartDownloadFailed);
           if (isPlayable && onPlay) {
             this.props.onPlay();
           }
