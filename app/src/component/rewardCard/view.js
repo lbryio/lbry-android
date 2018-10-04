@@ -62,7 +62,11 @@ class RewardCard extends React.PureComponent<Props> {
     const claimed = !!reward.transaction_id;
 
     return (
-      <View style={[rewardStyle.rewardCard, rewardStyle.row]}>
+      <TouchableOpacity style={[rewardStyle.rewardCard, rewardStyle.row]} onPress={() => {
+        if (!isPending && !claimed) {
+          this.onClaimPress();
+        }
+      }}>
         <View style={rewardStyle.leftCol}>
           {!isPending && <TouchableOpacity onPress={() => {
               if (!claimed) {
@@ -87,7 +91,7 @@ class RewardCard extends React.PureComponent<Props> {
           <Text style={rewardStyle.rewardAmount}>{reward.reward_amount}</Text>
           <Text style={rewardStyle.rewardCurrency}>LBC</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 };
