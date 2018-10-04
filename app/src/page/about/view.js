@@ -31,7 +31,7 @@ class AboutPage extends React.PureComponent {
   }
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, userEmail } = this.props;
     const loading = 'Loading...';
     const ver = this.state.versionInfo ? this.state.versionInfo : null;
 
@@ -63,7 +63,13 @@ class AboutPage extends React.PureComponent {
             <Link style={aboutStyle.link} href="https://reddit.com/r/lbry" text="Reddit" />
             <Link style={aboutStyle.link} href="https://t.me/lbryofficial" text="Telegram" />
           </View>
-          <Text style={aboutStyle.releaseInfoTitle}>Release information</Text>
+          <Text style={aboutStyle.releaseInfoTitle}>App info</Text>
+          {userEmail && userEmail.trim().length > 0 &&
+          <View style={aboutStyle.row}>
+            <View style={aboutStyle.col}><Text style={aboutStyle.text}>Connected Email</Text></View>
+            <View style={aboutStyle.col}><Text selectable={true} style={aboutStyle.valueText}>{userEmail}</Text></View>
+          </View>}
+
           <View style={aboutStyle.row}>
             <View style={aboutStyle.col}><Text style={aboutStyle.text}>App version</Text></View>
             <View style={aboutStyle.col}><Text selectable={true} style={aboutStyle.valueText}>{this.state.appVersion}</Text></View>
@@ -72,11 +78,6 @@ class AboutPage extends React.PureComponent {
           <View style={aboutStyle.row}>
             <View style={aboutStyle.col}><Text style={aboutStyle.text}>Daemon (lbrynet)</Text></View>
             <View style={aboutStyle.col}><Text selectable={true} style={aboutStyle.valueText}>{ver ? ver.lbrynet_version : loading }</Text></View>
-          </View>
-
-          <View style={aboutStyle.row}>
-            <View style={aboutStyle.col}><Text style={aboutStyle.text}>Wallet (lbryum)</Text></View>
-            <View style={aboutStyle.col}><Text selectable={true} style={aboutStyle.valueText}>{ver ? ver.lbryum_version : loading }</Text></View>
           </View>
 
           <View style={aboutStyle.row}>
