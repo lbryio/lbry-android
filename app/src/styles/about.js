@@ -16,6 +16,18 @@ const aboutStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+  innerRow: {
+    marginBottom: 4,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  verticalRow: {
+    marginBottom: 1,
+    backgroundColor: '#f9f9f9',
+    padding: 16,
+    flex: 1
+  },
   title: {
     color: Colors.LbryGreen,
     fontSize: 24,
@@ -43,6 +55,12 @@ const aboutStyle = StyleSheet.create({
     fontFamily: 'Metropolis-Regular',
     fontSize: 16,
     marginBottom: 24
+  },
+  emailPreferencesLink: {
+    color: Colors.LbryGreen,
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 15,
+    alignSelf: 'flex-end'
   },
   col: {
     alignSelf: 'stretch'

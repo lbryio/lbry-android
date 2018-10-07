@@ -28,10 +28,12 @@ class AboutPage extends React.PureComponent {
         lbryId: info.installation_id,
       });
     });
+
+    if (!this.props.accessToken) this.props.fetchAccessToken();
   }
 
   render() {
-    const { navigation, userEmail } = this.props;
+    const { accessToken, navigation, userEmail } = this.props;
     const loading = 'Loading...';
     const ver = this.state.versionInfo ? this.state.versionInfo : null;
 
@@ -65,9 +67,17 @@ class AboutPage extends React.PureComponent {
           </View>
           <Text style={aboutStyle.releaseInfoTitle}>App info</Text>
           {userEmail && userEmail.trim().length > 0 &&
-          <View style={aboutStyle.row}>
-            <View style={aboutStyle.col}><Text style={aboutStyle.text}>Connected Email</Text></View>
-            <View style={aboutStyle.col}><Text selectable={true} style={aboutStyle.valueText}>{userEmail}</Text></View>
+          <View style={aboutStyle.verticalRow}>
+            <View style={aboutStyle.innerRow}>
+              <View style={aboutStyle.col}><Text style={aboutStyle.text}>Connected Email</Text></View>
+              <View style={aboutStyle.col}><Text selectable={true} style={aboutStyle.valueText}>{userEmail}</Text></View>
+            </View>
+            <View>
+              <Link
+                style={aboutStyle.emailPreferencesLink}
+                href={`http://lbry.io/list/edit/${accessToken}`}
+                text="Update mailing preferences" />
+            </View>
           </View>}
 
           <View style={aboutStyle.row}>
