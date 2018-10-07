@@ -1,6 +1,14 @@
 import { connect } from 'react-redux';
+import { doFetchAccessToken, selectAccessToken, selectUserEmail } from 'lbryinc';
 import AboutPage from './view';
 
-const perform = dispatch => ({});
+const select = state => ({
+  accessToken: selectAccessToken(state),
+  userEmail: selectUserEmail(state),
+});
 
-export default connect(null, perform)(AboutPage);
+const perform = dispatch => ({
+  fetchAccessToken: () => dispatch(doFetchAccessToken()),
+});
+
+export default connect(select, perform)(AboutPage);
