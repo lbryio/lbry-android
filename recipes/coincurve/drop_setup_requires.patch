@@ -1,0 +1,12 @@
+diff --git a/setup.py b/setup.py
+index c224fb2..466e789 100644
+--- a/setup.py
++++ b/setup.py
+@@ -250,7 +250,6 @@ else:
+         def has_c_libraries(self):
+             return not has_system_lib()
+     setup_kwargs = dict(
+-        setup_requires=['cffi>=1.3.0', 'pytest-runner>=2.6.2'],
+         ext_package='coincurve',
+         cffi_modules=['_cffi_build/build.py:ffi'],
+         cmdclass={

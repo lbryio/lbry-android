@@ -396,6 +396,7 @@ class Context(object):
             'platforms',
             'android-{}'.format(self.android_min_api),
             platform_dir)
+
         if not exists(self.ndk_platform):
             warning('ndk_platform doesn\'t exist: {}'.format(
                 self.ndk_platform))
@@ -529,7 +530,7 @@ class Context(object):
         if self.python_recipe.from_crystax:
             return self.get_python_install_dir()
         return join(self.get_python_install_dir(),
-                    'lib', 'python2.7', 'site-packages')
+                    'lib', 'python3.6', 'site-packages')
 
     def get_libs_dir(self, arch):
         '''The libs dir for a given arch.'''
@@ -634,7 +635,7 @@ def run_pymodules_install(ctx, modules):
 
     venv = sh.Command(ctx.virtualenv)
     with current_directory(join(ctx.build_dir)):
-        shprint(venv, '--python=python2.7', 'venv')
+        shprint(venv, '--python=python3.6', 'venv')
 
         info('Creating a requirements.txt file for the Python modules')
         with open('requirements.txt', 'w') as fileh:

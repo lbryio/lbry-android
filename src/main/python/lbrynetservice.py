@@ -20,6 +20,7 @@ lbrynet.androidhelpers.paths.android_app_external_storage_dir = lambda: lbrynet_
 # Retrieve the Anroid keystore
 ks = lbrynet_utils.initKeyStore(service.getApplicationContext());
 
+'''
 import lbrynet.daemon.auth
 from lbrynet.daemon.auth.util import APIKey, API_KEY_NAME
 
@@ -49,10 +50,10 @@ def initialize_api_key_file(key_path):
         keys.update({new_api_key.name: new_api_key})
         save_api_keys(keys, key_path)
 
-
 lbrynet.daemon.auth.util.load_api_keys = load_api_keys
 lbrynet.daemon.auth.util.save_api_keys = save_api_keys
 lbrynet.daemon.auth.util.initialize_api_key_file = initialize_api_key_file
+'''
 
 # Keyring backend
 class LbryAndroidKeyring(keyring.backend.KeyringBackend):
@@ -76,7 +77,6 @@ keyring.set_keyring(LbryAndroidKeyring())
 import logging.handlers
 from lbrynet.core import log_support
 from twisted.internet import defer, reactor
-from jsonrpc.proxy import JSONRPCProxy
 
 from lbrynet import analytics
 from lbrynet import conf
@@ -128,7 +128,8 @@ def start():
     # TODO: specify components, initialise auth
     conf.settings.update({
         'components_to_skip': [PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT],
-        'concurrent_announcers': 0
+        'concurrent_announcers': 0,
+        'use_upnp': False
     })
 
     log.info('Final Settings: %s', conf.settings.get_current_settings_dict())

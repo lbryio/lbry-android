@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
     dpkg --add-architecture i386
 	apt-get update
 	apt-get install -y libssl-dev
-	apt-get install -y autoconf libffi-dev pkg-config libtool build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386 python-pip
+	apt-get install -y python3.6 python3.6-dev python3-pip autoconf libffi-dev pkg-config libtool build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386 python-pip
 	pip install -f --upgrade setuptools pyopenssl
 	git clone https://github.com/lbryio/buildozer.git
     cd buildozer
@@ -63,12 +63,15 @@ Vagrant.configure("2") do |config|
 	cp $HOME/lbry-android/buildozer.spec.vagrant $HOME/lbry-android/buildozer.spec
 
 	mkdir -p cd $HOME/.buildozer/android/platform/
-	wget -q 'https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip' -P $HOME/.buildozer/android/platform/
+	wget -q 'https://us.crystax.net/download/crystax-ndk-10.3.2-linux-x86_64.tar.xz' -P $HOME/.buildozer/android/
 	wget -q 'https://dl.google.com/android/android-sdk_r23-linux.tgz' -P $HOME/.buildozer/android/platform/
 	wget -q 'https://dl.google.com/android/repository/platform-27_r01.zip' -P $HOME/.buildozer/android/platform/
 	wget -q 'https://dl.google.com/android/repository/build-tools_r26.0.1-linux.zip' -P $HOME/.buildozer/android/platform/
-	unzip -qq $HOME/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip -d $HOME/.buildozer/android/platform/
-	rm $HOME/.buildozer/android/platform/android-ndk-r13b-linux-x86_64.zip
+	tar -xf ~/.buildozer/android/crystax-ndk-10.3.2-linux-x86_64.tar.xz -C $HOME/.buildozer/android/
+	rm $HOME/.buildozer/android/crystax-ndk-10.3.2-linux-x86_64.tar.xz
+	ln -s $HOME/.buildozer/android/crystax-ndk-10.3.2/platforms/android-21 $HOME/.buildozer/android/crystax-ndk-10.3.2/platforms/android-9
+	cp -f $HOME/lbry-android/scripts/build-target-python.sh $HOME/.buildozer/android/crystax-ndk-10.3.2/build/tools/build-target-python.sh
+	rm -rf $HOME/.buildozer/android/crystax-ndk-10.3.2/platforms/android-9
 	tar -xf $HOME/.buildozer/android/platform/android-sdk_r23-linux.tgz -C $HOME/.buildozer/android/platform/
 	rm $HOME/.buildozer/android/platform/android-sdk_r23-linux.tgz
 	mv $HOME/.buildozer/android/platform/android-sdk-linux $HOME/.buildozer/android/platform/android-sdk-23

@@ -1,0 +1,22 @@
+From bf3a0684e9b0af29d9777f61d6e7e1d3cc0f2803 Mon Sep 17 00:00:00 2001
+From: Kieran Prasch <kieranprasch@gmail.com>
+Date: Thu, 19 Jul 2018 14:11:48 -0700
+Subject: [PATCH] Exclude tests in setup.py
+
+---
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 0b579f1..0a793ed 100644
+--- a/setup.py
++++ b/setup.py
+@@ -277,7 +277,7 @@ def has_c_libraries(self):
+     install_requires=['asn1crypto', 'cffi>=1.3.0'],
+     tests_require=['pytest>=2.8.7'],
+ 
+-    packages=find_packages(exclude=('_cffi_build', '_cffi_build.*', 'libsecp256k1')),
++    packages=find_packages(exclude=('_cffi_build', '_cffi_build.*', 'libsecp256k1', 'tests')),
+ 
+     distclass=Distribution,
+     zip_safe=False,

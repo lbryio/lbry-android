@@ -308,9 +308,9 @@ JNIEXPORT void JNICALL Java_org_kivy_android_PythonService_nativeStart(
   setenv("PYTHONHOME", python_home, 1);
   setenv("PYTHONPATH", python_path, 1);
   setenv("PYTHON_SERVICE_ARGUMENT", arg, 1);
-  
+
   char ca_path[128];
-  snprintf(ca_path, 128, "%s/lib/python2.7/site-packages/certifi/cacert.pem", python_home);
+  snprintf(ca_path, 128, "%s/crystax_python/site-packages/certifi/cacert.pem", python_home);
   setenv("SSL_CERT_FILE", ca_path, 1);
 
   char *argv[] = {"."};
