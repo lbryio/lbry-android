@@ -27,7 +27,7 @@ class WalletPage extends React.PureComponent {
     }
 
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'handled'}>
         <WalletBalance />
         <WalletAddress />
         <WalletSend />
