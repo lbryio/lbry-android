@@ -7,12 +7,12 @@ This app has currently only been built on Ubuntu 14.04, 16.04, 17.10, and 18.04,
 #### Requirements
 * JDK 1.8
 * Android SDK
-* Android NDK
+* Crystax Android NDK
 * Buildozer
 * Node.js
 * npm
 
-#### Apt Packages
+#### apt Packages
 Based on the quickstart instructions at http://buildozer.readthedocs.io/en/latest/installation.html
 ```
 sudo dpkg --add-architecture i386
@@ -52,11 +52,49 @@ Assuming `lbry-android` as the current working folder:
 | android.permissions | Android manifest permissions required by the application. This should be set to `INTERNET` at the very least to enable internet connectivity |
 | android.api         | Android API version (Should be at least 23 for Gradle build support) |
 | android.sdk         | Android SDK version (Should be at least 23 for Gradle build support) |
-| android.ndk         | Android NDK version (13b has been tested to result in a successful build) |
-| android.ndk_path    | Android NDK path. buildozer will automatically download this if not set |
-| android.sdk_path    | Android SDK path. buildozer will automatically download this if not set |
+| android.ndk         | Android NDK version (not required when using crystax Android NDK) |
+| android.ndk_path    | Android NDK path. This should be set to the crystax Android NDK path) |
+| android.sdk_path    | Android SDK path. This should be set to the path where the Android SDK is manually set up (if not set up in the `.buildozer` path). |
 | p4a.source_dir      | Path to the python-for-android repository folder. Currently set to the included `p4a` folder |
 | p4a.local_recipes   | Path to a folder containing python_for_android recipes to be used in the build. The included `recipes` folder includes recipes for a successful build |
+
+#### Setup Android SDK for buildozer
+Download the Android SDK, platform and build tools archives.
+* Android API 23 SDK - https://dl.google.com/android/android-sdk_r23-linux.tgz
+* Android API 27 platform - https://dl.google.com/android/repository/platform-27_r01.zip
+* Android build tools 26.0.1 - https://dl.google.com/android/repository/build-tools_r26.0.1-linux.
+
+Create the `.buildozer` path (and the `android` sub-path) in your home folder if it doesn't already exist.
+`mkdir ~/.buildozer`
+`mkdir ~/.buildozer/android`
+
+Extract the API 23 SDK to the `~/.buildozer/android` path and rename the extracted folder.
+```
+tar -xf android-sdk_r23-linux.tgz ~/.buildozer/android/platform/
+mv ~/.buildozer/android/platform/android-sdk-linux ~/.buildozer/android/platform/android-sdk-23
+```
+
+Extract the API 27 platform archive into the `android-sdk-23` folder and rename the extracted folder.
+```
+unzip platform-27_r01.zip -d ~/.buildozer/android/platform/android-sdk-23/platforms
+mv ~/.buildozer/android/platform/android-sdk-23/platforms/android-8.1.0 ~/.buildozer/android/platform/android-sdk-23/platforms/android-27
+```
+
+Extract the the build tools 26.0.1 build tools into the `android-sdk-23` folder and rename the extracted folder.
+```
+mkdir -p ~/.buildozer/android/platform/android-sdk-23/build-tools
+unzip ~/.buildozer/android/platform/build-tools_r26.0.1-linux.zip -d ~/.buildozer/android/platform/android-sdk-23/build-tools
+mv ~/.buildozer/android/platform/android-sdk-23/build-tools/android-8.0.0 ~/.buildozer/android/platform/android-sdk-23/build-tools/26.0.1
+```
+
+Finally, create the Android SDK license file. This prevents being prompted to accept the SDK license during the build process.
+```
+mkdir -p ~/.buildozer/android/platform/android-sdk-23/licenses
+echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license
+```
+
+#### Setup Crystax Android NDK for buildozer
+Download the Crystax Android NDK from https://us.crystax.net/download/crystax-ndk-10.3.2-linux-x86_64.tar.xz and extract. Remember to update `android.ndk_path` in your `buildozer.spec` to the path of the extracted Crystax NDK archive.
 
 #### Build and Deploy
 Run `npm i` in the `lbry-android/app` folder to install the necessary modules required by the React Native user interface.
@@ -69,7 +107,7 @@ To build and deploy, you can run `./deploy.sh`. This requires a connected device
 If you already installed `Android SDK` and `adb`
 
 * Run `adb reverse tcp:8081 tcp:8081`
-* Then go to the `lbry-android/app` folder and run `npm start` 
+* Then go to the `lbry-android/app` folder and run `npm start`
 
 Note: You need to have your device connected with USB debugging.
 
