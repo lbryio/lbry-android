@@ -11,17 +11,18 @@ This app has currently only been built on Ubuntu 14.04, 16.04, 17.10, and 18.04,
 * Buildozer
 * Node.js
 * npm
+* yarn
 
 #### apt Packages
 Based on the quickstart instructions at http://buildozer.readthedocs.io/en/latest/installation.html
 ```
 sudo dpkg --add-architecture i386
 sudo apt-get update
-sudo apt-get install autoconf autogen build-essential libtool python python-pip python-openssl ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386
+sudo apt-get install autoconf autogen build-essential curl libtool libffi-dev python python-pip python-openssl python3 python3-pip ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386
 ```
 Alternatively, the JDK available from http://www.oracle.com/technetwork/java/javase/downloads/index.html can be installed instead of the `openjdk-8-jdk` package.
 
-#### Install Cython
+#### Install Cython and Setuptools
 ```
 sudo pip install --upgrade cython==0.25.2 setuptools
 ```
@@ -94,7 +95,9 @@ echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platfo
 ```
 
 #### Setup Crystax Android NDK for buildozer
-Download the Crystax Android NDK from https://us.crystax.net/download/crystax-ndk-10.3.2-linux-x86_64.tar.xz and extract. Remember to update `android.ndk_path` in your `buildozer.spec` to the path of the extracted Crystax NDK archive.
+* Download the Crystax Android NDK from https://us.crystax.net/download/crystax-ndk-10.3.2-linux-x86_64.tar.xz and extract. Remember to update `android.ndk_path` in your `buildozer.spec` to the path of the extracted Crystax NDK archive.
+* Copy `build-target-python.sh` from the `scripts` folder in the cloned `lbry-android` repository to the `crystax-ndk-10.3.2/build/tools/` folder.
+* Delete the `android-9` folder in `crystax-ndk-10.3.2/platforms`, and create a symbolic link named `android-9` to the `android-21` folder.
 
 #### Build and Deploy
 Run `npm i` in the `lbry-android/app` folder to install the necessary modules required by the React Native user interface.
