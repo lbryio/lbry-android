@@ -29,7 +29,11 @@ export function doUpdateLoadStatus(uri, outpoint) {
       outpoint,
       full_status: true,
     }).then(([fileInfo]) => {
-      if (!fileInfo || fileInfo.written_bytes === 0) {
+      if (!fileInfo) {
+        return;
+      }
+
+      if (fileInfo && fileInfo.written_bytes === 0) {
         // download hasn't started yet
         setTimeout(() => {
           dispatch(doUpdateLoadStatus(uri, outpoint));
