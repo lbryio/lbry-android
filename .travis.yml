@@ -5,11 +5,6 @@ python:
 - '3.6'
 jdk:
 - oraclejdk8
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
-      - oracle-java8-set-default
 install:
 - deactivate
 - export PATH=/usr/bin:$PATH
