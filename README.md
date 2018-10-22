@@ -9,7 +9,7 @@ An Android browser and wallet for the [LBRY](https://lbry.io) network. This app 
 The minimum supported Android version is 5.0 Lollipop. There are two ways to install:
 
 1. Via the Google Play Store. Anyone can join the [open beta](https://play.google.com/apps/testing/io.lbry.browser) in order to install the app from the Play Store.
-1. Direct APK install available at [http://build.lbry.io/android/latest.apk](http://build.lbry.io/android/latest.apk). You will need to enable installation from third-party sources on your device in order to install from this source.
+1. Direct APK install available at [https://build.lbry.io/android/latest.apk](https://build.lbry.io/android/latest.apk). You will need to enable installation from third-party sources on your device in order to install from this source.
 
 ## Usage
 The app can be launched by opening **LBRY Browser** from the device's app drawer or via the shortcut on the homescreen if that was created upon install.
