@@ -13,6 +13,7 @@
         "react": "16.2.0",
         "react-native": "0.55.3",
         "react-native-country-picker-modal": "^0.6.2",
+        "react-native-exception-handler": "2.10.0",
         "react-native-fast-image": "^5.0.3",
         "react-native-fetch-blob": "^0.10.8",
         "react-native-image-zoom-viewer": "^2.2.5",

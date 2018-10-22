@@ -1,4 +1,6 @@
 rootProject.name = 'browser'
+include ':react-native-exception-handler'
+project(':react-native-exception-handler').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-exception-handler/android')
 include ':react-native-fast-image'
 project(':react-native-fast-image').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-fast-image/android')
 include ':react-native-fetch-blob'
