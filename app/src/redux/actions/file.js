@@ -29,11 +29,11 @@ export function doUpdateLoadStatus(uri, outpoint) {
       outpoint,
       full_status: true,
     }).then(([fileInfo]) => {
-      if (!fileInfo) {
-        return;
-      }
+      if (!fileInfo || fileInfo.written_bytes === 0) {
+        // if the outpoint isn't in the state, then it was probably canceled, so stop checking the load status
+        const { downloadingByOutpoint = {} } = state.fileInfo;
+        if (!downloadingByOutpoint[outpoint]) return;
 
-      if (fileInfo && fileInfo.written_bytes === 0) {
         // download hasn't started yet
         setTimeout(() => {
           dispatch(doUpdateLoadStatus(uri, outpoint));
@@ -137,7 +137,7 @@ export function doStopDownloadingFile(uri, fileInfo) {
     Lbry.file_set_status(params).then(() => {
       dispatch({
         type: ACTIONS.DOWNLOADING_CANCELED,
-        data: {}
+        data: { uri, outpoint: fileInfo.outpoint }
       });
 
       // Should also delete the file after the user stops downloading
