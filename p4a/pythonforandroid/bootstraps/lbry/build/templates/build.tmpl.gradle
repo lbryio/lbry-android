@@ -1,4 +1,4 @@
-// This depends on the openjdk-8-jdk package being installed
+// This depends on the openjdk-8-jdk package (Ubuntu) being installed
 compileJava {
     options.fork = true
     options.forkOptions.executable = /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
