@@ -19,7 +19,7 @@ class WalletBalance extends React.PureComponent<Props> {
         <Text style={walletStyle.balanceTitle}>Balance</Text>
         <Text style={walletStyle.balanceCaption}>You currently have</Text>
         <Text style={walletStyle.balance}>
-          {(balance || balance === 0) && (formatCredits(balance, 2) + ' LBC')}
+          {(balance || balance === 0) && (formatCredits(parseFloat(balance), 2) + ' LBC')}
         </Text>
       </View>
     );

@@ -142,7 +142,10 @@ class RewardsPage extends React.PureComponent {
 
     return (
       <View style={rewardStyle.container}>
-        <ScrollView style={rewardStyle.scrollContainer} contentContainerStyle={rewardStyle.scrollContentContainer}>
+        <ScrollView
+          keyboardShouldPersistTaps={'handled'}
+          style={rewardStyle.scrollContainer}
+          contentContainerStyle={rewardStyle.scrollContentContainer}>
           {this.renderVerification()}
           {this.renderUnclaimedRewards()}
           {this.renderClaimedRewards()}

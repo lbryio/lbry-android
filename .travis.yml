@@ -3,6 +3,8 @@ dist: xenial
 language: python
 python:
 - '3.6'
+jdk:
+- oraclejdk8
 install:
 - deactivate
 - export PATH=/usr/bin:$PATH

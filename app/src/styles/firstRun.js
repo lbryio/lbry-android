@@ -65,8 +65,9 @@ const firstRunStyle = StyleSheet.create({
   },
   button: {
     alignSelf: 'flex-end',
-    marginLeft: 32,
-    marginRight: 32
+    padding: 20,
+    paddingLeft: 32,
+    paddingRight: 32
   },
   buttonText: {
     fontFamily: 'Metropolis-Regular',
