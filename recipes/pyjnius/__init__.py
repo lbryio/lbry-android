@@ -1,29 +1,19 @@
-
-from pythonforandroid.toolchain import CythonRecipe, Recipe, shprint, current_directory, info
-from pythonforandroid.patching import will_build, check_any
+from pythonforandroid.recipe import CythonRecipe
+from pythonforandroid.toolchain import shprint, current_directory, info
+from pythonforandroid.patching import will_build
 import sh
 from os.path import join
 
 
 class PyjniusRecipe(CythonRecipe):
-    version = 'master'
+    version = '1.1.3'
     url = 'https://github.com/kivy/pyjnius/archive/{version}.zip'
     name = 'pyjnius'
-    depends = [('python2', 'python3crystax'), 'genericndkbuild', 'six']
+    depends = [('python2', 'python3crystax'), ('genericndkbuild', 'sdl2', 'sdl'), 'six']
     site_packages_name = 'jnius'
-    call_hostpython_via_targetpython = False
 
     patches = [('sdl2_jnienv_getter.patch', will_build('sdl2')),
                ('genericndkbuild_jnienv_getter.patch', will_build('genericndkbuild'))]
-
-    def get_recipe_env(self, arch):
-        env = super(PyjniusRecipe, self).get_recipe_env(arch)
-        target_python = Recipe.get_recipe('python3crystax', self.ctx).get_build_dir(arch.arch)
-        env['PYTHON_ROOT'] = join(target_python, 'python-install')
-        env['CFLAGS'] += ' -I' + env['PYTHON_ROOT'] + '/include/python3.6'
-        env['LDFLAGS'] += ' -L' + env['PYTHON_ROOT'] + '/lib' + ' -lpython3.6m'
-
-        return env
 
     def postbuild_arch(self, arch):
         super(PyjniusRecipe, self).postbuild_arch(arch)

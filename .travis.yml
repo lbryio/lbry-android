@@ -6,6 +6,7 @@ python:
 install:
 - deactivate
 - export PATH=/usr/bin:$PATH
+- export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 - sudo dpkg --add-architecture i386
 - sudo add-apt-repository ppa:jonathonf/python-3.6 -y
 - sudo apt-get -qq update

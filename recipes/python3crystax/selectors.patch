@@ -1,0 +1,15 @@
+--- a/Lib/selectors.py	2018-06-27 00:39:50.000000000 +0100
++++ b/Lib/selectors.py	2018-10-28 17:39:46.027757518 +0100
+@@ -599,9 +599,9 @@
+ # Choose the best implementation, roughly:
+ #    epoll|kqueue|devpoll > poll > select.
+ # select() also can't accept a FD > FD_SETSIZE (usually around 1024)
+-if 'KqueueSelector' in globals():
+-    DefaultSelector = KqueueSelector
+-elif 'EpollSelector' in globals():
++#if 'KqueueSelector' in globals():
++#    DefaultSelector = KqueueSelector
++if 'EpollSelector' in globals():
+     DefaultSelector = EpollSelector
+ elif 'DevpollSelector' in globals():
+     DefaultSelector = DevpollSelector
