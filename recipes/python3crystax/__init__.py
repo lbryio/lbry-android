@@ -161,7 +161,7 @@ class Python3Recipe(TargetPythonRecipe):
     def prebuild_arch(self, arch):
         super(Python3Recipe, self).prebuild_arch(arch)
         if self.version == '3.6':
-            Python3Recipe.patches = ['patch_python3.6.patch']
+            Python3Recipe.patches = ['patch_python3.6.patch', 'selectors.patch']
             build_dir = self.get_build_dir(arch.arch)
             shprint(sh.ln, '-sf',
                            realpath(join(build_dir, 'Lib/site-packages/README.txt')),
