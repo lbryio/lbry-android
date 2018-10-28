@@ -1,10 +1,15 @@
+import sys
+from twisted.internet import asyncioreactor
+if 'twisted.internet.reactor' not in sys.modules:
+    asyncioreactor.install()
+
 import keyring.backend
 import platform
 import ssl
+from jnius import autoclass
 
 # Fixes / patches / overrides
 # platform.platform() in libc_ver: IOError: [Errno 21] Is a directory
-from jnius import autoclass
 lbrynet_utils = autoclass('io.lbry.browser.Utils')
 service = autoclass('io.lbry.browser.LbrynetService').serviceInstance
 platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_utils.getAndroidRelease(), lbrynet_utils.getAndroidSdk())
