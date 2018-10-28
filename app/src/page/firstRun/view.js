@@ -152,6 +152,13 @@ class FirstRunScreen extends React.PureComponent {
     }
   }
 
+  onEmailViewLayout = () => {
+    this.setState({ showBottomContainer: true });
+    AsyncStorage.getItem('firstRunEmail').then(email => {
+      this.setState({ showSkip: !email || email.trim().length === 0 });
+    });
+  }
+
   render() {
     const {
       authenticating,
@@ -171,7 +178,7 @@ class FirstRunScreen extends React.PureComponent {
                                 authToken={authToken}
                                 generateAuthToken={generateAuthToken}
                                 onEmailChanged={this.onEmailChanged}
-                                onEmailViewLayout={() => this.setState({ showBottomContainer: true, showSkip: true })} />);
+                                onEmailViewLayout={this.onEmailViewLayout} />);
     }
 
     return (
