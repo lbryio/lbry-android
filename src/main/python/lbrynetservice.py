@@ -1,10 +1,24 @@
+import sys
+from twisted.internet import asyncioreactor
+if 'twisted.internet.reactor' not in sys.modules:
+    asyncioreactor.install()
+else:
+    from twisted.internet import reactor
+    if not isinstance(reactor, asyncioreactor.AsyncioSelectorReactor) and getattr(sys, 'frozen', False):
+        # pyinstaller hooks install the default reactor before
+        # any of our code runs, see kivy for similar problem:
+        #    https://github.com/kivy/kivy/issues/4182
+        del sys.modules['twisted.internet.reactor']
+        asyncioreactor.install()
+        from twisted.internet import reactor
+
 import keyring.backend
 import platform
 import ssl
+from jnius import autoclass
 
 # Fixes / patches / overrides
 # platform.platform() in libc_ver: IOError: [Errno 21] Is a directory
-from jnius import autoclass
 lbrynet_utils = autoclass('io.lbry.browser.Utils')
 service = autoclass('io.lbry.browser.LbrynetService').serviceInstance
 platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_utils.getAndroidRelease(), lbrynet_utils.getAndroidSdk())
@@ -76,7 +90,7 @@ keyring.set_keyring(LbryAndroidKeyring())
 
 import logging.handlers
 from lbrynet.core import log_support
-from twisted.internet import defer, reactor
+from twisted.internet import reactor
 
 from lbrynet import analytics
 from lbrynet import conf
