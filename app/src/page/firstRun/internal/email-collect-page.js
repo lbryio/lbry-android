@@ -13,7 +13,7 @@ import Constants from '../../../constants';
 import firstRunStyle from '../../../styles/firstRun';
 
 class EmailCollectPage extends React.PureComponent {
-  static MAX_STATUS_TRIES = 15;
+  static MAX_STATUS_TRIES = 30;
 
   state = {
     email: null,
@@ -57,7 +57,7 @@ class EmailCollectPage extends React.PureComponent {
         setTimeout(() => {
           this.startAuthenticating();
           this.setState({ statusTries: this.state.statusTries + 1 });
-        }, 1000); // Retry every second for a maximum of MAX_STATUS_TRIES tries (15 seconds)
+        }, 1000); // Retry every second for a maximum of MAX_STATUS_TRIES tries (30 seconds)
       }
     });
   }
