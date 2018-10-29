@@ -14,7 +14,7 @@ This app has currently only been built on Ubuntu 14.04, 16.04, 17.10, and 18.04,
 * yarn
 
 #### apt Packages
-Based on the quickstart instructions at http://buildozer.readthedocs.io/en/latest/installation.html
+Based on the quick-start instructions at http://buildozer.readthedocs.io/en/latest/installation.html
 ```
 sudo dpkg --add-architecture i386
 sudo apt-get update
@@ -44,8 +44,8 @@ Assuming `lbry-android` as the current working folder:
 | Setting             | Description                  |
 |:------------------- |:-----------------------------|
 | title               | application title            |
-| package.name        | package name (eg. browser)   |
-| package.domain      | package domain (eg. io.lbry) |
+| package.name        | package name (e.g. browser)   |
+| package.domain      | package domain (e.g. io.lbry) |
 | source.dir          | the location of the application main.py |
 | version             | application version          |
 | requirements        | the Python module requirements for building the application |
@@ -81,7 +81,7 @@ unzip platform-27_r01.zip -d ~/.buildozer/android/platform/android-sdk-23/platfo
 mv ~/.buildozer/android/platform/android-sdk-23/platforms/android-8.1.0 ~/.buildozer/android/platform/android-sdk-23/platforms/android-27
 ```
 
-Extract the the build tools 26.0.1 build tools into the `android-sdk-23` folder and rename the extracted folder.
+Extract the build tools 26.0.1 build tools into the `android-sdk-23` folder and rename the extracted folder.
 ```
 mkdir -p ~/.buildozer/android/platform/android-sdk-23/build-tools
 unzip ~/.buildozer/android/platform/build-tools_r26.0.1-linux.zip -d ~/.buildozer/android/platform/android-sdk-23/build-tools

@@ -2,7 +2,7 @@
 
 python-for-android is a packager for Python apps on Android. You can
 create your own Python distribution including the modules and
-dependencies you want, and bundle it in an APK along with your own
+dependencies you want and bundle it in an APK along with your own
 code.
 
 Features include:
@@ -13,7 +13,7 @@ Features include:
 - Automatic support for most pure Python modules, and built in support
   for many others, including popular dependencies such as numpy and
   sqlalchemy.
-- Multiple architecture targets, for APKs optimised on any given device.
+- Multiple architecture targets, for APKs optimized on any given device.
 
 For documentation and support, see:
 
@@ -21,8 +21,8 @@ For documentation and support, see:
 - Mailing list: https://groups.google.com/forum/#!forum/kivy-users or
   https://groups.google.com/forum/#!forum/python-android.
 
-In 2015 these tools were rewritten to provide a new, easier to use and
-extend interface. If you are looking for the old toolchain with
+In 2015, these tools were rewritten to provide a newer, easier to use and
+extended interface. If you are looking for the old toolchain with
 distribute.sh and build.py, it is still available at
 https://github.com/kivy/python-for-android/tree/old_toolchain, and
 issues and PRs relating to this branch are still accepted. However,
