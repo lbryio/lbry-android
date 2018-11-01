@@ -12,7 +12,7 @@ The minimum supported Android version is 5.0 Lollipop. There are two ways to ins
 1. Direct APK install available at [http://build.lbry.io/android/latest.apk](http://build.lbry.io/android/latest.apk). You will need to enable installation from third-party sources on your device in order to install from this source.
 
 ## Usage
-The app can be launched by opening **LBRY Browser** from the device's app drawer or via the shortcut on the homescreen if that was created upon install.
+The app can be launched by opening **LBRY Browser** from the device's app drawer or via the shortcut on the home screen if that was created upon installation.
 
 ## Running from Source
 The app is built from source via [Buildozer](https://github.com/kivy/buildozer). After cloning the repository, copy `buildozer.spec.sample` to `buildozer.spec` and modify this file as necessary for your environment. Please see [BUILD.md](BUILD.md) for detailed build instructions.
