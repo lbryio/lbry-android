@@ -1,4 +1,5 @@
 import React from 'react';
+import { setJSExceptionHandler } from 'react-native-exception-handler';
 import { Provider, connect } from 'react-redux';
 import {
   AppRegistry,
@@ -30,6 +31,14 @@ import createFilter from 'redux-persist-transform-filter';
 import moment from 'moment';
 import settingsReducer from './redux/reducers/settings';
 import thunk from 'redux-thunk';
+
+const globalExceptionHandler = (error, isFatal) => {
+  if (error && NativeModules.Mixpanel) {
+    NativeModules.Mixpanel.logException(isFatal, error.message ? error.message : "No message", error);
+  }
+};
+setJSExceptionHandler(globalExceptionHandler, true);
+
 
 function isFunction(object) {
   return typeof object === 'function';

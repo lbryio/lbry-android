@@ -1,6 +1,7 @@
 package io.lbry.browser.reactmodules;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -23,7 +24,7 @@ public class MixpanelModule extends ReactContextBaseJavaModule {
         "93b81fb957cb0ddcd3198c10853a6a95"; /* Production */
 
     private Context context;
-    
+
     private MixpanelAPI mixpanel;
 
     public MixpanelModule(ReactApplicationContext reactContext) {
@@ -36,7 +37,7 @@ public class MixpanelModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "Mixpanel";
     }
-    
+
     @ReactMethod
     public void track(String name, ReadableMap payload) {
         JSONObject props = new JSONObject();
@@ -48,11 +49,39 @@ public class MixpanelModule extends ReactContextBaseJavaModule {
                 }
             }
         } catch (JSONException e) {
-            // Cannot use props. Stick with empty props.    
+            // Cannot use props. Stick with empty props.
         }
-        
+
         if (mixpanel != null) {
             mixpanel.track(name, props);
+        }
+    }
+
+    @ReactMethod
+    public void logException(boolean fatal, String message, ReadableMap payload) {
+        JSONObject props = new JSONObject();
+        try {
+            props.put("Message", message);
+            if (payload != null) {
+                HashMap<String, Object> payloadMap = payload.toHashMap();
+                for (Map.Entry<String, Object> entry : payloadMap.entrySet()) {
+                    props.put(entry.getKey(), entry.getValue());
+                }
+            }
+        } catch (JSONException e) {
+            // Cannot use props. Stick with empty props.
+        }
+
+        if (mixpanel != null) {
+            mixpanel.track(fatal ? "Exception" : "Warning", props);
+        }
+
+        if (fatal) {
+            Toast.makeText(context,
+                           "An application error occurred which has been automatically logged. " +
+                           "If you keep seeing this message, please provide feedback to the LBRY " +
+                           "team by emailing hello@lbry.io.",
+                            Toast.LENGTH_LONG).show();
         }
     }
 }

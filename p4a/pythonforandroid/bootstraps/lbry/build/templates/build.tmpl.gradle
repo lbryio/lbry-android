@@ -72,6 +72,13 @@ android {
     }
 }
 
+ext {
+    compileSdkVersion = {{ android_api }}
+    buildToolsVersion = '{{ build_tools_version }}'
+    minSdkVersion = {{ args.min_sdk_version }}
+	targetSdkVersion = {{ android_api }}
+}
+
 subprojects {
     afterEvaluate {project ->
         if (project.hasProperty("android")) {
@@ -84,6 +91,7 @@ subprojects {
 }
 
 dependencies {
+    compile project(':react-native-exception-handler')
     compile project(':react-native-fast-image')
     compile project(':react-native-fetch-blob')
 	compile project(':react-native-video')
