@@ -8,4 +8,5 @@ src/main/assets/index.android.bundle
 src/main/assets/index.android.bundle.meta
 *.log
 .vagrant
+.idea/
 

@@ -24,15 +24,9 @@ service = autoclass('io.lbry.browser.LbrynetService').serviceInstance
 platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_utils.getAndroidRelease(), lbrynet_utils.getAndroidSdk())
 
 import lbrynet.androidhelpers
-lbrynet.androidhelpers.paths.android_files_dir = lambda: lbrynet_utils.getFilesDir(service.getApplicationContext())
-lbrynet.androidhelpers.paths.android_internal_storage_dir = lambda: lbrynet_utils.getInternalStorageDir(service.getApplicationContext())
-lbrynet.androidhelpers.paths.android_external_storage_dir = lambda: lbrynet_utils.getExternalStorageDir(service.getApplicationContext())
-lbrynet.androidhelpers.paths.android_app_internal_storage_dir = lambda: lbrynet_utils.getAppInternalStorageDir(service.getApplicationContext())
-lbrynet.androidhelpers.paths.android_app_external_storage_dir = lambda: lbrynet_utils.getAppExternalStorageDir(service.getApplicationContext())
-
 # RPC authentication secret
-# Retrieve the Anroid keystore
-ks = lbrynet_utils.initKeyStore(service.getApplicationContext());
+# Retrieve the Android keystore
+ks = lbrynet_utils.initKeyStore(service.getApplicationContext())
 
 '''
 import lbrynet.daemon.auth
@@ -143,7 +137,10 @@ def start():
     conf.settings.update({
         'components_to_skip': [PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT],
         'concurrent_announcers': 0,
-        'use_upnp': False
+        'use_upnp': False,
+        'data_dir': '%s/lbrynet' % lbrynet_utils.getAppInternalStorageDir(service.getApplicationContext()),
+        'lbryum_wallet_dir': '%s/lbryum' % lbrynet_utils.getAppInternalStorageDir(service.getApplicationContext()),
+        'download_directory': '%s/Download' % lbrynet_utils.getInternalStorageDir(service.getApplicationContext())
     })
 
     log.info('Final Settings: %s', conf.settings.get_current_settings_dict())
