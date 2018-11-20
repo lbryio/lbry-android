@@ -93,7 +93,11 @@ from twisted.internet import reactor
 
 from lbrynet import utils, conf, log_support
 from lbrynet.extras import system_info
-from lbrynet.extras.daemon.Components import PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT
+from lbrynet.extras.daemon.Components import \
+    DHT_COMPONENT, \
+    HASH_ANNOUNCER_COMPONENT, \
+    PEER_PROTOCOL_SERVER_COMPONENT, \
+    REFLECTOR_COMPONENT
 from lbrynet.extras.daemon import analytics
 from lbrynet.extras.daemon.Daemon import Daemon
 
@@ -140,8 +144,7 @@ def start():
 
     # TODO: specify components, initialise auth
     conf.settings.update({
-        'components_to_skip': [PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT],
-        'concurrent_announcers': 0,
+        'components_to_skip': [DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT],
         'use_upnp': False
     })
 
