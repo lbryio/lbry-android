@@ -89,14 +89,13 @@ class LbryAndroidKeyring(keyring.backend.KeyringBackend):
 keyring.set_keyring(LbryAndroidKeyring())
 
 import logging.handlers
-from lbrynet.core import log_support
 from twisted.internet import reactor
 
-from lbrynet import analytics
-from lbrynet import conf
-from lbrynet.core import utils, system_info
-from lbrynet.daemon.Components import PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT
-from lbrynet.daemon.Daemon import Daemon
+from lbrynet import utils, conf, log_support
+from lbrynet.extras import system_info
+from lbrynet.extras.daemon.Components import PEER_PROTOCOL_SERVER_COMPONENT, REFLECTOR_COMPONENT
+from lbrynet.extras.daemon import analytics
+from lbrynet.extras.daemon.Daemon import Daemon
 
 # https certificate verification
 # TODO: this is bad. Need to find a way to properly verify https requests
