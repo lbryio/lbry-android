@@ -51,7 +51,7 @@ class AboutPage extends React.PureComponent {
           </Text>
           <View style={aboutStyle.links}>
             <Link style={aboutStyle.link} href="https://lbry.io/faq/what-is-lbry" text="What is LBRY?" />
-            <Link style={aboutStyle.link} href="https://lbry.io/faq/android-basics" text="Android App Basics?" />
+            <Link style={aboutStyle.link} href="https://lbry.io/faq/android-basics" text="Android App Basics" />
             <Link style={aboutStyle.link} href="https://lbry.io/faq" text="Frequently Asked Questions" />
           </View>
           <Text style={aboutStyle.socialTitle}>Get Social</Text>
