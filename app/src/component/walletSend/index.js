@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import {
-  doNotify,
+  doToast,
   doSendDraftTransaction,
   selectDraftTransaction,
   selectDraftTransactionError,
@@ -10,7 +10,7 @@ import WalletSend from './view';
 
 const perform = dispatch => ({
   sendToAddress: (address, amount) => dispatch(doSendDraftTransaction(address, amount)),
-  notify: (data) => dispatch(doNotify(data))
+  notify: (data) => dispatch(doToast(data))
 });
 
 const select = state => ({

@@ -70,17 +70,17 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
 
     if (!phoneNewIsPending && (phoneNewIsPending !== prevProps.phoneNewIsPending)) {
       if (phoneNewErrorMessage) {
-        notify({ message: String(phoneNewErrorMessage), displayType: ['toast'] });
+        notify({ message: String(phoneNewErrorMessage) });
       } else {
         this.setState({ newPhoneAdded: true });
       }
     }
     if (!phoneVerifyIsPending && (phoneVerifyIsPending !== prevProps.phoneVerifyIsPending)) {
       if (phoneVerifyErrorMessage) {
-        notify({ message: String(phoneVerifyErrorMessage), displayType: ['toast'] });
+        notify({ message: String(phoneVerifyErrorMessage) });
         this.setState({ codeVerifyStarted: false });
       } else {
-        notify({ message: 'Your phone number was successfully verified.', displayType: ['toast'] });
+        notify({ message: 'Your phone number was successfully verified.' });
         this.setState({ codeVerifySuccessful: true });
         if (onPhoneVerifySuccessful) {
           onPhoneVerifySuccessful();
@@ -107,7 +107,6 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     if (!NativeModules.UtilityModule) {
       return notify({
         message: 'The required permission could not be obtained due to a missing module.',
-        displayType: ['toast']
       });
     }
 
@@ -120,7 +119,6 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     if (!this.phoneInput.isValidNumber()) {
       return notify({
         message: 'Please provide a valid telephone number.',
-        displayType: ['toast']
       });
     }
 

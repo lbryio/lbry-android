@@ -30,10 +30,10 @@ class RewardCard extends React.PureComponent<Props> {
     const { clearError, notify, reward } = this.props;
     if (this.state.claimStarted && !isPending) {
       if (errorMessage && errorMessage.trim().length > 0) {
-        notify({ message: errorMessage, displayType: ['toast'] });
+        notify({ message: errorMessage });
         clearError(reward);
       } else {
-        notify({ message: 'Reward successfully claimed!', displayType: ['toast'] });
+        notify({ message: 'Reward successfully claimed!' });
       }
       this.setState({ claimStarted: false });
     }
@@ -48,7 +48,7 @@ class RewardCard extends React.PureComponent<Props> {
     } = this.props;
 
     if (!canClaim) {
-      notify({ message: 'Unfortunately, you are not eligible to claim this reward at this time.', displayType: ['toast'] });
+      notify({ message: 'Unfortunately, you are not eligible to claim this reward at this time.' });
       return;
     }
 

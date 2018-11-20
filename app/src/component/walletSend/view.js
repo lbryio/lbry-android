@@ -38,7 +38,6 @@ class WalletSend extends React.PureComponent<Props> {
     if (address && !regexAddress.test(address)) {
       notify({
         message: 'The recipient address is not a valid LBRY address.',
-        displayType: ['toast']
       });
       return;
     }
@@ -46,7 +45,6 @@ class WalletSend extends React.PureComponent<Props> {
     if (amount > balance) {
       notify({
         message: 'Insufficient credits',
-        displayType: ['toast']
       });
       return;
     }
@@ -62,7 +60,6 @@ class WalletSend extends React.PureComponent<Props> {
       const { notify } = this.props;
       notify({
         message: 'The recipient address is not a valid LBRY address.',
-        displayType: ['toast']
       });
     }
   }

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { doNotify } from 'lbry-redux';
+import { doToast } from 'lbry-redux';
 import { doRewardList, selectUnclaimedRewardValue, selectFetchingRewards, selectUser } from 'lbryinc';
 import RewardSummary from './view';
 
@@ -11,7 +11,7 @@ const select = state => ({
 
 const perform = dispatch => ({
   fetchRewards: () => dispatch(doRewardList()),
-  notify: data => dispatch(doNotify(data))
+  notify: data => dispatch(doToast(data))
 });
 
 export default connect(select, perform)(RewardSummary);

@@ -38,12 +38,11 @@ class EmailRewardSubcard extends React.PureComponent {
 
     if (this.state.verifyStarted && !emailNewPending) {
       if (emailNewErrorMessage) {
-        notify({ message: String(emailNewErrorMessage), displayType: ['toast']});
+        notify({ message: String(emailNewErrorMessage), isError: true });
         this.setState({ verifyStarted: false });
       } else {
         notify({
           message: 'Please follow the instructions in the email sent to your address to continue.',
-          displayType: ['toast']
         });
       }
     }
@@ -65,7 +64,6 @@ class EmailRewardSubcard extends React.PureComponent {
     if (!email || email.trim().length === 0 || email.indexOf('@') === -1) {
       return notify({
         message: 'Please provide a valid email address to continue.',
-        displayType: ['toast'],
       });
     }
 

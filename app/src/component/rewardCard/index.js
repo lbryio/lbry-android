@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { doNotify } from 'lbry-redux';
+import { doToast } from 'lbry-redux';
 import {
   doClaimRewardType,
   doClaimRewardClearError,
@@ -23,7 +23,7 @@ const makeSelect = () => {
 const perform = dispatch => ({
   claimReward: reward => dispatch(doClaimRewardType(reward.reward_type, true)),
   clearError: reward => dispatch(doClaimRewardClearError(reward)),
-  notify: data => dispatch(doNotify(data))
+  notify: data => dispatch(doToast(data))
 });
 
 export default connect(makeSelect, perform)(RewardCard);

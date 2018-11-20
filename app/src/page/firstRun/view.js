@@ -61,7 +61,7 @@ class FirstRunScreen extends React.PureComponent {
     if (this.state.emailSubmitted && !emailNewPending) {
       this.setState({ emailSubmitted: false });
       if (emailNewErrorMessage) {
-        notify ({ message: String(emailNewErrorMessage), displayType: ['toast']});
+        notify ({ message: String(emailNewErrorMessage), isError: true });
       } else {
         // Request successful. Navigate to discover.
         this.closeFinalPage();
@@ -115,7 +115,6 @@ class FirstRunScreen extends React.PureComponent {
       if (email.indexOf('@') === -1) {
         return notify({
           message: 'Please provide a valid email address to continue.',
-          displayType: ['toast'],
         });
       }
 

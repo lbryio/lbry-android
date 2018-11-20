@@ -33,7 +33,7 @@ import {
   ToastAndroid
 } from 'react-native';
 import { doDeleteCompleteBlobs } from '../redux/actions/file';
-import { SETTINGS, doHideNotification, doNotify, selectNotification } from 'lbry-redux';
+import { SETTINGS, doHideNotification, doToast, selectToast } from 'lbry-redux';
 import {
   doUserEmailVerify,
   doUserEmailVerifyFailure,
@@ -240,15 +240,15 @@ class AppWithNavigationState extends React.Component {
   componentWillUpdate(nextProps) {
     const { dispatch } = this.props;
     const {
-      notification,
+      toast,
       emailToVerify,
       emailVerifyPending,
       emailVerifyErrorMessage,
       user
     } = nextProps;
 
-    if (notification) {
-      const { displayType, message } = notification;
+    if (toast) {
+      const { message } = toast;
       let currentDisplayType;
       if (displayType && displayType.length) {
         for (let i = 0; i < displayType.length; i++) {
@@ -287,7 +287,7 @@ class AppWithNavigationState extends React.Component {
             AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
           }
           AsyncStorage.removeItem(Constants.KEY_SHOULD_VERIFY_EMAIL);
-          dispatch(doNotify({ message, displayType: ['toast'] }));
+          dispatch(doToast({ message }));
         }
       });
     }
@@ -340,12 +340,11 @@ class AppWithNavigationState extends React.Component {
           } catch (error) {
             const message = 'Invalid Verification Token';
             dispatch(doUserEmailVerifyFailure(message));
-            dispatch(doNotify({ message, displayType: ['toast'] }));
+            dispatch(doToast({ message }));
           }
         } else {
-          dispatch(doNotify({
+          dispatch(doToast({
             message: 'Invalid Verification URI',
-            displayType: ['toast'],
           }));
         }
       } else {
@@ -363,7 +362,7 @@ const mapStateToProps = state => ({
   backgroundPlayEnabled: makeSelectClientSetting(SETTINGS.BACKGROUND_PLAY_ENABLED)(state),
   keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
   nav: state.nav,
-  notification: selectNotification(state),
+  toast: selectToast(state),
   emailToVerify: selectEmailToVerify(state),
   emailVerifyPending: selectEmailVerifyIsPending(state),
   emailVerifyErrorMessage: selectEmailVerifyErrorMessage(state),
