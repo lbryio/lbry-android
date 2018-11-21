@@ -120,7 +120,7 @@ const discoverStyle = StyleSheet.create({
     justifyContent: 'space-between'
   },
   rewardIcon: {
-    color: Colors.LbryGreen,
+    color: Colors.Red,
     flex: 0.1,
     textAlign: 'right',
     marginTop: 6
