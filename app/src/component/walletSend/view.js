@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { regexAddress } from 'lbry-redux';
-import { TextInput, Text, View } from 'react-native';
+import { Alert, TextInput, Text, View } from 'react-native';
 import Button from '../button';
 import walletStyle from '../../styles/wallet';
 
@@ -52,8 +52,17 @@ class WalletSend extends React.PureComponent<Props> {
     }
 
     if (amount && address) {
-      sendToAddress(address, parseFloat(amount));
-      this.setState({ address: null, amount: null });
+      // Show confirmation before send
+      Alert.alert(
+      'Send LBC',
+      `Are you sure you want to send ${amount} LBC to ${address}?`,
+      [
+        { text: 'No' },
+        { text: 'Yes', onPress: () => {
+          sendToAddress(address, parseFloat(amount));
+          this.setState({ address: null, amount: null });
+        }}
+      ]);
     }
   }
 
