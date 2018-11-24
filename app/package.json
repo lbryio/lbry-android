@@ -7,8 +7,8 @@
     },
     "dependencies": {
         "base-64": "^0.1.0",
-        "lbry-redux": "lbryio/lbry-redux#pre-notification-update",
-        "lbryinc": "lbryio/lbryinc#daemon-0.30.1-rc",
+        "lbry-redux": "lbryio/lbry-redux",
+        "lbryinc": "lbryio/lbryinc",
         "moment": "^2.22.1",
         "react": "16.2.0",
         "react-native": "0.55.3",

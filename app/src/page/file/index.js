@@ -3,7 +3,7 @@ import {
   doFetchFileInfo,
   doFetchCostInfoForUri,
   doResolveUri,
-  doNotify,
+  doToast,
   makeSelectIsUriResolving,
   makeSelectCostInfoForUri,
   makeSelectFileInfoForUri,
@@ -38,7 +38,7 @@ const perform = dispatch => ({
   },
   fetchFileInfo: uri => dispatch(doFetchFileInfo(uri)),
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
-  notify: data => dispatch(doNotify(data)),
+  notify: data => dispatch(doToast(data)),
   resolveUri: uri => dispatch(doResolveUri(uri)),
   stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),
 });

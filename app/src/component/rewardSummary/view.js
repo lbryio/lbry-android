@@ -38,7 +38,6 @@ class RewardSummary extends React.Component {
     this.setState({ dismissed: true });
     this.props.notify({
       message: 'You can always claim your rewards from the Rewards page.',
-      displayType: ['toast']
     });
   }
 

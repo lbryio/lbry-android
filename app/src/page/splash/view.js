@@ -102,12 +102,11 @@ class SplashScreen extends React.PureComponent {
                 } catch (error) {
                   const message = 'Invalid Verification Token';
                   verifyUserEmailFailure(message);
-                  notify({ message, displayType: ['toast'] });
+                  notify({ message });
                 }
               } else {
                 notify({
                   message: 'Invalid Verification URI',
-                  displayType: ['toast'],
                 });
               }
             } else {

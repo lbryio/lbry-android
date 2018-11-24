@@ -5,7 +5,7 @@ import {
   selectEmailNewIsPending,
   selectEmailToVerify
 } from 'lbryinc';
-import { doNotify } from 'lbry-redux';
+import { doToast } from 'lbry-redux';
 import EmailRewardSubcard from './view';
 
 const select = state => ({
@@ -16,7 +16,7 @@ const select = state => ({
 
 const perform = dispatch => ({
   addUserEmail: email => dispatch(doUserEmailNew(email)),
-  notify: data => dispatch(doNotify(data))
+  notify: data => dispatch(doToast(data))
 });
 
 export default connect(select, perform)(EmailRewardSubcard);

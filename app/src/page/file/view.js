@@ -189,7 +189,6 @@ class FilePage extends React.PureComponent {
           // after the file_set_status and file_delete operations, so let the user know
           notify({
             message: 'The download will stop momentarily. You do not need to wait to discover something else.',
-            displayType: ['toast']
           });
         }}
       ],

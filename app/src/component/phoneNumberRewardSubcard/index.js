@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { doNotify } from 'lbry-redux';
+import { doToast } from 'lbry-redux';
 import {
   doUserPhoneNew,
   doUserPhoneVerify,
@@ -22,7 +22,7 @@ const select = state => ({
 const perform = dispatch => ({
   addUserPhone: (phone, country_code) => dispatch(doUserPhoneNew(phone, country_code)),
   verifyPhone: (verificationCode) => dispatch(doUserPhoneVerify(verificationCode)),
-  notify: data => dispatch(doNotify(data)),
+  notify: data => dispatch(doToast(data)),
 });
 
 export default connect(select, perform)(PhoneNumberRewardSubcard);

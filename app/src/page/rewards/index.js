@@ -8,7 +8,7 @@ import {
   selectClaimedRewards,
   selectUser,
 } from 'lbryinc';
-import { doNotify } from 'lbry-redux';
+import { doToast } from 'lbry-redux';
 import RewardsPage from './view';
 
 const select = state => ({
@@ -22,7 +22,7 @@ const select = state => ({
 
 const perform = dispatch => ({
   fetchRewards: () => dispatch(doRewardList()),
-  notify: data => dispatch(doNotify(data)),
+  notify: data => dispatch(doToast(data)),
 });
 
 export default connect(select, perform)(RewardsPage);

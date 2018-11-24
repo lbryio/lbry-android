@@ -21,7 +21,7 @@ export default class Link extends React.PureComponent {
       Linking.openURL(href)
         .then(() => setTimeout(() => { this.setState({ tappedStyle: false }); }, 2000))
       .catch(err => {
-        notify({ message: error, displayType: ['toast']})
+        notify({ message: error, isError: true })
         this.setState({tappedStyle: false})
       }
     );

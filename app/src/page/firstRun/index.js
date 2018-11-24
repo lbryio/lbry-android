@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { doNotify } from 'lbry-redux';
+import { doToast } from 'lbry-redux';
 import {
   doGenerateAuthToken,
   doUserEmailNew,
@@ -22,7 +22,7 @@ const select = (state) => ({
 const perform = dispatch => ({
   addUserEmail: email => dispatch(doUserEmailNew(email)),
   generateAuthToken: installationId => dispatch(doGenerateAuthToken(installationId)),
-  notify: data => dispatch(doNotify(data))
+  notify: data => dispatch(doToast(data))
 });
 
 export default connect(select, perform)(FirstRun);

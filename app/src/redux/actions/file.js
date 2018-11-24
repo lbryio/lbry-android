@@ -1,7 +1,7 @@
 import {
     ACTIONS,
     Lbry,
-    doNotify,
+    doToast,
     formatCredits,
     selectBalance,
     makeSelectCostInfoForUri,
@@ -190,9 +190,8 @@ export function doLoadVideo(uri, failureCallback) {
             data: { uri },
           });
 
-          dispatch(doNotify({
+          dispatch(doToast({
             message: `File timeout for uri ${uri}`,
-            displayType: ['toast']
           }));
 
           if (failureCallback) {
@@ -209,9 +208,8 @@ export function doLoadVideo(uri, failureCallback) {
           data: { uri },
         });
 
-        dispatch(doNotify({
+        dispatch(doToast({
           message: `Failed to download ${uri}, please try again. If this problem persists, visit https://lbry.io/faq/support for support.`,
-          displayType: ['toast']
         }));
 
         if (failureCallback) {
@@ -270,9 +268,8 @@ export function doPurchaseUri(uri, specificCostInfo, failureCallback) {
 
     if (cost > balance) {
       dispatch(doSetPlayingUri(null));
-      dispatch(doNotify({
+      dispatch(doToast({
         message: 'Insufficient credits',
-        displayType: ['toast']
       }));
       if (failureCallback) {
         failureCallback();
