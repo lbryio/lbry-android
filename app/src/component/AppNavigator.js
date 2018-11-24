@@ -33,7 +33,7 @@ import {
   ToastAndroid
 } from 'react-native';
 import { doDeleteCompleteBlobs } from '../redux/actions/file';
-import { SETTINGS, doHideNotification, doToast, selectToast } from 'lbry-redux';
+import { SETTINGS, doDismissToast, doToast, selectToast } from 'lbry-redux';
 import {
   doUserEmailVerify,
   doUserEmailVerifyFailure,
@@ -250,18 +250,6 @@ class AppWithNavigationState extends React.Component {
     if (toast) {
       const { message } = toast;
       let currentDisplayType;
-      if (displayType && displayType.length) {
-        for (let i = 0; i < displayType.length; i++) {
-          const type = displayType[i];
-          if (AppWithNavigationState.supportedDisplayTypes.indexOf(type) > -1) {
-            currentDisplayType = type;
-            break;
-          }
-        }
-      } else if (AppWithNavigationState.supportedDisplayTypes.indexOf(displayType) > -1) {
-        currentDisplayType = displayType;
-      }
-
       if (!currentDisplayType && message) {
         // default to toast if no display type set and there is a message specified
         currentDisplayType = 'toast';
@@ -271,7 +259,7 @@ class AppWithNavigationState extends React.Component {
         ToastAndroid.show(message, ToastAndroid.LONG);
       }
 
-      dispatch(doHideNotification());
+      dispatch(doDismissToast());
     }
 
     if (user &&
