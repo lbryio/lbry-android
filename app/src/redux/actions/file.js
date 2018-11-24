@@ -25,6 +25,8 @@ const deleteBlobsForSdHash = (sdHash) => {
 
 export function doUpdateLoadStatus(uri, outpoint) {
   return (dispatch, getState) => {
+    const state = getState();
+
     Lbry.file_list({
       outpoint,
       full_status: true,
