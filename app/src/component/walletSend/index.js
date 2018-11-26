@@ -8,15 +8,15 @@ import {
 } from 'lbry-redux';
 import WalletSend from './view';
 
-const perform = dispatch => ({
-  sendToAddress: (address, amount) => dispatch(doSendDraftTransaction(address, amount)),
-  notify: (data) => dispatch(doToast(data))
-});
-
 const select = state => ({
   balance: selectBalance(state),
   draftTransaction: selectDraftTransaction(state),
   transactionError: selectDraftTransactionError(state),
+});
+
+const perform = dispatch => ({
+  sendToAddress: (address, amount) => dispatch(doSendDraftTransaction(address, amount)),
+  notify: (data) => dispatch(doToast(data))
 });
 
 export default connect(select, perform)(WalletSend);

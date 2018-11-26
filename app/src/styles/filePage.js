@@ -142,12 +142,17 @@ const filePageStyle = StyleSheet.create({
     color: '#0c604b'
   },
   actions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 16,
     paddingBottom: 8,
     marginTop: -14,
     width: '100%',
+  },
+  fileActions: {
+    alignSelf: 'flex-end'
   },
   actionButton: {
     alignSelf: 'flex-start',
@@ -200,10 +205,57 @@ const filePageStyle = StyleSheet.create({
     zIndex: 100
   },
   link: {
-    color: Colors.LbryGreen
+    color: Colors.Grey
   },
   linkTapped: {
     color: "rgba(64, 184, 154, .2)"
+  },
+  tipCard: {
+    backgroundColor: Colors.White,
+    position: 'absolute',
+    top: containedMediaHeightWithControls - 16,
+    width: '100%',
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 16,
+    paddingRight: 16
+  },
+  row: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-between'
+  },
+  amountRow: {
+    flexDirection: 'row',
+    flex: 0.75
+  },
+  button: {
+    backgroundColor: Colors.LbryGreen,
+    alignSelf: 'flex-end',
+    marginBottom: 6
+  },
+  cancelTipLink: {
+    alignSelf: 'flex-end',
+    marginBottom: 14
+  },
+  input: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 14
+  },
+  tipAmountInput: {
+    alignSelf: 'flex-start',
+    width: 80,
+    fontSize: 16,
+    letterSpacing: 1
+  },
+  currency: {
+    alignSelf: 'flex-start',
+    marginTop: 17
+  },
+  text: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    lineHeight: 24
   }
 });
 

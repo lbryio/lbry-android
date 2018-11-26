@@ -37,6 +37,8 @@ class FilePage extends React.PureComponent {
     title: ''
   };
 
+  tipAmountInput = null;
+
   playerBackground = null;
 
   startTime = null;
@@ -55,8 +57,10 @@ class FilePage extends React.PureComponent {
       pageSuspended: false,
       showImageViewer: false,
       showWebView: false,
+      showTipView: false,
       playerBgHeight: 0,
       playerHeight: 0,
+      tipAmount: null,
       uri: null,
       stopDownloadConfirmed: false
     };
@@ -177,7 +181,7 @@ class FilePage extends React.PureComponent {
       [
         { text: 'No' },
         { text: 'Yes', onPress: () => {
-          stopDownload(navigation.state.params.uri, fileInfo);
+          stopDownloadz4(navigation.state.params.uri, fileInfo);
           this.setState({
             downloadPressed: false,
             fileViewLogged: false,
@@ -310,6 +314,21 @@ class FilePage extends React.PureComponent {
     this.setState({ fileViewLogged: true });
   }
 
+  handleSendTip = () => {
+    const { claim, balance, navigation, notify, sendTip } = this.props;
+    const { uri } = navigation.state.params;
+    const { tipAmount } = this.state;
+
+    if (tipAmount > balance) {
+      notify({
+        message: 'Insufficient credits',
+      });
+      return;
+    }
+
+    sendTip(tipAmount, claim.claim_id, uri, () => { this.setState({ tipAmount: 0, showTipView: false }) });
+  }
+
   render() {
     const {
       claim,
@@ -378,12 +397,12 @@ class FilePage extends React.PureComponent {
         const mediaType = Lbry.getMediaType(contentType);
         const isPlayable = mediaType === 'video' || mediaType === 'audio';
         const { height, channel_name: channelName, value } = claim;
-        const showActions = !this.state.fullscreenMode &&
-          !this.state.showImageViewer &&
-          !this.state.showWebView &&
-          (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
+        const showActions = !this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView;
+        const showFileActions = (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
         const channelClaimId =
           value && value.publisherSignature && value.publisherSignature.certificateId;
+        const canSendTip = this.state.tipAmount > 0;
+
 
         const playerStyle = [filePageStyle.player,
           this.state.isLandscape ? filePageStyle.containedPlayerLandscape :
@@ -473,21 +492,29 @@ class FilePage extends React.PureComponent {
                                                onPlaybackStarted={this.onPlaybackStarted}
                                               />}
 
-                {fileInfo && showActions &&
+                {showActions &&
                 <View style={filePageStyle.actions}>
-                  {completed && <Button style={filePageStyle.actionButton}
-                                        theme={"light"}
-                                        icon={"trash"}
-                                        text={"Delete"}
-                                        onPress={this.onDeletePressed} />}
-                  {!completed && fileInfo && !fileInfo.stopped &&
-                   fileInfo.written_bytes < fileInfo.total_bytes &&
-                   !this.state.stopDownloadConfirmed &&
-                    <Button style={filePageStyle.actionButton}
-                            theme={"light"}
-                            text={"Stop Download"}
-                            onPress={this.onStopDownloadPressed} />
-                  }
+                  {<Button style={filePageStyle.actionButton}
+                          theme={"light"}
+                          icon={"gift"}
+                          text={"Send a tip"}
+                          onPress={() => this.setState({ showTipView: true })} />}
+                  {showFileActions &&
+                    <View style={filePageStyle.fileActions}>
+                      {completed && <Button style={filePageStyle.actionButton}
+                                            theme={"light"}
+                                            icon={"trash"}
+                                            text={"Delete"}
+                                            onPress={this.onDeletePressed} />}
+                      {!completed && fileInfo && !fileInfo.stopped &&
+                       fileInfo.written_bytes < fileInfo.total_bytes &&
+                       !this.state.stopDownloadConfirmed &&
+                        <Button style={filePageStyle.actionButton}
+                                theme={"light"}
+                                text={"Stop Download"}
+                                onPress={this.onStopDownloadPressed} />
+                      }
+                    </View>}
                 </View>}
                 <ScrollView
                   style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
@@ -507,6 +534,23 @@ class FilePage extends React.PureComponent {
 
                   <RelatedContent navigation={navigation} uri={uri} />
                 </ScrollView>
+                {this.state.showTipView && <View style={filePageStyle.tipCard}>
+                  <View style={filePageStyle.row}>
+                    <View style={filePageStyle.amountRow}>
+                      <TextInput ref={ref => this.tipAmountInput = ref}
+                                 onChangeText={value => this.setState({tipAmount: value})}
+                                 keyboardType={'numeric'}
+                                 value={this.state.tipAmount}
+                                 style={[filePageStyle.input, filePageStyle.tipAmountInput]} />
+                      <Text style={[filePageStyle.text, filePageStyle.currency]}>LBC</Text>
+                    </View>
+                    <Link style={[filePageStyle.link, filePageStyle.cancelTipLink]} text={'Cancel'} onPress={() => this.setState({ showTipView: false })} />
+                    <Button text={'Send tip'}
+                            style={[filePageStyle.button, filePageStyle.sendButton]}
+                            disabled={!canSendTip}
+                            onPress={this.handleSendTip} />
+                  </View>
+                </View>}
               </View>
             )}
             {!this.state.fullscreenMode && <FloatingWalletBalance navigation={navigation} />}

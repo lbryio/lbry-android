@@ -3,6 +3,7 @@ import {
   doFetchFileInfo,
   doFetchCostInfoForUri,
   doResolveUri,
+  doSendTip,
   doToast,
   makeSelectIsUriResolving,
   makeSelectCostInfoForUri,
@@ -10,6 +11,7 @@ import {
   makeSelectClaimForUri,
   makeSelectContentTypeForUri,
   makeSelectMetadataForUri,
+  selectBalance,
   selectBlackListedOutpoints,
 } from 'lbry-redux';
 import { selectRewardContentClaimIds } from 'lbryinc';
@@ -19,6 +21,7 @@ import FilePage from './view';
 const select = (state, props) => {
   const selectProps = { uri: props.navigation.state.params.uri };
   return {
+    balance: selectBalance(state),
     blackListedOutpoints: selectBlackListedOutpoints(state),
     claim: makeSelectClaimForUri(selectProps.uri)(state),
     isResolvingUri: makeSelectIsUriResolving(selectProps.uri)(state),
@@ -40,6 +43,7 @@ const perform = dispatch => ({
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
   notify: data => dispatch(doToast(data)),
   resolveUri: uri => dispatch(doResolveUri(uri)),
+  sendTip: (amount, claimId, uri, successCallback, errorCallback) => dispatch(doSendTip(amount, claimId, uri, successCallback, errorCallback)),
   stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),
 });
 
