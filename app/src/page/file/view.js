@@ -181,7 +181,7 @@ class FilePage extends React.PureComponent {
       [
         { text: 'No' },
         { text: 'Yes', onPress: () => {
-          stopDownloadz4(navigation.state.params.uri, fileInfo);
+          stopDownload(navigation.state.params.uri, fileInfo);
           this.setState({
             downloadPressed: false,
             fileViewLogged: false,

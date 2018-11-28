@@ -37,7 +37,7 @@ const globalExceptionHandler = (error, isFatal) => {
     NativeModules.Mixpanel.logException(isFatal, error.message ? error.message : "No message", error);
   }
 };
-//setJSExceptionHandler(globalExceptionHandler, true);
+setJSExceptionHandler(globalExceptionHandler, true);
 
 
 function isFunction(object) {
