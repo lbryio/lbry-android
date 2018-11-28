@@ -66,6 +66,13 @@ const discoverStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Discover',
       headerLeft: menuNavigationButton(navigation),
+      header: ({ navigate }) => {
+        return {
+          titleStyle: {
+            fontFamily: 'Metropolis-Regular'
+          },
+        };
+      }
     })
   },
   File: {
@@ -78,7 +85,14 @@ const discoverStack = createStackNavigator({
   Search: {
     screen: SearchPage,
     navigationOptions: ({ navigation }) => ({
-      drawerLockMode: 'locked-closed'
+      drawerLockMode: 'locked-closed',
+      header: ({ navigate }) => {
+        return {
+          titleStyle: {
+            fontFamily: 'Metropolis-Regular'
+          },
+        };
+      }
     })
   }
 }, {
@@ -91,6 +105,13 @@ const trendingStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Trending',
       headerLeft: menuNavigationButton(navigation),
+      header: ({ navigate }) => {
+        return {
+          titleStyle: {
+            fontFamily: 'Metropolis-Regular'
+          },
+        };
+      }
     })
   }
 });
@@ -101,6 +122,13 @@ const myLbryStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'My LBRY',
       headerLeft: menuNavigationButton(navigation),
+      header: ({ navigate }) => {
+        return {
+          titleStyle: {
+            fontFamily: 'Metropolis-Regular'
+          },
+        };
+      }
     })
   }
 });
@@ -111,6 +139,13 @@ const rewardsStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Rewards',
       headerLeft: menuNavigationButton(navigation),
+      header: ({ navigate }) => {
+        return {
+          titleStyle: {
+            fontFamily: 'Metropolis-Regular'
+          },
+        };
+      }
     })
   }
 });
@@ -121,13 +156,27 @@ const walletStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Wallet',
       headerLeft: menuNavigationButton(navigation),
+      header: ({ navigate }) => {
+        return {
+          titleStyle: {
+            fontFamily: 'Metropolis-Regular'
+          },
+        };
+      }
     })
   },
   TransactionHistory: {
     screen: TransactionHistoryPage,
     navigationOptions: {
       title: 'Transaction History',
-      drawerLockMode: 'locked-closed'
+      drawerLockMode: 'locked-closed',
+      header: ({ navigate }) => {
+        return {
+          titleStyle: {
+            fontFamily: 'Metropolis-Regular'
+          },
+        };
+      }
     }
   }
 }, {
