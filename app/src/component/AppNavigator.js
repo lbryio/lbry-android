@@ -162,7 +162,8 @@ const drawer = createDrawerNavigator({
   drawerWidth: 300,
   headerMode: 'none',
   contentOptions: {
-    activeTintColor: Colors.LbryGreen
+    activeTintColor: Colors.LbryGreen,
+    labelStyle: discoverStyle.menuText
   }
 });
 
