@@ -131,6 +131,9 @@ const discoverStyle = StyleSheet.create({
   menuText: {
     fontFamily: 'Metropolis-Regular',
     fontSize: 16
+  },
+  titleText: {
+    fontFamily: 'Metropolis-Regular'
   }
 });
 

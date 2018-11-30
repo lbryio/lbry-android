@@ -66,13 +66,7 @@ const discoverStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Discover',
       headerLeft: menuNavigationButton(navigation),
-      header: ({ navigate }) => {
-        return {
-          titleStyle: {
-            fontFamily: 'Metropolis-Regular'
-          },
-        };
-      }
+      headerTitleStyle: discoverStyle.titleText
     })
   },
   File: {
@@ -86,13 +80,7 @@ const discoverStack = createStackNavigator({
     screen: SearchPage,
     navigationOptions: ({ navigation }) => ({
       drawerLockMode: 'locked-closed',
-      header: ({ navigate }) => {
-        return {
-          titleStyle: {
-            fontFamily: 'Metropolis-Regular'
-          },
-        };
-      }
+      headerTitleStyle: discoverStyle.titleText
     })
   }
 }, {
@@ -105,13 +93,7 @@ const trendingStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Trending',
       headerLeft: menuNavigationButton(navigation),
-      header: ({ navigate }) => {
-        return {
-          titleStyle: {
-            fontFamily: 'Metropolis-Regular'
-          },
-        };
-      }
+      headerTitleStyle: discoverStyle.titleText
     })
   }
 });
@@ -122,13 +104,7 @@ const myLbryStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'My LBRY',
       headerLeft: menuNavigationButton(navigation),
-      header: ({ navigate }) => {
-        return {
-          titleStyle: {
-            fontFamily: 'Metropolis-Regular'
-          },
-        };
-      }
+      headerTitleStyle: discoverStyle.titleText
     })
   }
 });
@@ -139,13 +115,7 @@ const rewardsStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Rewards',
       headerLeft: menuNavigationButton(navigation),
-      header: ({ navigate }) => {
-        return {
-          titleStyle: {
-            fontFamily: 'Metropolis-Regular'
-          },
-        };
-      }
+      headerTitleStyle: discoverStyle.titleText
     })
   }
 });
@@ -156,13 +126,7 @@ const walletStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Wallet',
       headerLeft: menuNavigationButton(navigation),
-      header: ({ navigate }) => {
-        return {
-          titleStyle: {
-            fontFamily: 'Metropolis-Regular'
-          },
-        };
-      }
+      headerTitleStyle: discoverStyle.titleText
     })
   },
   TransactionHistory: {
@@ -170,13 +134,7 @@ const walletStack = createStackNavigator({
     navigationOptions: {
       title: 'Transaction History',
       drawerLockMode: 'locked-closed',
-      header: ({ navigate }) => {
-        return {
-          titleStyle: {
-            fontFamily: 'Metropolis-Regular'
-          },
-        };
-      }
+      headerTitleStyle: discoverStyle.titleText
     }
   }
 }, {
