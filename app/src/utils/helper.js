@@ -1,6 +1,26 @@
 import { NavigationActions, StackActions } from 'react-navigation';
 
+function getRouteForSpecialUri(uri) {
+  let targetRoute;
+  const page = uri.substring(8).trim(); // 'lbry://?'.length == 8
+
+  switch (page) {
+    case 'rewards': targetRoute = 'Rewards'; break;
+    case 'settings': targetRoute = 'Settings'; break;
+    case 'trending': targetRoute = 'TrendingStack'; break;
+    case 'wallet': targetRoute = 'WalletStack'; break;
+    default: targetRoute = 'DiscoverStack'; break;
+  }
+
+  return targetRoute;
+}
+
 export function dispatchNavigateToUri(dispatch, nav, uri) {
+  if (uri.startsWith('lbry://?')) {
+    dispatch(NavigationActions.navigate({ routeName: getRouteForSpecialUri(uri) }));
+    return;
+  }
+
   const params = { uri };
   if (nav && nav.routes && nav.routes.length > 0 && 'Main' === nav.routes[0].routeName) {
     const mainRoute = nav.routes[0];
@@ -48,6 +68,11 @@ export function navigateToUri(navigation, uri, additionalParams) {
     return;
   }
 
+  if (uri.startsWith('lbry://?')) {
+    navigation.navigate({ routeName: getRouteForSpecialUri(uri) });
+    return;
+  }
+
   const params = Object.assign({ uri }, additionalParams);
   if ('File' === navigation.state.routeName) {
     const stackAction = StackActions.replace({ routeName: 'File', newKey: uri, params });
@@ -57,3 +82,5 @@ export function navigateToUri(navigation, uri, additionalParams) {
 
   navigation.navigate({ routeName: 'File', key: uri, params });
 }
+
+
