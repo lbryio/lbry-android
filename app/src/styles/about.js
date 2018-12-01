@@ -56,7 +56,7 @@ const aboutStyle = StyleSheet.create({
     fontSize: 16,
     marginBottom: 24
   },
-  emailPreferencesLink: {
+  listLink: {
     color: Colors.LbryGreen,
     fontFamily: 'Metropolis-Regular',
     fontSize: 15,

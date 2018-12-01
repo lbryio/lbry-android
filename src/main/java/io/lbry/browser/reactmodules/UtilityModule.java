@@ -2,21 +2,30 @@ package io.lbry.browser.reactmodules;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.Manifest;
+import android.net.Uri;
 import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import java.io.File;
+
 import io.lbry.browser.MainActivity;
+import io.lbry.browser.Utils;
 
 public class UtilityModule extends ReactContextBaseJavaModule {
+    private static final String FILE_PROVIDER = "io.lbry.browser.fileprovider";
+
     private Context context;
 
     public UtilityModule(ReactApplicationContext reactContext) {
@@ -136,6 +145,30 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         if (activity != null) {
             // Request for the RECEIVE_SMS permission
             MainActivity.checkReceiveSmsPermission(activity);
+        }
+    }
+
+    @ReactMethod
+    public void shareLogFile(Callback errorCallback) {
+        String logFileName = "lbrynet.log";
+        File logFile = new File(String.format("%s/%s", Utils.getAppInternalStorageDir(context), "lbrynet"), logFileName);
+        if (!logFile.exists()) {
+            errorCallback.invoke("The lbrynet.log file could not be found.");
+            return;
+        }
+
+        try {
+            Uri fileUri = FileProvider.getUriForFile(context, FILE_PROVIDER, logFile);
+            if (fileUri != null) {
+                Intent shareIntent = new Intent();
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                context.startActivity(Intent.createChooser(shareIntent, "Send LBRY log"));
+            }
+        } catch (IllegalArgumentException e) {
+            errorCallback.invoke("The lbrynet.log file cannot be shared due to permission restrictions.");
         }
     }
 
