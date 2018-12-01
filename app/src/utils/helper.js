@@ -1,14 +1,15 @@
 import { NavigationActions, StackActions } from 'react-navigation';
+import Constants from '../constants';
 
 function getRouteForSpecialUri(uri) {
   let targetRoute;
   const page = uri.substring(8).trim(); // 'lbry://?'.length == 8
 
   switch (page) {
-    case 'rewards': targetRoute = 'Rewards'; break;
-    case 'settings': targetRoute = 'Settings'; break;
-    case 'trending': targetRoute = 'TrendingStack'; break;
-    case 'wallet': targetRoute = 'WalletStack'; break;
+    case Constants.PAGE_REWARDS: targetRoute = 'Rewards'; break;
+    case Constants.PAGE_SETTINGS: targetRoute = 'Settings'; break;
+    case Constants.PAGE_TRENDING: targetRoute = 'TrendingStack'; break;
+    case Constants.PAGE_WALLET: targetRoute = 'WalletStack'; break;
     default: targetRoute = 'DiscoverStack'; break;
   }
 
@@ -82,5 +83,3 @@ export function navigateToUri(navigation, uri, additionalParams) {
 
   navigation.navigate({ routeName: 'File', key: uri, params });
 }
-
-
