@@ -6,6 +6,11 @@ const Constants = {
 
   ACTION_DELETE_COMPLETED_BLOBS: "DELETE_COMPLETED_BLOBS",
   ACTION_FIRST_RUN_PAGE_CHANGED: "FIRST_RUN_PAGE_CHANGED",
+
+  PAGE_REWARDS: 'rewards',
+  PAGE_SETTINGS: 'settings',
+  PAGE_TRENDING: 'trending',
+  PAGE_WALLET: 'wallet'
 };
 
 export default Constants;
