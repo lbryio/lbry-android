@@ -66,6 +66,7 @@ const discoverStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Discover',
       headerLeft: menuNavigationButton(navigation),
+      headerTitleStyle: discoverStyle.titleText
     })
   },
   File: {
@@ -78,7 +79,8 @@ const discoverStack = createStackNavigator({
   Search: {
     screen: SearchPage,
     navigationOptions: ({ navigation }) => ({
-      drawerLockMode: 'locked-closed'
+      drawerLockMode: 'locked-closed',
+      headerTitleStyle: discoverStyle.titleText
     })
   }
 }, {
@@ -91,6 +93,7 @@ const trendingStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Trending',
       headerLeft: menuNavigationButton(navigation),
+      headerTitleStyle: discoverStyle.titleText
     })
   }
 });
@@ -101,6 +104,7 @@ const myLbryStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'My LBRY',
       headerLeft: menuNavigationButton(navigation),
+      headerTitleStyle: discoverStyle.titleText
     })
   }
 });
@@ -111,6 +115,7 @@ const rewardsStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Rewards',
       headerLeft: menuNavigationButton(navigation),
+      headerTitleStyle: discoverStyle.titleText
     })
   }
 });
@@ -121,13 +126,15 @@ const walletStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Wallet',
       headerLeft: menuNavigationButton(navigation),
+      headerTitleStyle: discoverStyle.titleText
     })
   },
   TransactionHistory: {
     screen: TransactionHistoryPage,
     navigationOptions: {
       title: 'Transaction History',
-      drawerLockMode: 'locked-closed'
+      drawerLockMode: 'locked-closed',
+      headerTitleStyle: discoverStyle.titleText
     }
   }
 }, {
@@ -162,7 +169,8 @@ const drawer = createDrawerNavigator({
   drawerWidth: 300,
   headerMode: 'none',
   contentOptions: {
-    activeTintColor: Colors.LbryGreen
+    activeTintColor: Colors.LbryGreen,
+    labelStyle: discoverStyle.menuText
   }
 });
 

@@ -127,6 +127,13 @@ const discoverStyle = StyleSheet.create({
   },
   rewardTitle: {
     flex: 0.9
+  },
+  menuText: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16
+  },
+  titleText: {
+    fontFamily: 'Metropolis-Regular'
   }
 });
 
