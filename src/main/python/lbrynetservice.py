@@ -30,19 +30,21 @@ class LbryAndroidKeyring(KeyringBackend):
         lbrynet_android_utils.deletePassword(servicename, username, context, self._keystore)
 
 
-def get_android_internal_storage() -> str:
-    return lbrynet_android_utils.getAppExternalStorageDir(service.getApplicationContext())
-
-
 def start():
     keyring.set_keyring(LbryAndroidKeyring())
+
+    private_storage_dir = lbrynet_android_utils.getAppInternalStorageDir(service.getApplicationContext())
+    data_dir = f'{private_storage_dir}/lbrynet'
+    wallet_dir = f'{private_storage_dir}/lbryum'
+    download_dir = f'{lbrynet_android_utils.getInternalStorageDir(service.getApplicationContext())}/Download'
+
     return start_daemon(settings={
         'components_to_skip': [DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT,
                                REFLECTOR_COMPONENT],
         'use_upnp': False,
-        'use_https': False,
-        'use_auth_http': True
-    }, get_android_internal_storage=get_android_internal_storage)
+        # 'use_https': False,
+        # 'use_auth_http': True
+    }, data_dir=data_dir, wallet_dir=wallet_dir, download_dir=download_dir)
 
 
 if __name__ == '__main__':
