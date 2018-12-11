@@ -25,13 +25,13 @@ const settingsStyle = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     lineHeight: 18
   },
   description: {
     color: '#aaaaaa',
     fontSize: 12,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     lineHeight: 18
   }
 });

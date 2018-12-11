@@ -35,7 +35,7 @@ const filePageStyle = StyleSheet.create({
     height: containedMediaHeightWithControls
   },
   emptyClaimText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     textAlign: 'center',
     fontSize: 20,
     marginLeft: 16,
@@ -52,7 +52,7 @@ const filePageStyle = StyleSheet.create({
     flex: 1
   },
   title: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 24,
     marginTop: 12,
     marginLeft: 20,
@@ -60,7 +60,7 @@ const filePageStyle = StyleSheet.create({
     marginBottom: 12
   },
   channelName: {
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: 20,
     marginLeft: 20,
     marginRight: 20,
@@ -69,7 +69,7 @@ const filePageStyle = StyleSheet.create({
   },
   description: {
     color: Colors.DescriptionGrey,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 20,
     marginLeft: 20,
@@ -136,7 +136,7 @@ const filePageStyle = StyleSheet.create({
     borderRadius: 4
   },
   filePriceText: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 12,
     textAlign: 'center',
     color: '#0c604b'
@@ -178,19 +178,19 @@ const filePageStyle = StyleSheet.create({
     paddingRight: 24
   },
   dmcaText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 18,
     lineHeight: 24
   },
   dmcaLink: {
     color: Colors.LbryGreen,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 18,
     lineHeight: 24,
     marginTop: 24
   },
   infoText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 20,
     textAlign: 'center',
     marginLeft: 10
@@ -239,7 +239,7 @@ const filePageStyle = StyleSheet.create({
     marginBottom: 14
   },
   input: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14
   },
   tipAmountInput: {
@@ -253,7 +253,7 @@ const filePageStyle = StyleSheet.create({
     marginTop: 17
   },
   text: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 24
   }

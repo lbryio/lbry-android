@@ -28,16 +28,16 @@ const fileListStyle = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: (screenWidthPixels <= 720) ? 12 : 16
   },
   uri: {
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: (screenWidthPixels <= 720) ? 12 : 14,
     marginBottom: 8
   },
   publisher: {
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: (screenWidthPixels <= 720) ? 12 : 14,
     marginTop: (screenWidthPixels <= 720) ? 1 : 3,
     color: Colors.LbryGreen
@@ -49,7 +49,7 @@ const fileListStyle = StyleSheet.create({
     marginTop: (screenWidthPixels <= 720) ? 4 : 8
   },
   downloadStorage: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: (screenWidthPixels <= 720) ? 12 : 14,
     color: Colors.ChannelGrey
   },

@@ -16,7 +16,7 @@ const channelPageStyle = StyleSheet.create({
   },
   title: {
     color: Colors.LbryGreen,
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: 30,
     margin: 16
   },
@@ -27,7 +27,7 @@ const channelPageStyle = StyleSheet.create({
     flexDirection: 'row'
   },
   infoText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 20,
     textAlign: 'center',
     marginLeft: 10

@@ -12,7 +12,7 @@ const firstRunStyle = StyleSheet.create({
     backgroundColor: Colors.LbryGreen
   },
   title: {
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: 40,
     marginLeft: 32,
     marginRight: 32,
@@ -20,7 +20,7 @@ const firstRunStyle = StyleSheet.create({
     color: Colors.White
   },
   paragraph: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 18,
     lineHeight: 24,
     marginLeft: 32,
@@ -29,7 +29,7 @@ const firstRunStyle = StyleSheet.create({
     color: Colors.White
   },
   infoParagraph: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     lineHeight: 20,
     marginLeft: 32,
@@ -38,7 +38,7 @@ const firstRunStyle = StyleSheet.create({
     color: Colors.White
   },
   emailInput: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 24,
     lineHeight: 24,
     marginLeft: 32,
@@ -58,7 +58,7 @@ const firstRunStyle = StyleSheet.create({
   actionButton: {
     backgroundColor: Colors.White,
     alignSelf: 'center',
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 12,
     paddingLeft: 16,
     paddingRight: 16
@@ -70,7 +70,7 @@ const firstRunStyle = StyleSheet.create({
     paddingRight: 32
   },
   buttonText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 24,
     color: Colors.White
   },

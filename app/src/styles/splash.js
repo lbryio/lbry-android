@@ -8,7 +8,7 @@ const splashStyle = StyleSheet.create({
     backgroundColor: Colors.LbryGreen
   },
   title: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 64,
     textAlign: 'center',
     marginBottom: 48,
@@ -23,7 +23,7 @@ const splashStyle = StyleSheet.create({
     width: '50%'
   },
   details: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     marginLeft: 16,
     marginRight: 16,
@@ -31,7 +31,7 @@ const splashStyle = StyleSheet.create({
     textAlign: 'center'
   },
   message: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 18,
     color: Colors.White,
     marginLeft: 16,
