@@ -48,36 +48,36 @@ const rewardStyle = StyleSheet.create({
     paddingBottom: 16
   },
   text: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 24
   },
   infoText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 18,
     marginLeft: 12
   },
   title: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 22,
     marginBottom: 6,
     color: Colors.LbryGreen
   },
   subtitle: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 18,
     marginBottom: 6,
     color: Colors.LbryGreen
   },
   subcardText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 15,
     lineHeight: 20,
     marginLeft: 2,
     marginRight: 2
   },
   subcardTextInput: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     marginTop: 2,
     marginBottom: 2
@@ -99,7 +99,7 @@ const rewardStyle = StyleSheet.create({
   },
   link: {
     color: Colors.LbryGreen,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
   },
   textLink: {
@@ -118,21 +118,21 @@ const rewardStyle = StyleSheet.create({
     alignItems: 'center'
   },
   rewardAmount: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 26,
     textAlign: 'center'
   },
   rewardCurrency: {
-    fontFamily: 'Metropolis-Regular'
+    fontFamily: 'Inter-UI-Regular'
   },
   rewardTitle: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     color: Colors.LbryGreen,
     marginBottom: 4,
   },
   rewardDescription: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     lineHeight: 18,
     marginBottom: 4
@@ -162,7 +162,7 @@ const rewardStyle = StyleSheet.create({
   },
   summaryText: {
     color: Colors.White,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     lineHeight: 20,
     flex: 0.7
@@ -175,18 +175,18 @@ const rewardStyle = StyleSheet.create({
     marginLeft: 8
   },
   phoneInputText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     letterSpacing: 1.3
   },
   verifyingText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     marginLeft: 12,
     alignSelf: 'flex-start'
   },
   verificationCodeInput: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 24,
     letterSpacing: 12
   },
@@ -204,7 +204,7 @@ const rewardStyle = StyleSheet.create({
     flex: 0.2
   },
   customCodeInput: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     letterSpacing: 1.3,
     marginTop: -8,

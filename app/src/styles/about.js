@@ -31,14 +31,14 @@ const aboutStyle = StyleSheet.create({
   title: {
     color: Colors.LbryGreen,
     fontSize: 24,
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     marginTop: 16,
     marginLeft: 12,
     marginRight: 12,
     marginBottom: 8
   },
   paragraph: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 24,
     marginLeft: 12,
@@ -52,13 +52,13 @@ const aboutStyle = StyleSheet.create({
   },
   link: {
     color: Colors.LbryGreen,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     marginBottom: 24
   },
   listLink: {
     color: Colors.LbryGreen,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 15,
     alignSelf: 'flex-end'
   },
@@ -66,30 +66,30 @@ const aboutStyle = StyleSheet.create({
     alignSelf: 'stretch'
   },
   socialTitle: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     marginLeft: 12,
     marginRight: 12,
     marginBottom: 8,
     fontSize: 20
   },
   releaseInfoTitle: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     marginLeft: 12,
     marginRight: 12,
     marginBottom: 12,
     fontSize: 20
   },
   text: {
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: 15
   },
   valueText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     textAlign: 'right',
     fontSize: 15
   },
   lineValueText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 15
   }
 });

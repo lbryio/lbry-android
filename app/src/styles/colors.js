@@ -3,7 +3,7 @@ const Colors = {
   ChannelGrey: '#9b9b9b',
   DarkGrey: '#555555',
   DescriptionGrey: '#999999',
-  LbryGreen: '#40b89a',
+  LbryGreen: '#2f9176',
   BrighterLbryGreen: '#40b887',
   LightGrey: '#cccccc',
   LighterGrey: '#e5e5e5',

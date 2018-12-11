@@ -71,7 +71,7 @@ const mediaPlayerStyle = StyleSheet.create({
     bottom: 14,
   },
   elapsedDuration: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     position: 'absolute',
     left: 8,
     bottom: 24,
@@ -79,7 +79,7 @@ const mediaPlayerStyle = StyleSheet.create({
     color: '#ffffff'
   },
   totalDuration: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     position: 'absolute',
     right: 40,
     bottom: 24,

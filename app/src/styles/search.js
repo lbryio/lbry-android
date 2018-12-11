@@ -26,12 +26,12 @@ const searchStyle = StyleSheet.create({
   searchInput: {
     width: '100%',
     height: '100%',
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16
   },
   noResultsText: {
     textAlign: 'center',
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     position: 'absolute'
   },

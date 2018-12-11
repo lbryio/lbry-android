@@ -29,7 +29,7 @@ const buttonStyle = StyleSheet.create({
     color: Colors.DarkGrey
   },
   text: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14
   },
   textWithIcon: {
