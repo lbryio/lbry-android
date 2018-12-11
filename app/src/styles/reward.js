@@ -202,6 +202,17 @@ const rewardStyle = StyleSheet.create({
     paddingLeft: 4,
     paddingRight: 4,
     flex: 0.2
+  },
+  customCodeInput: {
+    fontFamily: 'Metropolis-Regular',
+    fontSize: 16,
+    letterSpacing: 1.3,
+    marginTop: -8,
+    marginBottom: 4
+  },
+  redeemButton: {
+    alignSelf: 'flex-end',
+    backgroundColor: Colors.LbryGreen
   }
 });
 

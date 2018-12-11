@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Colors from '../../styles/colors';
 import Link from '../../component/link';
+import CustomRewardCard from '../../component/customRewardCard';
 import PhoneNumberRewardSubcard from '../../component/phoneNumberRewardSubcard';
 import EmailRewardSubcard from '../../component/emailRewardSubcard';
 import PageHeader from '../../component/pageHeader';
@@ -122,6 +123,7 @@ class RewardsPage extends React.PureComponent {
                                            canClaim={!isNotEligible}
                                            reward={reward}
                                            reward_type={reward.reward_type} />)}
+        <CustomRewardCard canClaim={!isNotEligible} />
       </View>
     );
   }
