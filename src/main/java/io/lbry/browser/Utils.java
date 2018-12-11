@@ -6,6 +6,8 @@ import android.security.KeyPairGeneratorSpec;
 import android.util.Base64;
 import android.util.Log;
 
+import io.lbry.browser.BuildConfig;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -121,7 +123,7 @@ public final class Utils {
 
         return null;
     }
-    
+
     public static void setPassword(String serviceName, String username, String password, Context context, KeyStore keyStore) {
         try {
             String encryptedUsername = String.format("u_%s_%s", serviceName, encrypt(username.getBytes(), context, keyStore));
@@ -134,7 +136,7 @@ public final class Utils {
             Log.e(TAG, "lbrynetservice - Could not set a password", ex);
         }
     }
-    
+
     public static String getPassword(String serviceName, String username, Context context, KeyStore keyStore) {
         try {
             String encryptedUsername = String.format("u_%s_%s", serviceName, encrypt(username.getBytes(), context, keyStore));
@@ -143,16 +145,16 @@ public final class Utils {
             if (encryptedPassword == null || encryptedPassword.trim().length() == 0) {
                 return null;
             }
-            
+
             byte[] decoded = Base64.decode(encryptedPassword, Base64.DEFAULT);
             return new String(decrypt(decoded, context, keyStore), Charset.forName("UTF8"));
         } catch (Exception ex) {
             Log.e(TAG, "lbrynetservice - could not decrypt password for user", ex);
         }
-        
+
         return null;
     }
-    
+
     public static void deletePassword(String serviceName, String username, Context context, KeyStore keyStore) {
         try {
             String encryptedUsername = String.format("u_%s_%s", serviceName, encrypt(username.getBytes(), context, keyStore));
@@ -164,7 +166,7 @@ public final class Utils {
             Log.e(TAG, "lbrynetservice - Could not delete a password", ex);
         }
     }
-    
+
     public static String encrypt(byte[] input, Context context, KeyStore keyStore) throws Exception {
         Cipher c = Cipher.getInstance(AES_MODE, "BC");
         c.init(Cipher.ENCRYPT_MODE, getSecretKey(context, keyStore));
@@ -175,6 +177,10 @@ public final class Utils {
         Cipher c = Cipher.getInstance(AES_MODE, "BC");
         c.init(Cipher.DECRYPT_MODE, getSecretKey(context, keyStore));
         return c.doFinal(encrypted);
+    }
+
+    public static boolean isDebug() {
+        return BuildConfig.DEBUG;
     }
 
     public static final KeyStore initKeyStore(Context context) throws Exception {
