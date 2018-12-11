@@ -13,6 +13,7 @@ else:
         from twisted.internet import reactor
 
 import keyring.backend
+from lbrynet import build_type
 import platform
 import ssl
 from jnius import autoclass
@@ -22,6 +23,7 @@ from jnius import autoclass
 lbrynet_utils = autoclass('io.lbry.browser.Utils')
 service = autoclass('io.lbry.browser.LbrynetService').serviceInstance
 platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_utils.getAndroidRelease(), lbrynet_utils.getAndroidSdk())
+build_type.BUILD = 'dev' if lbrynet_utils.isDebug() else 'release'
 
 import lbrynet.androidhelpers
 lbrynet.androidhelpers.paths.android_files_dir = lambda: lbrynet_utils.getFilesDir(service.getApplicationContext())
