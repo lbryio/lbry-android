@@ -131,9 +131,10 @@ class RewardsPage extends React.PureComponent {
   renderClaimedRewards() {
     const { claimed } = this.props;
     if (claimed && claimed.length) {
+      const reversed = claimed.reverse();
       return (
         <View>
-          {claimed.reverse().map(reward => <RewardCard key={reward.reward_type} reward={reward} />)}
+          {reversed.map(reward => <RewardCard key={reward.transaction_id} reward={reward} />)}
         </View>
       );
     }
