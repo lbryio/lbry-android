@@ -133,7 +133,7 @@ class RewardsPage extends React.PureComponent {
     if (claimed && claimed.length) {
       return (
         <View>
-          {claimed.map(reward => <RewardCard key={reward.reward_type} reward={reward} />)}
+          {claimed.reverse().map(reward => <RewardCard key={reward.reward_type} reward={reward} />)}
         </View>
       );
     }
