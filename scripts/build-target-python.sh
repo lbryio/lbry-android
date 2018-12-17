@@ -14,6 +14,22 @@
 #       provided with the distribution.
 #
 # THIS SOFTWARE IS PROVIDED BY CrystaX ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND#!/bin/bash
+
+# Copyright (c) 2011-2015 CrystaX.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without modification, are
+# permitted provided that the following conditions are met:
+#
+#    1. Redistributions of source code must retain the above copyright notice, this list of
+#       conditions and the following disclaimer.
+#
+#    2. Redistributions in binary form must reproduce the above copyright notice, this list
+#       of conditions and the following disclaimer in the documentation and/or other materials
+#       provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY CrystaX ''AS IS'' AND ANY EXPRESS OR IMPLIED
 # WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 # FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL CrystaX OR
 # CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
@@ -610,7 +626,61 @@ build_python_for_abi ()
     run cp -p -T $OBJDIR_SOCKET/lib_socket.so $PYBIN_INSTALLDIR_MODULES/_socket.so
     fail_panic "Can't install python$PYTHON_ABI-$ABI module '_socket' in $PYBIN_INSTALLDIR_MODULES"
 
-#_ssl
+# _queue
+    local BUILDDIR_QUEUE="$BUILDDIR/queue"
+    local OBJDIR_QUEUE="$BUILDDIR_QUEUE/obj/local/$ABI"
+
+    run mkdir -p "$BUILDDIR_QUEUE/jni"
+    fail_panic "Can't create directory: $BUILDDIR_QUEUE/jni"
+
+    {
+        echo 'LOCAL_PATH := $(call my-dir)'
+        echo 'include $(CLEAR_VARS)'
+        echo 'LOCAL_MODULE := _queue'
+        echo "MY_PYTHON_SRC_ROOT := $PYTHON_SRCDIR"
+        echo 'LOCAL_SRC_FILES := \'
+        echo '  $(MY_PYTHON_SRC_ROOT)/Modules/_queuemodule.c'
+        echo 'LOCAL_STATIC_LIBRARIES := python_shared'
+        echo 'include $(BUILD_SHARED_LIBRARY)'
+        echo "\$(call import-module,python/$PYTHON_ABI)"
+    } >$BUILDDIR_QUEUE/jni/Android.mk
+    fail_panic "Can't generate $BUILDDIR_QUEUE/jni/Android.mk"
+
+    run $NDK_DIR/ndk-build -C $BUILDDIR_QUEUE -j$NUM_JOBS APP_ABI=$ABI V=1
+    fail_panic "Can't build python$PYTHON_ABI-$ABI module '_queue'"
+
+    log "Install python$PYTHON_ABI-$ABI module '_queue' in $PYBIN_INSTALLDIR_MODULES"
+    run cp -p -T $OBJDIR_QUEUE/lib_queue.so $PYBIN_INSTALLDIR_MODULES/_queue.so
+    fail_panic "Can't install python$PYTHON_ABI-$ABI module '_queue' in $PYBIN_INSTALLDIR_MODULES"
+
+# _asyncio
+    local BUILDDIR_ASYNCIO="$BUILDDIR/asyncio"
+    local OBJDIR_ASYNCIO="$BUILDDIR_ASYNCIO/obj/local/$ABI"
+
+    run mkdir -p "$BUILDDIR_ASYNCIO/jni"
+    fail_panic "Can't create directory: $BUILDDIR_ASYNCIO/jni"
+
+    {
+        echo 'LOCAL_PATH := $(call my-dir)'
+        echo 'include $(CLEAR_VARS)'
+        echo 'LOCAL_MODULE := _asyncio'
+        echo "MY_PYTHON_SRC_ROOT := $PYTHON_SRCDIR"
+        echo 'LOCAL_SRC_FILES := \'
+        echo '  $(MY_PYTHON_SRC_ROOT)/Modules/_asynciomodule.c'
+        echo 'LOCAL_STATIC_LIBRARIES := python_shared'
+        echo 'include $(BUILD_SHARED_LIBRARY)'
+        echo "\$(call import-module,python/$PYTHON_ABI)"
+    } >$BUILDDIR_ASYNCIO/jni/Android.mk
+    fail_panic "Can't generate $BUILDDIR_ASYNCIO/jni/Android.mk"
+
+    run $NDK_DIR/ndk-build -C $BUILDDIR_ASYNCIO -j$NUM_JOBS APP_ABI=$ABI V=1
+    fail_panic "Can't build python$PYTHON_ABI-$ABI module '_asyncio'"
+
+    log "Install python$PYTHON_ABI-$ABI module '_asyncio' in $PYBIN_INSTALLDIR_MODULES"
+    run cp -p -T $OBJDIR_ASYNCIO/lib_asyncio.so $PYBIN_INSTALLDIR_MODULES/_asyncio.so
+    fail_panic "Can't install python$PYTHON_ABI-$ABI module '_asyncio' in $PYBIN_INSTALLDIR_MODULES"
+
+# _ssl
     if [ -n "$OPENSSL_HOME" ]; then
         local BUILDDIR_SSL="$BUILDDIR/ssl"
         local OBJDIR_SSL="$BUILDDIR_SSL/obj/local/$ABI"
