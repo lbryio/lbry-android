@@ -680,6 +680,33 @@ build_python_for_abi ()
     run cp -p -T $OBJDIR_ASYNCIO/lib_asyncio.so $PYBIN_INSTALLDIR_MODULES/_asyncio.so
     fail_panic "Can't install python$PYTHON_ABI-$ABI module '_asyncio' in $PYBIN_INSTALLDIR_MODULES"
 
+# _contextvars
+    local BUILDDIR_CONTEXTVARS="$BUILDDIR/contextvars"
+    local OBJDIR_CONTEXTVARS="$BUILDDIR_CONTEXTVARS/obj/local/$ABI"
+
+    run mkdir -p "$BUILDDIR_CONTEXTVARS/jni"
+    fail_panic "Can't create directory: $BUILDDIR_CONTEXTVARS/jni"
+
+    {
+        echo 'LOCAL_PATH := $(call my-dir)'
+        echo 'include $(CLEAR_VARS)'
+        echo 'LOCAL_MODULE := _contextvars'
+        echo "MY_PYTHON_SRC_ROOT := $PYTHON_SRCDIR"
+        echo 'LOCAL_SRC_FILES := \'
+        echo '  $(MY_PYTHON_SRC_ROOT)/Modules/_contextvarsmodule.c'
+        echo 'LOCAL_STATIC_LIBRARIES := python_shared'
+        echo 'include $(BUILD_SHARED_LIBRARY)'
+        echo "\$(call import-module,python/$PYTHON_ABI)"
+    } >$BUILDDIR_CONTEXTVARS/jni/Android.mk
+    fail_panic "Can't generate $BUILDDIR_CONTEXTVARS/jni/Android.mk"
+
+    run $NDK_DIR/ndk-build -C $BUILDDIR_CONTEXTVARS -j$NUM_JOBS APP_ABI=$ABI V=1
+    fail_panic "Can't build python$PYTHON_ABI-$ABI module '_contextvars'"
+
+    log "Install python$PYTHON_ABI-$ABI module '_contextvars' in $PYBIN_INSTALLDIR_MODULES"
+    run cp -p -T $OBJDIR_CONTEXTVARS/lib_contextvars.so $PYBIN_INSTALLDIR_MODULES/_contextvars.so
+    fail_panic "Can't install python$PYTHON_ABI-$ABI module '_contextvars' in $PYBIN_INSTALLDIR_MODULES"
+
 # _ssl
     if [ -n "$OPENSSL_HOME" ]; then
         local BUILDDIR_SSL="$BUILDDIR/ssl"
