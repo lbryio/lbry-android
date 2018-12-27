@@ -2,16 +2,16 @@ sudo: required
 dist: xenial
 language: python
 python:
-- '3.6'
+- '3.7'
 install:
 - deactivate
 - export PATH=/usr/bin:$PATH
 - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 - sudo dpkg --add-architecture i386
-- sudo add-apt-repository ppa:jonathonf/python-3.6 -y
+- sudo add-apt-repository ppa:deadsnakes/ppa -y
 - sudo apt-get -qq update
-- sudo apt-get -qq install build-essential python3.6 python3.6-dev python3.6-venv python3-pip ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386
-- sudo pip install --upgrade cython==0.25.2 pip setuptools
+- sudo apt-get -qq install build-essential python3.7 python3.7-dev python3.7-venv python3-pip ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386
+- sudo pip install --upgrade cython==0.28.1 pip setuptools
 - wget -q https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.xz
 - tar -xf node-v8.11.1-linux-x64.tar.xz
 - sudo ln -s $TRAVIS_BUILD_DIR/node-v8.11.1-linux-x64/bin/node /usr/bin/node

@@ -1,0 +1,42 @@
+--- a/configure	2018-10-20 07:04:19.000000000 +0100
++++ b/configure	2018-12-17 08:26:38.713933919 +0100
+@@ -5650,34 +5650,6 @@
+ #endif
+ EOF
+ 
+-if $CPP $CPPFLAGS conftest.c >conftest.out 2>/dev/null; then
+-  ANDROID_API_LEVEL=`sed -n -e '/__ANDROID_API__/d' -e 's/^android_api = //p' conftest.out`
+-  _arm_arch=`sed -n -e '/__ARM_ARCH/d' -e 's/^arm_arch = //p' conftest.out`
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ANDROID_API_LEVEL" >&5
+-$as_echo "$ANDROID_API_LEVEL" >&6; }
+-  if test -z "$ANDROID_API_LEVEL"; then
+-    echo 'Fatal: you must define __ANDROID_API__'
+-    exit 1
+-  fi
+-
+-cat >>confdefs.h <<_ACEOF
+-#define ANDROID_API_LEVEL $ANDROID_API_LEVEL
+-_ACEOF
+-
+-
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the Android arm ABI" >&5
+-$as_echo_n "checking for the Android arm ABI... " >&6; }
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $_arm_arch" >&5
+-$as_echo "$_arm_arch" >&6; }
+-  if test "$_arm_arch" = 7; then
+-    BASECFLAGS="${BASECFLAGS} -mfloat-abi=softfp -mfpu=vfpv3-d16"
+-    LDFLAGS="${LDFLAGS} -march=armv7-a -Wl,--fix-cortex-a8"
+-  fi
+-else
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: not Android" >&5
+-$as_echo "not Android" >&6; }
+-fi
+-rm -f conftest.c conftest.out
+ 
+ # Check for unsupported systems
+ case $ac_sys_system/$ac_sys_release in
+@@ -18383,4 +18355,3 @@
+     echo "" >&6
+     echo "" >&6
+ fi
+-
