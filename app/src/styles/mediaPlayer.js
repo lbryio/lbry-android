@@ -93,7 +93,7 @@ const mediaPlayerStyle = StyleSheet.create({
     left: 15,
     height: 12,
     width: 12,
-    backgroundColor: '#40c0a9'
+    backgroundColor: Colors.LbryGreen
   },
   seekerHandle: {
     backgroundColor: 'transparent',
@@ -128,7 +128,7 @@ const mediaPlayerStyle = StyleSheet.create({
     left: 15,
     height: 24,
     width: 24,
-    backgroundColor: '#40c0a9'
+    backgroundColor: Colors.LbryGreen
   }
 });
 
