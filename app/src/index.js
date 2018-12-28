@@ -19,7 +19,7 @@ import {
   searchReducer,
   walletReducer
 } from 'lbry-redux';
-import { authReducer, rewardsReducer, userReducer } from 'lbryinc';
+import { authReducer, rewardsReducer, subscriptionsReducer, userReducer } from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
 import { AppNavigator } from './component/AppNavigator';
@@ -87,6 +87,7 @@ const reducers = combineReducers({
   rewards: rewardsReducer,
   settings: settingsReducer,
   search: searchReducer,
+  subscriptions: subscriptionsReducer,
   user: userReducer,
   wallet: walletReducer
 });

@@ -144,12 +144,14 @@ class SplashScreen extends React.PureComponent {
           authenticate,
           balanceSubscribe,
           blacklistedOutpointsSubscribe,
+          checkSubscriptionsInit,
           navigation,
           notify
         } = this.props;
 
         balanceSubscribe();
         blacklistedOutpointsSubscribe();
+        checkSubscriptionsInit();
         NativeModules.VersionInfo.getAppVersion().then(appVersion => {
           this.setState({ shouldAuthenticate: true });
           authenticate(appVersion, Platform.OS);

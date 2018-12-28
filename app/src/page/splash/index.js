@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { doBalanceSubscribe, doBlackListedOutpointsSubscribe, doToast } from 'lbry-redux';
 import {
   doAuthenticate,
+  doCheckSubscriptionsInit,
   doFetchRewardedContent,
   doUserEmailToVerify,
   doUserEmailVerify,
@@ -21,6 +22,7 @@ const perform = dispatch => ({
   authenticate: (appVersion, os) => dispatch(doAuthenticate(appVersion, os)),
   balanceSubscribe: () => dispatch(doBalanceSubscribe()),
   blacklistedOutpointsSubscribe: () => dispatch(doBlackListedOutpointsSubscribe()),
+  checkSubscriptionsInit: () => dispatch(doCheckSubscriptionsInit()),
   deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
   fetchRewardedContent: () => dispatch(doFetchRewardedContent()),
   notify: data => dispatch(doToast(data)),

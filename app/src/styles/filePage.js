@@ -154,11 +154,18 @@ const filePageStyle = StyleSheet.create({
   fileActions: {
     alignSelf: 'flex-end'
   },
+  socialActions: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row'
+  },
   actionButton: {
     alignSelf: 'flex-start',
     backgroundColor: Colors.White,
-    paddingLeft: 24,
-    paddingRight: 24
+    paddingLeft: 16,
+    paddingRight: 16
+  },
+  subscribeButton: {
+    marginRight: 8
   },
   loading: {
     position: 'absolute',
