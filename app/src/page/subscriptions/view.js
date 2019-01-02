@@ -56,7 +56,7 @@ class SubscriptionsPage extends React.PureComponent {
           contentContainerStyle={subscriptionsStyle.scrollPadding}
           renderItem={ ({item}) => (
             <FileItem
-              style={discoverStyle.fileItem}
+              style={subscriptionsStyle.fileItem}
               mediaStyle={discoverStyle.fileItemMedia}
               key={item}
               uri={uriFromFileInfo(item)}

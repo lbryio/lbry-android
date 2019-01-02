@@ -16,13 +16,17 @@ const subscriptionsStyle = StyleSheet.create({
     marginBottom: 60
   },
   scrollPadding: {
-    paddingTop: 24,
-    marginBottom: -60
+    paddingTop: 24
   },
   infoText: {
     textAlign: 'center',
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
+  },
+  fileItem: {
+    marginLeft: 24,
+    marginRight: 24,
+    marginBottom: 24
   }
 });
 
