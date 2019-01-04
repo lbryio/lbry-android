@@ -10,14 +10,14 @@ import {
   View
 } from 'react-native';
 import { buildURI } from 'lbry-redux';
-import { uriFromFileInfo } from '../../utils/helper';
+import { uriFromFileInfo } from 'utils/helper';
 import moment from 'moment';
-import Colors from '../../styles/colors';
-import discoverStyle from '../../styles/discover';
-import subscriptionsStyle from '../../styles/subscriptions';
-import FloatingWalletBalance from '../../component/floatingWalletBalance';
-import FileItem from '../../component/fileItem';
-import UriBar from '../../component/uriBar';
+import Colors from 'styles/colors';
+import discoverStyle from 'styles/discover';
+import subscriptionsStyle from 'styles/subscriptions';
+import FloatingWalletBalance from 'component/floatingWalletBalance';
+import FileItem from 'component/fileItem';
+import UriBar from 'component/uriBar';
 
 class SubscriptionsPage extends React.PureComponent {
   componentDidMount() {

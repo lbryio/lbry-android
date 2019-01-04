@@ -33,7 +33,6 @@ import settingsReducer from './redux/reducers/settings';
 import thunk from 'redux-thunk';
 
 const globalExceptionHandler = (error, isFatal) => {
-  console.log(error);
   if (error && NativeModules.Mixpanel) {
     NativeModules.Mixpanel.logException(isFatal, error.message ? error.message : "No message", error);
   }
