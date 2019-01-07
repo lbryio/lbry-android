@@ -40,7 +40,7 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
   }
 
   componentDidMount() {
-    DeviceEventEmitter.addListener('onReceiveSmsPermissionGranted', this.receiveSmsPermissionGranted);
+    //DeviceEventEmitter.addListener('onReceiveSmsPermissionGranted', this.receiveSmsPermissionGranted);
     DeviceEventEmitter.addListener('onVerificationCodeReceived', this.receiveVerificationCode);
 
     const { phone } = this.props;
@@ -48,13 +48,13 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
       this.setState({ newPhoneAdded: true });
     }
 
-    if (NativeModules.UtilityModule) {
+    /*if (NativeModules.UtilityModule) {
       NativeModules.UtilityModule.canReceiveSms().then(canReceiveSms => this.setState({ canReceiveSms }));
-    }
+    }*/
   }
 
   componentWillUnmount() {
-    DeviceEventEmitter.removeListener('onReceiveSmsPermissionGranted', this.receiveSmsPermissionGranted);
+    //DeviceEventEmitter.removeListener('onReceiveSmsPermissionGranted', this.receiveSmsPermissionGranted);
     DeviceEventEmitter.removeListener('onVerificationCodeReceived', this.receiveVerificationCode);
   }
 
@@ -89,10 +89,6 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     }
   }
 
-  receiveSmsPermissionGranted = () => {
-    this.setState({ canReceiveSms: true });
-  }
-
   receiveVerificationCode = (evt) => {
     if (!this.state.newPhoneAdded || this.state.codeVerifySuccessful) {
       return;
@@ -101,16 +97,6 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     const { verifyPhone } = this.props;
     this.setState({ codeVerifyStarted: true });
     verifyPhone(evt.code);
-  }
-
-  onAllowAccessPressed = () => {
-    if (!NativeModules.UtilityModule) {
-      return notify({
-        message: 'The required permission could not be obtained due to a missing module.',
-      });
-    }
-
-    NativeModules.UtilityModule.requestReceiveSmsPermission();
   }
 
   onSendTextPressed = () => {
@@ -169,17 +155,6 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     return (
       <View style={rewardStyle.subcard}>
         <Text style={rewardStyle.subtitle}>Pending action: Verify Phone Number</Text>
-        {!this.state.canReceiveSms &&
-          <View style={rewardStyle.smsPermissionContainer}>
-            <Text style={[rewardStyle.bottomMarginMedium, rewardStyle.subcardText]}>
-              You can grant access to the receive SMS permission in order to verify phone number. Alternatively, you can enter the verification code manually.
-            </Text>
-            <Button
-              style={rewardStyle.actionButton}
-              text={"Allow access"}
-              onPress={this.onAllowAccessPressed}
-            />
-          </View>}
         <View style={rewardStyle.phoneVerificationContainer}>
           {!this.state.newPhoneAdded &&
             <View>
