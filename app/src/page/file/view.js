@@ -27,6 +27,7 @@ import FloatingWalletBalance from '../../component/floatingWalletBalance';
 import Link from '../../component/link';
 import MediaPlayer from '../../component/mediaPlayer';
 import RelatedContent from '../../component/relatedContent';
+import SubscribeButton from '../../component/subscribeButton';
 import UriBar from '../../component/uriBar';
 import Video from 'react-native-video';
 import filePageStyle from '../../styles/filePage';
@@ -332,6 +333,7 @@ class FilePage extends React.PureComponent {
   render() {
     const {
       claim,
+      channelUri,
       fileInfo,
       metadata,
       contentType,
@@ -402,7 +404,6 @@ class FilePage extends React.PureComponent {
         const channelClaimId =
           value && value.publisherSignature && value.publisherSignature.certificateId;
         const canSendTip = this.state.tipAmount > 0;
-
 
         const playerStyle = [filePageStyle.player,
           this.state.isLandscape ? filePageStyle.containedPlayerLandscape :
@@ -494,11 +495,16 @@ class FilePage extends React.PureComponent {
 
                 {showActions &&
                 <View style={filePageStyle.actions}>
-                  {<Button style={filePageStyle.actionButton}
-                          theme={"light"}
-                          icon={"gift"}
-                          text={"Send a tip"}
-                          onPress={() => this.setState({ showTipView: true })} />}
+                  <View style={filePageStyle.socialActions}>
+                    {channelName && <SubscribeButton
+                                      style={[filePageStyle.actionButton, filePageStyle.subscribeButton]}
+                                      uri={channelUri} name={channelName} />}
+                    {<Button style={filePageStyle.actionButton}
+                            theme={"light"}
+                            icon={"gift"}
+                            text={"Send a tip"}
+                            onPress={() => this.setState({ showTipView: true })} />}
+                  </View>
                   {showFileActions &&
                     <View style={filePageStyle.fileActions}>
                       {completed && <Button style={filePageStyle.actionButton}

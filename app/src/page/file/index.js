@@ -8,6 +8,7 @@ import {
   makeSelectIsUriResolving,
   makeSelectCostInfoForUri,
   makeSelectFileInfoForUri,
+  makeSelectChannelForClaimUri,
   makeSelectClaimForUri,
   makeSelectContentTypeForUri,
   makeSelectMetadataForUri,
@@ -32,6 +33,7 @@ const select = (state, props) => {
     //tab: makeSelectCurrentParam('tab')(state),
     fileInfo: makeSelectFileInfoForUri(selectProps.uri)(state),
     rewardedContentClaimIds: selectRewardContentClaimIds(state, selectProps),
+    channelUri: makeSelectChannelForClaimUri(selectProps.uri, true)(state),
   };
 };
 

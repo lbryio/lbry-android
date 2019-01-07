@@ -11,6 +11,8 @@ export default class Button extends React.PureComponent {
       style,
       text,
       icon,
+      iconColor,
+      solid,
       theme,
       onPress,
       onLayout
@@ -41,9 +43,14 @@ export default class Button extends React.PureComponent {
       textStyles.push(buttonStyle.textLight);
     }
 
+    let renderIcon = (<Icon name={icon} size={18} color={iconColor ? iconColor : ('light' === theme ? Colors.DarkGrey : Colors.White)} />);
+    if (solid) {
+      renderIcon = (<Icon name={icon} size={18} color={iconColor ? iconColor : ('light' === theme ? Colors.DarkGrey : Colors.White)} solid />);
+    }
+
     return (
       <TouchableOpacity disabled={disabled} style={styles} onPress={onPress} onLayout={onLayout}>
-        {icon && <Icon name={icon} size={18} color={'light' === theme ? Colors.DarkGrey : Colors.White} />}
+        {icon && renderIcon}
         {text && (text.trim().length > 0) && <Text style={textStyles}>{text}</Text>}
       </TouchableOpacity>
     );

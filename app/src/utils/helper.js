@@ -1,4 +1,5 @@
 import { NavigationActions, StackActions } from 'react-navigation';
+import { buildURI } from 'lbry-redux';
 import Constants from '../constants';
 
 function getRouteForSpecialUri(uri) {
@@ -82,4 +83,12 @@ export function navigateToUri(navigation, uri, additionalParams) {
   }
 
   navigation.navigate({ routeName: 'File', key: uri, params });
+}
+
+export function uriFromFileInfo(fileInfo) {
+  const { name: claimName, claim_name: claimNameDownloaded, claim_id: claimId } = fileInfo;
+  const uriParams = {};
+  uriParams.contentName = claimName || claimNameDownloaded;
+  uriParams.claimId = claimId;
+  return buildURI(uriParams);
 }

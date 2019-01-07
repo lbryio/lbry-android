@@ -9,6 +9,7 @@ import TrendingPage from '../page/trending';
 import SearchPage from '../page/search';
 import SettingsPage from '../page/settings';
 import SplashScreen from '../page/splash';
+import SubscriptionsPage from '../page/subscriptions';
 import TransactionHistoryPage from '../page/transactionHistory';
 import WalletPage from '../page/wallet';
 import SearchInput from '../component/searchInput';
@@ -109,6 +110,17 @@ const myLbryStack = createStackNavigator({
   }
 });
 
+const mySubscriptionsStack = createStackNavigator({
+  Subscriptions: {
+    screen: SubscriptionsPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'My Subscriptions',
+      headerLeft: menuNavigationButton(navigation),
+      headerTitleStyle: discoverStyle.titleText
+    })
+  }
+});
+
 const rewardsStack = createStackNavigator({
   Rewards: {
     screen: RewardsPage,
@@ -147,6 +159,9 @@ const drawer = createDrawerNavigator({
   }},
   TrendingStack: { screen: trendingStack, navigationOptions: {
     title: 'Trending', drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />
+  }},
+  MySubscriptionsStack: { screen: mySubscriptionsStack, navigationOptions: {
+    title: 'My Subscriptions', drawerIcon: ({ tintColor }) => <Icon name="rss-square" size={20} style={{ color: tintColor }} />
   }},
   MyLBRYStack: { screen: myLbryStack, navigationOptions: {
     title: 'My LBRY', drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
