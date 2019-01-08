@@ -166,7 +166,7 @@ class FileList extends React.PureComponent<Props, State> {
 
       items.push(uri);
     });
-    
+
     return (
       <FlatList
         style={style}
@@ -176,7 +176,7 @@ class FileList extends React.PureComponent<Props, State> {
           <FileItem style={discoverStyle.fileItem}
                     uri={item}
                     navigation={navigation} />
-        )} />  
+        )} />
     );
   }
 }
