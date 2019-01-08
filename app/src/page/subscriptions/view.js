@@ -26,7 +26,7 @@ class SubscriptionsPage extends React.PureComponent {
       doFetchRecommendedSubscriptions
     } = this.props;
     doFetchMySubscriptions();
-    doFetchRecommendedSubscriptions();
+    //doFetchRecommendedSubscriptions();
   }
 
   render() {
@@ -63,7 +63,9 @@ class SubscriptionsPage extends React.PureComponent {
               navigation={navigation} />
             )
           }
-          data={allSubscriptions}
+          data={allSubscriptions.sort((a, b) => {
+            return b.height - a.height;
+          })}
           keyExtractor={(item, index) => uriFromFileInfo(item)} />}
 
       {hasSubscriptions && loading &&

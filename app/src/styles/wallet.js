@@ -33,6 +33,13 @@ const walletStyle = StyleSheet.create({
     marginRight: 16,
     padding: 16
   },
+  warningCard: {
+    backgroundColor: Colors.Orange,
+    padding: 16,
+    marginLeft: 16,
+    marginTop: 16,
+    marginRight: 16
+  },
   transactionsCard: {
     backgroundColor: '#ffffff',
     margin: 16
