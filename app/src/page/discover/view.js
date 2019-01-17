@@ -41,9 +41,19 @@ class DiscoverPage extends React.PureComponent {
       }
     });
 
-    const { fetchFeaturedUris, fetchRewardedContent } = this.props;
+    const {
+      fetchFeaturedUris,
+      fetchRewardedContent,
+      subscribedChannels,
+      unreadSubscriptions
+    } = this.props;
     fetchFeaturedUris();
     fetchRewardedContent();
+
+    const numberOfSubscriptions = subscribedChannels ? subscribedChannels.length : 0;
+    console.log('numSubs=' + numberOfSubscriptions);
+    console.log('***unread***');
+    console.log(unreadSubscriptions);
   }
 
   render() {

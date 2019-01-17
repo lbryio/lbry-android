@@ -3,15 +3,17 @@ import {
   doFetchFeaturedUris,
   selectBalance,
   selectFeaturedUris,
-  selectFetchingFeaturedUris
+  selectFetchingFeaturedUris,
 } from 'lbry-redux';
-import { doFetchRewardedContent } from 'lbryinc';
+import { doFetchRewardedContent, selectSubscriptions, selectUnreadSubscriptions } from 'lbryinc';
 import DiscoverPage from './view';
 
 const select = state => ({
   balance: selectBalance(state),
   featuredUris: selectFeaturedUris(state),
   fetchingFeaturedUris: selectFetchingFeaturedUris(state),
+  subscribedChannels: selectSubscriptions(state),
+  unreadSubscriptions: selectUnreadSubscriptions(state)
 });
 
 const perform = dispatch => ({

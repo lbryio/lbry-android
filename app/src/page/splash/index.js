@@ -3,6 +3,7 @@ import { doBalanceSubscribe, doBlackListedOutpointsSubscribe, doToast } from 'lb
 import {
   doAuthenticate,
   doCheckSubscriptionsInit,
+  doFetchMySubscriptions,
   doFetchRewardedContent,
   doUserEmailToVerify,
   doUserEmailVerify,
@@ -25,10 +26,11 @@ const perform = dispatch => ({
   checkSubscriptionsInit: () => dispatch(doCheckSubscriptionsInit()),
   deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
   fetchRewardedContent: () => dispatch(doFetchRewardedContent()),
+  fetchSubscriptions: (callback) => dispatch(doFetchMySubscriptions(callback)),
   notify: data => dispatch(doToast(data)),
   setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),
   verifyUserEmail: (token, recaptcha) => dispatch(doUserEmailVerify(token, recaptcha)),
-  verifyUserEmailFailure: error => dispatch(doUserEmailVerifyFailure(error)),
+  verifyUserEmailFailure: error => dispatch(doUserEmailVerifyFailure(error))
 });
 
 export default connect(select, perform)(SplashScreen);

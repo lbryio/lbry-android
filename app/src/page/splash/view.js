@@ -33,7 +33,8 @@ class SplashScreen extends React.PureComponent {
       launchUrl: null,
       isDownloadingHeaders: false,
       headersDownloadProgress: 0,
-      shouldAuthenticate: false
+      shouldAuthenticate: false,
+      subscriptionsFetched: false
     });
 
     if (NativeModules.DaemonServiceControl) {
@@ -63,6 +64,7 @@ class SplashScreen extends React.PureComponent {
   componentWillReceiveProps(nextProps) {
     const {
       emailToVerify,
+      fetchSubscriptions,
       navigation,
       setEmailToVerify,
       verifyUserEmail,
@@ -77,49 +79,51 @@ class SplashScreen extends React.PureComponent {
             setEmailToVerify(email);
           }
 
-          // user is authenticated, navigate to the main view
-          const resetAction = StackActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({ routeName: 'Main'})
-            ]
-          });
-          navigation.dispatch(resetAction);
+          fetchSubscriptions(() => {
+            // user is authenticated, navigate to the main view
+            const resetAction = StackActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({ routeName: 'Main'})
+              ]
+            });
+            navigation.dispatch(resetAction);
 
-          const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
-          if (launchUrl) {
-            if (launchUrl.startsWith('lbry://?verify=')) {
-              let verification = {};
-              try {
-                verification = JSON.parse(atob(launchUrl.substring(15)));
-              } catch (error) {
-                console.log(error);
-              }
-              if (verification.token && verification.recaptcha) {
-                AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
+            const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
+            if (launchUrl) {
+              if (launchUrl.startsWith('lbry://?verify=')) {
+                let verification = {};
                 try {
-                  verifyUserEmail(verification.token, verification.recaptcha);
+                  verification = JSON.parse(atob(launchUrl.substring(15)));
                 } catch (error) {
-                  const message = 'Invalid Verification Token';
-                  verifyUserEmailFailure(message);
-                  notify({ message });
+                  console.log(error);
+                }
+                if (verification.token && verification.recaptcha) {
+                  AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
+                  try {
+                    verifyUserEmail(verification.token, verification.recaptcha);
+                  } catch (error) {
+                    const message = 'Invalid Verification Token';
+                    verifyUserEmailFailure(message);
+                    notify({ message });
+                  }
+                } else {
+                  notify({
+                    message: 'Invalid Verification URI',
+                  });
                 }
               } else {
-                notify({
-                  message: 'Invalid Verification URI',
-                });
+                navigateToUri(navigation, launchUrl);
               }
-            } else {
-              navigateToUri(navigation, launchUrl);
             }
-          }
+          });
         });
       });
     }
   }
 
   _updateStatusCallback(status) {
-    const { deleteCompleteBlobs } = this.props;
+    const { deleteCompleteBlobs, fetchSubscriptions } = this.props;
     const startupStatus = status.startup_status;
     // At the minimum, wallet should be started and blocks_behind equal to 0 before calling resolve
     const hasStarted = startupStatus.file_manager && startupStatus.wallet && status.wallet.blocks_behind <= 0;
@@ -138,6 +142,7 @@ class SplashScreen extends React.PureComponent {
         isRunning: true,
       });
 
+      // fetch subscriptions, so that we can check for new content after resolve
       Lbry.resolve({ uri: 'lbry://one' }).then(() => {
         // Leave the splash screen
         const {

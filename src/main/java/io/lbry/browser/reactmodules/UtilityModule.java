@@ -1,6 +1,9 @@
 package io.lbry.browser.reactmodules;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +11,9 @@ import android.Manifest;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,12 +25,17 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
 import java.io.File;
+import java.util.Random;
 
 import io.lbry.browser.MainActivity;
+import io.lbry.browser.R;
 import io.lbry.browser.Utils;
+import io.lbry.browser.reactmodules.DownloadManagerModule;
 
 public class UtilityModule extends ReactContextBaseJavaModule {
     private static final String FILE_PROVIDER = "io.lbry.browser.fileprovider";
+
+    private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.SUBSCRIPTIONS_NOTIFICATION_CHANNEL";
 
     private Context context;
 
@@ -170,6 +181,39 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         } catch (IllegalArgumentException e) {
             errorCallback.invoke("The lbrynet.log file cannot be shared due to permission restrictions.");
         }
+    }
+
+    @ReactMethod
+    public void showNotificationForContent(String uri, String title, String publisher, String thumbnailUri) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                NOTIFICATION_CHANNEL_ID, "LBRY Subscriptions", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("LBRY subscription notifications");
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        int notificationId = 0;
+        Random random = new Random();
+        do {
+            notificationId = random.nextInt();
+        } while (notificationId < 100);
+
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+        builder.setColor(ContextCompat.getColor(context, R.color.lbrygreen))
+               .setContentIntent(DownloadManagerModule.getLaunchPendingIntent(uri, context))
+               .setContentTitle(title)
+               .setContentText(publisher)
+               .setSmallIcon(R.drawable.ic_lbry)
+               /*.setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+                         .setShowActionsInCompactView(0))
+               .addAction(paused ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause,
+                          paused ? "Play" : "Pause",
+                          paused ? playPendingIntent : pausePendingIntent)*/
+               .build();
+
+        notificationManager.notify(notificationId, builder.build());
     }
 
     private static boolean isEmulator() {
