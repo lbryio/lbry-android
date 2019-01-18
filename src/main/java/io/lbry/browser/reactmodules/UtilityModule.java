@@ -7,8 +7,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.Manifest;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
 import android.support.v4.app.NotificationCompat;
@@ -24,7 +26,12 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import io.lbry.browser.MainActivity;
@@ -33,9 +40,15 @@ import io.lbry.browser.Utils;
 import io.lbry.browser.reactmodules.DownloadManagerModule;
 
 public class UtilityModule extends ReactContextBaseJavaModule {
+    private static final Map<String, Integer> activeNotifications = new HashMap<String, Integer>();
+
     private static final String FILE_PROVIDER = "io.lbry.browser.fileprovider";
 
     private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.SUBSCRIPTIONS_NOTIFICATION_CHANNEL";
+
+    public static final String ACTION_NOTIFICATION_PLAY = "io.lbry.browser.ACTION_NOTIFICATION_PLAY";
+
+    public static final String ACTION_NOTIFICATION_LATER = "io.lbry.browser.ACTION_NOTIFICATION_LATER";
 
     private Context context;
 
@@ -184,8 +197,8 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showNotificationForContent(String uri, String title, String publisher, String thumbnailUri) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    public void showNotificationForContent(final String uri, String title, String publisher, final String thumbnail) {
+        final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                 NOTIFICATION_CHANNEL_ID, "LBRY Subscriptions", NotificationManager.IMPORTANCE_DEFAULT);
@@ -193,27 +206,66 @@ public class UtilityModule extends ReactContextBaseJavaModule {
             notificationManager.createNotificationChannel(channel);
         }
 
-        int notificationId = 0;
+        if (activeNotifications.containsKey(uri)) {
+            // the notification for the specified uri is already present, don't try to create another one
+            return;
+        }
+
+        int id = 0;
         Random random = new Random();
         do {
-            notificationId = random.nextInt();
-        } while (notificationId < 100);
+            id = random.nextInt();
+        } while (id < 100);
+        final int notificationId = id;
 
+        Intent playIntent = new Intent();
+        playIntent.setAction(ACTION_NOTIFICATION_PLAY);
+        PendingIntent playPendingIntent = PendingIntent.getBroadcast(context, 0, playIntent, 0);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-        builder.setColor(ContextCompat.getColor(context, R.color.lbrygreen))
+        Intent laterIntent = new Intent();
+        laterIntent.setAction(ACTION_NOTIFICATION_LATER);
+        PendingIntent laterPendingIntent = PendingIntent.getBroadcast(context, 0, laterIntent, 0);
+
+        boolean hasThumbnail = false;
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+        builder.setAutoCancel(true)
+               .setColor(ContextCompat.getColor(context, R.color.lbrygreen))
                .setContentIntent(DownloadManagerModule.getLaunchPendingIntent(uri, context))
-               .setContentTitle(title)
-               .setContentText(publisher)
+               .setContentTitle(publisher)
+               .setContentText(title)
                .setSmallIcon(R.drawable.ic_lbry)
-               /*.setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
-                         .setShowActionsInCompactView(0))
-               .addAction(paused ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause,
-                          paused ? "Play" : "Pause",
-                          paused ? playPendingIntent : pausePendingIntent)*/
-               .build();
+               .addAction(android.R.drawable.ic_media_play, "Play", playPendingIntent)
+               .addAction(android.R.drawable.ic_media_play, "Watch Later", laterPendingIntent);
 
-        notificationManager.notify(notificationId, builder.build());
+        activeNotifications.put(uri, notificationId);
+        if (thumbnail != null) {
+            // attempt to load the thumbnail Bitmap before displaying the notification
+            final Uri thumbnailUri = Uri.parse(thumbnail);
+            if (thumbnailUri != null) {
+                hasThumbnail = true;
+                (new AsyncTask<Void, Void, Bitmap>() {
+                    protected Bitmap doInBackground(Void... params) {
+                        try {
+                            return Picasso.get().load(thumbnailUri).get();
+                        } catch (IOException e) {
+                            return null;
+                        }
+                    }
+
+                    protected void onPostExecute(Bitmap result) {
+                        if (result != null) {
+                            builder.setLargeIcon(result)
+                                   .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(result).bigLargeIcon(null));
+                        }
+                        notificationManager.notify(notificationId, builder.build());
+                    }
+                }).execute();
+            }
+        }
+
+        if (!hasThumbnail) {
+            notificationManager.notify(notificationId, builder.build());
+        }
     }
 
     private static boolean isEmulator() {

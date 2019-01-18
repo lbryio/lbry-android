@@ -57,14 +57,23 @@ const filePageStyle = StyleSheet.create({
     marginTop: 12,
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 12
+    marginBottom: 8
+  },
+  channelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 16,
+  },
+  subscriptionRow: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end'
   },
   channelName: {
     fontFamily: 'Inter-UI-SemiBold',
     fontSize: 20,
-    marginLeft: 20,
-    marginRight: 20,
-    marginBottom: 20,
+    marginTop: 6,
     color: Colors.LbryGreen
   },
   description: {
@@ -164,8 +173,8 @@ const filePageStyle = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16
   },
-  subscribeButton: {
-    marginRight: 8
+  bellButton: {
+    marginLeft: 8
   },
   loading: {
     position: 'absolute',

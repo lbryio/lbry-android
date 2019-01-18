@@ -15,23 +15,24 @@ import {
   View,
   WebView
 } from 'react-native';
-import { navigateToUri } from '../../utils/helper';
+import { navigateToUri } from 'utils/helper';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import Button from '../../component/button';
-import Colors from '../../styles/colors';
-import ChannelPage from '../channel';
-import FileDownloadButton from '../../component/fileDownloadButton';
-import FileItemMedia from '../../component/fileItemMedia';
-import FilePrice from '../../component/filePrice';
-import FloatingWalletBalance from '../../component/floatingWalletBalance';
-import Link from '../../component/link';
-import MediaPlayer from '../../component/mediaPlayer';
-import RelatedContent from '../../component/relatedContent';
-import SubscribeButton from '../../component/subscribeButton';
-import UriBar from '../../component/uriBar';
+import Button from 'component/button';
+import Colors from 'styles/colors';
+import ChannelPage from 'page/channel';
+import FileDownloadButton from 'component/fileDownloadButton';
+import FileItemMedia from 'component/fileItemMedia';
+import FilePrice from 'component/filePrice';
+import FloatingWalletBalance from 'component/floatingWalletBalance';
+import Link from 'component/link';
+import MediaPlayer from 'component/mediaPlayer';
+import RelatedContent from 'component/relatedContent';
+import SubscribeButton from 'component/subscribeButton';
+import SubscribeNotificationButton from 'component/subscribeNotificationButton';
+import UriBar from 'component/uriBar';
 import Video from 'react-native-video';
-import filePageStyle from '../../styles/filePage';
-import uriBarStyle from '../../styles/uriBar';
+import filePageStyle from 'styles/filePage';
+import uriBarStyle from 'styles/uriBar';
 
 class FilePage extends React.PureComponent {
   static navigationOptions = {
@@ -496,14 +497,11 @@ class FilePage extends React.PureComponent {
                 {showActions &&
                 <View style={filePageStyle.actions}>
                   <View style={filePageStyle.socialActions}>
-                    {channelName && <SubscribeButton
-                                      style={[filePageStyle.actionButton, filePageStyle.subscribeButton]}
-                                      uri={channelUri} name={channelName} />}
-                    {<Button style={filePageStyle.actionButton}
+                    <Button style={filePageStyle.actionButton}
                             theme={"light"}
                             icon={"gift"}
                             text={"Send a tip"}
-                            onPress={() => this.setState({ showTipView: true })} />}
+                            onPress={() => this.setState({ showTipView: true })} />
                   </View>
                   {showFileActions &&
                     <View style={filePageStyle.fileActions}>
@@ -526,13 +524,27 @@ class FilePage extends React.PureComponent {
                   style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
                   contentContainerstyle={showActions ? null : filePageStyle.scrollContent}>
                   <Text style={filePageStyle.title} selectable={true}>{title}</Text>
-                  {channelName && <Link style={filePageStyle.channelName}
+                  {channelName &&
+                    <View style={filePageStyle.channelRow}>
+                      <Link style={filePageStyle.channelName}
                                         selectable={true}
                                         text={channelName}
                                         onPress={() => {
                                           const channelUri = normalizeURI(channelName);
                                           navigateToUri(navigation, channelUri);
-                                        }} />}
+                                        }} />
+                      <View style={filePageStyle.subscriptionRow}>
+                        <SubscribeButton
+                          style={filePageStyle.actionButton}
+                          uri={channelUri}
+                          name={channelName} />
+                        <SubscribeNotificationButton
+                          style={[filePageStyle.actionButton, filePageStyle.bellButton]}
+                          uri={channelUri}
+                          name={channelName} />
+                      </View>
+                    </View>
+                  }
 
                   {description && description.length > 0 && <View style={filePageStyle.divider} />}
 

@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     private static final int RECEIVE_SMS_PERMISSION_REQ_CODE = 203;
 
-    private BroadcastReceiver backgroundMediaReceiver;
+    private BroadcastReceiver notificationsReceiver;
 
     private BroadcastReceiver smsReceiver;
 
@@ -129,7 +129,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .build();
         mReactRootView.startReactApplication(mReactInstanceManager, "LBRYApp", null);
 
-        registerBackgroundMediaReceiver();
+        registerNotificationsReceiver();
 
         setContentView(mReactRootView);
     }
@@ -147,12 +147,12 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         registerReceiver(stopServiceReceiver, intentFilter);
     }
 
-    private void registerBackgroundMediaReceiver() {
+    private void registerNotificationsReceiver() {
         // Background media receiver
-        IntentFilter backgroundMediaFilter = new IntentFilter();
-        backgroundMediaFilter.addAction(BackgroundMediaModule.ACTION_PLAY);
-        backgroundMediaFilter.addAction(BackgroundMediaModule.ACTION_PAUSE);
-        backgroundMediaReceiver = new BroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BackgroundMediaModule.ACTION_PLAY);
+        filter.addAction(BackgroundMediaModule.ACTION_PAUSE);
+        notificationsReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
@@ -169,7 +169,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 }
             }
         };
-        registerReceiver(backgroundMediaReceiver, backgroundMediaFilter);
+        registerReceiver(notificationsReceiver, filter);
     }
 
     public void registerSmsReceiver() {
@@ -363,9 +363,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             }
         }
 
-        if (backgroundMediaReceiver != null) {
-            unregisterReceiver(backgroundMediaReceiver);
-            backgroundMediaReceiver = null;
+        if (notificationsReceiver != null) {
+            unregisterReceiver(notificationsReceiver);
+            notificationsReceiver = null;
         }
 
         if (smsReceiver != null) {

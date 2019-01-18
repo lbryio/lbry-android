@@ -64,7 +64,6 @@ class SplashScreen extends React.PureComponent {
   componentWillReceiveProps(nextProps) {
     const {
       emailToVerify,
-      fetchSubscriptions,
       navigation,
       setEmailToVerify,
       verifyUserEmail,
@@ -79,44 +78,42 @@ class SplashScreen extends React.PureComponent {
             setEmailToVerify(email);
           }
 
-          fetchSubscriptions(() => {
-            // user is authenticated, navigate to the main view
-            const resetAction = StackActions.reset({
-              index: 0,
-              actions: [
-                NavigationActions.navigate({ routeName: 'Main'})
-              ]
-            });
-            navigation.dispatch(resetAction);
+          // user is authenticated, navigate to the main view
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Main'})
+            ]
+          });
+          navigation.dispatch(resetAction);
 
-            const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
-            if (launchUrl) {
-              if (launchUrl.startsWith('lbry://?verify=')) {
-                let verification = {};
+          const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
+          if (launchUrl) {
+            if (launchUrl.startsWith('lbry://?verify=')) {
+              let verification = {};
+              try {
+                verification = JSON.parse(atob(launchUrl.substring(15)));
+              } catch (error) {
+                console.log(error);
+              }
+              if (verification.token && verification.recaptcha) {
+                AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
                 try {
-                  verification = JSON.parse(atob(launchUrl.substring(15)));
+                  verifyUserEmail(verification.token, verification.recaptcha);
                 } catch (error) {
-                  console.log(error);
-                }
-                if (verification.token && verification.recaptcha) {
-                  AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
-                  try {
-                    verifyUserEmail(verification.token, verification.recaptcha);
-                  } catch (error) {
-                    const message = 'Invalid Verification Token';
-                    verifyUserEmailFailure(message);
-                    notify({ message });
-                  }
-                } else {
-                  notify({
-                    message: 'Invalid Verification URI',
-                  });
+                  const message = 'Invalid Verification Token';
+                  verifyUserEmailFailure(message);
+                  notify({ message });
                 }
               } else {
-                navigateToUri(navigation, launchUrl);
+                notify({
+                  message: 'Invalid Verification URI',
+                });
               }
+            } else {
+              navigateToUri(navigation, launchUrl);
             }
-          });
+          }
         });
       });
     }

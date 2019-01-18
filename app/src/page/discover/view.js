@@ -8,7 +8,7 @@ import {
   Text,
   View
 } from 'react-native';
-import { normalizeURI } from 'lbry-redux';
+import { normalizeURI, parseURI } from 'lbry-redux';
 import moment from 'moment';
 import Colors from '../../styles/colors';
 import discoverStyle from '../../styles/discover';
@@ -44,16 +44,59 @@ class DiscoverPage extends React.PureComponent {
     const {
       fetchFeaturedUris,
       fetchRewardedContent,
-      subscribedChannels,
-      unreadSubscriptions
+      fetchSubscriptions
     } = this.props;
+
     fetchFeaturedUris();
     fetchRewardedContent();
+    fetchSubscriptions();
+  }
 
-    const numberOfSubscriptions = subscribedChannels ? subscribedChannels.length : 0;
-    console.log('numSubs=' + numberOfSubscriptions);
-    console.log('***unread***');
-    console.log(unreadSubscriptions);
+  subscriptionForUri = (uri, channelName) => {
+    const { allSubscriptions } = this.props;
+    const { claimId, claimName } = parseURI(uri);
+
+    if (allSubscriptions) {
+      for (let i = 0; i < allSubscriptions.length; i++) {
+        const sub = allSubscriptions[i];
+        if (sub.claim_id === claimId && sub.name === claimName && sub.channel_name === channelName) {
+          return sub;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { allSubscriptions/*, unreadSubscriptions*/, enabledChannelNotifications } = this.props;
+
+    const unreadSubscriptions = [ { channel: 'lbry://@carina#953060e296e5b252eb4de6c250d10429ff6fdfea',
+        uris: [ 'lbry://HawaiiGST#81f3c3f39467b6edf6c02cc210a72315237ee3f7' ] } ];
+
+    const utility = NativeModules.UtilityModule;
+    if (utility) {
+      if (prevProps.unreadSubscriptions &&
+          prevProps.unreadSubscriptions.length !== unreadSubscriptions.length &&
+          unreadSubscriptions.length > 0) {
+        unreadSubscriptions.map(({ channel, uris }) => {
+          const { claimName: channelName } = parseURI(channel);
+
+          // check if notifications are enabled for the channel
+          if (enabledChannelNotifications.indexOf(channelName) > -1) {
+            uris.forEach(uri => {
+              const sub = this.subscriptionForUri(uri, channelName);
+              if (sub && sub.value && sub.value.stream) {
+                const metadata = sub.value.stream.metadata;
+                if (metadata) {
+                  utility.showNotificationForContent(uri, metadata.title, channelName, metadata.thumbnail);
+                }
+              }
+            });
+          }
+        });
+      }
+    }
   }
 
   render() {
