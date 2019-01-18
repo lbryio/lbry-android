@@ -69,10 +69,7 @@ class DiscoverPage extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { allSubscriptions/*, unreadSubscriptions*/, enabledChannelNotifications } = this.props;
-
-    const unreadSubscriptions = [ { channel: 'lbry://@carina#953060e296e5b252eb4de6c250d10429ff6fdfea',
-        uris: [ 'lbry://HawaiiGST#81f3c3f39467b6edf6c02cc210a72315237ee3f7' ] } ];
+    const { allSubscriptions, unreadSubscriptions, enabledChannelNotifications } = this.props;
 
     const utility = NativeModules.UtilityModule;
     if (utility) {
