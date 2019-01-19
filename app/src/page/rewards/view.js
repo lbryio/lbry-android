@@ -25,9 +25,11 @@ class RewardsPage extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.props.fetchRewards();
+    const { fetchRewards, pushDrawerStack, navigation, user } = this.props;
 
-    const { user } = this.props;
+    pushDrawerStack();
+    fetchRewards();
+
     this.setState({
       isEmailVerified: (user && user.primary_email && user.has_verified_email),
       isIdentityVerified: (user && user.is_identity_verified),

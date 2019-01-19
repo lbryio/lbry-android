@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
-import { doSetClientSetting } from '../../redux/actions/settings';
-import { makeSelectClientSetting } from '../../redux/selectors/settings';
-import Constants from '../../constants';
+import { doSetClientSetting } from 'redux/actions/settings';
+import { makeSelectClientSetting } from 'redux/selectors/settings';
+import { doPushDrawerStack } from 'redux/actions/drawer';
+import Constants from 'constants';
 import WalletPage from './view';
 
 const select = state => ({
@@ -10,6 +11,7 @@ const select = state => ({
 
 const perform = dispatch => ({
   setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
+  pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_WALLET))
 });
 
 export default connect(select, perform)(WalletPage);

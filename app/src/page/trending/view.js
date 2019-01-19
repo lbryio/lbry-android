@@ -18,7 +18,9 @@ import UriBar from '../../component/uriBar';
 
 class TrendingPage extends React.PureComponent {
   componentDidMount() {
-    this.props.fetchTrendingUris();
+    const { fetchTrendingUris, pushDrawerStack } = this.props;
+    pushDrawerStack();
+    fetchTrendingUris();
   }
 
   render() {

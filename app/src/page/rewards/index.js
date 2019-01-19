@@ -9,6 +9,8 @@ import {
   selectUser,
 } from 'lbryinc';
 import { doToast } from 'lbry-redux';
+import { doPushDrawerStack } from 'redux/actions/drawer';
+import Constants from 'constants';
 import RewardsPage from './view';
 
 const select = state => ({
@@ -23,6 +25,7 @@ const select = state => ({
 const perform = dispatch => ({
   fetchRewards: () => dispatch(doRewardList()),
   notify: data => dispatch(doToast(data)),
+  pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_REWARDS))
 });
 
 export default connect(select, perform)(RewardsPage);

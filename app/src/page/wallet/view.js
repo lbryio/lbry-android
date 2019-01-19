@@ -10,6 +10,10 @@ import Constants from 'constants';
 import walletStyle from 'styles/wallet';
 
 class WalletPage extends React.PureComponent {
+  componentDidMount() {
+    this.props.pushDrawerStack();
+  }
+
   render() {
     const { understandsRisks, setClientSetting } = this.props;
 
