@@ -114,7 +114,7 @@ window.store = store;
 const compressor = createCompressor();
 const authFilter = createFilter('auth', ['authToken']);
 const saveClaimsFilter = createFilter('claims', ['byId', 'claimsByUri']);
-const subscriptionsFilter = createFilter('subscriptions', ['subscriptions']);
+const subscriptionsFilter = createFilter('subscriptions', ['enabledChannelNotifications', 'subscriptions']);
 const settingsFilter = createFilter('settings', ['clientSettings']);
 const walletFilter = createFilter('wallet', ['receiveAddress']);
 

@@ -30,7 +30,7 @@ const downloadsStyle = StyleSheet.create({
   noDownloadsText: {
     textAlign: 'center',
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 14,
+    fontSize: 16,
     position: 'absolute'
   },
   loading: {

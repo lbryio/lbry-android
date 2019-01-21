@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     private static final int RECEIVE_SMS_PERMISSION_REQ_CODE = 203;
 
-    private BroadcastReceiver backgroundMediaReceiver;
+    private BroadcastReceiver notificationsReceiver;
 
     private BroadcastReceiver smsReceiver;
 
@@ -72,6 +72,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     public static final String SALT_KEY = "salt";
 
     public static final String DEVICE_ID_KEY = "deviceId";
+
+    public static final String SOURCE_NOTIFICATION_ID_KEY = "sourceNotificationId";
 
     public static final String SETTING_KEEP_DAEMON_RUNNING = "keepDaemonRunning";
 
@@ -129,7 +131,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .build();
         mReactRootView.startReactApplication(mReactInstanceManager, "LBRYApp", null);
 
-        registerBackgroundMediaReceiver();
+        registerNotificationsReceiver();
 
         setContentView(mReactRootView);
     }
@@ -147,12 +149,12 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         registerReceiver(stopServiceReceiver, intentFilter);
     }
 
-    private void registerBackgroundMediaReceiver() {
+    private void registerNotificationsReceiver() {
         // Background media receiver
-        IntentFilter backgroundMediaFilter = new IntentFilter();
-        backgroundMediaFilter.addAction(BackgroundMediaModule.ACTION_PLAY);
-        backgroundMediaFilter.addAction(BackgroundMediaModule.ACTION_PAUSE);
-        backgroundMediaReceiver = new BroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BackgroundMediaModule.ACTION_PLAY);
+        filter.addAction(BackgroundMediaModule.ACTION_PAUSE);
+        notificationsReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
@@ -169,7 +171,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 }
             }
         };
-        registerReceiver(backgroundMediaReceiver, backgroundMediaFilter);
+        registerReceiver(notificationsReceiver, filter);
     }
 
     public void registerSmsReceiver() {
@@ -363,9 +365,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             }
         }
 
-        if (backgroundMediaReceiver != null) {
-            unregisterReceiver(backgroundMediaReceiver);
-            backgroundMediaReceiver = null;
+        if (notificationsReceiver != null) {
+            unregisterReceiver(notificationsReceiver);
+            notificationsReceiver = null;
         }
 
         if (smsReceiver != null) {
@@ -410,6 +412,15 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         if (mReactInstanceManager != null) {
             mReactInstanceManager.onNewIntent(intent);
         }
+
+        if (intent != null) {
+            int sourceNotificationId = intent.getIntExtra(SOURCE_NOTIFICATION_ID_KEY, -1);
+            if (sourceNotificationId > -1) {
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                notificationManager.cancel(sourceNotificationId);
+            }
+        }
+
         super.onNewIntent(intent);
     }
 

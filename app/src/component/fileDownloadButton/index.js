@@ -6,7 +6,7 @@ import {
   makeSelectLoadingForUri,
   makeSelectCostInfoForUri
 } from 'lbry-redux';
-import { doPurchaseUri, doStartDownload } from '../../redux/actions/file';
+import { doPurchaseUri, doStartDownload } from 'redux/actions/file';
 import FileDownloadButton from './view';
 
 const select = (state, props) => ({
