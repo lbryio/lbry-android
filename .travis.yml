@@ -46,7 +46,7 @@ install:
 - mkdir -p ~/.buildozer/android/platform/android-sdk-23/licenses
 - echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license
 script:
-- "./release.sh | grep -Fv -e 'working:' -e 'copy' -e 'Compiling' --line-buffered"
+- "./release.sh | grep -Fv -e 'working:' -e 'copy' -e 'Compiling' -e 'CONFIGURING' -e 'EXECUTING' --line-buffered"
 - cp $TRAVIS_BUILD_DIR/bin/*.apk /dev/null
 before_deploy:
 - cd $TRAVIS_BUILD_DIR/bin
