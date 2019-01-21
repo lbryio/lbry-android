@@ -73,9 +73,11 @@ class DiscoverPage extends React.PureComponent {
 
     const utility = NativeModules.UtilityModule;
     if (utility) {
-      if (prevProps.unreadSubscriptions &&
-          prevProps.unreadSubscriptions.length !== unreadSubscriptions.length &&
-          unreadSubscriptions.length > 0) {
+      const hasUnread = prevProps.unreadSubscriptions &&
+        prevProps.unreadSubscriptions.length !== unreadSubscriptions.length &&
+        unreadSubscriptions.length > 0;
+
+      if (hasUnread) {
         unreadSubscriptions.map(({ channel, uris }) => {
           const { claimName: channelName } = parseURI(channel);
 
@@ -84,9 +86,14 @@ class DiscoverPage extends React.PureComponent {
             uris.forEach(uri => {
               const sub = this.subscriptionForUri(uri, channelName);
               if (sub && sub.value && sub.value.stream) {
+                let isPlayable = false;
+                const source = sub.value.stream.source;
                 const metadata = sub.value.stream.metadata;
+                if (source) {
+                  isPlayable = source.contentType && ['audio', 'video'].indexOf(source.contentType.substring(0, 5)) > -1;
+                }
                 if (metadata) {
-                  utility.showNotificationForContent(uri, metadata.title, channelName, metadata.thumbnail);
+                  utility.showNotificationForContent(uri, metadata.title, channelName, metadata.thumbnail, isPlayable);
                 }
               }
             });

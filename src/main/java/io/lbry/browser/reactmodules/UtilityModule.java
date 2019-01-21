@@ -197,7 +197,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showNotificationForContent(final String uri, String title, String publisher, final String thumbnail) {
+    public void showNotificationForContent(final String uri, String title, String publisher, final String thumbnail, boolean isPlayable) {
         final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -218,13 +218,11 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         } while (id < 100);
         final int notificationId = id;
 
-        Intent playIntent = new Intent();
-        playIntent.setAction(ACTION_NOTIFICATION_PLAY);
-        PendingIntent playPendingIntent = PendingIntent.getBroadcast(context, 0, playIntent, 0);
-
-        Intent laterIntent = new Intent();
-        laterIntent.setAction(ACTION_NOTIFICATION_LATER);
-        PendingIntent laterPendingIntent = PendingIntent.getBroadcast(context, 0, laterIntent, 0);
+        String uriWithParam = String.format("%s?download=true", uri);
+        Intent playIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uriWithParam));
+        playIntent.putExtra(MainActivity.SOURCE_NOTIFICATION_ID_KEY, notificationId);
+        playIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent playPendingIntent = PendingIntent.getActivity(context, 0, playIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         boolean hasThumbnail = false;
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
@@ -234,8 +232,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
                .setContentTitle(publisher)
                .setContentText(title)
                .setSmallIcon(R.drawable.ic_lbry)
-               .addAction(android.R.drawable.ic_media_play, "Play", playPendingIntent)
-               .addAction(android.R.drawable.ic_media_play, "Watch Later", laterPendingIntent);
+               .addAction(android.R.drawable.ic_media_play, (isPlayable ? "Play" : "Open"), playPendingIntent);
 
         activeNotifications.put(uri, notificationId);
         if (thumbnail != null) {

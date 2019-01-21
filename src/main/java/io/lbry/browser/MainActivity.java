@@ -73,6 +73,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     public static final String DEVICE_ID_KEY = "deviceId";
 
+    public static final String SOURCE_NOTIFICATION_ID_KEY = "sourceNotificationId";
+
     public static final String SETTING_KEEP_DAEMON_RUNNING = "keepDaemonRunning";
 
     public static List<Integer> downloadNotificationIds = new ArrayList<Integer>();
@@ -410,6 +412,15 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         if (mReactInstanceManager != null) {
             mReactInstanceManager.onNewIntent(intent);
         }
+
+        if (intent != null) {
+            int sourceNotificationId = intent.getIntExtra(SOURCE_NOTIFICATION_ID_KEY, -1);
+            if (sourceNotificationId > -1) {
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                notificationManager.cancel(sourceNotificationId);
+            }
+        }
+
         super.onNewIntent(intent);
     }
 

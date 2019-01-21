@@ -23,7 +23,14 @@ export function dispatchNavigateToUri(dispatch, nav, uri) {
     return;
   }
 
-  const params = { uri };
+  let uriVars = {};
+  if (uri.indexOf('?') > -1) {
+    uriVarsStr = uri.substring(uri.indexOf('?') + 1);
+    uri = uri.substring(0, uri.indexOf('?'));
+    uriVars = parseUriVars(uriVarsStr);
+  }
+
+  const params = { uri, uriVars };
   if (nav && nav.routes && nav.routes.length > 0 && 'Main' === nav.routes[0].routeName) {
     const mainRoute = nav.routes[0];
     const discoverRoute = mainRoute.routes[0];
@@ -61,6 +68,23 @@ export function formatBytes(bytes, decimalPoints = 0) {
   return `${value} GB`;
 }
 
+function parseUriVars(vars) {
+  const uriVars = {};
+  const parts = vars.split('&');
+  for (let i = 0; i < parts.length; i++) {
+    const str = parts[i];
+    if (str.indexOf('=') > -1) {
+      const key = str.substring(0, str.indexOf('='));
+      const value = str.substring(str.indexOf('=') + 1);
+      uriVars[key] = value;
+    } else {
+      uriVars[str] = null;
+    }
+  }
+
+  return uriVars;
+}
+
 export function navigateToUri(navigation, uri, additionalParams) {
   if (!navigation) {
     return;
@@ -75,7 +99,14 @@ export function navigateToUri(navigation, uri, additionalParams) {
     return;
   }
 
-  const params = Object.assign({ uri }, additionalParams);
+  let uriVars = {};
+  if (uri.indexOf('?') > -1) {
+    uriVarsStr = uri.substring(uri.indexOf('?') + 1);
+    uri = uri.substring(0, uri.indexOf('?'));
+    uriVars = parseUriVars(uriVarsStr);
+  }
+
+  const params = Object.assign({ uri, uriVars }, additionalParams);
   if ('File' === navigation.state.routeName) {
     const stackAction = StackActions.replace({ routeName: 'File', newKey: uri, params });
     navigation.dispatch(stackAction);

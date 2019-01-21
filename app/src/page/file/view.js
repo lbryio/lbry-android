@@ -49,6 +49,7 @@ class FilePage extends React.PureComponent {
     super(props);
     this.state = {
       autoPlayMedia: false,
+      autoDownloadStarted: false,
       downloadButtonShown: false,
       downloadPressed: false,
       fileViewLogged: false,
@@ -64,6 +65,7 @@ class FilePage extends React.PureComponent {
       playerHeight: 0,
       tipAmount: null,
       uri: null,
+      uriVars: null,
       stopDownloadConfirmed: false
     };
   }
@@ -72,8 +74,8 @@ class FilePage extends React.PureComponent {
     StatusBar.setHidden(false);
 
     const { isResolvingUri, resolveUri, navigation } = this.props;
-    const { uri } = navigation.state.params;
-    this.setState({ uri });
+    const { uri, uriVars } = navigation.state.params;
+    this.setState({ uri, uriVars });
 
     if (!isResolvingUri) resolveUri(uri);
 
@@ -331,6 +333,13 @@ class FilePage extends React.PureComponent {
     sendTip(tipAmount, claim.claim_id, uri, () => { this.setState({ tipAmount: 0, showTipView: false }) });
   }
 
+  startDownloadFailed = () => {
+    this.startTime = null;
+    setTimeout(() => {
+      this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
+    }, 500);
+  }
+
   render() {
     const {
       claim,
@@ -342,7 +351,8 @@ class FilePage extends React.PureComponent {
       rewardedContentClaimIds,
       isResolvingUri,
       blackListedOutpoints,
-      navigation
+      navigation,
+      purchaseUri
     } = this.props;
     const { uri, autoplay } = navigation.state.params;
 
@@ -436,6 +446,12 @@ class FilePage extends React.PureComponent {
           }
         }
 
+        if (fileInfo && !this.state.autoDownloadStarted && this.state.uriVars && 'true' === this.state.uriVars.download) {
+          this.setState({ autoDownloadStarted: true }, () => {
+            purchaseUri(uri, this.startDownloadFailed);
+          });
+        }
+
         innerContent = (
           <View style={filePageStyle.pageContainer}>
             {this.state.showWebView && isWebViewable && <WebView source={{ uri: localFileUri }}
@@ -463,12 +479,7 @@ class FilePage extends React.PureComponent {
                                           this.setState({ downloadPressed: true, autoPlayMedia: true, stopDownloadConfirmed: false });
                                         }}
                                         onButtonLayout={() => this.setState({ downloadButtonShown: true })}
-                                        onStartDownloadFailed={() => {
-                                          this.startTime = null;
-                                          setTimeout(() => {
-                                            this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
-                                          }, 500);
-                                        }} />}
+                                        onStartDownloadFailed={this.startDownloadFailed} />}
                   {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
                 </View>
                 {canLoadMedia && fileInfo && <View style={playerBgStyle}

@@ -16,7 +16,7 @@ import {
   selectBlackListedOutpoints,
 } from 'lbry-redux';
 import { selectRewardContentClaimIds } from 'lbryinc';
-import { doDeleteFile, doStopDownloadingFile } from '../../redux/actions/file';
+import { doDeleteFile, doPurchaseUri, doStopDownloadingFile } from 'redux/actions/file';
 import FilePage from './view';
 
 const select = (state, props) => {
@@ -44,6 +44,7 @@ const perform = dispatch => ({
   fetchFileInfo: uri => dispatch(doFetchFileInfo(uri)),
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
   notify: data => dispatch(doToast(data)),
+  purchaseUri: (uri, failureCallback) => dispatch(doPurchaseUri(uri, null, failureCallback)),
   resolveUri: uri => dispatch(doResolveUri(uri)),
   sendTip: (amount, claimId, uri, successCallback, errorCallback) => dispatch(doSendTip(amount, claimId, uri, successCallback, errorCallback)),
   stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),
