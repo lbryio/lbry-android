@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
+import { navigateBack } from 'utils/helper';
 import Colors from 'styles/colors';
 import Button from 'component/button';
 import FileList from 'component/fileList';
@@ -41,7 +42,16 @@ class ChannelPage extends React.PureComponent {
   }
 
   render() {
-    const { fetching, claimsInChannel, claim, navigation, totalPages, uri } = this.props;
+    const {
+      fetching,
+      claimsInChannel,
+      claim,
+      navigation,
+      totalPages,
+      uri,
+      drawerStack,
+      popDrawerStack
+    } = this.props;
     const { name, permanent_url: permanentUrl } = claim;
 
     let contentList;
@@ -69,7 +79,7 @@ class ChannelPage extends React.PureComponent {
 
     return (
       <View style={channelPageStyle.container}>
-        <PageHeader title={name} onBackPressed={() => navigation.goBack(navigation.state.key)} />
+        <PageHeader title={name} onBackPressed={() => navigateBack(navigation, drawerStack, popDrawerStack)} />
         {contentList}
         {(totalPages > 1) &&
         <View style={channelPageStyle.pageButtons}>

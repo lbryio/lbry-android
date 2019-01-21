@@ -23,8 +23,10 @@ class SubscriptionsPage extends React.PureComponent {
   componentDidMount() {
     const {
       doFetchMySubscriptions,
-      doFetchRecommendedSubscriptions
+      doFetchRecommendedSubscriptions,
+      pushDrawerStack,
     } = this.props;
+    pushDrawerStack();
     doFetchMySubscriptions();
     //doFetchRecommendedSubscriptions();
   }

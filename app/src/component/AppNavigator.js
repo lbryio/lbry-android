@@ -33,7 +33,9 @@ import {
   TextInput,
   ToastAndroid
 } from 'react-native';
-import { doDeleteCompleteBlobs } from '../redux/actions/file';
+import { doPopDrawerStack } from 'redux/actions/drawer';
+import { doDeleteCompleteBlobs } from 'redux/actions/file';
+import { selectDrawerStack } from 'redux/selectors/drawer';
 import { SETTINGS, doDismissToast, doToast, selectToast } from 'lbry-redux';
 import {
   doUserEmailVerify,
@@ -43,16 +45,16 @@ import {
   selectEmailVerifyErrorMessage,
   selectUser
 } from 'lbryinc';
-import { makeSelectClientSetting } from '../redux/selectors/settings';
+import { makeSelectClientSetting } from 'redux/selectors/settings';
 import { decode as atob } from 'base-64';
-import { dispatchNavigateToUri } from '../utils/helper';
-import Colors from '../styles/colors';
-import Constants from '../constants';
+import { dispatchNavigateBack, dispatchNavigateToUri } from 'utils/helper';
+import Colors from 'styles/colors';
+import Constants from 'constants';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import NavigationButton from '../component/navigationButton';
-import discoverStyle from '../styles/discover';
-import searchStyle from '../styles/search';
-import SearchRightHeaderIcon from '../component/searchRightHeaderIcon';
+import NavigationButton from 'component/navigationButton';
+import discoverStyle from 'styles/discover';
+import searchStyle from 'styles/search';
+import SearchRightHeaderIcon from 'component/searchRightHeaderIcon';
 
 const menuNavigationButton = (navigation) => <NavigationButton
                                                name="bars"
@@ -72,21 +74,30 @@ const discoverStack = createStackNavigator({
   },
   File: {
     screen: FilePage,
-    navigationOptions: {
-      header: null,
-      drawerLockMode: 'locked-closed'
-    }
+    navigationOptions: ({ navigation }) => ({
+      header: null
+    })
   },
   Search: {
     screen: SearchPage,
     navigationOptions: ({ navigation }) => ({
-      drawerLockMode: 'locked-closed',
       headerTitleStyle: discoverStyle.titleText
     })
   }
 }, {
   headerMode: 'screen'
 });
+
+discoverStack.navigationOptions = ({ navigation }) => {
+  let drawerLockMode = 'unlocked';
+  if (navigation.state.index > 0) {
+    drawerLockMode = 'locked-closed';
+  }
+
+  return {
+    drawerLockMode
+  };
+};
 
 const trendingStack = createStackNavigator({
   Trending: {
@@ -232,7 +243,7 @@ class AppWithNavigationState extends React.Component {
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
-      const { dispatch, nav } = this.props;
+      const { dispatch, nav, drawerStack, popDrawerStack } = this.props;
       // There should be a better way to check this
       if (nav.routes.length > 0) {
         if (nav.routes[0].routeName === 'Main') {
@@ -241,7 +252,7 @@ class AppWithNavigationState extends React.Component {
               mainRoute.routes[0].index > 0 /* Discover stack index */ ||
               mainRoute.routes[4].index > 0 /* Wallet stack index */ ||
               mainRoute.index >= 5 /* Settings and About screens */) {
-            dispatch(NavigationActions.back());
+            dispatchNavigateBack(dispatch, nav, drawerStack, doPopDrawerStack);
             return true;
           }
         }
@@ -374,6 +385,7 @@ const mapStateToProps = state => ({
   keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
   nav: state.nav,
   toast: selectToast(state),
+  drawerStack: selectDrawerStack(state),
   emailToVerify: selectEmailToVerify(state),
   emailVerifyPending: selectEmailVerifyIsPending(state),
   emailVerifyErrorMessage: selectEmailVerifyErrorMessage(state),

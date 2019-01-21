@@ -1,6 +1,7 @@
 import { NavigationActions, StackActions } from 'react-navigation';
 import { buildURI } from 'lbry-redux';
-import Constants from '../constants';
+import { DrawerRoutes } from 'constants';
+import Constants from 'constants';
 
 function getRouteForSpecialUri(uri) {
   let targetRoute;
@@ -83,6 +84,41 @@ export function navigateToUri(navigation, uri, additionalParams) {
   }
 
   navigation.navigate({ routeName: 'File', key: uri, params });
+}
+
+export function navigateBack(navigation, drawerStack, popDrawerStack) {
+  const shouldPopStack = DrawerRoutes.indexOf(navigation.state.routeName) > -1;
+  if (shouldPopStack) {
+    navigation.goBack();
+    if (popDrawerStack) {
+      popDrawerStack();
+    }
+
+    navigation.navigate({ routeName: drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0] });
+    return;
+  }
+
+  navigation.goBack(navigation.state.key);
+}
+
+export function dispatchNavigateBack(dispatch, nav, drawerStack, popDrawerStack) {
+  const drawerRouteIndex = nav.routes[0].index;
+  const shouldPopStack = (
+    (drawerRouteIndex > 0 && drawerRouteIndex !== 5) || // not the discover nor wallet stack
+    (drawerRouteIndex === 5 && nav.routes[0].routes[drawerRouteIndex].index === 0) // wallet stack, and tx history page not active
+  );
+  if (shouldPopStack) {
+    dispatch(NavigationActions.back());
+    if (popDrawerStack) {
+      dispatch(popDrawerStack());
+    }
+
+    const navigateAction = NavigationActions.navigate({ routeName: drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0] });
+    dispatch(navigateAction);
+    return;
+  }
+
+  dispatch(NavigationActions.back());
 }
 
 export function uriFromFileInfo(fileInfo) {

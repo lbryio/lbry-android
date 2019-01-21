@@ -25,7 +25,9 @@ class DownloadsPage extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.props.fileList();
+    const { fileList, pushDrawerStack } = this.props;
+    pushDrawerStack();
+    fileList();
   }
 
   render() {

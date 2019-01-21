@@ -1,19 +1,26 @@
 import React from 'react';
 import { SETTINGS } from 'lbry-redux';
 import { Text, View, ScrollView, Switch, NativeModules } from 'react-native';
-import PageHeader from '../../component/pageHeader';
-import settingsStyle from '../../styles/settings';
+import { navigateBack } from 'utils/helper';
+import PageHeader from 'component/pageHeader';
+import settingsStyle from 'styles/settings';
 
 class SettingsPage extends React.PureComponent {
   static navigationOptions = {
     title: 'Settings'
   }
 
+  componentDidMount() {
+    this.props.pushDrawerStack();
+  }
+
   render() {
     const {
       backgroundPlayEnabled,
+      drawerStack,
       keepDaemonRunning,
       navigation,
+      popDrawerStack,
       showNsfw,
       setClientSetting
     } = this.props;
@@ -24,7 +31,7 @@ class SettingsPage extends React.PureComponent {
     return (
       <View>
         <PageHeader title={"Settings"}
-          onBackPressed={() => navigation.goBack(navigation.state.key)} />
+          onBackPressed={() => navigateBack(navigation, drawerStack, popDrawerStack)} />
         <ScrollView style={settingsStyle.scrollContainer}>
           <View style={settingsStyle.row}>
             <View style={settingsStyle.switchText}>

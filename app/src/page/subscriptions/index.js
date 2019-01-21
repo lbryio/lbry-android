@@ -14,6 +14,8 @@ import {
   selectFirstRunCompleted,
   selectShowSuggestedSubs
 } from 'lbryinc';
+import { doPushDrawerStack } from 'redux/actions/drawer';
+import Constants from 'constants';
 import SubscriptionsPage from './view';
 
 const select = state => ({
@@ -28,13 +30,13 @@ const select = state => ({
   showSuggestedSubs: selectShowSuggestedSubs(state),
 });
 
-export default connect(
-  select,
-  {
-    doFetchMySubscriptions,
-    doSetViewMode,
-    doFetchRecommendedSubscriptions,
-    doCompleteFirstRun,
-    doShowSuggestedSubs,
-  }
-)(SubscriptionsPage);
+const perform = dispatch => ({
+  doFetchMySubscriptions,
+  doSetViewMode,
+  doFetchRecommendedSubscriptions,
+  doCompleteFirstRun,
+  doShowSuggestedSubs,
+  pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_SUBSCRIPTIONS))
+});
+
+export default connect(select, perform)(SubscriptionsPage);
