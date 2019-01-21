@@ -213,6 +213,9 @@ const rewardStyle = StyleSheet.create({
   redeemButton: {
     alignSelf: 'flex-end',
     backgroundColor: Colors.LbryGreen
+  },
+  failureFootnote: {
+    marginTop: 12
   }
 });
 

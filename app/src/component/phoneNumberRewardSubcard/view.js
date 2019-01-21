@@ -11,14 +11,14 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import Button from '../button';
-import Colors from '../../styles/colors';
-import Constants from '../../constants';
+import Button from 'component/button';
+import Colors from 'styles/colors';
+import Constants from 'constants';
 import CountryPicker from 'react-native-country-picker-modal';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Link from '../link';
+import Link from 'component/link';
 import PhoneInput from 'react-native-phone-input';
-import rewardStyle from '../../styles/reward';
+import rewardStyle from 'styles/reward';
 
 class PhoneNumberRewardSubcard extends React.PureComponent {
   phoneInput = null;
@@ -35,6 +35,7 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
       countryCode: null,
       newPhoneAdded: false,
       number: null,
+      phoneVerifyFailed: false,
       verificationCode: null,
     };
   }
@@ -71,17 +72,18 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     if (!phoneNewIsPending && (phoneNewIsPending !== prevProps.phoneNewIsPending)) {
       if (phoneNewErrorMessage) {
         notify({ message: String(phoneNewErrorMessage) });
+        this.setState({ phoneVerifyFailed: true });
       } else {
-        this.setState({ newPhoneAdded: true });
+        this.setState({ newPhoneAdded: true, phoneVerifyFailed: false });
       }
     }
     if (!phoneVerifyIsPending && (phoneVerifyIsPending !== prevProps.phoneVerifyIsPending)) {
       if (phoneVerifyErrorMessage) {
         notify({ message: String(phoneVerifyErrorMessage) });
-        this.setState({ codeVerifyStarted: false });
+        this.setState({ codeVerifyStarted: false, phoneVerifyFailed: true });
       } else {
         notify({ message: 'Your phone number was successfully verified.' });
-        this.setState({ codeVerifySuccessful: true });
+        this.setState({ codeVerifySuccessful: true, phoneVerifyFailed: false });
         if (onPhoneVerifySuccessful) {
           onPhoneVerifySuccessful();
         }
@@ -108,6 +110,7 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
       });
     }
 
+    this.setState({ phoneVerifyFailed: false });
     const countryCode = this.phoneInput.getCountryCode();
     const number = this.phoneInput.getValue().replace('+' + countryCode, '');
     this.setState({ countryCode, number });
@@ -120,7 +123,7 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     }
 
     const { verifyPhone } = this.props;
-    this.setState({ codeVerifyStarted: true });
+    this.setState({ codeVerifyStarted: true, phoneVerifyFailed: false });
     verifyPhone(this.state.verificationCode);
   }
 
@@ -207,6 +210,12 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
                 </View>}
             </View>
           }
+          {this.state.phoneVerifyFailed &&
+            <View style={rewardStyle.failureFootnote}>
+              <Text style={rewardStyle.subcardText}>
+                Sorry, we were unable to verify your phone number. Please go to <Link style={rewardStyle.textLink} href="http://chat.lbry.io" text="chat.lbry.io" /> for manual verification if this keeps happening.
+              </Text>
+            </View>}
         </View>
 
         <CountryPicker
