@@ -103,8 +103,10 @@ export function navigateBack(navigation, drawerStack, popDrawerStack) {
 
 export function dispatchNavigateBack(dispatch, nav, drawerStack, popDrawerStack) {
   const drawerRouteIndex = nav.routes[0].index;
-  const shouldPopStack = (drawerRouteIndex > 0 && drawerRouteIndex !== 5) || // not the discover nor wallet stack
-    (drawerRouteIndex === 5 && nav.routes[0].routes[drawerRouteIndex].index === 0); // wallet stack, and tx history page not active
+  const shouldPopStack = (
+    (drawerRouteIndex > 0 && drawerRouteIndex !== 5) || // not the discover nor wallet stack
+    (drawerRouteIndex === 5 && nav.routes[0].routes[drawerRouteIndex].index === 0) // wallet stack, and tx history page not active
+  );
   if (shouldPopStack) {
     dispatch(NavigationActions.back());
     if (popDrawerStack) {
