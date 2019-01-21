@@ -796,7 +796,7 @@ class ToolchainCL(object):
                     error("Unknown build mode {} for apk()".format(
                         args.build_mode))
                     exit(1)
-                output = shprint(gradlew, "-q", "--console=plain", gradle_task, _tail=20,
+                output = shprint(gradlew, "--console=plain", gradle_task, _tail=20,
                                  _critical=True, _env=env)
 
                 # gradle output apks somewhere else
