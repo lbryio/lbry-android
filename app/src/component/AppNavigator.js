@@ -67,7 +67,7 @@ const discoverStack = createStackNavigator({
   Discover: {
     screen: DiscoverPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Discover',
+      title: 'Explore',
       headerLeft: menuNavigationButton(navigation),
       headerTitleStyle: discoverStyle.titleText
     })
@@ -166,7 +166,7 @@ const walletStack = createStackNavigator({
 
 const drawer = createDrawerNavigator({
   DiscoverStack: { screen: discoverStack, navigationOptions: {
-    title: 'Discover', drawerIcon: ({ tintColor }) => <Icon name="compass" size={20} style={{ color: tintColor }} />
+    title: 'Explore', drawerIcon: ({ tintColor }) => <Icon name="compass" size={20} style={{ color: tintColor }} />
   }},
   TrendingStack: { screen: trendingStack, navigationOptions: {
     title: 'Trending', drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />
@@ -174,14 +174,14 @@ const drawer = createDrawerNavigator({
   MySubscriptionsStack: { screen: mySubscriptionsStack, navigationOptions: {
     title: 'My Subscriptions', drawerIcon: ({ tintColor }) => <Icon name="rss-square" size={20} style={{ color: tintColor }} />
   }},
-  MyLBRYStack: { screen: myLbryStack, navigationOptions: {
-    title: 'My LBRY', drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
+  WalletStack: { screen: walletStack, navigationOptions: {
+    title: 'Wallet', drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
   }},
   Rewards: { screen: rewardsStack, navigationOptions: {
     drawerIcon: ({ tintColor }) => <Icon name="trophy" size={20} style={{ color: tintColor }} />
   }},
-  WalletStack: { screen: walletStack, navigationOptions: {
-    title: 'Wallet', drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
+  MyLBRYStack: { screen: myLbryStack, navigationOptions: {
+    title: 'My LBRY', drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
   }},
   Settings: { screen: SettingsPage, navigationOptions: {
     drawerLockMode: 'locked-closed',
