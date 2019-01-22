@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Colors from '../../styles/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from '../button';
@@ -30,6 +30,8 @@ class CustomRewardCard extends React.PureComponent<Props> {
   onClaimPress = () => {
     const { canClaim, notify, submitRewardCode } = this.props;
     const { rewardCode } = this.state;
+
+    Keyboard.dismiss();
 
     if (!canClaim) {
       notify({ message: 'Unfortunately, you are not eligible to claim this reward at this time.' });
