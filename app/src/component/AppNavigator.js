@@ -166,7 +166,7 @@ const walletStack = createStackNavigator({
 
 const drawer = createDrawerNavigator({
   DiscoverStack: { screen: discoverStack, navigationOptions: {
-    title: 'Explore', drawerIcon: ({ tintColor }) => <Icon name="compass" size={20} style={{ color: tintColor }} />
+    title: 'Explore', drawerIcon: ({ tintColor }) => <Icon name="home" size={20} style={{ color: tintColor }} />
   }},
   TrendingStack: { screen: trendingStack, navigationOptions: {
     title: 'Trending', drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />
