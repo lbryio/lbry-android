@@ -89,7 +89,7 @@ class FileDownloadButton extends React.PureComponent {
       return (
         <TouchableOpacity onLayout={onButtonLayout}
                           style={[style, fileDownloadButtonStyle.container]} onPress={openFile}>
-          <Text style={fileDownloadButtonStyle.text}>Open</Text>
+          <Text style={fileDownloadButtonStyle.text}>{isViewable ? 'View' : 'Open'}</Text>
         </TouchableOpacity>
       );
     }
