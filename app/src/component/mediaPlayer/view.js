@@ -153,6 +153,9 @@ class MediaPlayer extends React.PureComponent {
 
   onEnd = () => {
     this.setState({ paused: true });
+    if (this.props.onPlaybackFinished) {
+      this.props.onPlaybackFinished();
+    }
     this.video.seek(0);
   }
 

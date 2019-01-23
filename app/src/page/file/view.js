@@ -43,6 +43,8 @@ class FilePage extends React.PureComponent {
 
   playerBackground = null;
 
+  scrollView = null;
+
   startTime = null;
 
   constructor(props) {
@@ -58,6 +60,7 @@ class FilePage extends React.PureComponent {
       isLandscape: false,
       mediaLoaded: false,
       pageSuspended: false,
+      relatedContentY: 0,
       showImageViewer: false,
       showWebView: false,
       showTipView: false,
@@ -303,6 +306,18 @@ class FilePage extends React.PureComponent {
     NativeModules.Mixpanel.track('Play', payload);
   }
 
+  onPlaybackFinished = () => {
+    if (this.scrollView && this.state.relatedContentY) {
+        this.scrollView.scrollTo({ x: 0, y: this.state.relatedContentY, animated: true});
+    }
+  }
+
+  setRelatedContentPosition = (evt) =>  {
+    if (!this.state.relatedContentY) {
+      this.setState({ relatedContentY: evt.nativeEvent.layout.y });
+    }
+  }
+
   logFileView = (uri, fileInfo, timeToStart) => {
     const { outpoint, claim_id: claimId } = fileInfo;
     const params = {
@@ -503,6 +518,7 @@ class FilePage extends React.PureComponent {
                                                }}
                                                onMediaLoaded={() => this.onMediaLoaded(channelName, title, uri)}
                                                onPlaybackStarted={this.onPlaybackStarted}
+                                               onPlaybackFinished={this.onPlaybackFinished}
                                               />}
 
                 {showActions &&
@@ -533,7 +549,8 @@ class FilePage extends React.PureComponent {
                 </View>}
                 <ScrollView
                   style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
-                  contentContainerstyle={showActions ? null : filePageStyle.scrollContent}>
+                  contentContainerstyle={showActions ? null : filePageStyle.scrollContent}
+                  ref={(ref) => { this.scrollView = ref; }}>
                   <Text style={filePageStyle.title} selectable={true}>{title}</Text>
                   {channelName &&
                     <View style={filePageStyle.channelRow}>
@@ -561,6 +578,7 @@ class FilePage extends React.PureComponent {
 
                   {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
 
+                  <View onLayout={this.setRelatedContentPosition} />
                   <RelatedContent navigation={navigation} uri={uri} />
                 </ScrollView>
                 {this.state.showTipView && <View style={filePageStyle.tipCard}>
