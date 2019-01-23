@@ -349,6 +349,8 @@ class MediaPlayer extends React.PureComponent {
                style={mediaPlayerStyle.player}
                rate={this.state.rate}
                volume={this.state.volume}
+               poster={thumbnail}
+               posterResizeMode={"cover"}
                paused={this.state.paused}
                onLoad={this.onLoad}
                onProgress={this.onProgress}
