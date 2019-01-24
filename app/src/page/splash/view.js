@@ -18,6 +18,8 @@ import Colors from '../../styles/colors';
 import Constants from '../../constants';
 import splashStyle from '../../styles/splash';
 
+const BLOCK_HEIGHT_INTERVAL = 1000 * 60 * 2.5; // every 2.5 minutes
+
 class SplashScreen extends React.PureComponent {
   static navigationOptions = {
     title: 'Splash'
@@ -147,6 +149,7 @@ class SplashScreen extends React.PureComponent {
           balanceSubscribe,
           blacklistedOutpointsSubscribe,
           checkSubscriptionsInit,
+          updateBlockHeight,
           navigation,
           notify
         } = this.props;
@@ -154,6 +157,8 @@ class SplashScreen extends React.PureComponent {
         balanceSubscribe();
         blacklistedOutpointsSubscribe();
         checkSubscriptionsInit();
+        updateBlockHeight();
+        setInterval(() => { updateBlockHeight(); }, BLOCK_HEIGHT_INTERVAL);
         NativeModules.VersionInfo.getAppVersion().then(appVersion => {
           this.setState({ shouldAuthenticate: true });
           authenticate(appVersion, Platform.OS);
