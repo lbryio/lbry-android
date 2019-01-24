@@ -439,25 +439,30 @@ class FilePage extends React.PureComponent {
         // at least 2MB (or the full download) before media can be loaded
         const canLoadMedia = fileInfo &&
           (fileInfo.written_bytes >= 2097152 || fileInfo.written_bytes == fileInfo.total_bytes); // 2MB = 1024*1024*2
-        const canOpen = (mediaType === 'image' || mediaType === 'text') && completed;
+        const isViewable = (mediaType === 'image' || mediaType === 'text');
         const isWebViewable = mediaType === 'text';
+        const canOpen =  isViewable && completed;
         const localFileUri = this.localUriForFileInfo(fileInfo);
 
         const openFile = () => {
           if (mediaType === 'image') {
             // use image viewer
-            this.setState({
-              imageUrls: [{
-                url: localFileUri
-              }],
-              showImageViewer: true
-            });
+            if (!this.state.showImageViewer) {
+              this.setState({
+                imageUrls: [{
+                  url: localFileUri
+                }],
+                showImageViewer: true
+              });
+            }
           }
           if (isWebViewable) {
             // show webview
-            this.setState({
-              showWebView: true
-            });
+            if (!this.state.showWebView) {
+              this.setState({
+                showWebView: true
+              });
+            }
           }
         }
 
@@ -465,6 +470,11 @@ class FilePage extends React.PureComponent {
           this.setState({ autoDownloadStarted: true }, () => {
             purchaseUri(uri, this.startDownloadFailed);
           });
+        }
+
+        if (this.state.downloadPressed && canOpen) {
+          // automatically open a web viewable or image file after the download button is pressed
+          openFile();
         }
 
         innerContent = (
@@ -489,10 +499,12 @@ class FilePage extends React.PureComponent {
                                         style={filePageStyle.downloadButton}
                                         openFile={openFile}
                                         isPlayable={isPlayable}
+                                        isViewable={isViewable}
                                         onPlay={() => {
                                           this.startTime = Date.now();
                                           this.setState({ downloadPressed: true, autoPlayMedia: true, stopDownloadConfirmed: false });
                                         }}
+                                        onView={() => this.setState({ downloadPressed: true })}
                                         onButtonLayout={() => this.setState({ downloadButtonShown: true })}
                                         onStartDownloadFailed={this.startDownloadFailed} />}
                   {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
