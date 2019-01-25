@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { doBalanceSubscribe, doBlackListedOutpointsSubscribe, doToast } from 'lbry-redux';
+import { doBalanceSubscribe, doBlackListedOutpointsSubscribe, doUpdateBlockHeight, doToast } from 'lbry-redux';
 import {
   doAuthenticate,
   doCheckSubscriptionsInit,
@@ -11,7 +11,7 @@ import {
   selectUser,
   selectEmailToVerify
 } from 'lbryinc';
-import { doDeleteCompleteBlobs } from '../../redux/actions/file';
+import { doDeleteCompleteBlobs } from 'redux/actions/file';
 import SplashScreen from './view';
 
 const select = state => ({
@@ -29,6 +29,7 @@ const perform = dispatch => ({
   fetchSubscriptions: (callback) => dispatch(doFetchMySubscriptions(callback)),
   notify: data => dispatch(doToast(data)),
   setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),
+  updateBlockHeight: () => dispatch(doUpdateBlockHeight()),
   verifyUserEmail: (token, recaptcha) => dispatch(doUserEmailVerify(token, recaptcha)),
   verifyUserEmailFailure: error => dispatch(doUserEmailVerifyFailure(error))
 });
