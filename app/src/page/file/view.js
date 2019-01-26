@@ -503,6 +503,7 @@ class FilePage extends React.PureComponent {
                                                }}
                                                onMediaLoaded={() => this.onMediaLoaded(channelName, title, uri)}
                                                onPlaybackStarted={this.onPlaybackStarted}
+                                               thumbnail={metadata.thumbnail}
                                               />}
 
                 {showActions &&

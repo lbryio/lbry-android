@@ -9,10 +9,11 @@ import {
   ScrollView,
   TouchableOpacity
 } from 'react-native';
+import FastImage from 'react-native-fast-image'
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import FileItemMedia from '../fileItemMedia';
-import mediaPlayerStyle from '../../styles/mediaPlayer';
+import FileItemMedia from 'component/fileItemMedia';
+import mediaPlayerStyle from 'styles/mediaPlayer';
 
 class MediaPlayer extends React.PureComponent {
   static ControlsTimeout = 3000;
@@ -349,13 +350,18 @@ class MediaPlayer extends React.PureComponent {
                style={mediaPlayerStyle.player}
                rate={this.state.rate}
                volume={this.state.volume}
-               poster={thumbnail}
-               posterResizeMode={"cover"}
                paused={this.state.paused}
                onLoad={this.onLoad}
                onProgress={this.onProgress}
                onEnd={this.onEnd}
                />
+
+        {this.state.firstPlay && thumbnail &&
+        <FastImage
+          source={{uri: thumbnail}}
+          resizeMode={FastImage.resizeMode.cover}
+          style={mediaPlayerStyle.playerThumbnail}
+        />}
 
         <TouchableOpacity style={mediaPlayerStyle.playerControls} onPress={this.togglePlayerControls}>
           {this.renderPlayerControls()}

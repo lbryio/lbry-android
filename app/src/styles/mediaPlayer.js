@@ -7,6 +7,13 @@ const mediaPlayerStyle = StyleSheet.create({
     width: '100%',
     height: '100%'
   },
+  playerThumbnail: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+  },
   container: {
     flex: 1,
     paddingBottom: 16
