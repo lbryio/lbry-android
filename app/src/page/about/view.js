@@ -1,9 +1,10 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
 import { NativeModules, Text, View, ScrollView } from 'react-native';
-import Link from '../../component/link';
-import PageHeader from '../../component/pageHeader';
-import aboutStyle from '../../styles/about';
+import { navigateBack } from 'utils/helper';
+import Link from 'component/link';
+import PageHeader from 'component/pageHeader';
+import aboutStyle from 'styles/about';
 
 class AboutPage extends React.PureComponent {
   state = {

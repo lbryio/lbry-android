@@ -43,6 +43,8 @@ class FilePage extends React.PureComponent {
 
   playerBackground = null;
 
+  scrollView = null;
+
   startTime = null;
 
   constructor(props) {
@@ -58,6 +60,7 @@ class FilePage extends React.PureComponent {
       isLandscape: false,
       mediaLoaded: false,
       pageSuspended: false,
+      relatedContentY: 0,
       showImageViewer: false,
       showWebView: false,
       showTipView: false,
@@ -303,6 +306,18 @@ class FilePage extends React.PureComponent {
     NativeModules.Mixpanel.track('Play', payload);
   }
 
+  onPlaybackFinished = () => {
+    if (this.scrollView && this.state.relatedContentY) {
+        this.scrollView.scrollTo({ x: 0, y: this.state.relatedContentY, animated: true});
+    }
+  }
+
+  setRelatedContentPosition = (evt) =>  {
+    if (!this.state.relatedContentY) {
+      this.setState({ relatedContentY: evt.nativeEvent.layout.y });
+    }
+  }
+
   logFileView = (uri, fileInfo, timeToStart) => {
     const { outpoint, claim_id: claimId } = fileInfo;
     const params = {
@@ -424,25 +439,30 @@ class FilePage extends React.PureComponent {
         // at least 2MB (or the full download) before media can be loaded
         const canLoadMedia = fileInfo &&
           (fileInfo.written_bytes >= 2097152 || fileInfo.written_bytes == fileInfo.total_bytes); // 2MB = 1024*1024*2
-        const canOpen = (mediaType === 'image' || mediaType === 'text') && completed;
+        const isViewable = (mediaType === 'image' || mediaType === 'text');
         const isWebViewable = mediaType === 'text';
+        const canOpen =  isViewable && completed;
         const localFileUri = this.localUriForFileInfo(fileInfo);
 
         const openFile = () => {
           if (mediaType === 'image') {
             // use image viewer
-            this.setState({
-              imageUrls: [{
-                url: localFileUri
-              }],
-              showImageViewer: true
-            });
+            if (!this.state.showImageViewer) {
+              this.setState({
+                imageUrls: [{
+                  url: localFileUri
+                }],
+                showImageViewer: true
+              });
+            }
           }
           if (isWebViewable) {
             // show webview
-            this.setState({
-              showWebView: true
-            });
+            if (!this.state.showWebView) {
+              this.setState({
+                showWebView: true
+              });
+            }
           }
         }
 
@@ -450,6 +470,11 @@ class FilePage extends React.PureComponent {
           this.setState({ autoDownloadStarted: true }, () => {
             purchaseUri(uri, this.startDownloadFailed);
           });
+        }
+
+        if (this.state.downloadPressed && canOpen) {
+          // automatically open a web viewable or image file after the download button is pressed
+          openFile();
         }
 
         innerContent = (
@@ -474,10 +499,12 @@ class FilePage extends React.PureComponent {
                                         style={filePageStyle.downloadButton}
                                         openFile={openFile}
                                         isPlayable={isPlayable}
+                                        isViewable={isViewable}
                                         onPlay={() => {
                                           this.startTime = Date.now();
                                           this.setState({ downloadPressed: true, autoPlayMedia: true, stopDownloadConfirmed: false });
                                         }}
+                                        onView={() => this.setState({ downloadPressed: true })}
                                         onButtonLayout={() => this.setState({ downloadButtonShown: true })}
                                         onStartDownloadFailed={this.startDownloadFailed} />}
                   {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
@@ -503,6 +530,7 @@ class FilePage extends React.PureComponent {
                                                }}
                                                onMediaLoaded={() => this.onMediaLoaded(channelName, title, uri)}
                                                onPlaybackStarted={this.onPlaybackStarted}
+                                               onPlaybackFinished={this.onPlaybackFinished}
                                                thumbnail={metadata.thumbnail}
                                               />}
 
@@ -534,7 +562,8 @@ class FilePage extends React.PureComponent {
                 </View>}
                 <ScrollView
                   style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
-                  contentContainerstyle={showActions ? null : filePageStyle.scrollContent}>
+                  contentContainerstyle={showActions ? null : filePageStyle.scrollContent}
+                  ref={(ref) => { this.scrollView = ref; }}>
                   <Text style={filePageStyle.title} selectable={true}>{title}</Text>
                   {channelName &&
                     <View style={filePageStyle.channelRow}>
@@ -562,6 +591,7 @@ class FilePage extends React.PureComponent {
 
                   {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
 
+                  <View onLayout={this.setRelatedContentPosition} />
                   <RelatedContent navigation={navigation} uri={uri} />
                 </ScrollView>
                 {this.state.showTipView && <View style={filePageStyle.tipCard}>

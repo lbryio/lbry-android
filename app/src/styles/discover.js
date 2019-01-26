@@ -134,6 +134,18 @@ const discoverStyle = StyleSheet.create({
   },
   titleText: {
     fontFamily: 'Inter-UI-Regular'
+  },
+  detailsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  dateTime: {
+    marginTop: 2
+  },
+  dateTimeText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 14,
+    color: Colors.DescriptionGrey
   }
 });
 

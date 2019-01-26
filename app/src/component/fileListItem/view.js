@@ -8,12 +8,13 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { navigateToUri, formatBytes } from '../../utils/helper';
-import Colors from '../../styles/colors';
-import FileItemMedia from '../fileItemMedia';
-import Link from '../../component/link';
-import NsfwOverlay from '../../component/nsfwOverlay';
-import fileListStyle from '../../styles/fileList';
+import { navigateToUri, formatBytes } from 'utils/helper';
+import Colors from 'styles/colors';
+import DateTime from 'component/dateTime';
+import FileItemMedia from 'component/fileItemMedia';
+import Link from 'component/link';
+import NsfwOverlay from 'component/nsfwOverlay';
+import fileListStyle from 'styles/fileList';
 
 class FileListItem extends React.PureComponent {
   getStorageForFileInfo = (fileInfo) => {
@@ -62,11 +63,11 @@ class FileListItem extends React.PureComponent {
     const isResolving = !fileInfo && isResolvingUri;
     const title = fileInfo ? fileInfo.metadata.title : metadata && metadata.title ? metadata.title : parseURI(uri).contentName;
 
-    let name;
-    let channel;
+    let name, channel, height;
     if (claim) {
       name = claim.name;
       channel = claim.channel_name;
+      height = claim.height;
     }
 
     return (
@@ -93,9 +94,13 @@ class FileListItem extends React.PureComponent {
                 navigateToUri(navigation, channelUri);
               }} />}
 
+            <View style={fileListStyle.info}>
+              {fileInfo && <Text style={fileListStyle.infoText}>{this.getStorageForFileInfo(fileInfo)}</Text>}
+              <DateTime style={fileListStyle.publishInfo} textStyle={fileListStyle.infoText} timeAgo block={height} />
+            </View>
+
             {fileInfo &&
               <View style={fileListStyle.downloadInfo}>
-                <Text style={fileListStyle.downloadStorage}>{this.getStorageForFileInfo(fileInfo)}</Text>
                 {!fileInfo.completed &&
                   <View style={fileListStyle.progress}>
                     <View style={[fileListStyle.progressCompleted, { flex: this.getDownloadProgress(fileInfo) } ]} />
