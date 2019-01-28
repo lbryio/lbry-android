@@ -12,11 +12,11 @@ const channelPageStyle = StyleSheet.create({
   fileList: {
     paddingTop: 30,
     flex: 1,
-    marginBottom: 60
+    marginBottom: 16
   },
   title: {
     color: Colors.LbryGreen,
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: 30,
     margin: 16
   },
@@ -27,10 +27,25 @@ const channelPageStyle = StyleSheet.create({
     flexDirection: 'row'
   },
   infoText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 20,
     textAlign: 'center',
     marginLeft: 10
+  },
+  pageButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 16,
+    paddingRight: 16,
+    marginBottom: 76
+  },
+  button: {
+    backgroundColor: Colors.LbryGreen,
+    paddingLeft: 16,
+    paddingRight: 16
+  },
+  nextButton: {
+    alignSelf: 'flex-end'
   }
 });
 

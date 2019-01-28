@@ -17,6 +17,7 @@ public class PythonUtil {
             "python2.7",
             "python3.5m",
             "python3.6m",
+			"python3.7m",
             "main"
         };
     }
@@ -36,7 +37,7 @@ public class PythonUtil {
                 // If this is the last possible libpython
                 // load, and it has failed, give a more
                 // general error
-                if (lib.startsWith("python3.6") && !foundPython) {
+                if (lib.startsWith("python3.7") && !foundPython) {
                     throw new java.lang.RuntimeException("Could not load any libpythonXXX.so");
                 }
                 continue;
@@ -49,7 +50,7 @@ public class PythonUtil {
         } catch(UnsatisfiedLinkError e) {
             Log.v(TAG, "Failed to load _io.so or unicodedata.so...but that's okay.");
         }
-        
+
         try {
             // System.loadLibrary("ctypes");
             System.load(filesDirPath + "/lib/python2.7/lib-dynload/_ctypes.so");

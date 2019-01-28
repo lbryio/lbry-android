@@ -9,7 +9,7 @@ import {
   View,
   ScrollView
 } from 'react-native';
-import { navigateToUri } from '../../utils/helper';
+import { navigateToUri, uriFromFileInfo } from '../../utils/helper';
 import Colors from '../../styles/colors';
 import PageHeader from '../../component/pageHeader';
 import FileListItem from '../../component/fileListItem';
@@ -25,15 +25,9 @@ class DownloadsPage extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.props.fileList();
-  }
-
-  uriFromFileInfo(fileInfo) {
-    const { name: claimName, claim_name: claimNameDownloaded, claim_id: claimId } = fileInfo;
-    const uriParams = {};
-    uriParams.contentName = claimName || claimNameDownloaded;
-    uriParams.claimId = claimId;
-    return buildURI(uriParams);
+    const { fileList, pushDrawerStack } = this.props;
+    pushDrawerStack();
+    fileList();
   }
 
   render() {
@@ -59,9 +53,9 @@ class DownloadsPage extends React.PureComponent {
               renderItem={ ({item}) => (
                   <FileListItem
                     style={fileListStyle.item}
-                    uri={this.uriFromFileInfo(item)}
+                    uri={uriFromFileInfo(item)}
                     navigation={navigation}
-                    onPress={() => navigateToUri(navigation, this.uriFromFileInfo(item), { autoplay: true })} />
+                    onPress={() => navigateToUri(navigation, uriFromFileInfo(item), { autoplay: true })} />
                 )
               }
               data={fileInfos.sort((a, b) => {
@@ -71,7 +65,7 @@ class DownloadsPage extends React.PureComponent {
                 if (a.metadata.title === b.metadata.title) return 0;
                 return (a.metadata.title < b.metadata.title) ? -1 : 1;
               })}
-              keyExtractor={(item, index) => item.outpoint}
+              keyExtractor={(item, index) => item.download_path}
             />
           </View>}
         <FloatingWalletBalance navigation={navigation} />

@@ -39,4 +39,3 @@ class CoincurveRecipe(CompiledComponentsPythonRecipe):
 
 
 recipe = CoincurveRecipe()
-

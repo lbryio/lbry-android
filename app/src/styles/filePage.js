@@ -35,7 +35,7 @@ const filePageStyle = StyleSheet.create({
     height: containedMediaHeightWithControls
   },
   emptyClaimText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     textAlign: 'center',
     fontSize: 20,
     marginLeft: 16,
@@ -52,24 +52,33 @@ const filePageStyle = StyleSheet.create({
     flex: 1
   },
   title: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 24,
     marginTop: 12,
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 12
+    marginBottom: 8
   },
-  channelName: {
-    fontFamily: 'Metropolis-SemiBold',
-    fontSize: 20,
+  channelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 20,
+    marginBottom: 16,
+  },
+  subscriptionRow: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end'
+  },
+  channelName: {
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 20,
+    marginTop: 6,
     color: Colors.LbryGreen
   },
   description: {
     color: Colors.DescriptionGrey,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 20,
     marginLeft: 20,
@@ -136,7 +145,7 @@ const filePageStyle = StyleSheet.create({
     borderRadius: 4
   },
   filePriceText: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 12,
     textAlign: 'center',
     color: '#0c604b'
@@ -154,11 +163,18 @@ const filePageStyle = StyleSheet.create({
   fileActions: {
     alignSelf: 'flex-end'
   },
+  socialActions: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row'
+  },
   actionButton: {
     alignSelf: 'flex-start',
     backgroundColor: Colors.White,
-    paddingLeft: 24,
-    paddingRight: 24
+    paddingLeft: 16,
+    paddingRight: 16
+  },
+  bellButton: {
+    marginLeft: 8
   },
   loading: {
     position: 'absolute',
@@ -178,19 +194,19 @@ const filePageStyle = StyleSheet.create({
     paddingRight: 24
   },
   dmcaText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 18,
     lineHeight: 24
   },
   dmcaLink: {
     color: Colors.LbryGreen,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 18,
     lineHeight: 24,
     marginTop: 24
   },
   infoText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 20,
     textAlign: 'center',
     marginLeft: 10
@@ -239,7 +255,7 @@ const filePageStyle = StyleSheet.create({
     marginBottom: 14
   },
   input: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14
   },
   tipAmountInput: {
@@ -253,7 +269,7 @@ const filePageStyle = StyleSheet.create({
     marginTop: 17
   },
   text: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 24
   }

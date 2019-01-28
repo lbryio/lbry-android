@@ -11,7 +11,7 @@ const walletStyle = StyleSheet.create({
     flexDirection: 'row'
   },
   address: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: '#cccccc',
@@ -33,17 +33,24 @@ const walletStyle = StyleSheet.create({
     marginRight: 16,
     padding: 16
   },
+  warningCard: {
+    backgroundColor: Colors.Orange,
+    padding: 16,
+    marginLeft: 16,
+    marginTop: 16,
+    marginRight: 16
+  },
   transactionsCard: {
     backgroundColor: '#ffffff',
     margin: 16
   },
   title: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 20,
     marginBottom: 24
   },
   transactionsTitle: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 20
   },
   transactionsHeader: {
@@ -55,16 +62,16 @@ const walletStyle = StyleSheet.create({
     borderBottomColor: '#eeeeee'
   },
   text: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14
   },
   link: {
     color: Colors.LbryGreen,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14
   },
   smallText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 12
   },
   balanceCard: {
@@ -80,14 +87,14 @@ const walletStyle = StyleSheet.create({
   },
   balanceTitle: {
     color: '#ffffff',
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 18,
     marginLeft: 16,
     marginTop: 16
   },
   balanceCaption: {
     color: '#caedB9',
-    fontFamily: 'Metropolis-Medium',
+    fontFamily: 'Inter-UI-Medium',
     fontSize: 14,
     marginLeft: 16,
     marginTop: 8,
@@ -95,20 +102,20 @@ const walletStyle = StyleSheet.create({
   },
   balance: {
     color: '#ffffff',
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 36,
     marginLeft: 16,
     marginBottom: 16
   },
   infoText: {
     color: '#aaaaaa',
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     padding: 16,
     textAlign: 'center'
   },
   input: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 14
   },
   amountInput: {
@@ -129,7 +136,7 @@ const walletStyle = StyleSheet.create({
   },
   warningText: {
     color: Colors.White,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 24
   },

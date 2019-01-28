@@ -29,8 +29,8 @@ class GmpyRecipe(CythonRecipe):
 
         target_python = Recipe.get_recipe('python3crystax', self.ctx).get_build_dir(arch.arch)
         env['PYTHON_ROOT'] = join(target_python, 'python-install')
-        env['CFLAGS'] += ' -I' + env['PYTHON_ROOT'] + '/include/python3.6'
-        env['LDFLAGS'] += ' -L' + env['PYTHON_ROOT'] + '/lib' + ' -lpython3.6m'
+        env['CFLAGS'] += ' -I' + env['PYTHON_ROOT'] + '/include/python3.7'
+        env['LDFLAGS'] += ' -L' + env['PYTHON_ROOT'] + '/lib' + ' -lpython3.7m'
 
         return env
 

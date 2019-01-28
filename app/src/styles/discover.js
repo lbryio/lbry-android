@@ -33,13 +33,13 @@ const discoverStyle = StyleSheet.create({
     flexDirection: 'row'
   },
   title: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 20,
     textAlign: 'center',
     marginLeft: 10
   },
   categoryName: {
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: 20,
     marginLeft: 24,
     marginTop: 16,
@@ -58,12 +58,12 @@ const discoverStyle = StyleSheet.create({
     justifyContent: 'center'
   },
   fileItemName: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     marginTop: 8,
     fontSize: 18
   },
   channelName: {
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: 16,
     marginTop: 4,
     color: Colors.LbryGreen
@@ -79,7 +79,7 @@ const discoverStyle = StyleSheet.create({
     borderRadius: 4
   },
   filePriceText: {
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 12,
     textAlign: 'center',
     color: '#0c604b'
@@ -112,7 +112,7 @@ const discoverStyle = StyleSheet.create({
     color: Colors.White,
     fontSize: 14,
     textAlign: 'center',
-    fontFamily: 'Metropolis-Regular'
+    fontFamily: 'Inter-UI-Regular'
   },
   rewardTitleContainer: {
     alignItems: 'center',
@@ -129,11 +129,23 @@ const discoverStyle = StyleSheet.create({
     flex: 0.9
   },
   menuText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16
   },
   titleText: {
-    fontFamily: 'Metropolis-Regular'
+    fontFamily: 'Inter-UI-Regular'
+  },
+  detailsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  dateTime: {
+    marginTop: 2
+  },
+  dateTimeText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 14,
+    color: Colors.DescriptionGrey
   }
 });
 

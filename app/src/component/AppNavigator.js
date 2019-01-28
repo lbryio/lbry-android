@@ -9,6 +9,7 @@ import TrendingPage from '../page/trending';
 import SearchPage from '../page/search';
 import SettingsPage from '../page/settings';
 import SplashScreen from '../page/splash';
+import SubscriptionsPage from '../page/subscriptions';
 import TransactionHistoryPage from '../page/transactionHistory';
 import WalletPage from '../page/wallet';
 import SearchInput from '../component/searchInput';
@@ -32,7 +33,9 @@ import {
   TextInput,
   ToastAndroid
 } from 'react-native';
-import { doDeleteCompleteBlobs } from '../redux/actions/file';
+import { doPopDrawerStack } from 'redux/actions/drawer';
+import { doDeleteCompleteBlobs } from 'redux/actions/file';
+import { selectDrawerStack } from 'redux/selectors/drawer';
 import { SETTINGS, doDismissToast, doToast, selectToast } from 'lbry-redux';
 import {
   doUserEmailVerify,
@@ -42,16 +45,16 @@ import {
   selectEmailVerifyErrorMessage,
   selectUser
 } from 'lbryinc';
-import { makeSelectClientSetting } from '../redux/selectors/settings';
+import { makeSelectClientSetting } from 'redux/selectors/settings';
 import { decode as atob } from 'base-64';
-import { dispatchNavigateToUri } from '../utils/helper';
-import Colors from '../styles/colors';
-import Constants from '../constants';
+import { dispatchNavigateBack, dispatchNavigateToUri } from 'utils/helper';
+import Colors from 'styles/colors';
+import Constants from 'constants';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import NavigationButton from '../component/navigationButton';
-import discoverStyle from '../styles/discover';
-import searchStyle from '../styles/search';
-import SearchRightHeaderIcon from '../component/searchRightHeaderIcon';
+import NavigationButton from 'component/navigationButton';
+import discoverStyle from 'styles/discover';
+import searchStyle from 'styles/search';
+import SearchRightHeaderIcon from 'component/searchRightHeaderIcon';
 
 const menuNavigationButton = (navigation) => <NavigationButton
                                                name="bars"
@@ -64,28 +67,37 @@ const discoverStack = createStackNavigator({
   Discover: {
     screen: DiscoverPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Discover',
+      title: 'Explore',
       headerLeft: menuNavigationButton(navigation),
       headerTitleStyle: discoverStyle.titleText
     })
   },
   File: {
     screen: FilePage,
-    navigationOptions: {
-      header: null,
-      drawerLockMode: 'locked-closed'
-    }
+    navigationOptions: ({ navigation }) => ({
+      header: null
+    })
   },
   Search: {
     screen: SearchPage,
     navigationOptions: ({ navigation }) => ({
-      drawerLockMode: 'locked-closed',
       headerTitleStyle: discoverStyle.titleText
     })
   }
 }, {
   headerMode: 'screen'
 });
+
+discoverStack.navigationOptions = ({ navigation }) => {
+  let drawerLockMode = 'unlocked';
+  if (navigation.state.index > 0) {
+    drawerLockMode = 'locked-closed';
+  }
+
+  return {
+    drawerLockMode
+  };
+};
 
 const trendingStack = createStackNavigator({
   Trending: {
@@ -103,6 +115,17 @@ const myLbryStack = createStackNavigator({
     screen: DownloadsPage,
     navigationOptions: ({ navigation }) => ({
       title: 'My LBRY',
+      headerLeft: menuNavigationButton(navigation),
+      headerTitleStyle: discoverStyle.titleText
+    })
+  }
+});
+
+const mySubscriptionsStack = createStackNavigator({
+  Subscriptions: {
+    screen: SubscriptionsPage,
+    navigationOptions: ({ navigation }) => ({
+      title: 'My Subscriptions',
       headerLeft: menuNavigationButton(navigation),
       headerTitleStyle: discoverStyle.titleText
     })
@@ -143,19 +166,22 @@ const walletStack = createStackNavigator({
 
 const drawer = createDrawerNavigator({
   DiscoverStack: { screen: discoverStack, navigationOptions: {
-    title: 'Discover', drawerIcon: ({ tintColor }) => <Icon name="compass" size={20} style={{ color: tintColor }} />
+    title: 'Explore', drawerIcon: ({ tintColor }) => <Icon name="home" size={20} style={{ color: tintColor }} />
   }},
   TrendingStack: { screen: trendingStack, navigationOptions: {
     title: 'Trending', drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />
   }},
-  MyLBRYStack: { screen: myLbryStack, navigationOptions: {
-    title: 'My LBRY', drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
+  MySubscriptionsStack: { screen: mySubscriptionsStack, navigationOptions: {
+    title: 'My Subscriptions', drawerIcon: ({ tintColor }) => <Icon name="rss-square" size={20} style={{ color: tintColor }} />
+  }},
+  WalletStack: { screen: walletStack, navigationOptions: {
+    title: 'Wallet', drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
   }},
   Rewards: { screen: rewardsStack, navigationOptions: {
     drawerIcon: ({ tintColor }) => <Icon name="trophy" size={20} style={{ color: tintColor }} />
   }},
-  WalletStack: { screen: walletStack, navigationOptions: {
-    title: 'Wallet', drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
+  MyLBRYStack: { screen: myLbryStack, navigationOptions: {
+    title: 'My LBRY', drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
   }},
   Settings: { screen: SettingsPage, navigationOptions: {
     drawerLockMode: 'locked-closed',
@@ -217,7 +243,7 @@ class AppWithNavigationState extends React.Component {
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
-      const { dispatch, nav } = this.props;
+      const { dispatch, nav, drawerStack, popDrawerStack } = this.props;
       // There should be a better way to check this
       if (nav.routes.length > 0) {
         if (nav.routes[0].routeName === 'Main') {
@@ -226,7 +252,7 @@ class AppWithNavigationState extends React.Component {
               mainRoute.routes[0].index > 0 /* Discover stack index */ ||
               mainRoute.routes[4].index > 0 /* Wallet stack index */ ||
               mainRoute.index >= 5 /* Settings and About screens */) {
-            dispatch(NavigationActions.back());
+            dispatchNavigateBack(dispatch, nav, drawerStack, doPopDrawerStack);
             return true;
           }
         }
@@ -359,6 +385,7 @@ const mapStateToProps = state => ({
   keepDaemonRunning: makeSelectClientSetting(SETTINGS.KEEP_DAEMON_RUNNING)(state),
   nav: state.nav,
   toast: selectToast(state),
+  drawerStack: selectDrawerStack(state),
   emailToVerify: selectEmailToVerify(state),
   emailVerifyPending: selectEmailVerifyIsPending(state),
   emailVerifyErrorMessage: selectEmailVerifyErrorMessage(state),

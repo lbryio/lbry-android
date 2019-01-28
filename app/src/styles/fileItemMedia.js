@@ -10,7 +10,7 @@ const fileItemMediaStyle = StyleSheet.create({
     alignItems: 'center'
   },
   autothumbText: {
-    fontFamily: 'Metropolis-SemiBold',
+    fontFamily: 'Inter-UI-SemiBold',
     textAlign: 'center',
     color: Colors.White,
     fontSize: 40
@@ -55,7 +55,7 @@ const fileItemMediaStyle = StyleSheet.create({
   },
   text: {
     color: '#ffffff',
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     marginTop: 8
   },

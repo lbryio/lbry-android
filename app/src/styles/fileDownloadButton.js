@@ -10,7 +10,7 @@ const fileDownloadButtonStyle = StyleSheet.create({
     backgroundColor: '#40c0a9',
   },
   text: {
-    fontFamily: 'Metropolis-Medium',
+    fontFamily: 'Inter-UI-Medium',
     color: '#ffffff',
     fontSize: 14,
     textAlign: 'center'

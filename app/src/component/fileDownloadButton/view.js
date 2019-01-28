@@ -38,7 +38,9 @@ class FileDownloadButton extends React.PureComponent {
       purchaseUri,
       costInfo,
       isPlayable,
+      isViewable,
       onPlay,
+      onView,
       loading,
       doPause,
       style,
@@ -68,7 +70,7 @@ class FileDownloadButton extends React.PureComponent {
       }
       return (
         <Button icon={isPlayable ? 'play' : null}
-                text={isPlayable ? 'Play' : 'Download'}
+                text={(isPlayable ? 'Play' : (isViewable ? 'View' : 'Download'))}
                 onLayout={onButtonLayout}
                 style={[style, fileDownloadButtonStyle.container]} onPress={() => {
           if (NativeModules.Mixpanel) {
@@ -78,13 +80,16 @@ class FileDownloadButton extends React.PureComponent {
           if (isPlayable && onPlay) {
             this.props.onPlay();
           }
+          if (isViewable && onView) {
+            this.props.onView();
+          }
         }} />
       );
     } else if (fileInfo && fileInfo.download_path) {
       return (
         <TouchableOpacity onLayout={onButtonLayout}
                           style={[style, fileDownloadButtonStyle.container]} onPress={openFile}>
-          <Text style={fileDownloadButtonStyle.text}>Open</Text>
+          <Text style={fileDownloadButtonStyle.text}>{isViewable ? 'View' : 'Open'}</Text>
         </TouchableOpacity>
       );
     }

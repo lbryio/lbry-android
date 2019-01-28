@@ -10,7 +10,7 @@ from lbrynet.extras.daemon.Components import REFLECTOR_COMPONENT
 
 lbrynet_android_utils = autoclass('io.lbry.browser.Utils')
 service = autoclass('io.lbry.browser.LbrynetService').serviceInstance
-platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_utils.getAndroidRelease(), lbrynet_utils.getAndroidSdk())
+platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_android_utils.getAndroidRelease(), lbrynet_android_utils.getAndroidSdk())
 build_type.BUILD = 'dev' if lbrynet_android_utils.isDebug() else 'release'
 
 # Keyring backend

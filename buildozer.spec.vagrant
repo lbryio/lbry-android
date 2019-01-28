@@ -36,7 +36,7 @@ version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = python3crystax, openssl, sqlite3, hostpython3crystax, android, distro, pyjnius, certifi==2018.4.16, constantly, incremental, miniupnpc==1.9, gmpy, appdirs==1.4.3, argparse==1.2.1, docopt, base58==1.0.0, colorama==0.3.7, dnspython==1.12.0, ecdsa==0.13, envparse, jsonrpclib==0.1.7, jsonschema==2.5.1, pbkdf2, pyyaml, qrcode==5.2.2, requests, seccure==0.3.1.3, attrs==18.1.0, pyasn1, pyasn1-modules, service_identity==16.0.0, six==1.9.0, txJSON-RPC, zope.interface==4.3.3, protobuf==3.6.1, keyring==10.4.0, txupnp, git+https://github.com/lbryio/lbryschema.git#egg=lbryschema, git+https://github.com/lbryio/lbry.git#egg=lbrynet, git+https://github.com/lbryio/aioupnp.git#egg=aioupnp, asn1crypto, treq==17.8.0, funcsigs, mock, pbr, pyopenssl, twisted, idna, Automat, hyperlink, PyHamcrest, netifaces, cryptography, aiohttp, aiorpcX==0.9.0, asyncio, git+https://github.com/lbryio/torba@997b573aa4223ec6c8c01948cd2df0c6475b5f42#egg=torba, coincurve
+requirements = python3crystax, openssl, sqlite3, hostpython3crystax, android, distro, pyjnius, certifi==2018.4.16, constantly, incremental, miniupnpc==1.9, gmpy, appdirs==1.4.3, argparse==1.2.1, docopt, base58==1.0.0, colorama==0.3.7, dnspython==1.12.0, ecdsa==0.13, envparse, jsonrpclib==0.1.7, jsonschema==2.5.1, pbkdf2, pyyaml, qrcode==5.2.2, requests, seccure==0.3.1.3, attrs==18.1.0, pyasn1, pyasn1-modules, service_identity==16.0.0, six==1.9.0, txJSON-RPC, zope.interface==4.3.3, protobuf==3.6.1, keyring==10.4.0, txupnp, git+https://github.com/lbryio/lbryschema.git#egg=lbryschema, git+https://github.com/lbryio/lbry.git@v0.30.4#egg=lbrynet, git+https://github.com/lbryio/aioupnp.git#egg=aioupnp, asn1crypto, treq==17.8.0, funcsigs, mock, pbr, pyopenssl, twisted, idna, Automat, hyperlink, PyHamcrest, netifaces, cryptography, aiohttp, multidict==4.5.2, idna_ssl==1.1.0, typing_extensions==3.6.5, yarl, chardet==3.0.4, async_timeout==3.0.1, aiorpcX==0.9.0, asyncio, git+https://github.com/lbryio/torba#egg=torba, coincurve
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -86,7 +86,7 @@ fullscreen = 0
 #android.presplash_color = #FFFFFF
 
 # (list) Permissions
-android.permissions = ACCESS_NETWORK_STATE,BLUETOOTH,INTERNET,READ_EXTERNAL_STORAGE,RECEIVE_SMS,WRITE_EXTERNAL_STORAGE
+android.permissions = ACCESS_NETWORK_STATE,BLUETOOTH,INTERNET,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
 
 # (int) Android API to use
 android.api = 27
@@ -148,7 +148,7 @@ android.react_src = ./app
 
 # (list) Gradle dependencies to add (currently works only with sdl2_gradle
 # bootstrap)
-android.gradle_dependencies = com.android.support:support-v4:27.1.1, com.android.support:support-media-compat:27.1.1, com.android.support:appcompat-v7:27.1.1, com.facebook.react:react-native:0.55.3, com.mixpanel.android:mixpanel-android:5+, com.google.android.gms:play-services-gcm:11.0.4+, com.facebook.fresco:fresco:1.9.0, com.facebook.fresco:animated-gif:1.9.0
+android.gradle_dependencies = com.android.support:support-v4:27.1.1, com.android.support:support-media-compat:27.1.1, com.android.support:appcompat-v7:27.1.1, com.facebook.react:react-native:0.55.3, com.mixpanel.android:mixpanel-android:5+, com.google.android.gms:play-services-gcm:11.0.4+, com.facebook.fresco:fresco:1.9.0, com.facebook.fresco:animated-gif:1.9.0, com.squareup.picasso:picasso:2.71828
 
 # (str) python-for-android branch to use, defaults to master
 #p4a.branch = stable
@@ -272,4 +272,3 @@ warn_on_root = 1
 #    Then, invoke the command line with the "demo" profile:
 #
 #buildozer --profile demo android debug
-requirements = python3crystax, openssl, sqlite3, hostpython3crystax, android, distro, pyjnius, certifi==2018.4.16, constantly, incremental, miniupnpc==1.9, gmpy, appdirs==1.4.3, argparse==1.2.1, docopt, base58==1.0.0, colorama==0.3.7, dnspython==1.12.0, ecdsa==0.13, envparse, jsonrpclib==0.1.7, jsonschema==2.5.1, pbkdf2, pyyaml, qrcode==5.2.2, requests, seccure==0.3.1.3, attrs==18.1.0, pyasn1, pyasn1-modules, service_identity==16.0.0, six==1.9.0, txJSON-RPC, zope.interface==4.3.3, protobuf==3.6.1, keyring==10.4.0, txupnp, git+https://github.com/lbryio/lbryschema.git#egg=lbryschema, git+https://github.com/lbryio/lbry.git@remove-android-helpers#egg=lbrynet, git+https://github.com/lbryio/aioupnp.git#egg=aioupnp, asn1crypto, treq==17.8.0, funcsigs, mock, pbr, pyopenssl, twisted, idna, Automat, hyperlink, PyHamcrest, netifaces, cryptography, aiohttp, multidict==4.5.2, idna_ssl==1.1.0, typing_extensions==3.6.5, yarl, chardet==3.0.4, async_timeout==3.0.1, aiorpcX==0.9.0, asyncio, git+https://github.com/lbryio/torba@997b573aa4223ec6c8c01948cd2df0c6475b5f42#egg=torba, coincurve

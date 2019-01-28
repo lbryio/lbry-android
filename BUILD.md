@@ -18,13 +18,13 @@ Based on the quick-start instructions at http://buildozer.readthedocs.io/en/late
 ```
 sudo dpkg --add-architecture i386
 sudo apt-get update
-sudo apt-get install autoconf autogen build-essential curl libtool libffi-dev python python-pip python-openssl python3 python3-pip ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386
+sudo apt-get install autoconf autogen build-essential curl libtool libffi-dev python python-pip python-openssl python3.7 python3.7-dev python3-pip ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386
 ```
 Alternatively, the JDK available from http://www.oracle.com/technetwork/java/javase/downloads/index.html can be installed instead of the `openjdk-8-jdk` package.
 
 #### Install Cython and Setuptools
 ```
-sudo pip install --upgrade cython==0.25.2 setuptools
+sudo pip install --upgrade cython==0.28.1 setuptools
 ```
 
 #### Install buildozer

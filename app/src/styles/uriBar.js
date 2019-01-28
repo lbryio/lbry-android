@@ -22,7 +22,7 @@ const uriBarStyle = StyleSheet.create({
     borderColor: Colors.LightGrey,
     padding: 8,
     borderRadius: 4,
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     width: '100%'
   },
@@ -47,7 +47,7 @@ const uriBarStyle = StyleSheet.create({
     padding: 12
   },
   itemText: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     marginLeft: 12,
     marginRight: 12

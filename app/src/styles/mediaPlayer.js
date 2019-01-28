@@ -7,6 +7,13 @@ const mediaPlayerStyle = StyleSheet.create({
     width: '100%',
     height: '100%'
   },
+  playerThumbnail: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+  },
   container: {
     flex: 1,
     paddingBottom: 16
@@ -71,7 +78,7 @@ const mediaPlayerStyle = StyleSheet.create({
     bottom: 14,
   },
   elapsedDuration: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     position: 'absolute',
     left: 8,
     bottom: 24,
@@ -79,7 +86,7 @@ const mediaPlayerStyle = StyleSheet.create({
     color: '#ffffff'
   },
   totalDuration: {
-    fontFamily: 'Metropolis-Regular',
+    fontFamily: 'Inter-UI-Regular',
     position: 'absolute',
     right: 40,
     bottom: 24,
@@ -93,7 +100,7 @@ const mediaPlayerStyle = StyleSheet.create({
     left: 15,
     height: 12,
     width: 12,
-    backgroundColor: '#40c0a9'
+    backgroundColor: Colors.LbryGreen
   },
   seekerHandle: {
     backgroundColor: 'transparent',
@@ -128,7 +135,7 @@ const mediaPlayerStyle = StyleSheet.create({
     left: 15,
     height: 24,
     width: 24,
-    backgroundColor: '#40c0a9'
+    backgroundColor: Colors.LbryGreen
   }
 });
 

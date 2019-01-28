@@ -530,7 +530,7 @@ class Context(object):
         if self.python_recipe.from_crystax:
             return self.get_python_install_dir()
         return join(self.get_python_install_dir(),
-                    'lib', 'python3.6', 'site-packages')
+                    'lib', 'python3.7', 'site-packages')
 
     def get_libs_dir(self, arch):
         '''The libs dir for a given arch.'''
@@ -635,7 +635,7 @@ def run_pymodules_install(ctx, modules):
 
     venv = sh.Command(ctx.virtualenv)
     with current_directory(join(ctx.build_dir)):
-        shprint(venv, '--python=python3.6', 'venv')
+        shprint(venv, '--python=python3.7', 'venv')
 
         info('Creating a requirements.txt file for the Python modules')
         with open('requirements.txt', 'w') as fileh:

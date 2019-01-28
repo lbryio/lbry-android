@@ -11,14 +11,14 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import Button from '../button';
-import Colors from '../../styles/colors';
-import Constants from '../../constants';
+import Button from 'component/button';
+import Colors from 'styles/colors';
+import Constants from 'constants';
 import CountryPicker from 'react-native-country-picker-modal';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Link from '../link';
+import Link from 'component/link';
 import PhoneInput from 'react-native-phone-input';
-import rewardStyle from '../../styles/reward';
+import rewardStyle from 'styles/reward';
 
 class PhoneNumberRewardSubcard extends React.PureComponent {
   phoneInput = null;
@@ -35,12 +35,13 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
       countryCode: null,
       newPhoneAdded: false,
       number: null,
+      phoneVerifyFailed: false,
       verificationCode: null,
     };
   }
 
   componentDidMount() {
-    DeviceEventEmitter.addListener('onReceiveSmsPermissionGranted', this.receiveSmsPermissionGranted);
+    //DeviceEventEmitter.addListener('onReceiveSmsPermissionGranted', this.receiveSmsPermissionGranted);
     DeviceEventEmitter.addListener('onVerificationCodeReceived', this.receiveVerificationCode);
 
     const { phone } = this.props;
@@ -48,13 +49,13 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
       this.setState({ newPhoneAdded: true });
     }
 
-    if (NativeModules.UtilityModule) {
+    /*if (NativeModules.UtilityModule) {
       NativeModules.UtilityModule.canReceiveSms().then(canReceiveSms => this.setState({ canReceiveSms }));
-    }
+    }*/
   }
 
   componentWillUnmount() {
-    DeviceEventEmitter.removeListener('onReceiveSmsPermissionGranted', this.receiveSmsPermissionGranted);
+    //DeviceEventEmitter.removeListener('onReceiveSmsPermissionGranted', this.receiveSmsPermissionGranted);
     DeviceEventEmitter.removeListener('onVerificationCodeReceived', this.receiveVerificationCode);
   }
 
@@ -71,26 +72,23 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     if (!phoneNewIsPending && (phoneNewIsPending !== prevProps.phoneNewIsPending)) {
       if (phoneNewErrorMessage) {
         notify({ message: String(phoneNewErrorMessage) });
+        this.setState({ phoneVerifyFailed: true });
       } else {
-        this.setState({ newPhoneAdded: true });
+        this.setState({ newPhoneAdded: true, phoneVerifyFailed: false });
       }
     }
     if (!phoneVerifyIsPending && (phoneVerifyIsPending !== prevProps.phoneVerifyIsPending)) {
       if (phoneVerifyErrorMessage) {
         notify({ message: String(phoneVerifyErrorMessage) });
-        this.setState({ codeVerifyStarted: false });
+        this.setState({ codeVerifyStarted: false, phoneVerifyFailed: true });
       } else {
         notify({ message: 'Your phone number was successfully verified.' });
-        this.setState({ codeVerifySuccessful: true });
+        this.setState({ codeVerifySuccessful: true, phoneVerifyFailed: false });
         if (onPhoneVerifySuccessful) {
           onPhoneVerifySuccessful();
         }
       }
     }
-  }
-
-  receiveSmsPermissionGranted = () => {
-    this.setState({ canReceiveSms: true });
   }
 
   receiveVerificationCode = (evt) => {
@@ -103,16 +101,6 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     verifyPhone(evt.code);
   }
 
-  onAllowAccessPressed = () => {
-    if (!NativeModules.UtilityModule) {
-      return notify({
-        message: 'The required permission could not be obtained due to a missing module.',
-      });
-    }
-
-    NativeModules.UtilityModule.requestReceiveSmsPermission();
-  }
-
   onSendTextPressed = () => {
     const { addUserPhone, notify } = this.props;
 
@@ -122,6 +110,7 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
       });
     }
 
+    this.setState({ phoneVerifyFailed: false });
     const countryCode = this.phoneInput.getCountryCode();
     const number = this.phoneInput.getValue().replace('+' + countryCode, '');
     this.setState({ countryCode, number });
@@ -134,7 +123,7 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     }
 
     const { verifyPhone } = this.props;
-    this.setState({ codeVerifyStarted: true });
+    this.setState({ codeVerifyStarted: true, phoneVerifyFailed: false });
     verifyPhone(this.state.verificationCode);
   }
 
@@ -169,17 +158,6 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
     return (
       <View style={rewardStyle.subcard}>
         <Text style={rewardStyle.subtitle}>Pending action: Verify Phone Number</Text>
-        {!this.state.canReceiveSms &&
-          <View style={rewardStyle.smsPermissionContainer}>
-            <Text style={[rewardStyle.bottomMarginMedium, rewardStyle.subcardText]}>
-              You can grant access to the receive SMS permission in order to verify phone number. Alternatively, you can enter the verification code manually.
-            </Text>
-            <Button
-              style={rewardStyle.actionButton}
-              text={"Allow access"}
-              onPress={this.onAllowAccessPressed}
-            />
-          </View>}
         <View style={rewardStyle.phoneVerificationContainer}>
           {!this.state.newPhoneAdded &&
             <View>
@@ -232,6 +210,12 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
                 </View>}
             </View>
           }
+          {this.state.phoneVerifyFailed &&
+            <View style={rewardStyle.failureFootnote}>
+              <Text style={rewardStyle.subcardText}>
+                Sorry, we were unable to verify your phone number. Please go to <Link style={rewardStyle.textLink} href="http://chat.lbry.io" text="chat.lbry.io" /> for manual verification if this keeps happening.
+              </Text>
+            </View>}
         </View>
 
         <CountryPicker

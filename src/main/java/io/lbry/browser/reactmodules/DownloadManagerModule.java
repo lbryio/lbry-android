@@ -62,7 +62,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         Random random = new Random();
         do {
             id = random.nextInt();
-        } while (id < 100);
+        } while (id < 1000);
 
         return id;
     }
@@ -106,7 +106,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private PendingIntent getLaunchPendingIntent(String uri) {
+    public static PendingIntent getLaunchPendingIntent(String uri, Context context) {
         Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent intent = PendingIntent.getActivity(context, 0, launchIntent, 0);
@@ -121,7 +121,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         // The file URI is used as the unique ID
-        builder.setContentIntent(getLaunchPendingIntent(id))
+        builder.setContentIntent(getLaunchPendingIntent(id, context))
                .setContentTitle(String.format("Downloading %s", truncateFilename(filename)))
                .setGroup(GROUP_DOWNLOADS)
                .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -160,7 +160,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
             builders.put(notificationId, builder);
         }
 
-        builder.setContentIntent(getLaunchPendingIntent(id))
+        builder.setContentIntent(getLaunchPendingIntent(id, context))
                .setContentText(String.format("%.0f%% (%s / %s)", progress, formatBytes(writtenBytes), formatBytes(totalBytes)))
                .setGroup(GROUP_DOWNLOADS)
                .setProgress(MAX_PROGRESS, new Double(progress).intValue(), false)

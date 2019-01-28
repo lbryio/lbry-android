@@ -22,7 +22,7 @@ const floatingButtonStyle = StyleSheet.create({
   },
   text: {
     color: Colors.White,
-    fontFamily: 'Metropolis-Bold',
+    fontFamily: 'Inter-UI-Bold',
     fontSize: 18,
   },
   bottomRight: {

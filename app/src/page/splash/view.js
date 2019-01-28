@@ -18,6 +18,8 @@ import Colors from '../../styles/colors';
 import Constants from '../../constants';
 import splashStyle from '../../styles/splash';
 
+const BLOCK_HEIGHT_INTERVAL = 1000 * 60 * 2.5; // every 2.5 minutes
+
 class SplashScreen extends React.PureComponent {
   static navigationOptions = {
     title: 'Splash'
@@ -33,7 +35,8 @@ class SplashScreen extends React.PureComponent {
       launchUrl: null,
       isDownloadingHeaders: false,
       headersDownloadProgress: 0,
-      shouldAuthenticate: false
+      shouldAuthenticate: false,
+      subscriptionsFetched: false
     });
 
     if (NativeModules.DaemonServiceControl) {
@@ -119,7 +122,7 @@ class SplashScreen extends React.PureComponent {
   }
 
   _updateStatusCallback(status) {
-    const { deleteCompleteBlobs } = this.props;
+    const { deleteCompleteBlobs, fetchSubscriptions } = this.props;
     const startupStatus = status.startup_status;
     // At the minimum, wallet should be started and blocks_behind equal to 0 before calling resolve
     const hasStarted = startupStatus.file_manager && startupStatus.wallet && status.wallet.blocks_behind <= 0;
@@ -138,18 +141,24 @@ class SplashScreen extends React.PureComponent {
         isRunning: true,
       });
 
+      // fetch subscriptions, so that we can check for new content after resolve
       Lbry.resolve({ uri: 'lbry://one' }).then(() => {
         // Leave the splash screen
         const {
           authenticate,
           balanceSubscribe,
           blacklistedOutpointsSubscribe,
+          checkSubscriptionsInit,
+          updateBlockHeight,
           navigation,
           notify
         } = this.props;
 
         balanceSubscribe();
         blacklistedOutpointsSubscribe();
+        checkSubscriptionsInit();
+        updateBlockHeight();
+        setInterval(() => { updateBlockHeight(); }, BLOCK_HEIGHT_INTERVAL);
         NativeModules.VersionInfo.getAppVersion().then(appVersion => {
           this.setState({ shouldAuthenticate: true });
           authenticate(appVersion, Platform.OS);

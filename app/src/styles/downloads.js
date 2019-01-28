@@ -29,8 +29,8 @@ const downloadsStyle = StyleSheet.create({
   },
   noDownloadsText: {
     textAlign: 'center',
-    fontFamily: 'Metropolis-Regular',
-    fontSize: 14,
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 16,
     position: 'absolute'
   },
   loading: {

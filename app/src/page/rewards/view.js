@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Colors from '../../styles/colors';
 import Link from '../../component/link';
+import CustomRewardCard from '../../component/customRewardCard';
 import PhoneNumberRewardSubcard from '../../component/phoneNumberRewardSubcard';
 import EmailRewardSubcard from '../../component/emailRewardSubcard';
 import PageHeader from '../../component/pageHeader';
@@ -24,9 +25,11 @@ class RewardsPage extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.props.fetchRewards();
+    const { fetchRewards, pushDrawerStack, navigation, user } = this.props;
 
-    const { user } = this.props;
+    pushDrawerStack();
+    fetchRewards();
+
     this.setState({
       isEmailVerified: (user && user.primary_email && user.has_verified_email),
       isIdentityVerified: (user && user.is_identity_verified),
@@ -89,6 +92,7 @@ class RewardsPage extends React.PureComponent {
 
   renderUnclaimedRewards() {
     const { claimed, fetching, rewards, user } = this.props;
+    const unclaimedRewards = (rewards && rewards.length) ? rewards : [];
 
     if (fetching) {
       return (
@@ -103,25 +107,16 @@ class RewardsPage extends React.PureComponent {
           <Text style={rewardStyle.infoText}>This app is unable to earn rewards due to an authentication failure.</Text>
         </View>
       );
-    } else if (!rewards || rewards.length <= 0) {
-      return (
-        <View style={rewardStyle.busyContainer}>
-          <Text style={rewardStyle.infoText}>
-            {(claimed && claimed.length) ?
-              "You have claimed all available rewards! We're regularly adding more so be sure to check back later." :
-              "There are no rewards available at this time, please check back later."}
-          </Text>
-        </View>
-      );
     }
 
     const isNotEligible = !user || !user.primary_email || !user.has_verified_email || !user.is_reward_approved;
     return (
       <View>
-        {rewards.map(reward => <RewardCard key={reward.reward_type}
-                                           canClaim={!isNotEligible}
-                                           reward={reward}
-                                           reward_type={reward.reward_type} />)}
+        {unclaimedRewards.map(reward => <RewardCard key={reward.reward_type}
+                                          canClaim={!isNotEligible}
+                                          reward={reward}
+                                          reward_type={reward.reward_type} />)}
+        <CustomRewardCard canClaim={!isNotEligible} />
       </View>
     );
   }
@@ -129,9 +124,10 @@ class RewardsPage extends React.PureComponent {
   renderClaimedRewards() {
     const { claimed } = this.props;
     if (claimed && claimed.length) {
+      const reversed = claimed.reverse();
       return (
         <View>
-          {claimed.map(reward => <RewardCard key={reward.reward_type} reward={reward} />)}
+          {reversed.map(reward => <RewardCard key={reward.transaction_id} reward={reward} />)}
         </View>
       );
     }

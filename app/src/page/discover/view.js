@@ -8,7 +8,7 @@ import {
   Text,
   View
 } from 'react-native';
-import { normalizeURI } from 'lbry-redux';
+import { normalizeURI, parseURI } from 'lbry-redux';
 import moment from 'moment';
 import Colors from '../../styles/colors';
 import discoverStyle from '../../styles/discover';
@@ -41,9 +41,66 @@ class DiscoverPage extends React.PureComponent {
       }
     });
 
-    const { fetchFeaturedUris, fetchRewardedContent } = this.props;
+    const {
+      fetchFeaturedUris,
+      fetchRewardedContent,
+      fetchSubscriptions
+    } = this.props;
+
     fetchFeaturedUris();
     fetchRewardedContent();
+    fetchSubscriptions();
+  }
+
+  subscriptionForUri = (uri, channelName) => {
+    const { allSubscriptions } = this.props;
+    const { claimId, claimName } = parseURI(uri);
+
+    if (allSubscriptions) {
+      for (let i = 0; i < allSubscriptions.length; i++) {
+        const sub = allSubscriptions[i];
+        if (sub.claim_id === claimId && sub.name === claimName && sub.channel_name === channelName) {
+          return sub;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { allSubscriptions, unreadSubscriptions, enabledChannelNotifications } = this.props;
+
+    const utility = NativeModules.UtilityModule;
+    if (utility) {
+      const hasUnread = prevProps.unreadSubscriptions &&
+        prevProps.unreadSubscriptions.length !== unreadSubscriptions.length &&
+        unreadSubscriptions.length > 0;
+
+      if (hasUnread) {
+        unreadSubscriptions.map(({ channel, uris }) => {
+          const { claimName: channelName } = parseURI(channel);
+
+          // check if notifications are enabled for the channel
+          if (enabledChannelNotifications.indexOf(channelName) > -1) {
+            uris.forEach(uri => {
+              const sub = this.subscriptionForUri(uri, channelName);
+              if (sub && sub.value && sub.value.stream) {
+                let isPlayable = false;
+                const source = sub.value.stream.source;
+                const metadata = sub.value.stream.metadata;
+                if (source) {
+                  isPlayable = source.contentType && ['audio', 'video'].indexOf(source.contentType.substring(0, 5)) > -1;
+                }
+                if (metadata) {
+                  utility.showNotificationForContent(uri, metadata.title, channelName, metadata.thumbnail, isPlayable);
+                }
+              }
+            });
+          }
+        });
+      }
+    }
   }
 
   render() {

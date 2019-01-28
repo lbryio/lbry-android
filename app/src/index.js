@@ -19,17 +19,18 @@ import {
   searchReducer,
   walletReducer
 } from 'lbry-redux';
-import { authReducer, rewardsReducer, userReducer } from 'lbryinc';
+import { authReducer, rewardsReducer, subscriptionsReducer, userReducer } from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
-import { AppNavigator } from './component/AppNavigator';
+import { AppNavigator } from 'component/AppNavigator';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import AppWithNavigationState, { reactNavigationMiddleware } from './component/AppNavigator';
 import FilesystemStorage from 'redux-persist-filesystem-storage';
 import createCompressor from 'redux-persist-transform-compress';
 import createFilter from 'redux-persist-transform-filter';
 import moment from 'moment';
-import settingsReducer from './redux/reducers/settings';
+import drawerReducer from 'redux/reducers/drawer';
+import settingsReducer from 'redux/reducers/settings';
 import thunk from 'redux-thunk';
 
 const globalExceptionHandler = (error, isFatal) => {
@@ -81,12 +82,14 @@ const reducers = combineReducers({
   blacklist: blacklistReducer,
   claims: claimsReducer,
   costInfo: costInfoReducer,
+  drawer: drawerReducer,
   fileInfo: fileInfoReducer,
   nav: navigatorReducer,
   notifications: notificationsReducer,
   rewards: rewardsReducer,
   settings: settingsReducer,
   search: searchReducer,
+  subscriptions: subscriptionsReducer,
   user: userReducer,
   wallet: walletReducer
 });
@@ -111,7 +114,7 @@ window.store = store;
 const compressor = createCompressor();
 const authFilter = createFilter('auth', ['authToken']);
 const saveClaimsFilter = createFilter('claims', ['byId', 'claimsByUri']);
-const subscriptionsFilter = createFilter('subscriptions', ['subscriptions']);
+const subscriptionsFilter = createFilter('subscriptions', ['enabledChannelNotifications', 'subscriptions']);
 const settingsFilter = createFilter('settings', ['clientSettings']);
 const walletFilter = createFilter('wallet', ['receiveAddress']);
 

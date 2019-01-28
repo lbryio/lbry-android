@@ -1,5 +1,7 @@
 import { NavigationActions, StackActions } from 'react-navigation';
-import Constants from '../constants';
+import { buildURI } from 'lbry-redux';
+import { DrawerRoutes } from 'constants';
+import Constants from 'constants';
 
 function getRouteForSpecialUri(uri) {
   let targetRoute;
@@ -22,7 +24,14 @@ export function dispatchNavigateToUri(dispatch, nav, uri) {
     return;
   }
 
-  const params = { uri };
+  let uriVars = {};
+  if (uri.indexOf('?') > -1) {
+    uriVarsStr = uri.substring(uri.indexOf('?') + 1);
+    uri = uri.substring(0, uri.indexOf('?'));
+    uriVars = parseUriVars(uriVarsStr);
+  }
+
+  const params = { uri, uriVars };
   if (nav && nav.routes && nav.routes.length > 0 && 'Main' === nav.routes[0].routeName) {
     const mainRoute = nav.routes[0];
     const discoverRoute = mainRoute.routes[0];
@@ -60,6 +69,23 @@ export function formatBytes(bytes, decimalPoints = 0) {
   return `${value} GB`;
 }
 
+function parseUriVars(vars) {
+  const uriVars = {};
+  const parts = vars.split('&');
+  for (let i = 0; i < parts.length; i++) {
+    const str = parts[i];
+    if (str.indexOf('=') > -1) {
+      const key = str.substring(0, str.indexOf('='));
+      const value = str.substring(str.indexOf('=') + 1);
+      uriVars[key] = value;
+    } else {
+      uriVars[str] = null;
+    }
+  }
+
+  return uriVars;
+}
+
 export function navigateToUri(navigation, uri, additionalParams) {
   if (!navigation) {
     return;
@@ -74,7 +100,14 @@ export function navigateToUri(navigation, uri, additionalParams) {
     return;
   }
 
-  const params = Object.assign({ uri }, additionalParams);
+  let uriVars = {};
+  if (uri.indexOf('?') > -1) {
+    uriVarsStr = uri.substring(uri.indexOf('?') + 1);
+    uri = uri.substring(0, uri.indexOf('?'));
+    uriVars = parseUriVars(uriVarsStr);
+  }
+
+  const params = Object.assign({ uri, uriVars }, additionalParams);
   if ('File' === navigation.state.routeName) {
     const stackAction = StackActions.replace({ routeName: 'File', newKey: uri, params });
     navigation.dispatch(stackAction);
@@ -82,4 +115,47 @@ export function navigateToUri(navigation, uri, additionalParams) {
   }
 
   navigation.navigate({ routeName: 'File', key: uri, params });
+}
+
+export function navigateBack(navigation, drawerStack, popDrawerStack) {
+  const shouldPopStack = DrawerRoutes.indexOf(navigation.state.routeName) > -1;
+  if (shouldPopStack) {
+    navigation.goBack();
+    if (popDrawerStack) {
+      popDrawerStack();
+    }
+
+    navigation.navigate({ routeName: drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0] });
+    return;
+  }
+
+  navigation.goBack(navigation.state.key);
+}
+
+export function dispatchNavigateBack(dispatch, nav, drawerStack, popDrawerStack) {
+  const drawerRouteIndex = nav.routes[0].index;
+  const shouldPopStack = (
+    (drawerRouteIndex > 0 && drawerRouteIndex !== 3) || // not the discover nor wallet stack
+    (drawerRouteIndex === 3 && nav.routes[0].routes[drawerRouteIndex].index === 0) // wallet stack, and tx history page not active
+  );
+  if (shouldPopStack) {
+    dispatch(NavigationActions.back());
+    if (popDrawerStack) {
+      dispatch(popDrawerStack());
+    }
+
+    const navigateAction = NavigationActions.navigate({ routeName: drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0] });
+    dispatch(navigateAction);
+    return;
+  }
+
+  dispatch(NavigationActions.back());
+}
+
+export function uriFromFileInfo(fileInfo) {
+  const { name: claimName, claim_name: claimNameDownloaded, claim_id: claimId } = fileInfo;
+  const uriParams = {};
+  uriParams.contentName = claimName || claimNameDownloaded;
+  uriParams.claimId = claimId;
+  return buildURI(uriParams);
 }
