@@ -1,8 +1,8 @@
 import React from 'react';
 import { ActivityIndicator, Image, Text, View } from 'react-native';
-import Colors from '../../styles/colors';
+import Colors from 'styles/colors';
 import FastImage from 'react-native-fast-image'
-import fileItemMediaStyle from '../../styles/fileItemMedia';
+import fileItemMediaStyle from 'styles/fileItemMedia';
 
 class FileItemMedia extends React.PureComponent {
   static AUTO_THUMB_STYLES = [
