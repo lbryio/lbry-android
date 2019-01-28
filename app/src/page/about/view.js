@@ -33,7 +33,7 @@ class AboutPage extends React.PureComponent {
   }
 
   render() {
-    const { accessToken, navigation, userEmail } = this.props;
+    const { accessToken, navigation, notify, userEmail } = this.props;
     const loading = 'Loading...';
     const ver = this.state.versionInfo ? this.state.versionInfo : null;
 
@@ -75,7 +75,7 @@ class AboutPage extends React.PureComponent {
             </View>
             <View>
               <Link
-                style={aboutStyle.emailPreferencesLink}
+                style={aboutStyle.listLink}
                 href={`http://lbry.io/list/edit/${accessToken}`}
                 text="Update mailing preferences" />
             </View>
@@ -100,6 +100,21 @@ class AboutPage extends React.PureComponent {
             <View style={aboutStyle.col}>
               <Text style={aboutStyle.text}>Installation ID</Text>
               <Text selectable={true} style={aboutStyle.lineValueText}>{this.state.lbryId ? this.state.lbryId : loading}</Text>
+            </View>
+          </View>
+
+          <View style={aboutStyle.row}>
+            <View style={aboutStyle.col}><Text style={aboutStyle.text}>Logs</Text></View>
+            <View style={aboutStyle.col}>
+              <Link style={aboutStyle.listLink} text="Send log" onPress={() => {
+                if (NativeModules.UtilityModule) {
+                  NativeModules.UtilityModule.shareLogFile((error) => {
+                    if (error) {
+                      notify(error);
+                    }
+                  });
+                }
+              }} />
             </View>
           </View>
         </ScrollView>
