@@ -568,12 +568,14 @@ class FilePage extends React.PureComponent {
                   {channelName &&
                     <View style={filePageStyle.channelRow}>
                       <Link style={filePageStyle.channelName}
-                                        selectable={true}
-                                        text={channelName}
-                                        onPress={() => {
-                                          const channelUri = normalizeURI(channelName);
-                                          navigateToUri(navigation, channelUri);
-                                        }} />
+                            selectable={true}
+                            text={channelName}
+                            numberOfLines={1}
+                            ellipsizeMode={"tail"}
+                            onPress={() => {
+                              const channelUri = normalizeURI(channelName);
+                              navigateToUri(navigation, channelUri);
+                            }} />
                       <View style={filePageStyle.subscriptionRow}>
                         <SubscribeButton
                           style={filePageStyle.actionButton}

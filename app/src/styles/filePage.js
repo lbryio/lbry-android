@@ -74,6 +74,7 @@ const filePageStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-SemiBold',
     fontSize: 20,
     marginTop: 6,
+    width: '49%',
     color: Colors.LbryGreen
   },
   description: {

@@ -35,6 +35,8 @@ export default class Link extends React.PureComponent {
 
   render() {
     const {
+      ellipsizeMode,
+      numberOfLines,
       onPress,
       style,
       text
@@ -54,7 +56,13 @@ export default class Link extends React.PureComponent {
     }
 
     return (
-      <Text style={styles} onPress={onPress ? onPress : this.handlePress}>{text}</Text>
+      <Text
+        style={styles}
+        numberOfLines={numberOfLines}
+        ellipsizeMode={ellipsizeMode}
+        onPress={onPress ? onPress : this.handlePress}>
+        {text}
+      </Text>
     );
   }
 };
