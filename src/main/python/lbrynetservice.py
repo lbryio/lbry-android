@@ -40,7 +40,7 @@ def start():
     conf.initialize_settings(
         data_dir=f'{private_storage_dir}/lbrynet',
         wallet_dir=f'{private_storage_dir}/lbryum',
-        download_dir=f'{lbrynet_android_utils.getAppExternalStorageDir(service.getApplicationContext())}/Download'
+        download_dir=f'{lbrynet_android_utils.getInternalStorageDir(service.getApplicationContext())}/Download'
     )
     conf.settings.update({
         'components_to_skip': [
