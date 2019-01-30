@@ -68,14 +68,24 @@ const filePageStyle = StyleSheet.create({
   },
   subscriptionRow: {
     flexDirection: 'row',
-    alignSelf: 'flex-end'
+    marginTop: 8
+  },
+  publishInfo: {
+    width: '50%',
+    marginTop: 6,
   },
   channelName: {
     fontFamily: 'Inter-UI-SemiBold',
     fontSize: 20,
-    marginTop: 6,
-    width: '49%',
     color: Colors.LbryGreen
+  },
+  publishDateText: {
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 12,
+    color: Colors.DescriptionGrey
+  },
+  publishDate: {
+    marginTop: 4
   },
   description: {
     color: Colors.DescriptionGrey,

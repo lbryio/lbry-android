@@ -32,12 +32,15 @@ class DateTime extends React.PureComponent<Props> {
       return date ? <View style={style}><Text style={textStyle}>{moment(date).from(moment())}</Text></View> : null;
     }
 
+    // TODO: formatOptions not working as expected in RN
+    // date.toLocaleDateString([locale, 'en-US'], formatOptions)}
+
     return (
       <View style={style}>
         <Text style={textStyle}>
           {date &&
             (show === DateTime.SHOW_BOTH || show === DateTime.SHOW_DATE) &&
-            date.toLocaleDateString([locale, 'en-US'], formatOptions)}
+            moment(date).format('MMMM D, YYYY')}
           {show === DateTime.SHOW_BOTH && ' '}
           {date &&
             (show === DateTime.SHOW_BOTH || show === DateTime.SHOW_TIME) &&
