@@ -1,4 +1,5 @@
 import keyring
+import logging
 import platform
 from jnius import autoclass
 from keyring.backend import KeyringBackend
@@ -12,6 +13,7 @@ lbrynet_android_utils = autoclass('io.lbry.browser.Utils')
 service = autoclass('io.lbry.browser.LbrynetService').serviceInstance
 platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_android_utils.getAndroidRelease(), lbrynet_android_utils.getAndroidSdk())
 build_type.BUILD = 'dev' if lbrynet_android_utils.isDebug() else 'release'
+log = logging.getLogger(__name__)
 
 # Keyring backend
 class LbryAndroidKeyring(KeyringBackend):
@@ -54,6 +56,9 @@ def start():
 
     log_support.configure_logging(conf.settings.get_log_filename(), True, [])
     log_support.configure_loggly_handler()
+
+    log.info('Final Settings: %s', conf.settings.get_current_settings_dict())
+    log.info('Starting lbrynet-daemon');
 
     if check_connection():
         daemon = Daemon()
