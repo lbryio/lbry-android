@@ -20,6 +20,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import Button from 'component/button';
 import Colors from 'styles/colors';
 import ChannelPage from 'page/channel';
+import DateTime from 'component/dateTime';
 import FileDownloadButton from 'component/fileDownloadButton';
 import FileItemMedia from 'component/fileItemMedia';
 import FilePrice from 'component/filePrice';
@@ -567,13 +568,23 @@ class FilePage extends React.PureComponent {
                   <Text style={filePageStyle.title} selectable={true}>{title}</Text>
                   {channelName &&
                     <View style={filePageStyle.channelRow}>
-                      <Link style={filePageStyle.channelName}
-                                        selectable={true}
-                                        text={channelName}
-                                        onPress={() => {
-                                          const channelUri = normalizeURI(channelName);
-                                          navigateToUri(navigation, channelUri);
-                                        }} />
+                      <View style={filePageStyle.publishInfo}>
+                        <Link style={filePageStyle.channelName}
+                              selectable={true}
+                              text={channelName}
+                              numberOfLines={1}
+                              ellipsizeMode={"tail"}
+                              onPress={() => {
+                                const channelUri = normalizeURI(channelName);
+                                navigateToUri(navigation, channelUri);
+                              }} />
+                        <DateTime
+                          style={filePageStyle.publishDate}
+                          textStyle={filePageStyle.publishDateText}
+                          block={height}
+                          formatOptions={{ day: 'numeric', month: 'long', year: 'numeric' }}
+                          show={DateTime.SHOW_DATE} />
+                      </View>
                       <View style={filePageStyle.subscriptionRow}>
                         <SubscribeButton
                           style={filePageStyle.actionButton}
