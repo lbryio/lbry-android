@@ -53,7 +53,8 @@ class FileItem extends React.PureComponent {
       mediaStyle,
       navigation,
       showDetails,
-      compactView
+      compactView,
+      titleBeforeThumbnail
     } = this.props;
 
     const uri = normalizeURI(this.props.uri);
@@ -64,37 +65,23 @@ class FileItem extends React.PureComponent {
     const channelName = claim ? claim.channel_name : null;
     const height = claim ? claim.height : null;
 
-    if (compactView) {
-      return (
-        <View style={style}>
-          <TouchableOpacity style={discoverStyle.container} onPress={this.navigateToFileUri}>
-            <FileItemMedia title={title}
-                           thumbnail={thumbnail}
-                           blurRadius={obscureNsfw ? 15 : 0}
-                           resizeMode="cover"
-                           isResolvingUri={isResolvingUri}
-                           style={mediaStyle} />
-          </TouchableOpacity>
-          {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />}
-        </View>
-      );
-    }
-
     return (
       <View style={style}>
         <TouchableOpacity style={discoverStyle.container} onPress={this.navigateToFileUri}>
+          {!compactView && titleBeforeThumbnail && <Text style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>{title}</Text>}
           <FileItemMedia title={title}
                          thumbnail={thumbnail}
                          blurRadius={obscureNsfw ? 15 : 0}
                          resizeMode="cover"
                          isResolvingUri={isResolvingUri}
                          style={mediaStyle} />
-          <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />
-          <View style={isRewardContent ? discoverStyle.rewardTitleContainer : null}>
+
+          {!compactView && <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />}
+          {!compactView && <View style={isRewardContent ? discoverStyle.rewardTitleContainer : null}>
             <Text style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>{title}</Text>
             {isRewardContent && <Icon style={discoverStyle.rewardIcon} name="award" size={20} />}
-          </View>
-          {showDetails &&
+          </View>}
+          {(!compactView && showDetails) &&
           <View style={discoverStyle.detailsRow}>
             {channelName &&
               <Link style={discoverStyle.channelName} text={channelName} onPress={() => {

@@ -29,7 +29,7 @@ class SuggestedSubscriptions extends React.PureComponent {
           ); }
         }
         renderSectionHeader={
-          ({section: {title}}) => (<Link style={discoverStyle.categoryName} text={title} href={normalizeURI(title)} />)
+          ({section: {title}}) => (<Link style={subscriptionsStyle.channelTitle} text={title} href={normalizeURI(title)} />)
         }
         sections={suggested.map(({ uri, label }) => ({ title: label, data: [uri] }))}
         keyExtractor={(item, index) => item}

@@ -81,7 +81,7 @@ class SubscriptionsPage extends React.PureComponent {
       {!hasSubscriptions &&
         <View style={subscriptionsStyle.container}>
           <Text style={subscriptionsStyle.infoText}>
-            You are not subscribed to any channels. Here are some channels that you can subscribe to.
+            You are not subscribed to any channels at the moment. Here are some channels that we think you might enjoy.
           </Text>
           {loadingSuggested && <ActivityIndicator size="large" colors={Colors.LbryGreen} style={subscriptionsStyle.loading} />}
           {!loadingSuggested && <SuggestedSubscriptions navigation={navigation} />}

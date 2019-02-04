@@ -1,6 +1,7 @@
 import React from 'react';
 import { buildURI, normalizeURI } from 'lbry-redux';
-import { FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import Colors from 'styles/colors';
 import discoverStyle from 'styles/discover';
 import FileItem from 'component/fileItem';
 import subscriptionsStyle from 'styles/subscriptions';
@@ -30,8 +31,12 @@ class SuggestedSubscriptionItem extends React.PureComponent {
   render() {
     const { categoryLink, fetching, obscureNsfw, claims, navigation } = this.props;
 
-    if (fetching) {
-      return (<Text>Fetching content...</Text>);
+    if (!claims || !claims.length) {
+      return (
+        <View style={subscriptionsStyle.busyContainer}>
+          <ActivityIndicator size={'small'} color={Colors.LbryGreen} />
+        </View>
+      );
     }
 
     if (claims && claims.length > 0) {

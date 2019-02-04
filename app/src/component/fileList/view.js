@@ -2,8 +2,8 @@
 import * as React from 'react';
 import { buildURI } from 'lbry-redux';
 import { FlatList } from 'react-native';
-import FileItem from '../fileItem';
-import discoverStyle from '../../styles/discover';
+import FileItem from 'component/fileItem';
+import discoverStyle from 'styles/discover';
 
 // In the future, all Flow types need to be specified in a common source (lbry-redux, perhaps?)
 type FileInfo = {
@@ -176,7 +176,8 @@ class FileList extends React.PureComponent<Props, State> {
           <FileItem style={discoverStyle.fileItem}
                     uri={item}
                     navigation={navigation}
-                    showDetails={true} />
+                    showDetails={true}
+                    compactView={false} />
         )} />
     );
   }

@@ -5,6 +5,7 @@ import {
   mediaWidth,
   mediaHeight
 } from 'styles/discover';
+import Colors from 'styles/colors';
 
 const subscriptionsStyle = StyleSheet.create({
   container: {
@@ -38,7 +39,7 @@ const subscriptionsStyle = StyleSheet.create({
   },
   compactItems: {
     flex: 1,
-    marginTop: 12,
+    marginTop: 6,
     marginLeft: 20,
     marginRight: 24,
     marginBottom: 24,
@@ -63,6 +64,14 @@ const subscriptionsStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-Bold',
     marginTop: 8,
     fontSize: 18
+  },
+  channelTitle: {
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 20,
+    marginLeft: 24,
+    marginTop: 16,
+    marginBottom: 16,
+    color: Colors.LbryGreen
   }
 });
 

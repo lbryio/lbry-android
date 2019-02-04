@@ -45,7 +45,8 @@ class TrendingPage extends React.PureComponent {
                   key={item}
                   uri={normalizeURI(item)}
                   navigation={navigation}
-                  showDetails={true} />
+                  showDetails={true}
+                  compactView={false} />
               )
             }
             data={trendingUris.map(uri => uri.url)}
