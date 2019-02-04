@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import { normalizeURI } from 'lbry-redux';
 import moment from 'moment';
-import FileItem from '../../component/fileItem';
-import discoverStyle from '../../styles/discover';
-import Colors from '../../styles/colors';
-import FloatingWalletBalance from '../../component/floatingWalletBalance';
-import UriBar from '../../component/uriBar';
+import FileItem from '/component/fileItem';
+import discoverStyle from 'styles/discover';
+import Colors from 'styles/colors';
+import FloatingWalletBalance from 'component/floatingWalletBalance';
+import UriBar from 'component/uriBar';
 
 class TrendingPage extends React.PureComponent {
   componentDidMount() {
@@ -44,7 +44,8 @@ class TrendingPage extends React.PureComponent {
                   mediaStyle={discoverStyle.fileItemMedia}
                   key={item}
                   uri={normalizeURI(item)}
-                  navigation={navigation} />
+                  navigation={navigation}
+                  showDetails={true} />
               )
             }
             data={trendingUris.map(uri => uri.url)}

@@ -6,7 +6,7 @@ import {
   makeSelectFileInfoForUri,
   makeSelectIsUriResolving,
 } from 'lbry-redux';
-import { selectShowNsfw } from '../../redux/selectors/settings';
+import { selectShowNsfw } from 'redux/selectors/settings';
 import FileListItem from './view';
 
 const select = (state, props) => ({

@@ -175,7 +175,8 @@ class FileList extends React.PureComponent<Props, State> {
         renderItem={({item}) => (
           <FileItem style={discoverStyle.fileItem}
                     uri={item}
-                    navigation={navigation} />
+                    navigation={navigation}
+                    showDetails={true} />
         )} />
     );
   }

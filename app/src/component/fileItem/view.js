@@ -33,6 +33,15 @@ class FileItem extends React.PureComponent {
     }
   }
 
+  navigateToFileUri = () => {
+    const { navigation, uri } = this.props;
+    const normalizedUri = normalizeURI(uri);
+    if (NativeModules.Mixpanel) {
+      NativeModules.Mixpanel.track('Discover Tap', { Uri: normalizeURI });
+    }
+    navigateToUri(navigation, normalizedUri);
+  }
+
   render() {
     const {
       claim,
@@ -42,7 +51,9 @@ class FileItem extends React.PureComponent {
       rewardedContentClaimIds,
       style,
       mediaStyle,
-      navigation
+      navigation,
+      showDetails,
+      compactView
     } = this.props;
 
     const uri = normalizeURI(this.props.uri);
@@ -53,15 +64,25 @@ class FileItem extends React.PureComponent {
     const channelName = claim ? claim.channel_name : null;
     const height = claim ? claim.height : null;
 
+    if (compactView) {
+      return (
+        <View style={style}>
+          <TouchableOpacity style={discoverStyle.container} onPress={this.navigateToFileUri}>
+            <FileItemMedia title={title}
+                           thumbnail={thumbnail}
+                           blurRadius={obscureNsfw ? 15 : 0}
+                           resizeMode="cover"
+                           isResolvingUri={isResolvingUri}
+                           style={mediaStyle} />
+          </TouchableOpacity>
+          {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />}
+        </View>
+      );
+    }
+
     return (
       <View style={style}>
-        <TouchableOpacity style={discoverStyle.container} onPress={() => {
-              if (NativeModules.Mixpanel) {
-                NativeModules.Mixpanel.track('Discover Tap', { Uri: uri });
-              }
-              navigateToUri(navigation, uri);
-            }
-          }>
+        <TouchableOpacity style={discoverStyle.container} onPress={this.navigateToFileUri}>
           <FileItemMedia title={title}
                          thumbnail={thumbnail}
                          blurRadius={obscureNsfw ? 15 : 0}
@@ -73,6 +94,7 @@ class FileItem extends React.PureComponent {
             <Text style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>{title}</Text>
             {isRewardContent && <Icon style={discoverStyle.rewardIcon} name="award" size={20} />}
           </View>
+          {showDetails &&
           <View style={discoverStyle.detailsRow}>
             {channelName &&
               <Link style={discoverStyle.channelName} text={channelName} onPress={() => {
@@ -80,7 +102,7 @@ class FileItem extends React.PureComponent {
                 navigateToUri(navigation, channelUri);
               }} />}
             <DateTime style={discoverStyle.dateTime} textStyle={discoverStyle.dateTimeText} timeAgo block={height} />
-          </View>
+          </View>}
         </TouchableOpacity>
         {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />}
       </View>

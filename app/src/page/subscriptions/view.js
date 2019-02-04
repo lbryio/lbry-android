@@ -17,18 +17,20 @@ import discoverStyle from 'styles/discover';
 import subscriptionsStyle from 'styles/subscriptions';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
 import FileItem from 'component/fileItem';
+import SuggestedSubscriptions from 'component/suggestedSubscriptions';
 import UriBar from 'component/uriBar';
 
 class SubscriptionsPage extends React.PureComponent {
-  componentDidMount() {
+  componentWillMount() {
     const {
       doFetchMySubscriptions,
       doFetchRecommendedSubscriptions,
       pushDrawerStack,
     } = this.props;
+
     pushDrawerStack();
     doFetchMySubscriptions();
-    //doFetchRecommendedSubscriptions();
+    doFetchRecommendedSubscriptions();
   }
 
   render() {
@@ -77,10 +79,12 @@ class SubscriptionsPage extends React.PureComponent {
       }
 
       {!hasSubscriptions &&
-        <View style={subscriptionsStyle.busyContainer}>
+        <View style={subscriptionsStyle.container}>
           <Text style={subscriptionsStyle.infoText}>
-            You are not subscribed to any channels. Feel free to discover new channels that you can subscribe to.
+            You are not subscribed to any channels. Here are some channels that you can subscribe to.
           </Text>
+          {loadingSuggested && <ActivityIndicator size="large" colors={Colors.LbryGreen} style={subscriptionsStyle.loading} />}
+          {!loadingSuggested && <SuggestedSubscriptions navigation={navigation} />}
         </View>}
 
         <FloatingWalletBalance navigation={navigation} />
