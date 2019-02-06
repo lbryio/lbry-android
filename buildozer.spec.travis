@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = LBRY Browser
+title = LBRY
 
 # (str) Package name
 package.name = browser
