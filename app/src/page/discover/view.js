@@ -10,12 +10,12 @@ import {
 } from 'react-native';
 import { normalizeURI, parseURI } from 'lbry-redux';
 import moment from 'moment';
-import Colors from '../../styles/colors';
-import discoverStyle from '../../styles/discover';
-import FloatingWalletBalance from '../../component/floatingWalletBalance';
-import FileItem from '../../component/fileItem';
-import RewardSummary from '../../component/rewardSummary';
-import UriBar from '../../component/uriBar';
+import Colors from 'styles/colors';
+import discoverStyle from 'styles/discover';
+import FloatingWalletBalance from 'component/floatingWalletBalance';
+import FileItem from 'component/fileItem';
+import RewardSummary from 'component/rewardSummary';
+import UriBar from 'component/uriBar';
 
 class DiscoverPage extends React.PureComponent {
   componentDidMount() {
@@ -125,7 +125,9 @@ class DiscoverPage extends React.PureComponent {
                   mediaStyle={discoverStyle.fileItemMedia}
                   key={item}
                   uri={normalizeURI(item)}
-                  navigation={navigation} />
+                  navigation={navigation}
+                  compactView={false}
+                  showDetails={true} />
               )
             }
             renderSectionHeader={

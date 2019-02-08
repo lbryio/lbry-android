@@ -2,15 +2,15 @@ import { Dimensions, PixelRatio, StyleSheet } from 'react-native';
 import Colors from './colors';
 
 const screenDimension = Dimensions.get('window');
-const screenWidth = screenDimension.width;
-const screenHeight = screenDimension.height;
+export const screenWidth = screenDimension.width;
+export const screenHeight = screenDimension.height;
 const screenWidthPixels = PixelRatio.getPixelSizeForLayoutSize(screenWidth);
 const screenHeightPixels = PixelRatio.getPixelSizeForLayoutSize(screenHeight);
- // calculate thumbnail width and height based on device's aspect ratio
-const horizontalMargin = 48; // left and right margins (24 + 24)
-const verticalMargin = (screenWidthPixels > 720 && screenHeightPixels > 1920) ? 0 : ((screenWidthPixels <= 720) ? 20 : 16);
-const mediaWidth = screenWidth - horizontalMargin;
-const mediaHeight = ((screenWidth / screenHeight) * ((screenWidthPixels <= 720) ? screenWidth : mediaWidth)) - verticalMargin;
+// calculate thumbnail width and height based on device's aspect ratio
+export const horizontalMargin = 48; // left and right margins (24 + 24)
+export const verticalMargin = (screenWidthPixels > 720 && screenHeightPixels > 1920) ? 0 : ((screenWidthPixels <= 720) ? 20 : 16);
+export const mediaWidth = screenWidth - horizontalMargin;
+export const mediaHeight = ((screenWidth / screenHeight) * ((screenWidthPixels <= 720) ? screenWidth : mediaWidth)) - verticalMargin;
 
 const discoverStyle = StyleSheet.create({
   container: {

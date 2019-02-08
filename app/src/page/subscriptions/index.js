@@ -31,11 +31,8 @@ const select = state => ({
 });
 
 const perform = dispatch => ({
-  doFetchMySubscriptions,
-  doSetViewMode,
-  doFetchRecommendedSubscriptions,
-  doCompleteFirstRun,
-  doShowSuggestedSubs,
+  doFetchMySubscriptions: () => dispatch(doFetchMySubscriptions()),
+  doFetchRecommendedSubscriptions: () => dispatch(doFetchRecommendedSubscriptions()),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_SUBSCRIPTIONS))
 });
 
