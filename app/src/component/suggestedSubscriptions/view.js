@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, SectionList, Text, View } from 'react-native';
 import { normalizeURI } from 'lbry-redux';
+import SubscribeButton from 'component/subscribeButton';
 import SuggestedSubscriptionItem from 'component/suggestedSubscriptionItem';
 import Colors from 'styles/colors';
 import discoverStyle from 'styles/discover';
@@ -29,9 +30,19 @@ class SuggestedSubscriptions extends React.PureComponent {
           ); }
         }
         renderSectionHeader={
-          ({section: {title}}) => (<Link style={subscriptionsStyle.channelTitle} text={title} href={normalizeURI(title)} />)
+          ({section: {title}}) => {
+            const titleParts = title.split(';');
+            const channelName = titleParts[0];
+            const channelUri = normalizeURI(titleParts[1]);
+            return (
+              <View style={subscriptionsStyle.titleRow}>
+                <Link style={subscriptionsStyle.channelTitle} text={channelName} href={channelUri} />
+                <SubscribeButton style={subscriptionsStyle.subscribeButton} uri={channelUri} name={channelName} />
+              </View>
+            )
+          }
         }
-        sections={suggested.map(({ uri, label }) => ({ title: label, data: [uri] }))}
+        sections={suggested.map(({ uri, label }) => ({ title: (label + ';' + uri), data: [uri] }))}
         keyExtractor={(item, index) => item}
       />
     ) : null;

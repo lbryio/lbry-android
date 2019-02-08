@@ -72,6 +72,19 @@ const subscriptionsStyle = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
     color: Colors.LbryGreen
+  },
+  titleRow: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  subscribeButton: {
+    alignSelf: 'flex-start',
+    marginRight: 24,
+    marginTop: 8,
+    backgroundColor: Colors.White,
+    paddingLeft: 16,
+    paddingRight: 16,
   }
 });
 
