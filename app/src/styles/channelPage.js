@@ -10,9 +10,12 @@ const channelPageStyle = StyleSheet.create({
     flex: 1
   },
   fileList: {
-    paddingTop: 30,
     flex: 1,
-    marginBottom: 16
+    paddingTop: 30,
+    marginBottom: 60,
+  },
+  fileListContent: {
+    paddingBottom: 16
   },
   title: {
     color: Colors.LbryGreen,
@@ -33,11 +36,13 @@ const channelPageStyle = StyleSheet.create({
     marginLeft: 10
   },
   pageButtons: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    position: 'absolute',
+    bottom: 76,
     paddingLeft: 16,
-    paddingRight: 16,
-    marginBottom: 76
+    paddingRight: 16
   },
   button: {
     backgroundColor: Colors.LbryGreen,

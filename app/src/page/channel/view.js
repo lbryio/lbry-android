@@ -11,7 +11,8 @@ import channelPageStyle from 'styles/channelPage';
 
 class ChannelPage extends React.PureComponent {
   state = {
-    page: 1
+    page: 1,
+    showPageButtons: false
   };
 
   componentDidMount() {
@@ -26,7 +27,7 @@ class ChannelPage extends React.PureComponent {
   handlePreviousPage = () => {
     const { uri, fetchClaims } = this.props;
     if (this.state.page > 1) {
-      this.setState({ page: this.state.page - 1 }, () => {
+      this.setState({ page: this.state.page - 1, showPageButtons: false }, () => {
         fetchClaims(uri, this.state.page);
       });
     }
@@ -35,7 +36,7 @@ class ChannelPage extends React.PureComponent {
   handleNextPage = () => {
     const { uri, fetchClaims, totalPages } = this.props;
     if (this.state.page < totalPages) {
-      this.setState({ page: this.state.page + 1 }, () => {
+      this.setState({ page: this.state.page + 1, showPageButtons: false }, () => {
         fetchClaims(uri, this.state.page);
       });
     }
@@ -69,7 +70,9 @@ class ChannelPage extends React.PureComponent {
                     hideFilter
                     fileInfos={claimsInChannel}
                     navigation={navigation}
-                    style={channelPageStyle.fileList} />
+                    style={channelPageStyle.fileList}
+                    contentContainerStyle={channelPageStyle.fileListContent}
+                    onEndReached={() => this.setState({ showPageButtons: true })} />
         ) : (
           <View style={channelPageStyle.busyContainer}>
             <Text style={channelPageStyle.infoText}>No content found.</Text>
@@ -81,7 +84,7 @@ class ChannelPage extends React.PureComponent {
       <View style={channelPageStyle.container}>
         <PageHeader title={name} onBackPressed={() => navigateBack(navigation, drawerStack, popDrawerStack)} />
         {contentList}
-        {(totalPages > 1) &&
+        {(totalPages > 1) && this.state.showPageButtons &&
         <View style={channelPageStyle.pageButtons}>
           <View>
             {(this.state.page > 1) && <Button
