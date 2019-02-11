@@ -114,7 +114,7 @@ const myLbryStack = createStackNavigator({
   Downloads: {
     screen: DownloadsPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'My LBRY',
+      title: 'Downloads',
       headerLeft: menuNavigationButton(navigation),
       headerTitleStyle: discoverStyle.titleText
     })
@@ -181,7 +181,7 @@ const drawer = createDrawerNavigator({
     drawerIcon: ({ tintColor }) => <Icon name="trophy" size={20} style={{ color: tintColor }} />
   }},
   MyLBRYStack: { screen: myLbryStack, navigationOptions: {
-    title: 'My LBRY', drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
+    title: 'Downloads', drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
   }},
   Settings: { screen: SettingsPage, navigationOptions: {
     drawerLockMode: 'locked-closed',

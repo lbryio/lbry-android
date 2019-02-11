@@ -21,7 +21,7 @@ import fileListStyle from '../../styles/fileList';
 
 class DownloadsPage extends React.PureComponent {
   static navigationOptions = {
-    title: 'My LBRY'
+    title: 'Downloads'
   };
 
   componentDidMount() {
