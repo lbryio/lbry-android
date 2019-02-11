@@ -428,9 +428,9 @@ class FilePage extends React.PureComponent {
         const { height, channel_name: channelName, value } = claim;
         const showActions = !this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView;
         const showFileActions = (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
-        const channelClaimId =
-          value && value.publisherSignature && value.publisherSignature.certificateId;
+        const channelClaimId = value && value.publisherSignature && value.publisherSignature.certificateId;
         const canSendTip = this.state.tipAmount > 0;
+        const fullChannelUri = channelClaimId && channelClaimId.trim().length > 0 ? `${channelName}#${channelClaimId}` : channelName;
 
         const playerStyle = [filePageStyle.player,
           this.state.isLandscape ? filePageStyle.containedPlayerLandscape :
@@ -575,8 +575,7 @@ class FilePage extends React.PureComponent {
                               numberOfLines={1}
                               ellipsizeMode={"tail"}
                               onPress={() => {
-                                const channelUri = normalizeURI(channelName);
-                                navigateToUri(navigation, channelUri);
+                                navigateToUri(navigation, normalizeURI(fullChannelUri));
                               }} />
                         <DateTime
                           style={filePageStyle.publishDate}
@@ -588,11 +587,11 @@ class FilePage extends React.PureComponent {
                       <View style={filePageStyle.subscriptionRow}>
                         <SubscribeButton
                           style={filePageStyle.actionButton}
-                          uri={channelUri}
+                          uri={fullChannelUri}
                           name={channelName} />
                         <SubscribeNotificationButton
                           style={[filePageStyle.actionButton, filePageStyle.bellButton]}
-                          uri={channelUri}
+                          uri={fullChannelUri}
                           name={channelName} />
                       </View>
                     </View>

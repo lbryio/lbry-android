@@ -51,6 +51,8 @@ class FileItem extends React.PureComponent {
     const obscureNsfw = this.props.obscureNsfw && metadata && metadata.nsfw;
     const isRewardContent = claim && rewardedContentClaimIds.includes(claim.claim_id);
     const channelName = claim ? claim.channel_name : null;
+    const channelClaimId = claim && claim.value && claim.value.publisherSignature && claim.value.publisherSignature.certificateId;
+    const fullChannelUri = channelClaimId ? `${channelName}#${channelClaimId}` : channelName;
     const height = claim ? claim.height : null;
 
     return (
@@ -76,8 +78,7 @@ class FileItem extends React.PureComponent {
           <View style={discoverStyle.detailsRow}>
             {channelName &&
               <Link style={discoverStyle.channelName} text={channelName} onPress={() => {
-                const channelUri = normalizeURI(channelName);
-                navigateToUri(navigation, channelUri);
+                navigateToUri(navigation, normalizeURI(fullChannelUri));
               }} />}
             <DateTime style={discoverStyle.dateTime} textStyle={discoverStyle.dateTimeText} timeAgo block={height} />
           </View>
