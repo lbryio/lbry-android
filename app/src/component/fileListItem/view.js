@@ -63,11 +63,13 @@ class FileListItem extends React.PureComponent {
     const isResolving = !fileInfo && isResolvingUri;
     const title = fileInfo ? fileInfo.metadata.title : metadata && metadata.title ? metadata.title : parseURI(uri).contentName;
 
-    let name, channel, height;
+    let name, channel, height, channelClaimId, fullChannelUri;
     if (claim) {
       name = claim.name;
       channel = claim.channel_name;
       height = claim.height;
+      channelClaimId = claim.value && claim.value.publisherSignature && claim.value.publisherSignature.certificateId;
+      fullChannelUri = channelClaimId ? `${channel}#${channelClaimId}` : channel;
     }
 
     return (
@@ -90,8 +92,7 @@ class FileListItem extends React.PureComponent {
             {(title || name) && <Text style={fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
             {channel &&
               <Link style={fileListStyle.publisher} text={channel} onPress={() => {
-                const channelUri = normalizeURI(channel);
-                navigateToUri(navigation, channelUri);
+                navigateToUri(navigation, normalizeURI(fullChannelUri));
               }} />}
 
             <View style={fileListStyle.info}>
