@@ -33,6 +33,7 @@ const select = state => ({
 const perform = dispatch => ({
   doFetchMySubscriptions: () => dispatch(doFetchMySubscriptions()),
   doFetchRecommendedSubscriptions: () => dispatch(doFetchRecommendedSubscriptions()),
+  doSetViewMode: (viewMode) => dispatch(doSetViewMode(viewMode)),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_SUBSCRIPTIONS))
 });
 

@@ -22,7 +22,10 @@ const Constants = {
   DRAWER_ROUTE_REWARDS: "Rewards",
   DRAWER_ROUTE_WALLET: "Wallet",
   DRAWER_ROUTE_SETTINGS: "Settings",
-  DRAWER_ROUTE_ABOUT: "About"
+  DRAWER_ROUTE_ABOUT: "About",
+
+  SUBSCRIPTIONS_VIEW_ALL: 'view_all',
+  SUBSCRIPTIONS_VIEW_LATEST_FIRST: 'view_latest_first'
 };
 
 export default Constants;

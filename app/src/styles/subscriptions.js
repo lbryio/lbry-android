@@ -33,9 +33,21 @@ const subscriptionsStyle = StyleSheet.create({
   suggestedContainer: {
     flex: 1,
   },
+  contentContainer: {
+    flex: 1,
+    marginTop: 16
+  },
+  contentText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 16,
+    marginLeft: 24,
+    marginRight: 24,
+    marginBottom: 8
+  },
   fileItem: {
     marginLeft: 24,
     marginRight: 24,
+    marginBottom: 24
   },
   compactItems: {
     flex: 1,
@@ -85,6 +97,23 @@ const subscriptionsStyle = StyleSheet.create({
     backgroundColor: Colors.White,
     paddingLeft: 16,
     paddingRight: 16,
+  },
+  viewModeRow: {
+    flexDirection: 'row',
+    marginLeft: 24,
+    marginRight: 24,
+    marginTop: 24
+  },
+  viewModeLink: {
+    marginRight: 24,
+    fontSize: 18,
+    color: Colors.LbryGreen
+  },
+  inactiveMode: {
+    fontFamily: 'Inter-UI-Regular'
+  },
+  activeMode: {
+    fontFamily: 'Inter-UI-SemiBold'
   }
 });
 
