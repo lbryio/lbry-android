@@ -70,6 +70,7 @@ class EmailCollectPage extends React.PureComponent {
       onEmailChanged(text);
     }
     AsyncStorage.setItem(Constants.KEY_FIRST_RUN_EMAIL, text);
+    AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'true');
   }
 
   render() {

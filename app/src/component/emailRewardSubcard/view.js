@@ -18,6 +18,8 @@ import rewardStyle from '../../styles/reward';
 class EmailRewardSubcard extends React.PureComponent {
   state = {
     email: null,
+    emailAlreadySet: false,
+    previousEmail: null,
     verfiyStarted: false
   };
 
@@ -25,9 +27,9 @@ class EmailRewardSubcard extends React.PureComponent {
     const { emailToVerify } = this.props;
     AsyncStorage.getItem(Constants.KEY_FIRST_RUN_EMAIL).then(email => {
       if (email && email.trim().length > 0) {
-        this.setState({ email });
+        this.setState({ email, emailAlreadySet: true, previousEmail: email });
       } else {
-        this.setState({ email: emailToVerify });
+        this.setState({ email: emailToVerify, previousEmail: emailToVerify });
       }
     });
   }
@@ -41,9 +43,8 @@ class EmailRewardSubcard extends React.PureComponent {
         notify({ message: String(emailNewErrorMessage), isError: true });
         this.setState({ verifyStarted: false });
       } else {
-        notify({
-          message: 'Please follow the instructions in the email sent to your address to continue.',
-        });
+        notify({ message: 'Please follow the instructions in the email sent to your address to continue.' });
+        AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'true');
       }
     }
   }
@@ -59,7 +60,7 @@ class EmailRewardSubcard extends React.PureComponent {
       return;
     }
 
-    const { addUserEmail, notify } = this.props;
+    const { addUserEmail, notify, resendVerificationEmail } = this.props;
     const { email } = this.state;
     if (!email || email.trim().length === 0 || email.indexOf('@') === -1) {
       return notify({
@@ -68,6 +69,14 @@ class EmailRewardSubcard extends React.PureComponent {
     }
 
     this.setState({ verifyStarted: true });
+    if (this.state.emailAlreadySet && this.state.previousEmail === email) {
+      // resend verification email if there was one previously set (and it wasn't changed)
+      resendVerificationEmail(email);
+      AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'true');
+      notify({ message: 'Please follow the instructions in the email sent to your address to continue.' });
+      return;
+    }
+
     addUserEmail(email);
   }
 
