@@ -4,6 +4,8 @@ import {
   ActivityIndicator,
   AsyncStorage,
   Linking,
+  NativeModules,
+  Platform,
   Text,
   TextInput,
   View
@@ -46,19 +48,21 @@ class EmailCollectPage extends React.PureComponent {
   }
 
   startAuthenticating = () => {
-    const { generateAuthToken } = this.props;
+    const { authenticate } = this.props;
     this.setState({ authenticationStarted: true, authenticationFailed: false });
-    Lbry.status().then(info => {
-        generateAuthToken(info.installation_id)
-    }).catch(error => {
-      if (this.state.statusTries >= EmailCollectPage.MAX_STATUS_TRIES) {
-        this.setState({ authenticationFailed: true });
-      } else {
-        setTimeout(() => {
-          this.startAuthenticating();
-          this.setState({ statusTries: this.state.statusTries + 1 });
-        }, 1000); // Retry every second for a maximum of MAX_STATUS_TRIES tries (30 seconds)
-      }
+    NativeModules.VersionInfo.getAppVersion().then(appVersion => {
+      Lbry.status().then(info => {
+        authenticate(appVersion, Platform.OS)
+      }).catch(error => {
+        if (this.state.statusTries >= EmailCollectPage.MAX_STATUS_TRIES) {
+          this.setState({ authenticationFailed: true });
+        } else {
+          setTimeout(() => {
+            this.startAuthenticating();
+            this.setState({ statusTries: this.state.statusTries + 1 });
+          }, 1000); // Retry every second for a maximum of MAX_STATUS_TRIES tries (30 seconds)
+        }
+      });
     });
   }
 

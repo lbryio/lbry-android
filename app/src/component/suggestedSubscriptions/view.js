@@ -22,12 +22,12 @@ class SuggestedSubscriptions extends React.PureComponent {
 
     return suggested ? (
       <SectionList style={subscriptionsStyle.scrollContainer}
-        renderItem={ ({item, index, section}) => { console.log(item); return (
+        renderItem={ ({item, index, section}) => (
             <SuggestedSubscriptionItem
               key={item}
               categoryLink={normalizeURI(item)}
               navigation={navigation} />
-          ); }
+          )
         }
         renderSectionHeader={
           ({section: {title}}) => {

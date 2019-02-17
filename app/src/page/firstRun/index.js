@@ -1,18 +1,19 @@
 import { connect } from 'react-redux';
 import { doToast } from 'lbry-redux';
 import {
+  doAuthenticate,
   doGenerateAuthToken,
   doUserEmailNew,
   selectAuthToken,
   selectEmailNewErrorMessage,
   selectEmailNewIsPending,
   selectEmailToVerify,
-  selectIsAuthenticating
+  selectAuthenticationIsPending
 } from 'lbryinc';
 import FirstRun from './view';
 
 const select = (state) => ({
-  authenticating: selectIsAuthenticating(state),
+  authenticating: selectAuthenticationIsPending(state),
   authToken: selectAuthToken(state),
   emailToVerify: selectEmailToVerify(state),
   emailNewErrorMessage: selectEmailNewErrorMessage(state),
@@ -22,6 +23,7 @@ const select = (state) => ({
 const perform = dispatch => ({
   addUserEmail: email => dispatch(doUserEmailNew(email)),
   generateAuthToken: installationId => dispatch(doGenerateAuthToken(installationId)),
+  authenticate: (appVersion, os) => dispatch(doAuthenticate(appVersion, os)),
   notify: data => dispatch(doToast(data))
 });
 
