@@ -76,7 +76,7 @@ class SubscriptionsPage extends React.PureComponent {
           onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_ALL)}
         />
         <Link
-          text={'Latest Only'}
+          text={'Latest First'}
           style={[subscriptionsStyle.viewModeLink,
                   ((viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) ? subscriptionsStyle.activeMode : subscriptionsStyle.inactiveMode)]}
           onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST)}
