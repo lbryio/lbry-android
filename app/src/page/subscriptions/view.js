@@ -36,8 +36,14 @@ class SubscriptionsPage extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { doSetViewMode } = this.props;
-    doSetViewMode(Constants.SUBSCRIPTIONS_VIEW_ALL);
+    const { doSetViewMode, subscriptionsViewMode } = this.props;
+    doSetViewMode(subscriptionsViewMode ? subscriptionsViewMode : Constants.SUBSCRIPTIONS_VIEW_ALL);
+  }
+
+  changeViewMode = (viewMode) => {
+    const { setClientSetting, doSetViewMode } = this.props;
+    setClientSetting(Constants.SETTING_SUBSCRIPTIONS_VIEW_MODE, viewMode);
+    doSetViewMode(viewMode);
   }
 
   render() {
@@ -53,7 +59,7 @@ class SubscriptionsPage extends React.PureComponent {
       doShowSuggestedSubs,
       showSuggestedSubs,
       unreadSubscriptions,
-      navigation
+      navigation,
     } = this.props;
     const numberOfSubscriptions = subscribedChannels ? subscribedChannels.length : 0;
     const hasSubscriptions = numberOfSubscriptions > 0;
@@ -67,13 +73,13 @@ class SubscriptionsPage extends React.PureComponent {
           text={'All Subscriptions'}
           style={[subscriptionsStyle.viewModeLink,
                   ((viewMode === Constants.SUBSCRIPTIONS_VIEW_ALL) ? subscriptionsStyle.activeMode : subscriptionsStyle.inactiveMode)]}
-          onPress={() => doSetViewMode(Constants.SUBSCRIPTIONS_VIEW_ALL)}
+          onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_ALL)}
         />
         <Link
           text={'Latest Only'}
           style={[subscriptionsStyle.viewModeLink,
                   ((viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) ? subscriptionsStyle.activeMode : subscriptionsStyle.inactiveMode)]}
-          onPress={() => doSetViewMode(Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST)}
+          onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST)}
         />
       </View>}
 
