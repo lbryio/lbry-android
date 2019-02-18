@@ -8,8 +8,8 @@
     "dependencies": {
         "base-64": "^0.1.0",
         "@expo/vector-icons": "^8.1.0",
-        "lbry-redux": "lbryio/lbry-redux#mobile-channel-pagination",
-        "lbryinc": "lbryio/lbryinc#subscriptions",
+        "lbry-redux": "lbryio/lbry-redux#031sdk-resolve",
+        "lbryinc": "lbryio/lbryinc",
         "moment": "^2.22.1",
         "react": "16.2.0",
         "react-native": "0.55.3",

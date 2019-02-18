@@ -1,19 +1,26 @@
+import asyncio
 import keyring
 import logging
+import pathlib
 import platform
+import sys
 from jnius import autoclass
 from keyring.backend import KeyringBackend
-from lbrynet import build_type
-from lbrynet.extras.cli import conf, log_support, check_connection, Daemon, reactor
+from lbrynet import __version__ as lbrynet_version, build_type
+from lbrynet.conf import Config
+from lbrynet.extras.daemon.loggly_handler import get_loggly_handler
 from lbrynet.extras.daemon.Components import DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT
-from lbrynet.extras.daemon.Components import REFLECTOR_COMPONENT
+from lbrynet.extras.daemon.Daemon import Daemon
+from lbrynet.extras.daemon.loggly_handler import get_loggly_handler
+from lbrynet.utils import check_connection
 
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
 
 lbrynet_android_utils = autoclass('io.lbry.browser.Utils')
 service = autoclass('io.lbry.browser.LbrynetService').serviceInstance
 platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_android_utils.getAndroidRelease(), lbrynet_android_utils.getAndroidSdk())
 build_type.BUILD = 'dev' if lbrynet_android_utils.isDebug() else 'release'
-log = logging.getLogger(__name__)
 
 # Keyring backend
 class LbryAndroidKeyring(KeyringBackend):
@@ -34,36 +41,68 @@ class LbryAndroidKeyring(KeyringBackend):
         context = service.getApplicationContext()
         lbrynet_android_utils.deletePassword(servicename, username, context, self._keystore)
 
+def ensure_directory_exists(path: str):
+    if not os.path.isdir(path):
+        pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+
+def configure_logging(conf):
+    default_formatter = logging.Formatter("%(asctime)s %(levelname)-8s %(name)s:%(lineno)d: %(message)s")
+
+    file_handler = logging.handlers.RotatingFileHandler(
+        conf.log_file_path, maxBytes=2097152, backupCount=5
+    )
+    file_handler.setFormatter(default_formatter)
+    logging.getLogger('lbrynet').addHandler(file_handler)
+    logging.getLogger('torba').addHandler(file_handler)
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(default_formatter)
+
+    log.addHandler(handler)
+    logging.getLogger('lbrynet').addHandler(handler)
+    logging.getLogger('torba').addHandler(handler)
+
+    logging.getLogger('aioupnp').setLevel(logging.WARNING)
+    logging.getLogger('aiohttp').setLevel(logging.CRITICAL)
+    logging.getLogger('lbrynet').setLevel(logging.DEBUG)
+    logging.getLogger('torba').setLevel(logging.INFO)
+
+    loggly_handler = get_loggly_handler()
+    loggly_handler.setLevel(logging.ERROR)
+    logging.getLogger('lbrynet').addHandler(loggly_handler)
 
 def start():
     keyring.set_keyring(LbryAndroidKeyring())
-
     private_storage_dir = lbrynet_android_utils.getAppInternalStorageDir(service.getApplicationContext())
-    conf.initialize_settings(
+    conf = Config(
         data_dir=f'{private_storage_dir}/lbrynet',
         wallet_dir=f'{private_storage_dir}/lbryum',
-        download_dir=f'{lbrynet_android_utils.getInternalStorageDir(service.getApplicationContext())}/Download'
+        download_dir=f'{lbrynet_android_utils.getInternalStorageDir(service.getApplicationContext())}/Download',
+        components_to_skip=[DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT],
+        use_upnp=False
     )
-    conf.settings.update({
-        'components_to_skip': [
-            DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT,
-            REFLECTOR_COMPONENT
-        ],
-        'use_upnp': False,
-        # 'use_https': True,     # TODO: does this work on android?
-        # 'use_auth_http': True
-    })
 
-    log_support.configure_logging(conf.settings.get_log_filename(), True, [])
-    log_support.configure_loggly_handler()
+    for directory in (conf.data_dir, conf.download_dir, conf.wallet_dir):
+        ensure_directory_exists(directory)
 
-    log.info('Final Settings: %s', conf.settings.get_current_settings_dict())
-    log.info('Starting lbrynet-daemon');
+    configure_logging(conf)
+
+    log.info('Starting lbry sdk {}'.format(lbrynet_version));
+
+    loop = asyncio.get_event_loop()
+    loop.set_debug(True)
 
     if check_connection():
-        daemon = Daemon()
-        daemon.start_listening()
-        reactor.run()
+        daemon = Daemon(conf)
+        try:
+            loop.run_until_complete(daemon.start())
+            loop.run_until_complete(daemon.stop_event.wait())
+        except (GracefulExit):
+            pass
+        finally:
+            loop.run_until_complete(daemon.stop())
+        if hasattr(loop, 'shutdown_asyncgens'):
+            loop.run_until_complete(loop.shutdown_asyncgens())
     else:
         print("Not connected to internet, unable to start")
 
