@@ -5,6 +5,8 @@ const Constants = {
 
   SETTING_ALPHA_UNDERSTANDS_RISKS: "alphaUnderstandRisks",
   SETTING_SUBSCRIPTIONS_VIEW_MODE: "subscriptionsViewMode",
+  SETTING_RATING_REMINDER_LAST_SHOWN: "ratingReminderLastShown",
+  SETTING_RATING_REMINDER_DISABLED: "ratingReminderDisabled",
 
   ACTION_DELETE_COMPLETED_BLOBS: "DELETE_COMPLETED_BLOBS",
   ACTION_FIRST_RUN_PAGE_CHANGED: "FIRST_RUN_PAGE_CHANGED",
@@ -27,7 +29,10 @@ const Constants = {
   DRAWER_ROUTE_ABOUT: "About",
 
   SUBSCRIPTIONS_VIEW_ALL: 'view_all',
-  SUBSCRIPTIONS_VIEW_LATEST_FIRST: 'view_latest_first'
+  SUBSCRIPTIONS_VIEW_LATEST_FIRST: 'view_latest_first',
+
+  PLAY_STORE_URL: 'https://play.google.com/store/apps/details?id=io.lbry.browser',
+  RATING_REMINDER_INTERVAL: 604800, // 7 days (7 * 24 * 3600s)
 };
 
 export default Constants;

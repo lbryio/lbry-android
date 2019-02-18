@@ -125,7 +125,7 @@ class SplashScreen extends React.PureComponent {
     const { deleteCompleteBlobs, fetchSubscriptions } = this.props;
     const startupStatus = status.startup_status;
     // At the minimum, wallet should be started and blocks_behind equal to 0 before calling resolve
-    const hasStarted = startupStatus.file_manager && startupStatus.wallet && status.wallet.blocks_behind <= 0;
+    const hasStarted = startupStatus.stream_manager && startupStatus.wallet && status.wallet.blocks_behind <= 0;
     if (hasStarted) {
       deleteCompleteBlobs();
 
@@ -142,7 +142,7 @@ class SplashScreen extends React.PureComponent {
       });
 
       // fetch subscriptions, so that we can check for new content after resolve
-      Lbry.resolve({ uri: 'lbry://one' }).then(() => {
+      Lbry.resolve({ urls: 'lbry://one' }).then(() => {
         // Leave the splash screen
         const {
           authenticate,
