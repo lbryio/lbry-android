@@ -38,6 +38,7 @@ import { doDeleteCompleteBlobs } from 'redux/actions/file';
 import { selectDrawerStack } from 'redux/selectors/drawer';
 import { SETTINGS, doDismissToast, doToast, selectToast } from 'lbry-redux';
 import {
+  doUserCheckEmailVerified,
   doUserEmailVerify,
   doUserEmailVerifyFailure,
   selectEmailToVerify,
@@ -235,8 +236,10 @@ class AppWithNavigationState extends React.Component {
 
   constructor() {
     super();
+    this.emailVerifyCheckInterval = null;
     this.state = {
-      emailVerifyDone: false
+      emailVerifyDone: false,
+      verifyPending: false
     };
   }
 
@@ -262,13 +265,35 @@ class AppWithNavigationState extends React.Component {
   }
 
   componentDidMount() {
+    this.emailVerifyCheckInterval = setInterval(() => this.checkEmailVerification(), 5000);
     Linking.addEventListener('url', this._handleUrl);
+  }
+
+  checkEmailVerification = () => {
+    const { dispatch } = this.props;
+    AsyncStorage.getItem(Constants.KEY_EMAIL_VERIFY_PENDING).then(pending => {
+      this.setState({ verifyPending: ('true' === pending) });
+      if ('true' === pending) {
+        dispatch(doUserCheckEmailVerified());
+      }
+    });
   }
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
     BackHandler.removeEventListener('hardwareBackPress');
     Linking.removeEventListener('url', this._handleUrl);
+  }
+
+  componentDidUpdate() {
+    const { user } = this.props;
+    if (this.state.verifyPending && this.emailVerifyCheckInterval > 0 && user && user.has_verified_email) {
+      clearInterval(this.emailVerifyCheckInterval);
+      AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'false');
+      this.setState({ verifyPending: false });
+
+      ToastAndroid.show('Your email address was successfully verified.', ToastAndroid.LONG);
+    }
   }
 
   componentWillUpdate(nextProps) {

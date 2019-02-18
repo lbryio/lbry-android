@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 import {
   doUserEmailNew,
+  doUserResendVerificationEmail,
   selectEmailNewErrorMessage,
   selectEmailNewIsPending,
-  selectEmailToVerify
+  selectEmailToVerify,
 } from 'lbryinc';
 import { doToast } from 'lbry-redux';
 import EmailRewardSubcard from './view';
@@ -16,7 +17,8 @@ const select = state => ({
 
 const perform = dispatch => ({
   addUserEmail: email => dispatch(doUserEmailNew(email)),
-  notify: data => dispatch(doToast(data))
+  notify: data => dispatch(doToast(data)),
+  resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email))
 });
 
 export default connect(select, perform)(EmailRewardSubcard);

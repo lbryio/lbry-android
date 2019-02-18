@@ -160,9 +160,9 @@ class FirstRunScreen extends React.PureComponent {
 
   render() {
     const {
+      authenticate,
       authenticating,
       authToken,
-      generateAuthToken,
       emailNewErrorMessage,
       emailNewPending,
       emailToVerify
@@ -175,7 +175,7 @@ class FirstRunScreen extends React.PureComponent {
     } else if (this.state.currentPage === 'email-collect') {
       page = (<EmailCollectPage authenticating={authenticating}
                                 authToken={authToken}
-                                generateAuthToken={generateAuthToken}
+                                authenticate={authenticate}
                                 onEmailChanged={this.onEmailChanged}
                                 onEmailViewLayout={this.onEmailViewLayout} />);
     }
