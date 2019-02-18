@@ -117,8 +117,8 @@ class DiscoverPage extends React.PureComponent {
             <Text style={discoverStyle.title}>Fetching content...</Text>
           </View>
         )}
-        {hasContent &&
-          <SectionList style={discoverStyle.scrollContainer}
+        {(!!hasContent) &&
+          (<SectionList style={discoverStyle.scrollContainer}
             renderItem={ ({item, index, section}) => (
                 <FileItem
                   style={discoverStyle.fileItem}
@@ -135,7 +135,7 @@ class DiscoverPage extends React.PureComponent {
             }
             sections={Object.keys(featuredUris).map(category => ({ title: category, data: featuredUris[category] }))}
             keyExtractor={(item, index) => item}
-          />
+          />)
         }
         <FloatingWalletBalance navigation={navigation} />
         <UriBar navigation={navigation} />

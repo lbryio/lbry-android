@@ -1,6 +1,7 @@
 const Constants = {
   KEY_FIRST_RUN_EMAIL: "firstRunEmail",
   KEY_SHOULD_VERIFY_EMAIL: "shouldVerifyEmail",
+  KEY_EMAIL_VERIFY_PENDING: "emailVerifyPending",
 
   SETTING_ALPHA_UNDERSTANDS_RISKS: "alphaUnderstandRisks",
   SETTING_SUBSCRIPTIONS_VIEW_MODE: "subscriptionsViewMode",
