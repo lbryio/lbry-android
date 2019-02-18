@@ -1,8 +1,10 @@
 import React from 'react';
 import NavigationActions from 'react-navigation';
 import {
+  Alert,
   ActivityIndicator,
   AsyncStorage,
+  Linking,
   NativeModules,
   SectionList,
   Text,
@@ -10,6 +12,7 @@ import {
 } from 'react-native';
 import { normalizeURI, parseURI } from 'lbry-redux';
 import moment from 'moment';
+import Constants from 'constants';
 import Colors from 'styles/colors';
 import discoverStyle from 'styles/discover';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
@@ -50,6 +53,8 @@ class DiscoverPage extends React.PureComponent {
     fetchFeaturedUris();
     fetchRewardedContent();
     fetchSubscriptions();
+
+    this.showRatingReminder();
   }
 
   subscriptionForUri = (uri, channelName) => {
@@ -101,6 +106,43 @@ class DiscoverPage extends React.PureComponent {
         });
       }
     }
+  }
+
+  showRatingReminder = () => {
+    const { ratingReminderDisabled, ratingReminderLastShown, setClientSetting } = this.props;
+
+    const now = moment().unix();
+    if ('true' !== ratingReminderDisabled && ratingReminderLastShown) {
+      const lastShownParts = ratingReminderLastShown.split('|');
+      if (lastShownParts.length === 2) {
+        const lastShownTime = parseInt(lastShownParts[0], 10);
+        const lastShownCount = parseInt(lastShownParts[1], 10);
+        if (!isNaN(lastShownTime) && !isNaN(lastShownCount)) {
+          if (now > (lastShownTime + (Constants.RATING_REMINDER_INTERVAL * lastShownCount))) {
+            Alert.alert(
+              'Enjoying LBRY?',
+              'Are you enjoying your experience with the LBRY app? You can leave a review for us on the Play Store.',
+              [
+                { text: 'Never ask again', onPress: () => setClientSetting(Constants.SETTING_RATING_REMINDER_DISABLED, 'true')},
+                { text: 'Maybe later', onPress: () => this.updateRatingReminderShown(lastShownCount)},
+                { text: 'Rate app', onPress: () => Linking.openURL(Constants.PLAY_STORE_URL)}
+              ],
+              { cancelable: false }
+            );
+          }
+        }
+      }
+    }
+    if (!ratingReminderLastShown) {
+      // first time, so set a value for the next interval multiplier
+      this.updateRatingReminderShown(0);
+    }
+  }
+
+  updateRatingReminderShown = (lastShownCount) => {
+    const { setClientSetting } = this.props;
+    const settingString = (moment().unix() + '|' + (lastShownCount + 1));
+    setClientSetting(Constants.SETTING_RATING_REMINDER_LAST_SHOWN, settingString);
   }
 
   render() {
