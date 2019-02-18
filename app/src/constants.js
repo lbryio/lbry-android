@@ -32,7 +32,7 @@ const Constants = {
   SUBSCRIPTIONS_VIEW_LATEST_FIRST: 'view_latest_first',
 
   PLAY_STORE_URL: 'https://play.google.com/store/apps/details?id=io.lbry.browser',
-  RATING_REMINDER_INTERVAL: 60, // for testing purposes, 1 minute (60s)
+  RATING_REMINDER_INTERVAL: 604800, // 7 days (7 * 24 * 3600s)
 };
 
 export default Constants;

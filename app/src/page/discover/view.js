@@ -125,7 +125,10 @@ class DiscoverPage extends React.PureComponent {
               [
                 { text: 'Never ask again', onPress: () => setClientSetting(Constants.SETTING_RATING_REMINDER_DISABLED, 'true')},
                 { text: 'Maybe later', onPress: () => this.updateRatingReminderShown(lastShownCount)},
-                { text: 'Rate app', onPress: () => Linking.openURL(Constants.PLAY_STORE_URL)}
+                { text: 'Rate app', onPress: () => {
+                  setClientSetting(Constants.SETTING_RATING_REMINDER_DISABLED, 'true');
+                  Linking.openURL(Constants.PLAY_STORE_URL);
+                }}
               ],
               { cancelable: false }
             );
