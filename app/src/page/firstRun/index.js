@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { doToast } from 'lbry-redux';
 import {
   doAuthenticate,
-  doGenerateAuthToken,
   doUserEmailNew,
   selectAuthToken,
   selectEmailNewErrorMessage,
@@ -22,7 +21,6 @@ const select = (state) => ({
 
 const perform = dispatch => ({
   addUserEmail: email => dispatch(doUserEmailNew(email)),
-  generateAuthToken: installationId => dispatch(doGenerateAuthToken(installationId)),
   authenticate: (appVersion, os) => dispatch(doAuthenticate(appVersion, os)),
   notify: data => dispatch(doToast(data))
 });
