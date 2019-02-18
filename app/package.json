@@ -8,7 +8,7 @@
     "dependencies": {
         "base-64": "^0.1.0",
         "@expo/vector-icons": "^8.1.0",
-        "lbry-redux": "lbryio/lbry-redux#031sdk-resolve",
+        "lbry-redux": "lbryio/lbry-redux",
         "lbryinc": "lbryio/lbryinc",
         "moment": "^2.22.1",
         "react": "16.2.0",
