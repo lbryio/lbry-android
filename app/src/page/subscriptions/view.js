@@ -10,7 +10,7 @@ import {
   Text,
   View
 } from 'react-native';
-import { buildURI } from 'lbry-redux';
+import { buildURI, parseURI } from 'lbry-redux';
 import { uriFromFileInfo } from 'utils/helper';
 import moment from 'moment';
 import Colors from 'styles/colors';
@@ -77,7 +77,7 @@ class SubscriptionsPage extends React.PureComponent {
           onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_ALL)}
         />
         <Link
-          text={'Latest First'}
+          text={'Latest Only'}
           style={[subscriptionsStyle.viewModeLink,
                   ((viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) ? subscriptionsStyle.activeMode : subscriptionsStyle.inactiveMode)]}
           onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST)}
@@ -101,9 +101,7 @@ class SubscriptionsPage extends React.PureComponent {
               showDetails={true} />
             )
           }
-          data={allSubscriptions.sort((a, b) => {
-            return b.height - a.height;
-          })}
+          data={allSubscriptions}
           keyExtractor={(item, index) => uriFromFileInfo(item)} />}
 
         {(viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) &&
