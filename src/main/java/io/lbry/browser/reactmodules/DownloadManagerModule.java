@@ -32,6 +32,8 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     private HashMap<String, Integer> downloadIdNotificationIdMap = new HashMap<String, Integer>();
 
+    private HashMap<String, Double> downloadProgressMap = new HashMap<String, Double>();
+
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#");
 
     private static final int MAX_FILENAME_LENGTH = 20;
@@ -129,6 +131,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
                .setSmallIcon(android.R.drawable.stat_sys_download);
 
         int notificationId = getNotificationId(id);
+        downloadIdNotificationIdMap.put(id, notificationId);
         builders.put(notificationId, builder);
         notificationManager.notify(notificationId, builder.build());
 
@@ -143,6 +146,18 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
         int notificationId = getNotificationId(id);
         if (notificationId == -1) {
             return;
+        }
+
+        if (progress == 0 && downloadProgressMap.containsKey(id) && downloadProgressMap.get(id) > 0) {
+            // if this happens, the download was canceled, so remove the notification
+            // TODO: Figure out why updateDownload is called in the React Native code after stopDownload
+            removeDownloadNotification(id);
+            downloadProgressMap.remove(id);
+            return;
+        }
+
+        if (progress > 0) {
+            downloadProgressMap.put(id, progress);
         }
 
         createNotificationChannel();
@@ -198,6 +213,10 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void stopDownload(String id, String filename) {
+        removeDownloadNotification(id);
+    }
+
+    private void removeDownloadNotification(String id) {
         if (!downloadIdNotificationIdMap.containsKey(id)) {
             return;
         }

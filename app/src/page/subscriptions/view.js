@@ -6,6 +6,7 @@ import {
   FlatList,
   NativeModules,
   SectionList,
+  ScrollView,
   Text,
   View
 } from 'react-native';
