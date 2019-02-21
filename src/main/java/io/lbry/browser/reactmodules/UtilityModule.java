@@ -244,7 +244,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
                     protected Bitmap doInBackground(Void... params) {
                         try {
                             return Picasso.get().load(thumbnailUri).get();
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             return null;
                         }
                     }
