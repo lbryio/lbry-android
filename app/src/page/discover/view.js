@@ -10,7 +10,7 @@ import {
   Text,
   View
 } from 'react-native';
-import { normalizeURI, parseURI } from 'lbry-redux';
+import { Lbry, normalizeURI, parseURI } from 'lbry-redux';
 import moment from 'moment';
 import Constants from 'constants';
 import Colors from 'styles/colors';
@@ -64,6 +64,7 @@ class DiscoverPage extends React.PureComponent {
     if (allSubscriptions) {
       for (let i = 0; i < allSubscriptions.length; i++) {
         const sub = allSubscriptions[i];
+
         if (sub.claim_id === claimId && sub.name === claimName && sub.channel_name === channelName) {
           return sub;
         }
@@ -74,7 +75,7 @@ class DiscoverPage extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { allSubscriptions, unreadSubscriptions, enabledChannelNotifications } = this.props;
+    const { unreadSubscriptions, enabledChannelNotifications } = this.props;
 
     const utility = NativeModules.UtilityModule;
     if (utility) {
@@ -89,18 +90,20 @@ class DiscoverPage extends React.PureComponent {
           // check if notifications are enabled for the channel
           if (enabledChannelNotifications.indexOf(channelName) > -1) {
             uris.forEach(uri => {
-              const sub = this.subscriptionForUri(uri, channelName);
-              if (sub && sub.value && sub.value.stream) {
-                let isPlayable = false;
-                const source = sub.value.stream.source;
-                const metadata = sub.value.stream.metadata;
-                if (source) {
-                  isPlayable = source.contentType && ['audio', 'video'].indexOf(source.contentType.substring(0, 5)) > -1;
+              Lbry.resolve({ urls: uri }).then(result => {
+                const sub = result[uri].claim;
+                if (sub && sub.value && sub.value.stream) {
+                  let isPlayable = false;
+                  const source = sub.value.stream.source;
+                  const metadata = sub.value.stream.metadata;
+                  if (source) {
+                    isPlayable = source.contentType && ['audio', 'video'].indexOf(source.contentType.substring(0, 5)) > -1;
+                  }
+                  if (metadata) {
+                    utility.showNotificationForContent(uri, metadata.title, channelName, metadata.thumbnail, isPlayable);
+                  }
                 }
-                if (metadata) {
-                  utility.showNotificationForContent(uri, metadata.title, channelName, metadata.thumbnail, isPlayable);
-                }
-              }
+              });
             });
           }
         });
