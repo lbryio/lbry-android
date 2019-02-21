@@ -101,7 +101,9 @@ class SubscriptionsPage extends React.PureComponent {
               showDetails={true} />
             )
           }
-          data={allSubscriptions}
+          data={allSubscriptions.sort((a, b) => {
+            return b.height - a.height;
+          })}
           keyExtractor={(item, index) => uriFromFileInfo(item)} />}
 
         {(viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) &&
