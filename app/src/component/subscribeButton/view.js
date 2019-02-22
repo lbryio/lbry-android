@@ -1,5 +1,5 @@
 import React from 'react';
-import { parseURI } from 'lbry-redux';
+import { normalizeURI, parseURI } from 'lbry-redux';
 import { NativeModules, Text, View, TouchableOpacity } from 'react-native';
 import Button from '../button';
 import Colors from '../../styles/colors';
@@ -39,7 +39,7 @@ class SubscribeButton extends React.PureComponent {
         onPress={() => {
           subscriptionHandler({
             channelName: claimName,
-            uri,
+            uri: normalizeURI(uri),
           });
         }} />
     );

@@ -126,7 +126,7 @@ const mySubscriptionsStack = createStackNavigator({
   Subscriptions: {
     screen: SubscriptionsPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'My Subscriptions',
+      title: 'Subscriptions',
       headerLeft: menuNavigationButton(navigation),
       headerTitleStyle: discoverStyle.titleText
     })
@@ -173,13 +173,13 @@ const drawer = createDrawerNavigator({
     title: 'Trending', drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />
   }},
   MySubscriptionsStack: { screen: mySubscriptionsStack, navigationOptions: {
-    title: 'My Subscriptions', drawerIcon: ({ tintColor }) => <Icon name="rss-square" size={20} style={{ color: tintColor }} />
+    title: 'Subscriptions', drawerIcon: ({ tintColor }) => <Icon name="heart" solid={true} size={20} style={{ color: tintColor }} />
   }},
   WalletStack: { screen: walletStack, navigationOptions: {
     title: 'Wallet', drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
   }},
   Rewards: { screen: rewardsStack, navigationOptions: {
-    drawerIcon: ({ tintColor }) => <Icon name="trophy" size={20} style={{ color: tintColor }} />
+    drawerIcon: ({ tintColor }) => <Icon name="award" size={20} style={{ color: tintColor }} />
   }},
   MyLBRYStack: { screen: myLbryStack, navigationOptions: {
     title: 'Downloads', drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />

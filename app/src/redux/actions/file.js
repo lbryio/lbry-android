@@ -54,7 +54,13 @@ export function doUpdateLoadStatus(uri, outpoint) {
         });
 
         if (NativeModules.LbryDownloadManager) {
-          NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, 100, writtenBytes, totalBytes);
+          NativeModules.LbryDownloadManager.updateDownload(
+            uri,
+            fileInfo.file_name ? fileInfo.file_name : '',
+            100,
+            writtenBytes ? writtenBytes : 0,
+            totalBytes ? totalBytes : 0
+          );
         }
 
         // Once a download has been completed, delete the individual blob files to save space
@@ -84,7 +90,13 @@ export function doUpdateLoadStatus(uri, outpoint) {
         });
 
         if (NativeModules.LbryDownloadManager) {
-          NativeModules.LbryDownloadManager.updateDownload(uri, fileInfo.file_name, progress, writtenBytes, totalBytes);
+          NativeModules.LbryDownloadManager.updateDownload(
+            uri,
+            fileInfo.file_name ? fileInfo.file_name : '',
+            progress ? progress : 0,
+            writtenBytes ? writtenBytes : 0,
+            totalBytes ? totalBytes: 0
+          );
         }
 
         setTimeout(() => {
@@ -118,7 +130,7 @@ export function doStartDownload(uri, outpoint) {
       });
 
       if (NativeModules.LbryDownloadManager) {
-        NativeModules.LbryDownloadManager.startDownload(uri, fileInfo.file_name);
+        NativeModules.LbryDownloadManager.startDownload(uri, fileInfo.file_name ? fileInfo.file_name : '');
       }
 
       dispatch(doUpdateLoadStatus(uri, outpoint));
@@ -146,7 +158,7 @@ export function doStopDownloadingFile(uri, fileInfo) {
       dispatch(doDeleteFile(fileInfo.outpoint, uri));
 
       if (NativeModules.LbryDownloadManager) {
-        NativeModules.LbryDownloadManager.stopDownload(uri, fileInfo.file_name);
+        NativeModules.LbryDownloadManager.stopDownload(uri, fileInfo.file_name ? fileInfo.file_name : '');
       }
     });
   };

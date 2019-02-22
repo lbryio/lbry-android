@@ -64,7 +64,7 @@ def configure_logging(conf):
 
     logging.getLogger('aioupnp').setLevel(logging.WARNING)
     logging.getLogger('aiohttp').setLevel(logging.CRITICAL)
-    logging.getLogger('lbrynet').setLevel(logging.DEBUG)
+    logging.getLogger('lbrynet').setLevel(logging.DEBUG if lbrynet_android_utils.isDebug() else logging.INFO)
     logging.getLogger('torba').setLevel(logging.INFO)
 
     loggly_handler = get_loggly_handler()
@@ -90,21 +90,18 @@ def start():
     log.info('Starting lbry sdk {}'.format(lbrynet_version));
 
     loop = asyncio.get_event_loop()
-    loop.set_debug(True)
+    loop.set_debug(lbrynet_android_utils.isDebug())
 
-    if check_connection():
-        daemon = Daemon(conf)
-        try:
-            loop.run_until_complete(daemon.start())
-            loop.run_until_complete(daemon.stop_event.wait())
-        except (GracefulExit):
-            pass
-        finally:
-            loop.run_until_complete(daemon.stop())
-        if hasattr(loop, 'shutdown_asyncgens'):
-            loop.run_until_complete(loop.shutdown_asyncgens())
-    else:
-        print("Not connected to internet, unable to start")
+    daemon = Daemon(conf)
+    try:
+        loop.run_until_complete(daemon.start())
+        loop.run_until_complete(daemon.stop_event.wait())
+    except (GracefulExit):
+        pass
+    finally:
+        loop.run_until_complete(daemon.stop())
+    if hasattr(loop, 'shutdown_asyncgens'):
+        loop.run_until_complete(loop.shutdown_asyncgens())
 
 if __name__ == '__main__':
     start()
