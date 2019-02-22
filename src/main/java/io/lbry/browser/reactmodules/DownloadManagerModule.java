@@ -32,7 +32,7 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     private HashMap<String, Integer> downloadIdNotificationIdMap = new HashMap<String, Integer>();
 
-    private HashMap<String, Double> downloadProgressMap = new HashMap<String, Double>();
+    private HashMap<String, Boolean> stoppedDownloadsMap = new HashMap<String, Boolean>();
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#");
 
@@ -117,6 +117,10 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startDownload(String id, String filename) {
+        if (filename == null || filename.trim().length() == 0) {
+            return;
+        }
+
         createNotificationChannel();
         createNotificationGroup();
 
@@ -143,21 +147,21 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void updateDownload(String id, String filename, double progress, double writtenBytes, double totalBytes) {
+        if (filename == null || filename.trim().length() == 0) {
+            return;
+        }
+
         int notificationId = getNotificationId(id);
         if (notificationId == -1) {
             return;
         }
 
-        if (progress == 0 && downloadProgressMap.containsKey(id) && downloadProgressMap.get(id) > 0) {
+        if (stoppedDownloadsMap.containsKey(id) && stoppedDownloadsMap.get(id)) {
             // if this happens, the download was canceled, so remove the notification
             // TODO: Figure out why updateDownload is called in the React Native code after stopDownload
             removeDownloadNotification(id);
-            downloadProgressMap.remove(id);
+            stoppedDownloadsMap.remove(id);
             return;
-        }
-
-        if (progress > 0) {
-            downloadProgressMap.put(id, progress);
         }
 
         createNotificationChannel();
@@ -213,6 +217,8 @@ public class DownloadManagerModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void stopDownload(String id, String filename) {
+        android.util.Log.d("ReactNativeJS", "Stop download for id=" + id + "; filename=" + filename);
+        stoppedDownloadsMap.put(id, true);
         removeDownloadNotification(id);
     }
 
