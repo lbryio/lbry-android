@@ -142,8 +142,6 @@ export function navigateBack(navigation, drawerStack, popDrawerStack) {
   } else {
     navigation.navigate({ routeName: target  });
   }
-
-  return;
 }
 
 export function dispatchNavigateBack(dispatch, nav, drawerStack) {
@@ -158,8 +156,6 @@ export function dispatchNavigateBack(dispatch, nav, drawerStack) {
     const navigateAction = NavigationActions.navigate({ routeName: drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0] });
     dispatch(navigateAction);
   }
-
-  return;
 }
 
 export function uriFromFileInfo(fileInfo) {

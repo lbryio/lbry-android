@@ -13,9 +13,6 @@ reducers[Constants.ACTION_PUSH_DRAWER_STACK] = (state, action) => {
     newStack.push(routeName);
   }
 
-  console.log('***push***');
-  console.log(newStack);
-
   return {
     ...state,
     stack: newStack
@@ -25,9 +22,6 @@ reducers[Constants.ACTION_PUSH_DRAWER_STACK] = (state, action) => {
 reducers[Constants.ACTION_POP_DRAWER_STACK] = (state, action) => {
   // We don't want to pop the Discover route, since it's always expected to be the first
   const newStack = (state.stack.length === 1) ? state.stack.slice() : state.stack.slice(0, state.stack.length - 1);
-
-  console.log('***pop***');
-  console.log(newStack);
 
   return {
     ...state,
