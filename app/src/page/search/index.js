@@ -5,6 +5,8 @@ import {
   selectIsSearching,
   selectSearchValue
 } from 'lbry-redux';
+import { doPushDrawerStack } from 'redux/actions/drawer';
+import Constants from 'constants';
 import SearchPage from './view';
 
 const select = (state) => ({
@@ -14,7 +16,8 @@ const select = (state) => ({
 });
 
 const perform = dispatch => ({
-  search: (query) => dispatch(doSearch(query, 25))
+  search: (query) => dispatch(doSearch(query, 25)),
+  pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_SEARCH)),
 });
 
 export default connect(select, perform)(SearchPage);
