@@ -37,7 +37,7 @@ const walletStyle = StyleSheet.create({
     backgroundColor: Colors.Orange,
     padding: 16,
     marginLeft: 16,
-    marginTop: 16,
+    marginTop: 76,
     marginRight: 16
   },
   transactionsCard: {
@@ -132,7 +132,8 @@ const walletStyle = StyleSheet.create({
   warning: {
     backgroundColor: Colors.Orange,
     padding: 16,
-    margin: 16
+    margin: 16,
+    marginTop: 76
   },
   warningText: {
     color: Colors.White,
@@ -161,6 +162,9 @@ const walletStyle = StyleSheet.create({
   },
   bottomMarginLarge: {
     marginBottom: 24
+  },
+  transactionHistoryScroll: {
+    marginTop: 60
   }
 });
 

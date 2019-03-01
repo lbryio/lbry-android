@@ -30,6 +30,7 @@ class TrendingPage extends React.PureComponent {
 
     return (
       <View style={discoverStyle.container}>
+        <UriBar navigation={navigation} />
         {!hasContent && fetchingTrendingUris && (
           <View style={discoverStyle.busyContainer}>
             <ActivityIndicator size="large" color={Colors.LbryGreen} />
@@ -54,7 +55,6 @@ class TrendingPage extends React.PureComponent {
           />
         }
         <FloatingWalletBalance navigation={navigation} />
-        <UriBar navigation={navigation} />
       </View>
     );
   }

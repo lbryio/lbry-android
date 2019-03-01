@@ -12,7 +12,7 @@ const searchStyle = StyleSheet.create({
     height: '100%',
     paddingLeft: 16,
     paddingRight: 16,
-    marginBottom: 60
+    marginTop: 60
   },
   scrollPadding: {
     paddingBottom: 16

@@ -35,6 +35,9 @@ class SearchPage extends React.PureComponent {
 
     return (
       <View style={searchStyle.container}>
+        <UriBar value={searchQuery}
+                navigation={navigation}
+                onSearchSubmitted={(keywords) => search(keywords)} />
         {!isSearching && (!uris || uris.length === 0) &&
             <Text style={searchStyle.noResultsText}>No results to display.</Text>}
         <ScrollView style={searchStyle.scrollContainer} contentContainerStyle={searchStyle.scrollPadding}>
@@ -48,9 +51,6 @@ class SearchPage extends React.PureComponent {
         </ScrollView>
         {isSearching && <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} /> }
         <FloatingWalletBalance navigation={navigation} />
-        <UriBar value={searchQuery}
-                navigation={navigation}
-                onSearchSubmitted={(keywords) => search(keywords)} />
       </View>
     );
   }

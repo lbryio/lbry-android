@@ -158,6 +158,7 @@ class DiscoverPage extends React.PureComponent {
 
     return (
       <View style={discoverStyle.container}>
+        <UriBar navigation={navigation} />
         <RewardSummary navigation={navigation} />
         {!hasContent && fetchingFeaturedUris && (
           <View style={discoverStyle.busyContainer}>
@@ -186,7 +187,6 @@ class DiscoverPage extends React.PureComponent {
           />)
         }
         <FloatingWalletBalance navigation={navigation} />
-        <UriBar navigation={navigation} />
       </View>
     );
   }

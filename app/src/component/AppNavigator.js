@@ -69,8 +69,7 @@ const discoverStack = createStackNavigator({
     screen: DiscoverPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Explore',
-      headerLeft: menuNavigationButton(navigation),
-      headerTitleStyle: discoverStyle.titleText
+      header: null
     })
   },
   File: {
@@ -82,7 +81,7 @@ const discoverStack = createStackNavigator({
   Search: {
     screen: SearchPage,
     navigationOptions: ({ navigation }) => ({
-      headerTitleStyle: discoverStyle.titleText
+      header: null
     })
   }
 }, {
@@ -91,9 +90,9 @@ const discoverStack = createStackNavigator({
 
 discoverStack.navigationOptions = ({ navigation }) => {
   let drawerLockMode = 'unlocked';
-  if (navigation.state.index > 0) {
+  /*if (navigation.state.index > 0) {
     drawerLockMode = 'locked-closed';
-  }
+  }*/
 
   return {
     drawerLockMode
@@ -105,8 +104,7 @@ const trendingStack = createStackNavigator({
     screen: TrendingPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Trending',
-      headerLeft: menuNavigationButton(navigation),
-      headerTitleStyle: discoverStyle.titleText
+      header: null
     })
   }
 });
@@ -116,8 +114,7 @@ const myLbryStack = createStackNavigator({
     screen: DownloadsPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Downloads',
-      headerLeft: menuNavigationButton(navigation),
-      headerTitleStyle: discoverStyle.titleText
+      header: null
     })
   }
 });
@@ -127,8 +124,7 @@ const mySubscriptionsStack = createStackNavigator({
     screen: SubscriptionsPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Subscriptions',
-      headerLeft: menuNavigationButton(navigation),
-      headerTitleStyle: discoverStyle.titleText
+      header: null
     })
   }
 });
@@ -138,8 +134,7 @@ const rewardsStack = createStackNavigator({
     screen: RewardsPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Rewards',
-      headerLeft: menuNavigationButton(navigation),
-      headerTitleStyle: discoverStyle.titleText
+      header: null
     })
   }
 });
@@ -149,16 +144,14 @@ const walletStack = createStackNavigator({
     screen: WalletPage,
     navigationOptions: ({ navigation }) => ({
       title: 'Wallet',
-      headerLeft: menuNavigationButton(navigation),
-      headerTitleStyle: discoverStyle.titleText
+      header: null
     })
   },
   TransactionHistory: {
     screen: TransactionHistoryPage,
     navigationOptions: {
       title: 'Transaction History',
-      drawerLockMode: 'locked-closed',
-      headerTitleStyle: discoverStyle.titleText
+      header: null
     }
   }
 }, {

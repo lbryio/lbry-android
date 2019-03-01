@@ -1,7 +1,7 @@
 import { Platform, StyleSheet } from 'react-native';
 
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
-const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
+export const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
 
 let platformContainerStyles;
 if (Platform.OS === 'ios') {

@@ -67,90 +67,91 @@ class SubscriptionsPage extends React.PureComponent {
 
     return (
       <View style={subscriptionsStyle.container}>
+        <UriBar navigation={navigation} />
 
-      {hasSubscriptions && !loading &&
-      <View style={subscriptionsStyle.viewModeRow}>
-        <Link
-          text={'All Subscriptions'}
-          style={[subscriptionsStyle.viewModeLink,
-                  ((viewMode === Constants.SUBSCRIPTIONS_VIEW_ALL) ? subscriptionsStyle.activeMode : subscriptionsStyle.inactiveMode)]}
-          onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_ALL)}
-        />
-        <Link
-          text={'Latest Only'}
-          style={[subscriptionsStyle.viewModeLink,
-                  ((viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) ? subscriptionsStyle.activeMode : subscriptionsStyle.inactiveMode)]}
-          onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST)}
-        />
-      </View>}
-
-      {(hasSubscriptions && !loading) &&
-      <View style={subscriptionsStyle.container}>
-        {(viewMode === Constants.SUBSCRIPTIONS_VIEW_ALL) &&
-        <FlatList
-          style={subscriptionsStyle.scrollContainer}
-          contentContainerStyle={subscriptionsStyle.scrollPadding}
-          renderItem={ ({item}) => (
-            <FileItem
-              style={subscriptionsStyle.fileItem}
-              mediaStyle={discoverStyle.fileItemMedia}
-              key={item}
-              uri={uriFromFileInfo(item)}
-              navigation={navigation}
-              compactView={false}
-              showDetails={true} />
-            )
-          }
-          data={allSubscriptions.sort((a, b) => {
-            return b.height - a.height;
-          })}
-          keyExtractor={(item, index) => uriFromFileInfo(item)} />}
-
-        {(viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) &&
-        <View style={subscriptionsStyle.container}>
-          {unreadSubscriptions.length ?
-            (<ScrollView
-              style={subscriptionsStyle.scrollContainer}
-              contentContainerStyle={subscriptionsStyle.scrollPadding}>
-              {unreadSubscriptions.map(({ channel, uris }) => {
-                  const { claimName } = parseURI(channel);
-                  return uris.map(uri => (
-                    <FileItem
-                      style={subscriptionsStyle.fileItem}
-                      mediaStyle={discoverStyle.fileItemMedia}
-                      key={uri}
-                      uri={uri}
-                      navigation={navigation}
-                      compactView={false}
-                      showDetails={true} />));
-              })}
-            </ScrollView>) :
-            (<View style={subscriptionsStyle.contentContainer}>
-              <Text style={subscriptionsStyle.contentText}>All caught up! You might like the channels below.</Text>
-              <SuggestedSubscriptions navigation={navigation} />
-            </View>)
-          }
+        {hasSubscriptions && !loading &&
+        <View style={subscriptionsStyle.viewModeRow}>
+          <Link
+            text={'All Subscriptions'}
+            style={[subscriptionsStyle.viewModeLink,
+                    ((viewMode === Constants.SUBSCRIPTIONS_VIEW_ALL) ? subscriptionsStyle.activeMode : subscriptionsStyle.inactiveMode)]}
+            onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_ALL)}
+          />
+          <Link
+            text={'Latest Only'}
+            style={[subscriptionsStyle.viewModeLink,
+                    ((viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) ? subscriptionsStyle.activeMode : subscriptionsStyle.inactiveMode)]}
+            onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST)}
+          />
         </View>}
 
-      </View>}
+        {(hasSubscriptions && !loading) &&
+        <View style={subscriptionsStyle.subContainer}>
+          <UriBar navigation={navigation} />
+          {(viewMode === Constants.SUBSCRIPTIONS_VIEW_ALL) &&
+          <FlatList
+            style={subscriptionsStyle.scrollContainer}
+            contentContainerStyle={subscriptionsStyle.scrollPadding}
+            renderItem={ ({item}) => (
+              <FileItem
+                style={subscriptionsStyle.fileItem}
+                mediaStyle={discoverStyle.fileItemMedia}
+                key={item}
+                uri={uriFromFileInfo(item)}
+                navigation={navigation}
+                compactView={false}
+                showDetails={true} />
+              )
+            }
+            data={allSubscriptions.sort((a, b) => {
+              return b.height - a.height;
+            })}
+            keyExtractor={(item, index) => uriFromFileInfo(item)} />}
 
-      {(hasSubscriptions && loading) &&
-        <View style={subscriptionsStyle.busyContainer}>
-          <ActivityIndicator size="large" color={Colors.LbryGreen} style={subscriptionsStyle.loading} />
-        </View>
-      }
+          {(viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) &&
+          <View style={subscriptionsStyle.subContainer}>
+            {unreadSubscriptions.length ?
+              (<ScrollView
+                style={subscriptionsStyle.scrollContainer}
+                contentContainerStyle={subscriptionsStyle.scrollPadding}>
+                {unreadSubscriptions.map(({ channel, uris }) => {
+                    const { claimName } = parseURI(channel);
+                    return uris.map(uri => (
+                      <FileItem
+                        style={subscriptionsStyle.fileItem}
+                        mediaStyle={discoverStyle.fileItemMedia}
+                        key={uri}
+                        uri={uri}
+                        navigation={navigation}
+                        compactView={false}
+                        showDetails={true} />));
+                })}
+              </ScrollView>) :
+              (<View style={subscriptionsStyle.contentContainer}>
+                <Text style={subscriptionsStyle.contentText}>All caught up! You might like the channels below.</Text>
+                <SuggestedSubscriptions navigation={navigation} />
+              </View>)
+            }
+          </View>}
 
-      {(!hasSubscriptions && !loading) &&
-        <View style={subscriptionsStyle.container}>
-          <Text style={subscriptionsStyle.infoText}>
-            You are not subscribed to any channels at the moment. Here are some channels that we think you might enjoy.
-          </Text>
-          {loadingSuggested && <ActivityIndicator size="large" colors={Colors.LbryGreen} style={subscriptionsStyle.loading} />}
-          {!loadingSuggested && <SuggestedSubscriptions navigation={navigation} />}
         </View>}
+
+        {(hasSubscriptions && loading) &&
+          <View style={subscriptionsStyle.busyContainer}>
+            <ActivityIndicator size="large" color={Colors.LbryGreen} style={subscriptionsStyle.loading} />
+          </View>
+        }
+
+        {(!hasSubscriptions && !loading) &&
+          <View style={subscriptionsStyle.subContainer}>
+            <Text style={subscriptionsStyle.infoText}>
+              You are not subscribed to any channels at the moment. Here are some channels that we think you might enjoy.
+            </Text>
+            {loadingSuggested && <ActivityIndicator size="large" colors={Colors.LbryGreen} style={subscriptionsStyle.loading} />}
+            {!loadingSuggested && <SuggestedSubscriptions navigation={navigation} />}
+          </View>}
 
         <FloatingWalletBalance navigation={navigation} />
-        <UriBar navigation={navigation} />
       </View>
     )
   }

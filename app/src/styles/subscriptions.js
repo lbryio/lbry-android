@@ -11,6 +11,10 @@ const subscriptionsStyle = StyleSheet.create({
   container: {
     flex: 1,
   },
+  subContainer: {
+    flex: 1,
+    marginTop: 60
+  },
   busyContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -19,8 +23,7 @@ const subscriptionsStyle = StyleSheet.create({
     padding: 16
   },
   scrollContainer: {
-    flex: 1,
-    marginBottom: 60
+    flex: 1
   },
   scrollPadding: {
     paddingTop: 24

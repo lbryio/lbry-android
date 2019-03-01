@@ -36,6 +36,7 @@ class DownloadsPage extends React.PureComponent {
 
     return (
       <View style={downloadsStyle.container}>
+        <UriBar navigation={navigation} />
         {!fetching && !hasDownloads &&
           <View style={downloadsStyle.busyContainer}>
             <Text style={downloadsStyle.noDownloadsText}>You have not downloaded anything from LBRY yet.</Text>
@@ -69,7 +70,6 @@ class DownloadsPage extends React.PureComponent {
             />
           </View>}
         <FloatingWalletBalance navigation={navigation} />
-        <UriBar navigation={navigation} />
       </View>
     );
   }

@@ -7,14 +7,15 @@ import {
   Text,
   View
 } from 'react-native';
-import Colors from '../../styles/colors';
-import Link from '../../component/link';
-import CustomRewardCard from '../../component/customRewardCard';
-import PhoneNumberRewardSubcard from '../../component/phoneNumberRewardSubcard';
-import EmailRewardSubcard from '../../component/emailRewardSubcard';
-import PageHeader from '../../component/pageHeader';
-import RewardCard from '../../component/rewardCard';
-import rewardStyle from '../../styles/reward';
+import Colors from 'styles/colors';
+import Link from 'component/link';
+import CustomRewardCard from 'component/customRewardCard';
+import PhoneNumberRewardSubcard from 'component/phoneNumberRewardSubcard';
+import EmailRewardSubcard from 'component/emailRewardSubcard';
+import PageHeader from 'component/pageHeader';
+import RewardCard from 'component/rewardCard';
+import UriBar from 'component/uriBar';
+import rewardStyle from 'styles/reward';
 
 class RewardsPage extends React.PureComponent {
   state = {
@@ -134,10 +135,11 @@ class RewardsPage extends React.PureComponent {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, navigation } = this.props;
 
     return (
       <View style={rewardStyle.container}>
+        <UriBar navigation={navigation} />
         <ScrollView
           keyboardShouldPersistTaps={'handled'}
           style={rewardStyle.scrollContainer}
