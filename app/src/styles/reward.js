@@ -29,6 +29,9 @@ const rewardStyle = StyleSheet.create({
   rewardsContainer: {
     flex: 1
   },
+  scrollContainer: {
+    marginTop: 60
+  },
   scrollContentContainer: {
     paddingBottom: 16
   },

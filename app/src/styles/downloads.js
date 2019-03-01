@@ -11,7 +11,8 @@ const downloadsStyle = StyleSheet.create({
     flexDirection: 'row'
   },
   subContainer: {
-    flex: 1
+    flex: 1,
+    marginTop: 60
   },
   itemList: {
     flex: 1,

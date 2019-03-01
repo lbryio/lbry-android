@@ -22,8 +22,7 @@ const filePageStyle = StyleSheet.create({
     marginBottom: 20
   },
   innerPageContainer: {
-    flex: 1,
-    marginBottom: 60
+    flex: 1
   },
   innerPageContainerFsMode: {
     flex: 1,
@@ -32,7 +31,8 @@ const filePageStyle = StyleSheet.create({
   mediaContainer: {
     alignItems: 'center',
     width: screenWidth,
-    height: containedMediaHeightWithControls
+    height: containedMediaHeightWithControls,
+    marginTop: 60
   },
   emptyClaimText: {
     fontFamily: 'Inter-UI-Regular',
@@ -116,10 +116,12 @@ const filePageStyle = StyleSheet.create({
   containedPlayer: {
     width: '100%',
     height: containedMediaHeightWithControls,
+    top: 60
   },
   containedPlayerLandscape: {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    top: 60
   },
   fullscreenPlayer: {
     width: '100%',
