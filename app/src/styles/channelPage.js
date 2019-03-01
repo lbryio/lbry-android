@@ -11,8 +11,7 @@ const channelPageStyle = StyleSheet.create({
   },
   fileList: {
     flex: 1,
-    paddingTop: 30,
-    marginBottom: 60,
+    paddingTop: 30
   },
   fileListContent: {
     paddingBottom: 16

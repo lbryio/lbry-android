@@ -2,9 +2,11 @@
 import React from 'react';
 import { SEARCH_TYPES, isNameValid, isURIValid, normalizeURI } from 'lbry-redux';
 import { FlatList, Keyboard, TextInput, View } from 'react-native';
-import { navigateToUri } from '../../utils/helper';
+import { navigateToUri } from 'utils/helper';
 import UriBarItem from './internal/uri-bar-item';
-import uriBarStyle from '../../styles/uriBar';
+import NavigationButton from 'component/navigationButton';
+import discoverStyle from 'styles/discover';
+import uriBarStyle from 'styles/uriBar';
 
 class UriBar extends React.PureComponent {
   static INPUT_TIMEOUT = 500;
@@ -93,17 +95,13 @@ class UriBar extends React.PureComponent {
 
     return (
       <View style={style}>
-        {this.state.focused && (
-        <View style={uriBarStyle.suggestions}>
-          <FlatList style={uriBarStyle.suggestionList}
-                    data={suggestions}
-                    keyboardShouldPersistTaps={'handled'}
-                    keyExtractor={(item, value) => item.value}
-                    renderItem={({item}) => <UriBarItem item={item}
-                                                        navigation={navigation}
-                                                        onPress={() => this.handleItemPress(item)} />} />
-        </View>)}
         <View style={uriBarStyle.uriContainer}>
+          <NavigationButton
+            name="bars"
+            size={24}
+            style={uriBarStyle.drawerMenuButton}
+            iconStyle={discoverStyle.drawerHamburger}
+            onPress={() => navigation.openDrawer() } />
           <TextInput ref={(ref) => { this.textInput = ref }}
                      style={uriBarStyle.uriText}
                      onLayout={() => { this.setSelection(); }}
@@ -143,6 +141,19 @@ class UriBar extends React.PureComponent {
                       }
                     }}/>
         </View>
+        {this.state.focused && (
+        <View style={uriBarStyle.suggestions}>
+          <FlatList style={uriBarStyle.suggestionList}
+                    data={suggestions}
+                    keyboardShouldPersistTaps={'handled'}
+                    keyExtractor={(item, value) => item.value}
+                    renderItem={({item}) => (
+                      <UriBarItem
+                        item={item}
+                        navigation={navigation}
+                        onPress={() => this.handleItemPress(item)}
+                      />)} />
+        </View>)}
       </View>
     );
   }

@@ -1,11 +1,13 @@
 import { StyleSheet } from 'react-native';
+import { TITLE_OFFSET } from 'styles/pageHeader';
 import Colors from './colors';
 
 const uriBarStyle = StyleSheet.create({
   uriContainer: {
+    flexDirection: 'row',
     backgroundColor: Colors.White,
     padding: 8,
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
     height: 60,
     width: '100%',
     shadowColor: Colors.Black,
@@ -24,12 +26,12 @@ const uriBarStyle = StyleSheet.create({
     borderRadius: 4,
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
-    width: '100%'
+    flex: 17
   },
   overlay: {
     position: 'absolute',
     backgroundColor: 'transparent',
-    bottom: 0,
+    top: 0,
     width: '100%',
     zIndex: 200,
     elevation: 16
@@ -51,7 +53,12 @@ const uriBarStyle = StyleSheet.create({
     fontSize: 16,
     marginLeft: 12,
     marginRight: 12
-  }
+  },
+  drawerMenuButton: {
+    height: '100%',
+    justifyContent: 'center',
+    flex: 3
+  },
 });
 
 export default uriBarStyle;

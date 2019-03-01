@@ -27,7 +27,7 @@ const floatingButtonStyle = StyleSheet.create({
   },
   bottomRight: {
     right: 10,
-    bottom: 70
+    bottom: 10
   }
 });
 

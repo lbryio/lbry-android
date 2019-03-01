@@ -480,6 +480,7 @@ class FilePage extends React.PureComponent {
 
         innerContent = (
           <View style={filePageStyle.pageContainer}>
+            {!this.state.fullscreenMode && <UriBar value={uri} navigation={navigation} />}
             {this.state.showWebView && isWebViewable && <WebView source={{ uri: localFileUri }}
                                                                  style={filePageStyle.viewer} />}
 
@@ -624,7 +625,6 @@ class FilePage extends React.PureComponent {
               </View>
             )}
             {!this.state.fullscreenMode && <FloatingWalletBalance navigation={navigation} />}
-            {!this.state.fullscreenMode && <UriBar value={uri} navigation={navigation} />}
           </View>
         );
       }
