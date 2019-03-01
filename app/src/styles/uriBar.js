@@ -45,14 +45,24 @@ const uriBarStyle = StyleSheet.create({
   },
   item: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    padding: 12
+    alignItems: 'center',
+    padding: 12,
+    paddingTop: 8,
+    paddingBottom: 8
+  },
+  itemContent: {
+    marginLeft: 12,
+    marginRight: 12,
+    flex: 1
   },
   itemText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
-    marginLeft: 12,
-    marginRight: 12
+  },
+  itemDesc: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 14,
+    color: Colors.UriDescBlue
   },
   drawerMenuButton: {
     height: '100%',
