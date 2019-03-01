@@ -27,6 +27,8 @@ const Constants = {
   DRAWER_ROUTE_WALLET: "Wallet",
   DRAWER_ROUTE_SETTINGS: "Settings",
   DRAWER_ROUTE_ABOUT: "About",
+  DRAWER_ROUTE_SEARCH: "Search",
+  DRAWER_ROUTE_TRANSACTION_HISTORY: "TransactionHistory",
 
   SUBSCRIPTIONS_VIEW_ALL: 'view_all',
   SUBSCRIPTIONS_VIEW_LATEST_FIRST: 'view_latest_first',
@@ -45,5 +47,7 @@ export const DrawerRoutes = [
   Constants.DRAWER_ROUTE_REWARDS,
   Constants.DRAWER_ROUTE_WALLET,
   Constants.DRAWER_ROUTE_SETTINGS,
-  Constants.DRAWER_ROUTE_ABOUT
+  Constants.DRAWER_ROUTE_ABOUT,
+  Constants.DRAWER_ROUTE_SEARCH,
+  Constants.DRAWER_ROUTE_TRANSACTION_HISTORY
 ];

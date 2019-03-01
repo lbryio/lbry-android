@@ -33,7 +33,6 @@ import {
   TextInput,
   ToastAndroid
 } from 'react-native';
-import { doPopDrawerStack } from 'redux/actions/drawer';
 import { doDeleteCompleteBlobs } from 'redux/actions/file';
 import { selectDrawerStack } from 'redux/selectors/drawer';
 import { SETTINGS, doDismissToast, doToast, selectToast } from 'lbry-redux';
@@ -246,7 +245,7 @@ class AppWithNavigationState extends React.Component {
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', function() {
-      const { dispatch, nav, drawerStack, popDrawerStack } = this.props;
+      const { dispatch, nav, drawerStack } = this.props;
       // There should be a better way to check this
       if (nav.routes.length > 0) {
         if (nav.routes[0].routeName === 'Main') {
@@ -255,7 +254,7 @@ class AppWithNavigationState extends React.Component {
               mainRoute.routes[0].index > 0 /* Discover stack index */ ||
               mainRoute.routes[4].index > 0 /* Wallet stack index */ ||
               mainRoute.index >= 5 /* Settings and About screens */) {
-            dispatchNavigateBack(dispatch, nav, drawerStack, doPopDrawerStack);
+            dispatchNavigateBack(dispatch, nav, drawerStack);
             return true;
           }
         }

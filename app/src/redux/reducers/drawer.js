@@ -9,7 +9,7 @@ reducers[Constants.ACTION_PUSH_DRAWER_STACK] = (state, action) => {
   const routeName = action.data;
   const newStack = state.stack.slice();
 
-  if (routeName !== newStack[newStack.length -1]) {
+  if (routeName !== newStack[newStack.length - 1]) {
     newStack.push(routeName);
   }
 

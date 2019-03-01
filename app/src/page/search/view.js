@@ -21,6 +21,10 @@ class SearchPage extends React.PureComponent {
     title: 'Search Results'
   };
 
+  componentWillMount() {
+    this.props.pushDrawerStack();
+  }
+
   componentDidMount() {
     const { navigation, search } = this.props;
     const { searchQuery } = navigation.state.params;

@@ -4,6 +4,10 @@ import TransactionList from '../../component/transactionList';
 import walletStyle from '../../styles/wallet';
 
 class TransactionHistoryPage extends React.PureComponent {
+  componentWillMount() {
+    this.props.pushDrawerStack();
+  }
+
   componentDidMount() {
     this.props.fetchTransactions();
   }

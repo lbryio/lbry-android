@@ -1,5 +1,6 @@
 import { NavigationActions, StackActions } from 'react-navigation';
-import { buildURI } from 'lbry-redux';
+import { buildURI, isURIValid } from 'lbry-redux';
+import { doPopDrawerStack, doPushDrawerStack } from 'redux/actions/drawer';
 import { DrawerRoutes } from 'constants';
 import Constants from 'constants';
 
@@ -18,7 +19,7 @@ function getRouteForSpecialUri(uri) {
   return targetRoute;
 }
 
-export function dispatchNavigateToUri(dispatch, nav, uri) {
+export function dispatchNavigateToUri(dispatch, nav, uri, isNavigatingBack) {
   if (uri.startsWith('lbry://?')) {
     dispatch(NavigationActions.navigate({ routeName: getRouteForSpecialUri(uri) }));
     return;
@@ -32,6 +33,11 @@ export function dispatchNavigateToUri(dispatch, nav, uri) {
   }
 
   const params = { uri, uriVars };
+
+  if (!isNavigatingBack) {
+    dispatch(doPushDrawerStack(uri));
+  }
+
   if (nav && nav.routes && nav.routes.length > 0 && 'Main' === nav.routes[0].routeName) {
     const mainRoute = nav.routes[0];
     const discoverRoute = mainRoute.routes[0];
@@ -86,7 +92,7 @@ function parseUriVars(vars) {
   return uriVars;
 }
 
-export function navigateToUri(navigation, uri, additionalParams) {
+export function navigateToUri(navigation, uri, additionalParams, isNavigatingBack) {
   if (!navigation) {
     return;
   }
@@ -107,49 +113,49 @@ export function navigateToUri(navigation, uri, additionalParams) {
     uriVars = parseUriVars(uriVarsStr);
   }
 
+  const { store } = window;
   const params = Object.assign({ uri, uriVars }, additionalParams);
   if ('File' === navigation.state.routeName) {
     const stackAction = StackActions.replace({ routeName: 'File', newKey: uri, params });
     navigation.dispatch(stackAction);
+    if (store && store.dispatch && !isNavigatingBack) {
+      store.dispatch(doPushDrawerStack(uri));
+    }
     return;
   }
 
   navigation.navigate({ routeName: 'File', key: uri, params });
+  if (store && store.dispatch && !isNavigatingBack) {
+    store.dispatch(doPushDrawerStack(uri));
+  }
 }
 
 export function navigateBack(navigation, drawerStack, popDrawerStack) {
-  const shouldPopStack = DrawerRoutes.indexOf(navigation.state.routeName) > -1;
-  if (shouldPopStack) {
-    navigation.goBack();
-    if (popDrawerStack) {
-      popDrawerStack();
-    }
-
-    navigation.navigate({ routeName: drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0] });
-    return;
+  if (popDrawerStack) {
+    popDrawerStack();
   }
 
+  const target = drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0];
   navigation.goBack(navigation.state.key);
+  if (DrawerRoutes.indexOf(target) === -1 && isURIValid(target)) {
+    navigateToUri(navigation, target, null, true);
+  } else {
+    navigation.navigate({ routeName: target  });
+  }
 }
 
-export function dispatchNavigateBack(dispatch, nav, drawerStack, popDrawerStack) {
-  const drawerRouteIndex = nav.routes[0].index;
-  const shouldPopStack = (
-    (drawerRouteIndex > 0 && drawerRouteIndex !== 3) || // not the discover nor wallet stack
-    (drawerRouteIndex === 3 && nav.routes[0].routes[drawerRouteIndex].index === 0) // wallet stack, and tx history page not active
-  );
-  if (shouldPopStack) {
-    dispatch(NavigationActions.back());
-    if (popDrawerStack) {
-      dispatch(popDrawerStack());
-    }
+export function dispatchNavigateBack(dispatch, nav, drawerStack) {
+  dispatch(doPopDrawerStack());
 
+  const target = drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0];
+  dispatch(NavigationActions.back());
+
+  if (DrawerRoutes.indexOf(target) === -1 && isURIValid(target)) {
+    dispatchNavigateToUri(dispatch, nav, target, true);
+  } else {
     const navigateAction = NavigationActions.navigate({ routeName: drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0] });
     dispatch(navigateAction);
-    return;
   }
-
-  dispatch(NavigationActions.back());
 }
 
 export function uriFromFileInfo(fileInfo) {
