@@ -147,9 +147,12 @@ class UriBar extends React.PureComponent {
                     data={suggestions}
                     keyboardShouldPersistTaps={'handled'}
                     keyExtractor={(item, value) => item.value}
-                    renderItem={({item}) => <UriBarItem item={item}
-                                                        navigation={navigation}
-                                                        onPress={() => this.handleItemPress(item)} />} />
+                    renderItem={({item}) => (
+                      <UriBarItem
+                        item={item}
+                        navigation={navigation}
+                        onPress={() => this.handleItemPress(item)}
+                      />)} />
         </View>)}
       </View>
     );
