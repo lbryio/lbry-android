@@ -70,7 +70,7 @@ const discoverStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Explore',
       header: null
-    })
+    }),
   },
   File: {
     screen: FilePage,
@@ -85,7 +85,8 @@ const discoverStack = createStackNavigator({
     })
   }
 }, {
-  headerMode: 'screen'
+  headerMode: 'screen',
+  transitionConfig: () => ({ screenInterpolator: () => null }),
 });
 
 discoverStack.navigationOptions = ({ navigation }) => {
@@ -155,7 +156,8 @@ const walletStack = createStackNavigator({
     }
   }
 }, {
-  headerMode: 'screen'
+  headerMode: 'screen',
+  transitionConfig: () => ({ screenInterpolator: () => null }),
 });
 
 const drawer = createDrawerNavigator({
