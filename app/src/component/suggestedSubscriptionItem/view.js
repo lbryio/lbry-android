@@ -43,7 +43,7 @@ class SuggestedSubscriptionItem extends React.PureComponent {
       return (
         <View style={subscriptionsStyle.suggestedContainer}>
           <FileItem
-            style={subscriptionsStyle.fileItem}
+            style={subscriptionsStyle.compactMainFileItem}
             mediaStyle={subscriptionsStyle.fileItemMedia}
             uri={this.uriForClaim(claims[0])}
             navigation={navigation} />
