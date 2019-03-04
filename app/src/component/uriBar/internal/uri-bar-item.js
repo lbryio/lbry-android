@@ -34,7 +34,7 @@ class UriBarItem extends React.PureComponent {
           <Text style={uriBarStyle.itemDesc} numberOfLines={1}>
             {type === SEARCH_TYPES.SEARCH && `Search for '${value}'`}
             {type === SEARCH_TYPES.CHANNEL && `View the @${shorthand} channel`}
-            {type === SEARCH_TYPES.FILE && `Open the ${shorthand} claim`}
+            {type === SEARCH_TYPES.FILE && `View content at ${value}`}
           </Text>
         </View>
       </TouchableOpacity>
