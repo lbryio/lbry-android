@@ -5,6 +5,7 @@ import {
   selectIsFetchingTransactions,
 } from 'lbry-redux';
 import { doPushDrawerStack } from 'redux/actions/drawer';
+import Constants from 'constants';
 import TransactionHistoryPage from './view';
 
 const select = state => ({
