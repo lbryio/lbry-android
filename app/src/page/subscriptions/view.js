@@ -13,6 +13,7 @@ import {
 import { buildURI, parseURI } from 'lbry-redux';
 import { uriFromFileInfo } from 'utils/helper';
 import moment from 'moment';
+import Button from 'component/button';
 import Colors from 'styles/colors';
 import Constants from 'constants';
 import discoverStyle from 'styles/discover';
@@ -24,6 +25,10 @@ import SuggestedSubscriptions from 'component/suggestedSubscriptions';
 import UriBar from 'component/uriBar';
 
 class SubscriptionsPage extends React.PureComponent {
+  state = {
+    showingSuggestedSubs: false
+  };
+
   componentWillMount() {
     const {
       doFetchMySubscriptions,
@@ -62,14 +67,19 @@ class SubscriptionsPage extends React.PureComponent {
       unreadSubscriptions,
       navigation,
     } = this.props;
+
     const numberOfSubscriptions = subscribedChannels ? subscribedChannels.length : 0;
     const hasSubscriptions = numberOfSubscriptions > 0;
+
+    if (!hasSubscriptions && !this.state.showingSuggestedSubs) {
+      this.setState({ showingSuggestedSubs: true });
+    }
 
     return (
       <View style={subscriptionsStyle.container}>
         <UriBar navigation={navigation} />
 
-        {hasSubscriptions && !loading &&
+        {(!this.state.showingSuggestedSubs && hasSubscriptions && !loading) &&
         <View style={subscriptionsStyle.viewModeRow}>
           <Link
             text={'All Subscriptions'}
@@ -85,9 +95,8 @@ class SubscriptionsPage extends React.PureComponent {
           />
         </View>}
 
-        {(hasSubscriptions && !loading) &&
+        {(!this.state.showingSuggestedSubs && hasSubscriptions && !loading) &&
         <View style={subscriptionsStyle.subContainer}>
-          <UriBar navigation={navigation} />
           {(viewMode === Constants.SUBSCRIPTIONS_VIEW_ALL) &&
           <FlatList
             style={subscriptionsStyle.scrollContainer}
@@ -142,11 +151,25 @@ class SubscriptionsPage extends React.PureComponent {
           </View>
         }
 
-        {(!hasSubscriptions && !loading) &&
-          <View style={subscriptionsStyle.subContainer}>
+        {this.state.showingSuggestedSubs &&
+          <View style={subscriptionsStyle.suggestedSubsContainer}>
+            {!hasSubscriptions &&
             <Text style={subscriptionsStyle.infoText}>
               You are not subscribed to any channels at the moment. Here are some channels that we think you might enjoy.
-            </Text>
+            </Text>}
+
+            {hasSubscriptions &&
+            <View>
+              <Text style={subscriptionsStyle.infoText}>
+                You are currently subscribed to {numberOfSubscriptions} channel{(numberOfSubscriptions > 1) ? 's' : ''}.
+              </Text>
+              <Button
+                style={subscriptionsStyle.button}
+                text={"View my subscriptions"}
+                onPress={() => this.setState({ showingSuggestedSubs: false })} />
+            </View>
+            }
+
             {loadingSuggested && <ActivityIndicator size="large" colors={Colors.LbryGreen} style={subscriptionsStyle.loading} />}
             {!loadingSuggested && <SuggestedSubscriptions navigation={navigation} />}
           </View>}
