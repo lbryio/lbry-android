@@ -29,7 +29,14 @@ class UriBarItem extends React.PureComponent {
     return (
       <TouchableOpacity style={uriBarStyle.item} onPress={onPress}>
         {icon}
-        <Text style={uriBarStyle.itemText} numberOfLines={1}>{shorthand || value} - {type === 'search' ? 'Search' : value}</Text>
+        <View style={uriBarStyle.itemContent}>
+          <Text style={uriBarStyle.itemText} numberOfLines={1}>{shorthand || value} - {type === SEARCH_TYPES.SEARCH ? 'Search' : value}</Text>
+          <Text style={uriBarStyle.itemDesc} numberOfLines={1}>
+            {type === SEARCH_TYPES.SEARCH && `Search for '${value}'`}
+            {type === SEARCH_TYPES.CHANNEL && `View the @${shorthand} channel`}
+            {type === SEARCH_TYPES.FILE && `View content at ${value}`}
+          </Text>
+        </View>
       </TouchableOpacity>
     )
   }
