@@ -2,8 +2,15 @@ import { StyleSheet } from 'react-native';
 import Colors from './colors';
 
 const floatingButtonStyle = StyleSheet.create({
-  container: {
+  view: {
     position: 'absolute',
+    zIndex: 100,
+    borderRadius: 24,
+    padding: 14,
+    justifyContent: 'flex-end',
+    flexDirection: 'row'
+  },
+  container: {
     zIndex: 100,
     borderRadius: 24,
     padding: 14,
@@ -11,7 +18,7 @@ const floatingButtonStyle = StyleSheet.create({
     paddingRight: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.BrighterLbryGreen,
+    backgroundColor: Colors.LbryGreen,
     shadowColor: 'black',
     shadowOpacity: 0.1,
     shadowRadius: StyleSheet.hairlineWidth,
@@ -19,6 +26,17 @@ const floatingButtonStyle = StyleSheet.create({
       height: StyleSheet.hairlineWidth,
     },
     elevation: 4
+  },
+  pendingContainer: {
+    borderRadius: 24,
+    padding: 14,
+    paddingLeft: 70,
+    paddingRight: 20,
+    marginLeft: -60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.BrighterLbryGreen,
+    elevation: 3
   },
   text: {
     color: Colors.White,
