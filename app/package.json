@@ -10,6 +10,7 @@
         "@expo/vector-icons": "^8.1.0",
         "lbry-redux": "lbryio/lbry-redux#old-search",
         "lbryinc": "lbryio/lbryinc",
+        "merge": ">=1.2.1",
         "moment": "^2.22.1",
         "react": "16.2.0",
         "react-native": "0.55.3",
