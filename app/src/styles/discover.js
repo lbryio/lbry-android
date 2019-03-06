@@ -14,12 +14,12 @@ export const mediaHeight = ((screenWidth / screenHeight) * ((screenWidthPixels <
 
 const discoverStyle = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   scrollContainer: {
     flex: 1,
+    paddingTop: 12,
     marginTop: 60,
-    paddingTop: 12
   },
   trendingContainer: {
     flex: 1,
