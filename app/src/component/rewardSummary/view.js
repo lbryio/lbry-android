@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, NativeModules, Text, TouchableOpacity } from 'react-native';
+import { AsyncStorage, NativeModules, Text, TouchableOpacity, View } from 'react-native';
 import Button from '../../component/button';
 import rewardStyle from '../../styles/reward';
 

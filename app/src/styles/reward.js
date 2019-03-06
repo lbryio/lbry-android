@@ -159,6 +159,8 @@ const rewardStyle = StyleSheet.create({
   summaryContainer: {
     backgroundColor: Colors.LbryGreen,
     padding: 12,
+    marginTop: 60,
+    marginBottom: -60,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
