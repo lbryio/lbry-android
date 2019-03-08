@@ -20,6 +20,16 @@ const fileListStyle = StyleSheet.create({
   detailsContainer: {
     flex: 1
   },
+  featuredUri: {
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 24,
+    color: Colors.White
+  },
+  featuredTitle: {
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: (screenWidthPixels <= 720) ? 12 : 16,
+    color: Colors.White
+  },
   thumbnail: {
     width: thumbnailWidth,
     height: thumbnailHeight,

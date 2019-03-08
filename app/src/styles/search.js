@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import Colors from 'styles/colors';
 
 const searchStyle = StyleSheet.create({
   container: {
@@ -10,8 +11,6 @@ const searchStyle = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    paddingLeft: 16,
-    paddingRight: 16,
     marginTop: 60
   },
   scrollPadding: {
@@ -21,7 +20,19 @@ const searchStyle = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 8
+    marginTop: 8,
+    marginLeft: 8,
+    marginRight: 8
+  },
+  featuredResultItem: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+    paddingRight: 8,
+    backgroundColor: Colors.Black
   },
   searchInput: {
     width: '100%',
