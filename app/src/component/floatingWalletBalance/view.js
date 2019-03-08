@@ -13,7 +13,7 @@ type Props = {
 
 class FloatingWalletBalance extends React.PureComponent<Props> {
   render() {
-    const { balance, navigation } = this.props;
+    const { balance, navigation, unclaimedRewardAmount } = this.props;
 
     return (
       <View style={[floatingButtonStyle.view, floatingButtonStyle.bottomRight]}>
@@ -24,11 +24,11 @@ class FloatingWalletBalance extends React.PureComponent<Props> {
             {(balance || balance === 0) && (formatCredits(parseFloat(balance), 2) + ' LBC')}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={floatingButtonStyle.pendingContainer}>
-          <Text style={floatingButtonStyle.text}>
-            get 40
-          </Text>
-        </TouchableOpacity>
+        {unclaimedRewardAmount > 0 &&
+        <TouchableOpacity style={floatingButtonStyle.pendingContainer}
+          onPress={() => navigation && navigation.navigate({ routeName: 'Rewards' })} >
+          <Text style={floatingButtonStyle.text}>claim {unclaimedRewardAmount}</Text>
+        </TouchableOpacity>}
       </View>
     );
   }

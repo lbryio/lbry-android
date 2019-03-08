@@ -159,17 +159,15 @@ const rewardStyle = StyleSheet.create({
   summaryContainer: {
     backgroundColor: Colors.LbryGreen,
     padding: 12,
-    marginTop: 60,
-    marginBottom: -60,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    marginTop: 16,
+    marginLeft: 16,
+    marginRight: 16,
   },
   summaryText: {
     color: Colors.White,
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 16,
+    lineHeight: 24,
     flex: 0.7
   },
   phoneVerificationContainer: {
@@ -202,11 +200,11 @@ const rewardStyle = StyleSheet.create({
     marginBottom: 32
   },
   dismissButton: {
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
     backgroundColor: Colors.White,
-    paddingLeft: 4,
-    paddingRight: 4,
-    flex: 0.2
+    paddingLeft: 16,
+    paddingRight: 16,
+    marginTop: 8,
   },
   customCodeInput: {
     fontFamily: 'Inter-UI-Regular',
