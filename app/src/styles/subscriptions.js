@@ -13,7 +13,18 @@ const subscriptionsStyle = StyleSheet.create({
   },
   subContainer: {
     flex: 1,
+  },
+  suggestedSubsContainer: {
+    flex: 1,
     marginTop: 60
+  },
+  button: {
+    alignSelf: 'flex-start',
+    backgroundColor: Colors.LbryGreen,
+    paddingLeft: 16,
+    paddingRight: 16,
+    marginLeft: 16,
+    marginBottom: 16
   },
   busyContainer: {
     flex: 1,
@@ -51,6 +62,10 @@ const subscriptionsStyle = StyleSheet.create({
     marginLeft: 24,
     marginRight: 24,
     marginBottom: 24
+  },
+  compactMainFileItem: {
+    marginLeft: 24,
+    marginRight: 24
   },
   compactItems: {
     flex: 1,
@@ -105,7 +120,7 @@ const subscriptionsStyle = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 24,
     marginRight: 24,
-    marginTop: 24
+    marginTop: 84
   },
   viewModeLink: {
     marginRight: 24,

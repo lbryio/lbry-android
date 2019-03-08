@@ -1,18 +1,18 @@
 import React from 'react';
-import AboutPage from '../page/about';
-import DiscoverPage from '../page/discover';
-import DownloadsPage from '../page/downloads';
-import FilePage from '../page/file';
-import FirstRunScreen from '../page/firstRun';
-import RewardsPage from '../page/rewards';
-import TrendingPage from '../page/trending';
-import SearchPage from '../page/search';
-import SettingsPage from '../page/settings';
-import SplashScreen from '../page/splash';
-import SubscriptionsPage from '../page/subscriptions';
-import TransactionHistoryPage from '../page/transactionHistory';
-import WalletPage from '../page/wallet';
-import SearchInput from '../component/searchInput';
+import AboutPage from 'page/about';
+import DiscoverPage from 'page/discover';
+import DownloadsPage from 'page/downloads';
+import FilePage from 'page/file';
+import FirstRunScreen from 'page/firstRun';
+import RewardsPage from 'page/rewards';
+import TrendingPage from 'page/trending';
+import SearchPage from 'page/search';
+import SettingsPage from 'page/settings';
+import SplashScreen from 'page/splash';
+import SubscriptionsPage from 'page/subscriptions';
+import TransactionHistoryPage from 'page/transactionHistory';
+import WalletPage from 'page/wallet';
+import SearchInput from 'component/searchInput';
 import {
   createDrawerNavigator,
   createStackNavigator,
