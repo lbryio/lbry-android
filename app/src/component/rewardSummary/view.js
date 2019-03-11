@@ -56,14 +56,12 @@ class RewardSummary extends React.Component {
     }
 
     return (
-      <TouchableOpacity style={rewardStyle.summaryContainer} onPress={() => {
-        navigation.navigate('Rewards');
-      }}>
+      <View style={rewardStyle.summaryContainer}>
         <Text style={rewardStyle.summaryText}>
-          You have {unclaimedRewardAmount} LBC in unclaimed rewards. You have {this.state.actionsLeft} action{this.state.actionsLeft === 1 ? '' : 's'} left to claim your first reward. Tap here to continue.
+          You have {unclaimedRewardAmount} LBC in unclaimed rewards. LBC stands for LBRY Credits which are tokens that you can use in the digital marketplace. You have {this.state.actionsLeft} action{this.state.actionsLeft === 1 ? '' : 's'} left to claim your first reward.
         </Text>
         <Button style={rewardStyle.dismissButton} theme={"light"} text={"Dismiss"} onPress={this.onDismissPressed} />
-      </TouchableOpacity>
+      </View>
     );
   }
 }

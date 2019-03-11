@@ -14,6 +14,7 @@ import PhoneNumberRewardSubcard from 'component/phoneNumberRewardSubcard';
 import EmailRewardSubcard from 'component/emailRewardSubcard';
 import PageHeader from 'component/pageHeader';
 import RewardCard from 'component/rewardCard';
+import RewardSummary from 'component/rewardSummary';
 import UriBar from 'component/uriBar';
 import rewardStyle from 'styles/reward';
 
@@ -144,6 +145,7 @@ class RewardsPage extends React.PureComponent {
           keyboardShouldPersistTaps={'handled'}
           style={rewardStyle.scrollContainer}
           contentContainerStyle={rewardStyle.scrollContentContainer}>
+          <RewardSummary navigation={navigation} />
           {this.renderVerification()}
           {this.renderUnclaimedRewards()}
           {this.renderClaimedRewards()}
