@@ -37,7 +37,7 @@ class TransactionListItem extends React.PureComponent {
           <View style={transactionListStyle.col}>
             <Link style={transactionListStyle.smallLink}
                   text={txid.substring(0, 8)}
-                  href={`https://explorer.lbry.io/tx/${txid}`}
+                  href={`https://explorer.lbry.com/tx/${txid}`}
                   error={'The transaction URL could not be opened'} />
           </View>
           <View style={transactionListStyle.col}>

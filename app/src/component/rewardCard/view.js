@@ -83,7 +83,7 @@ class RewardCard extends React.PureComponent<Props> {
           <Text style={rewardStyle.rewardTitle}>{reward.reward_title}</Text>
           <Text style={rewardStyle.rewardDescription}>{reward.reward_description}</Text>
           {claimed && <Link style={rewardStyle.link}
-                href={`https://explorer.lbry.io/tx/${reward.transaction_id}`}
+                href={`https://explorer.lbry.com/tx/${reward.transaction_id}`}
                 text={reward.transaction_id.substring(0, 7)}
                 error={'The transaction URL could not be opened'} />}
         </View>

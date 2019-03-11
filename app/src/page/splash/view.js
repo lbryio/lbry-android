@@ -229,7 +229,7 @@ class SplashScreen extends React.PureComponent {
           isLagging: true,
           message: 'Connection Failure',
           details:
-            'We could not establish a connection to the daemon. Your data connection may be preventing LBRY from connecting. Contact hello@lbry.io if you think this is a software bug.'
+            'We could not establish a connection to the daemon. Your data connection may be preventing LBRY from connecting. Contact hello@lbry.com if you think this is a software bug.'
         });
       });
   }
