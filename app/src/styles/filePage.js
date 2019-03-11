@@ -139,6 +139,7 @@ const filePageStyle = StyleSheet.create({
   },
   containedPlayerBackground: {
     width: '100%',
+    marginTop: 60,
     height: containedMediaHeight,
   },
   fullscreenPlayerBackground: {

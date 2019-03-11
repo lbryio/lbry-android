@@ -511,30 +511,32 @@ class FilePage extends React.PureComponent {
                                         onStartDownloadFailed={this.startDownloadFailed} />}
                   {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
                 </View>
-                {canLoadMedia && fileInfo && <View style={playerBgStyle}
-                                                   ref={(ref) => { this.playerBackground = ref; }}
-                                                   onLayout={(evt) => {
-                                                    if (!this.state.playerBgHeight) {
-                                                      this.setState({ playerBgHeight: evt.nativeEvent.layout.height });
-                                                    }
-                                                  }} />}
-                {canLoadMedia && fileInfo && <MediaPlayer
-                                               fileInfo={fileInfo}
-                                               assignPlayer={(ref) => { this.player = ref; }}
-                                               uri={uri}
-                                               style={playerStyle}
-                                               autoPlay={autoplay || this.state.autoPlayMedia}
-                                               onFullscreenToggled={this.handleFullscreenToggle}
-                                               onLayout={(evt) => {
-                                                 if (!this.state.playerHeight) {
-                                                   this.setState({ playerHeight: evt.nativeEvent.layout.height });
-                                                 }
-                                               }}
-                                               onMediaLoaded={() => this.onMediaLoaded(channelName, title, uri)}
-                                               onPlaybackStarted={this.onPlaybackStarted}
-                                               onPlaybackFinished={this.onPlaybackFinished}
-                                               thumbnail={metadata.thumbnail}
-                                              />}
+                {(canLoadMedia && fileInfo && isPlayable) &&
+                  <View style={playerBgStyle}
+                    ref={(ref) => { this.playerBackground = ref; }}
+                    onLayout={(evt) => {
+                     if (!this.state.playerBgHeight) {
+                       this.setState({ playerBgHeight: evt.nativeEvent.layout.height });
+                     }
+                   }} />}
+                {(canLoadMedia && fileInfo && isPlayable) &&
+                  <MediaPlayer
+                    fileInfo={fileInfo}
+                    assignPlayer={(ref) => { this.player = ref; }}
+                    uri={uri}
+                    style={playerStyle}
+                    autoPlay={autoplay || this.state.autoPlayMedia}
+                    onFullscreenToggled={this.handleFullscreenToggle}
+                    onLayout={(evt) => {
+                      if (!this.state.playerHeight) {
+                        this.setState({ playerHeight: evt.nativeEvent.layout.height });
+                      }
+                    }}
+                    onMediaLoaded={() => this.onMediaLoaded(channelName, title, uri)}
+                    onPlaybackStarted={this.onPlaybackStarted}
+                    onPlaybackFinished={this.onPlaybackFinished}
+                    thumbnail={metadata.thumbnail}
+                   />}
 
                 {showActions &&
                 <View style={filePageStyle.actions}>
