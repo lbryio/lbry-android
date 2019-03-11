@@ -51,6 +51,7 @@ class FileListItem extends React.PureComponent {
       claim,
       fileInfo,
       metadata,
+      featuredResult,
       isResolvingUri,
       isDownloaded,
       style,
@@ -72,6 +73,10 @@ class FileListItem extends React.PureComponent {
       fullChannelUri = channelClaimId ? `${channel}#${channelClaimId}` : channel;
     }
 
+    if (featuredResult && !isResolvingUri && !claim && !title && !name) {
+      return null;
+    }
+
     return (
       <View style={style}>
         <TouchableOpacity style={style} onPress={onPress}>
@@ -81,15 +86,17 @@ class FileListItem extends React.PureComponent {
                          title={(title || name)}
                          thumbnail={metadata ? metadata.thumbnail : null} />
           <View style={fileListStyle.detailsContainer}>
+            {featuredResult && <Text style={fileListStyle.featuredUri} numberOfLines={1}>{uri}</Text>}
+
             {!title && !name && !channel && isResolving && (
             <View>
               {(!title && !name) && <Text style={fileListStyle.uri}>{uri}</Text>}
               {(!title && !name) && <View style={fileListStyle.row}>
-                <ActivityIndicator size={"small"} color={Colors.LbryGreen} />
+                <ActivityIndicator size={"small"} color={featuredResult ? Colors.White : Colors.LbryGreen} />
               </View>}
             </View>)}
 
-            {(title || name) && <Text style={fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
+            {(title || name) && <Text style={featuredResult ? fileListStyle.featuredTitle : fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
             {channel &&
               <Link style={fileListStyle.publisher} text={channel} onPress={() => {
                 navigateToUri(navigation, normalizeURI(fullChannelUri));

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lbry } from 'lbry-redux';
+import { Lbry, parseURI, normalizeURI, isURIValid } from 'lbry-redux';
 import {
   ActivityIndicator,
   Button,
@@ -8,15 +8,19 @@ import {
   View,
   ScrollView
 } from 'react-native';
-import { navigateToUri } from '../../utils/helper';
-import Colors from '../../styles/colors';
-import PageHeader from '../../component/pageHeader';
-import FileListItem from '../../component/fileListItem';
-import FloatingWalletBalance from '../../component/floatingWalletBalance';
-import UriBar from '../../component/uriBar';
-import searchStyle from '../../styles/search';
+import { navigateToUri } from 'utils/helper';
+import Colors from 'styles/colors';
+import PageHeader from 'component/pageHeader';
+import FileListItem from 'component/fileListItem';
+import FloatingWalletBalance from 'component/floatingWalletBalance';
+import UriBar from 'component/uriBar';
+import searchStyle from 'styles/search';
 
 class SearchPage extends React.PureComponent {
+  state = {
+    currentUri: null
+  }
+
   static navigationOptions = {
     title: 'Search Results'
   };
@@ -29,22 +33,38 @@ class SearchPage extends React.PureComponent {
     const { navigation, search } = this.props;
     const { searchQuery } = navigation.state.params;
     if (searchQuery && searchQuery.trim().length > 0) {
+      this.setState({ currentUri: (isURIValid(searchQuery)) ? normalizeURI(searchQuery) : null })
       search(searchQuery);
     }
   }
 
+  handleSearchSubmitted = (keywords) => {
+    const { search } = this.props;
+    this.setState({ currentUri: (isURIValid(keywords)) ? normalizeURI(keywords) : null });
+    search(keywords);
+  }
+
   render() {
-    const { isSearching, navigation, query, search, uris } = this.props;
+    const { isSearching, navigation, query, uris } = this.props;
     const { searchQuery } = navigation.state.params;
 
     return (
       <View style={searchStyle.container}>
         <UriBar value={searchQuery}
                 navigation={navigation}
-                onSearchSubmitted={(keywords) => search(keywords)} />
+                onSearchSubmitted={this.handleSearchSubmitted} />
         {!isSearching && (!uris || uris.length === 0) &&
             <Text style={searchStyle.noResultsText}>No results to display.</Text>}
         <ScrollView style={searchStyle.scrollContainer} contentContainerStyle={searchStyle.scrollPadding}>
+          {this.state.currentUri &&
+          <FileListItem
+            key={this.state.currentUri}
+            uri={this.state.currentUri}
+            featuredResult={true}
+            style={searchStyle.featuredResultItem}
+            navigation={navigation}
+            onPress={() => navigateToUri(navigation, this.state.currentUri)}
+          />}
           {!isSearching && uris && uris.length ? (
                 uris.map(uri => <FileListItem key={uri}
                                               uri={uri}

@@ -32,17 +32,29 @@ class UriBar extends React.PureComponent {
       changeTextTimeout: null,
       currentValue: null,
       inputText: null,
-      focused: false
+      focused: false,
+      // TODO: Add a setting to enable / disable direct search?
+      directSearch: true
     };
   }
 
   handleChangeText = text => {
     const newValue = text ? text : '';
     clearTimeout(this.state.changeTextTimeout);
-    const { updateSearchQuery } = this.props;
+    const { updateSearchQuery, onSearchSubmitted, navigation } = this.props;
 
     let timeout = setTimeout(() => {
       updateSearchQuery(text);
+
+      if (!text.startsWith('lbry://')) {
+        // not a URI input, so this is a search, perform a direct search
+        if (onSearchSubmitted) {
+          onSearchSubmitted(text);
+        } else {
+          navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: text }});
+        }
+      }
+
     }, UriBar.INPUT_TIMEOUT);
     this.setState({ inputText: newValue, currentValue: newValue, changeTextTimeout: timeout });
   }
@@ -141,7 +153,7 @@ class UriBar extends React.PureComponent {
                       }
                     }}/>
         </View>
-        {this.state.focused && (
+        {(this.state.focused && !this.state.directSearch) && (
         <View style={uriBarStyle.suggestions}>
           <FlatList style={uriBarStyle.suggestionList}
                     data={suggestions}
