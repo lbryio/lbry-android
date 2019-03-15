@@ -118,7 +118,7 @@ class UriBar extends React.PureComponent {
                      style={uriBarStyle.uriText}
                      onLayout={() => { this.setSelection(); }}
                      selectTextOnFocus={true}
-                     placeholder={'Search for videos, music, games and more'}
+                     placeholder={'Search movies, music, and more'}
                      underlineColorAndroid={'transparent'}
                      numberOfLines={1}
                      clearButtonMode={'while-editing'}
