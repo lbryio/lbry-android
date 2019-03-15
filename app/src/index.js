@@ -13,6 +13,7 @@ import {
   Lbry,
   blacklistReducer,
   claimsReducer,
+  contentReducer,
   costInfoReducer,
   fileInfoReducer,
   notificationsReducer,
@@ -81,6 +82,7 @@ const reducers = combineReducers({
   auth: authReducer,
   blacklist: blacklistReducer,
   claims: claimsReducer,
+  content: contentReducer,
   costInfo: costInfoReducer,
   drawer: drawerReducer,
   fileInfo: fileInfoReducer,
@@ -113,13 +115,14 @@ window.store = store;
 
 const compressor = createCompressor();
 const authFilter = createFilter('auth', ['authToken']);
+const contentFilter = createFilter('content', ['positions']);
 const saveClaimsFilter = createFilter('claims', ['byId', 'claimsByUri']);
 const subscriptionsFilter = createFilter('subscriptions', ['enabledChannelNotifications', 'subscriptions']);
 const settingsFilter = createFilter('settings', ['clientSettings']);
 const walletFilter = createFilter('wallet', ['receiveAddress']);
 
 const persistOptions = {
-  whitelist: ['auth', 'claims', 'subscriptions', 'settings', 'wallet'],
+  whitelist: ['auth', 'claims', 'content', 'subscriptions', 'settings', 'wallet'],
   // Order is important. Needs to be compressed last or other transforms can't
   // read the data
   transforms: [authFilter, saveClaimsFilter, subscriptionsFilter, settingsFilter, walletFilter, compressor],
