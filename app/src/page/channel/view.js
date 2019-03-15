@@ -6,6 +6,7 @@ import Colors from 'styles/colors';
 import Button from 'component/button';
 import FileList from 'component/fileList';
 import PageHeader from 'component/pageHeader';
+import SubscribeButton from 'component/subscribeButton';
 import UriBar from 'component/uriBar';
 import channelPageStyle from 'styles/channelPage';
 
@@ -82,7 +83,11 @@ class ChannelPage extends React.PureComponent {
 
     return (
       <View style={channelPageStyle.container}>
-        <PageHeader title={name} onBackPressed={() => navigateBack(navigation, drawerStack, popDrawerStack)} />
+        <UriBar value={uri} navigation={navigation} />
+        <View style={channelPageStyle.channelHeader}>
+          <Text style={channelPageStyle.channelName}>{name}</Text>
+          <SubscribeButton style={channelPageStyle.subscribeButton} uri={uri} name={name} />
+        </View>
         {contentList}
         {(totalPages > 1) && this.state.showPageButtons &&
         <View style={channelPageStyle.pageButtons}>
@@ -99,7 +104,6 @@ class ChannelPage extends React.PureComponent {
                                                disabled={!!fetching}
                                                onPress={this.handleNextPage} />}
         </View>}
-        <UriBar value={uri} navigation={navigation} />
       </View>
     )
   }
