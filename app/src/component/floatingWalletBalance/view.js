@@ -2,10 +2,11 @@
 import React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { formatCredits } from 'lbry-redux'
-import Address from '../address';
-import Button from '../button';
-import Colors from '../../styles/colors';
-import floatingButtonStyle from '../../styles/floatingButton';
+import Address from 'component/address';
+import Button from 'component/button';
+import Colors from 'styles/colors';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import floatingButtonStyle from 'styles/floatingButton';
 
 type Props = {
   balance: number,
@@ -27,7 +28,8 @@ class FloatingWalletBalance extends React.PureComponent<Props> {
         {unclaimedRewardAmount > 0 &&
         <TouchableOpacity style={floatingButtonStyle.pendingContainer}
           onPress={() => navigation && navigation.navigate({ routeName: 'Rewards' })} >
-          <Text style={floatingButtonStyle.text}>claim {unclaimedRewardAmount}</Text>
+          <Icon name="award" size={18} style={floatingButtonStyle.rewardIcon} />
+          <Text style={floatingButtonStyle.text}>{unclaimedRewardAmount}</Text>
         </TouchableOpacity>}
       </View>
     );

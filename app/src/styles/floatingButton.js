@@ -36,6 +36,7 @@ const floatingButtonStyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.BrighterLbryGreen,
+    flexDirection: 'row',
     elevation: 3
   },
   text: {
@@ -46,6 +47,10 @@ const floatingButtonStyle = StyleSheet.create({
   bottomRight: {
     right: 10,
     bottom: 10
+  },
+  rewardIcon: {
+    color: Colors.White,
+    marginRight: 4
   }
 });
 
