@@ -39,7 +39,7 @@ const channelPageStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'absolute',
-    bottom: 76,
+    bottom: 16,
     paddingLeft: 16,
     paddingRight: 16
   },
@@ -50,6 +50,23 @@ const channelPageStyle = StyleSheet.create({
   },
   nextButton: {
     alignSelf: 'flex-end'
+  },
+  channelHeader: {
+    marginTop: 60,
+    marginLeft: 16,
+    marginRight: 16
+  },
+  channelName: {
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 24,
+    marginTop: 16,
+    marginBottom: 8
+  },
+  subscribeButton: {
+    alignSelf: 'flex-start',
+    backgroundColor: Colors.White,
+    paddingLeft: 16,
+    paddingRight: 16
   }
 });
 
