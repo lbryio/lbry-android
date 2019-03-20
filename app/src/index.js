@@ -11,16 +11,22 @@ import {
 } from 'react-native';
 import {
   Lbry,
-  blacklistReducer,
   claimsReducer,
   contentReducer,
-  costInfoReducer,
   fileInfoReducer,
   notificationsReducer,
   searchReducer,
   walletReducer
 } from 'lbry-redux';
-import { authReducer, rewardsReducer, subscriptionsReducer, userReducer } from 'lbryinc';
+import {
+  authReducer,
+  blacklistReducer,
+  costInfoReducer,
+  homepageReducer,
+  rewardsReducer,
+  subscriptionsReducer,
+  userReducer
+} from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
 import { AppNavigator } from 'component/AppNavigator';
@@ -86,6 +92,7 @@ const reducers = combineReducers({
   costInfo: costInfoReducer,
   drawer: drawerReducer,
   fileInfo: fileInfoReducer,
+  homepage: homepageReducer,
   nav: navigatorReducer,
   notifications: notificationsReducer,
   rewards: rewardsReducer,

@@ -1,12 +1,10 @@
 import { connect } from 'react-redux';
 import {
   doFetchFileInfo,
-  doFetchCostInfoForUri,
   doResolveUri,
   doSendTip,
   doToast,
   makeSelectIsUriResolving,
-  makeSelectCostInfoForUri,
   makeSelectFileInfoForUri,
   makeSelectChannelForClaimUri,
   makeSelectClaimForUri,
@@ -14,9 +12,13 @@ import {
   makeSelectContentTypeForUri,
   makeSelectMetadataForUri,
   selectBalance,
-  selectBlackListedOutpoints,
 } from 'lbry-redux';
-import { selectRewardContentClaimIds } from 'lbryinc';
+import {
+  doFetchCostInfoForUri,
+  makeSelectCostInfoForUri,
+  selectRewardContentClaimIds,
+  selectBlackListedOutpoints
+} from 'lbryinc';
 import { doDeleteFile, doPurchaseUri, doStopDownloadingFile } from 'redux/actions/file';
 import FilePage from './view';
 
