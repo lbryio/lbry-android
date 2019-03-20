@@ -52,9 +52,9 @@ class AboutPage extends React.PureComponent {
             digital content they are interested in.
           </Text>
           <View style={aboutStyle.links}>
-            <Link style={aboutStyle.link} href="https://lbry.io/faq/what-is-lbry" text="What is LBRY?" />
-            <Link style={aboutStyle.link} href="https://lbry.io/faq/android-basics" text="Android App Basics" />
-            <Link style={aboutStyle.link} href="https://lbry.io/faq" text="Frequently Asked Questions" />
+            <Link style={aboutStyle.link} href="https://lbry.com/faq/what-is-lbry" text="What is LBRY?" />
+            <Link style={aboutStyle.link} href="https://lbry.com/faq/android-basics" text="Android App Basics" />
+            <Link style={aboutStyle.link} href="https://lbry.com/faq" text="Frequently Asked Questions" />
           </View>
           <Text style={aboutStyle.socialTitle}>Get Social</Text>
           <Text style={aboutStyle.paragraph}>
@@ -78,7 +78,7 @@ class AboutPage extends React.PureComponent {
             <View>
               <Link
                 style={aboutStyle.listLink}
-                href={`http://lbry.io/list/edit/${accessToken}`}
+                href={`http://lbry.com/list/edit/${accessToken}`}
                 text="Update mailing preferences" />
             </View>
           </View>}

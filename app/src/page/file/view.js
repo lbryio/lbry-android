@@ -414,7 +414,7 @@ class FilePage extends React.PureComponent {
               <Text style={filePageStyle.dmcaText}>
                 In response to a complaint we received under the US Digital Millennium Copyright Act, we have blocked access to this content from our applications.
               </Text>
-              <Link style={filePageStyle.dmcaLink} href="https://lbry.io/faq/dmca" text="Read More" />
+              <Link style={filePageStyle.dmcaLink} href="https://lbry.com/faq/dmca" text="Read More" />
             </View>
             <UriBar value={uri} navigation={navigation} />
           </View>

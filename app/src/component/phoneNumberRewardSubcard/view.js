@@ -213,7 +213,7 @@ class PhoneNumberRewardSubcard extends React.PureComponent {
           {this.state.phoneVerifyFailed &&
             <View style={rewardStyle.failureFootnote}>
               <Text style={rewardStyle.subcardText}>
-                Sorry, we were unable to verify your phone number. Please go to <Link style={rewardStyle.textLink} href="http://chat.lbry.io" text="chat.lbry.io" /> for manual verification if this keeps happening.
+                Sorry, we were unable to verify your phone number. Please go to <Link style={rewardStyle.textLink} href="http://chat.lbry.com" text="chat.lbry.com" /> for manual verification if this keeps happening.
               </Text>
             </View>}
         </View>

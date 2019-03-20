@@ -39,7 +39,7 @@ class WalletPage extends React.PureComponent {
         <ScrollView keyboardShouldPersistTaps={'handled'}>
           <View style={walletStyle.warningCard}>
             <Text style={walletStyle.warningText}>
-              Please backup your wallet file using the instructions at <Link style={walletStyle.warningText} text="https://lbry.io/faq/how-to-backup-wallet#android" href="https://lbry.io/faq/how-to-backup-wallet#android" />.
+              Please backup your wallet file using the instructions at <Link style={walletStyle.warningText} text="https://lbry.com/faq/how-to-backup-wallet#android" href="https://lbry.com/faq/how-to-backup-wallet#android" />.
             </Text>
           </View>
 

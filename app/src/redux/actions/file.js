@@ -221,7 +221,7 @@ export function doLoadVideo(uri, failureCallback) {
         });
 
         dispatch(doToast({
-          message: `Failed to download ${uri}, please try again. If this problem persists, visit https://lbry.io/faq/support for support.`,
+          message: `Failed to download ${uri}, please try again. If this problem persists, visit https://lbry.com/faq/support for support.`,
         }));
 
         if (failureCallback) {
