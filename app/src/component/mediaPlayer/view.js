@@ -81,13 +81,22 @@ class MediaPlayer extends React.PureComponent {
     this.setState({
       duration: data.duration
     });
+
+    const { position } = this.props;
+    if (!isNaN(parseFloat(position)) && position > 0) {
+      this.video.seek(position);
+    }
+
     if (this.props.onMediaLoaded) {
       this.props.onMediaLoaded();
     }
   }
 
   onProgress = (data) => {
-    this.setState({ currentTime: data.currentTime });
+    const { savePosition, fileInfo } = this.props;
+
+
+    this.setState({ currentTime: data.currentTime }, () => savePosition(fileInfo.claim_id, fileInfo.outpoint, data.currentTime));
 
     if (!this.state.seeking) {
       this.setSeekerPosition(this.calculateSeekerPosition());
@@ -98,6 +107,7 @@ class MediaPlayer extends React.PureComponent {
         this.props.onPlaybackStarted();
       }
       this.setState({ firstPlay: false });
+
       this.hidePlayerControls();
     }
   }

@@ -10,6 +10,7 @@ import {
   makeSelectFileInfoForUri,
   makeSelectChannelForClaimUri,
   makeSelectClaimForUri,
+  makeSelectContentPositionForUri,
   makeSelectContentTypeForUri,
   makeSelectMetadataForUri,
   selectBalance,
@@ -34,6 +35,7 @@ const select = (state, props) => {
     fileInfo: makeSelectFileInfoForUri(selectProps.uri)(state),
     rewardedContentClaimIds: selectRewardContentClaimIds(state, selectProps),
     channelUri: makeSelectChannelForClaimUri(selectProps.uri, true)(state),
+    position: makeSelectContentPositionForUri(selectProps.uri)(state)
   };
 };
 

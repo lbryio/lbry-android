@@ -368,6 +368,7 @@ class FilePage extends React.PureComponent {
       isResolvingUri,
       blackListedOutpoints,
       navigation,
+      position,
       purchaseUri
     } = this.props;
     const { uri, autoplay } = navigation.state.params;
@@ -536,6 +537,7 @@ class FilePage extends React.PureComponent {
                     onPlaybackStarted={this.onPlaybackStarted}
                     onPlaybackFinished={this.onPlaybackFinished}
                     thumbnail={metadata.thumbnail}
+                    position={position}
                    />}
 
                 {showActions &&
