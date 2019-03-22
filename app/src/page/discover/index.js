@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
 import {
-  doFetchFeaturedUris,
   selectBalance,
-  selectFeaturedUris,
-  selectFetchingFeaturedUris,
 } from 'lbry-redux';
 import {
+  doFetchFeaturedUris,
   doFetchRewardedContent,
   doFetchMySubscriptions,
   doRemoveUnreadSubscriptions,
   selectEnabledChannelNotifications,
+  selectFeaturedUris,
+  selectFetchingFeaturedUris,
   selectSubscriptionClaims,
   selectUnreadSubscriptions,
 } from 'lbryinc';
