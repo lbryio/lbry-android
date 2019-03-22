@@ -349,7 +349,7 @@ export function doDeleteCompleteBlobs() {
       data: {},
     });
 
-    Lbry.file_list().then(files => {
+    /*Lbry.file_list().then(files => {
       files.forEach(fileInfo => {
         if (fileInfo.completed) {
           Lbry.file_set_status({ status: 'stop', sd_hash: fileInfo.sd_hash }).then(() => {
@@ -359,6 +359,6 @@ export function doDeleteCompleteBlobs() {
           });
         }
       });
-    });
+    });*/
   };
 }
