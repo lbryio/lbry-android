@@ -4,14 +4,13 @@ import {
     doToast,
     formatCredits,
     selectBalance,
-    makeSelectCostInfoForUri,
     makeSelectFileInfoForUri,
     makeSelectMetadataForUri,
     selectDownloadingByOutpoint,
 } from 'lbry-redux';
-import { doClaimEligiblePurchaseRewards } from 'lbryinc';
+import { doClaimEligiblePurchaseRewards, makeSelectCostInfoForUri } from 'lbryinc';
 import { Alert, NativeModules } from 'react-native';
-import Constants from '../../constants';
+import Constants from 'constants';
 
 const DOWNLOAD_POLL_INTERVAL = 250;
 
