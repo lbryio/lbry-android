@@ -8,7 +8,7 @@
     "dependencies": {
         "base-64": "^0.1.0",
         "@expo/vector-icons": "^8.1.0",
-        "lbry-redux": "lbryio/lbry-redux#save-media-position",
+        "lbry-redux": "lbryio/lbry-redux",
         "lbryinc": "lbryio/lbryinc",
         "lodash": ">=4.17.11",
         "merge": ">=1.2.1",
@@ -18,7 +18,7 @@
         "react-native-country-picker-modal": "^0.6.2",
         "react-native-exception-handler": "2.9.0",
         "react-native-fast-image": "^5.0.3",
-        "react-native-fetch-blob": "^0.10.8",
+        "rn-fetch-blob": "^0.10.15",
         "react-native-image-zoom-viewer": "^2.2.5",
         "react-native-phone-input": "lbryio/react-native-phone-input",
         "react-native-vector-icons": "^5.0.0",
@@ -29,7 +29,7 @@
         "redux": "^3.6.0",
         "redux-logger": "3.0.6",
         "redux-persist": "^4.8.0",
-        "redux-persist-filesystem-storage": "^1.2.0",
+        "redux-persist-filesystem-storage": "^1.3.2",
         "redux-persist-transform-compress": "^4.2.0",
         "redux-persist-transform-filter": "0.0.10",
         "redux-thunk": "^2.2.0"

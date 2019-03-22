@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import {
-  doFetchCostInfoForUri,
   makeSelectFileInfoForUri,
   makeSelectDownloadingForUri,
   makeSelectLoadingForUri,
-  makeSelectCostInfoForUri
 } from 'lbry-redux';
+import { doFetchCostInfoForUri, makeSelectCostInfoForUri } from 'lbryinc';
 import { doPurchaseUri, doStartDownload } from 'redux/actions/file';
 import FileDownloadButton from './view';
 

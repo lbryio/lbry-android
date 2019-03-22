@@ -4,24 +4,22 @@ import {
     doToast,
     formatCredits,
     selectBalance,
-    makeSelectCostInfoForUri,
     makeSelectFileInfoForUri,
     makeSelectMetadataForUri,
     selectDownloadingByOutpoint,
 } from 'lbry-redux';
-import { doClaimEligiblePurchaseRewards } from 'lbryinc';
+import { doClaimEligiblePurchaseRewards, makeSelectCostInfoForUri } from 'lbryinc';
 import { Alert, NativeModules } from 'react-native';
-import Constants from '../../constants';
+import Constants from 'constants';
 
 const DOWNLOAD_POLL_INTERVAL = 250;
 
 const deleteBlobsForSdHash = (sdHash) => {
-  /*Lbry.blob_list({ sd_hash: sdHash }).then(hashes => {
+  Lbry.blob_list({ sd_hash: sdHash }).then(hashes => {
     hashes.filter(hash => hash != sdHash).forEach(hash => {
       Lbry.blob_delete({ blob_hash: hash });
     });
-  });*/
-  return;
+  });
 };
 
 export function doUpdateLoadStatus(uri, outpoint) {
@@ -349,7 +347,7 @@ export function doDeleteCompleteBlobs() {
       data: {},
     });
 
-    /*Lbry.file_list().then(files => {
+    Lbry.file_list().then(files => {
       files.forEach(fileInfo => {
         if (fileInfo.completed) {
           Lbry.file_set_status({ status: 'stop', sd_hash: fileInfo.sd_hash }).then(() => {
@@ -359,6 +357,6 @@ export function doDeleteCompleteBlobs() {
           });
         }
       });
-    });*/
+    });
   };
 }
