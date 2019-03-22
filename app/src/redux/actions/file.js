@@ -16,11 +16,12 @@ import Constants from '../../constants';
 const DOWNLOAD_POLL_INTERVAL = 250;
 
 const deleteBlobsForSdHash = (sdHash) => {
-  Lbry.blob_list({ sd_hash: sdHash }).then(hashes => {
+  /*Lbry.blob_list({ sd_hash: sdHash }).then(hashes => {
     hashes.filter(hash => hash != sdHash).forEach(hash => {
       Lbry.blob_delete({ blob_hash: hash });
     });
-  });
+  });*/
+  return;
 };
 
 export function doUpdateLoadStatus(uri, outpoint) {
