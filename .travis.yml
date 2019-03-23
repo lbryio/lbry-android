@@ -45,6 +45,7 @@ install:
 - mv ~/.buildozer/android/platform/android-sdk-23/build-tools/android-8.0.0 ~/.buildozer/android/platform/android-sdk-23/build-tools/26.0.1
 - mkdir -p ~/.buildozer/android/platform/android-sdk-23/licenses
 - echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license
+- echo $'\n84831b9409646a918e30573bab4c9c91346d8abd' > ~/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-preview-license
 script:
 - "./release.sh | grep -Fv -e 'working:' -e 'copy' -e 'Compiling' --line-buffered"
 - cp $TRAVIS_BUILD_DIR/bin/*.apk /dev/null
