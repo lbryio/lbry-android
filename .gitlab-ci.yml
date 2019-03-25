@@ -8,7 +8,7 @@ build apk:
     - export PATH=/usr/bin:$PATH
     - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
     - dpkg --add-architecture i386
-    - apt-get -qq install software-properties-common
+    - apt-get -qq update && apt-get -qq install software-properties-common
     - add-apt-repository ppa:deadsnakes/ppa -y
     - apt-get -qq update
     - apt-get -qq install build-essential python3.7 python3.7-dev python3.7-venv python3-pip ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386
