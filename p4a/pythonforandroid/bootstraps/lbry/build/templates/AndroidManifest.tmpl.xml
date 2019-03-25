@@ -3,6 +3,7 @@
      com.gamemaker.game
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
       package="{{ args.package }}"
       android:versionCode="{{ args.numeric_version }}"
       android:versionName="{{ args.version }}"
@@ -142,7 +143,7 @@
         {% endif %}
 
          <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="io.lbry.browser.LocalFileProvider"
             android:authorities="io.lbry.browser.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">
