@@ -5,6 +5,7 @@ build apk:
   stage: build
   image: ubuntu:18.04
   script:
+    - echo $TEST_ENV
     - export PATH=/usr/bin:$PATH
     - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
     - dpkg --add-architecture i386
