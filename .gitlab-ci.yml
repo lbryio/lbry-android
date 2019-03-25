@@ -8,12 +8,15 @@ build apk:
     - export PATH=/usr/bin:$PATH
     - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
     - dpkg --add-architecture i386
+    - echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | tee -a /etc/apt/sources.list
     - apt-get -qq update && apt-get -qq install curl software-properties-common
     - add-apt-repository ppa:deadsnakes/ppa -y
     - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+    - wget -qO - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | apt-key add -
     - apt-get -qq update
-    - apt-get -qq install autoconf autogen automake libtool libffi-dev build-essential python3.7 python3.7-dev python3.7-venv python3-pip ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev python-pip openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386 wget yarn
+    - apt-get -qq install autoconf autogen automake libtool libffi-dev build-essential python3.7 python3.7-dev python3.7-venv python3-pip ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev python-pip openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386 wget yarn gawk git-secret gpg
+    - gpg --import <(echo "$PGP_PRIVATE_KEY")
     - pip install --upgrade cython==0.28.1 setuptools
     - wget -q https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.xz
     - tar -xf node-v8.11.1-linux-x64.tar.xz
@@ -48,5 +51,6 @@ build apk:
     - mv ~/.buildozer/android/platform/android-sdk-23/build-tools/android-8.0.0 ~/.buildozer/android/platform/android-sdk-23/build-tools/26.0.1
     - mkdir -p ~/.buildozer/android/platform/android-sdk-23/licenses
     - echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license
+    - git secret reveal
     - "./release.sh | grep -Fv -e 'working:' -e 'copy' -e 'Compiling' --line-buffered"
     - cp $CI_PROJECT_DIR/bin/*.apk /dev/null
