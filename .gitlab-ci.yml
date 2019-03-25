@@ -14,7 +14,7 @@ build apk:
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
     - apt-get -qq update
     - apt-get -qq install build-essential python3.7 python3.7-dev python3.7-venv python3-pip ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev python-pip openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 m4 libc6-dev-i386 wget yarn
-    - pip install --upgrade cython==0.28.1 pip setuptools
+    - pip install --upgrade cython==0.28.1 setuptools
     - wget -q https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.xz
     - tar -xf node-v8.11.1-linux-x64.tar.xz
     - ln -s $CI_PROJECT_DIR/node-v8.11.1-linux-x64/bin/node /usr/bin/node || true
