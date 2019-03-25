@@ -9,7 +9,7 @@ build apk:
     - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
     - dpkg --add-architecture i386
     - echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | tee -a /etc/apt/sources.list
-    - apt-get -qq update && apt-get -qq install curl software-properties-common
+    - apt-get -qq update && apt-get -qq install curl ca-certificates software-properties-common
     - add-apt-repository ppa:deadsnakes/ppa -y
     - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
