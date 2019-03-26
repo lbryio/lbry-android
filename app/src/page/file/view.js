@@ -16,6 +16,7 @@ import {
   WebView
 } from 'react-native';
 import { navigateToUri } from 'utils/helper';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Button from 'component/button';
 import Colors from 'styles/colors';
@@ -62,6 +63,7 @@ class FilePage extends React.PureComponent {
       mediaLoaded: false,
       pageSuspended: false,
       relatedContentY: 0,
+      showDescription: false,
       showImageViewer: false,
       showWebView: false,
       showTipView: false,
@@ -540,15 +542,8 @@ class FilePage extends React.PureComponent {
                     position={position}
                    />}
 
-                {showActions &&
+                {(showActions && showFileActions) &&
                 <View style={filePageStyle.actions}>
-                  <View style={filePageStyle.socialActions}>
-                    <Button style={filePageStyle.actionButton}
-                            theme={"light"}
-                            icon={"gift"}
-                            text={"Send a tip"}
-                            onPress={() => this.setState({ showTipView: true })} />
-                  </View>
                   {showFileActions &&
                     <View style={filePageStyle.fileActions}>
                       {completed && <Button style={filePageStyle.actionButton}
@@ -598,13 +593,17 @@ class FilePage extends React.PureComponent {
                           style={[filePageStyle.actionButton, filePageStyle.bellButton]}
                           uri={fullChannelUri}
                           name={channelName} />
+                        <TouchableOpacity style={filePageStyle.descriptionToggle}
+                          onPress={() => this.setState({ showDescription: !this.state.showDescription })}>
+                          <Icon name={this.state.showDescription ? "caret-up" : "caret-down"} size={24} />
+                        </TouchableOpacity>
                       </View>
                     </View>
                   }
 
-                  {description && description.length > 0 && <View style={filePageStyle.divider} />}
-
-                  {description && <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
+                  {(this.state.showDescription && description && description.length > 0) && <View style={filePageStyle.divider} />}
+                  {(this.state.showDescription && description) &&
+                    <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
 
                   <View onLayout={this.setRelatedContentPosition} />
                   <RelatedContent navigation={navigation} uri={uri} />

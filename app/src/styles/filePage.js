@@ -53,7 +53,7 @@ const filePageStyle = StyleSheet.create({
   },
   title: {
     fontFamily: 'Inter-UI-Bold',
-    fontSize: 24,
+    fontSize: 20,
     marginTop: 12,
     marginLeft: 20,
     marginRight: 20,
@@ -76,7 +76,7 @@ const filePageStyle = StyleSheet.create({
   },
   channelName: {
     fontFamily: 'Inter-UI-SemiBold',
-    fontSize: 20,
+    fontSize: 16,
     color: Colors.LbryGreen
   },
   publishDateText: {
@@ -281,6 +281,12 @@ const filePageStyle = StyleSheet.create({
   currency: {
     alignSelf: 'flex-start',
     marginTop: 17
+  },
+  descriptionToggle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 36,
+    height: 36
   },
   text: {
     fontFamily: 'Inter-UI-Regular',
