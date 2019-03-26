@@ -13,7 +13,7 @@ build apk:
   script:
     - export PATH=/usr/bin:$PATH
     - chown -R $USER:$GROUP ~/.config
-    - chown -R $USER:$GROUP $CI_PROJECT_DIR
+    - mkdir -p ~/.config/yarn/link
     - echo "$PGP_PRIVATE_KEY" | gpg --batch --import
     - cd app
     - npm install
