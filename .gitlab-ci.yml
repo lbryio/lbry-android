@@ -1,6 +1,7 @@
 stages:
   - build
   - deploy
+  - release
   
 build apk:
   stage: build
@@ -39,3 +40,17 @@ deploy build.lbry.io:
   script:
     - aws s3 cp bin/$BUILD_APK_FILENAME s3://build.lbry.io/android/build-${CI_JOB_ID}_commit-${CI_COMMIT_SHA:0:7}/$BUILD_APK_FILENAME
     - aws s3 cp bin/$BUILD_APK_FILENAME s3://build.lbry.io/android/latest-push.apk
+
+release apk:
+  image: python:latest
+  stage: release
+  only: tags
+  dependencies:
+    - build apk
+  before_script:
+    - pip install awscli githubrelease
+    - export BUILD_VERSION=$(cat $CI_PROJECT_DIR/src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
+    - export BUILD_APK_FILENAME=browser-$BUILD_VERSION-release.apk
+  script:
+    - githubrelease asset lbryio/lbry-android upload $CI_COMMIT_TAG bin/$BUILD_APK_FILENAME
+    - aws s3 cp bin/$BUILD_APK_FILENAME s3://build.lbry.io/android/latest.apk
