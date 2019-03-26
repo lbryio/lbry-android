@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { doFetchTrendingUris, selectTrendingUris, selectFetchingTrendingUris } from 'lbry-redux';
+import { doFetchTrendingUris, selectTrendingUris, selectFetchingTrendingUris } from 'lbryinc';
 import { doPushDrawerStack } from 'redux/actions/drawer';
 import Constants from 'constants';
 import TrendingPage from './view';
