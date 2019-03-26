@@ -12,6 +12,8 @@ build apk:
       - bin/browser-*-release.apk
   script:
     - export PATH=/usr/bin:$PATH
+    - chown -R $USER:$GROUP ~/.config
+    - chown -R $USER:$GROUP $CI_PROJECT_DIR
     - echo "$PGP_PRIVATE_KEY" | gpg --batch --import
     - cd app
     - npm install
