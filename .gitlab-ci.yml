@@ -4,7 +4,7 @@ stages:
   
 build apk:
   stage: build
-  image: lbry/android-base:extended
+  image: lbry/android-base:latest
   before_script:
     - export BUILD_VERSION=$(cat $CI_PROJECT_DIR/src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
   artifacts:
@@ -16,7 +16,7 @@ build apk:
     - cd app
     - npm install
     - cd ..
-    - wget 'https://eu.crystax.net/download/crystax-ndk-10.3.2-linux-x86_64.tar.xz' -P ~/.buildozer/android/
+    - wget -q 'https://eu.crystax.net/download/crystax-ndk-10.3.2-linux-x86_64.tar.xz' -P ~/.buildozer/android/
     - tar -xf ~/.buildozer/android/crystax-ndk-10.3.2-linux-x86_64.tar.xz -C ~/.buildozer/android/
     - rm -rf ~/.buildozer/android/crystax-ndk-10.3.2/platforms/android-9
     - ln -s ~/.buildozer/android/crystax-ndk-10.3.2/platforms/android-21 ~/.buildozer/android/crystax-ndk-10.3.2/platforms/android-9
