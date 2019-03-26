@@ -62,6 +62,7 @@ build apk:
     - cp $CI_PROJECT_DIR/bin/*.apk /dev/null
 
 deploy build.lbry.io:
+  image: python:latest
   stage: deploy
   dependencies:
     - build apk
