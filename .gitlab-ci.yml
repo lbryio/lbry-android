@@ -4,7 +4,7 @@ stages:
   
 build apk:
   stage: build
-  image: lbry/android-base:latest
+  image: lbry/android-base:extended
   before_script:
     - export BUILD_VERSION=$(cat $CI_PROJECT_DIR/src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
   artifacts:
@@ -12,8 +12,6 @@ build apk:
       - bin/browser-*-release.apk
   script:
     - export PATH=/usr/bin:$PATH
-    - chown -R $USER:$GROUP ~/.config
-    - mkdir -p ~/.config/yarn/link
     - echo "$PGP_PRIVATE_KEY" | gpg --batch --import
     - cd app
     - npm install
