@@ -44,7 +44,8 @@ deploy build.lbry.io:
 release apk:
   image: python:latest
   stage: release
-  only: tags
+  only:
+    - tags
   dependencies:
     - build apk
   before_script:
