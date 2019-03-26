@@ -9,3 +9,5 @@ src/main/assets/index.android.bundle.meta
 *.log
 .vagrant
 
+lbry-android.keystore
+.gitsecret/keys/random_seed

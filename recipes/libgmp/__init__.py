@@ -8,8 +8,8 @@ import os
 
 class LibGMPRecipe(Recipe):
     version = '6.1.2'
-    url = 'http://www.mirrorservice.org/pub/gnu/gmp/gmp-{version}.tar.bz2'
-    #url = 'https://gmplib.org/download/gmp/gmp-{version}.tar.bz2'
+    #url = 'http://www.mirrorservice.org/pub/gnu/gmp/gmp-{version}.tar.bz2'
+    url = 'https://gmplib.org/download/gmp/gmp-{version}.tar.bz2'
 
     def should_build(self, arch):
         build_dir = self.get_build_dir(arch.arch)
