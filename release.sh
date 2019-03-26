@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 cd app
 react-native bundle --platform android --dev false --entry-file src/index.js --bundle-output ../src/main/assets/index.android.bundle --assets-dest ../src/main/res/
 cd ..
 version=$(cat src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
-buildozer android release
+buildozer android release <<< y
 jarsigner -verbose -sigalg SHA1withRSA \
     -digestalg SHA1 \
     -keystore lbry-android.keystore \
