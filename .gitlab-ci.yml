@@ -38,7 +38,7 @@ deploy build.lbry.io:
     - export BUILD_VERSION=$(cat $CI_PROJECT_DIR/src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
     - export BUILD_APK_FILENAME=browser-$BUILD_VERSION-release.apk
   script:
-    - aws s3 cp bin/$BUILD_APK_FILENAME s3://build.lbry.io/android/build-${CI_JOB_ID}_commit-${CI_COMMIT_SHA:0:7}/$BUILD_APK_FILENAME
+    - aws s3 cp bin/$BUILD_APK_FILENAME s3://build.lbry.io/android/build-${CI_PIPELINE_IID}_commit-${CI_COMMIT_SHA:0:7}/$BUILD_APK_FILENAME
     - aws s3 cp bin/$BUILD_APK_FILENAME s3://build.lbry.io/android/push.apk
 
 release apk:
