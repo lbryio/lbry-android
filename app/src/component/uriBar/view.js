@@ -9,7 +9,7 @@ import discoverStyle from 'styles/discover';
 import uriBarStyle from 'styles/uriBar';
 
 class UriBar extends React.PureComponent {
-  static INPUT_TIMEOUT = 500;
+  static INPUT_TIMEOUT = 1000; // 1 second
 
   textInput = null;
 

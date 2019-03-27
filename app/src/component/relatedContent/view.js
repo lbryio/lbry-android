@@ -1,10 +1,10 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
-import { navigateToUri } from '../../utils/helper';
-import Colors from '../../styles/colors';
-import FileListItem from '../fileListItem';
-import fileListStyle from '../../styles/fileList';
-import relatedContentStyle from '../../styles/relatedContent';
+import { navigateToUri } from 'utils/helper';
+import Colors from 'styles/colors';
+import FileListItem from 'component/fileListItem';
+import fileListStyle from 'styles/fileList';
+import relatedContentStyle from 'styles/relatedContent';
 
 export default class RelatedContent extends React.PureComponent<Props> {
   constructor() {
