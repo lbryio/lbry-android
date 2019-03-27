@@ -565,7 +565,13 @@ class FilePage extends React.PureComponent {
                   style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
                   contentContainerstyle={showActions ? null : filePageStyle.scrollContent}
                   ref={(ref) => { this.scrollView = ref; }}>
-                  <Text style={filePageStyle.title} selectable={true}>{title}</Text>
+                  <View style={filePageStyle.titleRow}>
+                    <Text style={filePageStyle.title} selectable={true}>{title}</Text>
+                    <TouchableOpacity style={filePageStyle.descriptionToggle}
+                      onPress={() => this.setState({ showDescription: !this.state.showDescription })}>
+                      <Icon name={this.state.showDescription ? "caret-up" : "caret-down"} size={24} />
+                    </TouchableOpacity>
+                  </View>
                   {channelName &&
                     <View style={filePageStyle.channelRow}>
                       <View style={filePageStyle.publishInfo}>
@@ -593,10 +599,6 @@ class FilePage extends React.PureComponent {
                           style={[filePageStyle.actionButton, filePageStyle.bellButton]}
                           uri={fullChannelUri}
                           name={channelName} />
-                        <TouchableOpacity style={filePageStyle.descriptionToggle}
-                          onPress={() => this.setState({ showDescription: !this.state.showDescription })}>
-                          <Icon name={this.state.showDescription ? "caret-up" : "caret-down"} size={24} />
-                        </TouchableOpacity>
                       </View>
                     </View>
                   }

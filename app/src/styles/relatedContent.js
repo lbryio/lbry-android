@@ -6,8 +6,8 @@ const relatedContentStyle = StyleSheet.create({
     flex: 1,
     paddingTop: 16,
     paddingBottom: 16,
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingLeft: 16,
+    paddingRight: 16,
     borderTopColor: Colors.LighterGrey,
     borderTopWidth: 1
   },

@@ -32,7 +32,8 @@ const filePageStyle = StyleSheet.create({
     alignItems: 'center',
     width: screenWidth,
     height: containedMediaHeightWithControls,
-    marginTop: 60
+    marginTop: 60,
+    marginBottom: -17
   },
   emptyClaimText: {
     fontFamily: 'Inter-UI-Regular',
@@ -42,8 +43,7 @@ const filePageStyle = StyleSheet.create({
     marginRight: 16
   },
   scrollContainer: {
-    flex: 1,
-    marginTop: -16
+    flex: 1
   },
   scrollContent: {
     paddingTop: 10
@@ -53,17 +53,23 @@ const filePageStyle = StyleSheet.create({
   },
   title: {
     fontFamily: 'Inter-UI-Bold',
-    fontSize: 20,
+    fontSize: 16,
+    flex: 18
+  },
+  titleRow: {
+    flexDirection: 'row',
     marginTop: 12,
-    marginLeft: 20,
-    marginRight: 20,
-    marginBottom: 8
+    marginBottom: 2,
+    marginLeft: 12,
+    marginRight: 12,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   channelRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 12,
+    marginRight: 12,
     marginBottom: 16,
   },
   subscriptionRow: {
@@ -76,7 +82,7 @@ const filePageStyle = StyleSheet.create({
   },
   channelName: {
     fontFamily: 'Inter-UI-SemiBold',
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.LbryGreen
   },
   publishDateText: {
@@ -90,10 +96,10 @@ const filePageStyle = StyleSheet.create({
   description: {
     color: Colors.DescriptionGrey,
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 16,
-    lineHeight: 20,
-    marginLeft: 20,
-    marginRight: 20,
+    fontSize: 13,
+    lineHeight: 18,
+    marginLeft: 12,
+    marginRight: 12,
     marginBottom: 16
   },
   thumbnail: {
@@ -171,7 +177,6 @@ const filePageStyle = StyleSheet.create({
     paddingRight: 16,
     paddingTop: 16,
     paddingBottom: 8,
-    marginTop: -14,
     width: '100%',
   },
   fileActions: {
@@ -286,7 +291,8 @@ const filePageStyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 36,
-    height: 36
+    height: 36,
+    marginTop: -8
   },
   text: {
     fontFamily: 'Inter-UI-Regular',
