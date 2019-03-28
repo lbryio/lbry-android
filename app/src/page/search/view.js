@@ -45,7 +45,7 @@ class SearchPage extends React.PureComponent {
   }
 
   render() {
-    const { isSearching, navigation, query, uris } = this.props;
+    const { isSearching, navigation, query, uris, urisByQuery } = this.props;
     const { searchQuery } = navigation.state.params;
 
     return (
