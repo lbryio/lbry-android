@@ -1,8 +1,7 @@
 
 import glob
+from pythonforandroid.recipe import CythonRecipe, Recipe
 from pythonforandroid.toolchain import (
-    CythonRecipe,
-    Recipe,
     current_directory,
     info,
     shprint,

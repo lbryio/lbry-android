@@ -1,28 +1,28 @@
 
 from pythonforandroid.recipe import TargetPythonRecipe
-from pythonforandroid.toolchain import shprint, current_directory, ArchARM
+from pythonforandroid.toolchain import shprint
 from pythonforandroid.logger import info, error
 from pythonforandroid.util import ensure_dir, temp_directory
 from os.path import exists, join
-import glob
 import sh
 
 prebuilt_download_locations = {
     '3.6': ('https://github.com/inclement/crystax_python_builds/'
             'releases/download/0.1/crystax_python_3.6_armeabi_armeabi-v7a.tar.gz')}
 
-class Python3Recipe(TargetPythonRecipe):
-    version = '3.5'
+
+class Python3CrystaXRecipe(TargetPythonRecipe):
+    version = '3.6'
     url = ''
     name = 'python3crystax'
 
-    depends = ['hostpython3crystax']  
-    conflicts = ['python2', 'python3']
+    depends = ['hostpython3crystax']
+    conflicts = ['python3', 'python2', 'python2legacy']
 
     from_crystax = True
 
     def get_dir_name(self):
-        name = super(Python3Recipe, self).get_dir_name()
+        name = super(Python3CrystaXRecipe, self).get_dir_name()
         name += '-version{}'.format(self.version)
         return name
 
@@ -73,4 +73,30 @@ class Python3Recipe(TargetPythonRecipe):
         # available. Using e.g. pyenv makes this easy.
         self.ctx.hostpython = 'python{}'.format(self.version)
 
-recipe = Python3Recipe()
+    def create_python_bundle(self, dirn, arch):
+        ndk_dir = self.ctx.ndk_dir
+        py_recipe = self.ctx.python_recipe
+        python_dir = join(ndk_dir, 'sources', 'python',
+                          py_recipe.version, 'libs', arch.arch)
+        shprint(sh.cp, '-r', join(python_dir,
+                                  'stdlib.zip'), dirn)
+        shprint(sh.cp, '-r', join(python_dir,
+                                  'modules'), dirn)
+        shprint(sh.cp, '-r', self.ctx.get_python_install_dir(),
+                join(dirn, 'site-packages'))
+
+        info('Renaming .so files to reflect cross-compile')
+        self.reduce_object_file_names(join(dirn, "site-packages"))
+
+        return join(dirn, 'site-packages')
+
+    def include_root(self, arch_name):
+        return join(self.ctx.ndk_dir, 'sources', 'python', self.major_minor_version_string,
+                    'include', 'python')
+
+    def link_root(self, arch_name):
+        return join(self.ctx.ndk_dir, 'sources', 'python', self.major_minor_version_string,
+                    'libs', arch_name)
+
+
+recipe = Python3CrystaXRecipe()

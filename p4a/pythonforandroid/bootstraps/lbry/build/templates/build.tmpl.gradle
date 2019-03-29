@@ -41,12 +41,6 @@ android {
         }
 	}
 
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = "../" + outputFileName
-        }
-    }
-
     dexOptions {
         jumboMode true
     }

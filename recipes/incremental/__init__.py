@@ -1,5 +1,6 @@
 
-from pythonforandroid.toolchain import PythonRecipe, shprint
+from pythonforandroid.recipe import PythonRecipe
+from pythonforandroid.toolchain import shprint
 import sh
 
 
