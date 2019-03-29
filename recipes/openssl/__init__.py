@@ -2,6 +2,7 @@ from functools import partial
 
 from pythonforandroid.recipe import Recipe
 from pythonforandroid.toolchain import shprint, current_directory
+from os.path import join
 import sh
 
 
@@ -60,8 +61,9 @@ class OpenSSLRecipe(Recipe):
             config_args.append(buildarch)
             shprint(perl, 'Configure', *config_args, _env=env)
             self.apply_patch('disable-sover.patch', arch.arch)
-            self.apply_patch('fix-cross-compile.patch', arch.arch)
 
+            makefile = join(self.get_build_dir(arch.arch), 'Makefile')
+            sh.sed('-i', 's/CROSS_COMPILE=arm-linux-androideabi-/CROSS_COMPILE=/g', makefile)
             shprint(sh.make, 'build_libs', _env=env)
 
             self.install_libs(arch, 'libssl.a', 'libssl' + self.version + '.so',
