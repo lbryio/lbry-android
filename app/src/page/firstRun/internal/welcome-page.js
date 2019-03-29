@@ -1,8 +1,8 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
 import { View, Text, Linking } from 'react-native';
-import Colors from '../../../styles/colors';
-import firstRunStyle from '../../../styles/firstRun';
+import Colors from 'styles/colors';
+import firstRunStyle from 'styles/firstRun';
 
 class WelcomePage extends React.PureComponent {
   render() {

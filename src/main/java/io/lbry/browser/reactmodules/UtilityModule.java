@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.security.KeyStore;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
@@ -52,9 +53,16 @@ public class UtilityModule extends ReactContextBaseJavaModule {
 
     private Context context;
 
+    private KeyStore keyStore;
+
     public UtilityModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.context = reactContext;
+        try {
+            this.keyStore = Utils.initKeyStore(context);
+        } catch (Exception ex) {
+            // continue without keystore
+        }
     }
 
     @Override
@@ -299,5 +307,22 @@ public class UtilityModule extends ReactContextBaseJavaModule {
                 // Check BRAND and DEVICE
                 (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
                );
+    }
+
+    @ReactMethod
+    public void setSecureValue(String key, String value) {
+        if (keyStore != null) {
+            Utils.setSecureValue(key, value, context, keyStore);
+        }
+    }
+
+    @ReactMethod
+    public void getSecureValue(String key, Promise promise) {
+        if (keyStore == null) {
+            promise.reject("no keyStore found");
+            return;
+        }
+
+        promise.resolve(Utils.getSecureValue(key, context, keyStore));
     }
 }

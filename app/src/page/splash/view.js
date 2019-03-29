@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { decode as atob } from 'base-64';
-import { navigateToUri } from '../../utils/helper';
+import { navigateToUri } from 'utils/helper';
 import AsyncStorage from '@react-native-community/async-storage';
 import PropTypes from 'prop-types';
 import Colors from 'styles/colors';
@@ -134,6 +134,31 @@ class SplashScreen extends React.PureComponent {
     }
   }
 
+  finishSplashScreen = () => {
+    Lbry.resolve({ urls: 'lbry://one' }).then(() => {
+      // Leave the splash screen
+      const {
+        authenticate,
+        balanceSubscribe,
+        blacklistedOutpointsSubscribe,
+        checkSubscriptionsInit,
+        updateBlockHeight,
+        navigation,
+        notify
+      } = this.props;
+
+      balanceSubscribe();
+      blacklistedOutpointsSubscribe();
+      checkSubscriptionsInit();
+      updateBlockHeight();
+      setInterval(() => { updateBlockHeight(); }, BLOCK_HEIGHT_INTERVAL);
+      NativeModules.VersionInfo.getAppVersion().then(appVersion => {
+        this.setState({ shouldAuthenticate: true });
+        authenticate(appVersion, Platform.OS);
+      });
+    });
+  }
+
   _updateStatusCallback(status) {
     const { deleteCompleteBlobs, fetchSubscriptions } = this.props;
     const startupStatus = status.startup_status;
@@ -154,29 +179,27 @@ class SplashScreen extends React.PureComponent {
         isRunning: true,
       });
 
-      // fetch subscriptions, so that we can check for new content after resolve
-      Lbry.resolve({ urls: 'lbry://one' }).then(() => {
-        // Leave the splash screen
-        const {
-          authenticate,
-          balanceSubscribe,
-          blacklistedOutpointsSubscribe,
-          checkSubscriptionsInit,
-          updateBlockHeight,
-          navigation,
-          notify
-        } = this.props;
+      AsyncStorage.getItem(Constants.KEY_FIRST_RUN_PASSWORD).then(passwordSet => {
+        if ("true" === passwordSet) {
+          // enrypt the wallet
+          NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
+            if (!password || password.trim().length === 0) {
+              this.finishSplashScreen();
+              return;
+            }
 
-        balanceSubscribe();
-        blacklistedOutpointsSubscribe();
-        checkSubscriptionsInit();
-        updateBlockHeight();
-        setInterval(() => { updateBlockHeight(); }, BLOCK_HEIGHT_INTERVAL);
-        NativeModules.VersionInfo.getAppVersion().then(appVersion => {
-          this.setState({ shouldAuthenticate: true });
-          authenticate(appVersion, Platform.OS);
-        });
+            Lbry.account_encrypt({ new_password: password }).then((result) => {
+              AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_PASSWORD);
+              this.finishSplashScreen();
+            });
+          });
+
+          return;
+        }
+
+        this.finishSplashScreen();
       });
+
 
       return;
     }
