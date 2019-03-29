@@ -2,10 +2,7 @@ from functools import partial
 
 from pythonforandroid.recipe import Recipe
 from pythonforandroid.toolchain import shprint, current_directory
-<<<<<<< HEAD
 from os.path import join
-=======
->>>>>>> finish sync implementation and fix build for openssl 1.1.1b required for sdk
 import sh
 
 
