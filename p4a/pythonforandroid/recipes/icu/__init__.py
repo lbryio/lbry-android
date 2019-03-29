@@ -2,7 +2,7 @@ import sh
 import os
 from os.path import join, isdir
 from pythonforandroid.recipe import NDKRecipe
-from pythonforandroid.toolchain import shprint, info
+from pythonforandroid.toolchain import shprint
 from pythonforandroid.util import current_directory, ensure_dir
 
 
@@ -11,7 +11,7 @@ class ICURecipe(NDKRecipe):
     version = '57.1'
     url = 'http://download.icu-project.org/files/icu4c/57.1/icu4c-57_1-src.tgz'
 
-    depends = [('python2', 'python3crystax'), 'hostpython2']  # installs in python
+    depends = [('hostpython2', 'hostpython3')]  # installs in python
     generated_libraries = [
         'libicui18n.so', 'libicuuc.so', 'libicudata.so', 'libicule.so']
 

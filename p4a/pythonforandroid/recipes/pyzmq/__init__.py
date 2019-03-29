@@ -13,7 +13,7 @@ class PyZMQRecipe(CythonRecipe):
     version = 'master'
     url = 'https://github.com/zeromq/pyzmq/archive/{version}.zip'
     site_packages_name = 'zmq'
-    depends = ['python2', 'libzmq']
+    depends = ['libzmq']
     cython_args = ['-Izmq/utils',
                    '-Izmq/backend/cython',
                    '-Izmq/devices']
@@ -54,5 +54,6 @@ skip_check_zmq = True
             build_dir = glob.glob('build/lib.*')[0]
             shprint(sh.find, build_dir, '-name', '"*.o"', '-exec',
                     env['STRIP'], '{}', ';', _env=env)
+
 
 recipe = PyZMQRecipe()

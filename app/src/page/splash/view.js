@@ -63,10 +63,49 @@ class SplashScreen extends React.PureComponent {
     });
   }
 
+  navigateToMain = () => {
+    const { navigation } = this.props;
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Main'})
+      ]
+    });
+    navigation.dispatch(resetAction);
+
+    const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
+    if (launchUrl) {
+      if (launchUrl.startsWith('lbry://?verify=')) {
+        let verification = {};
+        try {
+          verification = JSON.parse(atob(launchUrl.substring(15)));
+        } catch (error) {
+          console.log(error);
+        }
+        if (verification.token && verification.recaptcha) {
+          AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
+          try {
+            verifyUserEmail(verification.token, verification.recaptcha);
+          } catch (error) {
+            const message = 'Invalid Verification Token';
+            verifyUserEmailFailure(message);
+            notify({ message });
+          }
+        } else {
+          notify({
+            message: 'Invalid Verification URI',
+          });
+        }
+      } else {
+        navigateToUri(navigation, launchUrl);
+      }
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const {
       emailToVerify,
-      navigation,
+      getSync,
       setEmailToVerify,
       verifyUserEmail,
       verifyUserEmailFailure
@@ -81,59 +120,33 @@ class SplashScreen extends React.PureComponent {
           }
 
           // user is authenticated, navigate to the main view
-          const resetAction = StackActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({ routeName: 'Main'})
-            ]
-          });
-          navigation.dispatch(resetAction);
-
-          const launchUrl = navigation.state.params.launchUrl || this.state.launchUrl;
-          if (launchUrl) {
-            if (launchUrl.startsWith('lbry://?verify=')) {
-              let verification = {};
-              try {
-                verification = JSON.parse(atob(launchUrl.substring(15)));
-              } catch (error) {
-                console.log(error);
-              }
-              if (verification.token && verification.recaptcha) {
-                AsyncStorage.setItem(Constants.KEY_SHOULD_VERIFY_EMAIL, 'true');
-                try {
-                  verifyUserEmail(verification.token, verification.recaptcha);
-                } catch (error) {
-                  const message = 'Invalid Verification Token';
-                  verifyUserEmailFailure(message);
-                  notify({ message });
-                }
-              } else {
-                notify({
-                  message: 'Invalid Verification URI',
-                });
-              }
-            } else {
-              navigateToUri(navigation, launchUrl);
-            }
+          if (user.has_verified_email) {
+            NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
+              getSync(walletPassword);
+              this.navigateToMain();
+            });
+            return;
           }
+
+          this.navigateToMain();
         });
       });
     }
   }
 
   finishSplashScreen = () => {
+    const {
+      authenticate,
+      balanceSubscribe,
+      blacklistedOutpointsSubscribe,
+      checkSubscriptionsInit,
+      updateBlockHeight,
+      navigation,
+      notify
+    } = this.props;
+
     Lbry.resolve({ urls: 'lbry://one' }).then(() => {
       // Leave the splash screen
-      const {
-        authenticate,
-        balanceSubscribe,
-        blacklistedOutpointsSubscribe,
-        checkSubscriptionsInit,
-        updateBlockHeight,
-        navigation,
-        notify
-      } = this.props;
-
       balanceSubscribe();
       blacklistedOutpointsSubscribe();
       checkSubscriptionsInit();
@@ -168,7 +181,7 @@ class SplashScreen extends React.PureComponent {
 
       AsyncStorage.getItem(Constants.KEY_FIRST_RUN_PASSWORD).then(passwordSet => {
         if ("true" === passwordSet) {
-          // enrypt the wallet
+          // encrypt the wallet
           NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
             if (!password || password.trim().length === 0) {
               this.finishSplashScreen();

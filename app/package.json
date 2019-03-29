@@ -8,7 +8,7 @@
     "dependencies": {
         "base-64": "^0.1.0",
         "@expo/vector-icons": "^8.1.0",
-        "lbry-redux": "lbryio/lbry-redux",
+        "lbry-redux": "lbryio/lbry-redux#sync",
         "lbryinc": "lbryio/lbryinc#test-api",
         "lodash": ">=4.17.11",
         "merge": ">=1.2.1",

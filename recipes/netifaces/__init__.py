@@ -1,6 +1,6 @@
 
 import glob
-from pythonforandroid.toolchain import CompiledComponentsPythonRecipe, Recipe
+from pythonforandroid.recipe import CompiledComponentsPythonRecipe, Recipe
 from os.path import join
 import os
 import sh
