@@ -120,13 +120,13 @@ class SplashScreen extends React.PureComponent {
           }
 
           // user is authenticated, navigate to the main view
-          /*if (user.has_verified_email) {
+          if (user.has_verified_email) {
             NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
               getSync(walletPassword);
               this.navigateToMain();
             });
             return;
-          }*/
+          }
 
           this.navigateToMain();
         });
@@ -135,18 +135,18 @@ class SplashScreen extends React.PureComponent {
   }
 
   finishSplashScreen = () => {
+    const {
+      authenticate,
+      balanceSubscribe,
+      blacklistedOutpointsSubscribe,
+      checkSubscriptionsInit,
+      updateBlockHeight,
+      navigation,
+      notify
+    } = this.props;
+
     Lbry.resolve({ urls: 'lbry://one' }).then(() => {
       // Leave the splash screen
-      const {
-        authenticate,
-        balanceSubscribe,
-        blacklistedOutpointsSubscribe,
-        checkSubscriptionsInit,
-        updateBlockHeight,
-        navigation,
-        notify
-      } = this.props;
-
       balanceSubscribe();
       blacklistedOutpointsSubscribe();
       checkSubscriptionsInit();
@@ -181,7 +181,7 @@ class SplashScreen extends React.PureComponent {
 
       AsyncStorage.getItem(Constants.KEY_FIRST_RUN_PASSWORD).then(passwordSet => {
         if ("true" === passwordSet) {
-          // enrypt the wallet
+          // encrypt the wallet
           NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
             if (!password || password.trim().length === 0) {
               this.finishSplashScreen();

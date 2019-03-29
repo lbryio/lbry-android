@@ -24,6 +24,7 @@ import {
   homepageReducer,
   rewardsReducer,
   subscriptionsReducer,
+  syncReducer,
   userReducer
 } from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
@@ -99,6 +100,7 @@ const reducers = combineReducers({
   settings: settingsReducer,
   search: searchReducer,
   subscriptions: subscriptionsReducer,
+  sync: syncReducer,
   user: userReducer,
   wallet: walletReducer
 });
