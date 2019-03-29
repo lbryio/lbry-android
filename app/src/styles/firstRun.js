@@ -46,14 +46,29 @@ const firstRunStyle = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center'
   },
+  passwordInput: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 24,
+    lineHeight: 24,
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 20,
+    textAlign: 'center'
+  },
   leftButton: {
     flex: 1,
-    alignSelf: 'flex-start',
+    alignSelf: 'flex-end',
+    paddingBottom: 16,
     marginLeft: 32,
     marginRight: 32
   },
   bottomContainer: {
     flex: 1
+  },
+  buttonRow: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   actionButton: {
     backgroundColor: Colors.White,
@@ -71,7 +86,12 @@ const firstRunStyle = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 24,
+    fontSize: 20,
+    color: Colors.White
+  },
+  smallButtonText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 14,
     color: Colors.White
   },
   waiting: {

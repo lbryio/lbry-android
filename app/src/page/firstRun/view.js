@@ -10,16 +10,20 @@ import {
   View
 } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
-import Colors from '../../styles/colors';
-import Constants from '../../constants';
+import Colors from 'styles/colors';
+import Constants from 'constants';
+import WalletPage from './internal/wallet-page';
 import WelcomePage from './internal/welcome-page';
 import EmailCollectPage from './internal/email-collect-page';
-import firstRunStyle from '../../styles/firstRun';
+import SkipAccountPage from './internal/skip-account-page';
+import firstRunStyle from 'styles/firstRun';
 
 class FirstRunScreen extends React.PureComponent {
   static pages = [
-    'welcome',
-    'email-collect'
+    Constants.FIRST_RUN_PAGE_WELCOME,
+    Constants.FIRST_RUN_PAGE_EMAIL_COLLECT,
+    Constants.FIRST_RUN_PAGE_WALLET,
+    Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT,
   ];
 
   state = {
@@ -28,7 +32,8 @@ class FirstRunScreen extends React.PureComponent {
     isFirstRun: false,
     launchUrl: null,
     showSkip: false,
-    showBottomContainer: true
+    showBottomContainer: true,
+    walletPassword: null
   };
 
   componentDidMount() {
@@ -63,8 +68,9 @@ class FirstRunScreen extends React.PureComponent {
       if (emailNewErrorMessage) {
         notify ({ message: String(emailNewErrorMessage), isError: true });
       } else {
-        // Request successful. Navigate to discover.
-        this.closeFinalPage();
+        // Request successful. Navigate to next page (wallet).
+        this.showNextPage();
+        //this.closeFinalPage();
       }
     }
   }
@@ -80,14 +86,29 @@ class FirstRunScreen extends React.PureComponent {
     navigation.dispatch(resetAction);
   }
 
+  handleBackPressed = () => {
+    if (this.state.currentPage === Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT) {
+      this.showPage(Constants.FIRST_RUN_PAGE_EMAIL_COLLECT);
+    }
+  }
+
   handleContinuePressed = () => {
+    const { notify } = this.props;
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
-    if (this.state.currentPage !== 'email-collect' &&
-        pageIndex === (FirstRunScreen.pages.length - 1)) {
+    if (Constants.FIRST_RUN_PAGE_WALLET == this.state.currentPage) {
+      if (!this.state.walletPassword || this.state.walletPassword.trim().length < 6) {
+        return notify({ message: 'Your wallet passphrase should be at least 6 characters long' });
+      }
+
+      this.closeFinalPage();
+      return;
+    }
+
+    if (this.state.currentPage !== Constants.FIRST_RUN_PAGE_EMAIL_COLLECT && pageIndex === (FirstRunScreen.pages.length - 1)) {
       this.closeFinalPage();
     } else {
       // TODO: Actions and page verification for specific pages
-      if (this.state.currentPage === 'email-collect') {
+      if (this.state.currentPage === Constants.FIRST_RUN_PAGE_EMAIL_COLLECT) {
         // handle email collect
         this.handleEmailCollectPageContinue();
       } else {
@@ -103,10 +124,9 @@ class FirstRunScreen extends React.PureComponent {
     AsyncStorage.getItem(Constants.KEY_FIRST_RUN_EMAIL).then(email => {
       if (!email || email.trim().length === 0) {
         // no email provided. Skip.
-        if (this.state.currentPage === 'email-collect' && pageIndex === (FirstRunScreen.pages.length - 1)) {
-          this.closeFinalPage();
-        } else {
-          this.showNextPage();
+        if (this.state.currentPage === Constants.FIRST_RUN_PAGE_EMAIL_COLLECT) {
+          // go directly to the "Are You Sure?" page (instead of "Your Wwallet" first run page)
+          this.showPage(Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT);
         }
         return;
       }
@@ -133,6 +153,13 @@ class FirstRunScreen extends React.PureComponent {
     }
   }
 
+  showPage(pageName) {
+    const pageIndex = FirstRunScreen.pages.indexOf(pageName);
+    if (pageIndex > -1) {
+      this.setState({ currentPage: pageName });
+    }
+  }
+
   closeFinalPage() {
     // Final page. Let the app know that first run experience is completed.
     if (NativeModules.FirstRun) {
@@ -144,7 +171,7 @@ class FirstRunScreen extends React.PureComponent {
   }
 
   onEmailChanged = (email) => {
-    if ('email-collect' == this.state.currentPage) {
+    if (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT == this.state.currentPage) {
       this.setState({ showSkip: (!email || email.trim().length === 0) });
     } else {
       this.setState({ showSkip: false });
@@ -156,6 +183,14 @@ class FirstRunScreen extends React.PureComponent {
     AsyncStorage.getItem('firstRunEmail').then(email => {
       this.setState({ showSkip: !email || email.trim().length === 0 });
     });
+  }
+
+  onWalletPasswordChanged = (password) => {
+    this.setState({ walletPassword: password });
+  }
+
+  onWalletViewLayout = () => {
+    this.setState({ showBottomContainer: true });
   }
 
   render() {
@@ -178,6 +213,12 @@ class FirstRunScreen extends React.PureComponent {
                                 authenticate={authenticate}
                                 onEmailChanged={this.onEmailChanged}
                                 onEmailViewLayout={this.onEmailViewLayout} />);
+    } else if (this.state.currentPage === 'wallet') {
+      page = (<WalletPage
+                onWalletViewLayout={this.onWalletViewLayout}
+                onPasswordChanged={this.onWalletPasswordChanged} />);
+    } else if (this.state.currentPage === 'skip-account') {
+      page = (<SkipAccountPage onSkipAccountViewLayout={this.onSkipAccountViewLayout} />);
     }
 
     return (
@@ -188,10 +229,22 @@ class FirstRunScreen extends React.PureComponent {
           {emailNewPending &&
             <ActivityIndicator size="small" color={Colors.White} style={firstRunStyle.pageWaiting} />}
 
-          {!emailNewPending &&
-          <TouchableOpacity style={firstRunStyle.button} onPress={this.handleContinuePressed}>
-            <Text style={firstRunStyle.buttonText}>{this.state.showSkip ? 'Skip': 'Continue'}</Text>
-          </TouchableOpacity>}
+          <View style={firstRunStyle.buttonRow}>
+            {this.state.currentPage !== Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT && <View />}
+            {this.state.currentPage === Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT &&
+            <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleBackPressed}>
+              <Text style={firstRunStyle.buttonText}>Setup account</Text>
+            </TouchableOpacity>}
+
+            {!emailNewPending &&
+            <TouchableOpacity style={firstRunStyle.button} onPress={this.handleContinuePressed}>
+              {this.state.currentPage === Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT &&
+              <Text style={firstRunStyle.smallButtonText}>Continue without account</Text>}
+              {this.state.currentPage !== Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT &&
+              <Text style={firstRunStyle.buttonText}>{this.state.showSkip ? 'No, thanks': 'Continue'}</Text>}
+            </TouchableOpacity>}
+          </View>
+
         </View>}
       </View>
     );
