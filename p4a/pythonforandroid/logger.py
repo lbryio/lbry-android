@@ -44,9 +44,9 @@ class LevelDifferentiatingFormatter(logging.Formatter):
 
 
 logger = logging.getLogger('p4a')
-if not hasattr(logger, 'touched'):  # Necessary as importlib reloads
-                                    # this, which would add a second
-                                    # handler and reset the level
+# Necessary as importlib reloads this,
+# which would add a second handler and reset the level
+if not hasattr(logger, 'touched'):
     logger.setLevel(logging.INFO)
     logger.touched = True
     ch = logging.StreamHandler(stderr)
@@ -148,8 +148,10 @@ def shprint(command, *args, **kwargs):
     kwargs["_bg"] = True
     is_critical = kwargs.pop('_critical', False)
     tail_n = kwargs.pop('_tail', None)
+    full_debug = False
     if "P4A_FULL_DEBUG" in os.environ:
         tail_n = 0
+        full_debug = True
     filter_in = kwargs.pop('_filter', None)
     filter_out = kwargs.pop('_filterout', None)
     if len(logger.handlers) > 1:
@@ -177,16 +179,21 @@ def shprint(command, *args, **kwargs):
             if isinstance(line, bytes):
                 line = line.decode('utf-8', errors='replace')
             if logger.level > logging.DEBUG:
+                if full_debug:
+                    stdout.write(line)
+                    stdout.flush()
+                    continue
                 msg = line.replace(
                     '\n', ' ').replace(
                         '\t', ' ').replace(
                             '\b', ' ').rstrip()
                 if msg:
-                    stdout.write(u'{}\r{}{:<{width}}'.format(
-                        Err_Style.RESET_ALL, msg_hdr,
-                        shorten_string(msg, msg_width), width=msg_width))
-                    stdout.flush()
-                    need_closing_newline = True
+                    if "CI" not in os.environ:
+                        stdout.write(u'{}\r{}{:<{width}}'.format(
+                            Err_Style.RESET_ALL, msg_hdr,
+                            shorten_string(msg, msg_width), width=msg_width))
+                        stdout.flush()
+                        need_closing_newline = True
             else:
                 logger.debug(''.join(['\t', line.rstrip()]))
         if need_closing_newline:

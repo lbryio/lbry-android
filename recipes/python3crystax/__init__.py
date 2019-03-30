@@ -1,5 +1,5 @@
 from pythonforandroid.recipe import TargetPythonRecipe
-from pythonforandroid.toolchain import shprint, current_directory, ArchARM
+from pythonforandroid.toolchain import shprint, current_directory
 from pythonforandroid.logger import info, error
 from pythonforandroid.util import ensure_dir, temp_directory
 from os.path import exists, join
@@ -113,6 +113,14 @@ class Python3Recipe(TargetPythonRecipe):
 
         except ValueError:
             pass
+
+    def include_root(self, arch_name):
+        return join(self.ctx.ndk_dir, 'sources', 'python', self.major_minor_version_string,
+                    'include', 'python')
+
+    def link_root(self, arch_name):
+        return join(self.ctx.ndk_dir, 'sources', 'python', self.major_minor_version_string,
+                    'libs', arch_name)
 
     def check_for_sslso(self, ssl_recipe, arch):
         # type: (Recipe, str)

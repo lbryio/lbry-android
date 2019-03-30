@@ -1,4 +1,4 @@
-from os.path import basename, dirname, exists, isdir, isfile, join, realpath
+from os.path import basename, dirname, exists, isdir, isfile, join, realpath, split
 import importlib
 import glob
 from shutil import rmtree
@@ -12,16 +12,16 @@ import shutil
 import fnmatch
 from os import listdir, unlink, environ, mkdir, curdir, walk
 from sys import stdout
+import time
 try:
     from urlparse import urlparse
 except ImportError:
     from urllib.parse import urlparse
-from pythonforandroid.logger import (logger, info, warning, error, debug, shprint, info_main)
-from pythonforandroid.util import (urlretrieve, current_directory, ensure_dir)
+from pythonforandroid.logger import (logger, info, warning, debug, shprint, info_main)
+from pythonforandroid.util import (urlretrieve, current_directory, ensure_dir,
+                                   BuildInterruptingException)
 
 # this import is necessary to keep imp.load_source from complaining :)
-
-
 if PY2:
     import imp
     import_recipe = imp.load_source
@@ -140,13 +140,26 @@ class Recipe(with_metaclass(RecipeMeta)):
                 else:
                     progression = '{0:.2f}%'.format(
                         index * blksize * 100. / float(size))
-                stdout.write('- Download {}\r'.format(progression))
-                stdout.flush()
+                if "CI" not in environ:
+                    stdout.write('- Download {}\r'.format(progression))
+                    stdout.flush()
 
             if exists(target):
                 unlink(target)
 
-            urlretrieve(url, target, report_hook)
+            # Download item with multiple attempts (for bad connections):
+            attempts = 0
+            while True:
+                try:
+                    urlretrieve(url, target, report_hook)
+                except OSError as e:
+                    attempts += 1
+                    if attempts >= 5:
+                        raise e
+                    stdout.write('Download failed retrying in a second...')
+                    time.sleep(1)
+                    continue
+                break
             return target
         elif parsed_url.scheme in ('git', 'git+file', 'git+ssh', 'git+http', 'git+https'):
             if isdir(target):
@@ -167,28 +180,18 @@ class Recipe(with_metaclass(RecipeMeta)):
                         shprint(sh.git, 'submodule', 'update', '--recursive')
             return target
 
-    # def get_archive_rootdir(self, filename):
-    #     if filename.endswith(".tgz") or filename.endswith(".tar.gz") or \
-    #         filename.endswith(".tbz2") or filename.endswith(".tar.bz2"):
-    #         archive = tarfile.open(filename)
-    #         root = archive.next().path.split("/")
-    #         return root[0]
-    #     elif filename.endswith(".zip"):
-    #         with zipfile.ZipFile(filename) as zf:
-    #             return dirname(zf.namelist()[0])
-    #     else:
-    #         print("Error: cannot detect root directory")
-    #         print("Unrecognized extension for {}".format(filename))
-    #         raise Exception()
-
-    def apply_patch(self, filename, arch):
+    def apply_patch(self, filename, arch, build_dir=None):
         """
         Apply a patch from the current recipe directory into the current
         build directory.
+
+        .. versionchanged:: 0.6.0
+            Add ability to apply patch from any dir via kwarg `build_dir`'''
         """
         info("Applying patch {}".format(filename))
+        build_dir = build_dir if build_dir else self.get_build_dir(arch)
         filename = join(self.get_recipe_dir(), filename)
-        shprint(sh.patch, "-t", "-d", self.get_build_dir(arch), "-p1",
+        shprint(sh.patch, "-t", "-d", build_dir, "-p1",
                 "-i", filename, _tail=10)
 
     def copy_file(self, filename, dest):
@@ -206,41 +209,11 @@ class Recipe(with_metaclass(RecipeMeta)):
         with open(dest, "ab") as fd:
             fd.write(data)
 
-    # def has_marker(self, marker):
-    #     """
-    #     Return True if the current build directory has the marker set
-    #     """
-    #     return exists(join(self.build_dir, ".{}".format(marker)))
-
-    # def set_marker(self, marker):
-    #     """
-    #     Set a marker info the current build directory
-    #     """
-    #     with open(join(self.build_dir, ".{}".format(marker)), "w") as fd:
-    #         fd.write("ok")
-
-    # def delete_marker(self, marker):
-    #     """
-    #     Delete a specific marker
-    #     """
-    #     try:
-    #         unlink(join(self.build_dir, ".{}".format(marker)))
-    #     except:
-    #         pass
-
     @property
     def name(self):
         '''The name of the recipe, the same as the folder containing it.'''
         modname = self.__class__.__module__
         return modname.split(".", 2)[-1]
-
-    # @property
-    # def archive_fn(self):
-    #     bfn = basename(self.url.format(version=self.version))
-    #     fn = "{}/{}-{}".format(
-    #         self.ctx.cache_dir,
-    #         self.name, bfn)
-    #     return fn
 
     @property
     def filtered_archs(self):
@@ -269,6 +242,12 @@ class Recipe(with_metaclass(RecipeMeta)):
                 recipes.append(recipe)
         return sorted(recipes)
 
+    def get_opt_depends_in_list(self, recipes):
+        '''Given a list of recipe names, returns those that are also in
+        self.opt_depends.
+        '''
+        return [recipe for recipe in recipes if recipe in self.opt_depends]
+
     def get_build_container_dir(self, arch):
         '''Given the arch name, returns the directory where it will be
         built.
@@ -277,7 +256,8 @@ class Recipe(with_metaclass(RecipeMeta)):
         alternative or optional dependencies are being built.
         '''
         dir_name = self.get_dir_name()
-        return join(self.ctx.build_dir, 'other_builds', dir_name, arch)
+        return join(self.ctx.build_dir, 'other_builds',
+                    dir_name, '{}__ndk_target_{}'.format(arch, self.ctx.ndk_api))
 
     def get_dir_name(self):
         choices = self.check_recipe_choices()
@@ -367,7 +347,7 @@ class Recipe(with_metaclass(RecipeMeta)):
                             debug('* Expected md5sum: {}'.format(expected_md5))
                             raise ValueError(
                                 ('Generated md5sum does not match expected md5sum '
-                                'for {} recipe').format(self.name))
+                                 'for {} recipe').format(self.name))
             else:
                 info('{} download already cached, skipping'.format(self.name))
 
@@ -410,24 +390,20 @@ class Recipe(with_metaclass(RecipeMeta)):
                         try:
                             sh.unzip(extraction_filename)
                         except (sh.ErrorReturnCode_1, sh.ErrorReturnCode_2):
-                            pass  # return code 1 means unzipping had
-                                  # warnings but did complete,
-                                  # apparently happens sometimes with
-                                  # github zips
+                            # return code 1 means unzipping had
+                            # warnings but did complete,
+                            # apparently happens sometimes with
+                            # github zips
+                            pass
                         import zipfile
                         fileh = zipfile.ZipFile(extraction_filename, 'r')
                         root_directory = fileh.filelist[0].filename.split('/')[0]
                         if root_directory != basename(directory_name):
                             shprint(sh.mv, root_directory, directory_name)
-                    elif (extraction_filename.endswith('.tar.gz') or
-                          extraction_filename.endswith('.tgz') or
-                          extraction_filename.endswith('.tar.bz2') or
-                          extraction_filename.endswith('.tbz2') or
-                          extraction_filename.endswith('.tar.xz') or
-                          extraction_filename.endswith('.txz')):
+                    elif extraction_filename.endswith(
+                            ('.tar.gz', '.tgz', '.tar.bz2', '.tbz2', '.tar.xz', '.txz')):
                         sh.tar('xf', extraction_filename)
-                        root_directory = shprint(
-                            sh.tar, 'tf', extraction_filename).stdout.decode(
+                        root_directory = sh.tar('tf', extraction_filename).stdout.decode(
                                 'utf-8').split('\n')[0].split('/')[0]
                         if root_directory != directory_name:
                             shprint(sh.mv, root_directory, directory_name)
@@ -450,12 +426,12 @@ class Recipe(with_metaclass(RecipeMeta)):
             else:
                 info('{} is already unpacked, skipping'.format(self.name))
 
-    def get_recipe_env(self, arch=None, with_flags_in_cc=True):
+    def get_recipe_env(self, arch=None, with_flags_in_cc=True, clang=False):
         """Return the env specialized for the recipe
         """
         if arch is None:
             arch = self.filtered_archs[0]
-        return arch.get_env(with_flags_in_cc=with_flags_in_cc)
+        return arch.get_env(with_flags_in_cc=with_flags_in_cc, clang=clang)
 
     def prebuild_arch(self, arch):
         '''Run any pre-build tasks for the Recipe. By default, this checks if
@@ -471,8 +447,11 @@ class Recipe(with_metaclass(RecipeMeta)):
         build_dir = self.get_build_dir(arch.arch)
         return exists(join(build_dir, '.patched'))
 
-    def apply_patches(self, arch):
-        '''Apply any patches for the Recipe.'''
+    def apply_patches(self, arch, build_dir=None):
+        '''Apply any patches for the Recipe.
+
+        .. versionchanged:: 0.6.0
+            Add ability to apply patches from any dir via kwarg `build_dir`'''
         if self.patches:
             info_main('Applying patches for {}[{}]'
                       .format(self.name, arch.arch))
@@ -481,6 +460,7 @@ class Recipe(with_metaclass(RecipeMeta)):
                 info_main('{} already patched, skipping'.format(self.name))
                 return
 
+            build_dir = build_dir if build_dir else self.get_build_dir(arch.arch)
             for patch in self.patches:
                 if isinstance(patch, (tuple, list)):
                     patch, patch_check = patch
@@ -489,9 +469,9 @@ class Recipe(with_metaclass(RecipeMeta)):
 
                 self.apply_patch(
                         patch.format(version=self.version, arch=arch.arch),
-                        arch.arch)
+                        arch.arch, build_dir=build_dir)
 
-            shprint(sh.touch, join(self.get_build_dir(arch.arch), '.patched'))
+            shprint(sh.touch, join(build_dir, '.patched'))
 
     def should_build(self, arch):
         '''Should perform any necessary test and return True only if it needs
@@ -547,8 +527,8 @@ class Recipe(with_metaclass(RecipeMeta)):
         if exists(base_dir):
             dirs.append(base_dir)
         if not dirs:
-             warning(('Attempted to clean build for {} but found no existing '
-                      'build dirs').format(self.name))
+            warning('Attempted to clean build for {} but found no existing '
+                    'build dirs'.format(self.name))
 
         for directory in dirs:
             if exists(directory):
@@ -595,6 +575,7 @@ class Recipe(with_metaclass(RecipeMeta)):
     @classmethod
     def get_recipe(cls, name, ctx):
         '''Returns the Recipe with the given name, if it exists.'''
+        name = name.lower()
         if not hasattr(cls, "recipes"):
             cls.recipes = {}
         if name in cls.recipes:
@@ -602,20 +583,28 @@ class Recipe(with_metaclass(RecipeMeta)):
 
         recipe_file = None
         for recipes_dir in cls.recipe_dirs(ctx):
-            recipe_file = join(recipes_dir, name, '__init__.py')
-            if exists(recipe_file):
+            if not exists(recipes_dir):
+                continue
+            # Find matching folder (may differ in case):
+            for subfolder in listdir(recipes_dir):
+                if subfolder.lower() == name:
+                    recipe_file = join(recipes_dir, subfolder, '__init__.py')
+                    if exists(recipe_file):
+                        name = subfolder  # adapt to actual spelling
+                        break
+                    recipe_file = None
+            if recipe_file is not None:
                 break
-            recipe_file = None
 
         if not recipe_file:
-            raise IOError('Recipe does not exist: {}'.format(name))
+            raise ValueError('Recipe does not exist: {}'.format(name))
 
         mod = import_recipe('pythonforandroid.recipes.{}'.format(name), recipe_file)
         if len(logger.handlers) > 1:
             logger.removeHandler(logger.handlers[1])
         recipe = mod.recipe
         recipe.ctx = ctx
-        cls.recipes[name] = recipe
+        cls.recipes[name.lower()] = recipe
         return recipe
 
 
@@ -626,8 +615,8 @@ class IncludedFilesBehaviour(object):
 
     def prepare_build_dir(self, arch):
         if self.src_filename is None:
-            print('IncludedFilesBehaviour failed: no src_filename specified')
-            exit(1)
+            raise BuildInterruptingException(
+                'IncludedFilesBehaviour failed: no src_filename specified')
         shprint(sh.rm, '-rf', self.get_build_dir(arch))
         shprint(sh.cp, '-a', join(self.get_recipe_dir(), self.src_filename),
                 self.get_build_dir(arch))
@@ -640,6 +629,9 @@ class BootstrapNDKRecipe(Recipe):
 
     To build an NDK project which is not part of the bootstrap, see
     :class:`~pythonforandroid.recipe.NDKRecipe`.
+
+    To link with python, call the method :meth:`get_recipe_env`
+    with the kwarg *with_python=True*.
     '''
 
     dir_name = None  # The name of the recipe build folder in the jni dir
@@ -655,6 +647,20 @@ class BootstrapNDKRecipe(Recipe):
 
     def get_jni_dir(self):
         return join(self.ctx.bootstrap.build_dir, 'jni')
+
+    def get_recipe_env(self, arch=None, with_flags_in_cc=True, with_python=False):
+        env = super(BootstrapNDKRecipe, self).get_recipe_env(
+            arch, with_flags_in_cc)
+        if not with_python:
+            return env
+
+        env['PYTHON_INCLUDE_ROOT'] = self.ctx.python_recipe.include_root(arch.arch)
+        env['PYTHON_LINK_ROOT'] = self.ctx.python_recipe.link_root(arch.arch)
+        env['EXTRA_LDLIBS'] = ' -lpython{}'.format(
+            self.ctx.python_recipe.major_minor_version_string)
+        if 'python3' in self.ctx.python_recipe.name:
+            env['EXTRA_LDLIBS'] += 'm'
+        return env
 
 
 class NDKRecipe(Recipe):
@@ -682,7 +688,13 @@ class NDKRecipe(Recipe):
 
         env = self.get_recipe_env(arch)
         with current_directory(self.get_build_dir(arch.arch)):
-            shprint(sh.ndk_build, 'V=1', 'APP_ABI=' + arch.arch, *extra_args, _env=env)
+            shprint(
+                sh.ndk_build,
+                'V=1',
+                'APP_PLATFORM=android-' + str(self.ctx.ndk_api),
+                'APP_ABI=' + arch.arch,
+                *extra_args, _env=env
+            )
 
 
 class PythonRecipe(Recipe):
@@ -711,6 +723,13 @@ class PythonRecipe(Recipe):
     setup_extra_args = []
     '''List of extra arugments to pass to setup.py'''
 
+    def __init__(self, *args, **kwargs):
+        super(PythonRecipe, self).__init__(*args, **kwargs)
+        depends = self.depends
+        depends.append(('python2', 'python2legacy', 'python3', 'python3crystax'))
+        depends = list(set(depends))
+        self.depends = depends
+
     def clean_build(self, arch=None):
         super(PythonRecipe, self).clean_build(arch=arch)
         name = self.folder_name
@@ -726,14 +745,12 @@ class PythonRecipe(Recipe):
 
     @property
     def real_hostpython_location(self):
-        if 'hostpython2' in self.ctx.recipe_build_order:
-            return join(
-                Recipe.get_recipe('hostpython2', self.ctx).get_build_dir(),
-                'hostpython')
-        elif 'hostpython3crystax' in self.ctx.recipe_build_order:
-            return join(
-                Recipe.get_recipe('hostpython3crystax', self.ctx).get_build_dir(),
-                'hostpython')
+        host_name = 'host{}'.format(self.ctx.python_recipe.name)
+        host_build = Recipe.get_recipe(host_name, self.ctx).get_build_dir()
+        if host_name in ['hostpython2', 'hostpython3']:
+            return join(host_build, 'native-build', 'python')
+        elif host_name in ['hostpython3crystax', 'hostpython2legacy']:
+            return join(host_build, 'hostpython')
         else:
             python_recipe = self.ctx.python_recipe
             return 'python{}'.format(python_recipe.version)
@@ -757,17 +774,28 @@ class PythonRecipe(Recipe):
 
         env['PYTHONNOUSERSITE'] = '1'
 
+        # Set the LANG, this isn't usually important but is a better default
+        # as it occasionally matters how Python e.g. reads files
+        env['LANG'] = "en_GB.UTF-8"
+
         if not self.call_hostpython_via_targetpython:
             # sets python headers/linkages...depending on python's recipe
+            python_name = self.ctx.python_recipe.name
             python_version = self.ctx.python_recipe.version
             python_short_version = '.'.join(python_version.split('.')[:2])
-            if 'python2' in self.ctx.recipe_build_order:
-                env['PYTHON_ROOT'] = self.ctx.get_python_install_dir()
-                env['CFLAGS'] += ' -I' + env[
-                    'PYTHON_ROOT'] + '/include/python2.7'
-                env['LDFLAGS'] += ' -L' + env['PYTHON_ROOT'] + '/lib' + \
-                                  ' -lpython2.7'
-            elif self.ctx.python_recipe.from_crystax:
+            if not self.ctx.python_recipe.from_crystax:
+                env['CFLAGS'] += ' -I{}'.format(
+                    self.ctx.python_recipe.include_root(arch.arch))
+                env['LDFLAGS'] += ' -L{} -lpython{}'.format(
+                    self.ctx.python_recipe.link_root(arch.arch),
+                    self.ctx.python_recipe.major_minor_version_string)
+                if python_name == 'python3':
+                    env['LDFLAGS'] += 'm'
+                elif python_name == 'python2legacy':
+                    env['PYTHON_ROOT'] = join(
+                        self.ctx.python_recipe.get_build_dir(
+                            arch.arch), 'python-install')
+            else:
                 ndk_dir_python = join(self.ctx.ndk_dir, 'sources',
                                       'python', python_version)
                 env['CFLAGS'] += ' -I{} '.format(
@@ -776,26 +804,19 @@ class PythonRecipe(Recipe):
                 env['LDFLAGS'] += ' -L{}'.format(
                     join(ndk_dir_python, 'libs', arch.arch))
                 env['LDFLAGS'] += ' -lpython{}m'.format(python_short_version)
-            elif 'python3' in self.ctx.recipe_build_order:
-                # This headers are unused cause python3 recipe was removed
-                # TODO: should be reviewed when python3 recipe added
-                env['PYTHON_ROOT'] = self.ctx.get_python_install_dir()
-                env['CFLAGS'] += ' -I' + env[
-                    'PYTHON_ROOT'] + '/include/python{}m'.format(
-                    python_short_version)
-                env['LDFLAGS'] += ' -L' + env['PYTHON_ROOT'] + '/lib' + \
-                                  ' -lpython{}m'.format(
-                                      python_short_version)
+
             hppath = []
             hppath.append(join(dirname(self.hostpython_location), 'Lib'))
             hppath.append(join(hppath[0], 'site-packages'))
             builddir = join(dirname(self.hostpython_location), 'build')
-            hppath += [join(builddir, d) for d in listdir(builddir)
-                       if isdir(join(builddir, d))]
-            if 'PYTHONPATH' in env:
-                env['PYTHONPATH'] = ':'.join(hppath + [env['PYTHONPATH']])
-            else:
-                env['PYTHONPATH'] = ':'.join(hppath)
+            if exists(builddir):
+                hppath += [join(builddir, d) for d in listdir(builddir)
+                           if isdir(join(builddir, d))]
+            if len(hppath) > 0:
+                if 'PYTHONPATH' in env:
+                    env['PYTHONPATH'] = ':'.join(hppath + [env['PYTHONPATH']])
+                else:
+                    env['PYTHONPATH'] = ':'.join(hppath)
         return env
 
     def should_build(self, arch):
@@ -826,7 +847,7 @@ class PythonRecipe(Recipe):
         with current_directory(self.get_build_dir(arch.arch)):
             hostpython = sh.Command(self.hostpython_location)
 
-            if self.ctx.python_recipe.from_crystax:
+            if self.ctx.python_recipe.name != 'python2legacy':
                 hpenv = env.copy()
                 shprint(hostpython, 'setup.py', 'install', '-O2',
                         '--root={}'.format(self.ctx.get_python_install_dir()),
@@ -835,13 +856,11 @@ class PythonRecipe(Recipe):
             elif self.call_hostpython_via_targetpython:
                 shprint(hostpython, 'setup.py', 'install', '-O2', _env=env,
                         *self.setup_extra_args)
-            else:
-                hppath = join(dirname(self.hostpython_location), 'Lib',
-                              'site-packages')
+            else:  # python2legacy
+                hppath = join(dirname(self.hostpython_location), 'Lib', 'site-packages')
                 hpenv = env.copy()
                 if 'PYTHONPATH' in hpenv:
-                    hpenv['PYTHONPATH'] = ':'.join([hppath] +
-                                                   hpenv['PYTHONPATH'].split(':'))
+                    hpenv['PYTHONPATH'] = ':'.join([hppath] + hpenv['PYTHONPATH'].split(':'))
                 else:
                     hpenv['PYTHONPATH'] = hppath
                 shprint(hostpython, 'setup.py', 'install', '-O2',
@@ -920,12 +939,14 @@ class CppCompiledComponentsPythonRecipe(CompiledComponentsPythonRecipe):
             arch_noeabi=arch.arch.replace('eabi', '')
         )
         env['LDSHARED'] = env['CC'] + ' -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions'
-        env['CFLAGS'] += " -I{ctx.ndk_dir}/platforms/android-{ctx.android_api}/arch-{arch_noeabi}/usr/include" \
-                        " -I{ctx.ndk_dir}/sources/cxx-stl/gnu-libstdc++/{ctx.toolchain_version}/include" \
-                        " -I{ctx.ndk_dir}/sources/cxx-stl/gnu-libstdc++/{ctx.toolchain_version}/libs/{arch.arch}/include".format(**keys)
+        env['CFLAGS'] += (
+            " -I{ctx.ndk_dir}/platforms/android-{ctx.android_api}/arch-{arch_noeabi}/usr/include" +
+            " -I{ctx.ndk_dir}/sources/cxx-stl/gnu-libstdc++/{ctx.toolchain_version}/include" +
+            " -I{ctx.ndk_dir}/sources/cxx-stl/gnu-libstdc++/{ctx.toolchain_version}/libs/{arch.arch}/include").format(**keys)
         env['CXXFLAGS'] = env['CFLAGS'] + ' -frtti -fexceptions'
-        env['LDFLAGS'] += " -L{ctx.ndk_dir}/sources/cxx-stl/gnu-libstdc++/{ctx.toolchain_version}/libs/{arch.arch}" \
-                " -lgnustl_shared".format(**keys)
+        env['LDFLAGS'] += (
+            " -L{ctx.ndk_dir}/sources/cxx-stl/gnu-libstdc++/{ctx.toolchain_version}/libs/{arch.arch}" +
+            " -lgnustl_shared").format(**keys)
 
         return env
 
@@ -949,7 +970,7 @@ class CythonRecipe(PythonRecipe):
     def __init__(self, *args, **kwargs):
         super(CythonRecipe, self).__init__(*args, **kwargs)
         depends = self.depends
-        depends.append(('python2', 'python3crystax'))
+        depends.append(('python2', 'python2legacy', 'python3', 'python3crystax'))
         depends = list(set(depends))
         self.depends = depends
 
@@ -966,20 +987,10 @@ class CythonRecipe(PythonRecipe):
 
         env = self.get_recipe_env(arch)
 
-        if self.ctx.python_recipe.from_crystax:
-            command = sh.Command('python{}'.format(self.ctx.python_recipe.version))
-            site_packages_dirs = command(
-                '-c', 'import site; print("\\n".join(site.getsitepackages()))')
-            site_packages_dirs = site_packages_dirs.stdout.decode('utf-8').split('\n')
-            if 'PYTHONPATH' in env:
-                env['PYTHONPATH'] = env['PYTHONPATH'] + ':{}'.format(':'.join(site_packages_dirs))
-            else:
-                env['PYTHONPATH'] = ':'.join(site_packages_dirs)
-
         with current_directory(self.get_build_dir(arch.arch)):
             hostpython = sh.Command(self.ctx.hostpython)
             shprint(hostpython, '-c', 'import sys; print(sys.path)', _env=env)
-            print('cwd is', realpath(curdir))
+            debug('cwd is {}'.format(realpath(curdir)))
             info('Trying first build of {} to get cython files: this is '
                  'expected to fail'.format(self.name))
 
@@ -1000,14 +1011,19 @@ class CythonRecipe(PythonRecipe):
                 info('First build appeared to complete correctly, skipping manual'
                      'cythonising.')
 
-            if 'python2' in self.ctx.recipe_build_order:
+            self.strip_object_files(arch, env)
+
+    def strip_object_files(self, arch, env, build_dir=None):
+        if build_dir is None:
+            build_dir = self.get_build_dir(arch.arch)
+        with current_directory(build_dir):
+            info('Stripping object files')
+            if self.ctx.python_recipe.name == 'python2legacy':
                 info('Stripping object files')
                 build_lib = glob.glob('./build/lib*')
                 shprint(sh.find, build_lib[0], '-name', '*.o', '-exec',
                         env['STRIP'], '{}', ';', _env=env)
-
-            if 'python3crystax' in self.ctx.recipe_build_order:
-                info('Stripping object files')
+            else:
                 shprint(sh.find, '.', '-iname', '*.so', '-exec',
                         '/usr/bin/echo', '{}', ';', _env=env)
                 shprint(sh.find, '.', '-iname', '*.so', '-exec',
@@ -1050,11 +1066,11 @@ class CythonRecipe(PythonRecipe):
         if self.ctx.python_recipe.from_crystax:
             env['LDFLAGS'] = (env['LDFLAGS'] +
                               ' -L{}'.format(join(self.ctx.bootstrap.build_dir, 'libs', arch.arch)))
-            # ' -L/home/asandy/.local/share/python-for-android/build/bootstrap_builds/sdl2/libs/armeabi '
-        if self.ctx.python_recipe.from_crystax:
-            env['LDSHARED'] = env['CC'] + ' -shared'
-        else:
+
+        if self.ctx.python_recipe.name == 'python2legacy':
             env['LDSHARED'] = join(self.ctx.root_dir, 'tools', 'liblink.sh')
+        else:
+            env['LDSHARED'] = env['CC'] + ' -shared'
         # shprint(sh.whereis, env['LDSHARED'], _env=env)
         env['LIBLINK'] = 'NOTNONE'
         env['NDKPLATFORM'] = self.ctx.ndk_platform
@@ -1067,6 +1083,24 @@ class CythonRecipe(PythonRecipe):
                             'objects_{}'.format(self.name))
         env['LIBLINK_PATH'] = liblink_path
         ensure_dir(liblink_path)
+
+        # Add crystax-specific site packages:
+        if self.ctx.python_recipe.from_crystax:
+            command = sh.Command('python{}'.format(self.ctx.python_recipe.version))
+            site_packages_dirs = command(
+                '-c', 'import site; print("\\n".join(site.getsitepackages()))')
+            site_packages_dirs = site_packages_dirs.stdout.decode('utf-8').split('\n')
+            if 'PYTHONPATH' in env:
+                env['PYTHONPATH'] = env['PYTHONPATH'] +\
+                    ':{}'.format(':'.join(site_packages_dirs))
+            else:
+                env['PYTHONPATH'] = ':'.join(site_packages_dirs)
+            while env['PYTHONPATH'].find("::") > 0:
+                env['PYTHONPATH'] = env['PYTHONPATH'].replace("::", ":")
+            if env['PYTHONPATH'].endswith(":"):
+                env['PYTHONPATH'] = env['PYTHONPATH'][:-1]
+            if env['PYTHONPATH'].startswith(":"):
+                env['PYTHONPATH'] = env['PYTHONPATH'][1:]
 
         return env
 
@@ -1086,19 +1120,44 @@ class TargetPythonRecipe(Recipe):
     def prebuild_arch(self, arch):
         super(TargetPythonRecipe, self).prebuild_arch(arch)
         if self.from_crystax and self.ctx.ndk != 'crystax':
-            error('The {} recipe can only be built when '
-                  'using the CrystaX NDK. Exiting.'.format(self.name))
-            exit(1)
+            raise BuildInterruptingException(
+                'The {} recipe can only be built when '
+                'using the CrystaX NDK. Exiting.'.format(self.name))
         self.ctx.python_recipe = self
 
-    # @property
-    # def ctx(self):
-    #     return self._ctx
+    def include_root(self, arch):
+        '''The root directory from which to include headers.'''
+        raise NotImplementedError('Not implemented in TargetPythonRecipe')
 
-    # @ctx.setter
-    # def ctx(self, ctx):
-    #     self._ctx = ctx
-    #     ctx.python_recipe = self
+    def link_root(self):
+        raise NotImplementedError('Not implemented in TargetPythonRecipe')
+
+    @property
+    def major_minor_version_string(self):
+        from distutils.version import LooseVersion
+        return '.'.join([str(v) for v in LooseVersion(self.version).version[:2]])
+
+    def create_python_bundle(self, dirn, arch):
+        """
+        Create a packaged python bundle in the target directory, by
+        copying all the modules and standard library to the right
+        place.
+        """
+        raise NotImplementedError('{} does not implement create_python_bundle'.format(self))
+
+    def reduce_object_file_names(self, dirn):
+        """Recursively renames all files named XXX.cpython-...-linux-gnu.so"
+        to "XXX.so", i.e. removing the erroneous architecture name
+        coming from the local system.
+        """
+        py_so_files = shprint(sh.find, dirn, '-iname', '*.so')
+        filens = py_so_files.stdout.decode('utf-8').split('\n')[:-1]
+        for filen in filens:
+            file_dirname, file_basename = split(filen)
+            parts = file_basename.split('.')
+            if len(parts) <= 2:
+                continue
+            shprint(sh.mv, filen, join(file_dirname, parts[0] + '.so'))
 
 
 def md5sum(filen):

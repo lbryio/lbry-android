@@ -33,11 +33,12 @@ class Runnable(PythonJavaClass):
     def run(self):
         try:
             self.func(*self.args, **self.kwargs)
-        except:
+        except:  # noqa E722
             import traceback
             traceback.print_exc()
 
         Runnable.__runnables__.remove(self)
+
 
 def run_on_ui_thread(f):
     '''Decorator to create automatically a :class:`Runnable` object with the

@@ -7,7 +7,7 @@ import sh
 class LibZMQRecipe(Recipe):
     version = '4.1.4'
     url = 'http://download.zeromq.org/zeromq-{version}.tar.gz'
-    depends = ['python2']
+    depends = []
 
     def should_build(self, arch):
         super(LibZMQRecipe, self).should_build(arch)
@@ -51,7 +51,7 @@ class LibZMQRecipe(Recipe):
             # Copy libgnustl_shared.so
             with current_directory(self.get_build_dir(arch.arch)):
                 sh.cp(
-                    "{ctx.ndk_dir}/sources/cxx-stl/gnu-libstdc++/{ctx.toolchain_version}/libs/{arch.arch}/libgnustl_shared.so".format(ctx=self.ctx,arch=arch),
+                    "{ctx.ndk_dir}/sources/cxx-stl/gnu-libstdc++/{ctx.toolchain_version}/libs/{arch.arch}/libgnustl_shared.so".format(ctx=self.ctx, arch=arch),
                     self.ctx.get_libs_dir(arch.arch)
                 )
 

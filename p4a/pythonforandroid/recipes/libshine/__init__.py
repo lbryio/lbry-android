@@ -1,14 +1,11 @@
-from pythonforandroid.toolchain import Recipe, shprint, current_directory, ArchARM
+from pythonforandroid.toolchain import Recipe, current_directory, shprint
 from os.path import exists, join, realpath
-from os import uname
-import glob
 import sh
 
 
 class LibShineRecipe(Recipe):
-    version = '20aee967f67abefd065c196eec7ce21adbbe1549'
+    version = 'c72aba9031bde18a0995e7c01c9b53f2e08a0e46'
     url = 'https://github.com/toots/shine/archive/{version}.zip'
-    md5sum = 'bbf1f657e6adccb5e79f59da9ecfac2d'
 
     def should_build(self, arch):
         build_dir = self.get_build_dir(arch.arch)
@@ -28,5 +25,6 @@ class LibShineRecipe(Recipe):
                     _env=env)
             shprint(sh.make, '-j4', _env=env)
             shprint(sh.make, 'install', _env=env)
+
 
 recipe = LibShineRecipe()

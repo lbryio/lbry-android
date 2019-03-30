@@ -1,4 +1,5 @@
-from pythonforandroid.toolchain import Recipe, shprint
+from pythonforandroid.recipe import Recipe
+from pythonforandroid.toolchain import shprint
 from os.path import join
 import sh
 
@@ -43,4 +44,3 @@ class Hostpython3Recipe(Recipe):
 
 
 recipe = Hostpython3Recipe()
-

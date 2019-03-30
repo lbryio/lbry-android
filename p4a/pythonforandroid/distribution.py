@@ -2,9 +2,9 @@ from os.path import exists, join
 import glob
 import json
 
-from pythonforandroid.logger import (info, info_notify, warning,
-                                     Err_Style, Err_Fore)
-from pythonforandroid.util import current_directory
+from pythonforandroid.logger import (info, info_notify, warning, Err_Style, Err_Fore)
+from pythonforandroid.util import current_directory, BuildInterruptingException
+from shutil import rmtree
 
 
 class Distribution(object):
@@ -21,6 +21,7 @@ class Distribution(object):
     needs_build = False  # Whether the dist needs compiling
     url = None
     dist_dir = None  # Where the dist dir ultimately is. Should not be None.
+    ndk_api = None
 
     archs = []
     '''The arch targets that the dist is built for.'''
@@ -42,9 +43,11 @@ class Distribution(object):
 
     @classmethod
     def get_distribution(cls, ctx, name=None, recipes=[],
+                         ndk_api=None,
                          force_build=False,
                          extra_dist_dirs=[],
-                         require_perfect_match=False):
+                         require_perfect_match=False,
+                         allow_replace_dist=True):
         '''Takes information about the distribution, and decides what kind of
         distribution it will be.
 
@@ -68,21 +71,31 @@ class Distribution(object):
         require_perfect_match : bool
             If True, will only match distributions with precisely the
             correct set of recipes.
+        allow_replace_dist : bool
+            If True, will allow an existing dist with the specified
+            name but incompatible requirements to be overwritten by
+            a new one with the current requirements.
         '''
 
         existing_dists = Distribution.get_distributions(ctx)
 
-        needs_build = True  # whether the dist needs building, will be returned
-
         possible_dists = existing_dists
+
+        name_match_dist = None
 
         # 0) Check if a dist with that name already exists
         if name is not None and name:
             possible_dists = [d for d in possible_dists if d.name == name]
+            if possible_dists:
+                name_match_dist = possible_dists[0]
 
         # 1) Check if any existing dists meet the requirements
         _possible_dists = []
         for dist in possible_dists:
+            if (
+                ndk_api is not None and dist.ndk_api != ndk_api
+            ) or dist.ndk_api is None:
+                continue
             for recipe in recipes:
                 if recipe not in dist.recipes:
                     break
@@ -97,9 +110,11 @@ class Distribution(object):
         else:
             info('No existing dists meet the given requirements!')
 
-        # If any dist has perfect recipes, return it
+        # If any dist has perfect recipes and ndk API, return it
         for dist in possible_dists:
             if force_build:
+                continue
+            if ndk_api is not None and dist.ndk_api != ndk_api:
                 continue
             if (set(dist.recipes) == set(recipes) or
                 (set(recipes).issubset(set(dist.recipes)) and
@@ -110,33 +125,20 @@ class Distribution(object):
 
         assert len(possible_dists) < 2
 
-        if not name and possible_dists:
-            info('Asked for dist with name {} with recipes ({}), but a dist '
-                 'with this name already exists and has incompatible recipes '
-                 '({})'.format(name, ', '.join(recipes),
-                               ', '.join(possible_dists[0].recipes)))
-            info('No compatible dist found, so exiting.')
-            exit(1)
-
-        # # 2) Check if any downloadable dists meet the requirements
-
-        # online_dists = [('testsdl2', ['hostpython2', 'sdl2_image',
-        #                               'sdl2_mixer', 'sdl2_ttf',
-        #                               'python2', 'sdl2',
-        #                               'pyjniussdl2', 'kivysdl2'],
-        #                  'https://github.com/inclement/sdl2-example-dist/archive/master.zip'),
-        #                  ]
-        # _possible_dists = []
-        # for dist_name, dist_recipes, dist_url in online_dists:
-        #     for recipe in recipes:
-        #         if recipe not in dist_recipes:
-        #             break
-        #     else:
-        #         dist = Distribution(ctx)
-        #         dist.name = dist_name
-        #         dist.url = dist_url
-        #         _possible_dists.append(dist)
-        # # if _possible_dists
+        # If there was a name match but we didn't already choose it,
+        # then the existing dist is incompatible with the requested
+        # configuration and the build cannot continue
+        if name_match_dist is not None and not allow_replace_dist:
+            raise BuildInterruptingException(
+                'Asked for dist with name {name} with recipes ({req_recipes}) and '
+                'NDK API {req_ndk_api}, but a dist '
+                'with this name already exists and has either incompatible recipes '
+                '({dist_recipes}) or NDK API {dist_ndk_api}'.format(
+                    name=name,
+                    req_ndk_api=ndk_api,
+                    dist_ndk_api=name_match_dist.ndk_api,
+                    req_recipes=', '.join(recipes),
+                    dist_recipes=', '.join(name_match_dist.recipes)))
 
         # If we got this far, we need to build a new dist
         dist = Distribution(ctx)
@@ -152,16 +154,23 @@ class Distribution(object):
         dist.name = name
         dist.dist_dir = join(ctx.dist_dir, dist.name)
         dist.recipes = recipes
+        dist.ndk_api = ctx.ndk_api
 
         return dist
+
+    def folder_exists(self):
+        return exists(self.dist_dir)
+
+    def delete(self):
+        rmtree(self.dist_dir)
 
     @classmethod
     def get_distributions(cls, ctx, extra_dist_dirs=[]):
         '''Returns all the distributions found locally.'''
         if extra_dist_dirs:
-            warning('extra_dist_dirs argument to get_distributions '
-                    'is not yet implemented')
-            exit(1)
+            raise BuildInterruptingException(
+                'extra_dist_dirs argument to get_distributions '
+                'is not yet implemented')
         dist_dir = ctx.dist_dir
         folders = glob.glob(join(dist_dir, '*'))
         for dir in extra_dist_dirs:
@@ -179,40 +188,47 @@ class Distribution(object):
                 dist.recipes = dist_info['recipes']
                 if 'archs' in dist_info:
                     dist.archs = dist_info['archs']
+                if 'ndk_api' in dist_info:
+                    dist.ndk_api = dist_info['ndk_api']
+                else:
+                    dist.ndk_api = None
+                    warning(
+                        "Distribution {distname}: ({distdir}) has been "
+                        "built with an unknown api target, ignoring it, "
+                        "you might want to delete it".format(
+                            distname=dist.name,
+                            distdir=dist.dist_dir
+                        )
+                    )
                 dists.append(dist)
         return dists
 
-    def save_info(self):
+    def save_info(self, dirn):
         '''
         Save information about the distribution in its dist_dir.
         '''
-        with current_directory(self.dist_dir):
+        with current_directory(dirn):
             info('Saving distribution info')
             with open('dist_info.json', 'w') as fileh:
-                json.dump({'dist_name': self.name,
+                json.dump({'dist_name': self.ctx.dist_name,
+                           'bootstrap': self.ctx.bootstrap.name,
                            'archs': [arch.arch for arch in self.ctx.archs],
-                           'recipes': self.ctx.recipe_build_order},
+                           'ndk_api': self.ctx.ndk_api,
+                           'recipes': self.ctx.recipe_build_order + self.ctx.python_modules,
+                           'hostpython': self.ctx.hostpython,
+                           'python_version': self.ctx.python_recipe.major_minor_version_string},
                           fileh)
-
-    def load_info(self):
-        '''Load information about the dist from the info file that p4a
-        automatically creates.'''
-        with current_directory(self.dist_dir):
-            filen = 'dist_info.json'
-            if not exists(filen):
-                return None
-            with open('dist_info.json', 'r') as fileh:
-                dist_info = json.load(fileh)
-        return dist_info
 
 
 def pretty_log_dists(dists, log_func=info):
     infos = []
     for dist in dists:
-        infos.append('{Fore.GREEN}{Style.BRIGHT}{name}{Style.RESET_ALL}: '
+        ndk_api = 'unknown' if dist.ndk_api is None else dist.ndk_api
+        infos.append('{Fore.GREEN}{Style.BRIGHT}{name}{Style.RESET_ALL}: min API {ndk_api}, '
                      'includes recipes ({Fore.GREEN}{recipes}'
                      '{Style.RESET_ALL}), built for archs ({Fore.BLUE}'
                      '{archs}{Style.RESET_ALL})'.format(
+                         ndk_api=ndk_api,
                          name=dist.name, recipes=', '.join(dist.recipes),
                          archs=', '.join(dist.archs) if dist.archs else 'UNKNOWN',
                          Fore=Err_Fore, Style=Err_Style))

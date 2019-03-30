@@ -2,14 +2,13 @@ import os
 import sh
 from os.path import join
 from pythonforandroid.recipe import CompiledComponentsPythonRecipe
-from pythonforandroid.util import current_directory
 from pythonforandroid.toolchain import shprint, info
 
 
 class PyICURecipe(CompiledComponentsPythonRecipe):
     version = '1.9.2'
     url = 'https://pypi.python.org/packages/source/P/PyICU/PyICU-{version}.tar.gz'
-    depends = [('python2', 'python3crystax'), "icu"]
+    depends = ["icu"]
     patches = ['locale.patch', 'icu.patch']
 
     def get_recipe_env(self, arch):

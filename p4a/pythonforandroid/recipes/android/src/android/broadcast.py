@@ -28,7 +28,7 @@ class BroadcastReceiver(object):
 
         def _expand_partial_name(partial_name):
             if '.' in partial_name:
-                return partial_name # Its actually a full dotted name
+                return partial_name  # Its actually a full dotted name
             else:
                 name = 'ACTION_{}'.format(partial_name.upper())
                 if not hasattr(Intent, name):
@@ -61,8 +61,8 @@ class BroadcastReceiver(object):
         Handler = autoclass('android.os.Handler')
         self.handlerthread.start()
         self.handler = Handler(self.handlerthread.getLooper())
-        self.context.registerReceiver(self.receiver, self.receiver_filter, None,
-                self.handler)
+        self.context.registerReceiver(
+            self.receiver, self.receiver_filter, None, self.handler)
 
     def stop(self):
         self.context.unregisterReceiver(self.receiver)
@@ -76,4 +76,3 @@ class BroadcastReceiver(object):
             return PythonService.mService
         PythonActivity = autoclass(JAVA_NAMESPACE + '.PythonActivity')
         return PythonActivity.mActivity
-
