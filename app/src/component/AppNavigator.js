@@ -37,7 +37,6 @@ import { doDeleteCompleteBlobs } from 'redux/actions/file';
 import { selectDrawerStack } from 'redux/selectors/drawer';
 import { SETTINGS, doDismissToast, doToast, selectToast } from 'lbry-redux';
 import {
-  doGetSync,
   doUserCheckEmailVerified,
   doUserEmailVerify,
   doUserEmailVerifyFailure,
@@ -288,11 +287,6 @@ class AppWithNavigationState extends React.Component {
       this.setState({ verifyPending: false });
 
       ToastAndroid.show('Your email address was successfully verified.', ToastAndroid.LONG);
-
-      // upon successful email verification, check wallet sync
-      NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
-        dispatch(doGetSync(walletPassword));
-      });
     }
   }
 
