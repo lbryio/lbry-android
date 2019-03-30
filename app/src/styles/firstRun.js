@@ -94,6 +94,12 @@ const firstRunStyle = StyleSheet.create({
     fontSize: 14,
     color: Colors.White
   },
+  smallLeftButtonText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 14,
+    color: Colors.White,
+    marginBottom: 8
+  },
   waiting: {
     marginBottom: 24
   },
