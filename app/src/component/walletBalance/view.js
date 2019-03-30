@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 import { Image, Text, View } from 'react-native';
-import { formatCredits } from 'lbry-redux'
-import Address from '../address';
-import Button from '../button';
-import walletStyle from '../../styles/wallet';
+import { Lbry, formatCredits } from 'lbry-redux'
+import Address from 'component/address';
+import Button from 'component/button';
+import walletStyle from 'styles/wallet';
 
 type Props = {
   balance: number,

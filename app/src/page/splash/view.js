@@ -137,7 +137,7 @@ class SplashScreen extends React.PureComponent {
   finishSplashScreen = () => {
     const {
       authenticate,
-      balanceSubscribe,
+      totalBalanceSubscribe,
       blacklistedOutpointsSubscribe,
       checkSubscriptionsInit,
       updateBlockHeight,
@@ -147,7 +147,7 @@ class SplashScreen extends React.PureComponent {
 
     Lbry.resolve({ urls: 'lbry://one' }).then(() => {
       // Leave the splash screen
-      balanceSubscribe();
+      totalBalanceSubscribe();
       blacklistedOutpointsSubscribe();
       checkSubscriptionsInit();
       updateBlockHeight();

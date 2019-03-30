@@ -281,7 +281,7 @@ class AppWithNavigationState extends React.Component {
   }
 
   componentDidUpdate() {
-    const { user } = this.props;
+    const { dispatch, user } = this.props;
     if (this.state.verifyPending && this.emailVerifyCheckInterval > 0 && user && user.has_verified_email) {
       clearInterval(this.emailVerifyCheckInterval);
       AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'false');
