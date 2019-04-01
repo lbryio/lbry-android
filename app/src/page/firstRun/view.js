@@ -231,7 +231,7 @@ class FirstRunScreen extends React.PureComponent {
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
               <Text style={firstRunStyle.buttonText}>Setup account</Text>
             </TouchableOpacity>}
-            {Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage &&
+            {(!emailNewPending && Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage) &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
               <Text style={firstRunStyle.smallLeftButtonText}>No, thanks</Text>
             </TouchableOpacity>}
