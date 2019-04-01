@@ -226,7 +226,7 @@ class FirstRunScreen extends React.PureComponent {
             <ActivityIndicator size="small" color={Colors.White} style={firstRunStyle.pageWaiting} />}
 
           <View style={firstRunStyle.buttonRow}>
-            {([Constants.FIRST_RUN_PAGE_WELCOME, Constants.FIRST_RUN_PAGE_WELCOME].indexOf(this.state.currentPage) > -1) && <View />}
+            {([Constants.FIRST_RUN_PAGE_WELCOME, Constants.FIRST_RUN_PAGE_WALLET].indexOf(this.state.currentPage) > -1) && <View />}
             {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
               <Text style={firstRunStyle.buttonText}>Setup account</Text>
