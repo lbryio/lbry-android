@@ -101,11 +101,11 @@ class UriBar extends React.PureComponent {
     }
 
     let style = [uriBarStyle.overlay];
-    if (this.state.focused) {
+    /*if (this.state.focused) {
       style.push(uriBarStyle.inFocus);
     }
 
-    /*{(this.state.focused && !this.state.directSearch) && (
+    {(this.state.focused && !this.state.directSearch) && (
         <View style={uriBarStyle.suggestions}>
           <FlatList style={uriBarStyle.suggestionList}
                     data={suggestions}

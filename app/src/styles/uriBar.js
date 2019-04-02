@@ -30,9 +30,11 @@ const uriBarStyle = StyleSheet.create({
   },
   overlay: {
     position: 'absolute',
-    backgroundColor: 'transparent',
+    backgroundColor: '#cc0000',
     top: 0,
-    width: '100%'
+    width: '100%',
+    zIndex: 200,
+    elevation: 16
   },
   inFocus: {
     height: '100%'
