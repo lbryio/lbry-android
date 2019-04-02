@@ -18,6 +18,12 @@ class FloatingWalletBalance extends React.PureComponent<Props> {
 
     return (
       <View style={[floatingButtonStyle.view, floatingButtonStyle.bottomRight]}>
+        {unclaimedRewardAmount > 0 &&
+        <TouchableOpacity style={floatingButtonStyle.pendingContainer}
+          onPress={() => navigation && navigation.navigate({ routeName: 'Rewards' })} >
+          <Icon name="award" size={18} style={floatingButtonStyle.rewardIcon} />
+          <Text style={floatingButtonStyle.text}>{unclaimedRewardAmount}</Text>
+        </TouchableOpacity>}
         <TouchableOpacity style={floatingButtonStyle.container}
                           onPress={() => navigation && navigation.navigate({ routeName: 'WalletStack' })}>
           {isNaN(balance) && <ActivityIndicator size="small" color={Colors.White} />}
@@ -25,12 +31,6 @@ class FloatingWalletBalance extends React.PureComponent<Props> {
             {(balance || balance === 0) && (formatCredits(parseFloat(balance), 2) + ' LBC')}
           </Text>
         </TouchableOpacity>
-        {unclaimedRewardAmount > 0 &&
-        <TouchableOpacity style={floatingButtonStyle.pendingContainer}
-          onPress={() => navigation && navigation.navigate({ routeName: 'Rewards' })} >
-          <Icon name="award" size={18} style={floatingButtonStyle.rewardIcon} />
-          <Text style={floatingButtonStyle.text}>{unclaimedRewardAmount}</Text>
-        </TouchableOpacity>}
       </View>
     );
   }
