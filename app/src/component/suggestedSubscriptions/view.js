@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, SectionList, Text, View } from 'react-native';
 import { normalizeURI } from 'lbry-redux';
+import { navigateToUri } from 'utils/helper';
 import SubscribeButton from 'component/subscribeButton';
 import SuggestedSubscriptionItem from 'component/suggestedSubscriptionItem';
 import Colors from 'styles/colors';
@@ -36,7 +37,9 @@ class SuggestedSubscriptions extends React.PureComponent {
             const channelUri = normalizeURI(titleParts[1]);
             return (
               <View style={subscriptionsStyle.titleRow}>
-                <Link style={subscriptionsStyle.channelTitle} text={channelName} href={channelUri} />
+                <Link style={subscriptionsStyle.channelTitle} text={channelName} onPress={() => {
+                  navigateToUri(navigation, normalizeURI(channelUri));
+                }} />
                 <SubscribeButton style={subscriptionsStyle.subscribeButton} uri={channelUri} name={channelName} />
               </View>
             )

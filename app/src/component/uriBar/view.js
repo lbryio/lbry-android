@@ -105,6 +105,20 @@ class UriBar extends React.PureComponent {
       style.push(uriBarStyle.inFocus);
     }
 
+    /*{(this.state.focused && !this.state.directSearch) && (
+        <View style={uriBarStyle.suggestions}>
+          <FlatList style={uriBarStyle.suggestionList}
+                    data={suggestions}
+                    keyboardShouldPersistTaps={'handled'}
+                    keyExtractor={(item, value) => item.value}
+                    renderItem={({item}) => (
+                      <UriBarItem
+                        item={item}
+                        navigation={navigation}
+                        onPress={() => this.handleItemPress(item)}
+                      />)} />
+        </View>)}*/
+
     return (
       <View style={style}>
         <View style={uriBarStyle.uriContainer}>
@@ -153,19 +167,6 @@ class UriBar extends React.PureComponent {
                       }
                     }}/>
         </View>
-        {(this.state.focused && !this.state.directSearch) && (
-        <View style={uriBarStyle.suggestions}>
-          <FlatList style={uriBarStyle.suggestionList}
-                    data={suggestions}
-                    keyboardShouldPersistTaps={'handled'}
-                    keyExtractor={(item, value) => item.value}
-                    renderItem={({item}) => (
-                      <UriBarItem
-                        item={item}
-                        navigation={navigation}
-                        onPress={() => this.handleItemPress(item)}
-                      />)} />
-        </View>)}
       </View>
     );
   }

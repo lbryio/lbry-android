@@ -591,6 +591,10 @@ class FilePage extends React.PureComponent {
                           show={DateTime.SHOW_DATE} />
                       </View>
                       <View style={filePageStyle.subscriptionRow}>
+                        <Button style={[filePageStyle.actionButton, filePageStyle.tipButton]}
+                            theme={"light"}
+                            icon={"gift"}
+                            onPress={() => this.setState({ showTipView: true })} />
                         <SubscribeButton
                           style={filePageStyle.actionButton}
                           uri={fullChannelUri}
@@ -603,6 +607,26 @@ class FilePage extends React.PureComponent {
                     </View>
                   }
 
+                  {this.state.showTipView && <View style={filePageStyle.divider} />}
+                  {this.state.showTipView &&
+                  <View style={filePageStyle.tipCard}>
+                    <View style={filePageStyle.row}>
+                      <View style={filePageStyle.amountRow}>
+                        <TextInput ref={ref => this.tipAmountInput = ref}
+                                   onChangeText={value => this.setState({tipAmount: value})}
+                                   keyboardType={'numeric'}
+                                   value={this.state.tipAmount}
+                                   style={[filePageStyle.input, filePageStyle.tipAmountInput]} />
+                        <Text style={[filePageStyle.text, filePageStyle.currency]}>LBC</Text>
+                      </View>
+                      <Link style={[filePageStyle.link, filePageStyle.cancelTipLink]} text={'Cancel'} onPress={() => this.setState({ showTipView: false })} />
+                      <Button text={'Send a tip'}
+                              style={[filePageStyle.button, filePageStyle.sendButton]}
+                              disabled={!canSendTip}
+                              onPress={this.handleSendTip} />
+                    </View>
+                  </View>}
+
                   {(this.state.showDescription && description && description.length > 0) && <View style={filePageStyle.divider} />}
                   {(this.state.showDescription && description) &&
                     <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
@@ -610,23 +634,6 @@ class FilePage extends React.PureComponent {
                   <View onLayout={this.setRelatedContentPosition} />
                   <RelatedContent navigation={navigation} uri={uri} />
                 </ScrollView>
-                {this.state.showTipView && <View style={filePageStyle.tipCard}>
-                  <View style={filePageStyle.row}>
-                    <View style={filePageStyle.amountRow}>
-                      <TextInput ref={ref => this.tipAmountInput = ref}
-                                 onChangeText={value => this.setState({tipAmount: value})}
-                                 keyboardType={'numeric'}
-                                 value={this.state.tipAmount}
-                                 style={[filePageStyle.input, filePageStyle.tipAmountInput]} />
-                      <Text style={[filePageStyle.text, filePageStyle.currency]}>LBC</Text>
-                    </View>
-                    <Link style={[filePageStyle.link, filePageStyle.cancelTipLink]} text={'Cancel'} onPress={() => this.setState({ showTipView: false })} />
-                    <Button text={'Send tip'}
-                            style={[filePageStyle.button, filePageStyle.sendButton]}
-                            disabled={!canSendTip}
-                            onPress={this.handleSendTip} />
-                  </View>
-                </View>}
               </View>
             )}
             {!this.state.fullscreenMode && <FloatingWalletBalance navigation={navigation} />}

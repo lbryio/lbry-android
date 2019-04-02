@@ -32,9 +32,7 @@ const uriBarStyle = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'transparent',
     top: 0,
-    width: '100%',
-    zIndex: 200,
-    elevation: 16
+    width: '100%'
   },
   inFocus: {
     height: '100%'

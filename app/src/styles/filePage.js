@@ -246,11 +246,8 @@ const filePageStyle = StyleSheet.create({
     color: "rgba(64, 184, 154, .2)"
   },
   tipCard: {
-    backgroundColor: Colors.White,
-    position: 'absolute',
-    top: containedMediaHeightWithControls - 16,
     width: '100%',
-    paddingTop: 8,
+    marginTop: -12,
     paddingBottom: 8,
     paddingLeft: 16,
     paddingRight: 16
@@ -298,6 +295,9 @@ const filePageStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 24
+  },
+  tipButton: {
+    marginRight: 8
   }
 });
 
