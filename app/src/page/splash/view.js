@@ -120,13 +120,13 @@ class SplashScreen extends React.PureComponent {
           }
 
           // user is authenticated, navigate to the main view
-          if (user.has_verified_email) {
+          /*if (user.has_verified_email) {
             NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
               getSync(walletPassword);
               this.navigateToMain();
             });
             return;
-          }
+          }*/
 
           this.navigateToMain();
         });
