@@ -55,7 +55,15 @@ class SearchPage extends React.PureComponent {
                 onSearchSubmitted={this.handleSearchSubmitted} />
         {!isSearching && (!uris || uris.length === 0) &&
             <Text style={searchStyle.noResultsText}>No results to display.</Text>}
-        <ScrollView style={searchStyle.scrollContainer} contentContainerStyle={searchStyle.scrollPadding}>
+        {isSearching &&
+          <View style={searchStyle.busyContainer}>
+            <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} />
+          </View>}
+        {!isSearching &&
+        <ScrollView
+          style={searchStyle.scrollContainer}
+          contentContainerStyle={searchStyle.scrollPadding}
+          keyboardShouldPersistTaps={'handled'}>
           {this.state.currentUri &&
           <FileListItem
             key={this.state.currentUri}
@@ -72,8 +80,7 @@ class SearchPage extends React.PureComponent {
                                               navigation={navigation}
                                               onPress={() => navigateToUri(navigation, uri)}/>)
               ) : null }
-        </ScrollView>
-        {isSearching && <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} /> }
+        </ScrollView>}
         <FloatingWalletBalance navigation={navigation} />
       </View>
     );
