@@ -30,9 +30,9 @@ const floatingButtonStyle = StyleSheet.create({
   pendingContainer: {
     borderRadius: 24,
     padding: 14,
-    paddingLeft: 70,
-    paddingRight: 20,
-    marginLeft: -60,
+    paddingLeft: 20,
+    paddingRight: 70,
+    marginRight: -60,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.BrighterLbryGreen,
