@@ -2,7 +2,6 @@ import React from 'react';
 import NavigationActions from 'react-navigation';
 import {
   ActivityIndicator,
-  AsyncStorage,
   FlatList,
   NativeModules,
   SectionList,
@@ -12,6 +11,7 @@ import {
 } from 'react-native';
 import { buildURI, parseURI } from 'lbry-redux';
 import { uriFromFileInfo } from 'utils/helper';
+import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 import Button from 'component/button';
 import Colors from 'styles/colors';

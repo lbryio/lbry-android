@@ -2,7 +2,6 @@ import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
   ActivityIndicator,
-  AsyncStorage,
   Linking,
   NativeModules,
   Platform,
@@ -10,9 +9,10 @@ import {
   TextInput,
   View
 } from 'react-native';
-import Colors from '../../../styles/colors';
-import Constants from '../../../constants';
-import firstRunStyle from '../../../styles/firstRun';
+import AsyncStorage from '@react-native-community/async-storage';
+import Colors from 'styles/colors';
+import Constants from 'constants';
+import firstRunStyle from 'styles/firstRun';
 
 class EmailCollectPage extends React.PureComponent {
   static MAX_STATUS_TRIES = 30;

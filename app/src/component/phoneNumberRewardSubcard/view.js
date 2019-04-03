@@ -2,7 +2,6 @@
 import React from 'react';
 import {
   ActivityIndicator,
-  AsyncStorage,
   DeviceEventEmitter,
   NativeModules,
   StyleSheet,
@@ -11,6 +10,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Button from 'component/button';
 import Colors from 'styles/colors';
 import Constants from 'constants';

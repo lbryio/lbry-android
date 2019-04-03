@@ -2,7 +2,6 @@ import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
   ActivityIndicator,
-  AsyncStorage,
   Linking,
   NativeModules,
   Platform,
@@ -13,10 +12,11 @@ import {
 import { NavigationActions, StackActions } from 'react-navigation';
 import { decode as atob } from 'base-64';
 import { navigateToUri } from '../../utils/helper';
+import AsyncStorage from '@react-native-community/async-storage';
 import PropTypes from 'prop-types';
-import Colors from '../../styles/colors';
-import Constants from '../../constants';
-import splashStyle from '../../styles/splash';
+import Colors from 'styles/colors';
+import Constants from 'constants';
+import splashStyle from 'styles/splash';
 
 const BLOCK_HEIGHT_INTERVAL = 1000 * 60 * 2.5; // every 2.5 minutes
 

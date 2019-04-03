@@ -2,13 +2,13 @@ import React from 'react';
 import NavigationActions from 'react-navigation';
 import {
   ActivityIndicator,
-  AsyncStorage,
   NativeModules,
   FlatList,
   Text,
   View
 } from 'react-native';
 import { normalizeURI } from 'lbry-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 import FileItem from '/component/fileItem';
 import discoverStyle from 'styles/discover';
