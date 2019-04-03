@@ -55,7 +55,8 @@
                  android:icon="@drawable/icon"
                  android:allowBackup="true"
                  android:theme="@style/LbryAppTheme"
-                 android:hardwareAccelerated="true">
+                 android:hardwareAccelerated="true"
+                 android:usesCleartextTraffic="true">
 
         {% for m in args.meta_data %}
         <meta-data android:name="{{ m.split('=', 1)[0] }}" android:value="{{ m.split('=', 1)[-1] }}"/>{% endfor %}
