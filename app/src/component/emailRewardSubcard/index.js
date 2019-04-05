@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import {
   doUserEmailNew,
+  doUserEmailToVerify,
   doUserResendVerificationEmail,
   selectEmailNewErrorMessage,
   selectEmailNewIsPending,
@@ -17,6 +18,7 @@ const select = state => ({
 
 const perform = dispatch => ({
   addUserEmail: email => dispatch(doUserEmailNew(email)),
+  setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),
   notify: data => dispatch(doToast(data)),
   resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email))
 });

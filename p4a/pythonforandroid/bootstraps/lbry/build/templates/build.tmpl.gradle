@@ -19,52 +19,52 @@ allprojects {
             // All of React Native (JS, Android binaries) is installed from npm
             url "$rootDir/react/node_modules/react-native/android"
         }
-	    flatDir {
-	    	dirs 'libs'
-	    }
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
 apply plugin: 'com.android.application'
 
 android {
-	compileSdkVersion {{ android_api }}
-	buildToolsVersion '{{ build_tools_version }}'
- 	defaultConfig {
-		minSdkVersion {{ args.min_sdk_version }}
-		targetSdkVersion {{ android_api }}
-		versionCode {{ args.numeric_version }}
-		versionName '{{ args.version }}'
+    compileSdkVersion {{ android_api }}
+    buildToolsVersion '{{ build_tools_version }}'
+     defaultConfig {
+        minSdkVersion {{ args.min_sdk_version }}
+        targetSdkVersion {{ android_api }}
+        versionCode {{ args.numeric_version }}
+        versionName '{{ args.version }}'
 
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-	}
+    }
 
     dexOptions {
         jumboMode true
     }
 
-	{% if args.sign -%}
-	signingConfigs {
-		release {
-			storeFile file(System.getenv("P4A_RELEASE_KEYSTORE"))
-			keyAlias System.getenv("P4A_RELEASE_KEYALIAS")
-			storePassword System.getenv("P4A_RELEASE_KEYSTORE_PASSWD")
-			keyPassword System.getenv("P4A_RELEASE_KEYALIAS_PASSWD")
-		}
-	}
+    {% if args.sign -%}
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("P4A_RELEASE_KEYSTORE"))
+            keyAlias System.getenv("P4A_RELEASE_KEYALIAS")
+            storePassword System.getenv("P4A_RELEASE_KEYSTORE_PASSWD")
+            keyPassword System.getenv("P4A_RELEASE_KEYALIAS_PASSWD")
+        }
+    }
     {%- endif %}
 
-	buildTypes {
-		debug {
-		}
-		release {
-			{% if args.sign -%}
-			signingConfig signingConfigs.release
-			{%- endif %}
-		}
-	}
+    buildTypes {
+        debug {
+        }
+        release {
+            {% if args.sign -%}
+            signingConfig signingConfigs.release
+            {%- endif %}
+        }
+    }
 
     sourceSets {
         main {
@@ -77,7 +77,7 @@ ext {
     compileSdkVersion = {{ android_api }}
     buildToolsVersion = '{{ build_tools_version }}'
     minSdkVersion = {{ args.min_sdk_version }}
-	targetSdkVersion = {{ android_api }}
+    targetSdkVersion = {{ android_api }}
 }
 
 subprojects {
@@ -92,16 +92,18 @@ subprojects {
 }
 
 dependencies {
+    compile project(':@react-native-community_async-storage')
     compile project(':react-native-exception-handler')
     compile project(':react-native-fast-image')
+    compile project(':react-native-gesture-handler')
+    compile project(':react-native-video')
     compile project(':rn-fetch-blob')
-	compile project(':react-native-video')
     {%- for aar in aars %}
-	compile(name: '{{ aar }}', ext: 'aar')
-	{%- endfor -%}
-	{%- if args.depends -%}
-	{%- for depend in args.depends %}
-	compile '{{ depend }}'
-	{%- endfor %}
-	{%- endif %}
+    compile(name: '{{ aar }}', ext: 'aar')
+    {%- endfor -%}
+    {%- if args.depends -%}
+    {%- for depend in args.depends %}
+    compile '{{ depend }}'
+    {%- endfor %}
+    {%- endif %}
 }

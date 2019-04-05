@@ -25,6 +25,7 @@
     <!-- OpenGL ES 2.0 -->
     <uses-feature android:glEsVersion="0x00020000" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     {% for perm in args.permissions %}
     {% if '.' in perm %}
     <uses-permission android:name="{{ perm }}" />
@@ -54,7 +55,8 @@
                  android:icon="@drawable/icon"
                  android:allowBackup="true"
                  android:theme="@style/LbryAppTheme"
-                 android:hardwareAccelerated="true">
+                 android:hardwareAccelerated="true"
+                 android:usesCleartextTraffic="true">
 
         {% for m in args.meta_data %}
         <meta-data android:name="{{ m.split('=', 1)[0] }}" android:value="{{ m.split('=', 1)[-1] }}"/>{% endfor %}

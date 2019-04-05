@@ -31,6 +31,10 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.shell.MainReactPackage;
+import com.facebook.react.ReactRootView;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 
 import io.lbry.browser.reactpackages.LbryReactPackage;
@@ -116,15 +120,17 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
 
-        mReactRootView = new ReactRootView(this);
+        mReactRootView = new RNGestureHandlerEnabledRootView(this);
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
                 .setBundleAssetName("index.android.bundle")
                 .setJSMainModulePath("index")
                 .addPackage(new MainReactPackage())
+                .addPackage(new AsyncStoragePackage())
                 .addPackage(new FastImageViewPackage())
                 .addPackage(new ReactVideoPackage())
                 .addPackage(new RNFetchBlobPackage())
+                .addPackage(new RNGestureHandlerPackage())
                 .addPackage(new LbryReactPackage())
                 .setUseDeveloperSupport(true)
                 .setInitialLifecycleState(LifecycleState.RESUMED)

@@ -4,7 +4,6 @@ import { Provider, connect } from 'react-redux';
 import {
   AppRegistry,
   AppState,
-  AsyncStorage,
   Text,
   View,
   NativeModules
@@ -32,6 +31,7 @@ import { createLogger } from 'redux-logger';
 import { AppNavigator } from 'component/AppNavigator';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import AppWithNavigationState, { reactNavigationMiddleware } from './component/AppNavigator';
+import AsyncStorage from '@react-native-community/async-storage';
 import FilesystemStorage from 'redux-persist-filesystem-storage';
 import createCompressor from 'redux-persist-transform-compress';
 import createFilter from 'redux-persist-transform-filter';

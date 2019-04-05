@@ -1,7 +1,8 @@
 import React from 'react';
-import { AsyncStorage, NativeModules, Text, TouchableOpacity, View } from 'react-native';
-import Button from '../../component/button';
-import rewardStyle from '../../styles/reward';
+import { NativeModules, Text, TouchableOpacity, View } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import Button from 'component/button';
+import rewardStyle from 'styles/reward';
 
 class RewardSummary extends React.Component {
   static itemKey = 'rewardSummaryDismissed';

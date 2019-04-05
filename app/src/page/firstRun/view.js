@@ -2,7 +2,6 @@ import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
   ActivityIndicator,
-  AsyncStorage,
   Linking,
   NativeModules,
   Text,
@@ -10,11 +9,12 @@ import {
   View
 } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
-import Colors from '../../styles/colors';
-import Constants from '../../constants';
+import AsyncStorage from '@react-native-community/async-storage';
+import Colors from 'styles/colors';
+import Constants from 'constants';
 import WelcomePage from './internal/welcome-page';
 import EmailCollectPage from './internal/email-collect-page';
-import firstRunStyle from '../../styles/firstRun';
+import firstRunStyle from 'styles/firstRun';
 
 class FirstRunScreen extends React.PureComponent {
   static pages = [

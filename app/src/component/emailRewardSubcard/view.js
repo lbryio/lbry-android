@@ -2,41 +2,42 @@
 import React from 'react';
 import {
   ActivityIndicator,
-  AsyncStorage,
   Text,
   TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Button from '../button';
-import Colors from '../../styles/colors';
-import Constants from '../../constants';
-import Link from '../link';
-import rewardStyle from '../../styles/reward';
+import Button from 'component/button';
+import Colors from 'styles/colors';
+import Constants from 'constants';
+import Link from 'component/link';
+import rewardStyle from 'styles/reward';
 
 class EmailRewardSubcard extends React.PureComponent {
-  state = {
-    email: null,
-    emailAlreadySet: false,
-    previousEmail: null,
-    verfiyStarted: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: null,
+      emailAlreadySet: false,
+      previousEmail: null,
+      verfiyStarted: false
+    };
+  }
 
   componentDidMount() {
-    const { emailToVerify } = this.props;
-    AsyncStorage.getItem(Constants.KEY_FIRST_RUN_EMAIL).then(email => {
-      if (email && email.trim().length > 0) {
-        this.setState({ email, emailAlreadySet: true, previousEmail: email });
-      } else {
-        this.setState({ email: emailToVerify, previousEmail: emailToVerify });
-      }
-    });
+    const { setEmailToVerify } = this.props;
+    AsyncStorage.getItem(Constants.KEY_FIRST_RUN_EMAIL).then(email => setEmailToVerify(email));
   }
 
   componentWillReceiveProps(nextProps) {
-    const { emailNewErrorMessage, emailNewPending } = nextProps;
+    const { emailNewErrorMessage, emailNewPending, emailToVerify } = nextProps;
     const { notify } = this.props;
+
+    if (emailToVerify && emailToVerify.trim().length > 0 && !this.state.email && !this.state.previousEmail) {
+      this.setState({ email: emailToVerify, previousEmail: emailToVerify, emailAlreadySet: true });
+    }
 
     if (this.state.verifyStarted && !emailNewPending) {
       if (emailNewErrorMessage) {

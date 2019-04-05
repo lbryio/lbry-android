@@ -14,19 +14,19 @@ import TransactionHistoryPage from 'page/transactionHistory';
 import WalletPage from 'page/wallet';
 import SearchInput from 'component/searchInput';
 import {
+  createAppContainer,
   createDrawerNavigator,
   createStackNavigator,
   NavigationActions
 } from 'react-navigation';
 import {
   addListener,
-  reduxifyNavigator,
+  createReduxContainer,
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import {
   AppState,
-  AsyncStorage,
   BackHandler,
   Linking,
   NativeModules,
@@ -48,6 +48,7 @@ import {
 import { makeSelectClientSetting } from 'redux/selectors/settings';
 import { decode as atob } from 'base-64';
 import { dispatchNavigateBack, dispatchNavigateToUri } from 'utils/helper';
+import AsyncStorage from '@react-native-community/async-storage';
 import Colors from 'styles/colors';
 import Constants from 'constants';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -195,7 +196,7 @@ const drawer = createDrawerNavigator({
   }
 });
 
-export const AppNavigator = new createStackNavigator({
+const mainStackNavigator = new createStackNavigator({
   FirstRun: {
     screen: FirstRunScreen,
     navigationOptions: {
@@ -214,12 +215,11 @@ export const AppNavigator = new createStackNavigator({
 }, {
   headerMode: 'none'
 });
-
+export const AppNavigator = mainStackNavigator;
 export const reactNavigationMiddleware = createReactNavigationReduxMiddleware(
-  "root",
   state => state.nav,
 );
-const App = reduxifyNavigator(AppNavigator, "root");
+const App = createReduxContainer(mainStackNavigator, "root");
 const appMapStateToProps = (state) => ({
   state: state.nav,
 });

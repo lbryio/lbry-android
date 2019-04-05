@@ -3,7 +3,6 @@ import NavigationActions from 'react-navigation';
 import {
   Alert,
   ActivityIndicator,
-  AsyncStorage,
   Linking,
   NativeModules,
   SectionList,
@@ -11,6 +10,7 @@ import {
   View
 } from 'react-native';
 import { Lbry, normalizeURI, parseURI } from 'lbry-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 import Constants from 'constants';
 import Colors from 'styles/colors';
