@@ -1,7 +1,7 @@
 # LBRY Android
 [![pipeline status](https://ci.lbry.tech/lbry/lbry-android/badges/master/pipeline.svg)](https://ci.lbry.tech/lbry/lbry-android/commits/master)
 
-An Android browser and wallet for the [LBRY](https://lbry.io) network. This app bundles [lbrynet-daemon](https://github.com/lbryio/lbry) as a background service with a UI layer built with React Native. The APK is built using buildozer and the Gradle build tool.
+An Android browser and wallet for the [LBRY](https://lbry.com) network. This app bundles [lbrynet-daemon](https://github.com/lbryio/lbry) as a background service with a UI layer built with React Native. The APK is built using buildozer and the Gradle build tool.
 
 <img src="https://spee.ch/8/lbry-android.png" alt="LBRY Android Screenshot" width="384px" />
 
@@ -24,7 +24,7 @@ Contributions to this project are welcome, encouraged, and compensated. For more
 This project is MIT licensed. For the full license, see [LICENSE](LICENSE).
 
 ## Security
-We take security seriously. Please contact security@lbry.io regarding any security issues. Our PGP key is [here](https://keybase.io/lbry/key.asc) if you need it.
+We take security seriously. Please contact security@lbry.com regarding any security issues. Our PGP key is [here](https://keybase.io/lbry/key.asc) if you need it.
 
 ## Contact
-The primary contact for this project is [@akinwale](https://github.com/akinwale) (akinwale@lbry.io)
+The primary contact for this project is [@akinwale](https://github.com/akinwale) (akinwale@lbry.com)
