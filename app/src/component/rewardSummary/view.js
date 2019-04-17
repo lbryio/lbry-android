@@ -2,6 +2,8 @@ import React from 'react';
 import { NativeModules, Text, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Button from 'component/button';
+import Colors from 'styles/colors';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import rewardStyle from 'styles/reward';
 
 class RewardSummary extends React.Component {
@@ -58,9 +60,12 @@ class RewardSummary extends React.Component {
 
     return (
       <View style={rewardStyle.summaryContainer}>
-        <Text style={rewardStyle.summaryText}>
-          You have {unclaimedRewardAmount} LBC in unclaimed rewards. LBC stands for LBRY Credits which are tokens that you can use in the digital marketplace. You have {this.state.actionsLeft} action{this.state.actionsLeft === 1 ? '' : 's'} left to claim your first reward.
-        </Text>
+        <View style={rewardStyle.summaryRow}>
+          <Icon name="award" size={36} color={Colors.White} />
+          <Text style={rewardStyle.summaryText}>
+            {unclaimedRewardAmount} unclaimed credits
+          </Text>
+        </View>
         <Button style={rewardStyle.dismissButton} theme={"light"} text={"Dismiss"} onPress={this.onDismissPressed} />
       </View>
     );
