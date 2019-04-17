@@ -41,9 +41,8 @@ class WalletPage extends React.PureComponent {
 
     const content = (
       <View onLayout={onWalletViewLayout}>
-        <Text style={firstRunStyle.title}>Your Wallet</Text>
-        <Text style={firstRunStyle.paragraph}>LBRY Credits (or LBC) are tokens which you can use to purchase content and support creators in the digital marketplace.</Text>
-        <Text style={firstRunStyle.paragraph}>We use a wallet to store these tokens, which needs to be secured. Please enter a passphrase to secure your wallet.</Text>
+        <Text style={firstRunStyle.title}>Password</Text>
+        <Text style={firstRunStyle.paragraph}>Please enter a password to secure your account and wallet.</Text>
         <TextInput style={firstRunStyle.passwordInput}
             placeholder={this.state.placeholder}
             underlineColorAndroid="transparent"
@@ -60,7 +59,7 @@ class WalletPage extends React.PureComponent {
               }
             }}
             />
-        <Text style={firstRunStyle.infoParagraph}>If you forget your passphrase, you will be unable to make use of your LBC. Make sure to use a memorable passphrase.</Text>
+        <Text style={firstRunStyle.infoParagraph}>Note: for wallet security purposes, LBRY is unable to reset your password.</Text>
       </View>
     );
 

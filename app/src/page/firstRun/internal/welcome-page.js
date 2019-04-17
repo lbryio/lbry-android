@@ -9,10 +9,7 @@ class WelcomePage extends React.PureComponent {
     return (
       <View style={firstRunStyle.container}>
         <Text style={firstRunStyle.title}>Welcome to LBRY.</Text>
-        <Text style={firstRunStyle.paragraph}>LBRY is a decentralized peer-to-peer content sharing platform where
-        you can upload and download videos, music, ebooks and other forms of digital content.</Text>
-        <Text style={firstRunStyle.paragraph}>We make use of a blockchain which needs to be synchronized before
-        you can use the app. Synchronization may take a while because this is the first app launch.</Text>
+        <Text style={firstRunStyle.paragraph}>LBRY is a community-controlled content platform where you can find and publish videos, music, books, and more.</Text>
       </View>
     );
   }

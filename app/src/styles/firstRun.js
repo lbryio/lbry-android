@@ -70,6 +70,11 @@ const firstRunStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
   actionButton: {
     backgroundColor: Colors.White,
     alignSelf: 'center',
@@ -86,7 +91,7 @@ const firstRunStyle = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 20,
+    fontSize: 18,
     color: Colors.White
   },
   smallButtonText: {

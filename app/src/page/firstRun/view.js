@@ -229,19 +229,19 @@ class FirstRunScreen extends React.PureComponent {
             {([Constants.FIRST_RUN_PAGE_WELCOME, Constants.FIRST_RUN_PAGE_WALLET].indexOf(this.state.currentPage) > -1) && <View />}
             {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
-              <Text style={firstRunStyle.buttonText}>Setup account</Text>
+              <Text style={firstRunStyle.buttonText}>« Setup account</Text>
             </TouchableOpacity>}
             {Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
-              <Text style={firstRunStyle.smallLeftButtonText}>No, thanks</Text>
+              <Text style={firstRunStyle.smallLeftButtonText}>No, thanks »</Text>
             </TouchableOpacity>}
 
             {!emailNewPending &&
             <TouchableOpacity style={firstRunStyle.button} onPress={this.handleContinuePressed}>
               {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage &&
-              <Text style={firstRunStyle.smallButtonText}>Continue without account</Text>}
+              <Text style={firstRunStyle.smallButtonText}>Continue »</Text>}
               {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT !== this.state.currentPage &&
-              <Text style={firstRunStyle.buttonText}>Continue</Text>}
+              <Text style={firstRunStyle.buttonText}>{Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage ? 'Use LBRY' : 'Continue'} »</Text>}
             </TouchableOpacity>}
           </View>
 

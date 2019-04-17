@@ -6,6 +6,7 @@ import {
   Linking,
   NativeModules,
   Platform,
+  Switch,
   Text,
   TextInput,
   View
@@ -16,13 +17,17 @@ import firstRunStyle from 'styles/firstRun';
 
 class SkipAccountPage extends React.PureComponent {
   render() {
-    const { onSkipAccountViewLayout } = this.props;
+    const { onSkipAccountViewLayout, onSkipSwitchChanged } = this.props;
 
     const content = (
       <View onLayout={onSkipAccountViewLayout}>
         <Text style={firstRunStyle.title}>Are you sure?</Text>
-        <Text style={firstRunStyle.paragraph}>If you do not provide an email address, you will not be eligible for free LBC from LBRY, Inc.</Text>
-        <Text style={firstRunStyle.paragraph}>Additionally, all of your earnings and settings will be stored locally on this device. Uninstalling the app will delete all of your content and credits permanently.</Text>
+        <Text style={firstRunStyle.paragraph}>By not creating an account, you will not receive free credits, sync or backup services, or security updates.</Text>
+
+        <View style={firstRunStyle.row}>
+          <Switch value={false} onValueChange={value => onSkipSwitchChanged(value)} />
+          <Text style={firstRunStyle.paragraph}>I understand that if I uninstall LBRY I can lose all access to any balances or published content with no recovery option.</Text>
+        </View>
       </View>
     );
 
