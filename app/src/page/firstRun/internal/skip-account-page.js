@@ -13,20 +13,30 @@ import {
 } from 'react-native';
 import Colors from 'styles/colors';
 import Constants from 'constants';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import firstRunStyle from 'styles/firstRun';
 
 class SkipAccountPage extends React.PureComponent {
+  state = {
+    confirmed: false
+  };
+
   render() {
     const { onSkipAccountViewLayout, onSkipSwitchChanged } = this.props;
 
     const content = (
       <View onLayout={onSkipAccountViewLayout}>
-        <Text style={firstRunStyle.title}>Are you sure?</Text>
+        <View style={firstRunStyle.row}>
+          <Icon name="exclamation-triangle" style={firstRunStyle.titleIcon} size={32} color={Colors.White} />
+          <Text style={firstRunStyle.title}>Are you sure?</Text>
+        </View>
         <Text style={firstRunStyle.paragraph}>By not creating an account, you will not receive free credits, sync or backup services, or security updates.</Text>
 
-        <View style={firstRunStyle.row}>
-          <Switch value={false} onValueChange={value => onSkipSwitchChanged(value)} />
-          <Text style={firstRunStyle.paragraph}>I understand that if I uninstall LBRY I can lose all access to any balances or published content with no recovery option.</Text>
+        <View style={[firstRunStyle.row, firstRunStyle.confirmContainer]}>
+          <View style={firstRunStyle.rowSwitch}>
+            <Switch value={this.state.confirmed} onValueChange={value => { this.setState({ confirmed: value }); onSkipSwitchChanged(value); }} />
+          </View>
+          <Text style={firstRunStyle.rowParagraph}>I understand that if I uninstall LBRY, I can lose all access to any balances or published content with no recovery option.</Text>
         </View>
       </View>
     );

@@ -32,6 +32,7 @@ class FirstRunScreen extends React.PureComponent {
     isFirstRun: false,
     launchUrl: null,
     showSkip: false,
+    skipAccountConfirmed: false,
     showBottomContainer: true,
     walletPassword: null
   };
@@ -70,7 +71,6 @@ class FirstRunScreen extends React.PureComponent {
       } else {
         // Request successful. Navigate to next page (wallet).
         this.showNextPage();
-        //this.closeFinalPage();
       }
     }
   }
@@ -103,10 +103,15 @@ class FirstRunScreen extends React.PureComponent {
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     if (Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage) {
       if (!this.state.walletPassword || this.state.walletPassword.trim().length < 6) {
-        return notify({ message: 'Your wallet passphrase should be at least 6 characters long' });
+        return notify({ message: 'Your wallet password should be at least 6 characters long' });
       }
 
       this.closeFinalPage();
+      return;
+    }
+
+    if (Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage && !this.state.skipAccountConfirmed) {
+      notify({ message: 'Please confirm that you want to use LBRY without creating an account.' });
       return;
     }
 
@@ -189,6 +194,10 @@ class FirstRunScreen extends React.PureComponent {
     this.setState({ showBottomContainer: true });
   }
 
+  onSkipSwitchChanged = (checked) => {
+    this.setState({ skipAccountConfirmed: checked });
+  }
+
   render() {
     const {
       authenticate,
@@ -214,7 +223,9 @@ class FirstRunScreen extends React.PureComponent {
                 onWalletViewLayout={this.onWalletViewLayout}
                 onPasswordChanged={this.onWalletPasswordChanged} />);
     } else if (this.state.currentPage === 'skip-account') {
-      page = (<SkipAccountPage onSkipAccountViewLayout={this.onSkipAccountViewLayout} />);
+      page = (<SkipAccountPage
+                onSkipAccountViewLayout={this.onSkipAccountViewLayout}
+                onSkipSwitchChanged={this.onSkipSwitchChanged} />);
     }
 
     return (
@@ -231,7 +242,7 @@ class FirstRunScreen extends React.PureComponent {
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
               <Text style={firstRunStyle.buttonText}>« Setup account</Text>
             </TouchableOpacity>}
-            {Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage &&
+            {!emailNewPending && (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage) &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
               <Text style={firstRunStyle.smallLeftButtonText}>No, thanks »</Text>
             </TouchableOpacity>}
@@ -239,7 +250,7 @@ class FirstRunScreen extends React.PureComponent {
             {!emailNewPending &&
             <TouchableOpacity style={firstRunStyle.button} onPress={this.handleContinuePressed}>
               {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage &&
-              <Text style={firstRunStyle.smallButtonText}>Continue »</Text>}
+              <Text style={firstRunStyle.smallButtonText}>Use LBRY »</Text>}
               {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT !== this.state.currentPage &&
               <Text style={firstRunStyle.buttonText}>{Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage ? 'Use LBRY' : 'Continue'} »</Text>}
             </TouchableOpacity>}

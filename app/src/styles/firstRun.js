@@ -2,6 +2,11 @@ import { StyleSheet } from 'react-native';
 import Colors from './colors';
 
 const firstRunStyle = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    marginLeft: 32,
+    marginRight: 32,
+  },
   screenContainer: {
     flex: 1,
     backgroundColor: Colors.LbryGreen
@@ -37,6 +42,21 @@ const firstRunStyle = StyleSheet.create({
     marginBottom: 20,
     color: Colors.White
   },
+  confirmContainer: {
+    marginTop: 36
+  },
+  rowParagraph: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 16,
+    lineHeight: 24,
+    color: Colors.White,
+    flex: 0.7
+  },
+  rowSwitch: {
+    justifyContent: 'flex-start',
+    flex: 0.2,
+    marginRight: 8
+  },
   emailInput: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 24,
@@ -70,11 +90,6 @@ const firstRunStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
   actionButton: {
     backgroundColor: Colors.White,
     alignSelf: 'center',
@@ -97,19 +112,23 @@ const firstRunStyle = StyleSheet.create({
   smallButtonText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
-    color: Colors.White
+    color: Colors.White,
+    marginBottom: -2
   },
   smallLeftButtonText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     color: Colors.White,
-    marginBottom: 8
+    marginBottom: 6
   },
   waiting: {
     marginBottom: 24
   },
   pageWaiting: {
     alignSelf:  'center'
+  },
+  titleIcon: {
+    marginTop: 8
   }
 });
 
