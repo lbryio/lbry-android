@@ -12,6 +12,7 @@ import { navigateToUri, formatBytes } from 'utils/helper';
 import Colors from 'styles/colors';
 import DateTime from 'component/dateTime';
 import FileItemMedia from 'component/fileItemMedia';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import Link from 'component/link';
 import NsfwOverlay from 'component/nsfwOverlay';
 import fileListStyle from 'styles/fileList';
@@ -85,6 +86,7 @@ class FileListItem extends React.PureComponent {
                          resizeMode="cover"
                          title={(title || name)}
                          thumbnail={metadata ? metadata.thumbnail : null} />
+          {fileInfo && fileInfo.completed && <Icon style={fileListStyle.downloadedIcon} solid={true} color={Colors.BrightGreen} name={"folder"} size={16} />}
           <View style={fileListStyle.detailsContainer}>
             {featuredResult && <Text style={fileListStyle.featuredUri} numberOfLines={1}>{uri}</Text>}
 

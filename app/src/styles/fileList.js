@@ -81,6 +81,11 @@ const fileListStyle = StyleSheet.create({
     backgroundColor: Colors.LbryGreen,
     opacity: 0.2
   },
+  downloadedIcon: {
+    position: 'absolute',
+    top: 8,
+    left: 8
+  }
 });
 
 export default fileListStyle;

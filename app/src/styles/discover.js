@@ -70,12 +70,17 @@ const discoverStyle = StyleSheet.create({
     marginTop: 4,
     color: Colors.LbryGreen
   },
+  downloadedIcon: {
+    position: 'absolute',
+    right: 8,
+    top: 8
+  },
   filePriceContainer: {
-    backgroundColor: '#61fcd8',
+    backgroundColor: Colors.BrightGreen,
     justifyContent: 'center',
     position: 'absolute',
-    right: 16,
-    top: 16,
+    right: 8,
+    top: 8,
     width: 56,
     height: 24,
     borderRadius: 4

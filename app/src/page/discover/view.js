@@ -46,12 +46,14 @@ class DiscoverPage extends React.PureComponent {
     const {
       fetchFeaturedUris,
       fetchRewardedContent,
-      fetchSubscriptions
+      fetchSubscriptions,
+      fileList
     } = this.props;
 
     fetchFeaturedUris();
     fetchRewardedContent();
     fetchSubscriptions();
+    fileList();
 
     this.showRatingReminder();
   }
