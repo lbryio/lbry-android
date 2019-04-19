@@ -158,17 +158,19 @@ const rewardStyle = StyleSheet.create({
   },
   summaryContainer: {
     backgroundColor: Colors.LbryGreen,
-    padding: 12,
+    padding: 16,
     marginTop: 16,
     marginLeft: 16,
     marginRight: 16,
   },
+  summaryRow: {
+    flexDirection: 'row'
+  },
   summaryText: {
     color: Colors.White,
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 16,
-    lineHeight: 24,
-    flex: 0.7
+    fontSize: 28,
+    marginLeft: 12
   },
   phoneVerificationContainer: {
     paddingLeft: 4,
