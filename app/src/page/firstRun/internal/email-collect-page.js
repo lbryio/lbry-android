@@ -115,7 +115,7 @@ class EmailCollectPage extends React.PureComponent {
                 }
               }}
               />
-          <Text style={firstRunStyle.paragraph}>Setting up your account will allow you to earn rewards and keep your content and settings synced..</Text>
+          <Text style={firstRunStyle.paragraph}>An account will allow you to earn rewards and keep your content and settings synced.</Text>
           <Text style={firstRunStyle.infoParagraph}>This information is disclosed only to LBRY, Inc. and not to the LBRY network.</Text>
         </View>
       );
