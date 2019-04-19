@@ -70,7 +70,7 @@ class FileItem extends React.PureComponent {
     return (
       <View style={style}>
         <TouchableOpacity style={discoverStyle.container} onPress={this.navigateToFileUri}>
-          {!compactView && titleBeforeThumbnail && <Text style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>{title}</Text>}
+          {!compactView && titleBeforeThumbnail && <Text numberOfLines={1} style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>{title}</Text>}
           <FileItemMedia title={title}
                          thumbnail={thumbnail}
                          blurRadius={obscureNsfw ? 15 : 0}
@@ -80,8 +80,8 @@ class FileItem extends React.PureComponent {
 
           {!compactView && <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />}
           {!compactView && <View style={isRewardContent ? discoverStyle.rewardTitleContainer : null}>
-            <Text style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>{title}</Text>
-            {isRewardContent && <Icon style={discoverStyle.rewardIcon} name="award" size={20} />}
+            <Text numberOfLines={1} style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>{title}</Text>
+            {isRewardContent && <Icon style={discoverStyle.rewardIcon} name="award" size={14} />}
           </View>}
           {(!compactView && showDetails) &&
           <View style={discoverStyle.detailsRow}>

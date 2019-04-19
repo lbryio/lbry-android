@@ -12,11 +12,11 @@ import {
 import { Lbry, normalizeURI, parseURI } from 'lbry-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
+import CategoryList from 'component/categoryList';
 import Constants from 'constants';
 import Colors from 'styles/colors';
 import discoverStyle from 'styles/discover';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
-import FileItem from 'component/fileItem';
 import UriBar from 'component/uriBar';
 
 class DiscoverPage extends React.PureComponent {
@@ -150,6 +150,10 @@ class DiscoverPage extends React.PureComponent {
     setClientSetting(Constants.SETTING_RATING_REMINDER_LAST_SHOWN, settingString);
   }
 
+  trimClaimIdFromCategory(category) {
+    return category.split('#')[0];
+  }
+
   render() {
     const { featuredUris, fetchingFeaturedUris, navigation } = this.props;
     const hasContent = typeof featuredUris === 'object' && Object.keys(featuredUris).length,
@@ -167,20 +171,16 @@ class DiscoverPage extends React.PureComponent {
         {(!!hasContent) &&
           (<SectionList style={discoverStyle.scrollContainer}
             renderItem={ ({item, index, section}) => (
-                <FileItem
-                  style={discoverStyle.fileItem}
-                  mediaStyle={discoverStyle.fileItemMedia}
-                  key={item}
-                  uri={normalizeURI(item)}
-                  navigation={navigation}
-                  compactView={false}
-                  showDetails={true} />
-              )
-            }
+              <CategoryList
+                key={item}
+                category={item}
+                categoryMap={featuredUris}
+                navigation={navigation} />
+            )}
             renderSectionHeader={
               ({section: {title}}) => (<Text style={discoverStyle.categoryName}>{title}</Text>)
             }
-            sections={Object.keys(featuredUris).map(category => ({ title: category, data: featuredUris[category] }))}
+            sections={Object.keys(featuredUris).map(category => ({ title: this.trimClaimIdFromCategory(category), data: [category] }))}
             keyExtractor={(item, index) => item}
           />)
         }

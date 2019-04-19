@@ -11,6 +11,9 @@ export const horizontalMargin = 48; // left and right margins (24 + 24)
 export const verticalMargin = (screenWidthPixels > 720 && screenHeightPixels > 1920) ? 0 : ((screenWidthPixels <= 720) ? 20 : 16);
 export const mediaWidth = screenWidth - horizontalMargin;
 export const mediaHeight = ((screenWidth / screenHeight) * ((screenWidthPixels <= 720) ? screenWidth : mediaWidth)) - verticalMargin;
+export const fileItemWidth = screenWidth * 3/5;
+export const fileItemMediaWidth = fileItemWidth;
+export const fileItemMediaHeight = fileItemWidth * 9/16;
 
 const discoverStyle = StyleSheet.create({
   container: {
@@ -40,31 +43,30 @@ const discoverStyle = StyleSheet.create({
   },
   categoryName: {
     fontFamily: 'Inter-UI-SemiBold',
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: 24,
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: 12,
+    marginBottom: 12,
     color: Colors.Black
   },
   fileItem: {
-    marginLeft: 24,
-    marginRight: 24,
-    marginBottom: 48
+    width: fileItemWidth,
+    marginRight: 12
   },
   fileItemMedia: {
-    width: mediaWidth,
-    height: mediaHeight,
+    width: fileItemMediaWidth,
+    height: fileItemMediaHeight,
     alignItems: 'center',
     justifyContent: 'center'
   },
   fileItemName: {
-    fontFamily: 'Inter-UI-Bold',
+    fontFamily: 'Inter-UI-SemiBold',
     marginTop: 8,
-    fontSize: 18
+    fontSize: 14
   },
   channelName: {
     fontFamily: 'Inter-UI-SemiBold',
-    fontSize: 16,
+    fontSize: 12,
     marginTop: 4,
     color: Colors.LbryGreen
   },
@@ -144,8 +146,14 @@ const discoverStyle = StyleSheet.create({
   },
   dateTimeText: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 14,
+    fontSize: 12,
     color: Colors.DescriptionGrey
+  },
+  horizontalScrollContainer: {
+    marginBottom: 12
+  },
+  horizontalScrollPadding: {
+    paddingLeft: 20
   }
 });
 
