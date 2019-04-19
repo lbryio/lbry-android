@@ -169,7 +169,9 @@ class DiscoverPage extends React.PureComponent {
           </View>
         )}
         {(!!hasContent) &&
-          (<SectionList style={discoverStyle.scrollContainer}
+          (<SectionList
+            style={discoverStyle.scrollContainer}
+            contentContainerStyle={discoverStyle.scrollPadding}
             renderItem={ ({item, index, section}) => (
               <CategoryList
                 key={item}

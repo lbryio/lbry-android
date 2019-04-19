@@ -46,7 +46,7 @@ const discoverStyle = StyleSheet.create({
     fontSize: 18,
     marginLeft: 24,
     marginTop: 12,
-    marginBottom: 12,
+    marginBottom: 6,
     color: Colors.Black
   },
   fileItem: {
@@ -148,6 +148,9 @@ const discoverStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-Regular',
     fontSize: 12,
     color: Colors.DescriptionGrey
+  },
+  scrollPadding: {
+    paddingBottom: 24
   },
   horizontalScrollContainer: {
     marginBottom: 12
