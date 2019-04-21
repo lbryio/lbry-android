@@ -53,12 +53,13 @@ class SearchPage extends React.PureComponent {
         <UriBar value={searchQuery}
                 navigation={navigation}
                 onSearchSubmitted={this.handleSearchSubmitted} />
-        {!isSearching && (!uris || uris.length === 0) &&
-            <Text style={searchStyle.noResultsText}>No results to display.</Text>}
         {isSearching &&
           <View style={searchStyle.busyContainer}>
             <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} />
           </View>}
+
+        {!isSearching && (!uris || uris.length === 0) &&
+            <Text style={searchStyle.noResultsText}>No results to display.</Text>}
         {!isSearching &&
         <ScrollView
           style={searchStyle.scrollContainer}
@@ -73,7 +74,7 @@ class SearchPage extends React.PureComponent {
             navigation={navigation}
             onPress={() => navigateToUri(navigation, this.state.currentUri)}
           />}
-          {!isSearching && uris && uris.length ? (
+          {(uris && uris.length) ? (
                 uris.map(uri => <FileListItem key={uri}
                                               uri={uri}
                                               style={searchStyle.resultItem}

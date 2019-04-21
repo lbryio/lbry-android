@@ -209,23 +209,31 @@ class FirstRunScreen extends React.PureComponent {
     } = this.props;
 
     let page = null;
-    if (this.state.currentPage === 'welcome') {
-      // show welcome page
-      page = (<WelcomePage />);
-    } else if (this.state.currentPage === 'email-collect') {
-      page = (<EmailCollectPage authenticating={authenticating}
-                                authToken={authToken}
-                                authenticate={authenticate}
-                                onEmailChanged={this.onEmailChanged}
-                                onEmailViewLayout={this.onEmailViewLayout} />);
-    } else if (this.state.currentPage === 'wallet') {
-      page = (<WalletPage
+    switch (this.state.currentPage) {
+      case 'welcome':
+        page = (<WelcomePage />);
+        break;
+
+      case 'email-collect':
+        page = (<EmailCollectPage
+                  authenticating={authenticating}
+                  authToken={authToken}
+                  authenticate={authenticate}
+                  onEmailChanged={this.onEmailChanged}
+                  onEmailViewLayout={this.onEmailViewLayout} />);
+        break;
+
+      case 'wallet':
+        page = (<WalletPage
                 onWalletViewLayout={this.onWalletViewLayout}
                 onPasswordChanged={this.onWalletPasswordChanged} />);
-    } else if (this.state.currentPage === 'skip-account') {
-      page = (<SkipAccountPage
+        break;
+
+      case 'skip-account':
+        page = (<SkipAccountPage
                 onSkipAccountViewLayout={this.onSkipAccountViewLayout}
                 onSkipSwitchChanged={this.onSkipSwitchChanged} />);
+        break;
     }
 
     return (
@@ -255,7 +263,6 @@ class FirstRunScreen extends React.PureComponent {
               <Text style={firstRunStyle.buttonText}>{Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage ? 'Use LBRY' : 'Continue'} »</Text>}
             </TouchableOpacity>}
           </View>
-
         </View>}
       </View>
     );
