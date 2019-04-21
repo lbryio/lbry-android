@@ -30,7 +30,7 @@ class SkipAccountPage extends React.PureComponent {
           <Icon name="exclamation-triangle" style={firstRunStyle.titleIcon} size={32} color={Colors.White} />
           <Text style={firstRunStyle.title}>Are you sure?</Text>
         </View>
-        <Text style={firstRunStyle.paragraph}Without an account, you will not receive rewards, sync and backup services, or security updates.</Text>
+        <Text style={firstRunStyle.paragraph}>Without an account, you will not receive rewards, sync and backup services, or security updates.</Text>
 
         <View style={[firstRunStyle.row, firstRunStyle.confirmContainer]}>
           <View style={firstRunStyle.rowSwitch}>
