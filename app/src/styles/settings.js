@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
+import Colors from './colors';
 
 const settingsStyle = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.PageBackground
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',

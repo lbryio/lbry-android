@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
+import Colors from './colors';
 
 const downloadsStyle = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.PageBackground
   },
   busyContainer: {
     flex: 1,

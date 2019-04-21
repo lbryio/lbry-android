@@ -16,7 +16,7 @@ import moment from 'moment';
 import Button from 'component/button';
 import Colors from 'styles/colors';
 import Constants from 'constants';
-import discoverStyle from 'styles/discover';
+import fileListStyle from 'styles/fileList';
 import subscriptionsStyle from 'styles/subscriptions';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
 import FileItem from 'component/fileItem';
@@ -104,7 +104,7 @@ class SubscriptionsPage extends React.PureComponent {
             renderItem={ ({item}) => (
               <FileItem
                 style={subscriptionsStyle.fileItem}
-                mediaStyle={discoverStyle.fileItemMedia}
+                mediaStyle={fileListStyle.fileItemMedia}
                 key={item}
                 uri={uriFromFileInfo(item)}
                 navigation={navigation}
@@ -128,7 +128,7 @@ class SubscriptionsPage extends React.PureComponent {
                     return uris.map(uri => (
                       <FileItem
                         style={subscriptionsStyle.fileItem}
-                        mediaStyle={discoverStyle.fileItemMedia}
+                        mediaStyle={fileListStyle.fileItemMedia}
                         key={uri}
                         uri={uri}
                         navigation={navigation}

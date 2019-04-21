@@ -3,7 +3,8 @@ import Colors from './colors';
 
 const aboutStyle = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.PageBackground
   },
   scrollContainer: {
     flex: 1

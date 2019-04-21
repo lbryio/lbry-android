@@ -34,7 +34,7 @@ class WalletPage extends React.PureComponent {
     }
 
     return (
-      <View>
+      <View style={walletStyle.container}>
         <UriBar navigation={navigation} />
         <ScrollView keyboardShouldPersistTaps={'handled'}>
           <View style={walletStyle.warningCard}>

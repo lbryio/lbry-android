@@ -4,6 +4,7 @@ import Colors from 'styles/colors';
 const searchStyle = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.PageBackground
   },
   scrollContainer: {
     flex: 1,

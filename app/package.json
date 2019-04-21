@@ -22,7 +22,7 @@
         "react-native-gesture-handler": "^1.1.0",
         "react-native-image-zoom-viewer": "^2.2.5",
         "react-native-phone-input": "lbryio/react-native-phone-input",
-        "react-native-vector-icons": "^5.0.0",
+        "react-native-vector-icons": "^6.4.2",
         "react-native-video": "lbryio/react-native-video#exoplayer-lbry-android",
         "react-navigation": "^3.6.1",
         "react-navigation-redux-helpers": "^3.0.0",

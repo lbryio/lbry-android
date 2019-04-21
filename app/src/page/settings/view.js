@@ -29,7 +29,7 @@ class SettingsPage extends React.PureComponent {
     const actualKeepDaemonRunning = (keepDaemonRunning === null || keepDaemonRunning === undefined) ? true : keepDaemonRunning;
 
     return (
-      <View>
+      <View style={settingsStyle.container}>
         <PageHeader title={"Settings"}
           onBackPressed={() => navigateBack(navigation, drawerStack, popDrawerStack)} />
         <ScrollView style={settingsStyle.scrollContainer}>

@@ -5,6 +5,7 @@ const channelPageStyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: Colors.PageBackground
   },
   content: {
     flex: 1
@@ -67,7 +68,7 @@ const channelPageStyle = StyleSheet.create({
     backgroundColor: Colors.White,
     paddingLeft: 16,
     paddingRight: 16
-  }
+  },
 });
 
 export default channelPageStyle;

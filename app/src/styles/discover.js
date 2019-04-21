@@ -18,6 +18,7 @@ export const fileItemMediaHeight = fileItemWidth * 9/16;
 const discoverStyle = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.PageBackground
   },
   scrollContainer: {
     flex: 1,

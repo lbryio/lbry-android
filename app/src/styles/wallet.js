@@ -2,6 +2,9 @@ import { StyleSheet } from 'react-native';
 import Colors from './colors';
 
 const walletStyle = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.PageBackground
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',

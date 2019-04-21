@@ -3,7 +3,7 @@ import * as React from 'react';
 import { buildURI } from 'lbry-redux';
 import { FlatList } from 'react-native';
 import FileItem from 'component/fileItem';
-import discoverStyle from 'styles/discover';
+import fileListStyle from 'styles/fileList';
 
 // In the future, all Flow types need to be specified in a common source (lbry-redux, perhaps?)
 type FileInfo = {
@@ -183,7 +183,7 @@ class FileList extends React.PureComponent<Props, State> {
         onEndReached={onEndReached}
         keyExtractor={(item, index) => item}
         renderItem={({item}) => (
-          <FileItem style={discoverStyle.fileItem}
+          <FileItem style={fileListStyle.fileItem}
                     uri={item}
                     navigation={navigation}
                     showDetails={true}

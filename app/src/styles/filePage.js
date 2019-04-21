@@ -10,9 +10,11 @@ const filePageStyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: Colors.PageBackground
   },
   pageContainer: {
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.PageBackground
   },
   divider: {
     backgroundColor: Colors.LighterGrey,
@@ -73,11 +75,13 @@ const filePageStyle = StyleSheet.create({
     marginBottom: 16,
   },
   subscriptionRow: {
+    flex: 0.5,
     flexDirection: 'row',
+    justifyContent: 'flex-end',
     marginTop: 8
   },
   publishInfo: {
-    width: '50%',
+    flex: 0.5,
     marginTop: 6,
   },
   channelName: {
