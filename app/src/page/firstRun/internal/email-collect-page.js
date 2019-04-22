@@ -52,7 +52,7 @@ class EmailCollectPage extends React.PureComponent {
     this.setState({ authenticationStarted: true, authenticationFailed: false });
     NativeModules.VersionInfo.getAppVersion().then(appVersion => {
       Lbry.status().then(info => {
-        authenticate(appVersion, Platform.OS)
+        authenticate(appVersion, Platform.OS);
       }).catch(error => {
         if (this.state.statusTries >= EmailCollectPage.MAX_STATUS_TRIES) {
           this.setState({ authenticationFailed: true });
@@ -98,9 +98,7 @@ class EmailCollectPage extends React.PureComponent {
     } else {
       content = (
         <View onLayout={onEmailViewLayout}>
-          <Text style={firstRunStyle.title}>Rewards.</Text>
-          <Text style={firstRunStyle.paragraph}>You can earn LBRY Credits (LBC) rewards by completing various tasks in the app.</Text>
-          <Text style={firstRunStyle.paragraph}>Please provide a valid email address below to be able to claim your rewards.</Text>
+          <Text style={firstRunStyle.title}>Setup account</Text>
           <TextInput style={firstRunStyle.emailInput}
               placeholder={this.state.placeholder}
               underlineColorAndroid="transparent"
@@ -117,7 +115,8 @@ class EmailCollectPage extends React.PureComponent {
                 }
               }}
               />
-          <Text style={firstRunStyle.infoParagraph}>This information is disclosed only to LBRY, Inc. and not to the LBRY network. It is only required to earn LBRY rewards and may be used to sync usage data across devices.</Text>
+          <Text style={firstRunStyle.paragraph}>An account will allow you to earn rewards and keep your content and settings synced.</Text>
+          <Text style={firstRunStyle.infoParagraph}>This information is disclosed only to LBRY, Inc. and not to the LBRY network.</Text>
         </View>
       );
     }

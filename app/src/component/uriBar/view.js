@@ -101,23 +101,9 @@ class UriBar extends React.PureComponent {
     }
 
     let style = [uriBarStyle.overlay];
-    /*if (this.state.focused) {
-      style.push(uriBarStyle.inFocus);
-    }
 
-    {(this.state.focused && !this.state.directSearch) && (
-        <View style={uriBarStyle.suggestions}>
-          <FlatList style={uriBarStyle.suggestionList}
-                    data={suggestions}
-                    keyboardShouldPersistTaps={'handled'}
-                    keyExtractor={(item, value) => item.value}
-                    renderItem={({item}) => (
-                      <UriBarItem
-                        item={item}
-                        navigation={navigation}
-                        onPress={() => this.handleItemPress(item)}
-                      />)} />
-        </View>)}*/
+    // TODO: Add optional setting to enable URI / search bar suggestions
+    /*if (this.state.focused) { style.push(uriBarStyle.inFocus); }*/
 
     return (
       <View style={style}>
@@ -166,6 +152,19 @@ class UriBar extends React.PureComponent {
                         }
                       }
                     }}/>
+          {(this.state.focused && !this.state.directSearch) && (
+          <View style={uriBarStyle.suggestions}>
+            <FlatList style={uriBarStyle.suggestionList}
+                      data={suggestions}
+                      keyboardShouldPersistTaps={'handled'}
+                      keyExtractor={(item, value) => item.value}
+                      renderItem={({item}) => (
+                        <UriBarItem
+                          item={item}
+                          navigation={navigation}
+                          onPress={() => this.handleItemPress(item)}
+                        />)} />
+          </View>)}
         </View>
       </View>
     );

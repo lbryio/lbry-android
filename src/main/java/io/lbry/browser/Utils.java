@@ -124,6 +124,35 @@ public final class Utils {
         return null;
     }
 
+    public static void setSecureValue(String key, String value, Context context, KeyStore keyStore) {
+        try {
+            String encryptedValue = encrypt(value.getBytes(), context, keyStore);
+            SharedPreferences pref = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString(key, encryptedValue);
+            editor.commit();
+        } catch (Exception ex) {
+            Log.e(TAG, "utils - Could not set a secure value", ex);
+        }
+    }
+
+    public static String getSecureValue(String key, Context context, KeyStore keyStore) {
+        try {
+            SharedPreferences pref = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+            String encryptedValue = pref.getString(key, null);
+            if (encryptedValue == null || encryptedValue.trim().length() == 0) {
+                return null;
+            }
+
+            byte[] decoded = Base64.decode(encryptedValue, Base64.DEFAULT);
+            return new String(decrypt(decoded, context, keyStore), Charset.forName("UTF8"));
+        } catch (Exception ex) {
+            Log.e(TAG, "utils - Could not retrieve a secure value", ex);
+        }
+
+        return null;
+    }
+
     public static void setPassword(String serviceName, String username, String password, Context context, KeyStore keyStore) {
         try {
             String encryptedUsername = String.format("u_%s_%s", serviceName, encrypt(username.getBytes(), context, keyStore));

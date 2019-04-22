@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
-import { doBalanceSubscribe, doUpdateBlockHeight, doToast } from 'lbry-redux';
+import { doTotalBalanceSubscribe, doUpdateBlockHeight, doToast } from 'lbry-redux';
 import {
   doAuthenticate,
   doBlackListedOutpointsSubscribe,
   doCheckSubscriptionsInit,
   doFetchMySubscriptions,
   doFetchRewardedContent,
+  doGetSync,
   doUserEmailToVerify,
   doUserEmailVerify,
   doUserEmailVerifyFailure,
@@ -22,12 +23,13 @@ const select = state => ({
 
 const perform = dispatch => ({
   authenticate: (appVersion, os) => dispatch(doAuthenticate(appVersion, os)),
-  balanceSubscribe: () => dispatch(doBalanceSubscribe()),
+  totalBalanceSubscribe: () => dispatch(doTotalBalanceSubscribe()),
   blacklistedOutpointsSubscribe: () => dispatch(doBlackListedOutpointsSubscribe()),
   checkSubscriptionsInit: () => dispatch(doCheckSubscriptionsInit()),
   deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
   fetchRewardedContent: () => dispatch(doFetchRewardedContent()),
   fetchSubscriptions: (callback) => dispatch(doFetchMySubscriptions(callback)),
+  getSync: password => dispatch(doGetSync(password)),
   notify: data => dispatch(doToast(data)),
   setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),
   updateBlockHeight: () => dispatch(doUpdateBlockHeight()),

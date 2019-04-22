@@ -24,6 +24,7 @@ import {
   homepageReducer,
   rewardsReducer,
   subscriptionsReducer,
+  syncReducer,
   userReducer
 } from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
@@ -40,13 +41,13 @@ import drawerReducer from 'redux/reducers/drawer';
 import settingsReducer from 'redux/reducers/settings';
 import thunk from 'redux-thunk';
 
+
 const globalExceptionHandler = (error, isFatal) => {
   if (error && NativeModules.Mixpanel) {
     NativeModules.Mixpanel.logException(isFatal, error.message ? error.message : "No message", error);
   }
 };
 setJSExceptionHandler(globalExceptionHandler, true);
-
 
 function isFunction(object) {
   return typeof object === 'function';
@@ -99,6 +100,7 @@ const reducers = combineReducers({
   settings: settingsReducer,
   search: searchReducer,
   subscriptions: subscriptionsReducer,
+  sync: syncReducer,
   user: userReducer,
   wallet: walletReducer
 });
