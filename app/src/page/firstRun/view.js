@@ -12,14 +12,18 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import Colors from 'styles/colors';
 import Constants from 'constants';
+import WalletPage from './internal/wallet-page';
 import WelcomePage from './internal/welcome-page';
 import EmailCollectPage from './internal/email-collect-page';
+import SkipAccountPage from './internal/skip-account-page';
 import firstRunStyle from 'styles/firstRun';
 
 class FirstRunScreen extends React.PureComponent {
   static pages = [
-    'welcome',
-    'email-collect'
+    Constants.FIRST_RUN_PAGE_WELCOME,
+    Constants.FIRST_RUN_PAGE_EMAIL_COLLECT,
+    Constants.FIRST_RUN_PAGE_WALLET,
+    Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT,
   ];
 
   state = {
@@ -28,7 +32,9 @@ class FirstRunScreen extends React.PureComponent {
     isFirstRun: false,
     launchUrl: null,
     showSkip: false,
-    showBottomContainer: true
+    skipAccountConfirmed: false,
+    showBottomContainer: true,
+    walletPassword: null
   };
 
   componentDidMount() {
@@ -63,8 +69,8 @@ class FirstRunScreen extends React.PureComponent {
       if (emailNewErrorMessage) {
         notify ({ message: String(emailNewErrorMessage), isError: true });
       } else {
-        // Request successful. Navigate to discover.
-        this.closeFinalPage();
+        // Request successful. Navigate to next page (wallet).
+        this.showNextPage();
       }
     }
   }
@@ -80,14 +86,40 @@ class FirstRunScreen extends React.PureComponent {
     navigation.dispatch(resetAction);
   }
 
+  handleLeftButtonPressed = () => {
+    // Go to setup account page when "Setup account" is pressed
+    if (Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage) {
+      return this.showPage(Constants.FIRST_RUN_PAGE_EMAIL_COLLECT);
+    }
+
+    // Go to skip account page when "No, thanks" is pressed
+    if (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage) {
+      this.showPage(Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT);
+    }
+  }
+
   handleContinuePressed = () => {
+    const { notify } = this.props;
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
-    if (this.state.currentPage !== 'email-collect' &&
-        pageIndex === (FirstRunScreen.pages.length - 1)) {
+    if (Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage) {
+      if (!this.state.walletPassword || this.state.walletPassword.trim().length < 6) {
+        return notify({ message: 'Your wallet password should be at least 6 characters long' });
+      }
+
+      this.closeFinalPage();
+      return;
+    }
+
+    if (Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage && !this.state.skipAccountConfirmed) {
+      notify({ message: 'Please confirm that you want to use LBRY without creating an account.' });
+      return;
+    }
+
+    if (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT !== this.state.currentPage && pageIndex === (FirstRunScreen.pages.length - 1)) {
       this.closeFinalPage();
     } else {
       // TODO: Actions and page verification for specific pages
-      if (this.state.currentPage === 'email-collect') {
+      if (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage) {
         // handle email collect
         this.handleEmailCollectPageContinue();
       } else {
@@ -98,21 +130,10 @@ class FirstRunScreen extends React.PureComponent {
 
   handleEmailCollectPageContinue() {
     const { notify, addUserEmail } = this.props;
-    const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
 
     AsyncStorage.getItem(Constants.KEY_FIRST_RUN_EMAIL).then(email => {
-      if (!email || email.trim().length === 0) {
-        // no email provided. Skip.
-        if (this.state.currentPage === 'email-collect' && pageIndex === (FirstRunScreen.pages.length - 1)) {
-          this.closeFinalPage();
-        } else {
-          this.showNextPage();
-        }
-        return;
-      }
-
       // validate the email
-      if (email.indexOf('@') === -1) {
+      if (!email || email.indexOf('@') === -1) {
         return notify({
           message: 'Please provide a valid email address to continue.',
         });
@@ -133,6 +154,13 @@ class FirstRunScreen extends React.PureComponent {
     }
   }
 
+  showPage(pageName) {
+    const pageIndex = FirstRunScreen.pages.indexOf(pageName);
+    if (pageIndex > -1) {
+      this.setState({ currentPage: pageName });
+    }
+  }
+
   closeFinalPage() {
     // Final page. Let the app know that first run experience is completed.
     if (NativeModules.FirstRun) {
@@ -144,7 +172,7 @@ class FirstRunScreen extends React.PureComponent {
   }
 
   onEmailChanged = (email) => {
-    if ('email-collect' == this.state.currentPage) {
+    if (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT == this.state.currentPage) {
       this.setState({ showSkip: (!email || email.trim().length === 0) });
     } else {
       this.setState({ showSkip: false });
@@ -158,6 +186,18 @@ class FirstRunScreen extends React.PureComponent {
     });
   }
 
+  onWalletPasswordChanged = (password) => {
+    this.setState({ walletPassword: password });
+  }
+
+  onWalletViewLayout = () => {
+    this.setState({ showBottomContainer: true });
+  }
+
+  onSkipSwitchChanged = (checked) => {
+    this.setState({ skipAccountConfirmed: checked });
+  }
+
   render() {
     const {
       authenticate,
@@ -169,15 +209,31 @@ class FirstRunScreen extends React.PureComponent {
     } = this.props;
 
     let page = null;
-    if (this.state.currentPage === 'welcome') {
-      // show welcome page
-      page = (<WelcomePage />);
-    } else if (this.state.currentPage === 'email-collect') {
-      page = (<EmailCollectPage authenticating={authenticating}
-                                authToken={authToken}
-                                authenticate={authenticate}
-                                onEmailChanged={this.onEmailChanged}
-                                onEmailViewLayout={this.onEmailViewLayout} />);
+    switch (this.state.currentPage) {
+      case 'welcome':
+        page = (<WelcomePage />);
+        break;
+
+      case 'email-collect':
+        page = (<EmailCollectPage
+                  authenticating={authenticating}
+                  authToken={authToken}
+                  authenticate={authenticate}
+                  onEmailChanged={this.onEmailChanged}
+                  onEmailViewLayout={this.onEmailViewLayout} />);
+        break;
+
+      case 'wallet':
+        page = (<WalletPage
+                onWalletViewLayout={this.onWalletViewLayout}
+                onPasswordChanged={this.onWalletPasswordChanged} />);
+        break;
+
+      case 'skip-account':
+        page = (<SkipAccountPage
+                onSkipAccountViewLayout={this.onSkipAccountViewLayout}
+                onSkipSwitchChanged={this.onSkipSwitchChanged} />);
+        break;
     }
 
     return (
@@ -188,10 +244,25 @@ class FirstRunScreen extends React.PureComponent {
           {emailNewPending &&
             <ActivityIndicator size="small" color={Colors.White} style={firstRunStyle.pageWaiting} />}
 
-          {!emailNewPending &&
-          <TouchableOpacity style={firstRunStyle.button} onPress={this.handleContinuePressed}>
-            <Text style={firstRunStyle.buttonText}>{this.state.showSkip ? 'Skip': 'Continue'}</Text>
-          </TouchableOpacity>}
+          <View style={firstRunStyle.buttonRow}>
+            {([Constants.FIRST_RUN_PAGE_WELCOME, Constants.FIRST_RUN_PAGE_WALLET].indexOf(this.state.currentPage) > -1) && <View />}
+            {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage &&
+            <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
+              <Text style={firstRunStyle.buttonText}>« Setup account</Text>
+            </TouchableOpacity>}
+            {!emailNewPending && (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage) &&
+            <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
+              <Text style={firstRunStyle.smallLeftButtonText}>No, thanks »</Text>
+            </TouchableOpacity>}
+
+            {!emailNewPending &&
+            <TouchableOpacity style={firstRunStyle.button} onPress={this.handleContinuePressed}>
+              {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage &&
+              <Text style={firstRunStyle.smallButtonText}>Use LBRY »</Text>}
+              {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT !== this.state.currentPage &&
+              <Text style={firstRunStyle.buttonText}>{Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage ? 'Use LBRY' : 'Continue'} »</Text>}
+            </TouchableOpacity>}
+          </View>
         </View>}
       </View>
     );

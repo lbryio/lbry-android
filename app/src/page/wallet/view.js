@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { NativeModules, ScrollView, Text, View } from 'react-native';
 import TransactionListRecent from 'component/transactionListRecent';
 import WalletAddress from 'component/walletAddress';
 import WalletBalance from 'component/walletBalance';
@@ -13,6 +13,11 @@ import walletStyle from 'styles/wallet';
 class WalletPage extends React.PureComponent {
   componentDidMount() {
     this.props.pushDrawerStack();
+
+    const { user, getSync } = this.props;
+    if (user && user.has_verified_email) {
+      NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => getSync(walletPassword));
+    }
   }
 
   render() {

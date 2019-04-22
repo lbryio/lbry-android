@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { selectBalance } from 'lbry-redux';
+import { selectTotalBalance } from 'lbry-redux';
+import { selectUnclaimedRewardValue } from 'lbryinc';
 import FloatingWalletBalance from './view';
-import { doRewardList, selectUnclaimedRewardValue, selectFetchingRewards, selectUser } from 'lbryinc';
 
 const select = state => ({
-  balance: selectBalance(state),
+  balance: selectTotalBalance(state),
   unclaimedRewardAmount: selectUnclaimedRewardValue(state),
 });
 
