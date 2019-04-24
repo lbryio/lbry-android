@@ -9,15 +9,15 @@ import {
   View,
   ScrollView
 } from 'react-native';
-import { navigateToUri, uriFromFileInfo } from '../../utils/helper';
-import Colors from '../../styles/colors';
-import PageHeader from '../../component/pageHeader';
-import FileListItem from '../../component/fileListItem';
-import FloatingWalletBalance from '../../component/floatingWalletBalance';
-import StorageStatsCard from '../../component/storageStatsCard';
-import UriBar from '../../component/uriBar';
-import downloadsStyle from '../../styles/downloads';
-import fileListStyle from '../../styles/fileList';
+import { navigateToUri, uriFromFileInfo } from 'utils/helper';
+import Colors from 'styles/colors';
+import PageHeader from 'component/pageHeader';
+import FileListItem from 'component/fileListItem';
+import FloatingWalletBalance from 'component/floatingWalletBalance';
+import StorageStatsCard from 'component/storageStatsCard';
+import UriBar from 'component/uriBar';
+import downloadsStyle from 'styles/downloads';
+import fileListStyle from 'styles/fileList';
 
 class DownloadsPage extends React.PureComponent {
   static navigationOptions = {

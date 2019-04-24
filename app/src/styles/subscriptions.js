@@ -10,6 +10,7 @@ import Colors from 'styles/colors';
 const subscriptionsStyle = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.PageBackground
   },
   subContainer: {
     flex: 1,

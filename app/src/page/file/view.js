@@ -555,6 +555,7 @@ class FilePage extends React.PureComponent {
                        fileInfo.written_bytes < fileInfo.total_bytes &&
                        !this.state.stopDownloadConfirmed &&
                         <Button style={filePageStyle.actionButton}
+                                icon={"stop"}
                                 theme={"light"}
                                 text={"Stop Download"}
                                 onPress={this.onStopDownloadPressed} />

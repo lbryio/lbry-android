@@ -1,4 +1,5 @@
 import { Dimensions, PixelRatio, StyleSheet } from 'react-native';
+import { mediaWidth, mediaHeight } from './discover';
 import Colors from './colors';
 
 const screenDimension = Dimensions.get('window');
@@ -80,6 +81,22 @@ const fileListStyle = StyleSheet.create({
   progressRemaining: {
     backgroundColor: Colors.LbryGreen,
     opacity: 0.2
+  },
+  downloadedIcon: {
+    position: 'absolute',
+    top: 8,
+    left: 8
+  },
+  fileItem: {
+    marginLeft: 24,
+    marginRight: 24,
+    marginBottom: 48
+  },
+  fileItemMedia: {
+    width: mediaWidth,
+    height: mediaHeight,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 });
 

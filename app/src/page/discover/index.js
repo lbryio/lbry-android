@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 import {
+  doFileList,
   selectBalance,
+  selectFileInfosDownloaded,
 } from 'lbry-redux';
 import {
   doFetchFeaturedUris,
@@ -24,6 +26,7 @@ const select = state => ({
   enabledChannelNotifications: selectEnabledChannelNotifications(state),
   featuredUris: selectFeaturedUris(state),
   fetchingFeaturedUris: selectFetchingFeaturedUris(state),
+  fileInfos: selectFileInfosDownloaded(state),
   ratingReminderDisabled: makeSelectClientSetting(Constants.SETTING_RATING_REMINDER_DISABLED)(state),
   ratingReminderLastShown: makeSelectClientSetting(Constants.SETTING_RATING_REMINDER_LAST_SHOWN)(state),
   unreadSubscriptions: selectUnreadSubscriptions(state),
@@ -33,6 +36,7 @@ const perform = dispatch => ({
   fetchFeaturedUris: () => dispatch(doFetchFeaturedUris()),
   fetchRewardedContent: () => dispatch(doFetchRewardedContent()),
   fetchSubscriptions: () => dispatch(doFetchMySubscriptions()),
+  fileList: () => dispatch(doFileList()),
   removeUnreadSubscriptions: () => dispatch(doRemoveUnreadSubscriptions()),
   setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value))
 });

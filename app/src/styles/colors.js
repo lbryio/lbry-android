@@ -1,9 +1,12 @@
 const Colors = {
+  PageBackground: '#efeff4',
+
   Black: '#000000',
   ChannelGrey: '#9b9b9b',
   DarkGrey: '#555555',
   DescriptionGrey: '#999999',
   LbryGreen: '#2f9176',
+  BrightGreen: '#61fcd8',
   BrighterLbryGreen: '#40b887',
   LightGrey: '#cccccc',
   LighterGrey: '#e5e5e5',

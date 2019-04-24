@@ -10,8 +10,9 @@ import {
 import { normalizeURI } from 'lbry-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
-import FileItem from '/component/fileItem';
+import FileItem from 'component/fileItem';
 import discoverStyle from 'styles/discover';
+import fileListStyle from 'styles/fileList';
 import Colors from 'styles/colors';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
 import UriBar from 'component/uriBar';
@@ -41,8 +42,8 @@ class TrendingPage extends React.PureComponent {
           <FlatList style={discoverStyle.trendingContainer}
             renderItem={ ({item}) => (
                 <FileItem
-                  style={discoverStyle.fileItem}
-                  mediaStyle={discoverStyle.fileItemMedia}
+                  style={fileListStyle.fileItem}
+                  mediaStyle={fileListStyle.fileItemMedia}
                   key={item}
                   uri={normalizeURI(item)}
                   navigation={navigation}
