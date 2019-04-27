@@ -45,6 +45,8 @@ class FileItem extends React.PureComponent {
   render() {
     const {
       claim,
+      title,
+      thumbnail,
       fileInfo,
       metadata,
       isResolvingUri,
@@ -58,8 +60,6 @@ class FileItem extends React.PureComponent {
     } = this.props;
 
     const uri = normalizeURI(this.props.uri);
-    const title = metadata && metadata.title ? metadata.title : uri;
-    const thumbnail = metadata && metadata.thumbnail ? metadata.thumbnail : null;
     const obscureNsfw = this.props.obscureNsfw && metadata && metadata.nsfw;
     const isRewardContent = claim && rewardedContentClaimIds.includes(claim.claim_id);
     const channelName = claim ? claim.channel_name : null;

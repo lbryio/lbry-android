@@ -369,7 +369,7 @@ class MediaPlayer extends React.PureComponent {
                onEnd={this.onEnd}
                />
 
-        {this.state.firstPlay && thumbnail &&
+        {this.state.firstPlay && thumbnail && thumbnail.trim().length > 0 &&
         <FastImage
           source={{uri: thumbnail}}
           resizeMode={FastImage.resizeMode.cover}
