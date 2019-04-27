@@ -302,6 +302,23 @@ const filePageStyle = StyleSheet.create({
   },
   tipButton: {
     marginRight: 8
+  },
+  tagContainer: {
+    marginLeft: 12,
+    marginRight: 12,
+    flexDirection: 'row'
+  },
+  tagTitle: {
+    fontFamily: 'Inter-UI-SemiBold',
+    flex: 0.2
+  },
+  tagList: {
+    fontFamily: 'Inter-UI-Regular',
+    flex: 0.8,
+    flexDirection: 'row'
+  },
+  tagItem: {
+    marginRight: 16
   }
 });
 
