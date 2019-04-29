@@ -45,11 +45,23 @@ class FileItemMedia extends React.PureComponent {
     }
   }
 
+  isThumbnailValid = (thumbnail) => {
+    if (!thumbnail || ((typeof thumbnail) !== 'string')) {
+      return false;
+    }
+
+    if (thumbnail.substring(0, 7) != 'http://' && thumbnail.substring(0, 8) != 'https://') {
+      return false;
+    }
+
+    return true;
+  }
+
   render() {
     let style = this.props.style;
     const { blurRadius, isResolvingUri, thumbnail, title, resizeMode } = this.props;
     const atStyle = this.state.autoThumbStyle;
-    if (thumbnail && ((typeof thumbnail) === 'string') && thumbnail.trim().length > 0 && !this.state.imageLoadFailed) {
+    if (this.isThumbnailValid(thumbnail) && !this.state.imageLoadFailed) {
       if (style == null) {
         style = fileItemMediaStyle.thumbnail;
       }
