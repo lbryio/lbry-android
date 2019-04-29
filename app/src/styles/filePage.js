@@ -306,6 +306,7 @@ const filePageStyle = StyleSheet.create({
   tagContainer: {
     marginLeft: 12,
     marginRight: 12,
+    marginBottom: 16,
     flexDirection: 'row'
   },
   tagTitle: {
