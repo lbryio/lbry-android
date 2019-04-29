@@ -358,6 +358,12 @@ class FilePage extends React.PureComponent {
     }, 500);
   }
 
+  renderTags = (tags) => {
+    return tags.map((tag, i) => (
+      <Text style={filePageStyle.tagItem} key={`${tag}-${i}`}>{tag}</Text>
+    ));
+  }
+
   render() {
     const {
       claim,
@@ -424,6 +430,12 @@ class FilePage extends React.PureComponent {
           </View>
         );
       } else {
+
+        let tags = [];
+        if (claim && claim.value && claim.value.tags) {
+          tags = claim.value.tags;
+        }
+
         const completed = fileInfo && fileInfo.completed;
         const isRewardContent = rewardedContentClaimIds.includes(claim.claim_id);
         const description = metadata.description ? metadata.description : null;
@@ -630,8 +642,16 @@ class FilePage extends React.PureComponent {
                   </View>}
 
                   {(this.state.showDescription && description && description.length > 0) && <View style={filePageStyle.divider} />}
-                  {(this.state.showDescription && description) &&
-                    <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
+                  {(this.state.showDescription && description) && (
+                    <View>
+                      <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>
+                      {tags && tags.length > 0 && (
+                        <View style={filePageStyle.tagContainer}>
+                          <Text style={filePageStyle.tagTitle}>Tags</Text>
+                          <View style={filePageStyle.tagList}>{this.renderTags(tags)}</View>
+                        </View>
+                      )}
+                    </View>)}
 
                   <View onLayout={this.setRelatedContentPosition} />
                   <RelatedContent navigation={navigation} uri={uri} />

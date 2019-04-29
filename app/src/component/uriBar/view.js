@@ -44,6 +44,11 @@ class UriBar extends React.PureComponent {
     const { updateSearchQuery, onSearchSubmitted, navigation } = this.props;
 
     let timeout = setTimeout(() => {
+      if (text.trim().length === 0) {
+        // don't do anything if the text is empty
+        return;
+      }
+
       updateSearchQuery(text);
 
       if (!text.startsWith('lbry://')) {
