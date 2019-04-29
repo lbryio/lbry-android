@@ -141,7 +141,7 @@ class ChannelPage extends React.PureComponent {
           {(email && email.trim().length > 0) &&
           <View style={channelPageStyle.aboutItem}>
             <Text style={channelPageStyle.aboutTitle}>Email</Text>
-            <Text style={channelPageStyle.aboutText}>mail@email.com</Text>
+            <Link style={channelPageStyle.aboutText} text={email} href={`mailto:${email}`} />
           </View>}
 
           {(description && description.trim().length > 0) &&

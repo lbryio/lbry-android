@@ -35,7 +35,6 @@ import com.facebook.react.ReactRootView;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.swmansion.reanimated.ReanimatedPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 
 import io.lbry.browser.reactpackages.LbryReactPackage;
@@ -130,7 +129,6 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .addPackage(new AsyncStoragePackage())
                 .addPackage(new FastImageViewPackage())
                 .addPackage(new ReactVideoPackage())
-                .addPackage(new ReanimatedPackage())
                 .addPackage(new RNFetchBlobPackage())
                 .addPackage(new RNGestureHandlerPackage())
                 .addPackage(new LbryReactPackage())
