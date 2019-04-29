@@ -13,6 +13,7 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 import { navigateBack } from 'utils/helper';
 import Colors from 'styles/colors';
 import Button from 'component/button';
+import Link from 'component/link';
 import FileList from 'component/fileList';
 import PageHeader from 'component/pageHeader';
 import SubscribeButton from 'component/subscribeButton';
@@ -109,25 +110,45 @@ class ChannelPage extends React.PureComponent {
   }
 
   renderAbout = () => {
+    const { claim } = this.props;
+
+    if (!claim) {
+      return (
+        <View style={channelPageStyle.aboutTab}>
+          <View style={channelPageStyle.busyContainer}>
+            <Text style={channelPageStyle.infoText}>No information to display.</Text>
+          </View>
+        </View>
+      );
+    }
+
+    const { cover, description, thumbnail, email, website_url, title } = claim.value;
     return (
       <View style={channelPageStyle.aboutTab}>
+        {(!website_url && !email && !description) &&
+          <View style={channelPageStyle.busyContainer}>
+            <Text style={channelPageStyle.infoText}>Nothing here yet. Please check back later.</Text>
+          </View>}
 
+        {(website_url || email || description) &&
         <ScrollView style={channelPageStyle.aboutScroll} contentContainerStyle={channelPageStyle.aboutScrollContent}>
+          {(website_url && website_url.trim().length > 0) &&
           <View style={channelPageStyle.aboutItem}>
             <Text style={channelPageStyle.aboutTitle}>Website</Text>
-            <Text style={channelPageStyle.aboutText}>https://www.website.com</Text>
-          </View>
+            <Link style={channelPageStyle.aboutText} text={website_url} href={website_url} />
+          </View>}
 
+          {(email && email.trim().length > 0) &&
           <View style={channelPageStyle.aboutItem}>
             <Text style={channelPageStyle.aboutTitle}>Email</Text>
             <Text style={channelPageStyle.aboutText}>mail@email.com</Text>
-          </View>
+          </View>}
 
+          {(description && description.trim().length > 0) &&
           <View style={channelPageStyle.aboutItem}>
-            <Text style={channelPageStyle.aboutText}>Content description here</Text>
-          </View>
-        </ScrollView>
-
+            <Text style={channelPageStyle.aboutText}>{description}</Text>
+          </View>}
+        </ScrollView>}
       </View>
     );
   }
@@ -145,7 +166,17 @@ class ChannelPage extends React.PureComponent {
     } = this.props;
     const { name, permanent_url: permanentUrl } = claim;
 
-    // <SubscribeButton style={channelPageStyle.subscribeButton} uri={uri} name={name} />
+    let thumbnailUrl, coverUrl, title;
+    if (claim && claim.value) {
+      title = claim.value.title;
+      if (claim.value.cover) {
+        coverUrl = claim.value.cover.url;
+      }
+      if (claim.value.thumbnail) {
+        thumbnailUrl = claim.value.thumbnail.url;
+      }
+    }
+
 
     return (
       <View style={channelPageStyle.container}>
@@ -157,16 +188,20 @@ class ChannelPage extends React.PureComponent {
             <Image
               style={channelPageStyle.coverImage}
               resizeMode={'cover'}
-              source={require('../../assets/default_channel_cover.png')} />
+              source={(coverUrl && coverUrl.trim().length > 0) ? { uri: coverUrl } : require('../../assets/default_channel_cover.png')} />
 
             <View style={channelPageStyle.channelHeader}>
-              <Text style={channelPageStyle.channelName}>{name}</Text>
+              <Text style={channelPageStyle.channelName}>{(title && title.trim().length > 0) ? title : name}</Text>
             </View>
 
-            <Image
-              style={channelPageStyle.avatarImage}
-              resizeMode={'stretch'}
-              source={require('../../assets/default_avatar.jpg')} />
+            <View style={channelPageStyle.avatarImageContainer}>
+              <Image
+                style={channelPageStyle.avatarImage}
+                resizeMode={'stretch'}
+                source={(thumbnailUrl && thumbnailUrl.trim().length > 0) ? { uri: thumbnailUrl } : require('../../assets/default_avatar.jpg')} />
+            </View>
+
+            <SubscribeButton style={channelPageStyle.subscribeButton} uri={uri} name={name} />
           </View>
 
           <View style={channelPageStyle.tabBar}>

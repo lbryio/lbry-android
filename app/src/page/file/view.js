@@ -634,7 +634,7 @@ class FilePage extends React.PureComponent {
                     <Text style={filePageStyle.description} selectable={true}>{this.linkify(description)}</Text>}
 
                   <View onLayout={this.setRelatedContentPosition} />
-                  <RelatedContent navigation={navigation} uri={uri} />
+                  {false && <RelatedContent navigation={navigation} uri={uri} />}
                 </ScrollView>
               </View>
             )}

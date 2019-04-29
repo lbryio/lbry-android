@@ -70,7 +70,11 @@ const channelPageStyle = StyleSheet.create({
     alignSelf: 'flex-start',
     backgroundColor: Colors.White,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
+    position: 'absolute',
+    right: 8,
+    bottom: -88,
+    zIndex: 100
   },
   cover: {
     width: '100%',
@@ -128,7 +132,7 @@ const channelPageStyle = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24
   },
-  avatarImage: {
+  avatarImageContainer: {
     width: 80,
     height: 80,
     borderRadius: 160,
@@ -136,7 +140,11 @@ const channelPageStyle = StyleSheet.create({
     overflow: 'hidden',
     left: 24,
     bottom: -40,
-    elevation: 4
+    zIndex: 100
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
   }
 });
 
