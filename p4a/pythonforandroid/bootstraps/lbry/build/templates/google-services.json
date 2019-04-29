@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1073077851665",
+    "firebase_url": "https://lbry-179814.firebaseio.com",
+    "project_id": "lbry-179814",
+    "storage_bucket": "lbry-179814.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073077851665:android:592958d248940ab2",
+        "android_client_info": {
+          "package_name": "io.lbry.browser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1073077851665-0g1bqt3g1jvsi05ppqo220brdm1af0m4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJam9o1CqeFamS1iU9OvbR29vB1z0ag-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073077851665-0g1bqt3g1jvsi05ppqo220brdm1af0m4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
