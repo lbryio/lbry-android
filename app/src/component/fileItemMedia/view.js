@@ -49,7 +49,7 @@ class FileItemMedia extends React.PureComponent {
     let style = this.props.style;
     const { blurRadius, isResolvingUri, thumbnail, title, resizeMode } = this.props;
     const atStyle = this.state.autoThumbStyle;
-    if (thumbnail && ((typeof thumbnail) === 'string') && !this.state.imageLoadFailed) {
+    if (thumbnail && ((typeof thumbnail) === 'string') && thumbnail.trim().length > 0 && !this.state.imageLoadFailed) {
       if (style == null) {
         style = fileItemMediaStyle.thumbnail;
       }

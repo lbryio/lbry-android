@@ -11,6 +11,8 @@ import {
   makeSelectContentPositionForUri,
   makeSelectContentTypeForUri,
   makeSelectMetadataForUri,
+  makeSelectThumbnailForUri,
+  makeSelectTitleForUri,
   selectBalance,
 } from 'lbry-redux';
 import {
@@ -37,7 +39,9 @@ const select = (state, props) => {
     fileInfo: makeSelectFileInfoForUri(selectProps.uri)(state),
     rewardedContentClaimIds: selectRewardContentClaimIds(state, selectProps),
     channelUri: makeSelectChannelForClaimUri(selectProps.uri, true)(state),
-    position: makeSelectContentPositionForUri(selectProps.uri)(state)
+    position: makeSelectContentPositionForUri(selectProps.uri)(state),
+    thumbnail: makeSelectThumbnailForUri(selectProps.uri)(state),
+    title: makeSelectTitleForUri(selectProps.uri)(state),
   };
 };
 

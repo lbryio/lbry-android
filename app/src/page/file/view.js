@@ -371,7 +371,9 @@ class FilePage extends React.PureComponent {
       blackListedOutpoints,
       navigation,
       position,
-      purchaseUri
+      purchaseUri,
+      thumbnail,
+      title
     } = this.props;
     const { uri, autoplay } = navigation.state.params;
 
@@ -423,7 +425,6 @@ class FilePage extends React.PureComponent {
         );
       } else {
         const completed = fileInfo && fileInfo.completed;
-        const title = metadata.title;
         const isRewardContent = rewardedContentClaimIds.includes(claim.claim_id);
         const description = metadata.description ? metadata.description : null;
         const mediaType = Lbry.getMediaType(contentType);
@@ -496,7 +497,7 @@ class FilePage extends React.PureComponent {
                     onLayout={this.checkOrientation}>
                 <View style={filePageStyle.mediaContainer}>
                   {((canOpen || (!fileInfo || (isPlayable && !canLoadMedia))) || (!canOpen && fileInfo)) &&
-                    <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={metadata.thumbnail} />}
+                    <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={thumbnail} />}
                   {((!this.state.downloadButtonShown || this.state.downloadPressed) && !this.state.mediaLoaded) &&
                       <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
                   {((isPlayable && !completed && !canLoadMedia) || !completed || canOpen) && (!this.state.downloadPressed) &&
@@ -538,7 +539,7 @@ class FilePage extends React.PureComponent {
                     onMediaLoaded={() => this.onMediaLoaded(channelName, title, uri)}
                     onPlaybackStarted={this.onPlaybackStarted}
                     onPlaybackFinished={this.onPlaybackFinished}
-                    thumbnail={metadata.thumbnail}
+                    thumbnail={thumbnail}
                     position={position}
                    />}
 

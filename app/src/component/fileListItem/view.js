@@ -57,13 +57,14 @@ class FileListItem extends React.PureComponent {
       isDownloaded,
       style,
       onPress,
-      navigation
+      navigation,
+      thumbnail,
+      title
     } = this.props;
 
     const uri = normalizeURI(this.props.uri);
     const obscureNsfw = this.props.obscureNsfw && metadata && metadata.nsfw;
     const isResolving = !fileInfo && isResolvingUri;
-    const title = fileInfo ? fileInfo.metadata.title : metadata && metadata.title ? metadata.title : parseURI(uri).contentName;
 
     let name, channel, height, channelClaimId, fullChannelUri;
     if (claim) {
@@ -85,7 +86,7 @@ class FileListItem extends React.PureComponent {
                          blurRadius={obscureNsfw ? 15 : 0}
                          resizeMode="cover"
                          title={(title || name)}
-                         thumbnail={metadata ? metadata.thumbnail : null} />
+                         thumbnail={thumbnail} />
           {fileInfo && fileInfo.completed && <Icon style={fileListStyle.downloadedIcon} solid={true} color={Colors.BrightGreen} name={"folder"} size={16} />}
           <View style={fileListStyle.detailsContainer}>
             {featuredResult && <Text style={fileListStyle.featuredUri} numberOfLines={1}>{uri}</Text>}

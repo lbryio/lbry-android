@@ -30,10 +30,9 @@ export default class RelatedContent extends React.PureComponent<Props> {
   }
 
   getRecommendedContent() {
-    const { claim, search } = this.props;
+    const { search, title } = this.props;
 
-    if (claim && claim.value && claim.value.stream && claim.value.stream.metadata) {
-      const { title } = claim.value.stream.metadata;
+    if (title) {
       search(title);
       this.didSearch = true;
     }

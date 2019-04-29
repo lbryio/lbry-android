@@ -4,10 +4,13 @@ import {
   makeSelectClaimForUri,
   makeSelectMetadataForUri,
   makeSelectFileInfoForUri,
+  makeSelectThumbnailForUri,
+  makeSelectTitleForUri,
   makeSelectIsUriResolving,
+  makeSelectClaimIsNsfw
 } from 'lbry-redux';
 import { selectRewardContentClaimIds } from 'lbryinc';
-import { selectShowNsfw } from '../../redux/selectors/settings';
+import { selectShowNsfw } from 'redux/selectors/settings';
 import FileItem from './view';
 
 const select = (state, props) => ({
@@ -16,7 +19,10 @@ const select = (state, props) => ({
   metadata: makeSelectMetadataForUri(props.uri)(state),
   rewardedContentClaimIds: selectRewardContentClaimIds(state, props),
   isResolvingUri: makeSelectIsUriResolving(props.uri)(state),
-  obscureNsfw: !selectShowNsfw(state)
+  obscureNsfw: !selectShowNsfw(state),
+  thumbnail: makeSelectThumbnailForUri(props.uri)(state),
+  title: makeSelectTitleForUri(props.uri)(state),
+  nsfw: makeSelectClaimIsNsfw(props.uri)(state),
 });
 
 const perform = dispatch => ({
