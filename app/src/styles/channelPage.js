@@ -10,6 +10,10 @@ const channelPageStyle = StyleSheet.create({
   content: {
     flex: 1
   },
+  viewContainer: {
+    flex: 1,
+    marginTop: 60
+  },
   fileList: {
     flex: 1,
     paddingTop: 30
@@ -53,15 +57,14 @@ const channelPageStyle = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   channelHeader: {
-    marginTop: 60,
-    marginLeft: 16,
-    marginRight: 16
+    position: 'absolute',
+    left: 120,
+    bottom: 4
   },
   channelName: {
-    fontFamily: 'Inter-UI-SemiBold',
-    fontSize: 24,
-    marginTop: 16,
-    marginBottom: 8
+    color: Colors.White,
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 18
   },
   subscribeButton: {
     alignSelf: 'flex-start',
@@ -69,6 +72,72 @@ const channelPageStyle = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16
   },
+  cover: {
+    width: '100%',
+    height: '20%',
+  },
+  coverImage: {
+    width: '100%',
+    height: '100%'
+  },
+  tabBar: {
+    height: 45,
+    backgroundColor: Colors.LbryGreen,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
+  tabTitle: {
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 14,
+    color: Colors.White,
+  },
+  tab: {
+    width: '30%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  activeTabHint: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: Colors.White,
+    height: 3,
+    width: '100%'
+  },
+  contentTab: {
+    flex: 1
+  },
+  aboutTab: {
+    flex: 1
+  },
+  aboutScroll: {
+    flex: 1,
+  },
+  aboutItem: {
+    marginBottom: 24
+  },
+  aboutScrollContent: {
+    padding: 24
+  },
+  aboutTitle: {
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 16,
+    lineHeight: 24
+  },
+  aboutText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 16,
+    lineHeight: 24
+  },
+  avatarImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 160,
+    position: 'absolute',
+    overflow: 'hidden',
+    left: 24,
+    bottom: -40,
+    elevation: 4
+  }
 });
 
 export default channelPageStyle;
