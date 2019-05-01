@@ -34,9 +34,9 @@ class DiscoverPage extends React.PureComponent {
         AsyncStorage.getItem('firstLaunchSuspended').then(suspended => {
           AsyncStorage.removeItem('firstLaunchSuspended');
           const appSuspended = (suspended === 'true');
-          if (NativeModules.Mixpanel) {
-            NativeModules.Mixpanel.track('First Run Time', {
-              'Total Seconds': delta, 'App Suspended': appSuspended
+          if (NativeModules.Firebase) {
+            NativeModules.Firebase.track('first_run_time', {
+              'total_seconds': delta, 'app_suspended': appSuspended
             });
           }
         });

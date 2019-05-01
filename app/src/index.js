@@ -43,8 +43,8 @@ import thunk from 'redux-thunk';
 
 
 const globalExceptionHandler = (error, isFatal) => {
-  if (error && NativeModules.Mixpanel) {
-    NativeModules.Mixpanel.logException(isFatal, error.message ? error.message : "No message", error);
+  if (error && NativeModules.Firebase) {
+    NativeModules.Firebase.logException(isFatal, error.message ? error.message : "No message", error);
   }
 };
 setJSExceptionHandler(globalExceptionHandler, true);

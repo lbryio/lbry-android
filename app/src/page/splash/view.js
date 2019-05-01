@@ -254,8 +254,8 @@ class SplashScreen extends React.PureComponent {
   }
 
   componentDidMount() {
-    if (NativeModules.Mixpanel) {
-      NativeModules.Mixpanel.track('App Launch', null);
+    if (NativeModules.Firebase) {
+      NativeModules.Firebase.track('app_launch', null);
     }
 
     Linking.getInitialURL().then((url) => {
