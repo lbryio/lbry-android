@@ -12,6 +12,7 @@ import {
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { navigateBack } from 'utils/helper';
 import Colors from 'styles/colors';
+import Constants from 'constants';
 import Button from 'component/button';
 import Link from 'component/link';
 import FileList from 'component/fileList';
@@ -24,7 +25,7 @@ class ChannelPage extends React.PureComponent {
   state = {
     page: 1,
     showPageButtons: false,
-    activeTab: 'content'
+    activeTab: Constants.CONTENT_TAB
   };
 
   componentDidMount() {
@@ -197,7 +198,7 @@ class ChannelPage extends React.PureComponent {
             <View style={channelPageStyle.avatarImageContainer}>
               <Image
                 style={channelPageStyle.avatarImage}
-                resizeMode={'stretch'}
+                resizeMode={'cover'}
                 source={(thumbnailUrl && thumbnailUrl.trim().length > 0) ? { uri: thumbnailUrl } : require('../../assets/default_avatar.jpg')} />
             </View>
 
@@ -205,18 +206,18 @@ class ChannelPage extends React.PureComponent {
           </View>
 
           <View style={channelPageStyle.tabBar}>
-            <TouchableOpacity style={channelPageStyle.tab} onPress={() => this.setState({ activeTab: 'content' })}>
+            <TouchableOpacity style={channelPageStyle.tab} onPress={() => this.setState({ activeTab: Constants.CONTENT_TAB })}>
               <Text style={channelPageStyle.tabTitle}>CONTENT</Text>
-              {'content' === this.state.activeTab && <View style={channelPageStyle.activeTabHint} />}
+              {Constants.CONTENT_TAB === this.state.activeTab && <View style={channelPageStyle.activeTabHint} />}
             </TouchableOpacity>
-            <TouchableOpacity style={channelPageStyle.tab} onPress={() => this.setState({ activeTab: 'about' })}>
+            <TouchableOpacity style={channelPageStyle.tab} onPress={() => this.setState({ activeTab: Constants.ABOUT_TAB })}>
               <Text style={channelPageStyle.tabTitle}>ABOUT</Text>
-              {'about' === this.state.activeTab && <View style={channelPageStyle.activeTabHint} />}
+              {Constants.ABOUT_TAB === this.state.activeTab && <View style={channelPageStyle.activeTabHint} />}
             </TouchableOpacity>
           </View>
 
-          {'content' === this.state.activeTab && this.renderContent()}
-          {'about' === this.state.activeTab && this.renderAbout()}
+          {Constants.CONTENT_TAB === this.state.activeTab && this.renderContent()}
+          {Constants.ABOUT_TAB === this.state.activeTab && this.renderAbout()}
         </View>
       </View>
     )

@@ -4,6 +4,9 @@ const Constants = {
   FIRST_RUN_PAGE_WALLET: "wallet",
   FIRST_RUN_PAGE_SKIP_ACCOUNT: "skip-account",
 
+  CONTENT_TAB: "content",
+  ABOUT_TAB: "about",
+
   KEY_FIRST_RUN_EMAIL: "firstRunEmail",
   KEY_FIRST_RUN_PASSWORD: "firstRunPassword",
   KEY_SHOULD_VERIFY_EMAIL: "shouldVerifyEmail",
