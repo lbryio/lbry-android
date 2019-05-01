@@ -5,8 +5,8 @@ import SearchInput from './view';
 
 const perform = dispatch => ({
   search: search => {
-    if (NativeModules.Mixpanel) {
-      NativeModules.Mixpanel.track('Search', { Query: search });
+    if (NativeModules.Firebase) {
+      NativeModules.Firebase.track('search', { query: search });
     }
     return dispatch(doSearch(search));
   },

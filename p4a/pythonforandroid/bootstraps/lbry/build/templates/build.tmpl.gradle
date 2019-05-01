@@ -42,6 +42,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     dexOptions {
         jumboMode true
     }

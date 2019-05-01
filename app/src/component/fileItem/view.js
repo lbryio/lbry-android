@@ -36,8 +36,8 @@ class FileItem extends React.PureComponent {
   navigateToFileUri = () => {
     const { navigation, uri } = this.props;
     const normalizedUri = normalizeURI(uri);
-    if (NativeModules.Mixpanel) {
-      NativeModules.Mixpanel.track('Discover Tap', { Uri: normalizeURI });
+    if (NativeModules.Firebase) {
+      NativeModules.Firebase.track('explore_click', { uri: normalizedUri });
     }
     navigateToUri(navigation, normalizedUri);
   }
