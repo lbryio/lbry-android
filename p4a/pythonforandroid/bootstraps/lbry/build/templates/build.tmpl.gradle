@@ -84,6 +84,7 @@ ext {
     buildToolsVersion = '{{ build_tools_version }}'
     minSdkVersion = {{ args.min_sdk_version }}
     targetSdkVersion = {{ android_api }}
+    supportLibVersion = '27.1.1'
 }
 
 subprojects {

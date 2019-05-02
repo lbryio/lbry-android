@@ -11,7 +11,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
   WebView
 } from 'react-native';
@@ -444,7 +444,7 @@ class FilePage extends React.PureComponent {
         const { height, channel_name: channelName, value } = claim;
         const showActions = !this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView;
         const showFileActions = (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
-        const channelClaimId = value && value.publisherSignature && value.publisherSignature.certificateId;
+        const channelClaimId = claim && claim.signing_channel && claim.signing_channel.claim_id;
         const canSendTip = this.state.tipAmount > 0;
         const fullChannelUri = channelClaimId && channelClaimId.trim().length > 0 ? `${channelName}#${channelClaimId}` : channelName;
 
@@ -582,10 +582,10 @@ class FilePage extends React.PureComponent {
                   ref={(ref) => { this.scrollView = ref; }}>
                   <View style={filePageStyle.titleRow}>
                     <Text style={filePageStyle.title} selectable={true}>{title}</Text>
-                    <TouchableOpacity style={filePageStyle.descriptionToggle}
+                    <TouchableWithoutFeedback style={filePageStyle.descriptionToggle}
                       onPress={() => this.setState({ showDescription: !this.state.showDescription })}>
                       <Icon name={this.state.showDescription ? "caret-up" : "caret-down"} size={24} />
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                   </View>
                   {channelName &&
                     <View style={filePageStyle.channelRow}>

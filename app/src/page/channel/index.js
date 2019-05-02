@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import {
   doFetchClaimsByChannel,
-  doFetchClaimCountByChannel,
   makeSelectClaimForUri,
   makeSelectClaimsInChannelForCurrentPageState,
   makeSelectFetchingChannelClaims,
@@ -21,7 +20,6 @@ const select = (state, props) => ({
 
 const perform = dispatch => ({
   fetchClaims: (uri, page) => dispatch(doFetchClaimsByChannel(uri, page)),
-  fetchClaimCount: uri => dispatch(doFetchClaimCountByChannel(uri)),
   popDrawerStack: () => dispatch(doPopDrawerStack())
 });
 
