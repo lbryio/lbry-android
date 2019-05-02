@@ -88,8 +88,8 @@ class FilePage extends React.PureComponent {
     this.fetchFileInfo(this.props);
     this.fetchCostInfo(this.props);
 
-    if (NativeModules.Mixpanel) {
-      NativeModules.Mixpanel.track('Open File Page', { Uri: uri });
+    if (NativeModules.Firebase) {
+      NativeModules.Firebase.track('open_file_page', { uri: uri });
     }
     if (NativeModules.UtilityModule) {
       NativeModules.UtilityModule.keepAwakeOn();
@@ -301,12 +301,12 @@ class FilePage extends React.PureComponent {
     const { uri } = navigation.state.params;
     this.logFileView(uri, fileInfo, timeToStartMillis);
 
-    let payload = { 'Uri': uri };
+    let payload = { 'uri': uri };
     if (!isNaN(timeToStart)) {
-      payload['Time to Start (seconds)'] = timeToStart;
-      payload['Time to Start (ms)'] = timeToStartMillis;
+      payload['time_to_start_seconds'] = timeToStart;
+      payload['time_to_start_ms'] = timeToStartMillis;
     }
-    NativeModules.Mixpanel.track('Play', payload);
+    NativeModules.Firebase.track('play', payload);
   }
 
   onPlaybackFinished = () => {
