@@ -44,6 +44,13 @@ class RewardSummary extends React.Component {
     });
   }
 
+  handleSummaryPressed = () => {
+    const { showVerification } = this.props;
+    if (showVerification) {
+      showVerification();
+    }
+  }
+
   render() {
     const { fetching, navigation, unclaimedRewardAmount, user } = this.props;
 
@@ -59,7 +66,7 @@ class RewardSummary extends React.Component {
     }
 
     return (
-      <View style={rewardStyle.summaryContainer}>
+      <TouchableOpacity style={rewardStyle.summaryContainer} onPress={this.handleSummaryPressed}>
         <View style={rewardStyle.summaryRow}>
           <Icon name="award" size={36} color={Colors.White} />
           <Text style={rewardStyle.summaryText}>
@@ -67,7 +74,7 @@ class RewardSummary extends React.Component {
           </Text>
         </View>
         <Button style={rewardStyle.dismissButton} theme={"light"} text={"Dismiss"} onPress={this.onDismissPressed} />
-      </View>
+      </TouchableOpacity>
     );
   }
 }
