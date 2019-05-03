@@ -24,7 +24,10 @@ class RewardsPage extends React.PureComponent {
     isIdentityVerified: false,
     isRewardApproved: false,
     verifyRequestStarted: false,
+    revealVerification: false
   };
+
+  scrollView = null;
 
   componentDidMount() {
     const { fetchRewards, pushDrawerStack, navigation, user } = this.props;
@@ -73,7 +76,7 @@ class RewardsPage extends React.PureComponent {
           <Text style={rewardStyle.title}>Humans Only</Text>
           <Text style={rewardStyle.text}>Rewards are for human beings only. You'll have to prove you're one of us before you can claim any rewards.</Text>
           {!this.state.isEmailVerified && <EmailRewardSubcard />}
-          {!this.state.isIdentityVerified && <PhoneNumberRewardSubcard />}
+          {this.state.isEmailVerified && !this.state.isIdentityVerified && <PhoneNumberRewardSubcard />}
         </View>
       );
     }
@@ -115,10 +118,11 @@ class RewardsPage extends React.PureComponent {
     return (
       <View>
         {unclaimedRewards.map(reward => <RewardCard key={reward.reward_type}
+                                          showVerification={this.showVerification}
                                           canClaim={!isNotEligible}
                                           reward={reward}
                                           reward_type={reward.reward_type} />)}
-        <CustomRewardCard canClaim={!isNotEligible} />
+        <CustomRewardCard canClaim={!isNotEligible} showVerification={this.showVerification} />
       </View>
     );
   }
@@ -135,6 +139,14 @@ class RewardsPage extends React.PureComponent {
     }
   }
 
+  showVerification = () => {
+    this.setState({ revealVerification: true }, () => {
+      if (this.scrollView) {
+        this.scrollView.scrollTo({ x: 0, y: 0, animated: true });
+      }
+    });
+  }
+
   render() {
     const { user, navigation } = this.props;
 
@@ -142,11 +154,12 @@ class RewardsPage extends React.PureComponent {
       <View style={rewardStyle.container}>
         <UriBar navigation={navigation} />
         <ScrollView
+          ref={ref => this.scrollView = ref}
           keyboardShouldPersistTaps={'handled'}
           style={rewardStyle.scrollContainer}
           contentContainerStyle={rewardStyle.scrollContentContainer}>
-          <RewardSummary navigation={navigation} />
-          {this.renderVerification()}
+          <RewardSummary navigation={navigation} showVerification={this.showVerification} />
+          {this.state.revealVerification && this.renderVerification()}
           {this.renderUnclaimedRewards()}
           {this.renderClaimedRewards()}
         </ScrollView>

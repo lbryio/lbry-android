@@ -28,12 +28,15 @@ class CustomRewardCard extends React.PureComponent<Props> {
   }
 
   onClaimPress = () => {
-    const { canClaim, notify, submitRewardCode } = this.props;
+    const { canClaim, notify, showVerification, submitRewardCode } = this.props;
     const { rewardCode } = this.state;
 
     Keyboard.dismiss();
 
     if (!canClaim) {
+      if (showVerification) {
+        showVerification();
+      }
       notify({ message: 'Unfortunately, you are not eligible to claim this reward at this time.' });
       return;
     }
