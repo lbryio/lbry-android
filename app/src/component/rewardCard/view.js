@@ -44,10 +44,14 @@ class RewardCard extends React.PureComponent<Props> {
       canClaim,
       claimReward,
       notify,
-      reward
+      reward,
+      showVerification
     } = this.props;
 
     if (!canClaim) {
+      if (showVerification) {
+        showVerification();
+      }
       notify({ message: 'Unfortunately, you are not eligible to claim this reward at this time.' });
       return;
     }
