@@ -3,7 +3,8 @@ import Colors from './colors';
 
 const settingsStyle = StyleSheet.create({
   container: {
-    backgroundColor: Colors.PageBackground
+    backgroundColor: Colors.PageBackground,
+    flex: 1
   },
   title: {
     fontSize: 20,
