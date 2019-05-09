@@ -4,6 +4,12 @@ const Constants = {
   FIRST_RUN_PAGE_WALLET: "wallet",
   FIRST_RUN_PAGE_SKIP_ACCOUNT: "skip-account",
 
+  VERIFY_PAGE_EMAIL: "email-verify",
+  VERIFY_PAGE_PHONE_NUMBER: "phone-number-verify",
+
+  PHASE_COLLECTION: "collection",
+  PHASE_VERIFICATION: "verification",
+
   CONTENT_TAB: "content",
   ABOUT_TAB: "about",
 

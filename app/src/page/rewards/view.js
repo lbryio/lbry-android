@@ -14,6 +14,7 @@ import PhoneNumberRewardSubcard from 'component/phoneNumberRewardSubcard';
 import EmailRewardSubcard from 'component/emailRewardSubcard';
 import PageHeader from 'component/pageHeader';
 import RewardCard from 'component/rewardCard';
+import RewardEnrolment from 'component/rewardEnrolment';
 import RewardSummary from 'component/rewardSummary';
 import UriBar from 'component/uriBar';
 import rewardStyle from 'styles/reward';
@@ -153,7 +154,10 @@ class RewardsPage extends React.PureComponent {
     return (
       <View style={rewardStyle.container}>
         <UriBar navigation={navigation} />
-        <ScrollView
+        {!this.state.isRewardApproved && <RewardEnrolment navigation={navigation} />}
+
+
+        {this.state.isRewardApproved && <ScrollView
           ref={ref => this.scrollView = ref}
           keyboardShouldPersistTaps={'handled'}
           style={rewardStyle.scrollContainer}
@@ -162,7 +166,7 @@ class RewardsPage extends React.PureComponent {
           {this.state.revealVerification && this.renderVerification()}
           {this.renderUnclaimedRewards()}
           {this.renderClaimedRewards()}
-        </ScrollView>
+        </ScrollView>}
       </View>
     );
   }

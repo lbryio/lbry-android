@@ -55,6 +55,7 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void logException(boolean fatal, String message, ReadableMap payload) {
         Bundle bundle = new Bundle();
+        bundle.putString("message", message);
         if (payload != null) {
             HashMap<String, Object> payloadMap = payload.toHashMap();
             for (Map.Entry<String, Object> entry : payloadMap.entrySet()) {
