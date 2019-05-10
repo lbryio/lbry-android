@@ -14,11 +14,11 @@ type Props = {
 
 class FloatingWalletBalance extends React.PureComponent<Props> {
   render() {
-    const { balance, navigation, unclaimedRewardAmount } = this.props;
+    const { balance, navigation, rewardsNotInterested, unclaimedRewardAmount } = this.props;
 
     return (
       <View style={[floatingButtonStyle.view, floatingButtonStyle.bottomRight]}>
-        {unclaimedRewardAmount > 0 &&
+        {(!rewardsNotInterested && unclaimedRewardAmount > 0) &&
         <TouchableOpacity style={floatingButtonStyle.pendingContainer}
           onPress={() => navigation && navigation.navigate({ routeName: 'Rewards' })} >
           <Icon name="award" size={18} style={floatingButtonStyle.rewardIcon} />
