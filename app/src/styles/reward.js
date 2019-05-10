@@ -119,12 +119,19 @@ const rewardStyle = StyleSheet.create({
   bottomMarginLarge: {
     marginBottom: 24
   },
+  leftRightMargin: {
+    marginLeft: 32,
+    marginRight: 32
+  },
   link: {
     color: Colors.LbryGreen,
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
   },
   textLink: {
+    color: Colors.White
+  },
+  greenLink: {
     color: Colors.LbryGreen
   },
   leftCol: {
@@ -196,12 +203,14 @@ const rewardStyle = StyleSheet.create({
     paddingRight: 4
   },
   phoneInput: {
-    marginLeft: 8
+    marginLeft: 32,
+    marginRight: 32
   },
   phoneInputText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
-    letterSpacing: 1.3
+    letterSpacing: 1.3,
+    color: Colors.White
   },
   verifyingText: {
     fontFamily: 'Inter-UI-Regular',
@@ -211,8 +220,11 @@ const rewardStyle = StyleSheet.create({
   },
   verificationCodeInput: {
     fontFamily: 'Inter-UI-Regular',
+    color: Colors.White,
     fontSize: 24,
-    letterSpacing: 12
+    letterSpacing: 12,
+    marginLeft: 32,
+    marginRight: 32
   },
   loading: {
     alignSelf: 'flex-start'
@@ -251,7 +263,9 @@ const rewardStyle = StyleSheet.create({
     backgroundColor: Colors.LbryGreen
   },
   failureFootnote: {
-    marginTop: 12
+    marginTop: 32,
+    marginLeft: 32,
+    marginRight: 32
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -278,6 +292,12 @@ const rewardStyle = StyleSheet.create({
   verificationLink: {
     color: Colors.White,
     fontSize: 14
+  },
+  paragraphText: {
+    fontFamily: 'Inter-UI-Regular',
+    color: Colors.White,
+    fontSize: 12,
+    lineHeight: 16
   }
 });
 
