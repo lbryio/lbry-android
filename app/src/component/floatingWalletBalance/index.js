@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { makeSelectClientSetting } from 'redux/selectors/settings';
 import { selectBalance } from 'lbry-redux';
 import { selectUnclaimedRewardValue } from 'lbryinc';
+import Constants from 'constants';
 import FloatingWalletBalance from './view';
 
 const select = state => ({
