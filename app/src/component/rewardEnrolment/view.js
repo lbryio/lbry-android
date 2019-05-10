@@ -2,6 +2,7 @@ import React from 'react';
 import { NativeModules, Text, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Button from 'component/button';
+import Constants from 'constants';
 import Link from 'component/link';
 import Colors from 'styles/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -13,8 +14,9 @@ class RewardEnrolment extends React.Component {
   }
 
   onNotInterestedPressed = () => {
-    const { navigation } = this.props;
-    navigation.navigate({ routeName: 'DiscoverStack' })
+    const { navigation, setClientSetting } = this.props;
+    setClientSetting(Constants.SETTING_REWARDS_NOT_INTERESTED, true);
+    navigation.navigate({ routeName: 'DiscoverStack' });
   }
 
   onEnrollPressed = () => {

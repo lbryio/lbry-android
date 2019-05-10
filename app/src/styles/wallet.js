@@ -5,6 +5,9 @@ const walletStyle = StyleSheet.create({
   container: {
     backgroundColor: Colors.PageBackground
   },
+  scrollContainer: {
+    marginTop: 60
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -40,7 +43,7 @@ const walletStyle = StyleSheet.create({
     backgroundColor: Colors.Orange,
     padding: 16,
     marginLeft: 16,
-    marginTop: 76,
+    marginTop: 16,
     marginRight: 16
   },
   transactionsCard: {
@@ -142,7 +145,8 @@ const walletStyle = StyleSheet.create({
     color: Colors.White,
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
-    lineHeight: 24
+    lineHeight: 24,
+    marginBottom: 8
   },
   understand: {
     marginLeft: 16,
@@ -168,6 +172,19 @@ const walletStyle = StyleSheet.create({
   },
   transactionHistoryScroll: {
     marginTop: 60
+  },
+  rewardDriverCard: {
+    padding: 16,
+    backgroundColor: Colors.LbryGreen,
+    marginLeft: 16,
+    marginTop: 16,
+    marginRight: 16
+  },
+  rewardDriverText: {
+    color: Colors.White,
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 14,
+    lineHeight: 16
   }
 });
 
