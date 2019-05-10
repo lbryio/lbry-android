@@ -601,7 +601,7 @@ class FilePage extends React.PureComponent {
                         <DateTime
                           style={filePageStyle.publishDate}
                           textStyle={filePageStyle.publishDateText}
-                          block={height}
+                          uri={uri}
                           formatOptions={{ day: 'numeric', month: 'long', year: 'numeric' }}
                           show={DateTime.SHOW_DATE} />
                       </View>
