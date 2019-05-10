@@ -135,12 +135,12 @@ const rewardStyle = StyleSheet.create({
     color: Colors.LbryGreen
   },
   leftCol: {
-    width: '15%',
+    width: '5%',
     alignItems: 'center',
     paddingLeft: 6
   },
   midCol: {
-    width: '65%'
+    width: '75%'
   },
   rightCol: {
     width: '18%',

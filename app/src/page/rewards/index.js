@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import {
+  doClaimRewardType,
   doRewardList,
   selectEmailVerifyErrorMessage,
   selectEmailVerifyIsPending,
@@ -23,6 +24,7 @@ const select = state => ({
 });
 
 const perform = dispatch => ({
+  claimReward: reward => dispatch(doClaimRewardType(reward.reward_type, true)),
   fetchRewards: () => dispatch(doRewardList()),
   notify: data => dispatch(doToast(data)),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_REWARDS))

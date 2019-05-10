@@ -25,7 +25,8 @@ class RewardsPage extends React.PureComponent {
     isIdentityVerified: false,
     isRewardApproved: false,
     verifyRequestStarted: false,
-    revealVerification: true
+    revealVerification: true,
+    firstRewardClaimed: false
   };
 
   scrollView = null;
@@ -44,7 +45,8 @@ class RewardsPage extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { emailVerifyErrorMessage, emailVerifyPending, user } = nextProps;
+    const { emailVerifyErrorMessage, emailVerifyPending, rewards, user } = nextProps;
+    const { claimReward } = this.props;
     if (emailVerifyPending) {
       this.setState({ verifyRequestStarted: true });
     }
@@ -63,6 +65,17 @@ class RewardsPage extends React.PureComponent {
         isIdentityVerified: (user && user.is_identity_verified),
         isRewardApproved: (user && user.is_reward_approved)
       });
+    }
+
+    if (rewards && rewards.length && this.state.isRewardApproved && !this.state.firstRewardClaimed) {
+      // claim new_user and new_mobile rewards
+      for (let i = 0; i < rewards.length; i++) {
+        const { reward_type: type } = rewards[i];
+        if ('new_user' === type || 'new_mobile' === type) {
+          claimReward(rewards[i]);
+        }
+      }
+      this.setState({ firstRewardClaimed: true });
     }
   }
 
