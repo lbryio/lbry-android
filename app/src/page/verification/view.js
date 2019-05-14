@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Colors from 'styles/colors';
 import Constants from 'constants';
 import EmailVerifyPage from './internal/email-verify-page';
+import ManualVerifyPage from './internal/manual-verify-page';
 import PhoneVerifyPage from './internal/phone-verify-page';
 import firstRunStyle from 'styles/firstRun';
 
@@ -27,7 +28,8 @@ class VerificationScreen extends React.PureComponent {
     showBottomContainer: true,
     walletPassword: null,
     isEmailVerified: false,
-    isIdentityVerified: false
+    isIdentityVerified: false,
+    isRewardApproved: false
   };
 
   componentDidMount() {
@@ -40,7 +42,8 @@ class VerificationScreen extends React.PureComponent {
 
     this.setState({
       isEmailVerified: (user && user.primary_email && user.has_verified_email),
-      isIdentityVerified: (user && user.is_identity_verified)
+      isIdentityVerified: (user && user.is_identity_verified),
+      isRewardApproved: (user && user.is_reward_approved)
     }, () => {
       if (!this.state.isEmailVerified) {
         this.setState({ currentPage: 'emailVerify' });
@@ -48,8 +51,11 @@ class VerificationScreen extends React.PureComponent {
       if (this.state.isEmailVerified && !this.state.isIdentityVerified) {
         this.setState({ currentPage: 'phoneVerify' });
       }
+      if (this.state.isEmailVerified && this.state.isIdentityVerified && !this.state.isRewardApproved) {
+        this.setState({ currentPage: 'manualVerify' });
+      }
 
-      if (this.state.isEmailVerified && this.state.isIdentityVerified) {
+      if (this.state.isEmailVerified && this.state.isIdentityVerified && this.state.isRewardApproved) {
         // verification steps already completed
         // simply navigate back to the rewards page
         navigation.goBack();
@@ -73,6 +79,7 @@ class VerificationScreen extends React.PureComponent {
       emailNewErrorMessage,
       emailNewPending,
       emailToVerify,
+      navigation,
       notify,
       addUserPhone,
       phone,
@@ -112,6 +119,10 @@ class VerificationScreen extends React.PureComponent {
           />
         );
         break;
+      case 'manualVerify':
+        page = (
+          <ManualVerifyPage />
+        );
     }
 
     return (

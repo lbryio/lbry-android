@@ -131,6 +131,10 @@ const rewardStyle = StyleSheet.create({
   textLink: {
     color: Colors.White
   },
+  underlinedTextLink: {
+    color: Colors.White,
+    textDecorationLine: 'underline'
+  },
   greenLink: {
     color: Colors.LbryGreen
   },
@@ -274,7 +278,7 @@ const rewardStyle = StyleSheet.create({
     width: '100%',
     paddingLeft: 32,
     paddingRight: 32,
-    marginTop: 24
+    marginTop: 16
   },
   verificationTitle: {
     fontSize: 32,

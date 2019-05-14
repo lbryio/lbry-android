@@ -40,7 +40,7 @@ class EmailVerifyPage extends React.PureComponent {
   }
 
   onSendVerificationPressed = () => {
-    const { addUserEmail, emailNewPending, notify } = this.props;
+    const { addUserEmail, emailNewPending, notify, resendVerificationEmail } = this.props;
 
     if (emailNewPending) {
       return;
