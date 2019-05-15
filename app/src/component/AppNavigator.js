@@ -11,6 +11,7 @@ import SettingsPage from 'page/settings';
 import SplashScreen from 'page/splash';
 import SubscriptionsPage from 'page/subscriptions';
 import TransactionHistoryPage from 'page/transactionHistory';
+import VerificationScreen from 'page/verification';
 import WalletPage from 'page/wallet';
 import SearchInput from 'component/searchInput';
 import {
@@ -212,10 +213,19 @@ const mainStackNavigator = new createStackNavigator({
   },
   Main: {
     screen: drawer
+  },
+  Verification: {
+    screen: VerificationScreen,
+    navigationOptions: {
+      drawerLockMode: 'locked-closed'
+    }
   }
 }, {
   headerMode: 'none'
 });
+
+
+
 export const AppNavigator = mainStackNavigator;
 export const reactNavigationMiddleware = createReactNavigationReduxMiddleware(
   state => state.nav,

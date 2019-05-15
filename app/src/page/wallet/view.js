@@ -1,6 +1,7 @@
 import React from 'react';
 import { NativeModules, ScrollView, Text, View } from 'react-native';
 import TransactionListRecent from 'component/transactionListRecent';
+import WalletRewardsDriver from 'component/walletRewardsDriver';
 import WalletAddress from 'component/walletAddress';
 import WalletBalance from 'component/walletBalance';
 import WalletSend from 'component/walletSend';
@@ -20,8 +21,20 @@ class WalletPage extends React.PureComponent {
     }
   }
 
+  onDismissBackupPressed = () => {
+    const { setClientSetting } = this.props;
+    setClientSetting(Constants.SETTING_BACKUP_DISMISSED, true);
+  }
+
   render() {
-    const { understandsRisks, setClientSetting, navigation } = this.props;
+    const {
+      balance,
+      backupDismissed,
+      rewardsNotInterested,
+      understandsRisks,
+      setClientSetting,
+      navigation
+    } = this.props;
 
     if (!understandsRisks) {
       return (
@@ -41,17 +54,20 @@ class WalletPage extends React.PureComponent {
     return (
       <View style={walletStyle.container}>
         <UriBar navigation={navigation} />
-        <ScrollView keyboardShouldPersistTaps={'handled'}>
+        <ScrollView style={walletStyle.scrollContainer} keyboardShouldPersistTaps={'handled'}>
+          {!backupDismissed &&
           <View style={walletStyle.warningCard}>
             <Text style={walletStyle.warningText}>
               Please backup your wallet file using the instructions at <Link style={walletStyle.warningText} text="https://lbry.com/faq/how-to-backup-wallet#android" href="https://lbry.com/faq/how-to-backup-wallet#android" />.
             </Text>
-          </View>
+            <Button text={'Dismiss'} style={walletStyle.button} onPress={this.onDismissBackupPressed} />
+          </View>}
 
+          {(!rewardsNotInterested) && (!balance || balance === 0) && <WalletRewardsDriver navigation={navigation} />}
           <WalletBalance />
           <WalletAddress />
           <WalletSend />
-          <TransactionListRecent navigation={this.props.navigation} />
+          <TransactionListRecent navigation={navigation} />
         </ScrollView>
       </View>
     );

@@ -4,6 +4,12 @@ const Constants = {
   FIRST_RUN_PAGE_WALLET: "wallet",
   FIRST_RUN_PAGE_SKIP_ACCOUNT: "skip-account",
 
+  VERIFY_PAGE_EMAIL: "email-verify",
+  VERIFY_PAGE_PHONE_NUMBER: "phone-number-verify",
+
+  PHASE_COLLECTION: "collection",
+  PHASE_VERIFICATION: "verification",
+
   CONTENT_TAB: "content",
   ABOUT_TAB: "about",
 
@@ -16,6 +22,8 @@ const Constants = {
   SETTING_SUBSCRIPTIONS_VIEW_MODE: "subscriptionsViewMode",
   SETTING_RATING_REMINDER_LAST_SHOWN: "ratingReminderLastShown",
   SETTING_RATING_REMINDER_DISABLED: "ratingReminderDisabled",
+  SETTING_BACKUP_DISMISSED: "backupDismissed",
+  SETTING_REWARDS_NOT_INTERESTED: "rewardsNotInterested",
 
   ACTION_DELETE_COMPLETED_BLOBS: "DELETE_COMPLETED_BLOBS",
   ACTION_FIRST_RUN_PAGE_CHANGED: "FIRST_RUN_PAGE_CHANGED",

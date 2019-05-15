@@ -129,6 +129,20 @@ const firstRunStyle = StyleSheet.create({
   },
   titleIcon: {
     marginTop: 8
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 48,
+    height: 48,
+    borderRadius: 48,
+    justifyContent: 'center'
+  },
+  closeButtonText: {
+    alignSelf: 'center',
+    color: Colors.White,
+    fontSize: 16
   }
 });
 

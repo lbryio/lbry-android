@@ -14,6 +14,7 @@ import PhoneNumberRewardSubcard from 'component/phoneNumberRewardSubcard';
 import EmailRewardSubcard from 'component/emailRewardSubcard';
 import PageHeader from 'component/pageHeader';
 import RewardCard from 'component/rewardCard';
+import RewardEnrolment from 'component/rewardEnrolment';
 import RewardSummary from 'component/rewardSummary';
 import UriBar from 'component/uriBar';
 import rewardStyle from 'styles/reward';
@@ -24,7 +25,8 @@ class RewardsPage extends React.PureComponent {
     isIdentityVerified: false,
     isRewardApproved: false,
     verifyRequestStarted: false,
-    revealVerification: false
+    revealVerification: true,
+    firstRewardClaimed: false
   };
 
   scrollView = null;
@@ -43,7 +45,8 @@ class RewardsPage extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { emailVerifyErrorMessage, emailVerifyPending, user } = nextProps;
+    const { emailVerifyErrorMessage, emailVerifyPending, rewards, user } = nextProps;
+    const { claimReward } = this.props;
     if (emailVerifyPending) {
       this.setState({ verifyRequestStarted: true });
     }
@@ -63,6 +66,17 @@ class RewardsPage extends React.PureComponent {
         isRewardApproved: (user && user.is_reward_approved)
       });
     }
+
+    if (rewards && rewards.length && this.state.isRewardApproved && !this.state.firstRewardClaimed) {
+      // claim new_user and new_mobile rewards
+      for (let i = 0; i < rewards.length; i++) {
+        const { reward_type: type } = rewards[i];
+        if ('new_user' === type || 'new_mobile' === type) {
+          claimReward(rewards[i]);
+        }
+      }
+      this.setState({ firstRewardClaimed: true });
+    }
   }
 
   renderVerification() {
@@ -70,23 +84,12 @@ class RewardsPage extends React.PureComponent {
       return null;
     }
 
-    if (!this.state.isEmailVerified || !this.state.isIdentityVerified) {
-      return (
-        <View style={[rewardStyle.card, rewardStyle.verification]}>
-          <Text style={rewardStyle.title}>Humans Only</Text>
-          <Text style={rewardStyle.text}>Rewards are for human beings only. You'll have to prove you're one of us before you can claim any rewards.</Text>
-          {!this.state.isEmailVerified && <EmailRewardSubcard />}
-          {this.state.isEmailVerified && !this.state.isIdentityVerified && <PhoneNumberRewardSubcard />}
-        </View>
-      );
-    }
-
     if (this.state.isEmailVerified && this.state.isIdentityVerified && !this.state.isRewardApproved) {
       return (
         <View style={[rewardStyle.card, rewardStyle.verification]}>
           <Text style={rewardStyle.title}>Manual Reward Verification</Text>
           <Text style={rewardStyle.text}>
-            You need to be manually verified before you can start claiming rewards. Please request to be verified on the <Link style={rewardStyle.textLink} href="https://discordapp.com/invite/Z3bERWA" text="LBRY Discord server" />.
+            You need to be manually verified before you can start claiming rewards. Please request to be verified on the <Link style={rewardStyle.greenLink} href="https://discordapp.com/invite/Z3bERWA" text="LBRY Discord server" />.
           </Text>
         </View>
       );
@@ -153,16 +156,18 @@ class RewardsPage extends React.PureComponent {
     return (
       <View style={rewardStyle.container}>
         <UriBar navigation={navigation} />
-        <ScrollView
-          ref={ref => this.scrollView = ref}
-          keyboardShouldPersistTaps={'handled'}
-          style={rewardStyle.scrollContainer}
-          contentContainerStyle={rewardStyle.scrollContentContainer}>
-          <RewardSummary navigation={navigation} showVerification={this.showVerification} />
-          {this.state.revealVerification && this.renderVerification()}
-          {this.renderUnclaimedRewards()}
-          {this.renderClaimedRewards()}
-        </ScrollView>
+        {(!this.state.isEmailVerified || !this.state.isIdentityVerified || !this.state.isRewardApproved) &&
+          <RewardEnrolment navigation={navigation} />}
+
+        {(this.state.isEmailVerified && this.state.isIdentityVerified && this.state.isRewardApproved) &&
+          <ScrollView
+            ref={ref => this.scrollView = ref}
+            keyboardShouldPersistTaps={'handled'}
+            style={rewardStyle.scrollContainer}
+            contentContainerStyle={rewardStyle.scrollContentContainer}>
+            {this.renderUnclaimedRewards()}
+            {this.renderClaimedRewards()}
+          </ScrollView>}
       </View>
     );
   }

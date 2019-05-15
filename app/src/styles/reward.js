@@ -27,6 +27,24 @@ const rewardStyle = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row'
   },
+  enrollContainer: {
+    flex: 1,
+    marginTop: 76,
+    marginLeft: 16,
+    marginRight: 16,
+    marginBottom: 16,
+    padding: 24,
+    backgroundColor: Colors.LbryGreen
+  },
+  onboarding: {
+    marginTop: 36
+  },
+  enrollDescText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 18,
+    lineHeight: 28,
+    color: Colors.White
+  },
   rewardsContainer: {
     flex: 1
   },
@@ -101,21 +119,32 @@ const rewardStyle = StyleSheet.create({
   bottomMarginLarge: {
     marginBottom: 24
   },
+  leftRightMargin: {
+    marginLeft: 32,
+    marginRight: 32
+  },
   link: {
     color: Colors.LbryGreen,
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
   },
   textLink: {
+    color: Colors.White
+  },
+  underlinedTextLink: {
+    color: Colors.White,
+    textDecorationLine: 'underline'
+  },
+  greenLink: {
     color: Colors.LbryGreen
   },
   leftCol: {
-    width: '15%',
+    width: '5%',
     alignItems: 'center',
     paddingLeft: 6
   },
   midCol: {
-    width: '65%'
+    width: '75%'
   },
   rightCol: {
     width: '18%',
@@ -178,12 +207,14 @@ const rewardStyle = StyleSheet.create({
     paddingRight: 4
   },
   phoneInput: {
-    marginLeft: 8
+    marginLeft: 32,
+    marginRight: 32
   },
   phoneInputText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
-    letterSpacing: 1.3
+    letterSpacing: 1.3,
+    color: Colors.White
   },
   verifyingText: {
     fontFamily: 'Inter-UI-Regular',
@@ -193,8 +224,11 @@ const rewardStyle = StyleSheet.create({
   },
   verificationCodeInput: {
     fontFamily: 'Inter-UI-Regular',
+    color: Colors.White,
     fontSize: 24,
-    letterSpacing: 12
+    letterSpacing: 12,
+    marginLeft: 32,
+    marginRight: 32
   },
   loading: {
     alignSelf: 'flex-start'
@@ -202,12 +236,24 @@ const rewardStyle = StyleSheet.create({
   smsPermissionContainer: {
     marginBottom: 32
   },
-  dismissButton: {
-    alignSelf: 'flex-end',
+  buttonRow: {
+    width: '100%',
+    position: 'absolute',
+    alignItems: 'center',
+    left: 24,
+    bottom: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  notInterestedLink: {
+    fontSize: 14,
+    fontFamily: 'Inter-UI-Regular',
+    color: Colors.White
+  },
+  enrollButton: {
     backgroundColor: Colors.White,
     paddingLeft: 16,
-    paddingRight: 16,
-    marginTop: 8,
+    paddingRight: 16
   },
   customCodeInput: {
     fontFamily: 'Inter-UI-Regular',
@@ -221,7 +267,41 @@ const rewardStyle = StyleSheet.create({
     backgroundColor: Colors.LbryGreen
   },
   failureFootnote: {
-    marginTop: 12
+    marginTop: 32,
+    marginLeft: 32,
+    marginRight: 32
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingLeft: 32,
+    paddingRight: 32,
+    marginTop: 16
+  },
+  verificationTitle: {
+    fontSize: 32,
+    color: Colors.White,
+    fontFamily: 'Inter-UI-Regular',
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 24
+  },
+  verificationButton: {
+    backgroundColor: Colors.White,
+    paddingLeft: 16,
+    paddingRight: 16
+  },
+  verificationLink: {
+    color: Colors.White,
+    fontSize: 14
+  },
+  paragraphText: {
+    fontFamily: 'Inter-UI-Regular',
+    color: Colors.White,
+    fontSize: 12,
+    lineHeight: 16
   }
 });
 

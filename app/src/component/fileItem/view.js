@@ -90,7 +90,7 @@ class FileItem extends React.PureComponent {
               <Link style={discoverStyle.channelName} text={channelName} onPress={() => {
                 navigateToUri(navigation, normalizeURI(fullChannelUri));
               }} />}
-            <DateTime style={discoverStyle.dateTime} textStyle={discoverStyle.dateTimeText} timeAgo block={height} />
+            <DateTime style={discoverStyle.dateTime} textStyle={discoverStyle.dateTimeText} timeAgo uri={uri} />
           </View>}
         </TouchableOpacity>
         {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />}

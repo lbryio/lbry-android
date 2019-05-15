@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { selectTotalBalance } from 'lbry-redux';
+import { selectBalance } from 'lbry-redux';
 import WalletBalance from './view';
 
 const select = state => ({
-  balance: selectTotalBalance(state),
+  balance: selectBalance(state),
 });
 
 export default connect(select, null)(WalletBalance);
