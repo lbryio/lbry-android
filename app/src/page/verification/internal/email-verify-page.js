@@ -25,6 +25,11 @@ class EmailVerifyPage extends React.PureComponent {
     }
   }
 
+  componentWillUmount() {
+    AsyncStorage.removeItem(Constants.KEY_EMAIL_VERIFY_PENDING);
+    AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
+  }
+
   handleChangeText = (text) => {
     this.setState({ email: text });
     AsyncStorage.setItem(Constants.KEY_FIRST_RUN_EMAIL, text);
