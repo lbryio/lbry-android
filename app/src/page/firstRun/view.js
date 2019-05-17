@@ -171,7 +171,7 @@ class FirstRunScreen extends React.PureComponent {
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     const nextPage = FirstRunScreen.pages[pageIndex + 1];
     this.setState({ currentPage: nextPage });
-    if (nextPage === 'email-collect') {
+    if (nextPage === Constants.FIRST_RUN_PAGE_EMAIL_COLLECT) {
       // do not show the buttons (because we're waiting to get things ready)
       this.setState({ showBottomContainer: false });
     }
