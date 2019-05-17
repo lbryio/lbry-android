@@ -19,13 +19,27 @@ class WalletPage extends React.PureComponent {
     password: null,
     placeholder: 'password',
     statusTries: 0,
+    walletReady: false,
     hasCheckedSync: false
   };
 
   componentDidMount() {
-    const { checkSync } = this.props;
-    checkSync();
+    this.checkWalletReady();
+    this.props.checkSync();
     setTimeout(() => this.setState({ hasCheckedSync: true}), 1000);
+  }
+
+  checkWalletReady = () => {
+    // make sure the sdk wallet component is ready
+    Lbry.status().then(status => {
+      if (status.startup_status && status.startup_status.wallet) {
+        this.setState({ walletReady: true });
+        return;
+      }
+      setTimeout(this.checkWalletReady, 1000);
+    }).catch(() => {
+      setTimeout(this.checkWalletReady, 1000);
+    });
   }
 
   handleChangeText = (text) => {
@@ -47,7 +61,7 @@ class WalletPage extends React.PureComponent {
     const { onPasswordChanged, onWalletViewLayout, isRetrievingSync, hasSyncedWallet } = this.props;
 
     let content;
-    if (!this.state.hasCheckedSync || isRetrievingSync) {
+    if (!this.state.walletReady || !this.state.hasCheckedSync || isRetrievingSync) {
       <View>
         <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
           <Text style={firstRunStyle.paragraph}>Retrieving your account information...</Text>
