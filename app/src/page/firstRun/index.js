@@ -3,11 +3,13 @@ import { doToast } from 'lbry-redux';
 import {
   doAuthenticate,
   doUserEmailNew,
+  doUserResendVerificationEmail,
   selectAuthToken,
   selectEmailNewErrorMessage,
   selectEmailNewIsPending,
   selectEmailToVerify,
-  selectAuthenticationIsPending
+  selectAuthenticationIsPending,
+  selectUser,
 } from 'lbryinc';
 import FirstRun from './view';
 
@@ -17,12 +19,14 @@ const select = (state) => ({
   emailToVerify: selectEmailToVerify(state),
   emailNewErrorMessage: selectEmailNewErrorMessage(state),
   emailNewPending: selectEmailNewIsPending(state),
+  user: selectUser(state),
 });
 
 const perform = dispatch => ({
   addUserEmail: email => dispatch(doUserEmailNew(email)),
   authenticate: (appVersion, os) => dispatch(doAuthenticate(appVersion, os)),
-  notify: data => dispatch(doToast(data))
+  notify: data => dispatch(doToast(data)),
+  resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email))
 });
 
 export default connect(select, perform)(FirstRun);

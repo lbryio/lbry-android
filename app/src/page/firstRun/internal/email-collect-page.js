@@ -39,12 +39,6 @@ class EmailCollectPage extends React.PureComponent {
     if (!authToken && !authenticating) {
       this.startAuthenticating();
     }
-
-    AsyncStorage.getItem('firstRunEmail').then(email => {
-      if (email) {
-        this.setState({ email });
-      }
-    });
   }
 
   startAuthenticating = () => {
