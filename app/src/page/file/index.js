@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import {
   doFetchFileInfo,
+  doPurchaseUri,
   doResolveUri,
   doSendTip,
   doToast,
@@ -11,6 +12,7 @@ import {
   makeSelectContentPositionForUri,
   makeSelectContentTypeForUri,
   makeSelectMetadataForUri,
+  makeSelectStreamingUrlForUri,
   makeSelectThumbnailForUri,
   makeSelectTitleForUri,
   selectBalance,
@@ -21,7 +23,7 @@ import {
   selectRewardContentClaimIds,
   selectBlackListedOutpoints
 } from 'lbryinc';
-import { doDeleteFile, doPurchaseUri, doStopDownloadingFile } from 'redux/actions/file';
+import { doDeleteFile, doStopDownloadingFile } from 'redux/actions/file';
 import FilePage from './view';
 
 const select = (state, props) => {
@@ -40,6 +42,7 @@ const select = (state, props) => {
     rewardedContentClaimIds: selectRewardContentClaimIds(state, selectProps),
     channelUri: makeSelectChannelForClaimUri(selectProps.uri, true)(state),
     position: makeSelectContentPositionForUri(selectProps.uri)(state),
+    streamingUrl: makeSelectStreamingUrlForUri(selectProps.uri)(state),
     thumbnail: makeSelectThumbnailForUri(selectProps.uri)(state),
     title: makeSelectTitleForUri(selectProps.uri)(state),
   };
@@ -52,7 +55,7 @@ const perform = dispatch => ({
   fetchFileInfo: uri => dispatch(doFetchFileInfo(uri)),
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
   notify: data => dispatch(doToast(data)),
-  purchaseUri: (uri, failureCallback) => dispatch(doPurchaseUri(uri, null, failureCallback)),
+  purchaseUri: (uri, costInfo, saveFile) => dispatch(doPurchaseUri(uri, costInfo, saveFile)),
   resolveUri: uri => dispatch(doResolveUri(uri)),
   sendTip: (amount, claimId, uri, successCallback, errorCallback) => dispatch(doSendTip(amount, claimId, uri, successCallback, errorCallback)),
   stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),

@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import {
+  doPurchaseUri,
   makeSelectFileInfoForUri,
   makeSelectDownloadingForUri,
   makeSelectLoadingForUri,
 } from 'lbry-redux';
 import { doFetchCostInfoForUri, makeSelectCostInfoForUri } from 'lbryinc';
-import { doPurchaseUri, doStartDownload } from 'redux/actions/file';
+import { doStartDownload } from 'redux/actions/file';
 import FileDownloadButton from './view';
 
 const select = (state, props) => ({
@@ -16,7 +17,7 @@ const select = (state, props) => ({
 });
 
 const perform = dispatch => ({
-  purchaseUri: (uri, failureCallback) => dispatch(doPurchaseUri(uri, null, failureCallback)),
+  purchaseUri: (uri, costInfo, saveFile) => dispatch(doPurchaseUri(uri, costInfo, saveFile)),
   restartDownload: (uri, outpoint) => dispatch(doStartDownload(uri, outpoint)),
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
 });

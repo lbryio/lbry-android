@@ -58,6 +58,9 @@ const filePageStyle = StyleSheet.create({
     fontSize: 16,
     flex: 18
   },
+  titleTouch: {
+    flex: 1,
+  },
   titleRow: {
     flexDirection: 'row',
     marginTop: 12,

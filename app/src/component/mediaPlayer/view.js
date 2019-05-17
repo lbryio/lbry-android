@@ -1,6 +1,7 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
+  ActivityIndicator,
   DeviceEventEmitter,
   NativeModules,
   PanResponder,
@@ -9,6 +10,7 @@ import {
   ScrollView,
   TouchableOpacity
 } from 'react-native';
+import Colors from 'styles/colors';
 import FastImage from 'react-native-fast-image'
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -31,7 +33,7 @@ class MediaPlayer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      encodedFilePath: null,
+      buffering: false,
       rate: 1,
       volume: 1,
       muted: false,
@@ -93,10 +95,10 @@ class MediaPlayer extends React.PureComponent {
   }
 
   onProgress = (data) => {
-    const { savePosition, fileInfo } = this.props;
+    const { savePosition, claim } = this.props;
 
-
-    this.setState({ currentTime: data.currentTime }, () => savePosition(fileInfo.claim_id, fileInfo.outpoint, data.currentTime));
+    this.setState({ buffering: false, currentTime: data.currentTime },
+                  () => savePosition(claim.claim_id, claim.nout, data.currentTime));
 
     if (!this.state.seeking) {
       this.setSeekerPosition(this.calculateSeekerPosition());
@@ -149,7 +151,14 @@ class MediaPlayer extends React.PureComponent {
 
   togglePlay = () => {
     this.showPlayerControls();
-    this.setState({ paused: !this.state.paused });
+    this.setState({ paused: !this.state.paused }, this.handlePausedState);
+  }
+
+  handlePausedState = () => {
+    if (!this.state.paused) {
+      // onProgress will automatically clear this, so it's fine
+      this.setState({ buffering: true });
+    }
   }
 
   toggleFullscreenMode = () => {
@@ -273,6 +282,12 @@ class MediaPlayer extends React.PureComponent {
     }
   }
 
+  onBuffer = () => {
+    if (!this.state.paused) {
+      this.setState({ buffering: true }, () => this.manualHidePlayerControls());
+    }
+  }
+
   play = () => {
     this.setState({ paused: false }, this.updateBackgroundMediaNotification);
   }
@@ -315,18 +330,6 @@ class MediaPlayer extends React.PureComponent {
     return null;
   }
 
-  getEncodedDownloadPath = (fileInfo) => {
-    if (this.state.encodedFilePath) {
-      return this.state.encodedFilePath;
-    }
-
-    const { file_name: fileName } = fileInfo;
-    const encodedFileName = encodeURIComponent(fileName).replace(/!/g, '%21');
-    const encodedFilePath = fileInfo.download_path.replace(fileName, encodedFileName);
-    this.setState({ encodedFilePath });
-    return encodedFilePath;
-  }
-
   onSeekerTouchAreaPressed = (evt) => {
     if (evt && evt.nativeEvent) {
       const newSeekerPosition = evt.nativeEvent.locationX;
@@ -339,7 +342,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   render() {
-    const { backgroundPlayEnabled, fileInfo, thumbnail, onLayout, style } = this.props;
+    const { backgroundPlayEnabled, source, thumbnail, onLayout, style } = this.props;
     const completedWidth = this.getCurrentTimePercentage() * this.seekerWidth;
     const remainingWidth = this.seekerWidth - completedWidth;
     let styles = [this.state.fullscreenMode ? mediaPlayerStyle.fullscreenContainer : mediaPlayerStyle.container];
@@ -356,7 +359,7 @@ class MediaPlayer extends React.PureComponent {
 
     return (
       <View style={styles} onLayout={onLayout}>
-        <Video source={{ uri: 'file:///' + this.getEncodedDownloadPath(fileInfo) }}
+        <Video source={{ uri: source }}
                ref={(ref: Video) => { this.video = ref; }}
                resizeMode={this.state.resizeMode}
                playInBackground={backgroundPlayEnabled}
@@ -365,6 +368,7 @@ class MediaPlayer extends React.PureComponent {
                volume={this.state.volume}
                paused={this.state.paused}
                onLoad={this.onLoad}
+               onBuffer={this.onBuffer}
                onProgress={this.onProgress}
                onEnd={this.onEnd}
                />
@@ -389,6 +393,11 @@ class MediaPlayer extends React.PureComponent {
             <View style={[mediaPlayerStyle.innerProgressCompleted, { width: completedWidth }]} />
             <View style={[mediaPlayerStyle.innerProgressRemaining, { width: remainingWidth }]} />
           </View>
+        </View>}
+
+        {this.state.buffering &&
+        <View style={mediaPlayerStyle.loadingContainer}>
+          <ActivityIndicator color={Colors.LbryGreen} size="large" />
         </View>}
 
         {this.state.areControlsVisible &&

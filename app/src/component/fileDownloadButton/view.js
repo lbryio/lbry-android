@@ -1,7 +1,7 @@
 import React from 'react';
 import { NativeModules, Text, View, TouchableOpacity } from 'react-native';
 import Button from '../button';
-import fileDownloadButtonStyle from '../../styles/fileDownloadButton';
+import fileDownloadButtonStyle from 'styles/fileDownloadButton';
 
 class FileDownloadButton extends React.PureComponent {
   componentDidMount() {
@@ -46,7 +46,6 @@ class FileDownloadButton extends React.PureComponent {
       style,
       openFile,
       onButtonLayout,
-      onStartDownloadFailed
     } = this.props;
 
     if ((fileInfo && !fileInfo.stopped) || loading || downloading) {
@@ -76,7 +75,7 @@ class FileDownloadButton extends React.PureComponent {
           if (NativeModules.Firebase) {
             NativeModules.Firebase.track('purchase_uri', { uri: uri });
           }
-          purchaseUri(uri, onStartDownloadFailed);
+          purchaseUri(uri, costInfo, false);
           if (isPlayable && onPlay) {
             this.props.onPlay();
           }
