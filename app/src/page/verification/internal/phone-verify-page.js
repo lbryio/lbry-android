@@ -43,9 +43,12 @@ class PhoneVerifyPage extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { phone } = this.props;
+    const { phone, setEmailVerificationPhase } = this.props;
     if (phone && String(phone).trim().length > 0) {
       this.setState({ newPhoneAdded: true, phase: Constants.PHASE_VERIFICATION });
+    }
+    if (setEmailVerificationPhase) {
+      setEmailVerificationPhase(false);
     }
   }
 

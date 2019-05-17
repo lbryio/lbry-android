@@ -278,7 +278,7 @@ const rewardStyle = StyleSheet.create({
     width: '100%',
     paddingLeft: 32,
     paddingRight: 32,
-    marginTop: 16
+    marginTop: 8
   },
   verificationTitle: {
     fontSize: 32,

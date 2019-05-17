@@ -18,6 +18,13 @@ class EmailVerifyPage extends React.PureComponent {
     previousEmail: null
   }
 
+  componentDidMount() {
+    const { setEmailVerificationPhase } = this.props;
+    if (setEmailVerificationPhase) {
+      setEmailVerificationPhase(false);
+    }
+  }
+
   handleChangeText = (text) => {
     this.setState({ email: text });
     AsyncStorage.setItem(Constants.KEY_FIRST_RUN_EMAIL, text);
@@ -25,7 +32,7 @@ class EmailVerifyPage extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const { emailNewErrorMessage, emailNewPending, emailToVerify } = nextProps;
-    const { notify } = this.props;
+    const { notify, setEmailVerificationPhase } = this.props;
 
     if (this.state.verifyStarted && !emailNewPending) {
       if (emailNewErrorMessage) {
@@ -33,6 +40,9 @@ class EmailVerifyPage extends React.PureComponent {
         this.setState({ verifyStarted: false });
       } else {
         this.setState({ phase: Constants.PHASE_VERIFICATION });
+        if (setEmailVerificationPhase) {
+          setEmailVerificationPhase(true);
+        }
         //notify({ message: 'Please follow the instructions in the email sent to your address to continue.' });
         AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'true');
       }
@@ -40,7 +50,13 @@ class EmailVerifyPage extends React.PureComponent {
   }
 
   onSendVerificationPressed = () => {
-    const { addUserEmail, emailNewPending, notify, resendVerificationEmail } = this.props;
+    const {
+      addUserEmail,
+      emailNewPending,
+      notify,
+      resendVerificationEmail,
+      setEmailVerificationPhase
+    } = this.props;
 
     if (emailNewPending) {
       return;
@@ -58,6 +74,9 @@ class EmailVerifyPage extends React.PureComponent {
       resendVerificationEmail(this.state.email);
       AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'true');
       this.setState({ verifyStarted: true, phase: Constants.PHASE_VERIFICATION });
+      if (setEmailVerificationPhase) {
+        setEmailVerificationPhase(true);
+      }
       return;
     }
 
@@ -74,7 +93,15 @@ class EmailVerifyPage extends React.PureComponent {
   }
 
   onEditPressed = () => {
-    this.setState({ verifyStarted: false, phase: Constants.PHASE_COLLECTION, previousEmail: this.state.email });
+    const { setEmailVerificationPhase } = this.props;
+    this.setState({ verifyStarted: false, phase: Constants.PHASE_COLLECTION, previousEmail: this.state.email }, () => {
+      if (setEmailVerificationPhase) {
+        setEmailVerificationPhase(false);
+      }
+      // clear the previous email
+      AsyncStorage.removeItem(Constants.KEY_EMAIL_VERIFY_PENDING);
+      AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
+    });
   }
 
   render() {
