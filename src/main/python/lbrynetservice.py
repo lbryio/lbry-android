@@ -79,7 +79,8 @@ def start():
         wallet_dir=f'{private_storage_dir}/lbryum',
         download_dir=f'{lbrynet_android_utils.getInternalStorageDir(service.getApplicationContext())}/Download',
         components_to_skip=[DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT],
-        use_upnp=False
+        use_upnp=False,
+        save_blobs=False
     )
 
     for directory in (conf.data_dir, conf.download_dir, conf.wallet_dir):
