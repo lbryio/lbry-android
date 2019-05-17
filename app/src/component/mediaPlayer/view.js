@@ -226,7 +226,7 @@ class MediaPlayer extends React.PureComponent {
       onPanResponderRelease: (evt, gestureState) => {
         const time = this.getCurrentTimeForSeekerPosition();
         if (time >= this.state.duration) {
-          this.setState({ paused: true });
+          this.setState({ paused: true }, this.handlePausedState);
           this.onEnd();
         } else {
           this.seekTo(time);
@@ -297,6 +297,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   updateBackgroundMediaNotification = () => {
+    this.handlePausedState();
     const { backgroundPlayEnabled } = this.props;
     if (backgroundPlayEnabled) {
       if (NativeModules.BackgroundMedia && window.currentMediaInfo) {
