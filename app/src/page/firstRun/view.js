@@ -227,10 +227,13 @@ class FirstRunScreen extends React.PureComponent {
       authenticate,
       authenticating,
       authToken,
+      checkSync,
       emailNewErrorMessage,
       emailNewPending,
       emailToVerify,
       notify,
+      hasSyncedWallet,
+      isRetrievingSync,
       resendVerificationEmail
     } = this.props;
 
@@ -259,8 +262,11 @@ class FirstRunScreen extends React.PureComponent {
 
       case Constants.FIRST_RUN_PAGE_WALLET:
         page = (<WalletPage
-                onWalletViewLayout={this.onWalletViewLayout}
-                onPasswordChanged={this.onWalletPasswordChanged} />);
+                  checkSync={checkSync}
+                  hasSyncedWallet={hasSyncedWallet}
+                  isRetrievingSync={isRetrievingSync}
+                  onWalletViewLayout={this.onWalletViewLayout}
+                  onPasswordChanged={this.onWalletPasswordChanged} />);
         break;
 
       case Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT:

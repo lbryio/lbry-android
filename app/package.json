@@ -9,7 +9,7 @@
         "base-64": "^0.1.0",
         "@expo/vector-icons": "^8.1.0",
         "lbry-redux": "lbryio/lbry-redux",
-        "lbryinc": "lbryio/lbryinc",
+        "lbryinc": "lbryio/lbryinc#check-sync",
         "lodash": ">=4.17.11",
         "merge": ">=1.2.1",
         "moment": "^2.22.1",
