@@ -116,10 +116,10 @@ class FilePage extends React.PureComponent {
     }
 
     if (fileInfo && fileInfo.streaming_url && !this.state.streamingMode) {
-      this.setState({ streamingMode: false, currentStreamUrl: fileInfo.streaming_url });
+      this.setState({ streamingMode: true, currentStreamUrl: fileInfo.streaming_url });
     }
     if (streamingUrl && !this.state.streamingMode) {
-      this.setState({ streamingMode: false, currentStreamUrl: streamingUrl });
+      this.setState({ streamingMode: true, currentStreamUrl: streamingUrl });
     }
   }
 
@@ -557,7 +557,7 @@ class FilePage extends React.PureComponent {
 
         if (fileInfo && !this.state.autoDownloadStarted && this.state.uriVars && 'true' === this.state.uriVars.download) {
           this.setState({ autoDownloadStarted: true }, () => {
-            purchaseUri(uri, costInfo, true);
+            purchaseUri(uri, costInfo, false);
           });
         }
 

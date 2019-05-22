@@ -75,7 +75,7 @@ class FileDownloadButton extends React.PureComponent {
           if (NativeModules.Firebase) {
             NativeModules.Firebase.track('purchase_uri', { uri: uri });
           }
-          purchaseUri(uri, costInfo, true);
+          purchaseUri(uri, costInfo, false);
           if (isPlayable && onPlay) {
             this.props.onPlay();
           }
