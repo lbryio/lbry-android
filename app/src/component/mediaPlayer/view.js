@@ -79,6 +79,10 @@ class MediaPlayer extends React.PureComponent {
     return value;
   }
 
+  onError = (error) => {
+    console.log(error);
+  }
+
   onLoad = (data) => {
     this.setState({
       duration: data.duration
@@ -97,8 +101,10 @@ class MediaPlayer extends React.PureComponent {
   onProgress = (data) => {
     const { savePosition, claim } = this.props;
 
-    this.setState({ buffering: false, currentTime: data.currentTime },
-                  () => savePosition(claim.claim_id, claim.nout, data.currentTime));
+    this.setState({ buffering: false, currentTime: data.currentTime });
+    if (data.currentTime % 10 === 0) {
+      savePosition(claim.claim_id, claim.nout, data.currentTime);
+    }
 
     if (!this.state.seeking) {
       this.setSeekerPosition(this.calculateSeekerPosition());
@@ -360,7 +366,15 @@ class MediaPlayer extends React.PureComponent {
 
     return (
       <View style={styles} onLayout={onLayout}>
-        <Video source={{ uri: source }}
+        <Video source={{
+                 uri: source,
+                 headers: {
+                   "Accept-Encoding": "identity;q=1, *;q=0",
+                   "Save-Data": "on",
+                   "Accept": "*/*"
+                 }
+               }}
+               bufferConfig={{ minBufferMs: 3000, maxBufferMs: 60000, bufferForPlaybackMs: 3000, bufferForPlaybackAfterRebufferMs: 3000  }}
                ref={(ref: Video) => { this.video = ref; }}
                resizeMode={this.state.resizeMode}
                playInBackground={backgroundPlayEnabled}
@@ -372,6 +386,8 @@ class MediaPlayer extends React.PureComponent {
                onBuffer={this.onBuffer}
                onProgress={this.onProgress}
                onEnd={this.onEnd}
+               onError={this.onError}
+               minLoadRetryCount={999}
                />
 
         {this.state.firstPlay && thumbnail && thumbnail.trim().length > 0 &&

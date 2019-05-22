@@ -160,13 +160,11 @@ class SplashScreen extends React.PureComponent {
   }
 
   _updateStatusCallback(status) {
-    const { deleteCompleteBlobs, fetchSubscriptions } = this.props;
+    const { fetchSubscriptions } = this.props;
     const startupStatus = status.startup_status;
     // At the minimum, wallet should be started and blocks_behind equal to 0 before calling resolve
     const hasStarted = startupStatus.stream_manager && startupStatus.wallet && status.wallet.blocks_behind <= 0;
     if (hasStarted) {
-      deleteCompleteBlobs();
-
       // Wait until we are able to resolve a name before declaring
       // that we are done.
       // TODO: This is a hack, and the logic should live in the daemon

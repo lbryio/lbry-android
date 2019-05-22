@@ -28,6 +28,7 @@ import com.facebook.react.ReactRootView;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.shell.MainReactPackage;
@@ -39,15 +40,20 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 
 import io.lbry.browser.reactpackages.LbryReactPackage;
 import io.lbry.browser.reactmodules.BackgroundMediaModule;
-import io.lbry.browser.reactmodules.DownloadManagerModule;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
@@ -66,6 +72,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     private BroadcastReceiver smsReceiver;
 
     private BroadcastReceiver stopServiceReceiver;
+
+    private BroadcastReceiver downloadEventReceiver;
 
     private ReactRootView mReactRootView;
 
@@ -114,6 +122,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         // Register SMS receiver for handling verification texts
         registerSmsReceiver();
 
+        // Register the receiver to emit download events
+        registerDownloadEventReceiver();
+
         // Start the daemon service if it is not started
         serviceRunning = isServiceRunning(LbrynetService.class);
         if (!serviceRunning) {
@@ -140,6 +151,50 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         registerNotificationsReceiver();
 
         setContentView(mReactRootView);
+    }
+
+    private void registerDownloadEventReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_EVENT);
+        downloadEventReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String downloadAction = intent.getStringExtra("action");
+                String uri = intent.getStringExtra("uri");
+                String outpoint = intent.getStringExtra("outpoint");
+                String fileInfoJson = intent.getStringExtra("file_info");
+
+                if (uri == null || outpoint == null || fileInfoJson == null) {
+                    return;
+                }
+
+                try {
+                    String eventName = null;
+                    JSONObject json = new JSONObject(fileInfoJson);
+                    WritableMap fileInfo = JSONObjectToMap(json);
+                    WritableMap params = Arguments.createMap();
+                    params.putString("uri", uri);
+                    params.putString("outpoint", outpoint);
+                    params.putMap("fileInfo", fileInfo);
+
+                    if (DownloadManager.ACTION_UPDATE.equals(downloadAction)) {
+                        double progress = intent.getDoubleExtra("progress", 0);
+                        params.putDouble("progress", progress);
+                        eventName = "onDownloadUpdated";
+                    } else {
+                        eventName = (DownloadManager.ACTION_START.equals(downloadAction)) ? "onDownloadStarted" : "onDownloadCompleted";
+                    }
+
+                    ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+                    if (reactContext != null) {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
+                    }
+                } catch (JSONException ex) {
+                    // pass
+                }
+            }
+        };
+        registerReceiver(downloadEventReceiver, intentFilter);
     }
 
     private void registerStopReceiver() {
@@ -381,6 +436,11 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             smsReceiver = null;
         }
 
+        if (downloadEventReceiver != null) {
+            unregisterReceiver(downloadEventReceiver);
+            downloadEventReceiver = null;
+        }
+
         if (stopServiceReceiver != null) {
             unregisterReceiver(stopServiceReceiver);
             stopServiceReceiver = null;
@@ -388,7 +448,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(BackgroundMediaModule.NOTIFICATION_ID);
-        notificationManager.cancel(DownloadManagerModule.GROUP_ID);
+        notificationManager.cancel(DownloadManager.DOWNLOAD_NOTIFICATION_GROUP_ID);
         if (downloadNotificationIds != null) {
             for (int i = 0; i < downloadNotificationIds.size(); i++) {
                 notificationManager.cancel(downloadNotificationIds.get(i));
@@ -477,5 +537,55 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         }
 
         return false;
+    }
+
+    private static WritableMap JSONObjectToMap(JSONObject jsonObject) throws JSONException {
+        WritableMap map = Arguments.createMap();
+        Iterator<String> keys = jsonObject.keys();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            Object value = jsonObject.get(key);
+            if (value instanceof JSONArray) {
+                map.putArray(key, JSONArrayToList((JSONArray) value));
+            } else if (value instanceof JSONObject) {
+                map.putMap(key, JSONObjectToMap((JSONObject) value));
+            } else if (value instanceof  Boolean) {
+                map.putBoolean(key, (Boolean) value);
+            } else if (value instanceof  Integer) {
+                map.putInt(key, (Integer) value);
+            } else if (value instanceof  Double) {
+                map.putDouble(key, (Double) value);
+            } else if (value instanceof String)  {
+                map.putString(key, (String) value);
+            } else {
+                map.putString(key, value.toString());
+            }
+        }
+
+        return map;
+    }
+
+    private static WritableArray JSONArrayToList(JSONArray jsonArray) throws JSONException {
+        WritableArray array = Arguments.createArray();
+        for(int i = 0; i < jsonArray.length(); i++) {
+            Object value = jsonArray.get(i);
+            if (value instanceof JSONArray) {
+                array.pushArray(JSONArrayToList((JSONArray) value));
+            } else if (value instanceof JSONObject) {
+                array.pushMap(JSONObjectToMap((JSONObject) value));
+            } else if (value instanceof  Boolean) {
+                array.pushBoolean((Boolean) value);
+            } else if (value instanceof  Integer) {
+                array.pushInt((Integer) value);
+            } else if (value instanceof  Double) {
+                array.pushDouble((Double) value);
+            } else if (value instanceof String)  {
+                array.pushString((String) value);
+            } else {
+                array.pushString(value.toString());
+            }
+        }
+
+        return array;
     }
 }

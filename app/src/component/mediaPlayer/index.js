@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { SETTINGS, savePosition } from 'lbry-redux';
-import { makeSelectClientSetting } from '../../redux/selectors/settings';
+import { makeSelectClientSetting } from 'redux/selectors/settings';
 import MediaPlayer from './view';
 
 const select = state => ({

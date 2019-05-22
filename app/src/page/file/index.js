@@ -16,6 +16,7 @@ import {
   makeSelectThumbnailForUri,
   makeSelectTitleForUri,
   selectBalance,
+  selectPurchasedUris,
 } from 'lbry-redux';
 import {
   doFetchCostInfoForUri,
@@ -23,7 +24,13 @@ import {
   selectRewardContentClaimIds,
   selectBlackListedOutpoints
 } from 'lbryinc';
-import { doDeleteFile, doStopDownloadingFile } from 'redux/actions/file';
+import {
+  doStartDownload,
+  doUpdateDownload,
+  doFinishDownload,
+  doDeleteFile,
+  doStopDownloadingFile
+} from 'redux/actions/file';
 import FilePage from './view';
 
 const select = (state, props) => {
@@ -42,6 +49,7 @@ const select = (state, props) => {
     rewardedContentClaimIds: selectRewardContentClaimIds(state, selectProps),
     channelUri: makeSelectChannelForClaimUri(selectProps.uri, true)(state),
     position: makeSelectContentPositionForUri(selectProps.uri)(state),
+    purchasedUris: selectPurchasedUris(state),
     streamingUrl: makeSelectStreamingUrlForUri(selectProps.uri)(state),
     thumbnail: makeSelectThumbnailForUri(selectProps.uri)(state),
     title: makeSelectTitleForUri(selectProps.uri)(state),
@@ -59,6 +67,9 @@ const perform = dispatch => ({
   resolveUri: uri => dispatch(doResolveUri(uri)),
   sendTip: (amount, claimId, uri, successCallback, errorCallback) => dispatch(doSendTip(amount, claimId, uri, successCallback, errorCallback)),
   stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),
+  startDownload: (uri, outpoint, fileInfo) => dispatch(doStartDownload(uri, outpoint, fileInfo)),
+  updateDownload: (uri, outpoint, fileInfo, progress) => dispatch(doUpdateDownload(uri, outpoint, fileInfo, progress)),
+  finishDonwload: (uri, outpoint, fileInfo) => dispatch(doFinishDownload(uri, outpoint, fileInfo)),
 });
 
 export default connect(select, perform)(FilePage);

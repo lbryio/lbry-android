@@ -4,6 +4,7 @@ import { Lbryio } from 'lbryinc';
 import {
   ActivityIndicator,
   Alert,
+  DeviceEventEmitter,
   Dimensions,
   NativeModules,
   ScrollView,
@@ -80,6 +81,10 @@ class FilePage extends React.PureComponent {
   componentDidMount() {
     StatusBar.setHidden(false);
 
+    DeviceEventEmitter.addListener('onDownloadStarted', this.handleDownloadStarted);
+    DeviceEventEmitter.addListener('onDownloadUpdated', this.handleDownloadUpdated);
+    DeviceEventEmitter.addListener('onDownloadCompleted', this.handleDownloadCompleted);
+
     const { fileInfo, isResolvingUri, resolveUri, navigation } = this.props;
     const { uri, uriVars } = navigation.state.params;
     this.setState({ uri, uriVars });
@@ -98,12 +103,18 @@ class FilePage extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { fileInfo, streamingUrl } = nextProps;
+    const { purchasedUris: prevPurchasedUris } = this.props;
+    const { fileInfo, purchasedUris, streamingUrl } = nextProps;
+
+    if (prevPurchasedUris.length != purchasedUris.length && NativeModules.UtilityModule) {
+      NativeModules.UtilityModule.checkDownloads();
+    }
+
     if (fileInfo && fileInfo.streaming_url && !this.state.streamingMode) {
-      this.setState({ streamingMode: true, currentStreamUrl: fileInfo.streaming_url });
+      this.setState({ streamingMode: false, currentStreamUrl: fileInfo.streaming_url });
     }
     if (streamingUrl && !this.state.streamingMode) {
-      this.setState({ streamingMode: true, currentStreamUrl: streamingUrl });
+      this.setState({ streamingMode: false, currentStreamUrl: streamingUrl });
     }
   }
 
@@ -233,6 +244,28 @@ class FilePage extends React.PureComponent {
       window.currentMediaInfo = null;
     }
     window.player = null;
+
+    DeviceEventEmitter.removeListener('onDownloadStarted', this.handleDownloadStarted);
+    DeviceEventEmitter.removeListener('onDownloadUpdated', this.handleDownloadUpdated);
+    DeviceEventEmitter.removeListener('onDownloadCompleted', this.handleDownloadCompleted);
+  }
+
+  handleDownloadStarted = (evt) => {
+    const { startDownload } = this.props;
+    const { uri, outpoint, fileInfo } = evt;
+    startDownload(uri, outpoint, fileInfo);
+  }
+
+  handleDownloadUpdated = (evt) => {
+    const { updateDownload } = this.props;
+    const { uri, outpoint, fileInfo, progress } = evt;
+    updateDownload(uri, outpoint, fileInfo, progress);
+  }
+
+  handleDownloadCompleted = (evt) => {
+    const { completeDownload } = this.props;
+    const { uri, outpoint, fileInfo } = evt;
+    completeDownload(uri, outpoint, fileInfo);
   }
 
   localUriForFileInfo = (fileInfo) => {
@@ -526,7 +559,7 @@ class FilePage extends React.PureComponent {
 
         if (fileInfo && !this.state.autoDownloadStarted && this.state.uriVars && 'true' === this.state.uriVars.download) {
           this.setState({ autoDownloadStarted: true }, () => {
-            purchaseUri(uri, costInfo, false);
+            purchaseUri(uri, costInfo, true);
           });
         }
 
