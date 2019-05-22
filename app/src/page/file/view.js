@@ -103,8 +103,13 @@ class FilePage extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { purchasedUris: prevPurchasedUris } = this.props;
-    const { fileInfo, purchasedUris, streamingUrl } = nextProps;
+    const { purchasedUris: prevPurchasedUris, navigation } = this.props;
+    const { uri } = navigation.state.params;
+    const { fileInfo, purchasedUris, failedPurchaseUris, streamingUrl } = nextProps;
+
+    if (this.state.downloadPressed && failedPurchaseUris.includes(uri)) {
+      this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
+    }
 
     if (prevPurchasedUris.length != purchasedUris.length && NativeModules.UtilityModule) {
       NativeModules.UtilityModule.checkDownloads();
@@ -424,13 +429,6 @@ class FilePage extends React.PureComponent {
     sendTip(tipAmount, claim.claim_id, uri, () => { this.setState({ tipAmount: 0, showTipView: false }) });
   }
 
-  startDownloadFailed = () => {
-    this.startTime = null;
-    setTimeout(() => {
-      this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
-    }, 500);
-  }
-
   renderTags = (tags) => {
     return tags.map((tag, i) => (
       <Text style={filePageStyle.tagItem} key={`${tag}-${i}`}>{tag}</Text>
@@ -586,9 +584,7 @@ class FilePage extends React.PureComponent {
                     <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={thumbnail} />}
                   {((!this.state.downloadButtonShown || this.state.downloadPressed) && !this.state.mediaLoaded) &&
                       <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
-                  {((isPlayable && !completed && !canLoadMedia) ||
-                    (!this.state.streamingMode && !completed) || canOpen)
-                    && (!this.state.downloadPressed) &&
+                  {((isPlayable && !completed && !canLoadMedia) || canOpen) && (!this.state.downloadPressed) &&
                     <FileDownloadButton uri={uri}
                                         style={filePageStyle.downloadButton}
                                         openFile={openFile}

@@ -235,12 +235,27 @@ public class DownloadManager {
          }
 
          // If there are no more downloads and the group exists, set the icon to stop animating
-         if (groupCreated && groupBuilder != null && downloadIdNotificationIdMap.size() == 0) {
-             groupBuilder.setSmallIcon(android.R.drawable.stat_sys_download_done);
-             notificationManager.notify(DOWNLOAD_NOTIFICATION_GROUP_ID, groupBuilder.build());
-         }
+         checkGroupDownloadIcon(notificationManager);
+    }
 
-        //stoppedDownloadsMap.put(id, true);
+    public void abortDownload(String id) {
+        int notificationId = downloadIdNotificationIdMap.get(id);
+        if (downloadIdNotificationIdMap.containsKey(id)) {
+            downloadIdNotificationIdMap.remove(id);
+        }
+        if (builders.containsKey(notificationId)) {
+            builders.remove(notificationId);
+        }
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.cancel(notificationId);
+        activeDownloads.remove(id);
+
+        checkGroupDownloadIcon(notificationManager);
+        if (activeDownloads.size() == 0) {
+            notificationManager.cancel(DOWNLOAD_NOTIFICATION_GROUP_ID);
+            groupCreated = false;
+        }
     }
 
     public boolean isDownloadActive(String id) {
@@ -249,6 +264,10 @@ public class DownloadManager {
 
     public boolean hasActiveDownloads() {
         return activeDownloads.size() > 0;
+    }
+
+    public List<String> getActiveDownloads() {
+        return activeDownloads;
     }
 
     private void removeDownloadNotification(String id) {
@@ -263,14 +282,14 @@ public class DownloadManager {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = builders.get(notificationId);
-        /*notificationManager.cancel(notificationId);
+        notificationManager.cancel(notificationId);
         downloadIdNotificationIdMap.remove(id);
         builders.remove(notificationId);
 
         if (builders.values().size() == 0) {
             notificationManager.cancel(DOWNLOAD_NOTIFICATION_GROUP_ID);
             groupCreated = false;
-        }*/
+        }
     }
 
     private int getNotificationId(String id) {
@@ -285,6 +304,13 @@ public class DownloadManager {
         }
         downloadIdNotificationIdMap.put(id, notificationId);
         return notificationId;
+    }
+
+    private void checkGroupDownloadIcon(NotificationManagerCompat notificationManager) {
+        if (groupCreated && groupBuilder != null && downloadIdNotificationIdMap.size() == 0) {
+             groupBuilder.setSmallIcon(android.R.drawable.stat_sys_download_done);
+             notificationManager.notify(DOWNLOAD_NOTIFICATION_GROUP_ID, groupBuilder.build());
+         }
     }
 
     private static String formatBytes(double bytes)

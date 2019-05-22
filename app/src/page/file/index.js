@@ -17,6 +17,7 @@ import {
   makeSelectTitleForUri,
   selectBalance,
   selectPurchasedUris,
+  selectFailedPurchaseUris,
 } from 'lbry-redux';
 import {
   doFetchCostInfoForUri,
@@ -27,7 +28,7 @@ import {
 import {
   doStartDownload,
   doUpdateDownload,
-  doFinishDownload,
+  doCompleteDownload,
   doDeleteFile,
   doStopDownloadingFile
 } from 'redux/actions/file';
@@ -50,6 +51,7 @@ const select = (state, props) => {
     channelUri: makeSelectChannelForClaimUri(selectProps.uri, true)(state),
     position: makeSelectContentPositionForUri(selectProps.uri)(state),
     purchasedUris: selectPurchasedUris(state),
+    failedPurchaseUris: selectFailedPurchaseUris(state),
     streamingUrl: makeSelectStreamingUrlForUri(selectProps.uri)(state),
     thumbnail: makeSelectThumbnailForUri(selectProps.uri)(state),
     title: makeSelectTitleForUri(selectProps.uri)(state),
@@ -69,7 +71,7 @@ const perform = dispatch => ({
   stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),
   startDownload: (uri, outpoint, fileInfo) => dispatch(doStartDownload(uri, outpoint, fileInfo)),
   updateDownload: (uri, outpoint, fileInfo, progress) => dispatch(doUpdateDownload(uri, outpoint, fileInfo, progress)),
-  finishDonwload: (uri, outpoint, fileInfo) => dispatch(doFinishDownload(uri, outpoint, fileInfo)),
+  completeDownload: (uri, outpoint, fileInfo) => dispatch(doCompleteDownload(uri, outpoint, fileInfo)),
 });
 
 export default connect(select, perform)(FilePage);

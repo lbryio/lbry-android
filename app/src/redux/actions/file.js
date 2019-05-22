@@ -41,10 +41,9 @@ export function doUpdateDownload(uri, outpoint, fileInfo, progress) {
   };
 }
 
-export function doFinishDownload(uri, outpoint, fileInfo) {
+export function doCompleteDownload(uri, outpoint, fileInfo) {
   return (dispatch) => {
     if (fileInfo.completed) {
-      console.log('finishing download: ' + uri);
       dispatch({
         type: ACTIONS.DOWNLOADING_COMPLETED,
         data: {

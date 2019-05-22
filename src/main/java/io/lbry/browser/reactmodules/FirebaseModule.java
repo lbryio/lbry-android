@@ -53,21 +53,12 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void logException(boolean fatal, String message, ReadableMap payload) {
+    public void logException(boolean fatal, String message, String error) {
         Bundle bundle = new Bundle();
         bundle.putString("message", message);
-        if (payload != null) {
-            HashMap<String, Object> payloadMap = payload.toHashMap();
-            for (Map.Entry<String, Object> entry : payloadMap.entrySet()) {
-                Object value = entry.getValue();
-                if (value != null) {
-                    bundle.putString(entry.getKey(), entry.getValue().toString());
-                }
-            }
-        }
-
+        bundle.putString("error", error);
         if (firebaseAnalytics != null) {
-            firebaseAnalytics.logEvent(fatal ? "exception" : "warning", bundle);
+            firebaseAnalytics.logEvent(fatal ? "reactjs_exception" : "reactjs_warning", bundle);
         }
 
         if (fatal) {

@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -236,6 +238,7 @@ public class LbrynetService extends PythonService {
             JSONArray fileItems = response.optJSONArray("result");
             if (fileItems != null) {
                 try {
+                    List<String> itemUris = new ArrayList<String>();
                     for (int i = 0; i < fileItems.length(); i++) {
                         JSONObject item = fileItems.getJSONObject(i);
                         String downloadPath = item.getString("download_path");
@@ -248,8 +251,18 @@ public class LbrynetService extends PythonService {
                         String uri = String.format("lbry://%s#%s", claimName, claimId);
                         String outpoint = item.getString("outpoint");
                         boolean completed = item.getBoolean("completed");
-                        double writtenBytes = item.getDouble("written_bytes");
-                        double totalBytes = item.getDouble("total_bytes");
+                        double writtenBytes = item.optDouble("written_bytes", -1);
+                        double totalBytes = item.optDouble("total_bytes", -1);
+
+                        if (downloadManager.isDownloadActive(uri) && (writtenBytes == -1 || totalBytes == -1)) {
+                            // possibly deleted, abort the download
+                            downloadManager.abortDownload(uri);
+                            continue;
+                        }
+
+                        if (!itemUris.contains(uri)) {
+                            itemUris.add(uri);
+                        }
 
                         Intent intent = new Intent();
                         intent.setAction(DownloadManager.ACTION_DOWNLOAD_EVENT);
@@ -268,17 +281,29 @@ public class LbrynetService extends PythonService {
                                 intent.putExtra("progress", (writtenBytes / totalBytes) * 100);
                                 downloadManager.updateDownload(uri, file.getName(), writtenBytes, totalBytes);
                             }
+
+                            if (context != null) {
+                                context.sendBroadcast(intent);
+                            }
                         } else {
-                            // if the file does not exist, treat as a new download
-                            // TODO: Differentiate streaming from downloads
                             if (!completed) {
                                 intent.putExtra("action", "start");
                                 downloadManager.startDownload(uri, file.getName());
+
+
+                                if (context != null) {
+                                    context.sendBroadcast(intent);
+                                }
                             }
                         }
+                    }
 
-                        if (context != null) {
-                            context.sendBroadcast(intent);
+                    // check download manager uris and clear downloads that may have been cancelled / deleted
+                    List<String> activeUris = downloadManager.getActiveDownloads();
+                    for (int i = 0; i < activeUris.size(); i++) {
+                        String activeUri = activeUris.get(i);
+                        if (!itemUris.contains(activeUri)) {
+                            downloadManager.abortDownload(activeUri);
                         }
                     }
                 } catch (JSONException ex) {

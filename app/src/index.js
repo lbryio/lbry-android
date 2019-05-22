@@ -45,7 +45,8 @@ import thunk from 'redux-thunk';
 
 const globalExceptionHandler = (error, isFatal) => {
   if (error && NativeModules.Firebase) {
-    NativeModules.Firebase.logException(isFatal, error.message ? error.message : "No message", error);
+    console.log(JSON.stringify(error));
+    NativeModules.Firebase.logException(isFatal, error.message ? error.message : "No message", JSON.stringify(error));
   }
 };
 setJSExceptionHandler(globalExceptionHandler, true);
