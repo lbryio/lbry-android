@@ -125,8 +125,8 @@ class FirstRunScreen extends React.PureComponent {
     const { notify } = this.props;
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     if (Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage) {
-      if (!this.state.walletPassword || this.state.walletPassword.trim().length < 6) {
-        return notify({ message: 'Your wallet password should be at least 6 characters long' });
+      if (!this.state.walletPassword || this.state.walletPassword.trim().length() === 0) {
+        return notify({ message: 'Please enter a wallet password' });
       }
 
       this.closeFinalPage();
@@ -290,7 +290,7 @@ class FirstRunScreen extends React.PureComponent {
              Constants.FIRST_RUN_PAGE_EMAIL_VERIFY === this.state.currentPage) &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
               <Text style={firstRunStyle.buttonText}>
-                « {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage ? 'Setup account' : 'Cancel'}</Text>
+                « {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage ? 'Setup account' : 'Change Email'}</Text>
             </TouchableOpacity>}
             {!emailNewPending && (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage) &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
