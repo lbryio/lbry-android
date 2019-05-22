@@ -22,21 +22,33 @@ class EmailCollectPage extends React.PureComponent {
     authenticationStarted: false,
     authenticationFailed: false,
     placeholder: 'you@example.com',
-    statusTries: 0
+    statusTries: 0,
+    verifying: true
   };
 
   componentWillReceiveProps(nextProps) {
-    const { authenticating, authToken } = this.props;
+    const { authenticating, authToken, showNextPage } = this.props;
+    const { user } = nextProps;
 
     if (this.state.authenticationStarted && !authenticating && authToken === null) {
       this.setState({ authenticationFailed: true, authenticationStarted: false });
+    }
+
+    if (this.state.verifying) {
+      if (user && user.primary_email && user.has_verified_email) {
+        if (showNextPage) {
+          showNextPage();
+        }
+      } else {
+        this.setState({ verifying: false });
+      }
     }
   }
 
   componentDidMount() {
     // call user/new
     const { generateAuthToken, authenticating, authToken } = this.props;
-    if (!authToken && !authenticating) {
+    if (!authenticating) {
       this.startAuthenticating();
     }
   }
@@ -82,7 +94,7 @@ class EmailCollectPage extends React.PureComponent {
           <Text style={firstRunStyle.paragraph}>The LBRY servers were unreachable at this time. Please check your Internet connection and then restart the app to try again.</Text>
         </View>
       );
-    } else if (!authToken || authenticating) {
+    } else if (!authToken || authenticating || this.state.verifying) {
       content = (
         <View>
           <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />

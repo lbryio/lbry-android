@@ -157,6 +157,15 @@ const firstRunStyle = StyleSheet.create({
     backgroundColor: Colors.White,
     paddingLeft: 16,
     paddingRight: 16
+  },
+  passwordStrength: {
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 48
+  },
+  nowrap: {
+    flex: 1,
+    flexWrap: 'nowrap'
   }
 });
 

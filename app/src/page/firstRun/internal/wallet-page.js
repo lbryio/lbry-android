@@ -2,6 +2,7 @@ import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
   ActivityIndicator,
+  Dimensions,
   Linking,
   NativeModules,
   Platform,
@@ -9,6 +10,7 @@ import {
   TextInput,
   View
 } from 'react-native';
+import { BarPasswordStrengthDisplay } from 'react-native-password-strength-meter';
 import AsyncStorage from '@react-native-community/async-storage';
 import Colors from 'styles/colors';
 import Constants from 'constants';
@@ -37,7 +39,8 @@ class WalletPage extends React.PureComponent {
         return;
       }
       setTimeout(this.checkWalletReady, 1000);
-    }).catch(() => {
+    }).catch((e) => {
+      console.log(e);
       setTimeout(this.checkWalletReady, 1000);
     });
   }
@@ -62,10 +65,12 @@ class WalletPage extends React.PureComponent {
 
     let content;
     if (!this.state.walletReady || !this.state.hasCheckedSync || isRetrievingSync) {
-      <View>
-        <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
-          <Text style={firstRunStyle.paragraph}>Retrieving your account information...</Text>
-      </View>
+      content = (
+        <View>
+          <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
+            <Text style={firstRunStyle.paragraph}>Retrieving your account information...</Text>
+        </View>
+      );
     } else {
       content = (
         <View onLayout={onWalletViewLayout}>
@@ -91,6 +96,13 @@ class WalletPage extends React.PureComponent {
               }
             }}
             />
+            {(this.state.password && this.state.password.trim().length) > 0 &&
+              <View style={firstRunStyle.passwordStrength}>
+                <BarPasswordStrengthDisplay
+                  width={Dimensions.get('window').width - 80}
+                  minLength={1}
+                  password={this.state.password} />
+              </View>}
           <Text style={firstRunStyle.infoParagraph}>Note: for wallet security purposes, LBRY is unable to reset your password.</Text>
         </View>
       );

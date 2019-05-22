@@ -31,7 +31,7 @@ class EmailVerifyPage extends React.PureComponent {
     const content = (
       <View onLayout={onEmailViewLayout}>
         <Text style={firstRunStyle.title}>Verify Email</Text>
-        <Text style={firstRunStyle.paragraph}>An email has been sent to {email}. Please follow the instructions in the message to verify your email address.</Text>
+        <Text style={firstRunStyle.paragraph}>An email has been sent to <Text style={firstRunStyle.nowrap} numberOfLines={1}>{email}</Text>. Please follow the instructions in the message to verify your email address.</Text>
 
         <View style={firstRunStyle.buttonContainer}>
           <Button style={firstRunStyle.verificationButton} theme={"light"} text={"Resend"} onPress={this.onResendPressed} />

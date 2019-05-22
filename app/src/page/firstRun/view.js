@@ -122,10 +122,10 @@ class FirstRunScreen extends React.PureComponent {
   }
 
   handleContinuePressed = () => {
-    const { notify } = this.props;
+    const { notify, user } = this.props;
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     if (Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage) {
-      if (!this.state.walletPassword || this.state.walletPassword.trim().length() === 0) {
+      if (!this.state.walletPassword || this.state.walletPassword.trim().length === 0) {
         return notify({ message: 'Please enter a wallet password' });
       }
 
@@ -167,7 +167,7 @@ class FirstRunScreen extends React.PureComponent {
     });
   }
 
-  showNextPage() {
+  showNextPage = () => {
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     const nextPage = FirstRunScreen.pages[pageIndex + 1];
     this.setState({ currentPage: nextPage });
@@ -234,7 +234,8 @@ class FirstRunScreen extends React.PureComponent {
       notify,
       hasSyncedWallet,
       isRetrievingSync,
-      resendVerificationEmail
+      resendVerificationEmail,
+      user
     } = this.props;
 
     let page = null;
@@ -245,6 +246,8 @@ class FirstRunScreen extends React.PureComponent {
 
       case Constants.FIRST_RUN_PAGE_EMAIL_COLLECT:
         page = (<EmailCollectPage
+                  user={user}
+                  showNextPage={this.showNextPage}
                   authenticating={authenticating}
                   authToken={authToken}
                   authenticate={authenticate}
