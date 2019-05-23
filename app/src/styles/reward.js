@@ -139,12 +139,12 @@ const rewardStyle = StyleSheet.create({
     color: Colors.LbryGreen
   },
   leftCol: {
-    width: '5%',
+    width: '15%',
     alignItems: 'center',
     paddingLeft: 6
   },
   midCol: {
-    width: '75%'
+    width: '65%'
   },
   rightCol: {
     width: '18%',
@@ -278,7 +278,7 @@ const rewardStyle = StyleSheet.create({
     width: '100%',
     paddingLeft: 32,
     paddingRight: 32,
-    marginTop: 16
+    marginTop: 8
   },
   verificationTitle: {
     fontSize: 32,

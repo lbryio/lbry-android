@@ -143,6 +143,29 @@ const firstRunStyle = StyleSheet.create({
     alignSelf: 'center',
     color: Colors.White,
     fontSize: 16
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingLeft: 32,
+    paddingRight: 32,
+    marginTop: 16
+  },
+  verificationButton: {
+    backgroundColor: Colors.White,
+    paddingLeft: 16,
+    paddingRight: 16
+  },
+  passwordStrength: {
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 48
+  },
+  nowrap: {
+    flex: 1,
+    flexWrap: 'nowrap'
   }
 });
 

@@ -27,6 +27,7 @@ class VerificationScreen extends React.PureComponent {
     skipAccountConfirmed: false,
     showBottomContainer: true,
     walletPassword: null,
+    isEmailVerificationPhase: false,
     isEmailVerified: false,
     isIdentityVerified: false,
     isRewardApproved: false
@@ -35,6 +36,10 @@ class VerificationScreen extends React.PureComponent {
   componentDidMount() {
     const { user } = this.props;
     this.checkVerificationStatus(user);
+  }
+
+  setEmailVerificationPhase = (value) => {
+    this.setState({ isEmailVerificationPhase: value });
   }
 
   checkVerificationStatus = (user) => {
@@ -101,6 +106,7 @@ class VerificationScreen extends React.PureComponent {
             emailNewPending={emailNewPending}
             emailToVerify={emailToVerify}
             notify={notify}
+            setEmailVerificationPhase={this.setEmailVerificationPhase}
             resendVerificationEmail={resendVerificationEmail}
           />
         );
@@ -114,6 +120,7 @@ class VerificationScreen extends React.PureComponent {
             phoneVerifyErrorMessage={phoneVerifyErrorMessage}
             phoneNewIsPending={phoneNewIsPending}
             phoneNewErrorMessage={phoneNewErrorMessage}
+            setEmailVerificationPhase={this.setEmailVerificationPhase}
             notify={notify}
             verifyPhone={verifyPhone}
           />
@@ -121,7 +128,7 @@ class VerificationScreen extends React.PureComponent {
         break;
       case 'manualVerify':
         page = (
-          <ManualVerifyPage />
+          <ManualVerifyPage setEmailVerificationPhase={this.setEmailVerificationPhase} />
         );
     }
 
@@ -129,9 +136,10 @@ class VerificationScreen extends React.PureComponent {
       <View style={firstRunStyle.screenContainer}>
         {page}
 
-        <TouchableOpacity style={firstRunStyle.closeButton} onPress={this.onCloseButtonPressed}>
+        {!this.state.isEmailVerificationPhase &&
+        (<TouchableOpacity style={firstRunStyle.closeButton} onPress={this.onCloseButtonPressed}>
           <Text style={firstRunStyle.closeButtonText}>x</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>)}
       </View>
     );
   }
