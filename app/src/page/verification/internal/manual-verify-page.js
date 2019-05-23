@@ -10,6 +10,13 @@ import firstRunStyle from 'styles/firstRun';
 import rewardStyle from 'styles/reward';
 
 class ManualVerifyPage extends React.PureComponent {
+  componentDidMount() {
+    const { setEmailVerificationPhase } = this.props;
+    if (setEmailVerificationPhase) {
+      setEmailVerificationPhase(false);
+    }
+  }
+
   render() {
     return (
       <View style={firstRunStyle.container}>

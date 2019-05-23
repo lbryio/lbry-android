@@ -1,6 +1,7 @@
 const Constants = {
   FIRST_RUN_PAGE_WELCOME: "welcome",
   FIRST_RUN_PAGE_EMAIL_COLLECT: "email-collect",
+  FIRST_RUN_PAGE_EMAIL_VERIFY:"email-verify",
   FIRST_RUN_PAGE_WALLET: "wallet",
   FIRST_RUN_PAGE_SKIP_ACCOUNT: "skip-account",
 

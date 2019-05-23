@@ -2,12 +2,17 @@ import { connect } from 'react-redux';
 import { doToast } from 'lbry-redux';
 import {
   doAuthenticate,
+  doCheckSync,
   doUserEmailNew,
+  doUserResendVerificationEmail,
   selectAuthToken,
   selectEmailNewErrorMessage,
   selectEmailNewIsPending,
   selectEmailToVerify,
-  selectAuthenticationIsPending
+  selectAuthenticationIsPending,
+  selectHasSyncedWallet,
+  selectIsRetrievingSync,
+  selectUser,
 } from 'lbryinc';
 import FirstRun from './view';
 
@@ -17,12 +22,17 @@ const select = (state) => ({
   emailToVerify: selectEmailToVerify(state),
   emailNewErrorMessage: selectEmailNewErrorMessage(state),
   emailNewPending: selectEmailNewIsPending(state),
+  hasSyncedWallet: selectHasSyncedWallet(state),
+  isRetrievingSync: selectIsRetrievingSync(state),
+  user: selectUser(state),
 });
 
 const perform = dispatch => ({
   addUserEmail: email => dispatch(doUserEmailNew(email)),
   authenticate: (appVersion, os) => dispatch(doAuthenticate(appVersion, os)),
-  notify: data => dispatch(doToast(data))
+  checkSync: () => dispatch(doCheckSync()),
+  notify: data => dispatch(doToast(data)),
+  resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email))
 });
 
 export default connect(select, perform)(FirstRun);

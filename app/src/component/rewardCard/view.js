@@ -72,7 +72,16 @@ class RewardCard extends React.PureComponent<Props> {
         }
       }}>
         <View style={rewardStyle.leftCol}>
-
+          {!isPending && <TouchableOpacity onPress={() => {
+              if (!claimed) {
+                this.onClaimPress();
+              }
+            }}>
+            {claimed && <Icon name={claimed ? "check-circle" : "circle"}
+                  style={claimed ? rewardStyle.claimed : (canClaim ? rewardStyle.unclaimed : rewardStyle.disabled)}
+                  size={20} />}
+          </TouchableOpacity>}
+          {isPending && <ActivityIndicator size="small" color={Colors.LbryGreen} />}
         </View>
         <View style={rewardStyle.midCol}>
           <Text style={rewardStyle.rewardTitle}>{reward.reward_title}</Text>
@@ -83,16 +92,6 @@ class RewardCard extends React.PureComponent<Props> {
                 error={'The transaction URL could not be opened'} />}
         </View>
         <View style={rewardStyle.rightCol}>
-          {!isPending && <TouchableOpacity onPress={() => {
-              if (!claimed) {
-                this.onClaimPress();
-              }
-            }}>
-            <Icon name={claimed ? "check-circle" : "circle"}
-                  style={claimed ? rewardStyle.claimed : (canClaim ? rewardStyle.unclaimed : rewardStyle.disabled)}
-                  size={20} />
-          </TouchableOpacity>}
-          {isPending && <ActivityIndicator size="small" color={Colors.LbryGreen} />}
           <Text style={rewardStyle.rewardAmount}>{reward.reward_amount}</Text>
           <Text style={rewardStyle.rewardCurrency}>LBC</Text>
         </View>
