@@ -535,10 +535,6 @@ class FilePage extends React.PureComponent {
         const canOpen =  isViewable && completed;
         const localFileUri = this.localUriForFileInfo(fileInfo);
 
-        console.log('streamingMode=' + this.state.streamingMode);
-        console.log('isPlayable=' + isPlayable);
-        console.log('canLoadMedia=' + canLoadMedia);
-
         const openFile = () => {
           if (mediaType === 'image') {
             // use image viewer

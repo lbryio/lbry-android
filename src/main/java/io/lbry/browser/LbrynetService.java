@@ -294,10 +294,10 @@ public class LbrynetService extends PythonService {
                                 context.sendBroadcast(intent);
                             }
                         } else {
-                            /*if (writtenBytes == totalBytes) {
-                                // do not start
+                            if (writtenBytes == -1 || writtenBytes >= totalBytes) {
+                                // do not start a download that is considered completed
                                 continue;
-                            }*/
+                            }
                             if (!completed && downloadPath != null) {
                                 intent.putExtra("action", "start");
                                 android.util.Log.d("ReactNativeJS", "***");

@@ -197,9 +197,10 @@ class SplashScreen extends React.PureComponent {
 
         // For now, automatically unlock the wallet if a password is set so that downloads work
         NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
+          console.log('password=' + password);
           if (password && password.trim().length > 0) {
             // unlock the wallet and then finish the splash screen
-            Lbry.account_unlock({ password }).then(() => this.finishSplashScreen());
+            Lbry.account_unlock({ password }).then(() => this.finishSplashScreen()).catch((e) => console.log(e));
             return;
           }
 
