@@ -286,7 +286,7 @@ public class LbrynetService extends PythonService {
                                 context.sendBroadcast(intent);
                             }
                         } else {
-                            if (!completed) {
+                            if (!completed && writtenBytes < totalBytes) {
                                 intent.putExtra("action", "start");
                                 downloadManager.startDownload(uri, file.getName());
 

@@ -369,7 +369,6 @@ class MediaPlayer extends React.PureComponent {
         <Video source={{
                  uri: source,
                  headers: {
-                   "Accept-Encoding": "identity;q=1, *;q=0",
                    "Save-Data": "on",
                    "Accept": "*/*"
                  }
