@@ -103,7 +103,7 @@ class FilePage extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { purchasedUris: prevPurchasedUris, navigation } = this.props;
+    const { purchasedUris: prevPurchasedUris, navigation, contentType } = this.props;
     const { uri } = navigation.state.params;
     const { fileInfo, purchasedUris, failedPurchaseUris, streamingUrl } = nextProps;
 
@@ -115,10 +115,12 @@ class FilePage extends React.PureComponent {
       NativeModules.UtilityModule.checkDownloads();
     }
 
-    if (fileInfo && fileInfo.streaming_url && !this.state.streamingMode) {
+    const mediaType = Lbry.getMediaType(contentType);
+    const isPlayable = mediaType === 'video' || mediaType === 'audio';
+    if (fileInfo && fileInfo.streaming_url && !this.state.streamingMode && isPlayable) {
       this.setState({ streamingMode: true, currentStreamUrl: fileInfo.streaming_url });
     }
-    if (streamingUrl && !this.state.streamingMode) {
+    if (streamingUrl && !this.state.streamingMode && isPlayable) {
       this.setState({ streamingMode: true, currentStreamUrl: streamingUrl });
     }
   }
@@ -533,6 +535,10 @@ class FilePage extends React.PureComponent {
         const canOpen =  isViewable && completed;
         const localFileUri = this.localUriForFileInfo(fileInfo);
 
+        console.log('streamingMode=' + this.state.streamingMode);
+        console.log('isPlayable=' + isPlayable);
+        console.log('canLoadMedia=' + canLoadMedia);
+
         const openFile = () => {
           if (mediaType === 'image') {
             // use image viewer
@@ -557,7 +563,10 @@ class FilePage extends React.PureComponent {
 
         if (fileInfo && !this.state.autoDownloadStarted && this.state.uriVars && 'true' === this.state.uriVars.download) {
           this.setState({ autoDownloadStarted: true }, () => {
-            purchaseUri(uri, costInfo, false);
+            purchaseUri(uri, costInfo, !isPlayable);
+            if (NativeModules.UtilityModule) {
+              NativeModules.UtilityModule.checkDownloads();
+            }
           });
         }
 
@@ -584,7 +593,7 @@ class FilePage extends React.PureComponent {
                     <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={thumbnail} />}
                   {((!this.state.downloadButtonShown || this.state.downloadPressed) && !this.state.mediaLoaded) &&
                       <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
-                  {((isPlayable && !completed && !canLoadMedia) || canOpen) && (!this.state.downloadPressed) &&
+                  {((isPlayable && !completed && !canLoadMedia) || canOpen || (!completed && !this.state.streamingMode)) && (!this.state.downloadPressed) &&
                     <FileDownloadButton uri={uri}
                                         style={filePageStyle.downloadButton}
                                         openFile={openFile}
@@ -734,7 +743,8 @@ class FilePage extends React.PureComponent {
                 </ScrollView>
               </View>
             )}
-            {!this.state.fullscreenMode && <FloatingWalletBalance navigation={navigation} />}
+            {(!this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView) &&
+              <FloatingWalletBalance navigation={navigation} />}
           </View>
         );
       }

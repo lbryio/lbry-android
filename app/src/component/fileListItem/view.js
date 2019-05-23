@@ -106,7 +106,7 @@ class FileListItem extends React.PureComponent {
               }} />}
 
             <View style={fileListStyle.info}>
-              {fileInfo && <Text style={fileListStyle.infoText}>{this.getStorageForFileInfo(fileInfo)}</Text>}
+              {(fileInfo && !isNaN(fileInfo.written_bytes)) && <Text style={fileListStyle.infoText}>{this.getStorageForFileInfo(fileInfo)}</Text>}
               <DateTime style={fileListStyle.publishInfo} textStyle={fileListStyle.infoText} timeAgo uri={uri} />
             </View>
 
