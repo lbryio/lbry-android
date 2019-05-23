@@ -241,7 +241,7 @@ public class LbrynetService extends PythonService {
                     List<String> itemUris = new ArrayList<String>();
                     for (int i = 0; i < fileItems.length(); i++) {
                         JSONObject item = fileItems.getJSONObject(i);
-                        String downloadPath = item.getString("download_path");
+                        String downloadPath = item.isNull("download_path") ? null : item.getString("download_path");
                         if (downloadPath == null || downloadPath.trim().length() == 0) {
                             continue;
                         }
