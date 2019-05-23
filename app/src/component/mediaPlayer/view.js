@@ -1,6 +1,7 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
+  AppState,
   ActivityIndicator,
   DeviceEventEmitter,
   NativeModules,
@@ -34,6 +35,8 @@ class MediaPlayer extends React.PureComponent {
     super(props);
     this.state = {
       buffering: false,
+      backgroundPlayEnabled: false,
+      autoPaused: false,
       rate: 1,
       volume: 1,
       muted: false,
@@ -77,10 +80,6 @@ class MediaPlayer extends React.PureComponent {
     }
 
     return value;
-  }
-
-  onError = (error) => {
-    console.log(error);
   }
 
   onLoad = (data) => {
@@ -262,22 +261,26 @@ class MediaPlayer extends React.PureComponent {
     return 0;
   };
 
+
   componentWillMount() {
     this.initSeeker();
   }
 
   componentDidMount() {
-    const { assignPlayer } = this.props;
+    const { assignPlayer, backgroundPlayEnabled  } = this.props;
     if (assignPlayer) {
       assignPlayer(this);
     }
 
+    this.setState({ backgroundPlayEnabled: !!backgroundPlayEnabled });
     this.setSeekerPosition(this.calculateSeekerPosition());
+    AppState.addEventListener('change', this.handleAppStateChange);
     DeviceEventEmitter.addListener('onBackgroundPlayPressed', this.play);
     DeviceEventEmitter.addListener('onBackgroundPausePressed', this.pause);
   }
 
   componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange);
     DeviceEventEmitter.removeListener('onBackgroundPlayPressed', this.play);
     DeviceEventEmitter.removeListener('onBackgroundPausePressed', this.pause);
     this.clearControlsTimeout();
@@ -285,6 +288,20 @@ class MediaPlayer extends React.PureComponent {
     const { onFullscreenToggled } = this.props;
     if (onFullscreenToggled) {
       onFullscreenToggled(false);
+    }
+  }
+
+  handleAppStateChange = () => {
+    if (AppState.currentState && AppState.currentState.match(/inactive|background/)) {
+      if (!this.state.backgroundPlayEnabled && !this.state.paused) {
+        this.setState({ paused: true, autoPaused: true });
+      }
+    }
+
+    if (AppState.currentState && AppState.currentState.match(/active/)) {
+      if (!this.state.backgroundPlayEnabled && this.state.autoPaused) {
+        this.setState({ paused: false, autoPaused: false });
+      }
     }
   }
 
@@ -349,7 +366,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   render() {
-    const { backgroundPlayEnabled, source, thumbnail, onLayout, style } = this.props;
+    const { source, thumbnail, onLayout, style } = this.props;
     const completedWidth = this.getCurrentTimePercentage() * this.seekerWidth;
     const remainingWidth = this.seekerWidth - completedWidth;
     let styles = [this.state.fullscreenMode ? mediaPlayerStyle.fullscreenContainer : mediaPlayerStyle.container];
@@ -376,7 +393,7 @@ class MediaPlayer extends React.PureComponent {
                bufferConfig={{ minBufferMs: 3000, maxBufferMs: 60000, bufferForPlaybackMs: 3000, bufferForPlaybackAfterRebufferMs: 3000  }}
                ref={(ref: Video) => { this.video = ref; }}
                resizeMode={this.state.resizeMode}
-               playInBackground={backgroundPlayEnabled}
+               playInBackground={this.state.backgroundPlayEnabled}
                style={mediaPlayerStyle.player}
                rate={this.state.rate}
                volume={this.state.volume}

@@ -3,7 +3,6 @@ import { setJSExceptionHandler } from 'react-native-exception-handler';
 import { Provider, connect } from 'react-redux';
 import {
   AppRegistry,
-  AppState,
   Text,
   View,
   NativeModules
