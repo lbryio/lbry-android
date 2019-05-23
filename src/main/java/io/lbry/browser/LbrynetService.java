@@ -274,9 +274,17 @@ public class LbrynetService extends PythonService {
                         if (downloadManager.isDownloadActive(uri)) {
                             if (writtenBytes >= totalBytes || completed) {
                                 // completed download
+                                android.util.Log.d("ReactNativeJS", "***");
+                                android.util.Log.d("ReactNativeJS", String.format("Completing download for uri: %s", uri));
+                                android.util.Log.d("ReactNativeJS", String.format("downloadPath=%s", downloadPath));
+                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%d, totalBytes=%d", writtenBytes, totalBytes));
                                 intent.putExtra("action", "complete");
                                 downloadManager.completeDownload(uri, file.getName(), totalBytes);
                             } else {
+                                android.util.Log.d("ReactNativeJS", "***");
+                                android.util.Log.d("ReactNativeJS", String.format("Updating download for uri: %s", uri));
+                                android.util.Log.d("ReactNativeJS", String.format("downloadPath=%s", downloadPath));
+                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%d, totalBytes=%d", writtenBytes, totalBytes));
                                 intent.putExtra("action", "update");
                                 intent.putExtra("progress", (writtenBytes / totalBytes) * 100);
                                 downloadManager.updateDownload(uri, file.getName(), writtenBytes, totalBytes);
