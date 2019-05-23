@@ -254,6 +254,13 @@ public class LbrynetService extends PythonService {
                         double writtenBytes = item.optDouble("written_bytes", -1);
                         double totalBytes = item.optDouble("total_bytes", -1);
 
+                        android.util.Log.d("ReactNativeJS", "***");
+                        android.util.Log.d("ReactNativeJS", "downloadPath=" + downloadPath);
+                        android.util.Log.d("ReactNativeJS", "Uri=" + uri);
+                        android.util.Log.d("ReactNativeJS", "completed=" + completed);
+                        android.util.Log.d("ReactNativeJS", "writtenBytes=" + writtenBytes);
+                        android.util.Log.d("ReactNativeJS", "totalBytes=" + totalBytes);
+
                         if (downloadManager.isDownloadActive(uri) && (writtenBytes == -1 || totalBytes == -1)) {
                             // possibly deleted, abort the download
                             downloadManager.abortDownload(uri);
@@ -286,11 +293,9 @@ public class LbrynetService extends PythonService {
                                 context.sendBroadcast(intent);
                             }
                         } else {
-                            if (downloadPath != null && downloadPath.trim().length() > 0 && writtenBytes < totalBytes) {
+                            if (!completed && downloadPath != null) {
                                 intent.putExtra("action", "start");
                                 downloadManager.startDownload(uri, file.getName());
-
-
                                 if (context != null) {
                                     context.sendBroadcast(intent);
                                 }

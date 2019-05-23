@@ -34,7 +34,6 @@ import {
   TextInput,
   ToastAndroid
 } from 'react-native';
-import { doDeleteCompleteBlobs } from 'redux/actions/file';
 import { selectDrawerStack } from 'redux/selectors/drawer';
 import { SETTINGS, doDismissToast, doToast, selectToast } from 'lbry-redux';
 import {
@@ -370,8 +369,6 @@ class AppWithNavigationState extends React.Component {
     }
 
     if (AppState.currentState && AppState.currentState.match(/active/)) {
-      // Cleanup blobs for completed files upon app resume to save space
-      dispatch(doDeleteCompleteBlobs());
       if (backgroundPlayEnabled || NativeModules.BackgroundMedia) {
         NativeModules.BackgroundMedia.hidePlaybackNotification();
       }
