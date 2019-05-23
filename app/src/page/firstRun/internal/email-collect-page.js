@@ -96,7 +96,7 @@ class EmailCollectPage extends React.PureComponent {
       );
     } else if (!authToken || authenticating || this.state.verifying) {
       content = (
-        <View>
+        <View style={firstRunStyle.centered}>
           <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
           <Text style={firstRunStyle.paragraph}>Please wait while we get some things ready...</Text>
         </View>

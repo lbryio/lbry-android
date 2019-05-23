@@ -66,7 +66,7 @@ class WalletPage extends React.PureComponent {
     let content;
     if (!this.state.walletReady || !this.state.hasCheckedSync || isRetrievingSync) {
       content = (
-        <View>
+        <View style={firstRunStyle.centered}>
           <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
             <Text style={firstRunStyle.paragraph}>Retrieving your account information...</Text>
         </View>

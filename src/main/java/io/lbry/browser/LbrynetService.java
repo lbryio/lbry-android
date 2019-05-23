@@ -286,8 +286,16 @@ public class LbrynetService extends PythonService {
                                 context.sendBroadcast(intent);
                             }
                         } else {
+                            /*if (writtenBytes == totalBytes) {
+                                // do not start
+                                continue;
+                            }*/
                             if (!completed && downloadPath != null) {
                                 intent.putExtra("action", "start");
+                                android.util.Log.d("ReactNativeJS", "***");
+                                android.util.Log.d("ReactNativeJS", String.format("Starting download for uri: %s", uri));
+                                android.util.Log.d("ReactNativeJS", String.format("downloadPath=%s", downloadPath));
+                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%d, totalBytes=%d", writtenBytes, totalBytes));
                                 downloadManager.startDownload(uri, file.getName());
                                 if (context != null) {
                                     context.sendBroadcast(intent);

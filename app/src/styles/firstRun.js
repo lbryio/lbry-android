@@ -163,6 +163,9 @@ const firstRunStyle = StyleSheet.create({
     marginRight: 32,
     marginBottom: 48
   },
+  centered: {
+    alignItems: 'center'
+  },
   nowrap: {
     flex: 1,
     flexWrap: 'nowrap'

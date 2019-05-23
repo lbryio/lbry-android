@@ -158,7 +158,6 @@ public class DownloadManager {
         createNotificationChannel();
         createNotificationGroup();
 
-
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = null;
         int notificationId = getNotificationId(id);
