@@ -277,14 +277,14 @@ public class LbrynetService extends PythonService {
                                 android.util.Log.d("ReactNativeJS", "***");
                                 android.util.Log.d("ReactNativeJS", String.format("Completing download for uri: %s", uri));
                                 android.util.Log.d("ReactNativeJS", String.format("downloadPath=%s", downloadPath));
-                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%d, totalBytes=%d", writtenBytes, totalBytes));
+                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%.2f, totalBytes=%.2f", writtenBytes, totalBytes));
                                 intent.putExtra("action", "complete");
                                 downloadManager.completeDownload(uri, file.getName(), totalBytes);
                             } else {
                                 android.util.Log.d("ReactNativeJS", "***");
                                 android.util.Log.d("ReactNativeJS", String.format("Updating download for uri: %s", uri));
                                 android.util.Log.d("ReactNativeJS", String.format("downloadPath=%s", downloadPath));
-                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%d, totalBytes=%d", writtenBytes, totalBytes));
+                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%.2f, totalBytes=%.2f", writtenBytes, totalBytes));
                                 intent.putExtra("action", "update");
                                 intent.putExtra("progress", (writtenBytes / totalBytes) * 100);
                                 downloadManager.updateDownload(uri, file.getName(), writtenBytes, totalBytes);
@@ -303,7 +303,7 @@ public class LbrynetService extends PythonService {
                                 android.util.Log.d("ReactNativeJS", "***");
                                 android.util.Log.d("ReactNativeJS", String.format("Starting download for uri: %s", uri));
                                 android.util.Log.d("ReactNativeJS", String.format("downloadPath=%s", downloadPath));
-                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%d, totalBytes=%d", writtenBytes, totalBytes));
+                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%.2f, totalBytes=%.2f", writtenBytes, totalBytes));
                                 downloadManager.startDownload(uri, file.getName());
                                 if (context != null) {
                                     context.sendBroadcast(intent);
