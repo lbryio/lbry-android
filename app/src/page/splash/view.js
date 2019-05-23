@@ -28,7 +28,7 @@ class SplashScreen extends React.PureComponent {
   componentWillMount() {
     this.setState({
       daemonReady: false,
-      details: 'Starting daemon',
+      details: 'Starting up...',
       message: 'Connecting',
       isRunning: false,
       isLagging: false,
