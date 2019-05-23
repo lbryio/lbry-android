@@ -298,9 +298,11 @@ class AppWithNavigationState extends React.Component {
 
       ToastAndroid.show('Your email address was successfully verified.', ToastAndroid.LONG);
 
-      // upon successful email verification, check wallet sync
+      // upon successful email verification, do wallet sync (if password has been set)
       NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
-        dispatch(doGetSync(walletPassword));
+        if (walletPassword && walletPassword.trim().length > 0) {
+          dispatch(doGetSync(walletPassword));
+        }
       });
     }
   }

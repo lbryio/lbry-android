@@ -167,20 +167,25 @@ class FirstRunScreen extends React.PureComponent {
     });
   }
 
+  checkBottomContainer = (pageName) => {
+    if (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === pageName || Constants.FIRST_RUN_PAGE_WALLET === pageName) {
+      // do not show the buttons (because we're waiting to get things ready)
+      this.setState({ showBottomContainer: false });
+    }
+  }
+
   showNextPage = () => {
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     const nextPage = FirstRunScreen.pages[pageIndex + 1];
     this.setState({ currentPage: nextPage });
-    if (nextPage === Constants.FIRST_RUN_PAGE_EMAIL_COLLECT) {
-      // do not show the buttons (because we're waiting to get things ready)
-      this.setState({ showBottomContainer: false });
-    }
+    this.checkBottomContainer(nextPage);
   }
 
   showPage(pageName) {
     const pageIndex = FirstRunScreen.pages.indexOf(pageName);
     if (pageIndex > -1) {
       this.setState({ currentPage: pageName });
+      this.checkBottomContainer(pageName);
     }
   }
 

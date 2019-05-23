@@ -26,10 +26,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.DataOutputStream;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -79,6 +81,8 @@ public class LbrynetService extends PythonService {
     private ScheduledExecutorService taskExecutor;
 
     private ScheduledFuture taskExecutorHandle = null;
+
+    private boolean streamManagerReady = false;
 
     @Override
     public boolean canDisplayNotification() {
@@ -169,14 +173,25 @@ public class LbrynetService extends PythonService {
         }
     }
 
-    private void pollFileList() {
+    private String sdkCall(String method) throws ConnectException {
+        return sdkCall(method, null);
+    }
+
+    private String sdkCall(String method, Map<String, String> params) throws ConnectException {
         BufferedReader reader = null;
         DataOutputStream dos = null;
         HttpURLConnection conn = null;
 
         try {
             JSONObject request = new JSONObject();
-            request.put("method", "file_list");
+            request.put("method", method);
+            if (params != null) {
+                JSONObject requestParams = new JSONObject();
+                for (Map.Entry<String, String> entry : params.entrySet()) {
+                    requestParams.put(entry.getKey(), entry.getValue());
+                }
+                request.put("params", requestParams);
+            }
 
             URL url = new URL(SDK_URL);
             conn = (HttpURLConnection) url.openConnection();
@@ -199,10 +214,7 @@ public class LbrynetService extends PythonService {
                     sb.append(input);
                 }
 
-                JSONObject response = new JSONObject(sb.toString());
-                if (!response.has("error")) {
-                    handlePollFileResponse(response);
-                }
+                return sb.toString();
             } else {
                 reader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
                 StringBuilder sb = new StringBuilder();
@@ -210,13 +222,16 @@ public class LbrynetService extends PythonService {
                 while ((error = reader.readLine()) != null) {
                     sb.append(error);
                 }
-                android.util.Log.d(TAG, sb.toString());
+                return sb.toString();
             }
+        } catch (ConnectException ex) {
+            // sdk not started yet. rethrow
+            throw ex;
         } catch (IOException ex) {
-            android.util.Log.e(TAG, ex.getMessage(), ex);
+            Log.e(TAG, ex.getMessage(), ex);
             // ignore and continue
         } catch (Exception ex) {
-            android.util.Log.e(TAG, ex.getMessage(), ex);
+            Log.e(TAG, ex.getMessage(), ex);
             // ignore
         } finally {
             try {
@@ -229,6 +244,40 @@ public class LbrynetService extends PythonService {
             } catch (IOException ex) {
                 // pass
             }
+        }
+
+        return null;
+    }
+
+    private void pollFileList() {
+        try {
+            if (!streamManagerReady) {
+                String statusResponse = sdkCall("status");
+                if (statusResponse != null) {
+                    JSONObject status = new JSONObject(statusResponse);
+                    if (status.has("error")) {
+                        return;
+                    }
+                    if (status.has("startup_status")) {
+                        JSONObject startupStatus = status.getJSONObject("startup_status");
+                        streamManagerReady = startupStatus.has("stream_manager") && startupStatus.getBoolean("stream_manager");
+                    }
+                }
+            }
+
+            if (streamManagerReady) {
+                String fileList = sdkCall("file_list");
+                if (fileList != null) {
+                    JSONObject response = new JSONObject(fileList);
+                    if (!response.has("error")) {
+                        handlePollFileResponse(response);
+                    }
+                }
+            }
+        } catch (ConnectException ex) {
+            // pass
+        } catch (JSONException ex) {
+            Log.e(TAG, ex.getMessage(), ex);
         }
     }
 
@@ -274,17 +323,9 @@ public class LbrynetService extends PythonService {
                         if (downloadManager.isDownloadActive(uri)) {
                             if (writtenBytes >= totalBytes || completed) {
                                 // completed download
-                                android.util.Log.d("ReactNativeJS", "***");
-                                android.util.Log.d("ReactNativeJS", String.format("Completing download for uri: %s", uri));
-                                android.util.Log.d("ReactNativeJS", String.format("downloadPath=%s", downloadPath));
-                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%.2f, totalBytes=%.2f", writtenBytes, totalBytes));
                                 intent.putExtra("action", "complete");
                                 downloadManager.completeDownload(uri, file.getName(), totalBytes);
                             } else {
-                                android.util.Log.d("ReactNativeJS", "***");
-                                android.util.Log.d("ReactNativeJS", String.format("Updating download for uri: %s", uri));
-                                android.util.Log.d("ReactNativeJS", String.format("downloadPath=%s", downloadPath));
-                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%.2f, totalBytes=%.2f", writtenBytes, totalBytes));
                                 intent.putExtra("action", "update");
                                 intent.putExtra("progress", (writtenBytes / totalBytes) * 100);
                                 downloadManager.updateDownload(uri, file.getName(), writtenBytes, totalBytes);
@@ -300,10 +341,6 @@ public class LbrynetService extends PythonService {
                             }
                             if (!completed && downloadPath != null) {
                                 intent.putExtra("action", "start");
-                                android.util.Log.d("ReactNativeJS", "***");
-                                android.util.Log.d("ReactNativeJS", String.format("Starting download for uri: %s", uri));
-                                android.util.Log.d("ReactNativeJS", String.format("downloadPath=%s", downloadPath));
-                                android.util.Log.d("ReactNativeJS", String.format("writtenBytes=%.2f, totalBytes=%.2f", writtenBytes, totalBytes));
                                 downloadManager.startDownload(uri, file.getName());
                                 if (context != null) {
                                     context.sendBroadcast(intent);

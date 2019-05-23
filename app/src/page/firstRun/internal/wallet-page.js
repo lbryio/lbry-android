@@ -27,15 +27,16 @@ class WalletPage extends React.PureComponent {
 
   componentDidMount() {
     this.checkWalletReady();
-    this.props.checkSync();
-    setTimeout(() => this.setState({ hasCheckedSync: true}), 1000);
   }
 
   checkWalletReady = () => {
     // make sure the sdk wallet component is ready
     Lbry.status().then(status => {
       if (status.startup_status && status.startup_status.wallet) {
-        this.setState({ walletReady: true });
+        this.setState({ walletReady: true }, () => {
+          this.props.checkSync();
+          setTimeout(() => this.setState({ hasCheckedSync: true}), 1000);
+        });
         return;
       }
       setTimeout(this.checkWalletReady, 1000);
