@@ -332,14 +332,17 @@ public class LbrynetService extends PythonService {
                                 String claimName = item.getString("claim_name");
                                 String uri = String.format("lbry://%s#%s", claimName, claimId);
 
-                                File file = new File(downloadPath);
-                                Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
-                                intent.putExtra("action", "start");
-                                downloadManager.startDownload(uri, file.getName());
 
-                                Context context = getApplicationContext();
-                                if (context != null) {
-                                    context.sendBroadcast(intent);
+                                if (!downloadManager.isDownloadActive(uri)) {
+                                    File file = new File(downloadPath);
+                                    Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
+                                    intent.putExtra("action", "start");
+                                    downloadManager.startDownload(uri, file.getName());
+
+                                    Context context = getApplicationContext();
+                                    if (context != null) {
+                                        context.sendBroadcast(intent);
+                                    }
                                 }
                             }
                         }
