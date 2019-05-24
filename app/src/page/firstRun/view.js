@@ -38,7 +38,8 @@ class FirstRunScreen extends React.PureComponent {
     isEmailVerified: false,
     skipAccountConfirmed: false,
     showBottomContainer: true,
-    walletPassword: null
+    walletPassword: null,
+    syncApplyStarted: false
   };
 
   componentDidMount() {
@@ -65,16 +66,30 @@ class FirstRunScreen extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { emailNewErrorMessage, emailNewPending, user } = nextProps;
-    const { notify } = this.props;
+    const { emailNewErrorMessage, emailNewPending, syncApplyErrorMessage, syncApplyIsPending, user } = nextProps;
+    const { notify, isApplyingSync } = this.props;
 
     if (this.state.emailSubmitted && !emailNewPending) {
       this.setState({ emailSubmitted: false });
-      if (emailNewErrorMessage) {
+      if (emailNewErrorMessage && emailNewErrorMessage.trim().length > 0) {
         notify ({ message: String(emailNewErrorMessage), isError: true });
       } else {
         // Request successful. Navigate to email verify page.
         this.showPage(Constants.FIRST_RUN_PAGE_EMAIL_VERIFY)
+      }
+    }
+
+    if (this.state.syncApplyStarted && !syncApplyIsPending) {
+      this.setState({ syncApplyStarted: false });
+      if (syncApplyErrorMessage && syncApplyErrorMessage.trim().length > 0) {
+        notify({ message: syncApplyErrorMessage, isError: true });
+        this.setState({ showBottomContainer: true });
+      } else {
+        // password successfully verified
+        if (NativeModules.UtilityModule) {
+          NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, this.state.walletPassword);
+        }
+        this.closeFinalPage();
       }
     }
 
@@ -121,15 +136,28 @@ class FirstRunScreen extends React.PureComponent {
     }
   }
 
+  checkWalletPassword = () => {
+    const { syncApply, syncHash, syncData } = this.props;
+    this.setState({ syncApplyStarted: true, showBottomContainer: false }, () => {
+      syncApply(syncHash, syncData, this.state.walletPassword);
+    });
+  }
+
   handleContinuePressed = () => {
-    const { notify, user } = this.props;
+    const { notify, user, hasSyncedWallet } = this.props;
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     if (Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage) {
       if (!this.state.walletPassword || this.state.walletPassword.trim().length === 0) {
         return notify({ message: 'Please enter a wallet password' });
       }
 
-      this.closeFinalPage();
+      // do apply sync to check if the password is valid
+      if (hasSyncedWallet) {
+        this.checkWalletPassword();
+      } else {
+        setFreshPassword();
+        this.closeFinalPage();
+      }
       return;
     }
 
@@ -227,6 +255,13 @@ class FirstRunScreen extends React.PureComponent {
     this.setState({ skipAccountConfirmed: checked });
   }
 
+  setFreshPassword = () => {
+    if (NativeModules.UtilityModule) {
+      NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, this.state.walletPassword);
+      AsyncStorage.setItem(Constants.KEY_FIRST_RUN_PASSWORD, "true");
+    }
+  }
+
   render() {
     const {
       authenticate,
@@ -238,7 +273,8 @@ class FirstRunScreen extends React.PureComponent {
       emailToVerify,
       notify,
       hasSyncedWallet,
-      isRetrievingSync,
+      getSyncIsPending,
+      syncApplyIsPending,
       resendVerificationEmail,
       user
     } = this.props;
@@ -272,7 +308,8 @@ class FirstRunScreen extends React.PureComponent {
         page = (<WalletPage
                   checkSync={checkSync}
                   hasSyncedWallet={hasSyncedWallet}
-                  isRetrievingSync={isRetrievingSync}
+                  getSyncIsPending={getSyncIsPending}
+                  syncApplyIsPending={syncApplyIsPending}
                   onWalletViewLayout={this.onWalletViewLayout}
                   onPasswordChanged={this.onWalletPasswordChanged} />);
         break;

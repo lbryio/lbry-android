@@ -114,24 +114,18 @@ class SplashScreen extends React.PureComponent {
 
     if (this.state.daemonReady && this.state.shouldAuthenticate && user && user.id) {
       this.setState({ shouldAuthenticate: false }, () => {
-        AsyncStorage.getItem(Constants.KEY_FIRST_RUN_EMAIL).then(email => {
-          if (email) {
-            setEmailToVerify(email);
-          }
+        // user is authenticated, navigate to the main view
+        if (user.has_verified_email) {
+          NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
+            if (walletPassword && walletPassword.trim().length > 0) {
+              getSync(walletPassword);
+            }
+            this.navigateToMain();
+          });
+          return;
+        }
 
-          // user is authenticated, navigate to the main view
-          if (user.has_verified_email) {
-            NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
-              if (walletPassword && walletPassword.trim().length > 0) {
-                getSync(walletPassword);
-              }
-              this.navigateToMain();
-            });
-            return;
-          }
-
-          this.navigateToMain();
-        });
+        this.navigateToMain();
       });
     }
   }
@@ -142,9 +136,11 @@ class SplashScreen extends React.PureComponent {
       balanceSubscribe,
       blacklistedOutpointsSubscribe,
       checkSubscriptionsInit,
-      updateBlockHeight,
+      getSync,
       navigation,
-      notify
+      notify,
+      updateBlockHeight,
+      user
     } = this.props;
 
     Lbry.resolve({ urls: 'lbry://one' }).then(() => {
@@ -154,10 +150,21 @@ class SplashScreen extends React.PureComponent {
       checkSubscriptionsInit();
       updateBlockHeight();
       setInterval(() => { updateBlockHeight(); }, BLOCK_HEIGHT_INTERVAL);
-      NativeModules.VersionInfo.getAppVersion().then(appVersion => {
-        this.setState({ shouldAuthenticate: true });
-        authenticate(appVersion, Platform.OS);
-      });
+
+      if (user && user.id && user.has_verified_email) {
+        // user already authenticated
+        NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
+          if (walletPassword && walletPassword.trim().length > 0) {
+            getSync(walletPassword);
+          }
+          this.navigateToMain();
+        });
+      } else {
+        NativeModules.VersionInfo.getAppVersion().then(appVersion => {
+          this.setState({ shouldAuthenticate: true });
+          authenticate(appVersion, Platform.OS);
+        });
+      }
     });
   }
 
@@ -201,7 +208,7 @@ class SplashScreen extends React.PureComponent {
         NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
           if (password && password.trim().length > 0) {
             // unlock the wallet and then finish the splash screen
-            Lbry.account_unlock({ password }).then(() => this.finishSplashScreen()).catch((e) => console.log(e));
+            Lbry.account_unlock({ password }).then(() => this.finishSplashScreen());
             return;
           }
 

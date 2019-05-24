@@ -156,10 +156,10 @@ class RewardsPage extends React.PureComponent {
     return (
       <View style={rewardStyle.container}>
         <UriBar navigation={navigation} />
-        {(!this.state.isEmailVerified || !this.state.isIdentityVerified || !this.state.isRewardApproved) &&
+        {(!this.state.isEmailVerified || !this.state.isRewardApproved) &&
           <RewardEnrolment navigation={navigation} />}
 
-        {(this.state.isEmailVerified && this.state.isIdentityVerified && this.state.isRewardApproved) &&
+        {(this.state.isEmailVerified && this.state.isRewardApproved) &&
           <ScrollView
             ref={ref => this.scrollView = ref}
             keyboardShouldPersistTaps={'handled'}

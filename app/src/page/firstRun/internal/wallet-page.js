@@ -41,7 +41,6 @@ class WalletPage extends React.PureComponent {
       }
       setTimeout(this.checkWalletReady, 1000);
     }).catch((e) => {
-      console.log(e);
       setTimeout(this.checkWalletReady, 1000);
     });
   }
@@ -53,23 +52,24 @@ class WalletPage extends React.PureComponent {
     if (onPasswordChanged) {
       onPasswordChanged(text);
     }
-
-    if (NativeModules.UtilityModule) {
-      NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, text);
-      // simply set any string value to indicate that a passphrase was set on first run
-      AsyncStorage.setItem(Constants.KEY_FIRST_RUN_PASSWORD, "true");
-    }
   }
 
   render() {
-    const { onPasswordChanged, onWalletViewLayout, isRetrievingSync, hasSyncedWallet } = this.props;
+    const { onPasswordChanged, onWalletViewLayout, getSyncIsPending, hasSyncedWallet, syncApplyIsPending } = this.props;
 
     let content;
-    if (!this.state.walletReady || !this.state.hasCheckedSync || isRetrievingSync) {
+    if (!this.state.walletReady || !this.state.hasCheckedSync || getSyncIsPending) {
       content = (
         <View style={firstRunStyle.centered}>
           <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
             <Text style={firstRunStyle.paragraph}>Retrieving your account information...</Text>
+        </View>
+      );
+    } else if (syncApplyIsPending) {
+      content = (
+        <View style={firstRunStyle.centered}>
+          <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
+            <Text style={firstRunStyle.paragraph}>Validating password...</Text>
         </View>
       );
     } else {

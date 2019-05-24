@@ -344,6 +344,7 @@ class AppWithNavigationState extends React.Component {
           if (!emailVerifyErrorMessage) {
             AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
           }
+
           AsyncStorage.removeItem(Constants.KEY_SHOULD_VERIFY_EMAIL);
           dispatch(doToast({ message }));
         }
