@@ -117,10 +117,7 @@ class FilePage extends React.PureComponent {
       if (purchasedUris.includes(uri)) {
         const { nout, txid } = claim;
         const outpoint = `${txid}:${nout}`;
-        console.log('sending queued download with outpoint: ' + outpoint);
         NativeModules.UtilityModule.queueDownload(outpoint);
-      } else{
-        console.log('just checking downloads here.');
       }
       NativeModules.UtilityModule.checkDownloads();
     }
@@ -196,7 +193,7 @@ class FilePage extends React.PureComponent {
   }
 
   onDeletePressed = () => {
-    const { claim, deleteFile, fileInfo } = this.props;
+    const { claim, deleteFile, deletePurchasedUri, fileInfo, navigation } = this.props;
 
     Alert.alert(
       'Delete file',
@@ -204,7 +201,12 @@ class FilePage extends React.PureComponent {
       [
         { text: 'No' },
         { text: 'Yes', onPress: () => {
+          const { uri } = navigation.state.params;
           deleteFile(`${claim.txid}:${claim.nout}`, true);
+          deletePurchasedUri(uri);
+          if (NativeModules.UtilityModule) {
+            NativeModules.UtilityModule.deleteDownload(uri);
+          }
           this.setState({
             downloadPressed: false,
             fileViewLogged: false,
@@ -218,7 +220,7 @@ class FilePage extends React.PureComponent {
   }
 
   onStopDownloadPressed = () => {
-    const { fileInfo, navigation, notify, stopDownload } = this.props;
+    const { deletePurchasedUri, fileInfo, navigation, notify, stopDownload } = this.props;
 
     Alert.alert(
       'Stop download',
@@ -226,7 +228,12 @@ class FilePage extends React.PureComponent {
       [
         { text: 'No' },
         { text: 'Yes', onPress: () => {
-          stopDownload(navigation.state.params.uri, fileInfo);
+          const { uri } = navigation.state.params;
+          stopDownload(uri, fileInfo);
+          deletePurchasedUri(uri);
+          if (NativeModules.UtilityModule) {
+            NativeModules.UtilityModule.deleteDownload(uri);
+          }
           this.setState({
             downloadPressed: false,
             fileViewLogged: false,

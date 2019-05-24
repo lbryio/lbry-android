@@ -64,6 +64,8 @@ public class LbrynetService extends PythonService {
 
     public static final String ACTION_QUEUE_DOWNLOAD = "io.lbry.browser.ACTION_QUEUE_DOWNLOAD";
 
+    public static final String ACTION_DELETE_DOWNLOAD = "io.lbry.browser.ACTION_DELETE_DOWNLOAD";
+
     public static final String GROUP_SERVICE = "io.lbry.browser.GROUP_SERVICE";
 
     public static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.DAEMON_NOTIFICATION_CHANNEL";
@@ -88,10 +90,6 @@ public class LbrynetService extends PythonService {
 
     private boolean streamManagerReady = false;
 
-    // Maintain a list of all file list URIs for this session
-    // (to be able to track downloads that finish before file_list)
-    private List<String> fileListUris;
-
     @Override
     public boolean canDisplayNotification() {
         return true;
@@ -114,6 +112,7 @@ public class LbrynetService extends PythonService {
 
         IntentFilter downloadFilter = new IntentFilter();
         downloadFilter.addAction(ACTION_CHECK_DOWNLOADS);
+        downloadFilter.addAction(ACTION_DELETE_DOWNLOAD);
         downloadFilter.addAction(ACTION_QUEUE_DOWNLOAD);
         downloadReceiver = new BroadcastReceiver() {
             @Override
@@ -124,14 +123,15 @@ public class LbrynetService extends PythonService {
                     if (outpoint != null && outpoint.trim().length() > 0) {
                         LbrynetService.this.queueDownload(outpoint);
                     }
+                } else if (ACTION_DELETE_DOWNLOAD.equals(action)) {
+                    String uri = intent.getStringExtra("uri");
+                    LbrynetService.this.deleteDownload(uri);
                 } else if (ACTION_CHECK_DOWNLOADS.equals(action)) {
                     LbrynetService.this.checkDownloads();
                 }
             }
         };
         registerReceiver(downloadReceiver, downloadFilter);
-
-        fileListUris = new ArrayList<String>();
     }
 
     @Override
@@ -332,8 +332,7 @@ public class LbrynetService extends PythonService {
                                 String claimName = item.getString("claim_name");
                                 String uri = String.format("lbry://%s#%s", claimName, claimId);
 
-
-                                if (!downloadManager.isDownloadActive(uri)) {
+                                if (!downloadManager.isDownloadActive(uri) && !downloadManager.isDownloadCompleted(uri)) {
                                     File file = new File(downloadPath);
                                     Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
                                     intent.putExtra("action", "start");
@@ -356,13 +355,20 @@ public class LbrynetService extends PythonService {
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    private void deleteDownload(String uri) {
+        if (downloadManager.isDownloadActive(uri)) {
+            downloadManager.abortDownload(uri);
+        }
+        downloadManager.deleteDownloadUri(uri);
+    }
+
     private void handlePollFileResponse(JSONObject response) {
         Context context = getApplicationContext();
         if (response.has("result")) {
             JSONArray fileItems = response.optJSONArray("result");
             if (fileItems != null) {
                 try {
-                    List<String> itemUris = new ArrayList<String>();
+                    //List<String> itemUris = new ArrayList<String>();
                     for (int i = 0; i < fileItems.length(); i++) {
                         JSONObject item = fileItems.getJSONObject(i);
                         String downloadPath = item.isNull("download_path") ? null : item.getString("download_path");
@@ -382,10 +388,6 @@ public class LbrynetService extends PythonService {
                             // possibly deleted, abort the download
                             downloadManager.abortDownload(uri);
                             continue;
-                        }
-
-                        if (!itemUris.contains(uri)) {
-                            itemUris.add(uri);
                         }
 
                         File file = new File(downloadPath);
@@ -420,14 +422,14 @@ public class LbrynetService extends PythonService {
                     }
 
                     // check download manager uris and clear downloads that may have been cancelled / deleted
-                    List<String> activeUris = downloadManager.getActiveDownloads();
+                    /*List<String> activeUris = downloadManager.getActiveDownloads();
                     for (int i = 0; i < activeUris.size(); i++) {
                         String activeUri = activeUris.get(i);
                         if (!itemUris.contains(activeUri)) {
                             downloadManager.abortDownload(activeUri);
                             fileListUris.remove(activeUri); // remove URIs from the session that may have been deleted
                         }
-                    }
+                    }*/
                 } catch (JSONException ex) {
                     // pass
                     Log.e(TAG, ex.getMessage(), ex);

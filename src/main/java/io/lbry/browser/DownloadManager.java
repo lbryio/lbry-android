@@ -28,6 +28,8 @@ public class DownloadManager {
 
     private List<String> activeDownloads = new ArrayList<String>();
 
+    private List<String> completedDownloads = new ArrayList<String>();
+
     private HashMap<Integer, NotificationCompat.Builder> builders = new HashMap<Integer, NotificationCompat.Builder>();
 
     private HashMap<String, Integer> downloadIdNotificationIdMap = new HashMap<String, Integer>();
@@ -122,31 +124,33 @@ public class DownloadManager {
             return;
         }
 
-        if (!isDownloadActive(id)) {
-            activeDownloads.add(id);
-        }
+        synchronized (this) {
+            if (!isDownloadActive(id)) {
+                activeDownloads.add(id);
+            }
 
-        createNotificationChannel();
-        createNotificationGroup();
+            createNotificationChannel();
+            createNotificationGroup();
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-        // The file URI is used as the unique ID
-        builder.setContentIntent(getLaunchPendingIntent(id, context))
-               .setContentTitle(String.format("Downloading %s", truncateFilename(filename)))
-               .setGroup(GROUP_DOWNLOADS)
-               .setPriority(NotificationCompat.PRIORITY_LOW)
-               .setProgress(MAX_PROGRESS, 0, false)
-               .setSmallIcon(android.R.drawable.stat_sys_download);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+            // The file URI is used as the unique ID
+            builder.setContentIntent(getLaunchPendingIntent(id, context))
+                   .setContentTitle(String.format("Downloading %s", truncateFilename(filename)))
+                   .setGroup(GROUP_DOWNLOADS)
+                   .setPriority(NotificationCompat.PRIORITY_LOW)
+                   .setProgress(MAX_PROGRESS, 0, false)
+                   .setSmallIcon(android.R.drawable.stat_sys_download);
 
-        int notificationId = getNotificationId(id);
-        downloadIdNotificationIdMap.put(id, notificationId);
-        builders.put(notificationId, builder);
-        notificationManager.notify(notificationId, builder.build());
+            int notificationId = getNotificationId(id);
+            downloadIdNotificationIdMap.put(id, notificationId);
+            builders.put(notificationId, builder);
+            notificationManager.notify(notificationId, builder.build());
 
-        if (groupCreated && groupBuilder != null) {
-            groupBuilder.setSmallIcon(android.R.drawable.stat_sys_download);
-            notificationManager.notify(DOWNLOAD_NOTIFICATION_GROUP_ID, groupBuilder.build());
+            if (groupCreated && groupBuilder != null) {
+                groupBuilder.setSmallIcon(android.R.drawable.stat_sys_download);
+                notificationManager.notify(DOWNLOAD_NOTIFICATION_GROUP_ID, groupBuilder.build());
+            }
         }
     }
 
@@ -155,110 +159,103 @@ public class DownloadManager {
             return;
         }
 
-        createNotificationChannel();
-        createNotificationGroup();
+        synchronized (this) {
+            createNotificationChannel();
+            createNotificationGroup();
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        NotificationCompat.Builder builder = null;
-        int notificationId = getNotificationId(id);
-        if (builders.containsKey(notificationId)) {
-            builder = builders.get(notificationId);
-        } else {
-            builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-            builder.setContentTitle(String.format("Downloading %s", truncateFilename(filename)))
-                   .setPriority(NotificationCompat.PRIORITY_LOW);
-            builders.put(notificationId, builder);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            NotificationCompat.Builder builder = null;
+            int notificationId = getNotificationId(id);
+            if (builders.containsKey(notificationId)) {
+                builder = builders.get(notificationId);
+            } else {
+                builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+                builder.setContentTitle(String.format("Downloading %s", truncateFilename(filename)))
+                       .setPriority(NotificationCompat.PRIORITY_LOW);
+                builders.put(notificationId, builder);
+            }
+
+            double progress = (writtenBytes / totalBytes) * 100;
+            builder.setContentIntent(getLaunchPendingIntent(id, context))
+                   .setContentText(String.format("%.0f%% (%s / %s)", progress, formatBytes(writtenBytes), formatBytes(totalBytes)))
+                   .setGroup(GROUP_DOWNLOADS)
+                   .setProgress(MAX_PROGRESS, new Double(progress).intValue(), false)
+                   .setSmallIcon(android.R.drawable.stat_sys_download);
+            notificationManager.notify(notificationId, builder.build());
+
+            if (progress >= MAX_PROGRESS) {
+                builder.setContentTitle(String.format("Downloaded %s", truncateFilename(filename, 30)))
+                       .setContentText(String.format("%s", formatBytes(totalBytes)))
+                       .setGroup(GROUP_DOWNLOADS)
+                       .setProgress(0, 0, false)
+                       .setSmallIcon(android.R.drawable.stat_sys_download_done);
+                notificationManager.notify(notificationId, builder.build());
+
+                if (downloadIdNotificationIdMap.containsKey(id)) {
+                    downloadIdNotificationIdMap.remove(id);
+                }
+                if (builders.containsKey(notificationId)) {
+                    builders.remove(notificationId);
+                }
+
+                // If there are no more downloads and the group exists, set the icon to stop animating
+                if (groupCreated && groupBuilder != null && downloadIdNotificationIdMap.size() == 0) {
+                    groupBuilder.setSmallIcon(android.R.drawable.stat_sys_download_done);
+                    notificationManager.notify(DOWNLOAD_NOTIFICATION_GROUP_ID, groupBuilder.build());
+                }
+
+                completeDownload(id, filename, totalBytes);
+            }
         }
+    }
 
-        double progress = (writtenBytes / totalBytes) * 100;
-        builder.setContentIntent(getLaunchPendingIntent(id, context))
-               .setContentText(String.format("%.0f%% (%s / %s)", progress, formatBytes(writtenBytes), formatBytes(totalBytes)))
-               .setGroup(GROUP_DOWNLOADS)
-               .setProgress(MAX_PROGRESS, new Double(progress).intValue(), false)
-               .setSmallIcon(android.R.drawable.stat_sys_download);
-        notificationManager.notify(notificationId, builder.build());
+    public void completeDownload(String id, String filename, double totalBytes) {
+        synchronized (this) {
+            if (isDownloadActive(id)) {
+                activeDownloads.remove(id);
+            }
+            if (!isDownloadCompleted(id)) {
+                completedDownloads.add(id);
+            }
 
-        if (progress >= MAX_PROGRESS) {
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            NotificationCompat.Builder builder = null;
+            int notificationId = getNotificationId(id);
+            if (builders.containsKey(notificationId)) {
+                builder = builders.get(notificationId);
+            } else {
+                builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+                builder.setPriority(NotificationCompat.PRIORITY_LOW);
+                builders.put(notificationId, builder);
+            }
+
             builder.setContentTitle(String.format("Downloaded %s", truncateFilename(filename, 30)))
                    .setContentText(String.format("%s", formatBytes(totalBytes)))
                    .setGroup(GROUP_DOWNLOADS)
                    .setProgress(0, 0, false)
                    .setSmallIcon(android.R.drawable.stat_sys_download_done);
-            notificationManager.notify(notificationId, builder.build());
+             notificationManager.notify(notificationId, builder.build());
 
-            if (downloadIdNotificationIdMap.containsKey(id)) {
-                downloadIdNotificationIdMap.remove(id);
-            }
-            if (builders.containsKey(notificationId)) {
-                builders.remove(notificationId);
-            }
-
-            // If there are no more downloads and the group exists, set the icon to stop animating
-            if (groupCreated && groupBuilder != null && downloadIdNotificationIdMap.size() == 0) {
-                groupBuilder.setSmallIcon(android.R.drawable.stat_sys_download_done);
-                notificationManager.notify(DOWNLOAD_NOTIFICATION_GROUP_ID, groupBuilder.build());
-            }
-
-            completeDownload(id, filename, totalBytes);
+             // If there are no more downloads and the group exists, set the icon to stop animating
+             checkGroupDownloadIcon(notificationManager);
         }
-    }
-
-    public void completeDownload(String id, String filename, double totalBytes) {
-        if (isDownloadActive(id)) {
-            activeDownloads.remove(id);
-        }
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        NotificationCompat.Builder builder = null;
-        int notificationId = getNotificationId(id);
-        if (builders.containsKey(notificationId)) {
-            builder = builders.get(notificationId);
-        } else {
-            builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-            builder.setPriority(NotificationCompat.PRIORITY_LOW);
-            builders.put(notificationId, builder);
-        }
-
-        builder.setContentTitle(String.format("Downloaded %s", truncateFilename(filename, 30)))
-               .setContentText(String.format("%s", formatBytes(totalBytes)))
-               .setGroup(GROUP_DOWNLOADS)
-               .setProgress(0, 0, false)
-               .setSmallIcon(android.R.drawable.stat_sys_download_done);
-         notificationManager.notify(notificationId, builder.build());
-
-         if (downloadIdNotificationIdMap.containsKey(id)) {
-             downloadIdNotificationIdMap.remove(id);
-         }
-         if (builders.containsKey(notificationId)) {
-             builders.remove(notificationId);
-         }
-
-         // If there are no more downloads and the group exists, set the icon to stop animating
-         checkGroupDownloadIcon(notificationManager);
     }
 
     public void abortDownload(String id) {
-        int notificationId = downloadIdNotificationIdMap.get(id);
-        if (downloadIdNotificationIdMap.containsKey(id)) {
-            downloadIdNotificationIdMap.remove(id);
-        }
-        if (builders.containsKey(notificationId)) {
-            builders.remove(notificationId);
-        }
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.cancel(notificationId);
-        activeDownloads.remove(id);
-
-        checkGroupDownloadIcon(notificationManager);
-        if (activeDownloads.size() == 0) {
-            notificationManager.cancel(DOWNLOAD_NOTIFICATION_GROUP_ID);
-            groupCreated = false;
+        synchronized (this) {
+            if (downloadIdNotificationIdMap.containsKey(id)) {
+                removeDownloadNotification(id);
+            }
+            activeDownloads.remove(id);
         }
     }
 
     public boolean isDownloadActive(String id) {
         return (activeDownloads.contains(id));
+    }
+
+    public boolean isDownloadCompleted(String id) {
+        return (completedDownloads.contains(id));
     }
 
     public boolean hasActiveDownloads() {
@@ -269,22 +266,35 @@ public class DownloadManager {
         return activeDownloads;
     }
 
-    private void removeDownloadNotification(String id) {
-        if (!downloadIdNotificationIdMap.containsKey(id)) {
-            return;
-        }
+    public List<String> getCompletedDownloads() {
+        return completedDownloads;
+    }
 
+    public void deleteDownloadUri(String uri) {
+        synchronized (this) {
+            activeDownloads.remove(uri);
+            completedDownloads.remove(uri);
+
+            if (downloadIdNotificationIdMap.containsKey(uri)) {
+                removeDownloadNotification(uri);
+            }
+        }
+    }
+
+    private void removeDownloadNotification(String id) {
         int notificationId = downloadIdNotificationIdMap.get(id);
-        if (!builders.containsKey(notificationId)) {
-            return;
+        if (downloadIdNotificationIdMap.containsKey(id)) {
+            downloadIdNotificationIdMap.remove(id);
+        }
+        if (builders.containsKey(notificationId)) {
+            builders.remove(notificationId);
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = builders.get(notificationId);
         notificationManager.cancel(notificationId);
-        downloadIdNotificationIdMap.remove(id);
-        builders.remove(notificationId);
 
+        checkGroupDownloadIcon(notificationManager);
         if (builders.values().size() == 0) {
             notificationManager.cancel(DOWNLOAD_NOTIFICATION_GROUP_ID);
             groupCreated = false;

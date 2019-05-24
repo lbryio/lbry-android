@@ -344,4 +344,14 @@ public class UtilityModule extends ReactContextBaseJavaModule {
             context.sendBroadcast(intent);
         }
     }
+
+    @ReactMethod
+    public void deleteDownload(String uri) {
+        Intent intent = new Intent();
+        intent.setAction(LbrynetService.ACTION_DELETE_DOWNLOAD);
+        intent.putExtra("uri", uri);
+        if (context != null) {
+            context.sendBroadcast(intent);
+        }
+    }
 }

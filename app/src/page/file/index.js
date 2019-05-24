@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import {
   doFetchFileInfo,
   doPurchaseUri,
+  doDeletePurchasedUri,
   doResolveUri,
   doSendTip,
   doToast,
@@ -66,6 +67,7 @@ const perform = dispatch => ({
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
   notify: data => dispatch(doToast(data)),
   purchaseUri: (uri, costInfo, saveFile) => dispatch(doPurchaseUri(uri, costInfo, saveFile)),
+  deletePurchasedUri: uri => dispatch(doDeletePurchasedUri(uri)),
   resolveUri: uri => dispatch(doResolveUri(uri)),
   sendTip: (amount, claimId, uri, successCallback, errorCallback) => dispatch(doSendTip(amount, claimId, uri, successCallback, errorCallback)),
   stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),
