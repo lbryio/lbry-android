@@ -59,7 +59,7 @@ class FileDownloadButton extends React.PureComponent {
           <Text style={fileDownloadButtonStyle.text}>{label}</Text>
         </View>
       );
-    } else if (fileInfo === null && !downloading) {
+    } else if (!fileInfo && !downloading) {
       if (!costInfo) {
         return (
           <View style={[style, fileDownloadButtonStyle.container]}>

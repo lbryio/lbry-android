@@ -103,7 +103,7 @@ class FilePage extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { purchasedUris: prevPurchasedUris, navigation, contentType } = this.props;
+    const { claim, purchasedUris: prevPurchasedUris, navigation, contentType } = this.props;
     const { uri } = navigation.state.params;
     const { fileInfo, purchasedUris, failedPurchaseUris, streamingUrl } = nextProps;
 
@@ -111,12 +111,20 @@ class FilePage extends React.PureComponent {
       this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
     }
 
+    const mediaType = Lbry.getMediaType(contentType);
+    const isPlayable = mediaType === 'video' || mediaType === 'audio';
     if (prevPurchasedUris.length != purchasedUris.length && NativeModules.UtilityModule) {
+      if (purchasedUris.includes(uri)) {
+        const { nout, txid } = claim;
+        const outpoint = `${txid}:${nout}`;
+        console.log('sending queued download with outpoint: ' + outpoint);
+        NativeModules.UtilityModule.queueDownload(outpoint);
+      } else{
+        console.log('just checking downloads here.');
+      }
       NativeModules.UtilityModule.checkDownloads();
     }
 
-    const mediaType = Lbry.getMediaType(contentType);
-    const isPlayable = mediaType === 'video' || mediaType === 'audio';
     if (fileInfo && fileInfo.streaming_url && !this.state.streamingMode && isPlayable) {
       this.setState({ streamingMode: true, currentStreamUrl: fileInfo.streaming_url });
     }
@@ -196,7 +204,7 @@ class FilePage extends React.PureComponent {
       [
         { text: 'No' },
         { text: 'Yes', onPress: () => {
-          deleteFile(claim.nout, true);
+          deleteFile(`${claim.txid}:${claim.nout}`, true);
           this.setState({
             downloadPressed: false,
             fileViewLogged: false,
@@ -589,7 +597,8 @@ class FilePage extends React.PureComponent {
                     <FileItemMedia style={filePageStyle.thumbnail} title={title} thumbnail={thumbnail} />}
                   {((!this.state.downloadButtonShown || this.state.downloadPressed) && !this.state.mediaLoaded) &&
                       <ActivityIndicator size="large" color={Colors.LbryGreen} style={filePageStyle.loading} />}
-                  {((isPlayable && !completed && !canLoadMedia) || canOpen || (!completed && !this.state.streamingMode)) && (!this.state.downloadPressed) &&
+                  {((isPlayable && !completed && !canLoadMedia) || canOpen || (!completed && !this.state.streamingMode)) &&
+                    (!this.state.downloadPressed) &&
                     <FileDownloadButton uri={uri}
                                         style={filePageStyle.downloadButton}
                                         openFile={openFile}

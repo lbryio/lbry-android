@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Binder;
@@ -30,6 +31,7 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -60,6 +62,8 @@ public class LbrynetService extends PythonService {
 
     public static final String ACTION_CHECK_DOWNLOADS = "io.lbry.browser.ACTION_CHECK_DOWNLOADS";
 
+    public static final String ACTION_QUEUE_DOWNLOAD = "io.lbry.browser.ACTION_QUEUE_DOWNLOAD";
+
     public static final String GROUP_SERVICE = "io.lbry.browser.GROUP_SERVICE";
 
     public static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.DAEMON_NOTIFICATION_CHANNEL";
@@ -84,6 +88,10 @@ public class LbrynetService extends PythonService {
 
     private boolean streamManagerReady = false;
 
+    // Maintain a list of all file list URIs for this session
+    // (to be able to track downloads that finish before file_list)
+    private List<String> fileListUris;
+
     @Override
     public boolean canDisplayNotification() {
         return true;
@@ -106,13 +114,24 @@ public class LbrynetService extends PythonService {
 
         IntentFilter downloadFilter = new IntentFilter();
         downloadFilter.addAction(ACTION_CHECK_DOWNLOADS);
+        downloadFilter.addAction(ACTION_QUEUE_DOWNLOAD);
         downloadReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                LbrynetService.this.checkDownloads();
+                String action = intent.getAction();
+                if (ACTION_QUEUE_DOWNLOAD.equals(action)) {
+                    String outpoint = intent.getStringExtra("outpoint");
+                    if (outpoint != null && outpoint.trim().length() > 0) {
+                        LbrynetService.this.queueDownload(outpoint);
+                    }
+                } else if (ACTION_CHECK_DOWNLOADS.equals(action)) {
+                    LbrynetService.this.checkDownloads();
+                }
             }
         };
         registerReceiver(downloadReceiver, downloadFilter);
+
+        fileListUris = new ArrayList<String>();
     }
 
     @Override
@@ -258,9 +277,12 @@ public class LbrynetService extends PythonService {
                     if (status.has("error")) {
                         return;
                     }
-                    if (status.has("startup_status")) {
-                        JSONObject startupStatus = status.getJSONObject("startup_status");
-                        streamManagerReady = startupStatus.has("stream_manager") && startupStatus.getBoolean("stream_manager");
+                    if (status.has("result")) {
+                        JSONObject result = status.getJSONObject("result");
+                        if (result.has("startup_status")) {
+                            JSONObject startupStatus = result.getJSONObject("startup_status");
+                            streamManagerReady = startupStatus.has("stream_manager") && startupStatus.getBoolean("stream_manager");
+                        }
                     }
                 }
             }
@@ -281,6 +303,56 @@ public class LbrynetService extends PythonService {
         }
     }
 
+    private void queueDownload(String outpoint) {
+        (new AsyncTask<Void, Void, String>() {
+            protected String doInBackground(Void... param) {
+                try {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("outpoint", outpoint);
+                    return sdkCall("file_list", params);
+                } catch (ConnectException ex) {
+                    return null;
+                }
+            }
+
+            protected void onPostExecute(String fileList) {
+                if (fileList != null) {
+                    try {
+                        JSONObject response = new JSONObject(fileList);
+                        if (!response.has("error")) {
+                            JSONArray fileItems = response.optJSONArray("result");
+                            if (fileItems != null && fileItems.length() > 0) {
+                                // TODO: Create Java FileItem class
+                                JSONObject item = fileItems.getJSONObject(0);
+                                String downloadPath = item.isNull("download_path") ? null : item.getString("download_path");
+                                if (downloadPath == null || downloadPath.trim().length() == 0) {
+                                    return;
+                                }
+                                String claimId = item.getString("claim_id");
+                                String claimName = item.getString("claim_name");
+                                String uri = String.format("lbry://%s#%s", claimName, claimId);
+
+                                File file = new File(downloadPath);
+                                Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
+                                intent.putExtra("action", "start");
+                                downloadManager.startDownload(uri, file.getName());
+
+                                Context context = getApplicationContext();
+                                if (context != null) {
+                                    context.sendBroadcast(intent);
+                                }
+                            }
+                        }
+                    } catch (JSONException ex) {
+                        // pass
+                    }
+                }
+
+                checkDownloads();
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
     private void handlePollFileResponse(JSONObject response) {
         Context context = getApplicationContext();
         if (response.has("result")) {
@@ -298,10 +370,10 @@ public class LbrynetService extends PythonService {
                         String claimId = item.getString("claim_id");
                         String claimName = item.getString("claim_name");
                         String uri = String.format("lbry://%s#%s", claimName, claimId);
-                        String outpoint = item.getString("outpoint");
                         boolean completed = item.getBoolean("completed");
                         double writtenBytes = item.optDouble("written_bytes", -1);
                         double totalBytes = item.optDouble("total_bytes", -1);
+                        String outpoint = item.getString("outpoint");
 
                         if (downloadManager.isDownloadActive(uri) && (writtenBytes == -1 || totalBytes == -1)) {
                             // possibly deleted, abort the download
@@ -313,13 +385,8 @@ public class LbrynetService extends PythonService {
                             itemUris.add(uri);
                         }
 
-                        Intent intent = new Intent();
-                        intent.setAction(DownloadManager.ACTION_DOWNLOAD_EVENT);
-                        intent.putExtra("uri", uri);
-                        intent.putExtra("outpoint", outpoint);
-                        intent.putExtra("file_info", item.toString());
-
                         File file = new File(downloadPath);
+                        Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
                         if (downloadManager.isDownloadActive(uri)) {
                             if (writtenBytes >= totalBytes || completed) {
                                 // completed download
@@ -355,11 +422,12 @@ public class LbrynetService extends PythonService {
                         String activeUri = activeUris.get(i);
                         if (!itemUris.contains(activeUri)) {
                             downloadManager.abortDownload(activeUri);
+                            fileListUris.remove(activeUri); // remove URIs from the session that may have been deleted
                         }
                     }
                 } catch (JSONException ex) {
                     // pass
-                    android.util.Log.e(TAG, ex.getMessage(), ex);
+                    Log.e(TAG, ex.getMessage(), ex);
                 }
             }
         }
@@ -375,6 +443,17 @@ public class LbrynetService extends PythonService {
                 taskExecutor = null;
             }
         }
+    }
+
+
+    private static Intent createDownloadEventIntent(String uri, String outpoint, String fileInfo) {
+        Intent intent = new Intent();
+        intent.setAction(DownloadManager.ACTION_DOWNLOAD_EVENT);
+        intent.putExtra("uri", uri);
+        intent.putExtra("outpoint", outpoint);
+        intent.putExtra("file_info", fileInfo);
+
+        return intent;
     }
 
     @Override
@@ -396,6 +475,7 @@ public class LbrynetService extends PythonService {
                 getApplicationContext(), "", LbrynetService.class, "lbrynetservice");
         }
 
+        // no need to iterate the checks repeatedly here, because this is service startup
         checkDownloads();
 
         return super.onStartCommand(intent, flags, startId);

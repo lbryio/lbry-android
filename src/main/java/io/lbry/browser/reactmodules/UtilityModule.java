@@ -335,4 +335,14 @@ public class UtilityModule extends ReactContextBaseJavaModule {
             context.sendBroadcast(intent);
         }
     }
+
+    @ReactMethod
+    public void queueDownload(String outpoint) {
+        Intent intent = new Intent();
+        intent.setAction(LbrynetService.ACTION_QUEUE_DOWNLOAD);
+        intent.putExtra("outpoint", outpoint);
+        if (context != null) {
+            context.sendBroadcast(intent);
+        }
+    }
 }
