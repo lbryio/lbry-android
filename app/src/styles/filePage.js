@@ -290,7 +290,7 @@ const filePageStyle = StyleSheet.create({
   currency: {
     alignSelf: 'flex-start',
     fontSize: 12,
-    marginTop: 16,
+    marginTop: 15,
     marginLeft: 4
   },
   descriptionToggle: {

@@ -57,7 +57,7 @@ class VerificationScreen extends React.PureComponent {
       }
 
       if (syncFlow) {
-        if (!this.state.isEmailVerified && !deviceWalletSynced) {
+        if (this.state.isEmailVerified && !deviceWalletSynced) {
           this.setState({ currentPage: 'syncVerify' });
         }
       } else {
