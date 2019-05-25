@@ -67,7 +67,7 @@ class FirstRunScreen extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const { emailNewErrorMessage, emailNewPending, syncApplyErrorMessage, syncApplyIsPending, user } = nextProps;
-    const { notify, isApplyingSync } = this.props;
+    const { notify, isApplyingSync, setClientSetting } = this.props;
 
     if (this.state.emailSubmitted && !emailNewPending) {
       this.setState({ emailSubmitted: false });
@@ -89,6 +89,7 @@ class FirstRunScreen extends React.PureComponent {
         if (NativeModules.UtilityModule) {
           NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, this.state.walletPassword);
         }
+        setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
         this.closeFinalPage();
       }
     }
@@ -335,7 +336,7 @@ class FirstRunScreen extends React.PureComponent {
              Constants.FIRST_RUN_PAGE_EMAIL_VERIFY === this.state.currentPage) &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
               <Text style={firstRunStyle.buttonText}>
-                « {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage ? 'Setup account' : 'Change Email'}</Text>
+                « {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage ? 'Setup account' : 'Change email'}</Text>
             </TouchableOpacity>}
             {!emailNewPending && (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage) &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>

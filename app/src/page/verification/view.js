@@ -15,6 +15,7 @@ import Constants from 'constants';
 import EmailVerifyPage from './internal/email-verify-page';
 import ManualVerifyPage from './internal/manual-verify-page';
 import PhoneVerifyPage from './internal/phone-verify-page';
+import SyncVerifyPage from './internal/sync-verify-page';
 import firstRunStyle from 'styles/firstRun';
 
 class VerificationScreen extends React.PureComponent {
@@ -43,7 +44,8 @@ class VerificationScreen extends React.PureComponent {
   }
 
   checkVerificationStatus = (user) => {
-    const { navigation } = this.props;
+    const { deviceWalletSynced, navigation } = this.props;
+    const { syncFlow } = navigation.state.params;
 
     this.setState({
       isEmailVerified: (user && user.primary_email && user.has_verified_email),
@@ -53,11 +55,23 @@ class VerificationScreen extends React.PureComponent {
       if (!this.state.isEmailVerified) {
         this.setState({ currentPage: 'emailVerify' });
       }
-      if (this.state.isEmailVerified && !this.state.isIdentityVerified) {
-        this.setState({ currentPage: 'phoneVerify' });
+
+      if (syncFlow) {
+        if (!this.state.isEmailVerified && !deviceWalletSynced) {
+          this.setState({ currentPage: 'syncVerify' });
+        }
+      } else {
+        if (this.state.isEmailVerified && !this.state.isIdentityVerified) {
+          this.setState({ currentPage: 'phoneVerify' });
+        }
+        if (this.state.isEmailVerified && this.state.isIdentityVerified && !this.state.isRewardApproved) {
+          this.setState({ currentPage: 'manualVerify' });
+        }
       }
-      if (this.state.isEmailVerified && this.state.isIdentityVerified && !this.state.isRewardApproved) {
-        this.setState({ currentPage: 'manualVerify' });
+
+      if (this.state.isEmailVerified && syncFlow && deviceWalletSynced) {
+        navigation.goBack();
+        return;
       }
 
       if (this.state.isEmailVerified && this.state.isIdentityVerified && this.state.isRewardApproved) {
@@ -81,18 +95,28 @@ class VerificationScreen extends React.PureComponent {
   render() {
     const {
       addUserEmail,
+      checkSync,
       emailNewErrorMessage,
       emailNewPending,
       emailToVerify,
       navigation,
       notify,
       addUserPhone,
+      getSyncIsPending,
+      hasSyncedWallet,
+      setSyncIsPending,
+      syncApplyIsPending,
+      syncApplyErrorMessage,
+      syncApply,
+      syncData,
+      syncHash,
       phone,
       phoneVerifyIsPending,
       phoneVerifyErrorMessage,
       phoneNewIsPending,
       phoneNewErrorMessage,
       resendVerificationEmail,
+      setClientSetting,
       verifyPhone
     } = this.props;
 
@@ -111,6 +135,7 @@ class VerificationScreen extends React.PureComponent {
           />
         );
         break;
+
       case 'phoneVerify':
         page = (
           <PhoneVerifyPage
@@ -126,10 +151,30 @@ class VerificationScreen extends React.PureComponent {
           />
         );
         break;
+
+      case 'syncVerify':
+        page = (
+          <SyncVerifyPage
+            checkSync={checkSync}
+            getSyncIsPending={getSyncIsPending}
+            hasSyncedWallet={hasSyncedWallet}
+            setClientSetting={setClientSetting}
+            setSyncIsPending={setSyncIsPending}
+            syncApplyIsPending={syncApplyIsPending}
+            syncApplyErrorMessage={syncApplyErrorMessage}
+            syncApply={syncApply}
+            syncData={syncData}
+            syncHash={syncHash}
+            notify={notify}
+            setEmailVerificationPhase={this.setEmailVerificationPhase} />
+        );
+        break;
+
       case 'manualVerify':
         page = (
           <ManualVerifyPage setEmailVerificationPhase={this.setEmailVerificationPhase} />
         );
+        break;
     }
 
     return (

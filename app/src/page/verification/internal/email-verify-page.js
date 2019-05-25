@@ -142,7 +142,9 @@ class EmailVerifyPage extends React.PureComponent {
                   text={"Send verification email"}
                   onPress={this.onSendVerificationPressed} />}
               {this.state.verifyStarted && emailNewPending &&
-                <ActivityIndicator size={"small"} color={Colors.White} style={rewardStyle.loading} />}
+                <View style={firstRunStyle.centerInside}>
+                  <ActivityIndicator size={"small"} color={Colors.White} />
+                </View>}
             </View>
           </View>}
 

@@ -166,6 +166,10 @@ const firstRunStyle = StyleSheet.create({
   centered: {
     alignItems: 'center'
   },
+  centerInside: {
+    flex: 1,
+    alignItems:'center'
+  },
   nowrap: {
     flex: 1,
     flexWrap: 'nowrap'

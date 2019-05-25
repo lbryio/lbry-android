@@ -62,7 +62,7 @@ class WalletPage extends React.PureComponent {
       content = (
         <View style={firstRunStyle.centered}>
           <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
-            <Text style={firstRunStyle.paragraph}>Retrieving your account information...</Text>
+          <Text style={firstRunStyle.paragraph}>Retrieving your account information...</Text>
         </View>
       );
     } else if (syncApplyIsPending) {
@@ -97,7 +97,7 @@ class WalletPage extends React.PureComponent {
               }
             }}
             />
-            {(this.state.password && this.state.password.trim().length) > 0 &&
+            {(!hasSyncedWallet && this.state.password && this.state.password.trim().length) > 0 &&
               <View style={firstRunStyle.passwordStrength}>
                 <BarPasswordStrengthDisplay
                   width={Dimensions.get('window').width - 80}

@@ -21,7 +21,7 @@ class RewardEnrolment extends React.Component {
 
   onEnrollPressed = () => {
     const { navigation } = this.props;
-    navigation.navigate({ routeName: 'Verification' })
+    navigation.navigate({ routeName: 'Verification', key: 'verification' })
   }
 
   render() {
