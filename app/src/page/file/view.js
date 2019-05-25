@@ -726,6 +726,7 @@ class FilePage extends React.PureComponent {
                         <TextInput ref={ref => this.tipAmountInput = ref}
                                    onChangeText={value => this.setState({tipAmount: value})}
                                    keyboardType={'numeric'}
+                                   placeholder={'0'}
                                    value={this.state.tipAmount}
                                    style={[filePageStyle.input, filePageStyle.tipAmountInput]} />
                         <Text style={[filePageStyle.text, filePageStyle.currency]}>LBC</Text>

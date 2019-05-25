@@ -108,6 +108,7 @@ class WalletSend extends React.PureComponent<Props> {
             <TextInput ref={ref => this.amountInput = ref}
                        onChangeText={value => this.setState({amount: value})}
                        keyboardType={'numeric'}
+                       placeholder={'0'}
                        value={this.state.amount}
                        style={[walletStyle.input, walletStyle.amountInput]} />
             <Text style={[walletStyle.text, walletStyle.currency]}>LBC</Text>

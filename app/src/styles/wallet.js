@@ -167,7 +167,9 @@ const walletStyle = StyleSheet.create({
   },
   currency: {
     alignSelf: 'flex-start',
-    marginTop: 17
+    fontSize: 12,
+    marginTop: 16,
+    marginLeft: 4
   },
   sendButton: {
     marginTop: 8

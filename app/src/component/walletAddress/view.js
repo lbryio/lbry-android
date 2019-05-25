@@ -32,7 +32,7 @@ class WalletAddress extends React.PureComponent<Props> {
         <Address address={receiveAddress} style={walletStyle.bottomMarginSmall} />
         <Button style={[walletStyle.button, walletStyle.bottomMarginLarge]}
                 icon={'sync'}
-                text={'Get New Address'}
+                text={'Get new address'}
                 onPress={getNewAddress}
                 disabled={gettingNewAddress}
                 />
