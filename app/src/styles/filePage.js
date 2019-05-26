@@ -343,6 +343,18 @@ const filePageStyle = StyleSheet.create({
   rewardIcon: {
     color: Colors.White,
     marginRight: 8
+  },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: 48,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  backButtonIcon: {
+    color: Colors.White
   }
 });
 

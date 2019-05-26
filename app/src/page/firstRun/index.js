@@ -3,7 +3,7 @@ import { doToast } from 'lbry-redux';
 import {
   doAuthenticate,
   doCheckSync,
-  doSetClientSetting,
+  doGetSync,
   doSyncApply,
   doUserEmailNew,
   doUserResendVerificationEmail,
@@ -20,6 +20,7 @@ import {
   selectSyncHash,
   selectUser,
 } from 'lbryinc';
+import { doSetClientSetting } from 'redux/actions/settings';
 import FirstRun from './view';
 
 const select = (state) => ({
@@ -42,6 +43,7 @@ const perform = dispatch => ({
   authenticate: (appVersion, os) => dispatch(doAuthenticate(appVersion, os)),
   setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
   syncApply: (hash, data, password) => dispatch(doSyncApply(hash, data, password)),
+  getSync: password => dispatch(doGetSync(password)),
   checkSync: () => dispatch(doCheckSync()),
   notify: data => dispatch(doToast(data)),
   resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email))

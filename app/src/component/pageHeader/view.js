@@ -9,8 +9,8 @@ import {
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import NavigationButton from '../navigationButton';
-import pageHeaderStyle from '../../styles/pageHeader';
+import NavigationButton from 'component/navigationButton';
+import pageHeaderStyle from 'styles/pageHeader';
 
 const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 const AnimatedText = Animated.Text;

@@ -12,12 +12,13 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
   WebView
 } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
-import { navigateToUri } from 'utils/helper';
+import { navigateBack, navigateToUri } from 'utils/helper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Button from 'component/button';
@@ -471,6 +472,11 @@ class FilePage extends React.PureComponent {
     setPlayerVisible();
   }
 
+  onBackButtonPressed = () => {
+    const { navigation, drawerStack, popDrawerStack } = this.props;
+    navigateBack(navigation, drawerStack, popDrawerStack);
+  }
+
   render() {
     const {
       balance,
@@ -635,6 +641,10 @@ class FilePage extends React.PureComponent {
                                         onView={() => this.setState({ downloadPressed: true })}
                                         onButtonLayout={() => this.setState({ downloadButtonShown: true })} />}
                   {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}
+
+                  <TouchableOpacity style={filePageStyle.backButton} onPress={this.onBackButtonPressed}>
+                     <Icon name={"arrow-left"} size={18} style={filePageStyle.backButtonIcon} />
+                  </TouchableOpacity>
                 </View>
                 {(this.state.streamingMode || (canLoadMedia && fileInfo && isPlayable)) &&
                   <View style={playerBgStyle}
@@ -661,6 +671,7 @@ class FilePage extends React.PureComponent {
                       }
                     }}
                     onMediaLoaded={() => this.onMediaLoaded(channelName, title, uri)}
+                    onBackButtonPressed={this.onBackButtonPressed}
                     onPlaybackStarted={this.onPlaybackStarted}
                     onPlaybackFinished={this.onPlaybackFinished}
                     thumbnail={thumbnail}

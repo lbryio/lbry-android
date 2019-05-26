@@ -34,7 +34,8 @@ import {
   doDeleteFile,
   doStopDownloadingFile
 } from 'redux/actions/file';
-import { doSetPlayerVisible } from 'redux/actions/drawer';
+import { doPopDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
+import { selectDrawerStack } from 'redux/selectors/drawer';
 import FilePage from './view';
 
 const select = (state, props) => {
@@ -43,6 +44,7 @@ const select = (state, props) => {
     balance: selectBalance(state),
     blackListedOutpoints: selectBlackListedOutpoints(state),
     claim: makeSelectClaimForUri(selectProps.uri)(state),
+    drawerStack: selectDrawerStack(state),
     isResolvingUri: makeSelectIsUriResolving(selectProps.uri)(state),
     contentType: makeSelectContentTypeForUri(selectProps.uri)(state),
     costInfo: makeSelectCostInfoForUri(selectProps.uri)(state),
@@ -69,6 +71,7 @@ const perform = dispatch => ({
   fetchFileInfo: uri => dispatch(doFetchFileInfo(uri)),
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
   notify: data => dispatch(doToast(data)),
+  popDrawerStack: () => dispatch(doPopDrawerStack()),
   purchaseUri: (uri, costInfo, saveFile) => dispatch(doPurchaseUri(uri, costInfo, saveFile)),
   deletePurchasedUri: uri => dispatch(doDeletePurchasedUri(uri)),
   resolveUri: uri => dispatch(doResolveUri(uri)),

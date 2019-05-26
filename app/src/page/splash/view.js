@@ -169,7 +169,7 @@ class SplashScreen extends React.PureComponent {
   }
 
   _updateStatusCallback(status) {
-    const { fetchSubscriptions } = this.props;
+    const { fetchSubscriptions, getSync, setClientSetting } = this.props;
     const startupStatus = status.startup_status;
     // At the minimum, wallet should be started and blocks_behind equal to 0 before calling resolve
     const hasStarted = startupStatus.stream_manager && startupStatus.wallet && status.wallet.blocks_behind <= 0;
@@ -186,36 +186,17 @@ class SplashScreen extends React.PureComponent {
         isRunning: true,
       });
 
-      AsyncStorage.getItem(Constants.KEY_FIRST_RUN_PASSWORD).then(passwordSet => {
-        if ("true" === passwordSet) {
-          // encrypt the wallet
-          NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
-            if (!password || password.trim().length === 0) {
-              this.finishSplashScreen();
-              return;
-            }
 
-            Lbry.account_encrypt({ new_password: password }).then((result) => {
-              AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_PASSWORD);
-              Lbry.account_unlock({ password }).then(() => this.finishSplashScreen());
-            });
-          });
-
+      // For now, automatically unlock the wallet if a password is set so that downloads work
+      NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
+        if (password && password.trim().length > 0) {
+          // unlock the wallet and then finish the splash screen
+          Lbry.account_unlock({ password }).then(() => this.finishSplashScreen()).catch(() => this.finishSplashScreen());
           return;
         }
 
-        // For now, automatically unlock the wallet if a password is set so that downloads work
-        NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
-          if (password && password.trim().length > 0) {
-            // unlock the wallet and then finish the splash screen
-            Lbry.account_unlock({ password }).then(() => this.finishSplashScreen());
-            return;
-          }
-
-          this.finishSplashScreen();
-        });
+        this.finishSplashScreen();
       });
-
 
       return;
     }

@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { doToast } from 'lbry-redux';
 import {
   doCheckSync,
+  doGetSync,
   doSyncApply,
   doUserEmailNew,
   doUserEmailToVerify,
@@ -53,6 +54,7 @@ const select = (state) => ({
 const perform = dispatch => ({
   addUserEmail: email => dispatch(doUserEmailNew(email)),
   addUserPhone: (phone, country_code) => dispatch(doUserPhoneNew(phone, country_code)),
+  getSync: password => dispatch(doGetSync(password)),
   checkSync: () => dispatch(doCheckSync()),
   verifyPhone: (verificationCode) => dispatch(doUserPhoneVerify(verificationCode)),
   notify: data => dispatch(doToast(data)),

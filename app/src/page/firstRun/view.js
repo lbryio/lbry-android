@@ -152,12 +152,13 @@ class FirstRunScreen extends React.PureComponent {
         return notify({ message: 'Please enter a wallet password' });
       }
 
+      console.log('hasSyncedWallet=' + hasSyncedWallet);
       // do apply sync to check if the password is valid
       if (hasSyncedWallet) {
         this.checkWalletPassword();
       } else {
-        setFreshPassword();
-        this.closeFinalPage();
+        console.log('setting fresh password?!');
+        this.setFreshPassword();
       }
       return;
     }
@@ -257,9 +258,17 @@ class FirstRunScreen extends React.PureComponent {
   }
 
   setFreshPassword = () => {
+    const { getSync, setClientSetting } = this.props;
     if (NativeModules.UtilityModule) {
       NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, this.state.walletPassword);
-      AsyncStorage.setItem(Constants.KEY_FIRST_RUN_PASSWORD, "true");
+      Lbry.account_encrypt({ new_password: this.state.walletPassword }).then(() => {
+        Lbry.account_unlock({ password: this.state.walletPassword }).then(() => {
+          // fresh account, new password set
+          getSync(this.state.walletPassword);
+          setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
+          this.closeFinalPage();
+        });
+      });
     }
   }
 

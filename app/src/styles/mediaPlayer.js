@@ -74,7 +74,7 @@ const mediaPlayerStyle = StyleSheet.create({
     height: 36,
     alignItems: 'center',
     justifyContent: 'center',
-    right: 0,
+    right: 4,
     bottom: 14,
   },
   elapsedDuration: {
@@ -82,15 +82,15 @@ const mediaPlayerStyle = StyleSheet.create({
     position: 'absolute',
     left: 8,
     bottom: 24,
-    fontSize: 14,
+    fontSize: 12,
     color: '#ffffff'
   },
   totalDuration: {
     fontFamily: 'Inter-UI-Regular',
     position: 'absolute',
-    right: 40,
+    right: 48,
     bottom: 24,
-    fontSize: 14,
+    fontSize: 12,
     color: '#ffffff'
   },
   seekerCircle: {
@@ -145,6 +145,18 @@ const mediaPlayerStyle = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0
+  },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: 48,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  backButtonIcon: {
+    color: Colors.White
   }
 });
 

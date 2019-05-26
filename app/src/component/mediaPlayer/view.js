@@ -344,9 +344,15 @@ class MediaPlayer extends React.PureComponent {
   }
 
   renderPlayerControls() {
+    const { onBackButtonPressed } = this.props;
+
     if (this.state.areControlsVisible) {
       return (
         <View style={mediaPlayerStyle.playerControlsContainer}>
+          <TouchableOpacity style={mediaPlayerStyle.backButton} onPress={onBackButtonPressed}>
+            <Icon name={"arrow-left"} size={18} style={mediaPlayerStyle.backButtonIcon} />
+           </TouchableOpacity>
+
           <TouchableOpacity style={mediaPlayerStyle.playPauseButton}
             onPress={this.togglePlay}>
             {this.state.paused && <Icon name="play" size={40} color="#ffffff" />}
@@ -379,7 +385,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   render() {
-    const { source, thumbnail, onLayout, style } = this.props;
+    const { onLayout, source, style, thumbnail } = this.props;
     const completedWidth = this.getCurrentTimePercentage() * this.seekerWidth;
     const remainingWidth = this.seekerWidth - completedWidth;
     let styles = [this.state.fullscreenMode ? mediaPlayerStyle.fullscreenContainer : mediaPlayerStyle.container];

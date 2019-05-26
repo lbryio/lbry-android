@@ -78,7 +78,7 @@ def start():
         data_dir=f'{private_storage_dir}/lbrynet',
         wallet_dir=f'{private_storage_dir}/lbryum',
         download_dir=f'{lbrynet_android_utils.getInternalStorageDir(service.getApplicationContext())}/Download',
-        blob_lru_cache_size=16,
+        blob_lru_cache_size=32,
         components_to_skip=[DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT],
         save_blobs=False,
         save_files=False,

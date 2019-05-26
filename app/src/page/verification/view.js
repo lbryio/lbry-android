@@ -99,6 +99,7 @@ class VerificationScreen extends React.PureComponent {
       emailNewErrorMessage,
       emailNewPending,
       emailToVerify,
+      getSync,
       navigation,
       notify,
       addUserPhone,
@@ -156,8 +157,12 @@ class VerificationScreen extends React.PureComponent {
         page = (
           <SyncVerifyPage
             checkSync={checkSync}
+            getSync={getSync}
             getSyncIsPending={getSyncIsPending}
             hasSyncedWallet={hasSyncedWallet}
+            navigation={navigation}
+            notify={notify}
+            setEmailVerificationPhase={this.setEmailVerificationPhase}
             setClientSetting={setClientSetting}
             setSyncIsPending={setSyncIsPending}
             syncApplyIsPending={syncApplyIsPending}
@@ -165,8 +170,7 @@ class VerificationScreen extends React.PureComponent {
             syncApply={syncApply}
             syncData={syncData}
             syncHash={syncHash}
-            notify={notify}
-            setEmailVerificationPhase={this.setEmailVerificationPhase} />
+          />
         );
         break;
 

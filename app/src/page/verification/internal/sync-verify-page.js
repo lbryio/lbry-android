@@ -37,15 +37,35 @@ class SyncVerifyPage extends React.PureComponent {
   }
 
   onEnableSyncPressed = () => {
-    const { syncApply, syncData, syncHash } = this.props;
+    const {
+      getSync,
+      hasSyncedWallet,
+      navigation,
+      setClientSetting,
+      syncApply,
+      syncData,
+      syncHash
+    } = this.props;
+
     this.setState({ syncApplyStarted: true }, () => {
-      syncApply(syncHash, syncData, this.state.password);
+      if (!hasSyncedWallet) {
+        // fresh account with no sync
+        Lbry.account_encrypt({ new_password: this.state.password }).then(() => {
+          Lbry.account_unlock({ password: this.state.password }).then(() => {
+            getSync(this.state.password);
+            setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
+            navigation.goBack();
+          });
+        });
+      } else {
+        syncApply(syncHash, syncData, this.state.password);
+      }
     });
   }
 
   componentWillReceiveProps(nextProps) {
     const { getSyncIsPending, syncApplyIsPending, syncApplyErrorMessage } = nextProps;
-    const { setClientSetting, navigation, notify } = this.props;
+    const { getSync, setClientSetting, navigation, notify, hasSyncedWallet } = this.props;
     if (this.state.checkSyncStarted && !getSyncIsPending) {
       this.setState({ syncChecked: true });
     }
@@ -60,9 +80,7 @@ class SyncVerifyPage extends React.PureComponent {
           NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, this.state.password);
         }
         setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
-        Lbry.account_unlock({ password: this.state.password }).then(() => navigation.goBack()).catch(() => {
-          notify({ message: 'Your wallet could not be unlocked. Please restart the app.' });
-        });
+        navigation.goBack();
       }
     }
   }
