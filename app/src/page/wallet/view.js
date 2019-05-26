@@ -14,7 +14,9 @@ import walletStyle from 'styles/wallet';
 
 class WalletPage extends React.PureComponent {
   componentDidMount() {
-    this.props.pushDrawerStack();
+    const { pushDrawerStack, setPlayerVisible } = this.props;
+    pushDrawerStack();
+    setPlayerVisible();
 
     const { getSync, user } = this.props;
     if (user && user.has_verified_email) {

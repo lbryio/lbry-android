@@ -4,7 +4,7 @@ import {
   selectTransactionItems,
   selectIsFetchingTransactions,
 } from 'lbry-redux';
-import { doPushDrawerStack } from 'redux/actions/drawer';
+import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import Constants from 'constants';
 import TransactionHistoryPage from './view';
 
@@ -16,6 +16,7 @@ const select = state => ({
 const perform = dispatch => ({
   fetchTransactions: () => dispatch(doFetchTransactions()),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_TRANSACTION_HISTORY)),
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
 });
 
 export default connect(select, perform)(TransactionHistoryPage);

@@ -2,8 +2,14 @@ import Constants from 'constants';
 
 const reducers = {};
 const defaultState = {
-  stack: [ Constants.DRAWER_ROUTE_DISCOVER ] // Discover is always the first drawer route
+  stack: [ Constants.DRAWER_ROUTE_DISCOVER ], // Discover is always the first drawer route
+  playerVisible: false
 };
+
+reducers[Constants.ACTION_SET_PLAYER_VISIBLE] = (state, action) =>
+  Object.assign({}, state, {
+    playerVisible: action.data.visible
+  });
 
 reducers[Constants.ACTION_PUSH_DRAWER_STACK] = (state, action) => {
   const routeName = action.data;

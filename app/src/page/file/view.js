@@ -16,6 +16,7 @@ import {
   View,
   WebView
 } from 'react-native';
+import { NavigationEvents } from 'react-navigation';
 import { navigateToUri } from 'utils/helper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -452,6 +453,13 @@ class FilePage extends React.PureComponent {
     ));
   }
 
+  onFileDownloadButtonPlayed = () => {
+    const { setPlayerVisible } = this.props;
+    this.startTime = Date.now();
+    this.setState({ downloadPressed: true, autoPlayMedia: true, stopDownloadConfirmed: false });
+    setPlayerVisible();
+  }
+
   render() {
     const {
       claim,
@@ -611,10 +619,7 @@ class FilePage extends React.PureComponent {
                                         openFile={openFile}
                                         isPlayable={isPlayable}
                                         isViewable={isViewable}
-                                        onPlay={() => {
-                                          this.startTime = Date.now();
-                                          this.setState({ downloadPressed: true, autoPlayMedia: true, stopDownloadConfirmed: false });
-                                        }}
+                                        onPlay={this.onFileDownloadButtonPlayed}
                                         onView={() => this.setState({ downloadPressed: true })}
                                         onButtonLayout={() => this.setState({ downloadButtonShown: true })} />}
                   {!fileInfo && <FilePrice uri={uri} style={filePageStyle.filePriceContainer} textStyle={filePageStyle.filePriceText} />}

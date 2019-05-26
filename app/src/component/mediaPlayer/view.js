@@ -148,6 +148,11 @@ class MediaPlayer extends React.PureComponent {
   }
 
   togglePlayerControls = () => {
+    const { setPlayerVisible, isPlayerVisible } = this.props;
+    if (!isPlayerVisible) {
+      setPlayerVisible();
+    }
+
     if (this.state.areControlsVisible) {
       this.manualHidePlayerControls();
     } else {
@@ -262,9 +267,16 @@ class MediaPlayer extends React.PureComponent {
     return 0;
   };
 
-
   componentWillMount() {
     this.initSeeker();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { isPlayerVisible } = nextProps;
+    if (!isPlayerVisible && !this.state.backgroundPlayEnabled) {
+      // force pause if the player is not visible and background play is not enabled
+      this.setState({ paused: true });
+    }
   }
 
   componentDidMount() {
@@ -337,8 +349,8 @@ class MediaPlayer extends React.PureComponent {
         <View style={mediaPlayerStyle.playerControlsContainer}>
           <TouchableOpacity style={mediaPlayerStyle.playPauseButton}
             onPress={this.togglePlay}>
-            {this.state.paused && <Icon name="play" size={32} color="#ffffff" />}
-            {!this.state.paused && <Icon name="pause" size={32} color="#ffffff" />}
+            {this.state.paused && <Icon name="play" size={40} color="#ffffff" />}
+            {!this.state.paused && <Icon name="pause" size={40} color="#ffffff" />}
           </TouchableOpacity>
 
           <TouchableOpacity style={mediaPlayerStyle.toggleFullscreenButton} onPress={this.toggleFullscreenMode}>

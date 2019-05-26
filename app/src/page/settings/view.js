@@ -11,7 +11,9 @@ class SettingsPage extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.pushDrawerStack();
+    const { pushDrawerStack, setPlayerVisible } = this.props;
+    pushDrawerStack();
+    setPlayerVisible();
   }
 
   render() {

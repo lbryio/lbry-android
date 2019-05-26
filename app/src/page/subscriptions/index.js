@@ -12,7 +12,7 @@ import {
   selectFirstRunCompleted,
   selectShowSuggestedSubs
 } from 'lbryinc';
-import { doPushDrawerStack } from 'redux/actions/drawer';
+import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import { doSetClientSetting } from 'redux/actions/settings';
 import { makeSelectClientSetting } from 'redux/selectors/settings';
 import Constants from 'constants';
@@ -37,6 +37,7 @@ const perform = dispatch => ({
   doSetViewMode: (viewMode) => dispatch(doSetViewMode(viewMode)),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_SUBSCRIPTIONS)),
   setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
 });
 
 export default connect(select, perform)(SubscriptionsPage);

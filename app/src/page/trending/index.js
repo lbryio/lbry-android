@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { doFetchTrendingUris, selectTrendingUris, selectFetchingTrendingUris } from 'lbryinc';
-import { doPushDrawerStack } from 'redux/actions/drawer';
+import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import Constants from 'constants';
 import TrendingPage from './view';
 
@@ -11,7 +11,8 @@ const select = state => ({
 
 const perform = dispatch => ({
   fetchTrendingUris: () => dispatch(doFetchTrendingUris()),
-  pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_TRENDING))
+  pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_TRENDING)),
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
 });
 
 export default connect(select, perform)(TrendingPage);

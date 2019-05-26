@@ -224,7 +224,6 @@ const mainStackNavigator = new createStackNavigator({
 });
 
 
-
 export const AppNavigator = mainStackNavigator;
 export const reactNavigationMiddleware = createReactNavigationReduxMiddleware(
   state => state.nav,

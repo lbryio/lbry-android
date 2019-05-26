@@ -33,6 +33,7 @@ import {
   doDeleteFile,
   doStopDownloadingFile
 } from 'redux/actions/file';
+import { doSetPlayerVisible } from 'redux/actions/drawer';
 import FilePage from './view';
 
 const select = (state, props) => {
@@ -70,6 +71,7 @@ const perform = dispatch => ({
   deletePurchasedUri: uri => dispatch(doDeletePurchasedUri(uri)),
   resolveUri: uri => dispatch(doResolveUri(uri)),
   sendTip: (amount, claimId, uri, successCallback, errorCallback) => dispatch(doSendTip(amount, claimId, uri, successCallback, errorCallback)),
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(true)),
   stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),
   startDownload: (uri, outpoint, fileInfo) => dispatch(doStartDownload(uri, outpoint, fileInfo)),
   updateDownload: (uri, outpoint, fileInfo, progress) => dispatch(doUpdateDownload(uri, outpoint, fileInfo, progress)),

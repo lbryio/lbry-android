@@ -32,9 +32,10 @@ class RewardsPage extends React.PureComponent {
   scrollView = null;
 
   componentDidMount() {
-    const { fetchRewards, pushDrawerStack, navigation, user } = this.props;
+    const { fetchRewards, pushDrawerStack, navigation, setPlayerVisible, user } = this.props;
 
     pushDrawerStack();
+    setPlayerVisible();
     fetchRewards();
 
     this.setState({

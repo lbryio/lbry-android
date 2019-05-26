@@ -87,7 +87,8 @@ class FileListItem extends React.PureComponent {
                          resizeMode="cover"
                          title={(title || name)}
                          thumbnail={thumbnail} />
-          {fileInfo && fileInfo.completed && <Icon style={fileListStyle.downloadedIcon} solid={true} color={Colors.BrightGreen} name={"folder"} size={16} />}
+          {(fileInfo && fileInfo.completed && fileInfo.download_path) &&
+            <Icon style={fileListStyle.downloadedIcon} solid={true} color={Colors.BrightGreen} name={"folder"} size={16} />}
           <View style={fileListStyle.detailsContainer}>
             {featuredResult && <Text style={fileListStyle.featuredUri} numberOfLines={1}>{uri}</Text>}
 

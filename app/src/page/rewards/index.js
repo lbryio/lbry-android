@@ -10,7 +10,7 @@ import {
   selectUser,
 } from 'lbryinc';
 import { doToast } from 'lbry-redux';
-import { doPushDrawerStack } from 'redux/actions/drawer';
+import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import Constants from 'constants';
 import RewardsPage from './view';
 
@@ -27,7 +27,8 @@ const perform = dispatch => ({
   claimReward: reward => dispatch(doClaimRewardType(reward.reward_type, true)),
   fetchRewards: () => dispatch(doRewardList()),
   notify: data => dispatch(doToast(data)),
-  pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_REWARDS))
+  pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_REWARDS)),
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
 });
 
 export default connect(select, perform)(RewardsPage);

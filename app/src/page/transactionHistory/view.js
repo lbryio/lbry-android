@@ -6,7 +6,9 @@ import walletStyle from 'styles/wallet';
 
 class TransactionHistoryPage extends React.PureComponent {
   componentWillMount() {
-    this.props.pushDrawerStack();
+    const { pushDrawerStack, setPlayerVisible } = this.props;
+    pushDrawerStack();
+    setPlayerVisible();
   }
 
   componentDidMount() {

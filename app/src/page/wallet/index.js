@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { doSetClientSetting } from 'redux/actions/settings';
 import { makeSelectClientSetting } from 'redux/selectors/settings';
-import { doPushDrawerStack } from 'redux/actions/drawer';
+import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import { selectBalance } from 'lbry-redux';
 import { doCheckSync, doGetSync, selectUser, selectHasSyncedWallet } from 'lbryinc';
 import Constants from 'constants';
@@ -20,7 +20,8 @@ const perform = dispatch => ({
   checkSync: () => dispatch(doCheckSync()),
   getSync: password => dispatch(doGetSync(password)),
   setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
-  pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_WALLET))
+  pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_WALLET)),
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
 });
 
 export default connect(select, perform)(WalletPage);
