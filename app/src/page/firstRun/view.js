@@ -152,12 +152,10 @@ class FirstRunScreen extends React.PureComponent {
         return notify({ message: 'Please enter a wallet password' });
       }
 
-      console.log('hasSyncedWallet=' + hasSyncedWallet);
       // do apply sync to check if the password is valid
       if (hasSyncedWallet) {
         this.checkWalletPassword();
       } else {
-        console.log('setting fresh password?!');
         this.setFreshPassword();
       }
       return;
