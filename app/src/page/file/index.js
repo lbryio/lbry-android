@@ -19,6 +19,7 @@ import {
   selectBalance,
   selectPurchasedUris,
   selectFailedPurchaseUris,
+  selectPurchaseUriErrorMessage,
 } from 'lbry-redux';
 import {
   doFetchCostInfoForUri,
@@ -54,6 +55,7 @@ const select = (state, props) => {
     position: makeSelectContentPositionForUri(selectProps.uri)(state),
     purchasedUris: selectPurchasedUris(state),
     failedPurchaseUris: selectFailedPurchaseUris(state),
+    purchaseUriErrorMessage: selectPurchaseUriErrorMessage(state),
     streamingUrl: makeSelectStreamingUrlForUri(selectProps.uri)(state),
     thumbnail: makeSelectThumbnailForUri(selectProps.uri)(state),
     title: makeSelectTitleForUri(selectProps.uri)(state),

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import Colors from 'styles/colors';
 
 const fileDownloadButtonStyle = StyleSheet.create({
   container: {
@@ -7,11 +8,11 @@ const fileDownloadButtonStyle = StyleSheet.create({
     height: 36,
     borderRadius: 18,
     justifyContent: 'center',
-    backgroundColor: '#40c0a9',
+    backgroundColor: Colors.LbryGreen,
   },
   text: {
     fontFamily: 'Inter-UI-Medium',
-    color: '#ffffff',
+    color: Colors.White,
     fontSize: 14,
     textAlign: 'center'
   }

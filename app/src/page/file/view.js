@@ -35,6 +35,7 @@ import SubscribeButton from 'component/subscribeButton';
 import SubscribeNotificationButton from 'component/subscribeNotificationButton';
 import UriBar from 'component/uriBar';
 import Video from 'react-native-video';
+import FileRewardsDriver from 'component/fileRewardsDriver';
 import filePageStyle from 'styles/filePage';
 import uriBarStyle from 'styles/uriBar';
 
@@ -104,11 +105,21 @@ class FilePage extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { claim, purchasedUris: prevPurchasedUris, navigation, contentType } = this.props;
+    const {
+      claim,
+      failedPurchaseUris: prevFailedPurchaseUris,
+      purchasedUris: prevPurchasedUris,
+      navigation,
+      contentType,
+      notify
+    } = this.props;
     const { uri } = navigation.state.params;
-    const { fileInfo, purchasedUris, failedPurchaseUris, streamingUrl } = nextProps;
+    const { failedPurchaseUris, fileInfo, purchasedUris, purchaseUriErrorMessage, streamingUrl } = nextProps;
 
-    if (this.state.downloadPressed && failedPurchaseUris.includes(uri)) {
+    if (failedPurchaseUris.includes(uri) && !purchasedUris.includes(uri)) {
+      if (purchaseUriErrorMessage && purchaseUriErrorMessage.trim().length > 0) {
+        notify({ message: purchaseUriErrorMessage, isError: true });
+      }
       this.setState({ downloadPressed: false, fileViewLogged: false, mediaLoaded: false });
     }
 
@@ -462,6 +473,7 @@ class FilePage extends React.PureComponent {
 
   render() {
     const {
+      balance,
       claim,
       channelUri,
       costInfo,
@@ -755,6 +767,8 @@ class FilePage extends React.PureComponent {
                         </View>
                       )}
                     </View>)}
+
+                  {(costInfo && parseFloat(costInfo.cost) > balance) && <FileRewardsDriver navigation={navigation} />}
 
                   <View onLayout={this.setRelatedContentPosition} />
                   <RelatedContent navigation={navigation} uri={uri} />

@@ -162,7 +162,7 @@ const filePageStyle = StyleSheet.create({
     bottom: 0
   },
   filePriceContainer: {
-    backgroundColor: '#61fcd8',
+    backgroundColor: Colors.NextLbryGreen,
     justifyContent: 'center',
     position: 'absolute',
     right: 16,
@@ -325,6 +325,24 @@ const filePageStyle = StyleSheet.create({
   },
   tagItem: {
     marginRight: 16
+  },
+  rewardDriverCard: {
+    alignItems: 'center',
+    backgroundColor: Colors.BrighterLbryGreen,
+    flexDirection: 'row',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 12,
+    paddingBottom: 12
+  },
+  rewardDriverText: {
+    fontFamily: 'Inter-UI-Regular',
+    color: Colors.White,
+    fontSize: 14
+  },
+  rewardIcon: {
+    color: Colors.White,
+    marginRight: 8
   }
 });
 

@@ -13,7 +13,7 @@ class FileDownloadButton extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
     //this.checkAvailability(nextProps.uri);
-    this.restartDownload(nextProps);
+    //this.restartDownload(nextProps);
   }
 
   restartDownload(props) {

@@ -108,7 +108,7 @@ class FilePrice extends React.PureComponent {
         <CreditAmount
           style={textStyle}
           label={false}
-          amount={costInfo.cost}
+          amount={parseFloat(costInfo.cost)}
           isEstimate={isEstimate}
           showFree
           showFullPrice={showFullPrice}>???</CreditAmount>

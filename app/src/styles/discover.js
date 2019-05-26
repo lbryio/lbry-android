@@ -77,7 +77,7 @@ const discoverStyle = StyleSheet.create({
     top: 8
   },
   filePriceContainer: {
-    backgroundColor: Colors.BrightGreen,
+    backgroundColor: Colors.NextLbryGreen,
     justifyContent: 'center',
     position: 'absolute',
     right: 8,

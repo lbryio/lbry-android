@@ -78,7 +78,7 @@ class FileItem extends React.PureComponent {
                          isResolvingUri={isResolvingUri}
                          style={mediaStyle} />
 
-          {(!compactView && fileInfo && fileInfo.completed) && <Icon style={discoverStyle.downloadedIcon} solid={true} color={Colors.BrightGreen} name={"folder"} size={16} />}
+          {(!compactView && fileInfo && fileInfo.completed) && <Icon style={discoverStyle.downloadedIcon} solid={true} color={Colors.NextLbryGreen} name={"folder"} size={16} />}
           {(!compactView && (!fileInfo || !fileInfo.completed)) && <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />}
           {!compactView && <View style={isRewardContent ? discoverStyle.rewardTitleContainer : null}>
             <Text numberOfLines={1} style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>{title}</Text>
