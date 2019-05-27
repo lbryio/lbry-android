@@ -8,6 +8,7 @@ import {
   Platform,
   Text,
   TextInput,
+  TouchableOpacity,
   View
 } from 'react-native';
 import { BarPasswordStrengthDisplay } from 'react-native-password-strength-meter';
@@ -15,6 +16,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Colors from 'styles/colors';
 import Constants from 'constants';
 import firstRunStyle from 'styles/firstRun';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const firstRunMargins = 80;
 
@@ -24,7 +26,8 @@ class WalletPage extends React.PureComponent {
     placeholder: 'password',
     statusTries: 0,
     walletReady: false,
-    hasCheckedSync: false
+    hasCheckedSync: false,
+    revealPassword: false
   };
 
   componentDidMount() {
@@ -82,31 +85,38 @@ class WalletPage extends React.PureComponent {
             {hasSyncedWallet ? "Please enter the password you used to secure your wallet." :
             "Please enter a password to secure your account and wallet."}
           </Text>
-          <TextInput style={firstRunStyle.passwordInput}
-            placeholder={this.state.placeholder}
-            underlineColorAndroid="transparent"
-            secureTextEntry={true}
-            value={this.state.password}
-            onChangeText={text => this.handleChangeText(text)}
-            onFocus={() => {
-              if (!this.state.password || this.state.password.length === 0) {
-                this.setState({ placeholder: '' });
-              }
-            }}
-            onBlur={() => {
-              if (!this.state.password || this.state.password.length === 0) {
-                this.setState({ placeholder: 'password' });
-              }
-            }}
-            />
+          <View style={firstRunStyle.passwordInputContainer}>
+            <TextInput style={firstRunStyle.passwordInput}
+              placeholder={this.state.placeholder}
+              underlineColorAndroid="transparent"
+              secureTextEntry={!this.state.revealPassword}
+              value={this.state.password}
+              onChangeText={text => this.handleChangeText(text)}
+              onFocus={() => {
+                if (!this.state.password || this.state.password.length === 0) {
+                  this.setState({ placeholder: '' });
+                }
+              }}
+              onBlur={() => {
+                if (!this.state.password || this.state.password.length === 0) {
+                  this.setState({ placeholder: 'password' });
+                }
+              }}
+              />
+            <TouchableOpacity
+              style={firstRunStyle.revealPasswordIcon}
+              onPress={() => this.setState({ revealPassword: !this.state.revealPassword })}>
+              <Icon name={this.state.revealPassword ? "eye-slash" : "eye"} size={16} style={firstRunStyle.revealIcon} />
+            </TouchableOpacity>
+          </View>
 
-            {(!hasSyncedWallet && this.state.password && this.state.password.trim().length) > 0 &&
-              <View style={firstRunStyle.passwordStrength}>
-                <BarPasswordStrengthDisplay
-                  width={Dimensions.get('window').width - firstRunMargins}
-                  minLength={1}
-                  password={this.state.password} />
-              </View>}
+          {(!hasSyncedWallet && this.state.password && this.state.password.trim().length) > 0 &&
+            <View style={firstRunStyle.passwordStrength}>
+              <BarPasswordStrengthDisplay
+                width={Dimensions.get('window').width - firstRunMargins}
+                minLength={1}
+                password={this.state.password} />
+            </View>}
           <Text style={firstRunStyle.infoParagraph}>Note: for wallet security purposes, LBRY is unable to reset your password.</Text>
         </View>
       );

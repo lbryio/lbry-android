@@ -67,7 +67,7 @@ class DownloadsPage extends React.PureComponent {
                 if (a.metadata.title === b.metadata.title) return 0;
                 return (a.metadata.title < b.metadata.title) ? -1 : 1;
               })}
-              keyExtractor={(item, index) => item.download_path}
+              keyExtractor={(item, index) => item.outpoint}
             />
           </View>}
         <FloatingWalletBalance navigation={navigation} />

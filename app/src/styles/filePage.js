@@ -56,7 +56,8 @@ const filePageStyle = StyleSheet.create({
   title: {
     fontFamily: 'Inter-UI-Bold',
     fontSize: 16,
-    flex: 18
+    flex: 18,
+    alignSelf: 'flex-start'
   },
   titleTouch: {
     flex: 1,

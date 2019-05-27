@@ -32,15 +32,20 @@ class SearchPage extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { navigation, search } = this.props;
-    let searchQuery;
-    if (navigation && navigation.state) {
-      searchQuery = navigation.state.params.searchQuery;
-    }
+    const { search } = this.props;
+    const searchQuery = this.getSearchQuery();
     if (searchQuery && searchQuery.trim().length > 0) {
       this.setState({ currentUri: (isURIValid(searchQuery)) ? normalizeURI(searchQuery) : null })
       search(searchQuery);
     }
+  }
+
+  getSearchQuery() {
+    const { navigation } = this.props;
+    if (navigation && navigation.state && navigation.state.params) {
+      return navigation.state.params.searchQuery;
+    }
+    return null;
   }
 
   handleSearchSubmitted = (keywords) => {
@@ -51,11 +56,10 @@ class SearchPage extends React.PureComponent {
 
   render() {
     const { isSearching, navigation, query, uris, urisByQuery } = this.props;
-    const { searchQuery } = navigation.state.params;
 
     return (
       <View style={searchStyle.container}>
-        <UriBar value={searchQuery}
+        <UriBar value={this.getSearchQuery() || query}
                 navigation={navigation}
                 onSearchSubmitted={this.handleSearchSubmitted} />
         {isSearching &&

@@ -131,6 +131,10 @@ class FilePage extends React.PureComponent {
         const { nout, txid } = claim;
         const outpoint = `${txid}:${nout}`;
         NativeModules.UtilityModule.queueDownload(outpoint);
+        // If the media is playable, file/view will be done in onPlaybackStarted
+        if (!isPlayable && !this.state.fileViewLogged) {
+          this.logFileView(uri, claim);
+        }
       }
       NativeModules.UtilityModule.checkDownloads();
     }
@@ -159,16 +163,6 @@ class FilePage extends React.PureComponent {
         title: metadata ? metadata.title : claim.name,
         uri: this.state.uri
       };
-    }
-
-    const prevFileInfo = prevProps.fileInfo;
-    if (!prevFileInfo && fileInfo) {
-      const mediaType = Lbry.getMediaType(contentType);
-      const isPlayable = mediaType === 'video' || mediaType === 'audio';
-      // If the media is playable, file/view will be done in onPlaybackStarted
-      if (!isPlayable && !this.state.fileViewLogged) {
-        this.logFileView(uri, claim);
-      }
     }
   }
 
@@ -313,15 +307,14 @@ class FilePage extends React.PureComponent {
 
   playerUriForFileInfo = (fileInfo) => {
     const { streamingUrl } = this.props;
+    if (fileInfo && fileInfo.download_path) {
+      return this.getEncodedDownloadPath(fileInfo);
+    }
     if (streamingUrl) {
       return streamingUrl;
     }
     if (this.state.currentStreamUrl) {
       return this.state.currentStreamUrl;
-    }
-
-    if (fileInfo && fileInfo.download_path) {
-      return this.getEncodedDownloadPath(fileInfo);
     }
 
     return null;
@@ -402,9 +395,9 @@ class FilePage extends React.PureComponent {
       this.startTime = null;
     }
 
-    const { fileInfo, navigation } = this.props;
+    const { claim, navigation } = this.props;
     const { uri } = navigation.state.params;
-    this.logFileView(uri, fileInfo, timeToStartMillis);
+    this.logFileView(uri, claim, timeToStartMillis);
 
     let payload = { 'uri': uri };
     if (!isNaN(timeToStart)) {

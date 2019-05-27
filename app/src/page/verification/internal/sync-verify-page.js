@@ -6,6 +6,7 @@ import {
   NativeModules,
   Text,
   TextInput,
+  TouchableOpacity,
   View
 } from 'react-native';
 import { BarPasswordStrengthDisplay } from 'react-native-password-strength-meter';
@@ -14,6 +15,7 @@ import Link from 'component/link';
 import Colors from 'styles/colors';
 import Constants from 'constants';
 import firstRunStyle from 'styles/firstRun';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import rewardStyle from 'styles/reward';
 
 
@@ -24,6 +26,7 @@ class SyncVerifyPage extends React.PureComponent {
     placeholder: 'password',
     syncApplyStarted: false,
     syncChecked: false,
+    revealPassword: false
   }
 
   componentDidMount() {
@@ -117,23 +120,30 @@ class SyncVerifyPage extends React.PureComponent {
         <View>
           <Text style={rewardStyle.verificationTitle}>Wallet Sync</Text>
           {paragraph}
-          <TextInput style={firstRunStyle.passwordInput}
-            placeholder={this.state.placeholder}
-            underlineColorAndroid="transparent"
-            secureTextEntry={true}
-            value={this.state.password}
-            onChangeText={text => this.handleChangeText(text)}
-            onFocus={() => {
-              if (!this.state.password || this.state.password.length === 0) {
-                this.setState({ placeholder: '' });
-              }
-            }}
-            onBlur={() => {
-              if (!this.state.password || this.state.password.length === 0) {
-                this.setState({ placeholder: 'password' });
-              }
-            }}
-            />
+          <View style={firstRunStyle.passwordInputContainer}>
+            <TextInput style={firstRunStyle.passwordInput}
+              placeholder={this.state.placeholder}
+              underlineColorAndroid="transparent"
+              secureTextEntry={!this.state.revealPassword}
+              value={this.state.password}
+              onChangeText={text => this.handleChangeText(text)}
+              onFocus={() => {
+                if (!this.state.password || this.state.password.length === 0) {
+                  this.setState({ placeholder: '' });
+                }
+              }}
+              onBlur={() => {
+                if (!this.state.password || this.state.password.length === 0) {
+                  this.setState({ placeholder: 'password' });
+                }
+              }}
+              />
+            <TouchableOpacity
+              style={firstRunStyle.revealPasswordIcon}
+              onPress={() => this.setState({ revealPassword: !this.state.revealPassword })}>
+              <Icon name={this.state.revealPassword ? "eye-slash" : "eye"} size={16} style={firstRunStyle.revealIcon} />
+            </TouchableOpacity>
+          </View>
           {(!hasSyncedWallet && this.state.password && this.state.password.trim().length) > 0 &&
             <View style={firstRunStyle.passwordStrength}>
               <BarPasswordStrengthDisplay

@@ -54,7 +54,7 @@ class WalletPage extends React.PureComponent {
             </Text>
             {!hasSyncedWallet &&
             <Text style={walletStyle.warningParagraph}>
-              If you are not using the LBRY sync service, you will lose all of your credits if you uninstall this application. Instructions on how to enroll as well as how to backup your wallet manually are available on the next page.
+              Since you are not using the LBRY sync service, you will lose all of your credits if you uninstall this application. Instructions on how to enroll as well as how to backup your wallet manually are available on the next page.
             </Text>}
             <Text style={walletStyle.warningText}>
               If you understand the risks and you wish to continue, please tap the button below.
