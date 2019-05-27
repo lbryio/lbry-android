@@ -7,7 +7,6 @@ import com.facebook.react.uimanager.ViewManager;
 
 import io.lbry.browser.reactmodules.BackgroundMediaModule;
 import io.lbry.browser.reactmodules.DaemonServiceControlModule;
-import io.lbry.browser.reactmodules.DownloadManagerModule;
 import io.lbry.browser.reactmodules.FirstRunModule;
 import io.lbry.browser.reactmodules.FirebaseModule;
 import io.lbry.browser.reactmodules.ScreenOrientationModule;
@@ -30,7 +29,6 @@ public class LbryReactPackage implements ReactPackage {
 
         modules.add(new BackgroundMediaModule(reactContext));
         modules.add(new DaemonServiceControlModule(reactContext));
-        modules.add(new DownloadManagerModule(reactContext));
         modules.add(new FirstRunModule(reactContext));
         modules.add(new FirebaseModule(reactContext));
         modules.add(new ScreenOrientationModule(reactContext));

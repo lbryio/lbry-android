@@ -33,6 +33,15 @@ const firstRunStyle = StyleSheet.create({
     marginBottom: 20,
     color: Colors.White
   },
+  spacedParagraph: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 18,
+    lineHeight: 28,
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 20,
+    color: Colors.White
+  },
   infoParagraph: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
@@ -162,6 +171,13 @@ const firstRunStyle = StyleSheet.create({
     marginLeft: 32,
     marginRight: 32,
     marginBottom: 48
+  },
+  centered: {
+    alignItems: 'center'
+  },
+  centerInside: {
+    flex: 1,
+    alignItems:'center'
   },
   nowrap: {
     flex: 1,

@@ -142,13 +142,15 @@ class EmailVerifyPage extends React.PureComponent {
                   text={"Send verification email"}
                   onPress={this.onSendVerificationPressed} />}
               {this.state.verifyStarted && emailNewPending &&
-                <ActivityIndicator size={"small"} color={Colors.White} style={rewardStyle.loading} />}
+                <View style={firstRunStyle.centerInside}>
+                  <ActivityIndicator size={"small"} color={Colors.White} />
+                </View>}
             </View>
           </View>}
 
         {(Constants.PHASE_VERIFICATION === this.state.phase) &&
           <View>
-            <Text style={firstRunStyle.paragraph}>An email has been sent to {this.state.email}. Please follow the instructions in the message to verify your email address.</Text>
+            <Text style={firstRunStyle.paragraph}>An email has been sent to <Text style={firstRunStyle.nowrap}>{this.state.email}</Text>. Please follow the instructions in the message to verify your email address.</Text>
 
             <View style={rewardStyle.buttonContainer}>
               <Button style={rewardStyle.verificationButton} theme={"light"} text={"Resend"} onPress={this.onResendPressed} />

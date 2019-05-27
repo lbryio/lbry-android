@@ -13,7 +13,7 @@ import {
   selectUser,
   selectEmailToVerify
 } from 'lbryinc';
-import { doDeleteCompleteBlobs } from 'redux/actions/file';
+import { doSetClientSetting } from 'redux/actions/settings';
 import SplashScreen from './view';
 
 const select = state => ({
@@ -26,11 +26,11 @@ const perform = dispatch => ({
   balanceSubscribe: () => dispatch(doBalanceSubscribe()),
   blacklistedOutpointsSubscribe: () => dispatch(doBlackListedOutpointsSubscribe()),
   checkSubscriptionsInit: () => dispatch(doCheckSubscriptionsInit()),
-  deleteCompleteBlobs: () => dispatch(doDeleteCompleteBlobs()),
   fetchRewardedContent: () => dispatch(doFetchRewardedContent()),
   fetchSubscriptions: (callback) => dispatch(doFetchMySubscriptions(callback)),
   getSync: password => dispatch(doGetSync(password)),
   notify: data => dispatch(doToast(data)),
+  setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
   setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),
   updateBlockHeight: () => dispatch(doUpdateBlockHeight()),
   verifyUserEmail: (token, recaptcha) => dispatch(doUserEmailVerify(token, recaptcha)),

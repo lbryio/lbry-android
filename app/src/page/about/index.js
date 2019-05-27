@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { doToast } from 'lbry-redux';
 import { doFetchAccessToken, selectAccessToken, selectUserEmail } from 'lbryinc';
-import { doPushDrawerStack, doPopDrawerStack } from 'redux/actions/drawer';
+import { doPushDrawerStack, doPopDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import { selectDrawerStack } from 'redux/selectors/drawer';
 import AboutPage from './view';
 import Constants from 'constants';
@@ -17,6 +17,7 @@ const perform = dispatch => ({
   notify: data => dispatch(doToast(data)),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_ABOUT)),
   popDrawerStack: () => dispatch(doPopDrawerStack()),
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false)),
 });
 
 export default connect(select, perform)(AboutPage);

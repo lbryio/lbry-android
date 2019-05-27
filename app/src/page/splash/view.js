@@ -28,7 +28,7 @@ class SplashScreen extends React.PureComponent {
   componentWillMount() {
     this.setState({
       daemonReady: false,
-      details: 'Starting daemon',
+      details: 'Starting up...',
       message: 'Connecting',
       isRunning: false,
       isLagging: false,
@@ -114,22 +114,18 @@ class SplashScreen extends React.PureComponent {
 
     if (this.state.daemonReady && this.state.shouldAuthenticate && user && user.id) {
       this.setState({ shouldAuthenticate: false }, () => {
-        AsyncStorage.getItem(Constants.KEY_FIRST_RUN_EMAIL).then(email => {
-          if (email) {
-            setEmailToVerify(email);
-          }
-
-          // user is authenticated, navigate to the main view
-          if (user.has_verified_email) {
-            NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
+        // user is authenticated, navigate to the main view
+        if (user.has_verified_email) {
+          NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
+            if (walletPassword && walletPassword.trim().length > 0) {
               getSync(walletPassword);
-              this.navigateToMain();
-            });
-            return;
-          }
+            }
+            this.navigateToMain();
+          });
+          return;
+        }
 
-          this.navigateToMain();
-        });
+        this.navigateToMain();
       });
     }
   }
@@ -140,9 +136,11 @@ class SplashScreen extends React.PureComponent {
       balanceSubscribe,
       blacklistedOutpointsSubscribe,
       checkSubscriptionsInit,
-      updateBlockHeight,
+      getSync,
       navigation,
-      notify
+      notify,
+      updateBlockHeight,
+      user
     } = this.props;
 
     Lbry.resolve({ urls: 'lbry://one' }).then(() => {
@@ -152,21 +150,30 @@ class SplashScreen extends React.PureComponent {
       checkSubscriptionsInit();
       updateBlockHeight();
       setInterval(() => { updateBlockHeight(); }, BLOCK_HEIGHT_INTERVAL);
-      NativeModules.VersionInfo.getAppVersion().then(appVersion => {
-        this.setState({ shouldAuthenticate: true });
-        authenticate(appVersion, Platform.OS);
-      });
+
+      if (user && user.id && user.has_verified_email) {
+        // user already authenticated
+        NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
+          if (walletPassword && walletPassword.trim().length > 0) {
+            getSync(walletPassword);
+          }
+          this.navigateToMain();
+        });
+      } else {
+        NativeModules.VersionInfo.getAppVersion().then(appVersion => {
+          this.setState({ shouldAuthenticate: true });
+          authenticate(appVersion, Platform.OS);
+        });
+      }
     });
   }
 
   _updateStatusCallback(status) {
-    const { deleteCompleteBlobs, fetchSubscriptions } = this.props;
+    const { fetchSubscriptions, getSync, setClientSetting } = this.props;
     const startupStatus = status.startup_status;
     // At the minimum, wallet should be started and blocks_behind equal to 0 before calling resolve
     const hasStarted = startupStatus.stream_manager && startupStatus.wallet && status.wallet.blocks_behind <= 0;
     if (hasStarted) {
-      deleteCompleteBlobs();
-
       // Wait until we are able to resolve a name before declaring
       // that we are done.
       // TODO: This is a hack, and the logic should live in the daemon
@@ -179,36 +186,17 @@ class SplashScreen extends React.PureComponent {
         isRunning: true,
       });
 
-      AsyncStorage.getItem(Constants.KEY_FIRST_RUN_PASSWORD).then(passwordSet => {
-        if ("true" === passwordSet) {
-          // encrypt the wallet
-          NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
-            if (!password || password.trim().length === 0) {
-              this.finishSplashScreen();
-              return;
-            }
 
-            Lbry.account_encrypt({ new_password: password }).then((result) => {
-              AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_PASSWORD);
-              Lbry.account_unlock({ password }).then(() => this.finishSplashScreen());
-            });
-          });
-
+      // For now, automatically unlock the wallet if a password is set so that downloads work
+      NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
+        if (password && password.trim().length > 0) {
+          // unlock the wallet and then finish the splash screen
+          Lbry.account_unlock({ password }).then(() => this.finishSplashScreen()).catch(() => this.finishSplashScreen());
           return;
         }
 
-        // For now, automatically unlock the wallet if a password is set so that downloads work
-        NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
-          if (password && password.trim().length > 0) {
-            // unlock the wallet and then finish the splash screen
-            Lbry.account_unlock({ password }).then(() => this.finishSplashScreen());
-            return;
-          }
-
-          this.finishSplashScreen();
-        });
+        this.finishSplashScreen();
       });
-
 
       return;
     }

@@ -34,7 +34,6 @@ import {
   TextInput,
   ToastAndroid
 } from 'react-native';
-import { doDeleteCompleteBlobs } from 'redux/actions/file';
 import { selectDrawerStack } from 'redux/selectors/drawer';
 import { SETTINGS, doDismissToast, doToast, selectToast } from 'lbry-redux';
 import {
@@ -116,7 +115,7 @@ const myLbryStack = createStackNavigator({
   Downloads: {
     screen: DownloadsPage,
     navigationOptions: ({ navigation }) => ({
-      title: 'Downloads',
+      title: 'Library',
       header: null
     })
   }
@@ -179,7 +178,7 @@ const drawer = createDrawerNavigator({
     drawerIcon: ({ tintColor }) => <Icon name="award" size={20} style={{ color: tintColor }} />
   }},
   MyLBRYStack: { screen: myLbryStack, navigationOptions: {
-    title: 'Downloads', drawerIcon: ({ tintColor }) => <Icon name="folder" size={20} style={{ color: tintColor }} />
+    title: 'Library', drawerIcon: ({ tintColor }) => <Icon name="download" size={20} style={{ color: tintColor }} />
   }},
   Settings: { screen: SettingsPage, navigationOptions: {
     drawerLockMode: 'locked-closed',
@@ -223,7 +222,6 @@ const mainStackNavigator = new createStackNavigator({
 }, {
   headerMode: 'none'
 });
-
 
 
 export const AppNavigator = mainStackNavigator;
@@ -299,9 +297,11 @@ class AppWithNavigationState extends React.Component {
 
       ToastAndroid.show('Your email address was successfully verified.', ToastAndroid.LONG);
 
-      // upon successful email verification, check wallet sync
+      // upon successful email verification, do wallet sync (if password has been set)
       NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
-        dispatch(doGetSync(walletPassword));
+        if (walletPassword && walletPassword.trim().length > 0) {
+          dispatch(doGetSync(walletPassword));
+        }
       });
     }
   }
@@ -343,6 +343,7 @@ class AppWithNavigationState extends React.Component {
           if (!emailVerifyErrorMessage) {
             AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
           }
+
           AsyncStorage.removeItem(Constants.KEY_SHOULD_VERIFY_EMAIL);
           dispatch(doToast({ message }));
         }
@@ -370,8 +371,6 @@ class AppWithNavigationState extends React.Component {
     }
 
     if (AppState.currentState && AppState.currentState.match(/active/)) {
-      // Cleanup blobs for completed files upon app resume to save space
-      dispatch(doDeleteCompleteBlobs());
       if (backgroundPlayEnabled || NativeModules.BackgroundMedia) {
         NativeModules.BackgroundMedia.hidePlaybackNotification();
       }

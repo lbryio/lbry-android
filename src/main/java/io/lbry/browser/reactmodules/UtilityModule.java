@@ -35,10 +35,11 @@ import java.util.Map;
 import java.util.Random;
 import java.security.KeyStore;
 
+import io.lbry.browser.DownloadManager;
 import io.lbry.browser.MainActivity;
+import io.lbry.browser.LbrynetService;
 import io.lbry.browser.R;
 import io.lbry.browser.Utils;
-import io.lbry.browser.reactmodules.DownloadManagerModule;
 
 public class UtilityModule extends ReactContextBaseJavaModule {
     private static final Map<String, Integer> activeNotifications = new HashMap<String, Integer>();
@@ -194,14 +195,13 @@ public class UtilityModule extends ReactContextBaseJavaModule {
             if (fileUri != null) {
                 Intent shareIntent = new Intent();
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-                    // Android 6 and lower
-                    shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-                context.startActivity(Intent.createChooser(shareIntent, "Send LBRY log"));
+
+                Intent sendLogIntent = Intent.createChooser(shareIntent, "Send LBRY log");
+                sendLogIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(sendLogIntent);
             }
         } catch (IllegalArgumentException e) {
             errorCallback.invoke("The lbrynet.log file cannot be shared due to permission restrictions.");
@@ -240,7 +240,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         builder.setAutoCancel(true)
                .setColor(ContextCompat.getColor(context, R.color.lbrygreen))
-               .setContentIntent(DownloadManagerModule.getLaunchPendingIntent(uri, context))
+               .setContentIntent(DownloadManager.getLaunchPendingIntent(uri, context))
                .setContentTitle(publisher)
                .setContentText(title)
                .setSmallIcon(R.drawable.ic_lbry)
@@ -324,5 +324,34 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         }
 
         promise.resolve(Utils.getSecureValue(key, context, keyStore));
+    }
+
+    @ReactMethod
+    public void checkDownloads() {
+        Intent intent = new Intent();
+        intent.setAction(LbrynetService.ACTION_CHECK_DOWNLOADS);
+        if (context != null) {
+            context.sendBroadcast(intent);
+        }
+    }
+
+    @ReactMethod
+    public void queueDownload(String outpoint) {
+        Intent intent = new Intent();
+        intent.setAction(LbrynetService.ACTION_QUEUE_DOWNLOAD);
+        intent.putExtra("outpoint", outpoint);
+        if (context != null) {
+            context.sendBroadcast(intent);
+        }
+    }
+
+    @ReactMethod
+    public void deleteDownload(String uri) {
+        Intent intent = new Intent();
+        intent.setAction(LbrynetService.ACTION_DELETE_DOWNLOAD);
+        intent.putExtra("uri", uri);
+        if (context != null) {
+            context.sendBroadcast(intent);
+        }
     }
 }

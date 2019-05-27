@@ -26,12 +26,17 @@ class SearchPage extends React.PureComponent {
   };
 
   componentWillMount() {
-    this.props.pushDrawerStack();
+    const { pushDrawerStack, setPlayerVisible } = this.props;
+    pushDrawerStack();
+    setPlayerVisible();
   }
 
   componentDidMount() {
     const { navigation, search } = this.props;
-    const { searchQuery } = navigation.state.params;
+    let searchQuery;
+    if (navigation && navigation.state) {
+      searchQuery = navigation.state.params.searchQuery;
+    }
     if (searchQuery && searchQuery.trim().length > 0) {
       this.setState({ currentUri: (isURIValid(searchQuery)) ? normalizeURI(searchQuery) : null })
       search(searchQuery);

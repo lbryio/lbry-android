@@ -1,6 +1,9 @@
 import { connect } from 'react-redux';
 import { doToast } from 'lbry-redux';
 import {
+  doCheckSync,
+  doGetSync,
+  doSyncApply,
   doUserEmailNew,
   doUserEmailToVerify,
   doUserResendVerificationEmail,
@@ -14,8 +17,18 @@ import {
   selectEmailNewErrorMessage,
   selectEmailNewIsPending,
   selectEmailToVerify,
+  selectHasSyncedWallet,
+  selectGetSyncIsPending,
+  selectSetSyncIsPending,
+  selectSyncApplyIsPending,
+  selectSyncApplyErrorMessage,
+  selectSyncData,
+  selectSyncHash,
   selectUser,
 } from 'lbryinc';
+import { doSetClientSetting } from 'redux/actions/settings';
+import { makeSelectClientSetting } from 'redux/selectors/settings';
+import Constants from 'constants';
 import Verification from './view';
 
 const select = (state) => ({
@@ -28,15 +41,27 @@ const select = (state) => ({
   phone: selectPhoneToVerify(state),
   phoneNewErrorMessage: selectPhoneNewErrorMessage(state),
   phoneNewIsPending: selectPhoneNewIsPending(state),
+  deviceWalletSynced: makeSelectClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED)(state),
+  hasSyncedWallet: selectHasSyncedWallet(state),
+  getSyncIsPending: selectGetSyncIsPending(state),
+  setSyncIsPending: selectSetSyncIsPending(state),
+  syncApplyIsPending: selectSyncApplyIsPending(state),
+  syncApplyErrorMessage: selectSyncApplyErrorMessage(state),
+  syncData: selectSyncData(state),
+  syncHash: selectSyncHash(state),
 });
 
 const perform = dispatch => ({
   addUserEmail: email => dispatch(doUserEmailNew(email)),
   addUserPhone: (phone, country_code) => dispatch(doUserPhoneNew(phone, country_code)),
+  getSync: password => dispatch(doGetSync(password)),
+  checkSync: () => dispatch(doCheckSync()),
   verifyPhone: (verificationCode) => dispatch(doUserPhoneVerify(verificationCode)),
   notify: data => dispatch(doToast(data)),
+  setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
   setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),
-  resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email))
+  syncApply: (hash, data, password) => dispatch(doSyncApply(hash, data, password)),
+  resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email)),
 });
 
 export default connect(select, perform)(Verification);

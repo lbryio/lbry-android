@@ -21,7 +21,7 @@ class ManualVerifyPage extends React.PureComponent {
     return (
       <View style={firstRunStyle.container}>
         <Text style={rewardStyle.verificationTitle}>Manual Reward Verification</Text>
-        <Text style={firstRunStyle.paragraph}>You need to be manually verified before you can start claiming rewards. Please request to be verified on the <Link style={rewardStyle.underlinedTextLink} href="https://discordapp.com/invite/Z3bERWA" text="LBRY Discord server" />.</Text>
+        <Text style={firstRunStyle.spacedParagraph}>You need to be manually verified before you can start claiming rewards. Please request to be verified on the <Link style={rewardStyle.underlinedTextLink} href="https://discordapp.com/invite/Z3bERWA" text="LBRY Discord server" />.</Text>
       </View>
     );
   }

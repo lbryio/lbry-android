@@ -14,7 +14,10 @@ class AboutPage extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.props.pushDrawerStack();
+    const { pushDrawerStack, setPlayerVisible } = this.props;
+    pushDrawerStack();
+    setPlayerVisible();
+
     if (NativeModules.VersionInfo) {
       NativeModules.VersionInfo.getAppVersion().then(version => {
         this.setState({appVersion: version});

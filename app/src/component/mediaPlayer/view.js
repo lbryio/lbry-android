@@ -1,6 +1,8 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
+  AppState,
+  ActivityIndicator,
   DeviceEventEmitter,
   NativeModules,
   PanResponder,
@@ -9,11 +11,14 @@ import {
   ScrollView,
   TouchableOpacity
 } from 'react-native';
+import Colors from 'styles/colors';
 import FastImage from 'react-native-fast-image'
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FileItemMedia from 'component/fileItemMedia';
 import mediaPlayerStyle from 'styles/mediaPlayer';
+
+const positionSaveInterval = 10
 
 class MediaPlayer extends React.PureComponent {
   static ControlsTimeout = 3000;
@@ -31,7 +36,9 @@ class MediaPlayer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      encodedFilePath: null,
+      buffering: false,
+      backgroundPlayEnabled: false,
+      autoPaused: false,
       rate: 1,
       volume: 1,
       muted: false,
@@ -85,6 +92,7 @@ class MediaPlayer extends React.PureComponent {
     const { position } = this.props;
     if (!isNaN(parseFloat(position)) && position > 0) {
       this.video.seek(position);
+      this.setState({ currentTime: position }, () => this.setSeekerPosition(this.calculateSeekerPosition()));
     }
 
     if (this.props.onMediaLoaded) {
@@ -93,10 +101,13 @@ class MediaPlayer extends React.PureComponent {
   }
 
   onProgress = (data) => {
-    const { savePosition, fileInfo } = this.props;
+    const { savePosition, claim } = this.props;
 
-
-    this.setState({ currentTime: data.currentTime }, () => savePosition(fileInfo.claim_id, fileInfo.outpoint, data.currentTime));
+    this.setState({ buffering: false, currentTime: data.currentTime });
+    if (data.currentTime > 0 && Math.floor(data.currentTime) % positionSaveInterval === 0) {
+      const { claim_id: claimId, txid, nout } = claim;
+      savePosition(claimId, `${txid}:${nout}`, data.currentTime);
+    }
 
     if (!this.state.seeking) {
       this.setSeekerPosition(this.calculateSeekerPosition());
@@ -140,6 +151,11 @@ class MediaPlayer extends React.PureComponent {
   }
 
   togglePlayerControls = () => {
+    const { setPlayerVisible, isPlayerVisible } = this.props;
+    if (!isPlayerVisible) {
+      setPlayerVisible();
+    }
+
     if (this.state.areControlsVisible) {
       this.manualHidePlayerControls();
     } else {
@@ -149,7 +165,14 @@ class MediaPlayer extends React.PureComponent {
 
   togglePlay = () => {
     this.showPlayerControls();
-    this.setState({ paused: !this.state.paused });
+    this.setState({ paused: !this.state.paused }, this.handlePausedState);
+  }
+
+  handlePausedState = () => {
+    if (!this.state.paused) {
+      // onProgress will automatically clear this, so it's fine
+      this.setState({ buffering: true });
+    }
   }
 
   toggleFullscreenMode = () => {
@@ -217,7 +240,7 @@ class MediaPlayer extends React.PureComponent {
       onPanResponderRelease: (evt, gestureState) => {
         const time = this.getCurrentTimeForSeekerPosition();
         if (time >= this.state.duration) {
-          this.setState({ paused: true });
+          this.setState({ paused: true }, this.handlePausedState);
           this.onEnd();
         } else {
           this.seekTo(time);
@@ -251,18 +274,29 @@ class MediaPlayer extends React.PureComponent {
     this.initSeeker();
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { isPlayerVisible } = nextProps;
+    if (!isPlayerVisible && !this.state.backgroundPlayEnabled) {
+      // force pause if the player is not visible and background play is not enabled
+      this.setState({ paused: true });
+    }
+  }
+
   componentDidMount() {
-    const { assignPlayer } = this.props;
+    const { assignPlayer, backgroundPlayEnabled  } = this.props;
     if (assignPlayer) {
       assignPlayer(this);
     }
 
+    this.setState({ backgroundPlayEnabled: !!backgroundPlayEnabled });
     this.setSeekerPosition(this.calculateSeekerPosition());
+    AppState.addEventListener('change', this.handleAppStateChange);
     DeviceEventEmitter.addListener('onBackgroundPlayPressed', this.play);
     DeviceEventEmitter.addListener('onBackgroundPausePressed', this.pause);
   }
 
   componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange);
     DeviceEventEmitter.removeListener('onBackgroundPlayPressed', this.play);
     DeviceEventEmitter.removeListener('onBackgroundPausePressed', this.pause);
     this.clearControlsTimeout();
@@ -270,6 +304,26 @@ class MediaPlayer extends React.PureComponent {
     const { onFullscreenToggled } = this.props;
     if (onFullscreenToggled) {
       onFullscreenToggled(false);
+    }
+  }
+
+  handleAppStateChange = () => {
+    if (AppState.currentState && AppState.currentState.match(/inactive|background/)) {
+      if (!this.state.backgroundPlayEnabled && !this.state.paused) {
+        this.setState({ paused: true, autoPaused: true });
+      }
+    }
+
+    if (AppState.currentState && AppState.currentState.match(/active/)) {
+      if (!this.state.backgroundPlayEnabled && this.state.autoPaused) {
+        this.setState({ paused: false, autoPaused: false });
+      }
+    }
+  }
+
+  onBuffer = () => {
+    if (!this.state.paused) {
+      this.setState({ buffering: true }, () => this.manualHidePlayerControls());
     }
   }
 
@@ -282,6 +336,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   updateBackgroundMediaNotification = () => {
+    this.handlePausedState();
     const { backgroundPlayEnabled } = this.props;
     if (backgroundPlayEnabled) {
       if (NativeModules.BackgroundMedia && window.currentMediaInfo) {
@@ -292,13 +347,19 @@ class MediaPlayer extends React.PureComponent {
   }
 
   renderPlayerControls() {
+    const { onBackButtonPressed } = this.props;
+
     if (this.state.areControlsVisible) {
       return (
         <View style={mediaPlayerStyle.playerControlsContainer}>
+          <TouchableOpacity style={mediaPlayerStyle.backButton} onPress={onBackButtonPressed}>
+            <Icon name={"arrow-left"} size={18} style={mediaPlayerStyle.backButtonIcon} />
+           </TouchableOpacity>
+
           <TouchableOpacity style={mediaPlayerStyle.playPauseButton}
             onPress={this.togglePlay}>
-            {this.state.paused && <Icon name="play" size={32} color="#ffffff" />}
-            {!this.state.paused && <Icon name="pause" size={32} color="#ffffff" />}
+            {this.state.paused && <Icon name="play" size={40} color="#ffffff" />}
+            {!this.state.paused && <Icon name="pause" size={40} color="#ffffff" />}
           </TouchableOpacity>
 
           <TouchableOpacity style={mediaPlayerStyle.toggleFullscreenButton} onPress={this.toggleFullscreenMode}>
@@ -315,18 +376,6 @@ class MediaPlayer extends React.PureComponent {
     return null;
   }
 
-  getEncodedDownloadPath = (fileInfo) => {
-    if (this.state.encodedFilePath) {
-      return this.state.encodedFilePath;
-    }
-
-    const { file_name: fileName } = fileInfo;
-    const encodedFileName = encodeURIComponent(fileName).replace(/!/g, '%21');
-    const encodedFilePath = fileInfo.download_path.replace(fileName, encodedFileName);
-    this.setState({ encodedFilePath });
-    return encodedFilePath;
-  }
-
   onSeekerTouchAreaPressed = (evt) => {
     if (evt && evt.nativeEvent) {
       const newSeekerPosition = evt.nativeEvent.locationX;
@@ -338,8 +387,14 @@ class MediaPlayer extends React.PureComponent {
     }
   }
 
+  onTrackingLayout = (evt) => {
+    this.trackingOffset = evt.nativeEvent.layout.x;
+    this.seekerWidth = evt.nativeEvent.layout.width;
+    this.setSeekerPosition(this.calculateSeekerPosition());
+  }
+
   render() {
-    const { backgroundPlayEnabled, fileInfo, thumbnail, onLayout, style } = this.props;
+    const { onLayout, source, style, thumbnail } = this.props;
     const completedWidth = this.getCurrentTimePercentage() * this.seekerWidth;
     const remainingWidth = this.seekerWidth - completedWidth;
     let styles = [this.state.fullscreenMode ? mediaPlayerStyle.fullscreenContainer : mediaPlayerStyle.container];
@@ -356,17 +411,27 @@ class MediaPlayer extends React.PureComponent {
 
     return (
       <View style={styles} onLayout={onLayout}>
-        <Video source={{ uri: 'file:///' + this.getEncodedDownloadPath(fileInfo) }}
+        <Video source={{
+                 uri: source,
+                 headers: {
+                   "Save-Data": "on",
+                   "Accept": "*/*"
+                 }
+               }}
+               bufferConfig={{ minBufferMs: 3000, maxBufferMs: 60000, bufferForPlaybackMs: 3000, bufferForPlaybackAfterRebufferMs: 3000  }}
                ref={(ref: Video) => { this.video = ref; }}
                resizeMode={this.state.resizeMode}
-               playInBackground={backgroundPlayEnabled}
+               playInBackground={this.state.backgroundPlayEnabled}
                style={mediaPlayerStyle.player}
                rate={this.state.rate}
                volume={this.state.volume}
                paused={this.state.paused}
                onLoad={this.onLoad}
+               onBuffer={this.onBuffer}
                onProgress={this.onProgress}
                onEnd={this.onEnd}
+               onError={this.onError}
+               minLoadRetryCount={999}
                />
 
         {this.state.firstPlay && thumbnail && thumbnail.trim().length > 0 &&
@@ -381,14 +446,16 @@ class MediaPlayer extends React.PureComponent {
         </TouchableOpacity>
 
         {(!this.state.fullscreenMode || (this.state.fullscreenMode && this.state.areControlsVisible)) &&
-        <View style={trackingStyle} onLayout={(evt) => {
-              this.trackingOffset = evt.nativeEvent.layout.x;
-              this.seekerWidth = evt.nativeEvent.layout.width;
-            }}>
+        <View style={trackingStyle} onLayout={this.onTrackingLayout}>
           <View style={mediaPlayerStyle.progress}>
             <View style={[mediaPlayerStyle.innerProgressCompleted, { width: completedWidth }]} />
             <View style={[mediaPlayerStyle.innerProgressRemaining, { width: remainingWidth }]} />
           </View>
+        </View>}
+
+        {this.state.buffering &&
+        <View style={mediaPlayerStyle.loadingContainer}>
+          <ActivityIndicator color={Colors.LbryGreen} size="large" />
         </View>}
 
         {this.state.areControlsVisible &&

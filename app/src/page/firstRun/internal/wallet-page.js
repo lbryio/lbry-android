@@ -16,6 +16,8 @@ import Colors from 'styles/colors';
 import Constants from 'constants';
 import firstRunStyle from 'styles/firstRun';
 
+const firstRunMargins = 80;
+
 class WalletPage extends React.PureComponent {
   state = {
     password: null,
@@ -27,20 +29,20 @@ class WalletPage extends React.PureComponent {
 
   componentDidMount() {
     this.checkWalletReady();
-    this.props.checkSync();
-    setTimeout(() => this.setState({ hasCheckedSync: true}), 1000);
   }
 
   checkWalletReady = () => {
     // make sure the sdk wallet component is ready
     Lbry.status().then(status => {
       if (status.startup_status && status.startup_status.wallet) {
-        this.setState({ walletReady: true });
+        this.setState({ walletReady: true }, () => {
+          this.props.checkSync();
+          setTimeout(() => this.setState({ hasCheckedSync: true}), 1000);
+        });
         return;
       }
       setTimeout(this.checkWalletReady, 1000);
     }).catch((e) => {
-      console.log(e);
       setTimeout(this.checkWalletReady, 1000);
     });
   }
@@ -52,23 +54,24 @@ class WalletPage extends React.PureComponent {
     if (onPasswordChanged) {
       onPasswordChanged(text);
     }
-
-    if (NativeModules.UtilityModule) {
-      NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, text);
-      // simply set any string value to indicate that a passphrase was set on first run
-      AsyncStorage.setItem(Constants.KEY_FIRST_RUN_PASSWORD, "true");
-    }
   }
 
   render() {
-    const { onPasswordChanged, onWalletViewLayout, isRetrievingSync, hasSyncedWallet } = this.props;
+    const { onPasswordChanged, onWalletViewLayout, getSyncIsPending, hasSyncedWallet, syncApplyIsPending } = this.props;
 
     let content;
-    if (!this.state.walletReady || !this.state.hasCheckedSync || isRetrievingSync) {
+    if (!this.state.walletReady || !this.state.hasCheckedSync || getSyncIsPending) {
       content = (
-        <View>
+        <View style={firstRunStyle.centered}>
           <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
-            <Text style={firstRunStyle.paragraph}>Retrieving your account information...</Text>
+          <Text style={firstRunStyle.paragraph}>Retrieving your account information...</Text>
+        </View>
+      );
+    } else if (syncApplyIsPending) {
+      content = (
+        <View style={firstRunStyle.centered}>
+          <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
+            <Text style={firstRunStyle.paragraph}>Validating password...</Text>
         </View>
       );
     } else {
@@ -96,10 +99,11 @@ class WalletPage extends React.PureComponent {
               }
             }}
             />
-            {(this.state.password && this.state.password.trim().length) > 0 &&
+
+            {(!hasSyncedWallet && this.state.password && this.state.password.trim().length) > 0 &&
               <View style={firstRunStyle.passwordStrength}>
                 <BarPasswordStrengthDisplay
-                  width={Dimensions.get('window').width - 80}
+                  width={Dimensions.get('window').width - firstRunMargins}
                   minLength={1}
                   password={this.state.password} />
               </View>}

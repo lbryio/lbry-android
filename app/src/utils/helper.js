@@ -1,6 +1,6 @@
 import { NavigationActions, StackActions } from 'react-navigation';
 import { buildURI, isURIValid } from 'lbry-redux';
-import { doPopDrawerStack, doPushDrawerStack } from 'redux/actions/drawer';
+import { doPopDrawerStack, doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import { DrawerRoutes } from 'constants';
 import Constants from 'constants';
 
@@ -36,6 +36,7 @@ export function dispatchNavigateToUri(dispatch, nav, uri, isNavigatingBack) {
 
   if (!isNavigatingBack) {
     dispatch(doPushDrawerStack(uri));
+    dispatch(doSetPlayerVisible(true));
   }
 
   if (nav && nav.routes && nav.routes.length > 0 && 'Main' === nav.routes[0].routeName) {
@@ -120,6 +121,7 @@ export function navigateToUri(navigation, uri, additionalParams, isNavigatingBac
     navigation.dispatch(stackAction);
     if (store && store.dispatch && !isNavigatingBack) {
       store.dispatch(doPushDrawerStack(uri));
+      store.dispatch(doSetPlayerVisible(true));
     }
     return;
   }
@@ -127,6 +129,7 @@ export function navigateToUri(navigation, uri, additionalParams, isNavigatingBac
   navigation.navigate({ routeName: 'File', key: uri, params });
   if (store && store.dispatch && !isNavigatingBack) {
     store.dispatch(doPushDrawerStack(uri));
+    store.dispatch(doSetPlayerVisible(true));
   }
 }
 

@@ -178,11 +178,9 @@ class ChannelPage extends React.PureComponent {
       }
     }
 
-
     return (
       <View style={channelPageStyle.container}>
         <UriBar value={uri} navigation={navigation} />
-
 
         <View style={channelPageStyle.viewContainer}>
           <View style={channelPageStyle.cover}>

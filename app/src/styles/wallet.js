@@ -29,6 +29,10 @@ const walletStyle = StyleSheet.create({
     backgroundColor: Colors.LbryGreen,
     alignSelf: 'flex-start'
   },
+  enrollButton: {
+    backgroundColor: Colors.White,
+    alignSelf: 'flex-start'
+  },
   historyList: {
     backgroundColor: '#ffffff'
   },
@@ -51,12 +55,12 @@ const walletStyle = StyleSheet.create({
     margin: 16
   },
   title: {
-    fontFamily: 'Inter-UI-Bold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: 20,
     marginBottom: 24
   },
   transactionsTitle: {
-    fontFamily: 'Inter-UI-Bold',
+    fontFamily: 'Inter-UI-SemiBold',
     fontSize: 20
   },
   transactionsHeader: {
@@ -93,8 +97,8 @@ const walletStyle = StyleSheet.create({
   },
   balanceTitle: {
     color: '#ffffff',
-    fontFamily: 'Inter-UI-Bold',
-    fontSize: 18,
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 20,
     marginLeft: 16,
     marginTop: 16
   },
@@ -141,6 +145,13 @@ const walletStyle = StyleSheet.create({
     margin: 16,
     marginTop: 76
   },
+  warningParagraph: {
+    color: Colors.White,
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 16,
+    lineHeight: 24,
+    marginBottom: 16
+  },
   warningText: {
     color: Colors.White,
     fontFamily: 'Inter-UI-Regular',
@@ -156,7 +167,9 @@ const walletStyle = StyleSheet.create({
   },
   currency: {
     alignSelf: 'flex-start',
-    marginTop: 17
+    fontSize: 12,
+    marginTop: 16,
+    marginLeft: 4
   },
   sendButton: {
     marginTop: 8
@@ -185,6 +198,29 @@ const walletStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     lineHeight: 16
+  },
+  syncDriverCard: {
+    padding: 16,
+    backgroundColor: Colors.LbryGreen,
+    marginLeft: 16,
+    marginTop: 16,
+    marginRight: 16
+  },
+  syncDriverTitle:  {
+    color: Colors.White,
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 20
+  },
+  syncDriverText: {
+    color: Colors.White,
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 14,
+  },
+  actionRow: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   }
 });
 

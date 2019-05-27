@@ -171,10 +171,12 @@ class PhoneVerifyPage extends React.PureComponent {
                     text={"Send verification text"}
                     onPress={this.onSendTextPressed} />}
                 {phoneNewIsPending &&
-                  <ActivityIndicator
-                    style={[rewardStyle.loading, rewardStyle.topMarginMedium]}
-                    size="small"
-                    color={Colors.White} />}
+                  <View style={firstRunStyle.centerInside}>
+                    <ActivityIndicator
+                      style={rewardStyle.topMarginMedium}
+                      size="small"
+                      color={Colors.White} />
+                  </View>}
               </View>
             </View>}
 
@@ -204,12 +206,12 @@ class PhoneVerifyPage extends React.PureComponent {
                 </View>
               }
               {phoneVerifyIsPending &&
-                <View>
+                <View style={firstRunStyle.centered}>
                   <Text style={firstRunStyle.paragraph}>Verifying your phone number...</Text>
                   <ActivityIndicator
                     color={Colors.White}
                     size="small"
-                    style={[rewardStyle.loading, rewardStyle.topMarginMedium, rewardStyle.leftRightMargin]} />
+                    style={[rewardStyle.topMarginMedium, rewardStyle.leftRightMargin]} />
                 </View>}
             </View>
           }

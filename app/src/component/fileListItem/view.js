@@ -87,7 +87,8 @@ class FileListItem extends React.PureComponent {
                          resizeMode="cover"
                          title={(title || name)}
                          thumbnail={thumbnail} />
-          {fileInfo && fileInfo.completed && <Icon style={fileListStyle.downloadedIcon} solid={true} color={Colors.BrightGreen} name={"folder"} size={16} />}
+          {(fileInfo && fileInfo.completed && fileInfo.download_path) &&
+            <Icon style={fileListStyle.downloadedIcon} solid={true} color={Colors.BrightGreen} name={"folder"} size={16} />}
           <View style={fileListStyle.detailsContainer}>
             {featuredResult && <Text style={fileListStyle.featuredUri} numberOfLines={1}>{uri}</Text>}
 
@@ -106,7 +107,8 @@ class FileListItem extends React.PureComponent {
               }} />}
 
             <View style={fileListStyle.info}>
-              {fileInfo && <Text style={fileListStyle.infoText}>{this.getStorageForFileInfo(fileInfo)}</Text>}
+              {(fileInfo && !isNaN(fileInfo.written_bytes) && fileInfo.written_bytes > 0) &&
+                <Text style={fileListStyle.infoText}>{this.getStorageForFileInfo(fileInfo)}</Text>}
               <DateTime style={fileListStyle.publishInfo} textStyle={fileListStyle.infoText} timeAgo uri={uri} />
             </View>
 

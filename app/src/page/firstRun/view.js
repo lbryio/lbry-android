@@ -38,7 +38,8 @@ class FirstRunScreen extends React.PureComponent {
     isEmailVerified: false,
     skipAccountConfirmed: false,
     showBottomContainer: true,
-    walletPassword: null
+    walletPassword: null,
+    syncApplyStarted: false
   };
 
   componentDidMount() {
@@ -65,16 +66,31 @@ class FirstRunScreen extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { emailNewErrorMessage, emailNewPending, user } = nextProps;
-    const { notify } = this.props;
+    const { emailNewErrorMessage, emailNewPending, syncApplyErrorMessage, syncApplyIsPending, user } = nextProps;
+    const { notify, isApplyingSync, setClientSetting } = this.props;
 
     if (this.state.emailSubmitted && !emailNewPending) {
       this.setState({ emailSubmitted: false });
-      if (emailNewErrorMessage) {
+      if (emailNewErrorMessage && emailNewErrorMessage.trim().length > 0) {
         notify ({ message: String(emailNewErrorMessage), isError: true });
       } else {
         // Request successful. Navigate to email verify page.
         this.showPage(Constants.FIRST_RUN_PAGE_EMAIL_VERIFY)
+      }
+    }
+
+    if (this.state.syncApplyStarted && !syncApplyIsPending) {
+      this.setState({ syncApplyStarted: false });
+      if (syncApplyErrorMessage && syncApplyErrorMessage.trim().length > 0) {
+        notify({ message: syncApplyErrorMessage, isError: true });
+        this.setState({ showBottomContainer: true });
+      } else {
+        // password successfully verified
+        if (NativeModules.UtilityModule) {
+          NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, this.state.walletPassword);
+        }
+        setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
+        this.closeFinalPage();
       }
     }
 
@@ -121,15 +137,27 @@ class FirstRunScreen extends React.PureComponent {
     }
   }
 
+  checkWalletPassword = () => {
+    const { syncApply, syncHash, syncData } = this.props;
+    this.setState({ syncApplyStarted: true, showBottomContainer: false }, () => {
+      syncApply(syncHash, syncData, this.state.walletPassword);
+    });
+  }
+
   handleContinuePressed = () => {
-    const { notify, user } = this.props;
+    const { notify, user, hasSyncedWallet } = this.props;
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     if (Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage) {
       if (!this.state.walletPassword || this.state.walletPassword.trim().length === 0) {
         return notify({ message: 'Please enter a wallet password' });
       }
 
-      this.closeFinalPage();
+      // do apply sync to check if the password is valid
+      if (hasSyncedWallet) {
+        this.checkWalletPassword();
+      } else {
+        this.setFreshPassword();
+      }
       return;
     }
 
@@ -167,20 +195,25 @@ class FirstRunScreen extends React.PureComponent {
     });
   }
 
+  checkBottomContainer = (pageName) => {
+    if (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === pageName || Constants.FIRST_RUN_PAGE_WALLET === pageName) {
+      // do not show the buttons (because we're waiting to get things ready)
+      this.setState({ showBottomContainer: false });
+    }
+  }
+
   showNextPage = () => {
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     const nextPage = FirstRunScreen.pages[pageIndex + 1];
     this.setState({ currentPage: nextPage });
-    if (nextPage === Constants.FIRST_RUN_PAGE_EMAIL_COLLECT) {
-      // do not show the buttons (because we're waiting to get things ready)
-      this.setState({ showBottomContainer: false });
-    }
+    this.checkBottomContainer(nextPage);
   }
 
   showPage(pageName) {
     const pageIndex = FirstRunScreen.pages.indexOf(pageName);
     if (pageIndex > -1) {
       this.setState({ currentPage: pageName });
+      this.checkBottomContainer(pageName);
     }
   }
 
@@ -222,6 +255,21 @@ class FirstRunScreen extends React.PureComponent {
     this.setState({ skipAccountConfirmed: checked });
   }
 
+  setFreshPassword = () => {
+    const { getSync, setClientSetting } = this.props;
+    if (NativeModules.UtilityModule) {
+      NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, this.state.walletPassword);
+      Lbry.account_encrypt({ new_password: this.state.walletPassword }).then(() => {
+        Lbry.account_unlock({ password: this.state.walletPassword }).then(() => {
+          // fresh account, new password set
+          getSync(this.state.walletPassword);
+          setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
+          this.closeFinalPage();
+        });
+      });
+    }
+  }
+
   render() {
     const {
       authenticate,
@@ -233,7 +281,8 @@ class FirstRunScreen extends React.PureComponent {
       emailToVerify,
       notify,
       hasSyncedWallet,
-      isRetrievingSync,
+      getSyncIsPending,
+      syncApplyIsPending,
       resendVerificationEmail,
       user
     } = this.props;
@@ -267,7 +316,8 @@ class FirstRunScreen extends React.PureComponent {
         page = (<WalletPage
                   checkSync={checkSync}
                   hasSyncedWallet={hasSyncedWallet}
-                  isRetrievingSync={isRetrievingSync}
+                  getSyncIsPending={getSyncIsPending}
+                  syncApplyIsPending={syncApplyIsPending}
                   onWalletViewLayout={this.onWalletViewLayout}
                   onPasswordChanged={this.onWalletPasswordChanged} />);
         break;
@@ -293,7 +343,7 @@ class FirstRunScreen extends React.PureComponent {
              Constants.FIRST_RUN_PAGE_EMAIL_VERIFY === this.state.currentPage) &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
               <Text style={firstRunStyle.buttonText}>
-                « {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage ? 'Setup account' : 'Change Email'}</Text>
+                « {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage ? 'Setup account' : 'Change email'}</Text>
             </TouchableOpacity>}
             {!emailNewPending && (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage) &&
             <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>

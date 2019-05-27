@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { SETTINGS } from 'lbry-redux';
-import { doPushDrawerStack, doPopDrawerStack } from 'redux/actions/drawer';
+import { doPushDrawerStack, doPopDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import { doSetClientSetting } from 'redux/actions/settings';
 import { selectDrawerStack } from 'redux/selectors/drawer';
 import { makeSelectClientSetting } from 'redux/selectors/settings';
@@ -18,6 +18,7 @@ const perform = dispatch => ({
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_SETTINGS)),
   popDrawerStack: () => dispatch(doPopDrawerStack()),
   setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false)),
 });
 
 export default connect(select, perform)(SettingsPage);

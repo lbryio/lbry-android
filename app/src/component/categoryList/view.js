@@ -13,6 +13,9 @@ class CategoryList extends React.PureComponent {
       <FlatList
         style={discoverStyle.horizontalScrollContainer}
         contentContainerStyle={discoverStyle.horizontalScrollPadding}
+        initialNumToRender={3}
+        maxToRenderPerBatch={3}
+        removeClippedSubviews={true}
         renderItem={ ({item}) => (
           <FileItem
             style={discoverStyle.fileItem}

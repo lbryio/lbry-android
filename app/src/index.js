@@ -3,7 +3,6 @@ import { setJSExceptionHandler } from 'react-native-exception-handler';
 import { Provider, connect } from 'react-redux';
 import {
   AppRegistry,
-  AppState,
   Text,
   View,
   NativeModules
@@ -12,6 +11,7 @@ import {
   Lbry,
   claimsReducer,
   contentReducer,
+  fileReducer,
   fileInfoReducer,
   notificationsReducer,
   searchReducer,
@@ -28,7 +28,6 @@ import {
   userReducer
 } from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import { createLogger } from 'redux-logger';
 import { AppNavigator } from 'component/AppNavigator';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import AppWithNavigationState, { reactNavigationMiddleware } from './component/AppNavigator';
@@ -44,8 +43,7 @@ import thunk from 'redux-thunk';
 
 const globalExceptionHandler = (error, isFatal) => {
   if (error && NativeModules.Firebase) {
-    console.log(error);
-    NativeModules.Firebase.logException(isFatal, error.message ? error.message : "No message", error);
+    NativeModules.Firebase.logException(isFatal, error.message ? error.message : "No message", JSON.stringify(error));
   }
 };
 setJSExceptionHandler(globalExceptionHandler, true);
@@ -93,6 +91,7 @@ const reducers = combineReducers({
   content: contentReducer,
   costInfo: costInfoReducer,
   drawer: drawerReducer,
+  file: fileReducer,
   fileInfo: fileInfoReducer,
   homepage: homepageReducer,
   nav: navigatorReducer,
@@ -107,7 +106,6 @@ const reducers = combineReducers({
 });
 
 const bulkThunk = createBulkThunkMiddleware();
-const logger = createLogger({ collapsed: true });
 const middleware = [thunk, bulkThunk, reactNavigationMiddleware];
 
 // eslint-disable-next-line no-underscore-dangle

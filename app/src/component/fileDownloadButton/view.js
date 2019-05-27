@@ -1,7 +1,7 @@
 import React from 'react';
 import { NativeModules, Text, View, TouchableOpacity } from 'react-native';
 import Button from '../button';
-import fileDownloadButtonStyle from '../../styles/fileDownloadButton';
+import fileDownloadButtonStyle from 'styles/fileDownloadButton';
 
 class FileDownloadButton extends React.PureComponent {
   componentDidMount() {
@@ -13,7 +13,7 @@ class FileDownloadButton extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
     //this.checkAvailability(nextProps.uri);
-    this.restartDownload(nextProps);
+    //this.restartDownload(nextProps);
   }
 
   restartDownload(props) {
@@ -46,7 +46,6 @@ class FileDownloadButton extends React.PureComponent {
       style,
       openFile,
       onButtonLayout,
-      onStartDownloadFailed
     } = this.props;
 
     if ((fileInfo && !fileInfo.stopped) || loading || downloading) {
@@ -60,7 +59,7 @@ class FileDownloadButton extends React.PureComponent {
           <Text style={fileDownloadButtonStyle.text}>{label}</Text>
         </View>
       );
-    } else if (fileInfo === null && !downloading) {
+    } else if (!fileInfo && !downloading) {
       if (!costInfo) {
         return (
           <View style={[style, fileDownloadButtonStyle.container]}>
@@ -76,7 +75,10 @@ class FileDownloadButton extends React.PureComponent {
           if (NativeModules.Firebase) {
             NativeModules.Firebase.track('purchase_uri', { uri: uri });
           }
-          purchaseUri(uri, onStartDownloadFailed);
+          purchaseUri(uri, costInfo, !isPlayable);
+          if (NativeModules.UtilityModule) {
+            NativeModules.UtilityModule.checkDownloads();
+          }
           if (isPlayable && onPlay) {
             this.props.onPlay();
           }

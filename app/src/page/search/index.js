@@ -8,7 +8,7 @@ import {
   makeSelectQueryWithOptions,
   selectSearchUrisByQuery
 } from 'lbry-redux';
-import { doPushDrawerStack } from 'redux/actions/drawer';
+import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import Constants from 'constants';
 import SearchPage from './view';
 
@@ -23,6 +23,7 @@ const perform = dispatch => ({
   search: (query) => dispatch(doSearch(query, 25)),
   updateSearchQuery: query => dispatch(doUpdateSearchQuery(query)),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_SEARCH)),
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
 });
 
 export default connect(select, perform)(SearchPage);

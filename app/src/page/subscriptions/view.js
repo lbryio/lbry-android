@@ -34,9 +34,11 @@ class SubscriptionsPage extends React.PureComponent {
       doFetchMySubscriptions,
       doFetchRecommendedSubscriptions,
       pushDrawerStack,
+      setPlayerVisible
     } = this.props;
 
     pushDrawerStack();
+    setPlayerVisible();
     doFetchMySubscriptions();
     doFetchRecommendedSubscriptions();
   }

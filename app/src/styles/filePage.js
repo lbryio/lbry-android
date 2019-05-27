@@ -58,6 +58,9 @@ const filePageStyle = StyleSheet.create({
     fontSize: 16,
     flex: 18
   },
+  titleTouch: {
+    flex: 1,
+  },
   titleRow: {
     flexDirection: 'row',
     marginTop: 12,
@@ -159,7 +162,7 @@ const filePageStyle = StyleSheet.create({
     bottom: 0
   },
   filePriceContainer: {
-    backgroundColor: '#61fcd8',
+    backgroundColor: Colors.NextLbryGreen,
     justifyContent: 'center',
     position: 'absolute',
     right: 16,
@@ -239,8 +242,8 @@ const filePageStyle = StyleSheet.create({
     flex: 1,
     left: 0,
     right: 0,
-    top: 0,
-    bottom: 60,
+    top: 60,
+    bottom: 0,
     zIndex: 100
   },
   link: {
@@ -286,7 +289,9 @@ const filePageStyle = StyleSheet.create({
   },
   currency: {
     alignSelf: 'flex-start',
-    marginTop: 17
+    fontSize: 12,
+    marginTop: 15,
+    marginLeft: 4
   },
   descriptionToggle: {
     alignItems: 'center',
@@ -320,6 +325,36 @@ const filePageStyle = StyleSheet.create({
   },
   tagItem: {
     marginRight: 16
+  },
+  rewardDriverCard: {
+    alignItems: 'center',
+    backgroundColor: Colors.BrighterLbryGreen,
+    flexDirection: 'row',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 12,
+    paddingBottom: 12
+  },
+  rewardDriverText: {
+    fontFamily: 'Inter-UI-Regular',
+    color: Colors.White,
+    fontSize: 14
+  },
+  rewardIcon: {
+    color: Colors.White,
+    marginRight: 8
+  },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: 48,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  backButtonIcon: {
+    color: Colors.White
   }
 });
 

@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Binder;
@@ -17,12 +18,30 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.DataOutputStream;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.kivy.android.PythonService;
 import org.renpy.android.AssetExtract;
 import org.renpy.android.ResourceManager;
@@ -41,6 +60,12 @@ public class LbrynetService extends PythonService {
 
     public static final String ACTION_STOP_SERVICE = "io.lbry.browser.ACTION_STOP_SERVICE";
 
+    public static final String ACTION_CHECK_DOWNLOADS = "io.lbry.browser.ACTION_CHECK_DOWNLOADS";
+
+    public static final String ACTION_QUEUE_DOWNLOAD = "io.lbry.browser.ACTION_QUEUE_DOWNLOAD";
+
+    public static final String ACTION_DELETE_DOWNLOAD = "io.lbry.browser.ACTION_DELETE_DOWNLOAD";
+
     public static final String GROUP_SERVICE = "io.lbry.browser.GROUP_SERVICE";
 
     public static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.DAEMON_NOTIFICATION_CHANNEL";
@@ -49,7 +74,21 @@ public class LbrynetService extends PythonService {
 
     public static LbrynetService serviceInstance;
 
+    private static final String SDK_URL = "http://127.0.0.1:5279";
+
+    private static final int SDK_POLL_INTERVAL = 500; // 500 milliseconds
+
     private BroadcastReceiver stopServiceReceiver;
+
+    private BroadcastReceiver downloadReceiver;
+
+    private DownloadManager downloadManager;
+
+    private ScheduledExecutorService taskExecutor;
+
+    private ScheduledFuture taskExecutorHandle = null;
+
+    private boolean streamManagerReady = false;
 
     @Override
     public boolean canDisplayNotification() {
@@ -70,6 +109,29 @@ public class LbrynetService extends PythonService {
             }
         };
         registerReceiver(stopServiceReceiver, intentFilter);
+
+        IntentFilter downloadFilter = new IntentFilter();
+        downloadFilter.addAction(ACTION_CHECK_DOWNLOADS);
+        downloadFilter.addAction(ACTION_DELETE_DOWNLOAD);
+        downloadFilter.addAction(ACTION_QUEUE_DOWNLOAD);
+        downloadReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (ACTION_QUEUE_DOWNLOAD.equals(action)) {
+                    String outpoint = intent.getStringExtra("outpoint");
+                    if (outpoint != null && outpoint.trim().length() > 0) {
+                        LbrynetService.this.queueDownload(outpoint);
+                    }
+                } else if (ACTION_DELETE_DOWNLOAD.equals(action)) {
+                    String uri = intent.getStringExtra("uri");
+                    LbrynetService.this.deleteDownload(uri);
+                } else if (ACTION_CHECK_DOWNLOADS.equals(action)) {
+                    LbrynetService.this.checkDownloads();
+                }
+            }
+        };
+        registerReceiver(downloadReceiver, downloadFilter);
     }
 
     @Override
@@ -78,6 +140,7 @@ public class LbrynetService extends PythonService {
         String serviceDescription = "The LBRY service is running in the background.";
 
         Context context = getApplicationContext();
+        downloadManager = new DownloadManager(context);
         NotificationManager notificationManager =
             (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -118,6 +181,286 @@ public class LbrynetService extends PythonService {
         startForeground(1, notification);
     }
 
+    private void checkDownloads() {
+        if (taskExecutor == null) {
+            taskExecutor = Executors.newScheduledThreadPool(1);
+            taskExecutorHandle = taskExecutor.scheduleAtFixedRate(new Runnable() {
+                public void run() {
+                    LbrynetService.this.pollFileList();
+                }
+            }, 0, SDK_POLL_INTERVAL, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    private String sdkCall(String method) throws ConnectException {
+        return sdkCall(method, null);
+    }
+
+    private String sdkCall(String method, Map<String, String> params) throws ConnectException {
+        BufferedReader reader = null;
+        DataOutputStream dos = null;
+        HttpURLConnection conn = null;
+
+        try {
+            JSONObject request = new JSONObject();
+            request.put("method", method);
+            if (params != null) {
+                JSONObject requestParams = new JSONObject();
+                for (Map.Entry<String, String> entry : params.entrySet()) {
+                    requestParams.put(entry.getKey(), entry.getValue());
+                }
+                request.put("params", requestParams);
+            }
+
+            URL url = new URL(SDK_URL);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setUseCaches(false);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-type", "application/json");
+
+            dos = new DataOutputStream(conn.getOutputStream());
+            dos.writeBytes(request.toString());
+            dos.flush();
+            dos.close();
+
+            if (conn.getResponseCode() == 200) {
+                reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+                StringBuilder sb = new StringBuilder();
+                String input;
+                while ((input = reader.readLine()) != null) {
+                    sb.append(input);
+                }
+
+                return sb.toString();
+            } else {
+                reader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
+                StringBuilder sb = new StringBuilder();
+                String error;
+                while ((error = reader.readLine()) != null) {
+                    sb.append(error);
+                }
+                return sb.toString();
+            }
+        } catch (ConnectException ex) {
+            // sdk not started yet. rethrow
+            throw ex;
+        } catch (IOException ex) {
+            Log.e(TAG, ex.getMessage(), ex);
+            // ignore and continue
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage(), ex);
+            // ignore
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (conn != null) {
+                    conn.disconnect();
+                }
+            } catch (IOException ex) {
+                // pass
+            }
+        }
+
+        return null;
+    }
+
+    private void pollFileList() {
+        try {
+            if (!streamManagerReady) {
+                String statusResponse = sdkCall("status");
+                if (statusResponse != null) {
+                    JSONObject status = new JSONObject(statusResponse);
+                    if (status.has("error")) {
+                        return;
+                    }
+                    if (status.has("result")) {
+                        JSONObject result = status.getJSONObject("result");
+                        if (result.has("startup_status")) {
+                            JSONObject startupStatus = result.getJSONObject("startup_status");
+                            streamManagerReady = startupStatus.has("stream_manager") && startupStatus.getBoolean("stream_manager");
+                        }
+                    }
+                }
+            }
+
+            if (streamManagerReady) {
+                String fileList = sdkCall("file_list");
+                if (fileList != null) {
+                    JSONObject response = new JSONObject(fileList);
+                    if (!response.has("error")) {
+                        handlePollFileResponse(response);
+                    }
+                }
+            }
+        } catch (ConnectException ex) {
+            // pass
+        } catch (JSONException ex) {
+            Log.e(TAG, ex.getMessage(), ex);
+        }
+    }
+
+    private void queueDownload(String outpoint) {
+        (new AsyncTask<Void, Void, String>() {
+            protected String doInBackground(Void... param) {
+                try {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("outpoint", outpoint);
+                    return sdkCall("file_list", params);
+                } catch (ConnectException ex) {
+                    return null;
+                }
+            }
+
+            protected void onPostExecute(String fileList) {
+                if (fileList != null) {
+                    try {
+                        JSONObject response = new JSONObject(fileList);
+                        if (!response.has("error")) {
+                            JSONArray fileItems = response.optJSONArray("result");
+                            if (fileItems != null && fileItems.length() > 0) {
+                                // TODO: Create Java FileItem class
+                                JSONObject item = fileItems.getJSONObject(0);
+                                String downloadPath = item.isNull("download_path") ? null : item.getString("download_path");
+                                if (downloadPath == null || downloadPath.trim().length() == 0) {
+                                    return;
+                                }
+                                String claimId = item.getString("claim_id");
+                                String claimName = item.getString("claim_name");
+                                String uri = String.format("lbry://%s#%s", claimName, claimId);
+
+                                if (!downloadManager.isDownloadActive(uri) && !downloadManager.isDownloadCompleted(uri)) {
+                                    File file = new File(downloadPath);
+                                    Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
+                                    intent.putExtra("action", "start");
+                                    downloadManager.startDownload(uri, file.getName());
+
+                                    Context context = getApplicationContext();
+                                    if (context != null) {
+                                        context.sendBroadcast(intent);
+                                    }
+                                }
+                            }
+                        }
+                    } catch (JSONException ex) {
+                        // pass
+                    }
+                }
+
+                checkDownloads();
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void deleteDownload(String uri) {
+        if (downloadManager.isDownloadActive(uri)) {
+            downloadManager.abortDownload(uri);
+        }
+        downloadManager.deleteDownloadUri(uri);
+    }
+
+    private void handlePollFileResponse(JSONObject response) {
+        Context context = getApplicationContext();
+        if (response.has("result")) {
+            JSONArray fileItems = response.optJSONArray("result");
+            if (fileItems != null) {
+                try {
+                    //List<String> itemUris = new ArrayList<String>();
+                    for (int i = 0; i < fileItems.length(); i++) {
+                        JSONObject item = fileItems.getJSONObject(i);
+                        String downloadPath = item.isNull("download_path") ? null : item.getString("download_path");
+                        if (downloadPath == null || downloadPath.trim().length() == 0) {
+                            continue;
+                        }
+
+                        String claimId = item.getString("claim_id");
+                        String claimName = item.getString("claim_name");
+                        String uri = String.format("lbry://%s#%s", claimName, claimId);
+                        boolean completed = item.getBoolean("completed");
+                        double writtenBytes = item.optDouble("written_bytes", -1);
+                        double totalBytes = item.optDouble("total_bytes", -1);
+                        String outpoint = item.getString("outpoint");
+
+                        if (downloadManager.isDownloadActive(uri) && (writtenBytes == -1 || totalBytes == -1)) {
+                            // possibly deleted, abort the download
+                            downloadManager.abortDownload(uri);
+                            continue;
+                        }
+
+                        File file = new File(downloadPath);
+                        Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
+                        if (downloadManager.isDownloadActive(uri)) {
+                            if (writtenBytes >= totalBytes || completed) {
+                                // completed download
+                                intent.putExtra("action", "complete");
+                                downloadManager.completeDownload(uri, file.getName(), totalBytes);
+                            } else {
+                                intent.putExtra("action", "update");
+                                intent.putExtra("progress", (writtenBytes / totalBytes) * 100);
+                                downloadManager.updateDownload(uri, file.getName(), writtenBytes, totalBytes);
+                            }
+
+                            if (context != null) {
+                                context.sendBroadcast(intent);
+                            }
+                        } else {
+                            if (writtenBytes == -1 || writtenBytes >= totalBytes) {
+                                // do not start a download that is considered completed
+                                continue;
+                            }
+                            if (!completed && downloadPath != null) {
+                                intent.putExtra("action", "start");
+                                downloadManager.startDownload(uri, file.getName());
+                                if (context != null) {
+                                    context.sendBroadcast(intent);
+                                }
+                            }
+                        }
+                    }
+
+                    // check download manager uris and clear downloads that may have been cancelled / deleted
+                    /*List<String> activeUris = downloadManager.getActiveDownloads();
+                    for (int i = 0; i < activeUris.size(); i++) {
+                        String activeUri = activeUris.get(i);
+                        if (!itemUris.contains(activeUri)) {
+                            downloadManager.abortDownload(activeUri);
+                            fileListUris.remove(activeUri); // remove URIs from the session that may have been deleted
+                        }
+                    }*/
+                } catch (JSONException ex) {
+                    // pass
+                    Log.e(TAG, ex.getMessage(), ex);
+                }
+            }
+        }
+
+        if (!downloadManager.hasActiveDownloads()) {
+            // stop polling
+            if (taskExecutorHandle != null) {
+                taskExecutorHandle.cancel(true);
+                taskExecutorHandle = null;
+            }
+            if (taskExecutor != null) {
+                taskExecutor.shutdownNow();
+                taskExecutor = null;
+            }
+        }
+    }
+
+
+    private static Intent createDownloadEventIntent(String uri, String outpoint, String fileInfo) {
+        Intent intent = new Intent();
+        intent.setAction(DownloadManager.ACTION_DOWNLOAD_EVENT);
+        intent.putExtra("uri", uri);
+        intent.putExtra("outpoint", outpoint);
+        intent.putExtra("file_info", fileInfo);
+
+        return intent;
+    }
+
     @Override
     public int startType() {
         return START_STICKY;
@@ -137,13 +480,19 @@ public class LbrynetService extends PythonService {
                 getApplicationContext(), "", LbrynetService.class, "lbrynetservice");
         }
 
-        // Register broadcast receiver
+        // no need to iterate the checks repeatedly here, because this is service startup
+        checkDownloads();
 
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
+        if (downloadReceiver != null) {
+            unregisterReceiver(downloadReceiver);
+            downloadReceiver = null;
+        }
+
         if (stopServiceReceiver != null) {
             unregisterReceiver(stopServiceReceiver);
             stopServiceReceiver = null;
