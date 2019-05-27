@@ -66,6 +66,10 @@ class StorageStatsCard extends React.PureComponent {
   }
 
   render() {
+    if (this.state.totalBytes == 0) {
+      return null;
+    }
+
     return (
       <View style={storageStatsStyle.card}>
         <View style={[storageStatsStyle.row, storageStatsStyle.totalSizeContainer]}>

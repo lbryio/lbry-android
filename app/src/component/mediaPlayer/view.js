@@ -90,6 +90,7 @@ class MediaPlayer extends React.PureComponent {
     const { position } = this.props;
     if (!isNaN(parseFloat(position)) && position > 0) {
       this.video.seek(position);
+      this.setState({ currentTime: position }, () => this.setSeekerPosition(this.calculateSeekerPosition()));
     }
 
     if (this.props.onMediaLoaded) {
@@ -101,7 +102,7 @@ class MediaPlayer extends React.PureComponent {
     const { savePosition, claim } = this.props;
 
     this.setState({ buffering: false, currentTime: data.currentTime });
-    if (data.currentTime % 10 === 0) {
+    if (data.currentTime > 0 && Math.floor(data.currentTime) % 10 === 0) {
       const { claim_id: claimId, txid, nout } = claim;
       savePosition(claimId, `${txid}:${nout}`, data.currentTime);
     }
@@ -384,6 +385,12 @@ class MediaPlayer extends React.PureComponent {
     }
   }
 
+  onTrackingLayout = (evt) => {
+    this.trackingOffset = evt.nativeEvent.layout.x;
+    this.seekerWidth = evt.nativeEvent.layout.width;
+    this.setSeekerPosition(this.calculateSeekerPosition());
+  }
+
   render() {
     const { onLayout, source, style, thumbnail } = this.props;
     const completedWidth = this.getCurrentTimePercentage() * this.seekerWidth;
@@ -437,10 +444,7 @@ class MediaPlayer extends React.PureComponent {
         </TouchableOpacity>
 
         {(!this.state.fullscreenMode || (this.state.fullscreenMode && this.state.areControlsVisible)) &&
-        <View style={trackingStyle} onLayout={(evt) => {
-              this.trackingOffset = evt.nativeEvent.layout.x;
-              this.seekerWidth = evt.nativeEvent.layout.width;
-            }}>
+        <View style={trackingStyle} onLayout={this.onTrackingLayout}>
           <View style={mediaPlayerStyle.progress}>
             <View style={[mediaPlayerStyle.innerProgressCompleted, { width: completedWidth }]} />
             <View style={[mediaPlayerStyle.innerProgressRemaining, { width: remainingWidth }]} />

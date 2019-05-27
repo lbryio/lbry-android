@@ -40,7 +40,7 @@ class DownloadsPage extends React.PureComponent {
         <UriBar navigation={navigation} />
         {!fetching && !hasDownloads &&
           <View style={downloadsStyle.busyContainer}>
-            <Text style={downloadsStyle.noDownloadsText}>You have not downloaded anything from LBRY yet.</Text>
+            <Text style={downloadsStyle.noDownloadsText}>You have not watched or downloaded any content from LBRY yet.</Text>
           </View>}
         {fetching && !hasDownloads &&
           <View style={downloadsStyle.busyContainer}>
