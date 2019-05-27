@@ -97,6 +97,7 @@ class WalletPage extends React.PureComponent {
               }
             }}
             />
+
             {(!hasSyncedWallet && this.state.password && this.state.password.trim().length) > 0 &&
               <View style={firstRunStyle.passwordStrength}>
                 <BarPasswordStrengthDisplay
