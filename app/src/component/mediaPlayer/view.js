@@ -18,6 +18,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import FileItemMedia from 'component/fileItemMedia';
 import mediaPlayerStyle from 'styles/mediaPlayer';
 
+const positionSaveInterval = 10
+
 class MediaPlayer extends React.PureComponent {
   static ControlsTimeout = 3000;
 
@@ -102,7 +104,7 @@ class MediaPlayer extends React.PureComponent {
     const { savePosition, claim } = this.props;
 
     this.setState({ buffering: false, currentTime: data.currentTime });
-    if (data.currentTime > 0 && Math.floor(data.currentTime) % 10 === 0) {
+    if (data.currentTime > 0 && Math.floor(data.currentTime) % positionSaveInterval === 0) {
       const { claim_id: claimId, txid, nout } = claim;
       savePosition(claimId, `${txid}:${nout}`, data.currentTime);
     }

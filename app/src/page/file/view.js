@@ -135,11 +135,12 @@ class FilePage extends React.PureComponent {
       NativeModules.UtilityModule.checkDownloads();
     }
 
-    if (fileInfo && fileInfo.streaming_url && !this.state.streamingMode && isPlayable) {
-      this.setState({ streamingMode: true, currentStreamUrl: fileInfo.streaming_url });
-    }
-    if (streamingUrl && !this.state.streamingMode && isPlayable) {
-      this.setState({ streamingMode: true, currentStreamUrl: streamingUrl });
+    if (!this.state.streamingMode && isPlayable) {
+      if (streamingUrl) {
+        this.setState({ streamingMode: true, currentStreamUrl: streamingUrl });
+      } else if (fileInfo && fileInfo.streaming_url) {
+        this.setState({ streamingMode: true, currentStreamUrl: fileInfo.streaming_url });
+      }
     }
   }
 

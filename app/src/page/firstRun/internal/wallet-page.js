@@ -16,6 +16,8 @@ import Colors from 'styles/colors';
 import Constants from 'constants';
 import firstRunStyle from 'styles/firstRun';
 
+const firstRunMargins = 80;
+
 class WalletPage extends React.PureComponent {
   state = {
     password: null,
@@ -101,7 +103,7 @@ class WalletPage extends React.PureComponent {
             {(!hasSyncedWallet && this.state.password && this.state.password.trim().length) > 0 &&
               <View style={firstRunStyle.passwordStrength}>
                 <BarPasswordStrengthDisplay
-                  width={Dimensions.get('window').width - 80}
+                  width={Dimensions.get('window').width - firstRunMargins}
                   minLength={1}
                   password={this.state.password} />
               </View>}
