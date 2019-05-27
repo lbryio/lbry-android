@@ -11,15 +11,17 @@ import {
 } from 'lbryinc';
 import { doToast } from 'lbry-redux';
 import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
+import { selectCurrentRoute } from 'redux/selectors/drawer';
 import Constants from 'constants';
 import RewardsPage from './view';
 
 const select = state => ({
+  claimed: selectClaimedRewards(state),
+  currentRoute: selectCurrentRoute(state),
   emailVerifyErrorMessage: selectEmailVerifyErrorMessage(state),
   emailVerifyPending: selectEmailVerifyIsPending(state),
   fetching: selectFetchingRewards(state),
   rewards: selectUnclaimedRewards(state),
-  claimed: selectClaimedRewards(state),
   user: selectUser(state),
 });
 

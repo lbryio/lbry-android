@@ -13,3 +13,5 @@ export const selectLastDrawerRoute = createSelector(selectState, state => {
 
   return null;
 });
+
+export const selectCurrentRoute = createSelector(selectState, state => state.currentRoute);

@@ -34,6 +34,9 @@ const Constants = {
   ACTION_POP_DRAWER_STACK: "POP_DRAWER_STACK",
   ACTION_SET_PLAYER_VISIBLE: "SET_PLAYER_VISIBLE",
 
+  ACTION_REACT_NAVIGATION_RESET: "Navigation/RESET",
+  ACTION_REACT_NAVGIATION_NAVIGATE: "Navigation/NAVIGATE",
+
   PAGE_REWARDS: "rewards",
   PAGE_SETTINGS: "settings",
   PAGE_TRENDING: "trending",
@@ -50,10 +53,18 @@ const Constants = {
   DRAWER_ROUTE_SEARCH: "Search",
   DRAWER_ROUTE_TRANSACTION_HISTORY: "TransactionHistory",
 
-  SUBSCRIPTIONS_VIEW_ALL: 'view_all',
-  SUBSCRIPTIONS_VIEW_LATEST_FIRST: 'view_latest_first',
+  FULL_ROUTE_NAME_DISCOVER: "DiscoverStack",
+  FULL_ROUTE_NAME_TRENDING: "TrendingStack",
+  FULL_ROUTE_NAME_MY_SUBSCRIPTIONS: "MySubscriptionsStack",
+  FULL_ROUTE_NAME_WALLET: "WalletStack",
+  FULL_ROUTE_NAME_MY_LBRY: "MyLBRYStack",
 
-  PLAY_STORE_URL: 'https://play.google.com/store/apps/details?id=io.lbry.browser',
+  ROUTE_FILE: "File",
+
+  SUBSCRIPTIONS_VIEW_ALL: "view_all",
+  SUBSCRIPTIONS_VIEW_LATEST_FIRST: "view_latest_first",
+
+  PLAY_STORE_URL: "https://play.google.com/store/apps/details?id=io.lbry.browser",
   RATING_REMINDER_INTERVAL: 604800, // 7 days (7 * 24 * 3600s)
 };
 

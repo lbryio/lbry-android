@@ -192,6 +192,7 @@ class PhoneVerifyPage extends React.PureComponent {
                     keyboardType="numeric"
                     placeholder="0000"
                     underlineColorAndroid="transparent"
+                    selectionColor={Colors.White}
                     value={this.state.verificationCode}
                     onChangeText={text => this.handleChangeText(text)}
                   />

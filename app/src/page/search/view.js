@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { navigateToUri } from 'utils/helper';
 import Colors from 'styles/colors';
+import Constants from 'constants';
 import PageHeader from 'component/pageHeader';
 import FileListItem from 'component/fileListItem';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
@@ -25,18 +26,40 @@ class SearchPage extends React.PureComponent {
     title: 'Search Results'
   };
 
+  didFocusListener;
+
   componentWillMount() {
-    const { pushDrawerStack, setPlayerVisible } = this.props;
-    pushDrawerStack();
-    setPlayerVisible();
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
   }
 
-  componentDidMount() {
-    const { search } = this.props;
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
+  onComponentFocused = () => {
+    const { pushDrawerStack, setPlayerVisible, search } = this.props;
+    pushDrawerStack();
+    setPlayerVisible();
+
     const searchQuery = this.getSearchQuery();
     if (searchQuery && searchQuery.trim().length > 0) {
       this.setState({ currentUri: (isURIValid(searchQuery)) ? normalizeURI(searchQuery) : null })
       search(searchQuery);
+    }
+  }
+
+  componentDidMount() {
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+    if (Constants.DRAWER_ROUTE_SEARCH === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
     }
   }
 

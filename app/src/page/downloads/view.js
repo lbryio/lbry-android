@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { navigateToUri, uriFromFileInfo } from 'utils/helper';
 import Colors from 'styles/colors';
+import Constants from 'constants';
 import PageHeader from 'component/pageHeader';
 import FileListItem from 'component/fileListItem';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
@@ -24,11 +25,36 @@ class DownloadsPage extends React.PureComponent {
     title: 'Downloads'
   };
 
-  componentDidMount() {
+  didFocusListener;
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
+  onComponentFocused = () => {
     const { fileList, pushDrawerStack, setPlayerVisible } = this.props;
     pushDrawerStack();
     setPlayerVisible();
     fileList();
+  }
+
+  componentDidMount() {
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+    if (Constants.FULL_ROUTE_NAME_MY_LBRY === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
   }
 
   render() {

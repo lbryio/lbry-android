@@ -2,6 +2,7 @@ import React from 'react';
 import { SETTINGS } from 'lbry-redux';
 import { Text, View, ScrollView, Switch, NativeModules } from 'react-native';
 import { navigateBack } from 'utils/helper';
+import Constants from 'constants';
 import PageHeader from 'component/pageHeader';
 import settingsStyle from 'styles/settings';
 
@@ -10,10 +11,35 @@ class SettingsPage extends React.PureComponent {
     title: 'Settings'
   }
 
-  componentDidMount() {
+  didFocusListener;
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
+  onComponentFocused = () => {
     const { pushDrawerStack, setPlayerVisible } = this.props;
     pushDrawerStack();
     setPlayerVisible();
+  }
+
+  componentDidMount() {
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+    if (Constants.DRAWER_ROUTE_SETTINGS === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
   }
 
   render() {

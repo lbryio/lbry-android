@@ -1,5 +1,4 @@
 import React from 'react';
-import NavigationActions from 'react-navigation';
 import {
   ActivityIndicator,
   NativeModules,
@@ -14,15 +13,41 @@ import FileItem from 'component/fileItem';
 import discoverStyle from 'styles/discover';
 import fileListStyle from 'styles/fileList';
 import Colors from 'styles/colors';
+import Constants from 'constants';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
 import UriBar from 'component/uriBar';
 
 class TrendingPage extends React.PureComponent {
-  componentDidMount() {
+  didFocusListener;
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
+  onComponentFocused = () => {
     const { fetchTrendingUris, pushDrawerStack, setPlayerVisible } = this.props;
     pushDrawerStack();
     setPlayerVisible();
     fetchTrendingUris();
+  }
+
+  componentDidMount() {
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+    if (Constants.FULL_ROUTE_NAME_TRENDING === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
   }
 
   render() {

@@ -22,8 +22,9 @@ import { navigateBack, navigateToUri } from 'utils/helper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Button from 'component/button';
-import Colors from 'styles/colors';
 import ChannelPage from 'page/channel';
+import Colors from 'styles/colors';
+import Constants from 'constants';
 import DateTime from 'component/dateTime';
 import FileDownloadButton from 'component/fileDownloadButton';
 import FileItemMedia from 'component/fileItemMedia';
@@ -81,7 +82,14 @@ class FilePage extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
+  didFocusListener;
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  onComponentFocused = () => {
     StatusBar.setHidden(false);
 
     DeviceEventEmitter.addListener('onDownloadStarted', this.handleDownloadStarted);
@@ -105,9 +113,14 @@ class FilePage extends React.PureComponent {
     }
   }
 
+  componentDidMount() {
+    this.onComponentFocused();
+  }
+
   componentWillReceiveProps(nextProps) {
     const {
       claim,
+      currentRoute,
       failedPurchaseUris: prevFailedPurchaseUris,
       purchasedUris: prevPurchasedUris,
       navigation,
@@ -115,7 +128,18 @@ class FilePage extends React.PureComponent {
       notify
     } = this.props;
     const { uri } = navigation.state.params;
-    const { failedPurchaseUris, fileInfo, purchasedUris, purchaseUriErrorMessage, streamingUrl } = nextProps;
+    const {
+      currentRoute: prevRoute,
+      failedPurchaseUris,
+      fileInfo,
+      purchasedUris,
+      purchaseUriErrorMessage,
+      streamingUrl
+    } = nextProps;
+
+    if (Constants.ROUTE_FILE === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
 
     if (failedPurchaseUris.includes(uri) && !purchasedUris.includes(uri)) {
       if (purchaseUriErrorMessage && purchaseUriErrorMessage.trim().length > 0) {
@@ -269,6 +293,9 @@ class FilePage extends React.PureComponent {
       const utility = NativeModules.UtilityModule;
       utility.keepAwakeOff();
       utility.showNavigationBar();
+    }
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
     }
     if (window.currentMediaInfo) {
       window.currentMediaInfo = null;

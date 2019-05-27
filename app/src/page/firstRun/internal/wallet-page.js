@@ -89,6 +89,7 @@ class WalletPage extends React.PureComponent {
             <TextInput style={firstRunStyle.passwordInput}
               placeholder={this.state.placeholder}
               underlineColorAndroid="transparent"
+              selectionColor={Colors.White}
               secureTextEntry={!this.state.revealPassword}
               value={this.state.password}
               onChangeText={text => this.handleChangeText(text)}

@@ -15,10 +15,12 @@ import {
 import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import { doSetClientSetting } from 'redux/actions/settings';
 import { makeSelectClientSetting } from 'redux/selectors/settings';
+import { selectCurrentRoute } from 'redux/selectors/drawer';
 import Constants from 'constants';
 import SubscriptionsPage from './view';
 
 const select = state => ({
+  currentRoute: selectCurrentRoute(state),
   loading:
     selectIsFetchingSubscriptions(state) ||
     Boolean(Object.keys(selectSubscriptionsBeingFetched(state)).length),

@@ -29,23 +29,46 @@ class SubscriptionsPage extends React.PureComponent {
     showingSuggestedSubs: false
   };
 
+  didFocusListener;
+
   componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
+  onComponentFocused = () => {
     const {
       doFetchMySubscriptions,
       doFetchRecommendedSubscriptions,
+      doSetViewMode,
       pushDrawerStack,
-      setPlayerVisible
+      setPlayerVisible,
+      subscriptionsViewMode
     } = this.props;
 
     pushDrawerStack();
     setPlayerVisible();
     doFetchMySubscriptions();
     doFetchRecommendedSubscriptions();
+    doSetViewMode(subscriptionsViewMode ? subscriptionsViewMode : Constants.SUBSCRIPTIONS_VIEW_ALL);
   }
 
   componentDidMount() {
-    const { doSetViewMode, subscriptionsViewMode } = this.props;
-    doSetViewMode(subscriptionsViewMode ? subscriptionsViewMode : Constants.SUBSCRIPTIONS_VIEW_ALL);
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+    if (Constants.FULL_ROUTE_NAME_MY_SUBSCRIPTIONS === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
   }
 
   changeViewMode = (viewMode) => {

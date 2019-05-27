@@ -13,7 +13,32 @@ import Constants from 'constants';
 import walletStyle from 'styles/wallet';
 
 class WalletPage extends React.PureComponent {
+  didFocusListener;
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
   componentDidMount() {
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+    if (Constants.FULL_ROUTE_NAME_WALLET === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
+  }
+
+  onComponentFocused = () => {
     const { pushDrawerStack, setPlayerVisible } = this.props;
     pushDrawerStack();
     setPlayerVisible();
