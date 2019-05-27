@@ -430,7 +430,8 @@ class FilePage extends React.PureComponent {
       return;
     }
 
-    const { nout: outpoint, claim_id: claimId } = claim;
+    const { nout, claim_id: claimId, txid } = claim;
+    const outpoint = `${txid}:${nout}`;
     const params = {
       uri,
       outpoint,
