@@ -106,6 +106,7 @@ const filePageStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-Regular',
     fontSize: 13,
     lineHeight: 18,
+    marginTop: -8,
     marginLeft: 12,
     marginRight: 12
   },
