@@ -67,7 +67,7 @@ class FirstRunScreen extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const { emailNewErrorMessage, emailNewPending, syncApplyErrorMessage, syncApplyIsPending, user } = nextProps;
-    const { notify, isApplyingSync, setClientSetting } = this.props;
+    const { notify, isApplyingSync, setClientSetting, setDefaultAccount } = this.props;
 
     if (this.state.emailSubmitted && !emailNewPending) {
       this.setState({ emailSubmitted: false });
@@ -89,6 +89,7 @@ class FirstRunScreen extends React.PureComponent {
         if (NativeModules.UtilityModule) {
           NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, this.state.walletPassword);
         }
+        setDefaultAccount();
         setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
         this.closeFinalPage();
       }

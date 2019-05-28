@@ -4,6 +4,7 @@ import {
   doAuthenticate,
   doCheckSync,
   doGetSync,
+  doSetDefaultAccount,
   doSyncApply,
   doUserEmailNew,
   doUserResendVerificationEmail,
@@ -45,6 +46,7 @@ const perform = dispatch => ({
   syncApply: (hash, data, password) => dispatch(doSyncApply(hash, data, password)),
   getSync: password => dispatch(doGetSync(password)),
   checkSync: () => dispatch(doCheckSync()),
+  setDefaultAccount: () => dispatch(doSetDefaultAccount()),
   notify: data => dispatch(doToast(data)),
   resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email))
 });

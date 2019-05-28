@@ -60,6 +60,10 @@ class VerificationScreen extends React.PureComponent {
         if (this.state.isEmailVerified && !deviceWalletSynced) {
           this.setState({ currentPage: 'syncVerify' });
         }
+
+        if (this.state.isEmailVerified && syncFlow && deviceWalletSynced) {
+          navigation.goBack();
+        }
       } else {
         if (this.state.isEmailVerified && !this.state.isIdentityVerified && !this.state.isRewardApproved) {
           this.setState({ currentPage: 'phoneVerify' });
@@ -67,17 +71,11 @@ class VerificationScreen extends React.PureComponent {
         if (this.state.isEmailVerified && this.state.isIdentityVerified && !this.state.isRewardApproved) {
           this.setState({ currentPage: 'manualVerify' });
         }
-      }
-
-      if (this.state.isEmailVerified && syncFlow && deviceWalletSynced) {
-        navigation.goBack();
-        return;
-      }
-
-      if (this.state.isEmailVerified && this.state.isRewardApproved) {
-        // verification steps already completed
-        // simply navigate back to the rewards page
-        navigation.goBack();
+        if (this.state.isEmailVerified && this.state.isRewardApproved) {
+          // verification steps already completed
+          // simply navigate back to the rewards page
+          navigation.goBack();
+        }
       }
     });
   }
@@ -104,6 +102,7 @@ class VerificationScreen extends React.PureComponent {
       notify,
       addUserPhone,
       getSyncIsPending,
+      setDefaultAccount,
       hasSyncedWallet,
       setSyncIsPending,
       syncApplyIsPending,
@@ -164,6 +163,7 @@ class VerificationScreen extends React.PureComponent {
             notify={notify}
             setEmailVerificationPhase={this.setEmailVerificationPhase}
             setClientSetting={setClientSetting}
+            setDefaultAccount={setDefaultAccount}
             setSyncIsPending={setSyncIsPending}
             syncApplyIsPending={syncApplyIsPending}
             syncApplyErrorMessage={syncApplyErrorMessage}
