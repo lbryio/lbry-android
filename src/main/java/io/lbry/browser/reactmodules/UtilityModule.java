@@ -239,7 +239,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         boolean hasThumbnail = false;
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         builder.setAutoCancel(true)
-               .setColor(ContextCompat.getColor(context, R.color.lbrygreen))
+               .setColor(ContextCompat.getColor(context, R.color.lbryGreen))
                .setContentIntent(DownloadManager.getLaunchPendingIntent(uri, context))
                .setContentTitle(publisher)
                .setContentText(title)

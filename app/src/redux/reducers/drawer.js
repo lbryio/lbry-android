@@ -26,6 +26,16 @@ reducers[Constants.ACTION_PUSH_DRAWER_STACK] = (state, action) => {
   };
 };
 
+reducers[Constants.ACTION_POP_DRAWER_STACK] = (state, action) => {
+  // We don't want to pop the Discover route, since it's always expected to be the first
+  const newStack = (state.stack.length === 1) ? state.stack.slice() : state.stack.slice(0, state.stack.length - 1);
+
+  return {
+    ...state,
+    stack: newStack
+  }
+};
+
 // TODO: The ACTION_REACT_NAVIGATION_*** reducers are a workaround for the react
 // navigation event listeners (willFocus, didFocus, etc) not working with the
 // react-navigation-redux-helpers package.
@@ -36,22 +46,19 @@ reducers[Constants.ACTION_REACT_NAVGIATION_RESET] = (state, action) => {
   }
 }
 
-reducers[Constants.ACTION_REACT_NAVGIATION_NAVIGATE] = (state, action) => {
+reducers[Constants.ACTION_REACT_NAVIGATION_NAVIGATE] = (state, action) => {
   return {
     ...state,
     currentRoute: action.routeName
   }
 }
 
-reducers[Constants.ACTION_POP_DRAWER_STACK] = (state, action) => {
-  // We don't want to pop the Discover route, since it's always expected to be the first
-  const newStack = (state.stack.length === 1) ? state.stack.slice() : state.stack.slice(0, state.stack.length - 1);
-
+reducers[Constants.ACTION_REACT_NAVIGATION_REPLACE] = (state, action) => {
   return {
     ...state,
-    stack: newStack
+    currentRoute: action.routeName
   }
-};
+}
 
 export default function reducer(state = defaultState, action) {
   const handler = reducers[action.type];

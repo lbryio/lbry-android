@@ -580,7 +580,8 @@ class FilePage extends React.PureComponent {
         const isPlayable = mediaType === 'video' || mediaType === 'audio';
         const { height, channel_name: channelName, value } = claim;
         const showActions = !this.state.streamingMode && !this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView;
-        const showFileActions = (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
+        const showFileActions = (fileInfo && fileInfo.download_path) &&
+          (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
         const channelClaimId = claim && claim.signing_channel && claim.signing_channel.claim_id;
         const canSendTip = this.state.tipAmount > 0;
         const fullChannelUri = channelClaimId && channelClaimId.trim().length > 0 ? `${channelName}#${channelClaimId}` : channelName;

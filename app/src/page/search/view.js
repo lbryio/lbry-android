@@ -19,7 +19,8 @@ import searchStyle from 'styles/search';
 
 class SearchPage extends React.PureComponent {
   state = {
-    currentUri: null
+    currentQuery: null,
+    currentUri: null,
   }
 
   static navigationOptions = {
@@ -40,13 +41,16 @@ class SearchPage extends React.PureComponent {
   }
 
   onComponentFocused = () => {
-    const { pushDrawerStack, setPlayerVisible, search } = this.props;
+    const { pushDrawerStack, setPlayerVisible, query, search } = this.props;
     pushDrawerStack();
     setPlayerVisible();
 
-    const searchQuery = this.getSearchQuery();
+    const searchQuery = query || this.getSearchQuery();
     if (searchQuery && searchQuery.trim().length > 0) {
-      this.setState({ currentUri: (isURIValid(searchQuery)) ? normalizeURI(searchQuery) : null })
+      this.setState({
+        currentQuery: searchQuery,
+        currentUri: (isURIValid(searchQuery)) ? normalizeURI(searchQuery) : null
+      });
       search(searchQuery);
     }
   }
@@ -56,10 +60,19 @@ class SearchPage extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { currentRoute } = nextProps;
-    const { currentRoute: prevRoute } = this.props;
+    const { currentRoute, query } = nextProps;
+    const { currentRoute: prevRoute, search } = this.props;
+
     if (Constants.DRAWER_ROUTE_SEARCH === currentRoute && currentRoute !== prevRoute) {
       this.onComponentFocused();
+    }
+
+    if (query && query.trim().length > 0 && query !== this.state.currentQuery) {
+      this.setState({
+        currentQuery: query,
+        currentUri: (isURIValid(query)) ? normalizeURI(query) : null
+      });
+      search(query);
     }
   }
 
@@ -82,9 +95,10 @@ class SearchPage extends React.PureComponent {
 
     return (
       <View style={searchStyle.container}>
-        <UriBar value={this.getSearchQuery() || query}
+        <UriBar value={query}
                 navigation={navigation}
-                onSearchSubmitted={this.handleSearchSubmitted} />
+                onSearchSubmitted={this.handleSearchSubmitted}
+                searchView={true} />
         {isSearching &&
           <View style={searchStyle.busyContainer}>
             <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} />

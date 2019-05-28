@@ -86,13 +86,7 @@ class DownloadsPage extends React.PureComponent {
                     onPress={() => navigateToUri(navigation, uriFromFileInfo(item), { autoplay: true })} />
                 )
               }
-              data={fileInfos.sort((a, b) => {
-                // TODO: Implement sort based on user selection
-                if (!a.completed && b.completed) return -1;
-                if (a.completed && !b.completed) return 1;
-                if (a.metadata.title === b.metadata.title) return 0;
-                return (a.metadata.title < b.metadata.title) ? -1 : 1;
-              })}
+              data={fileInfos}
               keyExtractor={(item, index) => item.outpoint}
             />
           </View>}
