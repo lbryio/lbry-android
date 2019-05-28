@@ -56,7 +56,8 @@ const filePageStyle = StyleSheet.create({
   title: {
     fontFamily: 'Inter-UI-Bold',
     fontSize: 16,
-    flex: 18
+    flex: 18,
+    alignSelf: 'flex-start'
   },
   titleTouch: {
     flex: 1,
@@ -105,9 +106,9 @@ const filePageStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-Regular',
     fontSize: 13,
     lineHeight: 18,
+    marginTop: -8,
     marginLeft: 12,
-    marginRight: 12,
-    marginBottom: 16
+    marginRight: 12
   },
   thumbnail: {
     width: screenWidth,
@@ -311,6 +312,7 @@ const filePageStyle = StyleSheet.create({
   tagContainer: {
     marginLeft: 12,
     marginRight: 12,
+    marginTop: 16,
     marginBottom: 16,
     flexDirection: 'row'
   },

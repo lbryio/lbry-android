@@ -99,9 +99,32 @@ class UriBar extends React.PureComponent {
     }
   }
 
+  handleSubmitEditing = () => {
+    const { navigation, onSearchSubmitted, updateSearchQuery } = this.props;
+    if (this.state.inputText) {
+      let inputText = this.state.inputText;
+      if (inputText.startsWith('lbry://') && isURIValid(inputText)) {
+        // if it's a URI (lbry://...), open the file page
+        const uri = normalizeURI(inputText);
+        navigateToUri(navigation, uri);
+      } else {
+        updateSearchQuery(inputText);
+        // Not a URI, default to a search request
+        if (onSearchSubmitted) {
+          // Only the search page sets the onSearchSubmitted prop, so call this prop if set
+          onSearchSubmitted(inputText);
+          return;
+        }
+
+        // Open the search page with the query populated
+        navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: inputText }});
+      }
+    }
+  }
+
   render() {
-    const { navigation, onSearchSubmitted, suggestions, updateSearchQuery, value } = this.props;
-    if (this.state.currentValue === null) {
+    const { navigation, suggestions, query, searchView, value  } = this.props;
+    if (value && this.state.currentValue === null) {
       this.setState({ currentValue: value });
     }
 
@@ -127,7 +150,7 @@ class UriBar extends React.PureComponent {
                      underlineColorAndroid={'transparent'}
                      numberOfLines={1}
                      clearButtonMode={'while-editing'}
-                     value={this.state.currentValue}
+                     value={searchView ? query : this.state.currentValue}
                      returnKeyType={'go'}
                      inlineImageLeft={'baseline_search_black_24'}
                      inlineImagePadding={16}
@@ -137,26 +160,7 @@ class UriBar extends React.PureComponent {
                        this.setSelection();
                      }}
                      onChangeText={this.handleChangeText}
-                     onSubmitEditing={() => {
-                      if (this.state.inputText) {
-                        let inputText = this.state.inputText;
-                        if (inputText.startsWith('lbry://') && isURIValid(inputText)) {
-                          // if it's a URI (lbry://...), open the file page
-                          const uri = normalizeURI(inputText);
-                          navigateToUri(navigation, uri);
-                        } else {
-                          // Not a URI, default to a search request
-                          if (onSearchSubmitted) {
-                            // Only the search page sets the onSearchSubmitted prop, so call this prop if set
-                            onSearchSubmitted(inputText);
-                            return;
-                          }
-
-                          // Open the search page with the query populated
-                          navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: inputText }});
-                        }
-                      }
-                    }}/>
+                     onSubmitEditing={this.handleSubmitEditing}/>
           {(this.state.focused && !this.state.directSearch) && (
           <View style={uriBarStyle.suggestions}>
             <FlatList style={uriBarStyle.suggestionList}

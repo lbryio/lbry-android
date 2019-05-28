@@ -5,14 +5,36 @@ import UriBar from 'component/uriBar';
 import walletStyle from 'styles/wallet';
 
 class TransactionHistoryPage extends React.PureComponent {
+  didFocusListener;
+
   componentWillMount() {
-    const { pushDrawerStack, setPlayerVisible } = this.props;
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
+  onComponentFocused = () => {
+    const { fetchTransactions, pushDrawerStack, setPlayerVisible } = this.props;
     pushDrawerStack();
     setPlayerVisible();
+    fetchTransactions();
   }
 
   componentDidMount() {
-    this.props.fetchTransactions();
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+    if (Constants.DRAWER_ROUTE_TRANSACTION_HISTORY === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
   }
 
   render() {

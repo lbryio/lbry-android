@@ -59,7 +59,7 @@ public class BackgroundMediaModule extends ReactContextBaseJavaModule {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, LbrynetService.NOTIFICATION_CHANNEL_ID);
-        builder.setColor(ContextCompat.getColor(context, R.color.lbrygreen))
+        builder.setColor(ContextCompat.getColor(context, R.color.lbryGreen))
                .setContentIntent(pendingIntent)
                .setContentTitle(title)
                .setContentText(publisher)

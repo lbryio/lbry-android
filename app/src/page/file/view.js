@@ -22,8 +22,9 @@ import { navigateBack, navigateToUri } from 'utils/helper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Button from 'component/button';
-import Colors from 'styles/colors';
 import ChannelPage from 'page/channel';
+import Colors from 'styles/colors';
+import Constants from 'constants';
 import DateTime from 'component/dateTime';
 import FileDownloadButton from 'component/fileDownloadButton';
 import FileItemMedia from 'component/fileItemMedia';
@@ -81,7 +82,14 @@ class FilePage extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
+  didFocusListener;
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  onComponentFocused = () => {
     StatusBar.setHidden(false);
 
     DeviceEventEmitter.addListener('onDownloadStarted', this.handleDownloadStarted);
@@ -105,9 +113,14 @@ class FilePage extends React.PureComponent {
     }
   }
 
+  componentDidMount() {
+    this.onComponentFocused();
+  }
+
   componentWillReceiveProps(nextProps) {
     const {
       claim,
+      currentRoute,
       failedPurchaseUris: prevFailedPurchaseUris,
       purchasedUris: prevPurchasedUris,
       navigation,
@@ -115,7 +128,18 @@ class FilePage extends React.PureComponent {
       notify
     } = this.props;
     const { uri } = navigation.state.params;
-    const { failedPurchaseUris, fileInfo, purchasedUris, purchaseUriErrorMessage, streamingUrl } = nextProps;
+    const {
+      currentRoute: prevRoute,
+      failedPurchaseUris,
+      fileInfo,
+      purchasedUris,
+      purchaseUriErrorMessage,
+      streamingUrl
+    } = nextProps;
+
+    if (Constants.ROUTE_FILE === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
 
     if (failedPurchaseUris.includes(uri) && !purchasedUris.includes(uri)) {
       if (purchaseUriErrorMessage && purchaseUriErrorMessage.trim().length > 0) {
@@ -131,6 +155,10 @@ class FilePage extends React.PureComponent {
         const { nout, txid } = claim;
         const outpoint = `${txid}:${nout}`;
         NativeModules.UtilityModule.queueDownload(outpoint);
+        // If the media is playable, file/view will be done in onPlaybackStarted
+        if (!isPlayable && !this.state.fileViewLogged) {
+          this.logFileView(uri, claim);
+        }
       }
       NativeModules.UtilityModule.checkDownloads();
     }
@@ -159,16 +187,6 @@ class FilePage extends React.PureComponent {
         title: metadata ? metadata.title : claim.name,
         uri: this.state.uri
       };
-    }
-
-    const prevFileInfo = prevProps.fileInfo;
-    if (!prevFileInfo && fileInfo) {
-      const mediaType = Lbry.getMediaType(contentType);
-      const isPlayable = mediaType === 'video' || mediaType === 'audio';
-      // If the media is playable, file/view will be done in onPlaybackStarted
-      if (!isPlayable && !this.state.fileViewLogged) {
-        this.logFileView(uri, claim);
-      }
     }
   }
 
@@ -276,6 +294,9 @@ class FilePage extends React.PureComponent {
       utility.keepAwakeOff();
       utility.showNavigationBar();
     }
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
     if (window.currentMediaInfo) {
       window.currentMediaInfo = null;
     }
@@ -313,15 +334,14 @@ class FilePage extends React.PureComponent {
 
   playerUriForFileInfo = (fileInfo) => {
     const { streamingUrl } = this.props;
+    if (fileInfo && fileInfo.download_path) {
+      return this.getEncodedDownloadPath(fileInfo);
+    }
     if (streamingUrl) {
       return streamingUrl;
     }
     if (this.state.currentStreamUrl) {
       return this.state.currentStreamUrl;
-    }
-
-    if (fileInfo && fileInfo.download_path) {
-      return this.getEncodedDownloadPath(fileInfo);
     }
 
     return null;
@@ -402,9 +422,9 @@ class FilePage extends React.PureComponent {
       this.startTime = null;
     }
 
-    const { fileInfo, navigation } = this.props;
+    const { claim, navigation } = this.props;
     const { uri } = navigation.state.params;
-    this.logFileView(uri, fileInfo, timeToStartMillis);
+    this.logFileView(uri, claim, timeToStartMillis);
 
     let payload = { 'uri': uri };
     if (!isNaN(timeToStart)) {
@@ -560,7 +580,8 @@ class FilePage extends React.PureComponent {
         const isPlayable = mediaType === 'video' || mediaType === 'audio';
         const { height, channel_name: channelName, value } = claim;
         const showActions = !this.state.streamingMode && !this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView;
-        const showFileActions = (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
+        const showFileActions = (fileInfo && fileInfo.download_path) &&
+          (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
         const channelClaimId = claim && claim.signing_channel && claim.signing_channel.claim_id;
         const canSendTip = this.state.tipAmount > 0;
         const fullChannelUri = channelClaimId && channelClaimId.trim().length > 0 ? `${channelName}#${channelClaimId}` : channelName;
@@ -703,6 +724,7 @@ class FilePage extends React.PureComponent {
                 <ScrollView
                   style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
                   contentContainerstyle={showActions ? null : filePageStyle.scrollContent}
+                  keyboardShouldPersistTaps={'handled'}
                   ref={(ref) => { this.scrollView = ref; }}>
                   <TouchableWithoutFeedback style={filePageStyle.titleTouch}
                     onPress={() => this.setState({ showDescription: !this.state.showDescription })}>

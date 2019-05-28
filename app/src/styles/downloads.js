@@ -31,10 +31,11 @@ const downloadsStyle = StyleSheet.create({
     paddingBottom: 16
   },
   noDownloadsText: {
-    textAlign: 'center',
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
-    position: 'absolute'
+    lineHeight: 24,
+    marginLeft: 16,
+    marginRight: 16
   },
   loading: {
     position: 'absolute'

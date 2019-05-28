@@ -8,10 +8,9 @@ import {
   View
 } from 'react-native';
 import Colors from 'styles/colors';
+import Constants from 'constants';
 import Link from 'component/link';
 import CustomRewardCard from 'component/customRewardCard';
-import PhoneNumberRewardSubcard from 'component/phoneNumberRewardSubcard';
-import EmailRewardSubcard from 'component/emailRewardSubcard';
 import PageHeader from 'component/pageHeader';
 import RewardCard from 'component/rewardCard';
 import RewardEnrolment from 'component/rewardEnrolment';
@@ -31,7 +30,20 @@ class RewardsPage extends React.PureComponent {
 
   scrollView = null;
 
-  componentDidMount() {
+  didFocusListener;
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
+  onComponentFocused = () => {
     const { fetchRewards, pushDrawerStack, navigation, setPlayerVisible, user } = this.props;
 
     pushDrawerStack();
@@ -45,9 +57,18 @@ class RewardsPage extends React.PureComponent {
     });
   }
 
+  componentDidMount() {
+    this.onComponentFocused();
+  }
+
   componentWillReceiveProps(nextProps) {
-    const { emailVerifyErrorMessage, emailVerifyPending, rewards, user } = nextProps;
-    const { claimReward } = this.props;
+    const { currentRoute, emailVerifyErrorMessage, emailVerifyPending, rewards, user } = nextProps;
+    const { claimReward, currentRoute: prevRoute } = this.props;
+
+    if (Constants.DRAWER_ROUTE_REWARDS === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
+
     if (emailVerifyPending) {
       this.setState({ verifyRequestStarted: true });
     }

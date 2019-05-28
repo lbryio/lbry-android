@@ -160,7 +160,7 @@ public class LbrynetService extends PythonService {
         // Create the notification group
         NotificationCompat.Builder groupBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         groupBuilder.setContentTitle("LBRY Browser")
-                    .setColor(ContextCompat.getColor(context, R.color.lbrygreen))
+                    .setColor(ContextCompat.getColor(context, R.color.lbryGreen))
                     .setSmallIcon(R.drawable.ic_lbry)
                     .setPriority(NotificationCompat.PRIORITY_LOW)
                     .setGroup(GROUP_SERVICE)
@@ -168,7 +168,7 @@ public class LbrynetService extends PythonService {
         notificationManager.notify(SERVICE_NOTIFICATION_GROUP_ID, groupBuilder.build());
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-        Notification notification = builder.setColor(ContextCompat.getColor(context, R.color.lbrygreen))
+        Notification notification = builder.setColor(ContextCompat.getColor(context, R.color.lbryGreen))
                                            .setContentIntent(pendingIntent)
                                            .setContentTitle(serviceTitle)
                                            .setContentText(serviceDescription)

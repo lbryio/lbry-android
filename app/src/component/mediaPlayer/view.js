@@ -411,14 +411,8 @@ class MediaPlayer extends React.PureComponent {
 
     return (
       <View style={styles} onLayout={onLayout}>
-        <Video source={{
-                 uri: source,
-                 headers: {
-                   "Save-Data": "on",
-                   "Accept": "*/*"
-                 }
-               }}
-               bufferConfig={{ minBufferMs: 3000, maxBufferMs: 60000, bufferForPlaybackMs: 3000, bufferForPlaybackAfterRebufferMs: 3000  }}
+        <Video source={{ uri: source }}
+               bufferConfig={{ minBufferMs: 15000, maxBufferMs: 60000, bufferForPlaybackMs: 5000, bufferForPlaybackAfterRebufferMs: 5000  }}
                ref={(ref: Video) => { this.video = ref; }}
                resizeMode={this.state.resizeMode}
                playInBackground={this.state.backgroundPlayEnabled}

@@ -13,7 +13,32 @@ import Constants from 'constants';
 import walletStyle from 'styles/wallet';
 
 class WalletPage extends React.PureComponent {
+  didFocusListener;
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
   componentDidMount() {
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+    if (Constants.FULL_ROUTE_NAME_WALLET === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
+  }
+
+  onComponentFocused = () => {
     const { pushDrawerStack, setPlayerVisible } = this.props;
     pushDrawerStack();
     setPlayerVisible();
@@ -54,7 +79,7 @@ class WalletPage extends React.PureComponent {
             </Text>
             {!hasSyncedWallet &&
             <Text style={walletStyle.warningParagraph}>
-              If you are not using the LBRY sync service, you will lose all of your credits if you uninstall this application. Instructions on how to enroll as well as how to backup your wallet manually are available on the next page.
+              Since you are not using the LBRY sync service, you will lose all of your credits if you uninstall this application. Instructions on how to enroll as well as how to backup your wallet manually are available on the next page.
             </Text>}
             <Text style={walletStyle.warningText}>
               If you understand the risks and you wish to continue, please tap the button below.

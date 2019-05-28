@@ -9,10 +9,12 @@ import {
   selectSearchUrisByQuery
 } from 'lbry-redux';
 import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
+import { selectCurrentRoute } from 'redux/selectors/drawer';
 import Constants from 'constants';
 import SearchPage from './view';
 
 const select = (state) => ({
+  currentRoute: selectCurrentRoute(state),
   isSearching: selectIsSearching(state),
   query: selectSearchValue(state),
   uris: makeSelectSearchUris(makeSelectQueryWithOptions(null, 25)(state))(state),

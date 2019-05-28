@@ -2,6 +2,7 @@ import React from 'react';
 import { Lbry } from 'lbry-redux';
 import { NativeModules, Text, View, ScrollView } from 'react-native';
 import { navigateBack } from 'utils/helper';
+import Constants from 'constants';
 import Link from 'component/link';
 import PageHeader from 'component/pageHeader';
 import aboutStyle from 'styles/about';
@@ -13,7 +14,32 @@ class AboutPage extends React.PureComponent {
     versionInfo: null
   };
 
+  didFocusListener;
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
   componentDidMount() {
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+    if (Constants.DRAWER_ROUTE_ABOUT === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
+  }
+
+  onComponentFocused = () => {
     const { pushDrawerStack, setPlayerVisible } = this.props;
     pushDrawerStack();
     setPlayerVisible();

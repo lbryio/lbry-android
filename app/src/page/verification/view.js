@@ -61,7 +61,7 @@ class VerificationScreen extends React.PureComponent {
           this.setState({ currentPage: 'syncVerify' });
         }
       } else {
-        if (this.state.isEmailVerified && !this.state.isIdentityVerified) {
+        if (this.state.isEmailVerified && !this.state.isIdentityVerified && !this.state.isRewardApproved) {
           this.setState({ currentPage: 'phoneVerify' });
         }
         if (this.state.isEmailVerified && this.state.isIdentityVerified && !this.state.isRewardApproved) {
@@ -74,7 +74,7 @@ class VerificationScreen extends React.PureComponent {
         return;
       }
 
-      if (this.state.isEmailVerified && this.state.isIdentityVerified && this.state.isRewardApproved) {
+      if (this.state.isEmailVerified && this.state.isRewardApproved) {
         // verification steps already completed
         // simply navigate back to the rewards page
         navigation.goBack();

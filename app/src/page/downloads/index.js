@@ -6,13 +6,15 @@ import {
   selectIsFetchingFileList,
 } from 'lbry-redux';
 import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
+import { selectCurrentRoute } from 'redux/selectors/drawer';
 import Constants from 'constants';
 import DownloadsPage from './view';
 
 const select = (state) => ({
+  claims: selectMyClaimsWithoutChannels(state),
+  currentRoute: selectCurrentRoute(state),
   fileInfos: selectFileInfosDownloaded(state),
   fetching: selectIsFetchingFileList(state),
-  claims: selectMyClaimsWithoutChannels(state),
 });
 
 const perform = dispatch => ({

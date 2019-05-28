@@ -28,9 +28,8 @@ import {
   userReducer
 } from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import { AppNavigator } from 'component/AppNavigator';
+import AppWithNavigationState, { AppNavigator, navigatorReducer, reactNavigationMiddleware } from 'component/AppNavigator';
 import { persistStore, autoRehydrate } from 'redux-persist';
-import AppWithNavigationState, { reactNavigationMiddleware } from './component/AppNavigator';
 import AsyncStorage from '@react-native-community/async-storage';
 import FilesystemStorage from 'redux-persist-filesystem-storage';
 import createCompressor from 'redux-persist-transform-compress';
@@ -76,13 +75,9 @@ function enableBatching(reducer) {
   };
 }
 
-const router = AppNavigator.router;
+/*const router = AppNavigator.router;
 const navAction = router.getActionForPathAndParams('FirstRun');
-const initialNavState = router.getStateForAction(navAction);
-const navigatorReducer = (state = initialNavState, action) => {
-  const nextState = AppNavigator.router.getStateForAction(action, state);
-  return nextState || state;
-};
+const initialNavState = router.getStateForAction(navAction);*/
 
 const reducers = combineReducers({
   auth: authReducer,

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { navigateToUri, uriFromFileInfo } from 'utils/helper';
 import Colors from 'styles/colors';
+import Constants from 'constants';
 import PageHeader from 'component/pageHeader';
 import FileListItem from 'component/fileListItem';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
@@ -24,11 +25,36 @@ class DownloadsPage extends React.PureComponent {
     title: 'Downloads'
   };
 
-  componentDidMount() {
+  didFocusListener;
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
+  onComponentFocused = () => {
     const { fileList, pushDrawerStack, setPlayerVisible } = this.props;
     pushDrawerStack();
     setPlayerVisible();
     fileList();
+  }
+
+  componentDidMount() {
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+    if (Constants.FULL_ROUTE_NAME_MY_LBRY === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
+    }
   }
 
   render() {
@@ -60,14 +86,8 @@ class DownloadsPage extends React.PureComponent {
                     onPress={() => navigateToUri(navigation, uriFromFileInfo(item), { autoplay: true })} />
                 )
               }
-              data={fileInfos.sort((a, b) => {
-                // TODO: Implement sort based on user selection
-                if (!a.completed && b.completed) return -1;
-                if (a.completed && !b.completed) return 1;
-                if (a.metadata.title === b.metadata.title) return 0;
-                return (a.metadata.title < b.metadata.title) ? -1 : 1;
-              })}
-              keyExtractor={(item, index) => item.download_path}
+              data={fileInfos}
+              keyExtractor={(item, index) => item.outpoint}
             />
           </View>}
         <FloatingWalletBalance navigation={navigation} />

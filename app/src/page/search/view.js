@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { navigateToUri } from 'utils/helper';
 import Colors from 'styles/colors';
+import Constants from 'constants';
 import PageHeader from 'component/pageHeader';
 import FileListItem from 'component/fileListItem';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
@@ -18,29 +19,69 @@ import searchStyle from 'styles/search';
 
 class SearchPage extends React.PureComponent {
   state = {
-    currentUri: null
+    currentQuery: null,
+    currentUri: null,
   }
 
   static navigationOptions = {
     title: 'Search Results'
   };
 
+  didFocusListener;
+
   componentWillMount() {
-    const { pushDrawerStack, setPlayerVisible } = this.props;
+    const { navigation } = this.props;
+    this.didFocusListener = navigation.addListener('didFocus', this.onComponentFocused);
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusListener) {
+      this.didFocusListener.remove();
+    }
+  }
+
+  onComponentFocused = () => {
+    const { pushDrawerStack, setPlayerVisible, query, search } = this.props;
     pushDrawerStack();
     setPlayerVisible();
+
+    const searchQuery = query || this.getSearchQuery();
+    if (searchQuery && searchQuery.trim().length > 0) {
+      this.setState({
+        currentQuery: searchQuery,
+        currentUri: (isURIValid(searchQuery)) ? normalizeURI(searchQuery) : null
+      });
+      search(searchQuery);
+    }
   }
 
   componentDidMount() {
-    const { navigation, search } = this.props;
-    let searchQuery;
-    if (navigation && navigation.state) {
-      searchQuery = navigation.state.params.searchQuery;
+    this.onComponentFocused();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute, query } = nextProps;
+    const { currentRoute: prevRoute, search } = this.props;
+
+    if (Constants.DRAWER_ROUTE_SEARCH === currentRoute && currentRoute !== prevRoute) {
+      this.onComponentFocused();
     }
-    if (searchQuery && searchQuery.trim().length > 0) {
-      this.setState({ currentUri: (isURIValid(searchQuery)) ? normalizeURI(searchQuery) : null })
-      search(searchQuery);
+
+    if (query && query.trim().length > 0 && query !== this.state.currentQuery) {
+      this.setState({
+        currentQuery: query,
+        currentUri: (isURIValid(query)) ? normalizeURI(query) : null
+      });
+      search(query);
     }
+  }
+
+  getSearchQuery() {
+    const { navigation } = this.props;
+    if (navigation && navigation.state && navigation.state.params) {
+      return navigation.state.params.searchQuery;
+    }
+    return null;
   }
 
   handleSearchSubmitted = (keywords) => {
@@ -51,13 +92,13 @@ class SearchPage extends React.PureComponent {
 
   render() {
     const { isSearching, navigation, query, uris, urisByQuery } = this.props;
-    const { searchQuery } = navigation.state.params;
 
     return (
       <View style={searchStyle.container}>
-        <UriBar value={searchQuery}
+        <UriBar value={query}
                 navigation={navigation}
-                onSearchSubmitted={this.handleSearchSubmitted} />
+                onSearchSubmitted={this.handleSearchSubmitted}
+                searchView={true} />
         {isSearching &&
           <View style={searchStyle.busyContainer}>
             <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} />

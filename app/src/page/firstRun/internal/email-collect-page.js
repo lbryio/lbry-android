@@ -108,6 +108,7 @@ class EmailCollectPage extends React.PureComponent {
           <TextInput style={firstRunStyle.emailInput}
               placeholder={this.state.placeholder}
               underlineColorAndroid="transparent"
+              selectionColor={Colors.NextLbryGreen}
               value={this.state.email}
               onChangeText={text => this.handleChangeText(text)}
               onFocus={() => {

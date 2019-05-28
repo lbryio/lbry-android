@@ -12,6 +12,7 @@ import {
 import { NavigationActions, StackActions } from 'react-navigation';
 import { decode as atob } from 'base-64';
 import { navigateToUri } from 'utils/helper';
+import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 import PropTypes from 'prop-types';
 import Colors from 'styles/colors';
@@ -42,19 +43,6 @@ class SplashScreen extends React.PureComponent {
     if (NativeModules.DaemonServiceControl) {
       NativeModules.DaemonServiceControl.startService();
     }
-  }
-
-  componentDidMount() {
-    // Start measuring the first launch time from the splash screen (time from daemon start to user interaction)
-    AsyncStorage.getItem('hasLaunched').then(value => {
-      if (value == null || value !== 'true') {
-        AsyncStorage.setItem('hasLaunched', 'true');
-        // only set firstLaunchTime since we've determined that this is the first app launch ever
-        AsyncStorage.setItem('firstLaunchTime', String(moment().unix()));
-      }
-    });
-
-    this.props.fetchRewardedContent();
   }
 
   updateStatus() {
@@ -246,9 +234,19 @@ class SplashScreen extends React.PureComponent {
       NativeModules.Firebase.track('app_launch', null);
     }
 
+    this.props.fetchRewardedContent();
     Linking.getInitialURL().then((url) => {
       if (url) {
         this.setState({ launchUrl: url });
+      }
+    });
+
+    // Start measuring the first launch time from the splash screen (time from daemon start to user interaction)
+    AsyncStorage.getItem('hasLaunched').then(value => {
+      if (value == null || value !== 'true') {
+        AsyncStorage.setItem('hasLaunched', 'true');
+        // only set firstLaunchTime since we've determined that this is the first app launch ever
+        AsyncStorage.setItem('firstLaunchTime', String(moment().unix()));
       }
     });
 

@@ -15,15 +15,14 @@ import VerificationScreen from 'page/verification';
 import WalletPage from 'page/wallet';
 import SearchInput from 'component/searchInput';
 import {
-  createAppContainer,
   createDrawerNavigator,
   createStackNavigator,
   NavigationActions
 } from 'react-navigation';
 import {
-  addListener,
   createReduxContainer,
   createReactNavigationReduxMiddleware,
+  createNavigationReducer
 } from 'react-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import {
@@ -101,46 +100,6 @@ discoverStack.navigationOptions = ({ navigation }) => {
   };
 };
 
-const trendingStack = createStackNavigator({
-  Trending: {
-    screen: TrendingPage,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Trending',
-      header: null
-    })
-  }
-});
-
-const myLbryStack = createStackNavigator({
-  Downloads: {
-    screen: DownloadsPage,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Library',
-      header: null
-    })
-  }
-});
-
-const mySubscriptionsStack = createStackNavigator({
-  Subscriptions: {
-    screen: SubscriptionsPage,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Subscriptions',
-      header: null
-    })
-  }
-});
-
-const rewardsStack = createStackNavigator({
-  Rewards: {
-    screen: RewardsPage,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Rewards',
-      header: null
-    })
-  }
-});
-
 const walletStack = createStackNavigator({
   Wallet: {
     screen: WalletPage,
@@ -165,19 +124,19 @@ const drawer = createDrawerNavigator({
   DiscoverStack: { screen: discoverStack, navigationOptions: {
     title: 'Explore', drawerIcon: ({ tintColor }) => <Icon name="home" size={20} style={{ color: tintColor }} />
   }},
-  TrendingStack: { screen: trendingStack, navigationOptions: {
+  TrendingStack: { screen: TrendingPage, navigationOptions: {
     title: 'Trending', drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />
   }},
-  MySubscriptionsStack: { screen: mySubscriptionsStack, navigationOptions: {
+  MySubscriptionsStack: { screen: SubscriptionsPage, navigationOptions: {
     title: 'Subscriptions', drawerIcon: ({ tintColor }) => <Icon name="heart" solid={true} size={20} style={{ color: tintColor }} />
   }},
   WalletStack: { screen: walletStack, navigationOptions: {
     title: 'Wallet', drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
   }},
-  Rewards: { screen: rewardsStack, navigationOptions: {
+  Rewards: { screen: RewardsPage, navigationOptions: {
     drawerIcon: ({ tintColor }) => <Icon name="award" size={20} style={{ color: tintColor }} />
   }},
-  MyLBRYStack: { screen: myLbryStack, navigationOptions: {
+  MyLBRYStack: { screen: DownloadsPage, navigationOptions: {
     title: 'Library', drawerIcon: ({ tintColor }) => <Icon name="download" size={20} style={{ color: tintColor }} />
   }},
   Settings: { screen: SettingsPage, navigationOptions: {
@@ -225,10 +184,12 @@ const mainStackNavigator = new createStackNavigator({
 
 
 export const AppNavigator = mainStackNavigator;
+export const navigatorReducer = createNavigationReducer(AppNavigator);
 export const reactNavigationMiddleware = createReactNavigationReduxMiddleware(
   state => state.nav,
 );
-const App = createReduxContainer(mainStackNavigator, "root");
+
+const App = createReduxContainer(mainStackNavigator);
 const appMapStateToProps = (state) => ({
   state: state.nav,
 });

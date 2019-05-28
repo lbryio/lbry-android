@@ -5,10 +5,12 @@ import {
   selectIsFetchingTransactions,
 } from 'lbry-redux';
 import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
+import { selectCurrentRoute } from 'redux/selectors/drawer';
 import Constants from 'constants';
 import TransactionHistoryPage from './view';
 
 const select = state => ({
+  currentRoute: selectCurrentRoute(state),
   fetchingTransactions: selectIsFetchingTransactions(state),
   transactions: selectTransactionItems(state),
 });

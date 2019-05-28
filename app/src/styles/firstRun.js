@@ -182,6 +182,22 @@ const firstRunStyle = StyleSheet.create({
   nowrap: {
     flex: 1,
     flexWrap: 'nowrap'
+  },
+  passwordInputContainer: {
+    marginLeft: 32,
+    marginRight: 32
+  },
+  revealPasswordIcon: {
+    position: 'absolute',
+    right: 0,
+    top: 6,
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  revealIcon: {
+    color: Colors.White
   }
 });
 

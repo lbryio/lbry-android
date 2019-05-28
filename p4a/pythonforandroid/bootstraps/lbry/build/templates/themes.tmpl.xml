@@ -1,7 +1,6 @@
 <resources>
- <style name="LbryAppTheme" parent="@android:style/Theme.Material.Light">
-  <item name="android:windowBackground">@color/lbrygreen</item>
-  <item name="colorControlActivated">@color/white</item>
-  <item name="colorAccent">@color/white</item>
+ <style name="LbryAppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+  <item name="android:windowBackground">@color/lbryGreen</item>
+  <item name="colorControlActivated">@color/nextLbryGreen</item>
  </style>
 </resources>

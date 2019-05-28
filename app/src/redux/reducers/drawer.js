@@ -3,7 +3,8 @@ import Constants from 'constants';
 const reducers = {};
 const defaultState = {
   stack: [ Constants.DRAWER_ROUTE_DISCOVER ], // Discover is always the first drawer route
-  playerVisible: false
+  playerVisible: false,
+  currentRoute: null
 };
 
 reducers[Constants.ACTION_SET_PLAYER_VISIBLE] = (state, action) =>
@@ -34,6 +35,30 @@ reducers[Constants.ACTION_POP_DRAWER_STACK] = (state, action) => {
     stack: newStack
   }
 };
+
+// TODO: The ACTION_REACT_NAVIGATION_*** reducers are a workaround for the react
+// navigation event listeners (willFocus, didFocus, etc) not working with the
+// react-navigation-redux-helpers package.
+reducers[Constants.ACTION_REACT_NAVGIATION_RESET] = (state, action) => {
+  return {
+    ...state,
+    currentRoute: Constants.DRAWER_ROUTE_DISCOVER // default to Discover upon reset
+  }
+}
+
+reducers[Constants.ACTION_REACT_NAVIGATION_NAVIGATE] = (state, action) => {
+  return {
+    ...state,
+    currentRoute: action.routeName
+  }
+}
+
+reducers[Constants.ACTION_REACT_NAVIGATION_REPLACE] = (state, action) => {
+  return {
+    ...state,
+    currentRoute: action.routeName
+  }
+}
 
 export default function reducer(state = defaultState, action) {
   const handler = reducers[action.type];
