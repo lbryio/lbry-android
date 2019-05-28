@@ -107,8 +107,7 @@ const filePageStyle = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     marginLeft: 12,
-    marginRight: 12,
-    marginBottom: 16
+    marginRight: 12
   },
   thumbnail: {
     width: screenWidth,
@@ -312,6 +311,7 @@ const filePageStyle = StyleSheet.create({
   tagContainer: {
     marginLeft: 12,
     marginRight: 12,
+    marginTop: 16,
     marginBottom: 16,
     flexDirection: 'row'
   },

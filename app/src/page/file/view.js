@@ -724,6 +724,7 @@ class FilePage extends React.PureComponent {
                 <ScrollView
                   style={showActions ? filePageStyle.scrollContainerActions : filePageStyle.scrollContainer}
                   contentContainerstyle={showActions ? null : filePageStyle.scrollContent}
+                  keyboardShouldPersistTaps={'handled'}
                   ref={(ref) => { this.scrollView = ref; }}>
                   <TouchableWithoutFeedback style={filePageStyle.titleTouch}
                     onPress={() => this.setState({ showDescription: !this.state.showDescription })}>
