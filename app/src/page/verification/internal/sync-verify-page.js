@@ -68,7 +68,7 @@ class SyncVerifyPage extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const { getSyncIsPending, syncApplyIsPending, syncApplyErrorMessage } = nextProps;
-    const { getSync, setClientSetting, navigation, notify, hasSyncedWallet } = this.props;
+    const { getSync, hasSyncedWallet, navigation, notify, setClientSetting, setDefaultAccount } = this.props;
     if (this.state.checkSyncStarted && !getSyncIsPending) {
       this.setState({ syncChecked: true });
     }
@@ -82,6 +82,7 @@ class SyncVerifyPage extends React.PureComponent {
         if (NativeModules.UtilityModule) {
           NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, this.state.password);
         }
+        setDefaultAccount();
         setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
         navigation.goBack();
       }
