@@ -19,13 +19,13 @@ const uriBarStyle = StyleSheet.create({
     elevation: 4
   },
   uriText: {
-    backgroundColor: Colors.White,
-    borderWidth: 1,
-    borderColor: Colors.LightGrey,
-    padding: 8,
-    borderRadius: 4,
+    backgroundColor: Colors.VeryLightGrey,
+    borderRadius: 24,
+    paddingLeft: 12,
+    paddingRight: 12,
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
+    lineHeight: 18,
     flex: 17
   },
   overlay: {

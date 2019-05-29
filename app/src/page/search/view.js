@@ -104,8 +104,7 @@ class SearchPage extends React.PureComponent {
             <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} />
           </View>}
 
-        {!isSearching && (!uris || uris.length === 0) &&
-            <Text style={searchStyle.noResultsText}>No results to display.</Text>}
+
         {!isSearching &&
         <ScrollView
           style={searchStyle.scrollContainer}
@@ -127,6 +126,10 @@ class SearchPage extends React.PureComponent {
                                               navigation={navigation}
                                               onPress={() => navigateToUri(navigation, uri)}/>)
               ) : null }
+          {(!uris || uris.length === 0) &&
+            <View style={searchStyle.noResults}>
+              <Text style={searchStyle.noResultsText}>There are no results to display for <Text style={searchStyle.boldText}>{query}</Text>. Please try a different search term.</Text>
+            </View>}
         </ScrollView>}
         <FloatingWalletBalance navigation={navigation} />
       </View>
