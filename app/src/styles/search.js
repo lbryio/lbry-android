@@ -8,7 +8,7 @@ const searchStyle = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-    marginTop: 60
+    marginTop: 60,
   },
   busyContainer: {
     flex: 1,
@@ -16,6 +16,7 @@ const searchStyle = StyleSheet.create({
     justifyContent: 'center'
   },
   scrollPadding: {
+    flex: 1,
     paddingBottom: 16
   },
   resultItem: {
@@ -27,7 +28,6 @@ const searchStyle = StyleSheet.create({
     marginRight: 8
   },
   featuredResultItem: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 8,
@@ -42,11 +42,22 @@ const searchStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16
   },
+  noResults: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   noResultsText: {
-    textAlign: 'center',
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 14,
-    position: 'absolute'
+    fontSize: 16,
+    marginLeft: 16,
+    marginRight: 16
+  },
+  boldText: {
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 16
   },
   loading: {
     position: 'absolute'
