@@ -3,6 +3,7 @@ import React from 'react';
 import { SEARCH_TYPES, isNameValid, isURIValid, normalizeURI } from 'lbry-redux';
 import { FlatList, Keyboard, TextInput, View } from 'react-native';
 import { navigateToUri } from 'utils/helper';
+import Constants from 'constants';
 import UriBarItem from './internal/uri-bar-item';
 import NavigationButton from 'component/navigationButton';
 import discoverStyle from 'styles/discover';
@@ -26,6 +27,15 @@ class UriBar extends React.PureComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { currentRoute, query } = nextProps;
+    const { currentRoute: prevRoute } = this.props;
+
+    if (Constants.DRAWER_ROUTE_SEARCH === currentRoute && currentRoute !== prevRoute) {
+      this.setState({ currentValue: query, inputText: query });
+    }
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -33,6 +43,7 @@ class UriBar extends React.PureComponent {
       currentValue: null,
       inputText: null,
       focused: false,
+      currentValueSet: false,
       // TODO: Add a setting to enable / disable direct search?
       directSearch: true
     };
@@ -122,10 +133,14 @@ class UriBar extends React.PureComponent {
     }
   }
 
+  onSearchPageBlurred() {
+    this.setState({ currenValueSet: false });
+  }
+
   render() {
-    const { navigation, suggestions, query, searchView, value  } = this.props;
-    if (value && this.state.currentValue === null) {
-      this.setState({ currentValue: value });
+    const { navigation, suggestions, query, value  } = this.props;
+    if (!this.state.currentValue) {
+      this.setState({ currentValue: value, currentValueSet: true });
     }
 
     let style = [uriBarStyle.overlay];
@@ -150,7 +165,7 @@ class UriBar extends React.PureComponent {
                      underlineColorAndroid={'transparent'}
                      numberOfLines={1}
                      clearButtonMode={'while-editing'}
-                     value={searchView ? query : this.state.currentValue}
+                     value={this.state.currentValue}
                      returnKeyType={'go'}
                      inlineImageLeft={'baseline_search_black_24'}
                      inlineImagePadding={16}
