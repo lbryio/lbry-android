@@ -19,11 +19,9 @@ const uriBarStyle = StyleSheet.create({
     elevation: 4
   },
   uriText: {
-    backgroundColor: Colors.White,
-    borderWidth: 1,
-    borderColor: Colors.LightGrey,
+    backgroundColor: Colors.VeryLightGrey,
     padding: 8,
-    borderRadius: 4,
+    borderRadius: 24,
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     flex: 17
