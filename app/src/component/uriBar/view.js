@@ -43,7 +43,6 @@ class UriBar extends React.PureComponent {
       currentValue: null,
       inputText: null,
       focused: false,
-      currentValueSet: false,
       // TODO: Add a setting to enable / disable direct search?
       directSearch: true
     };
@@ -139,8 +138,8 @@ class UriBar extends React.PureComponent {
 
   render() {
     const { navigation, suggestions, query, value  } = this.props;
-    if (!this.state.currentValue) {
-      this.setState({ currentValue: value, currentValueSet: true });
+    if (this.state.currentValue === null) {
+      this.setState({ currentValue: value });
     }
 
     let style = [uriBarStyle.overlay];
