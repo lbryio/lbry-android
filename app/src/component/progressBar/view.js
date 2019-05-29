@@ -26,13 +26,24 @@ class ProgressBar extends React.PureComponent {
     const { borderRadius, color, height, progress, style } = this.props;
     const currentProgress = Math.ceil(progress);
 
+    let styles = [];
+    if (style) {
+      if (style.length) {
+        styles = styles.concat(style);
+      } else {
+        styles.push(style);
+      }
+    }
+
+    styles.push[{
+      borderRadius: borderRadius || defaultBorderRadius,
+      flexDirection: 'row',
+      height: height || defaultHeight,
+      overflow: 'hidden'
+    }];
+
     return (
-      <View style={[style, {
-        borderRadius: borderRadius || defaultBorderRadius,
-        flexDirection: 'row',
-        height: height || defaultHeight,
-        overflow: 'hidden'
-      }]}>
+      <View style={styles}>
         <View style={{ backgroundColor: color, borderRadius: borderRadius || defaultBorderRadius, flex: currentProgress }} />
         <View style={{ backgroundColor: color, opacity: 0.2, flex: (100 - currentProgress) }} />
       </View>
