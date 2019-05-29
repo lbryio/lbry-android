@@ -5,7 +5,6 @@ import {
   Linking,
   NativeModules,
   Platform,
-  ProgressBarAndroid,
   Text,
   View
 } from 'react-native';
@@ -14,6 +13,7 @@ import { decode as atob } from 'base-64';
 import { navigateToUri } from 'utils/helper';
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
+import ProgressBar from 'component/progressBar';
 import PropTypes from 'prop-types';
 import Colors from 'styles/colors';
 import Constants from 'constants';
@@ -271,12 +271,11 @@ class SplashScreen extends React.PureComponent {
     return (
       <View style={splashStyle.container}>
         <Text style={splashStyle.title}>LBRY</Text>
-        {'android' === Platform.OS && this.state.isDownloadingHeaders &&
-        <ProgressBarAndroid color={Colors.White}
-                            indeterminate={false}
-                            styleAttr={"Horizontal"}
-                            style={splashStyle.progress}
-                            progress={this.state.headersDownloadProgress/100.0} />}
+        {this.state.isDownloadingHeaders &&
+          <ProgressBar
+            color={Colors.White}
+            style={splashStyle.progress}
+            progress={this.state.headersDownloadProgress} />}
         {!this.state.isDownloadingHeaders && <ActivityIndicator color={Colors.White} style={splashStyle.loading} size={"small"} />}
         <Text style={splashStyle.message}>{message}</Text>
         <Text style={splashStyle.details}>{details}</Text>
