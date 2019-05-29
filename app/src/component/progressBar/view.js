@@ -35,12 +35,12 @@ class ProgressBar extends React.PureComponent {
       }
     }
 
-    styles.push[{
+    styles.push({
       borderRadius: borderRadius || defaultBorderRadius,
       flexDirection: 'row',
       height: height || defaultHeight,
       overflow: 'hidden'
-    }];
+    });
 
     return (
       <View style={styles}>
