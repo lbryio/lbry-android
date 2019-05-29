@@ -5,6 +5,7 @@ import {
   selectSearchValue,
   selectSearchSuggestions
 } from 'lbry-redux';
+import { selectCurrentRoute } from 'redux/selectors/drawer';
 import UriBar from './view';
 
 const select = state => {
@@ -13,6 +14,7 @@ const select = state => {
   return {
     ...searchState,
     query: selectSearchValue(state),
+    currentRoute: selectCurrentRoute(state),
     suggestions: selectSearchSuggestions(state)
   };
 };

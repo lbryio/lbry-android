@@ -97,8 +97,7 @@ class SearchPage extends React.PureComponent {
       <View style={searchStyle.container}>
         <UriBar value={query}
                 navigation={navigation}
-                onSearchSubmitted={this.handleSearchSubmitted}
-                searchView={true} />
+                onSearchSubmitted={this.handleSearchSubmitted} />
         {isSearching &&
           <View style={searchStyle.busyContainer}>
             <ActivityIndicator size="large" color={Colors.LbryGreen} style={searchStyle.loading} />

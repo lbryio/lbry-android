@@ -16,7 +16,6 @@ const searchStyle = StyleSheet.create({
     justifyContent: 'center'
   },
   scrollPadding: {
-    flex: 1,
     paddingBottom: 16
   },
   resultItem: {
@@ -28,6 +27,7 @@ const searchStyle = StyleSheet.create({
     marginRight: 8
   },
   featuredResultItem: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 8,
@@ -52,6 +52,7 @@ const searchStyle = StyleSheet.create({
   noResultsText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
+    marginTop: 16,
     marginLeft: 16,
     marginRight: 16
   },
