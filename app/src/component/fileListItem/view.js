@@ -3,7 +3,6 @@ import { normalizeURI, parseURI } from 'lbry-redux';
 import {
   ActivityIndicator,
   Platform,
-  ProgressBarAndroid,
   Text,
   TouchableOpacity,
   View
@@ -15,6 +14,7 @@ import FileItemMedia from 'component/fileItemMedia';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Link from 'component/link';
 import NsfwOverlay from 'component/nsfwOverlay';
+import ProgressBar from 'component/progressBar';
 import fileListStyle from 'styles/fileList';
 
 class FileListItem extends React.PureComponent {
@@ -88,7 +88,7 @@ class FileListItem extends React.PureComponent {
                          title={(title || name)}
                          thumbnail={thumbnail} />
           {(fileInfo && fileInfo.completed && fileInfo.download_path) &&
-            <Icon style={fileListStyle.downloadedIcon} solid={true} color={Colors.BrightGreen} name={"folder"} size={16} />}
+            <Icon style={fileListStyle.downloadedIcon} solid={true} color={Colors.NextLbryGreen} name={"folder"} size={16} />}
           <View style={fileListStyle.detailsContainer}>
             {featuredResult && <Text style={fileListStyle.featuredUri} numberOfLines={1}>{uri}</Text>}
 
@@ -112,13 +112,15 @@ class FileListItem extends React.PureComponent {
               <DateTime style={fileListStyle.publishInfo} textStyle={fileListStyle.infoText} timeAgo uri={uri} />
             </View>
 
-            {fileInfo &&
+            {(fileInfo && fileInfo.download_path) &&
               <View style={fileListStyle.downloadInfo}>
                 {!fileInfo.completed &&
-                  <View style={fileListStyle.progress}>
-                    <View style={[fileListStyle.progressCompleted, { flex: this.getDownloadProgress(fileInfo) } ]} />
-                    <View style={[fileListStyle.progressRemaining, { flex: (100 - this.getDownloadProgress(fileInfo)) } ]} />
-                  </View>}
+                  <ProgressBar
+                    borderRadius={3}
+                    color={Colors.NextLbryGreen}
+                    height={3}
+                    style={fileListStyle.progress}
+                    progress={this.getDownloadProgress(fileInfo)} />}
               </View>
             }
           </View>

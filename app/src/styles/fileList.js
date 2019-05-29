@@ -71,9 +71,6 @@ const fileListStyle = StyleSheet.create({
   },
   progress: {
     marginTop: (screenWidthPixels <= 720) ? 2 : 4,
-    height: 3,
-    flex: 1,
-    flexDirection: 'row'
   },
   progressCompleted: {
     backgroundColor: Colors.LbryGreen
