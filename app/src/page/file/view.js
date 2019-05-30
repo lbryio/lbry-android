@@ -597,7 +597,10 @@ class FilePage extends React.PureComponent {
         const mediaType = Lbry.getMediaType(contentType);
         const isPlayable = mediaType === 'video' || mediaType === 'audio';
         const { height, channel_name: channelName, value } = claim;
-        const showActions = !this.state.streamingMode && !this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView;
+        const showActions = (fileInfo && fileInfo.download_path) &&
+          !this.state.fullscreenMode &&
+          !this.state.showImageViewer &&
+          !this.state.showWebView;
         const showFileActions = (fileInfo && fileInfo.download_path) &&
           (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
         const channelClaimId = claim && claim.signing_channel && claim.signing_channel.claim_id;
