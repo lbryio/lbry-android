@@ -502,14 +502,18 @@ class FilePage extends React.PureComponent {
   }
 
   onSaveFilePressed = () => {
-    const { costInfo, fileGet, navigation, purchaseUri, purchasedUris } = this.props;
+    const { costInfo, fileGet, fileInfo, navigation, purchasedUris, purchaseUri } = this.props;
     const { uri } = navigation.state.params;
 
-    if (purchasedUris.includes(uri)) {
-      // URI already purchased, use fileGet directly
+    if (fileInfo || purchasedUris.includes(uri)) {
+      // file already in library or URI already purchased, use fileGet directly
       this.setState({ fileGetStarted: true }, () => fileGet(uri, true));
     } else {
-      purchaseUri(uri, costInfo, true);
+      this.setState({
+        downloadPressed: true,
+        autoPlayMedia: true,
+        stopDownloadConfirmed: false
+      }, () => purchaseUri(uri, costInfo, true));
     }
   }
 
