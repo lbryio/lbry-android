@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import {
   doFetchFileInfo,
+  doFileGet,
   doPurchaseUri,
   doDeletePurchasedUri,
   doResolveUri,
@@ -70,6 +71,7 @@ const perform = dispatch => ({
   },
   fetchFileInfo: uri => dispatch(doFetchFileInfo(uri)),
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
+  fileGet: (uri, saveFile) => dispatch(doFileGet(uri, saveFile)),
   notify: data => dispatch(doToast(data)),
   popDrawerStack: () => dispatch(doPopDrawerStack()),
   purchaseUri: (uri, costInfo, saveFile) => dispatch(doPurchaseUri(uri, costInfo, saveFile)),

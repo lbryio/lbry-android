@@ -1,8 +1,8 @@
 import React from 'react';
 import { normalizeURI, parseURI } from 'lbry-redux';
 import { NativeModules, Text, View, TouchableOpacity } from 'react-native';
-import Button from '../button';
-import Colors from '../../styles/colors';
+import Button from 'component/button';
+import Colors from 'styles/colors';
 
 class SubscribeButton extends React.PureComponent {
   render() {
@@ -11,7 +11,8 @@ class SubscribeButton extends React.PureComponent {
       isSubscribed,
       doChannelSubscribe,
       doChannelUnsubscribe,
-      style
+      style,
+      hideText
     } = this.props;
 
     let styles = [];
@@ -35,7 +36,7 @@ class SubscribeButton extends React.PureComponent {
         icon={isSubscribed ? "heart-broken" : "heart"}
         iconColor={iconColor}
         solid={isSubscribed ? false : true}
-        text={subscriptionLabel}
+        text={hideText ? null : subscriptionLabel}
         onPress={() => {
           subscriptionHandler({
             channelName: claimName,

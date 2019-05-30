@@ -63,6 +63,7 @@ class FilePage extends React.PureComponent {
       downloadPressed: false,
       fileViewLogged: false,
       fullscreenMode: false,
+      fileGetStarted: false,
       imageUrls: null,
       isLandscape: false,
       mediaLoaded: false,
@@ -150,7 +151,7 @@ class FilePage extends React.PureComponent {
 
     const mediaType = Lbry.getMediaType(contentType);
     const isPlayable = mediaType === 'video' || mediaType === 'audio';
-    if (prevPurchasedUris.length != purchasedUris.length && NativeModules.UtilityModule) {
+    if ((this.state.fileGetStarted || prevPurchasedUris.length !== purchasedUris.length) && NativeModules.UtilityModule) {
       if (purchasedUris.includes(uri)) {
         const { nout, txid } = claim;
         const outpoint = `${txid}:${nout}`;
@@ -159,6 +160,7 @@ class FilePage extends React.PureComponent {
         if (!isPlayable && !this.state.fileViewLogged) {
           this.logFileView(uri, claim);
         }
+        this.setState({ fileGetStarted: false });
       }
       NativeModules.UtilityModule.checkDownloads();
     }
@@ -499,6 +501,18 @@ class FilePage extends React.PureComponent {
     navigateBack(navigation, drawerStack, popDrawerStack);
   }
 
+  onSaveFilePressed = () => {
+    const { costInfo, fileGet, navigation, purchaseUri, purchasedUris } = this.props;
+    const { uri } = navigation.state.params;
+
+    if (purchasedUris.includes(uri)) {
+      // URI already purchased, use fileGet directly
+      this.setState({ fileGetStarted: true }, () => fileGet(uri, true));
+    } else {
+      purchaseUri(uri, costInfo, true);
+    }
+  }
+
   render() {
     const {
       balance,
@@ -754,6 +768,11 @@ class FilePage extends React.PureComponent {
                           show={DateTime.SHOW_DATE} />
                       </View>
                       <View style={filePageStyle.subscriptionRow}>
+                        {((isPlayable && !fileInfo) || (isPlayable && fileInfo && !fileInfo.download_path)) &&
+                        <Button style={[filePageStyle.actionButton, filePageStyle.saveFileButton]}
+                            theme={"light"}
+                            icon={"download"}
+                            onPress={this.onSaveFilePressed} />}
                         <Button style={[filePageStyle.actionButton, filePageStyle.tipButton]}
                             theme={"light"}
                             icon={"gift"}
@@ -761,7 +780,8 @@ class FilePage extends React.PureComponent {
                         <SubscribeButton
                           style={filePageStyle.actionButton}
                           uri={fullChannelUri}
-                          name={channelName} />
+                          name={channelName}
+                          hideText={false} />
                         <SubscribeNotificationButton
                           style={[filePageStyle.actionButton, filePageStyle.bellButton]}
                           uri={fullChannelUri}
