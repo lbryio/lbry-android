@@ -20,6 +20,9 @@ const discoverStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.PageBackground
   },
+  drawerContentContainer: {
+    flex: 1
+  },
   scrollContainer: {
     flex: 1,
     paddingTop: 12,
