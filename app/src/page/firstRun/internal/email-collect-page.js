@@ -1,8 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
 import {
-  ActivityIndicator,
-  Linking,
   NativeModules,
   Platform,
   Text,
@@ -15,24 +13,15 @@ import Constants from 'constants';
 import firstRunStyle from 'styles/firstRun';
 
 class EmailCollectPage extends React.PureComponent {
-  static MAX_STATUS_TRIES = 30;
-
   state = {
     email: null,
-    authenticationStarted: false,
-    authenticationFailed: false,
     placeholder: 'you@example.com',
-    statusTries: 0,
     verifying: true
   };
 
   componentWillReceiveProps(nextProps) {
-    const { authenticating, authToken, showNextPage } = this.props;
+    const { showNextPage } = this.props;
     const { user } = nextProps;
-
-    if (this.state.authenticationStarted && !authenticating && authToken === null) {
-      this.setState({ authenticationFailed: true, authenticationStarted: false });
-    }
 
     if (this.state.verifying) {
       if (user && user.primary_email && user.has_verified_email) {
@@ -43,33 +32,6 @@ class EmailCollectPage extends React.PureComponent {
         this.setState({ verifying: false });
       }
     }
-  }
-
-  componentDidMount() {
-    // call user/new
-    const { generateAuthToken, authenticating, authToken } = this.props;
-    if (!authenticating) {
-      this.startAuthenticating();
-    }
-  }
-
-  startAuthenticating = () => {
-    const { authenticate } = this.props;
-    this.setState({ authenticationStarted: true, authenticationFailed: false });
-    NativeModules.VersionInfo.getAppVersion().then(appVersion => {
-      Lbry.status().then(info => {
-        authenticate(appVersion, Platform.OS);
-      }).catch(error => {
-        if (this.state.statusTries >= EmailCollectPage.MAX_STATUS_TRIES) {
-          this.setState({ authenticationFailed: true });
-        } else {
-          setTimeout(() => {
-            this.startAuthenticating();
-            this.setState({ statusTries: this.state.statusTries + 1 });
-          }, 1000); // Retry every second for a maximum of MAX_STATUS_TRIES tries (30 seconds)
-        }
-      });
-    });
   }
 
   handleChangeText = (text) => {
@@ -84,49 +46,32 @@ class EmailCollectPage extends React.PureComponent {
   }
 
   render() {
-    const { authenticating, authToken, onEmailChanged, onEmailViewLayout, emailToVerify } = this.props;
+    const { onEmailViewLayout } = this.props;
 
-    let content;
-    if (this.state.authenticationFailed) {
-      // Ask the user to try again
-      content = (
-        <View>
-          <Text style={firstRunStyle.paragraph}>The LBRY servers were unreachable at this time. Please check your Internet connection and then restart the app to try again.</Text>
-        </View>
-      );
-    } else if (!authToken || authenticating || this.state.verifying) {
-      content = (
-        <View style={firstRunStyle.centered}>
-          <ActivityIndicator size="large" color={Colors.White} style={firstRunStyle.waiting} />
-          <Text style={firstRunStyle.paragraph}>Please wait while we get some things ready...</Text>
-        </View>
-      );
-    } else {
-      content = (
-        <View onLayout={onEmailViewLayout}>
-          <Text style={firstRunStyle.title}>Setup account</Text>
-          <TextInput style={firstRunStyle.emailInput}
-              placeholder={this.state.placeholder}
-              underlineColorAndroid="transparent"
-              selectionColor={Colors.NextLbryGreen}
-              value={this.state.email}
-              onChangeText={text => this.handleChangeText(text)}
-              onFocus={() => {
-                if (!this.state.email || this.state.email.length === 0) {
-                  this.setState({ placeholder: '' });
-                }
-              }}
-              onBlur={() => {
-                if (!this.state.email || this.state.email.length === 0) {
-                  this.setState({ placeholder: 'you@example.com' });
-                }
-              }}
-              />
-          <Text style={firstRunStyle.paragraph}>An account will allow you to earn rewards and keep your account and settings synced.</Text>
-          <Text style={firstRunStyle.infoParagraph}>This information is disclosed only to LBRY, Inc. and not to the LBRY network.</Text>
-        </View>
-      );
-    }
+    const content = (
+      <View onLayout={onEmailViewLayout}>
+        <Text style={firstRunStyle.title}>Setup account</Text>
+        <TextInput style={firstRunStyle.emailInput}
+            placeholder={this.state.placeholder}
+            underlineColorAndroid="transparent"
+            selectionColor={Colors.NextLbryGreen}
+            value={this.state.email}
+            onChangeText={text => this.handleChangeText(text)}
+            onFocus={() => {
+              if (!this.state.email || this.state.email.length === 0) {
+                this.setState({ placeholder: '' });
+              }
+            }}
+            onBlur={() => {
+              if (!this.state.email || this.state.email.length === 0) {
+                this.setState({ placeholder: 'you@example.com' });
+              }
+            }}
+            />
+        <Text style={firstRunStyle.paragraph}>An account will allow you to earn rewards and keep your account and settings synced.</Text>
+        <Text style={firstRunStyle.infoParagraph}>This information is disclosed only to LBRY, Inc. and not to the LBRY network.</Text>
+      </View>
+    );
 
     return (
       <View style={firstRunStyle.container}>
