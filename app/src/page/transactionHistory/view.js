@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, ScrollView, Text } from 'react-native';
+import Constants from 'constants';
 import TransactionList from 'component/transactionList';
 import UriBar from 'component/uriBar';
 import walletStyle from 'styles/wallet';

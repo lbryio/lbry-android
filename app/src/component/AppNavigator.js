@@ -2,6 +2,7 @@ import React from 'react';
 import AboutPage from 'page/about';
 import DiscoverPage from 'page/discover';
 import DownloadsPage from 'page/downloads';
+import DrawerContent from 'component/drawerContent';
 import FilePage from 'page/file';
 import FirstRunScreen from 'page/firstRun';
 import RewardsPage from 'page/rewards';
@@ -13,7 +14,6 @@ import SubscriptionsPage from 'page/subscriptions';
 import TransactionHistoryPage from 'page/transactionHistory';
 import VerificationScreen from 'page/verification';
 import WalletPage from 'page/wallet';
-import SearchInput from 'component/searchInput';
 import {
   createDrawerNavigator,
   createStackNavigator,
@@ -150,6 +150,7 @@ const drawer = createDrawerNavigator({
 }, {
   drawerWidth: 300,
   headerMode: 'none',
+  contentComponent: DrawerContent,
   contentOptions: {
     activeTintColor: Colors.LbryGreen,
     labelStyle: discoverStyle.menuText
