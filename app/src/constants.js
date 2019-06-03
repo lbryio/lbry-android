@@ -16,6 +16,7 @@ const Constants = {
 
   KEY_FIRST_RUN_EMAIL: "firstRunEmail",
   KEY_FIRST_RUN_PASSWORD: "firstRunPassword",
+  KEY_FIRST_USER_AUTH: "firstUserAuth",
   KEY_SHOULD_VERIFY_EMAIL: "shouldVerifyEmail",
   KEY_EMAIL_VERIFY_PENDING: "emailVerifyPending",
 

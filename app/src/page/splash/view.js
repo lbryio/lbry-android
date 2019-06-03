@@ -241,9 +241,10 @@ class SplashScreen extends React.PureComponent {
       }
     });
 
-    // Start measuring the first launch time from the splash screen (time from daemon start to user interaction)
+    // Start measuring the first launch time from the splash screen
+    // (time to first user interaction - after first run completed)
     AsyncStorage.getItem('hasLaunched').then(value => {
-      if (value == null || value !== 'true') {
+      if ('true' !== value) {
         AsyncStorage.setItem('hasLaunched', 'true');
         // only set firstLaunchTime since we've determined that this is the first app launch ever
         AsyncStorage.setItem('firstLaunchTime', String(moment().unix()));

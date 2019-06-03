@@ -7,7 +7,9 @@ import {
   Text,
   View
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Colors from 'styles/colors';
+import Constants from 'constants';
 import firstRunStyle from 'styles/firstRun';
 
 class WelcomePage extends React.PureComponent {
@@ -16,14 +18,26 @@ class WelcomePage extends React.PureComponent {
   state = {
     authenticationStarted: false,
     authenticationFailed: false,
+    sdkStarted: false,
     statusTries: 0,
   };
 
   componentWillReceiveProps(nextProps) {
     const { authenticating, authToken } = this.props;
 
-    if (this.state.authenticationStarted && !authenticating && authToken === null) {
-      this.setState({ authenticationFailed: true, authenticationStarted: false });
+    if (this.state.authenticationStarted && !authenticating) {
+      if (authToken === null) {
+        this.setState({ authenticationFailed: true, authenticationStarted: false });
+      } else {
+        // first_user_auth because it's the first time
+        AsyncStorage.getItem(Constants.KEY_FIRST_USER_AUTH).then(firstUserAuth => {
+          if ('true' !== firstUserAuth) {
+            // first_user_auth
+            NativeModules.Firebase.track('first_user_auth', null);
+            AsyncStorage.setItem(Constants.KEY_FIRST_USER_AUTH, 'true');
+          }
+        });
+      }
     }
   }
 
@@ -40,10 +54,15 @@ class WelcomePage extends React.PureComponent {
     this.setState({ authenticationStarted: true, authenticationFailed: false });
     NativeModules.VersionInfo.getAppVersion().then(appVersion => {
       Lbry.status().then(info => {
+        this.setState({ sdkStarted: true });
+
         authenticate(appVersion, Platform.OS);
       }).catch(error => {
         if (this.state.statusTries >= WelcomePage.MAX_STATUS_TRIES) {
           this.setState({ authenticationFailed: true });
+
+          // sdk_start_failed
+          NativeModules.Firebase.track('sdk_start_failed', null);
         } else {
           setTimeout(() => {
             this.startAuthenticating();

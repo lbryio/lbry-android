@@ -22,7 +22,6 @@ class VerificationScreen extends React.PureComponent {
   state = {
     currentPage: null,
     emailSubmitted: false,
-    isFirstRun: false,
     launchUrl: null,
     showSkip: false,
     skipAccountConfirmed: false,
