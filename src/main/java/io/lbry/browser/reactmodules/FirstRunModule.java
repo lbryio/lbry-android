@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import io.lbry.browser.MainActivity;
 
@@ -40,5 +43,11 @@ public class FirstRunModule extends ReactContextBaseJavaModule {
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("firstRun", false);
         editor.commit();
+
+        FirebaseAnalytics firebase = FirebaseAnalytics.getInstance(context);
+        if (firebase != null) {
+            Bundle bundle = new Bundle();
+            firebase.logEvent("first_run_completed", bundle);
+        }
     }
 }

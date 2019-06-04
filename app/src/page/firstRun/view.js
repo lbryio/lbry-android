@@ -37,7 +37,7 @@ class FirstRunScreen extends React.PureComponent {
     showSkip: false,
     isEmailVerified: false,
     skipAccountConfirmed: false,
-    showBottomContainer: true,
+    showBottomContainer: false,
     walletPassword: null,
     syncApplyStarted: false
   };
@@ -252,6 +252,10 @@ class FirstRunScreen extends React.PureComponent {
     this.setState({ showBottomContainer: true });
   }
 
+  onWelcomePageLayout = () => {
+    this.setState({ showBottomContainer: true });
+  }
+
   onSkipSwitchChanged = (checked) => {
     this.setState({ skipAccountConfirmed: checked });
   }
@@ -291,16 +295,17 @@ class FirstRunScreen extends React.PureComponent {
     let page = null;
     switch (this.state.currentPage) {
       case Constants.FIRST_RUN_PAGE_WELCOME:
-        page = (<WelcomePage />);
+        page = (<WelcomePage
+                  authenticating={authenticating}
+                  authToken={authToken}
+                  authenticate={authenticate}
+                  onWelcomePageLayout={this.onWelcomePageLayout} />);
         break;
 
       case Constants.FIRST_RUN_PAGE_EMAIL_COLLECT:
         page = (<EmailCollectPage
                   user={user}
                   showNextPage={this.showNextPage}
-                  authenticating={authenticating}
-                  authToken={authToken}
-                  authenticate={authenticate}
                   onEmailChanged={this.onEmailChanged}
                   onEmailViewLayout={this.onEmailViewLayout} />);
         break;
