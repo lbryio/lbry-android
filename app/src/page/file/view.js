@@ -511,7 +511,7 @@ class FilePage extends React.PureComponent {
     } else {
       this.setState({
         downloadPressed: true,
-        autoPlayMedia: true,
+        autoPlayMedia: false,
         stopDownloadConfirmed: false
       }, () => purchaseUri(uri, costInfo, true));
     }
