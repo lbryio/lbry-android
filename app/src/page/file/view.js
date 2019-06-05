@@ -63,6 +63,7 @@ class FilePage extends React.PureComponent {
       downloadPressed: false,
       fileViewLogged: false,
       fullscreenMode: false,
+      fileGetStarted: false,
       imageUrls: null,
       isLandscape: false,
       mediaLoaded: false,
@@ -150,7 +151,7 @@ class FilePage extends React.PureComponent {
 
     const mediaType = Lbry.getMediaType(contentType);
     const isPlayable = mediaType === 'video' || mediaType === 'audio';
-    if (prevPurchasedUris.length != purchasedUris.length && NativeModules.UtilityModule) {
+    if ((this.state.fileGetStarted || prevPurchasedUris.length !== purchasedUris.length) && NativeModules.UtilityModule) {
       if (purchasedUris.includes(uri)) {
         const { nout, txid } = claim;
         const outpoint = `${txid}:${nout}`;
@@ -159,6 +160,7 @@ class FilePage extends React.PureComponent {
         if (!isPlayable && !this.state.fileViewLogged) {
           this.logFileView(uri, claim);
         }
+        this.setState({ fileGetStarted: false });
       }
       NativeModules.UtilityModule.checkDownloads();
     }
@@ -499,6 +501,22 @@ class FilePage extends React.PureComponent {
     navigateBack(navigation, drawerStack, popDrawerStack);
   }
 
+  onSaveFilePressed = () => {
+    const { costInfo, fileGet, fileInfo, navigation, purchasedUris, purchaseUri } = this.props;
+    const { uri } = navigation.state.params;
+
+    if (fileInfo || purchasedUris.includes(uri)) {
+      // file already in library or URI already purchased, use fileGet directly
+      this.setState({ fileGetStarted: true }, () => fileGet(uri, true));
+    } else {
+      this.setState({
+        downloadPressed: true,
+        autoPlayMedia: false,
+        stopDownloadConfirmed: false
+      }, () => purchaseUri(uri, costInfo, true));
+    }
+  }
+
   render() {
     const {
       balance,
@@ -579,7 +597,10 @@ class FilePage extends React.PureComponent {
         const mediaType = Lbry.getMediaType(contentType);
         const isPlayable = mediaType === 'video' || mediaType === 'audio';
         const { height, channel_name: channelName, value } = claim;
-        const showActions = !this.state.streamingMode && !this.state.fullscreenMode && !this.state.showImageViewer && !this.state.showWebView;
+        const showActions = (fileInfo && fileInfo.download_path) &&
+          !this.state.fullscreenMode &&
+          !this.state.showImageViewer &&
+          !this.state.showWebView;
         const showFileActions = (fileInfo && fileInfo.download_path) &&
           (completed || (fileInfo && !fileInfo.stopped && fileInfo.written_bytes < fileInfo.total_bytes));
         const channelClaimId = claim && claim.signing_channel && claim.signing_channel.claim_id;
@@ -754,6 +775,11 @@ class FilePage extends React.PureComponent {
                           show={DateTime.SHOW_DATE} />
                       </View>
                       <View style={filePageStyle.subscriptionRow}>
+                        {((isPlayable && !fileInfo) || (isPlayable && fileInfo && !fileInfo.download_path)) &&
+                        <Button style={[filePageStyle.actionButton, filePageStyle.saveFileButton]}
+                            theme={"light"}
+                            icon={"download"}
+                            onPress={this.onSaveFilePressed} />}
                         <Button style={[filePageStyle.actionButton, filePageStyle.tipButton]}
                             theme={"light"}
                             icon={"gift"}
@@ -761,7 +787,8 @@ class FilePage extends React.PureComponent {
                         <SubscribeButton
                           style={filePageStyle.actionButton}
                           uri={fullChannelUri}
-                          name={channelName} />
+                          name={channelName}
+                          hideText={false} />
                         <SubscribeNotificationButton
                           style={[filePageStyle.actionButton, filePageStyle.bellButton]}
                           uri={fullChannelUri}

@@ -79,13 +79,13 @@ const filePageStyle = StyleSheet.create({
     marginBottom: 16,
   },
   subscriptionRow: {
-    flex: 0.5,
+    flex: 0.6,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginTop: 8
   },
   publishInfo: {
-    flex: 0.5,
+    flex: 0.4,
     marginTop: 6,
   },
   channelName: {
@@ -197,8 +197,8 @@ const filePageStyle = StyleSheet.create({
   actionButton: {
     alignSelf: 'flex-start',
     backgroundColor: Colors.White,
-    paddingLeft: 16,
-    paddingRight: 16
+    paddingLeft: 10,
+    paddingRight: 10
   },
   bellButton: {
     marginLeft: 8
@@ -307,6 +307,9 @@ const filePageStyle = StyleSheet.create({
     lineHeight: 24
   },
   tipButton: {
+    marginRight: 8
+  },
+  saveFileButton: {
     marginRight: 8
   },
   tagContainer: {
