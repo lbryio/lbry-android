@@ -263,7 +263,7 @@ class FirstRunScreen extends React.PureComponent {
       NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, newPassword);
       Lbry.account_encrypt({ new_password: newPassword }).then(() => {
         // fresh account, new password set
-        getSync(this.state.walletPassword);
+        getSync(newPassword);
         setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
         this.closeFinalPage();
       });
