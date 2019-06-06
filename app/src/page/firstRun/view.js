@@ -149,10 +149,6 @@ class FirstRunScreen extends React.PureComponent {
     const { notify, user, hasSyncedWallet } = this.props;
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     if (Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage) {
-      if (!this.state.walletPassword || this.state.walletPassword.trim().length === 0) {
-        return notify({ message: 'Please enter a wallet password' });
-      }
-
       // do apply sync to check if the password is valid
       if (hasSyncedWallet) {
         this.checkWalletPassword();
@@ -263,14 +259,13 @@ class FirstRunScreen extends React.PureComponent {
   setFreshPassword = () => {
     const { getSync, setClientSetting } = this.props;
     if (NativeModules.UtilityModule) {
-      NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, this.state.walletPassword);
-      Lbry.account_encrypt({ new_password: this.state.walletPassword }).then(() => {
-        Lbry.account_unlock({ password: this.state.walletPassword }).then(() => {
-          // fresh account, new password set
-          getSync(this.state.walletPassword);
-          setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
-          this.closeFinalPage();
-        });
+      const newPassword = this.state.walletPassword ? this.state.walletPassword : '';
+      NativeModules.UtilityModule.setSecureValue(Constants.KEY_FIRST_RUN_PASSWORD, newPassword);
+      Lbry.account_encrypt({ new_password: newPassword }).then(() => {
+        // fresh account, new password set
+        getSync(this.state.walletPassword);
+        setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
+        this.closeFinalPage();
       });
     }
   }

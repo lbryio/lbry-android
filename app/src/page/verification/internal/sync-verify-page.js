@@ -53,12 +53,11 @@ class SyncVerifyPage extends React.PureComponent {
     this.setState({ syncApplyStarted: true }, () => {
       if (!hasSyncedWallet) {
         // fresh account with no sync
-        Lbry.account_encrypt({ new_password: this.state.password }).then(() => {
-          Lbry.account_unlock({ password: this.state.password }).then(() => {
-            getSync(this.state.password);
-            setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
-            navigation.goBack();
-          });
+        const newPassword = this.state.password ? this.state.password : '';
+        Lbry.account_encrypt({ new_password: newPassword }).then(() => {
+          getSync(newPassword);
+          setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
+          navigation.goBack();
         });
       } else {
         syncApply(syncHash, syncData, this.state.password);
