@@ -5,6 +5,7 @@ import DownloadsPage from 'page/downloads';
 import DrawerContent from 'component/drawerContent';
 import FilePage from 'page/file';
 import FirstRunScreen from 'page/firstRun';
+import PublishPage from 'page/publish';
 import RewardsPage from 'page/rewards';
 import TrendingPage from 'page/trending';
 import SearchPage from 'page/search';
@@ -132,6 +133,9 @@ const drawer = createDrawerNavigator({
   }},
   WalletStack: { screen: walletStack, navigationOptions: {
     title: 'Wallet', drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
+  }},
+  Publish: { screen: PublishPage, navigationOptions: {
+    drawerIcon: ({ tintColor }) => <Icon name="upload" size={20} style={{ color: tintColor }} />
   }},
   Rewards: { screen: RewardsPage, navigationOptions: {
     drawerIcon: ({ tintColor }) => <Icon name="award" size={20} style={{ color: tintColor }} />

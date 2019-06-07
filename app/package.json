@@ -23,6 +23,7 @@
         "react-native-image-zoom-viewer": "^2.2.5",
         "react-native-password-strength-meter": "^0.0.2",
         "react-native-phone-input": "lbryio/react-native-phone-input",
+        "react-native-super-grid": "^3.0.4",
         "react-native-vector-icons": "^6.4.2",
         "react-native-video": "lbryio/react-native-video#exoplayer-lbry-android",
         "react-navigation": "^3.11.0",

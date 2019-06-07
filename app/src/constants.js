@@ -48,6 +48,7 @@ const Constants = {
   DRAWER_ROUTE_TRENDING: "Trending",
   DRAWER_ROUTE_SUBSCRIPTIONS: "Subscriptions",
   DRAWER_ROUTE_MY_LBRY: "Downloads",
+  DRAWER_ROUTE_PUBLISH: "Publish",
   DRAWER_ROUTE_REWARDS: "Rewards",
   DRAWER_ROUTE_WALLET: "Wallet",
   DRAWER_ROUTE_SETTINGS: "Settings",
