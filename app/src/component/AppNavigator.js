@@ -134,11 +134,11 @@ const drawer = createDrawerNavigator({
   WalletStack: { screen: walletStack, navigationOptions: {
     title: 'Wallet', drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
   }},
-  Publish: { screen: PublishPage, navigationOptions: {
-    drawerIcon: ({ tintColor }) => <Icon name="upload" size={20} style={{ color: tintColor }} />
-  }},
   Rewards: { screen: RewardsPage, navigationOptions: {
     drawerIcon: ({ tintColor }) => <Icon name="award" size={20} style={{ color: tintColor }} />
+  }},
+  Publish: { screen: PublishPage, navigationOptions: {
+    drawerIcon: ({ tintColor }) => <Icon name="upload" size={20} style={{ color: tintColor }} />
   }},
   MyLBRYStack: { screen: DownloadsPage, navigationOptions: {
     title: 'Library', drawerIcon: ({ tintColor }) => <Icon name="download" size={20} style={{ color: tintColor }} />

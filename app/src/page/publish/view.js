@@ -1,5 +1,6 @@
 import React from 'react';
 import { NativeModules, Text, View } from 'react-native';
+import UriBar from 'component/uriBar';
 import publishStyle from 'styles/reward';
 
 class PublishPage extends React.PureComponent {
@@ -22,7 +23,7 @@ class PublishPage extends React.PureComponent {
     pushDrawerStack();
     setPlayerVisible();
     NativeModules.Gallery.getVideos().then(videos => {
-      console.log('videos retrieved.');
+      console.log(videos);
     });
   }
 
@@ -40,6 +41,8 @@ class PublishPage extends React.PureComponent {
   }
 
   render() {
+    const { navigation } = this.props;
+
     return (
       <View style={publishStyle.container}>
         <UriBar navigation={navigation} />
