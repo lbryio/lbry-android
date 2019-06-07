@@ -182,18 +182,16 @@ class FirstRunScreen extends React.PureComponent {
 
   handleEmailCollectPageContinue() {
     const { notify, addUserEmail } = this.props;
+    const { email } = this.state;
+    // validate the email
+    if (!email || email.indexOf('@') === -1) {
+      return notify({
+        message: 'Please provide a valid email address to continue.',
+      });
+    }
 
-    AsyncStorage.getItem(Constants.KEY_FIRST_RUN_EMAIL).then(email => {
-      // validate the email
-      if (!email || email.indexOf('@') === -1) {
-        return notify({
-          message: 'Please provide a valid email address to continue.',
-        });
-      }
-
-      addUserEmail(email);
-      this.setState({ emailSubmitted: true });
-    });
+    addUserEmail(email);
+    this.setState({ emailSubmitted: true });
   }
 
   checkBottomContainer = (pageName) => {
@@ -238,10 +236,9 @@ class FirstRunScreen extends React.PureComponent {
   }
 
   onEmailViewLayout = () => {
-    this.setState({ showBottomContainer: true });
-    AsyncStorage.getItem('firstRunEmail').then(email => {
-      this.setState({ showSkip: !email || email.trim().length === 0 });
-    });
+    this.setState({ showBottomContainer: true, showSkip: true });
+    AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
+    AsyncStorage.removeItem(Constants.KEY_EMAIL_VERIFY_PENDING);
   }
 
   onWalletPasswordChanged = (password) => {

@@ -38,11 +38,11 @@ class EmailCollectPage extends React.PureComponent {
     // save the value to the state email
     const { onEmailChanged } = this.props;
     this.setState({ email: text });
+    AsyncStorage.setItem(Constants.KEY_FIRST_RUN_EMAIL, text);
+    AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'true');
     if (onEmailChanged) {
       onEmailChanged(text);
     }
-    AsyncStorage.setItem(Constants.KEY_FIRST_RUN_EMAIL, text);
-    AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'true');
   }
 
   render() {
