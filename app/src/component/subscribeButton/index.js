@@ -1,10 +1,5 @@
 import { connect } from 'react-redux';
-import {
-  doChannelSubscribe,
-  doChannelUnsubscribe,
-  selectSubscriptions,
-  makeSelectIsSubscribed,
-} from 'lbryinc';
+import { doChannelSubscribe, doChannelUnsubscribe, selectSubscriptions, makeSelectIsSubscribed } from 'lbryinc';
 import { doToast } from 'lbry-redux';
 import SubscribeButton from './view';
 

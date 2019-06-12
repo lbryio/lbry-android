@@ -32,7 +32,7 @@ import { makeSelectClientSetting } from 'redux/selectors/settings';
 import Constants from 'constants';
 import Verification from './view';
 
-const select = (state) => ({
+const select = state => ({
   emailToVerify: selectEmailToVerify(state),
   emailNewErrorMessage: selectEmailNewErrorMessage(state),
   emailNewPending: selectEmailNewIsPending(state),
@@ -57,7 +57,7 @@ const perform = dispatch => ({
   addUserPhone: (phone, country_code) => dispatch(doUserPhoneNew(phone, country_code)),
   getSync: password => dispatch(doGetSync(password)),
   checkSync: () => dispatch(doCheckSync()),
-  verifyPhone: (verificationCode) => dispatch(doUserPhoneVerify(verificationCode)),
+  verifyPhone: verificationCode => dispatch(doUserPhoneVerify(verificationCode)),
   notify: data => dispatch(doToast(data)),
   setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
   setDefaultAccount: () => dispatch(doSetDefaultAccount()),
@@ -66,4 +66,7 @@ const perform = dispatch => ({
   resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email)),
 });
 
-export default connect(select, perform)(Verification);
+export default connect(
+  select,
+  perform
+)(Verification);

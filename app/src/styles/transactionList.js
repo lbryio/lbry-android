@@ -8,46 +8,46 @@ const transactionListStyle = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 12,
-    paddingBottom: 12
+    paddingBottom: 12,
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   topRow: {
-    marginBottom: 4
+    marginBottom: 4,
   },
   col: {
-    alignSelf: 'stretch'
+    alignSelf: 'stretch',
   },
   text: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 14
+    fontSize: 14,
   },
   link: {
     color: Colors.LbryGreen,
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 14
+    fontSize: 14,
   },
   amount: {
-    textAlign: 'right'
+    textAlign: 'right',
   },
   smallText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 12,
-    color: '#aaaaaa'
+    color: '#aaaaaa',
   },
   smallLink: {
     color: Colors.LbryGreen,
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 12
+    fontSize: 12,
   },
   noTransactions: {
     fontFamily: 'Inter-UI-Regular',
     textAlign: 'center',
     padding: 16,
-    color: '#aaaaaa'
-  }
+    color: '#aaaaaa',
+  },
 });
 
 export default transactionListStyle;

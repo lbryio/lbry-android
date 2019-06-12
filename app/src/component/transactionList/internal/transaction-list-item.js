@@ -25,20 +25,25 @@ class TransactionListItem extends React.PureComponent {
               <Link
                 style={transactionListStyle.link}
                 onPress={() => navigateToUri(navigation, buildURI({ claimName: name, claimId }))}
-                text={name} />
+                text={name}
+              />
             )}
           </View>
           <View style={transactionListStyle.col}>
             <Text style={[transactionListStyle.amount, transactionListStyle.text]}>{formatCredits(amount, 8)}</Text>
-            { fee !== 0 && (<Text style={[transactionListStyle.amount, transactionListStyle.text]}>fee {formatCredits(fee, 8)}</Text>) }
+            {fee !== 0 && (
+              <Text style={[transactionListStyle.amount, transactionListStyle.text]}>fee {formatCredits(fee, 8)}</Text>
+            )}
           </View>
         </View>
         <View style={transactionListStyle.row}>
           <View style={transactionListStyle.col}>
-            <Link style={transactionListStyle.smallLink}
-                  text={txid.substring(0, 8)}
-                  href={`https://explorer.lbry.com/tx/${txid}`}
-                  error={'The transaction URL could not be opened'} />
+            <Link
+              style={transactionListStyle.smallLink}
+              text={txid.substring(0, 8)}
+              href={`https://explorer.lbry.com/tx/${txid}`}
+              error={'The transaction URL could not be opened'}
+            />
           </View>
           <View style={transactionListStyle.col}>
             {date ? (

@@ -14,7 +14,7 @@ class DrawerContent extends React.PureComponent {
         <SafeAreaView style={discoverStyle.drawerContentContainer} forceInset={{ top: 'always', horizontal: 'never' }}>
           <DrawerItems
             {...props}
-            onItemPress={(route) => {
+            onItemPress={route => {
               const { routeName } = route.route;
               if (Constants.FULL_ROUTE_NAME_DISCOVER === routeName) {
                 navigation.navigate({ routeName: Constants.DRAWER_ROUTE_DISCOVER });
@@ -28,7 +28,7 @@ class DrawerContent extends React.PureComponent {
 
               onItemPress(route);
             }}
-            />
+          />
         </SafeAreaView>
       </ScrollView>
     );

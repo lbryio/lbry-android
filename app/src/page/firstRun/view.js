@@ -1,13 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import {
-  ActivityIndicator,
-  Linking,
-  NativeModules,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { ActivityIndicator, Linking, NativeModules, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import Colors from 'styles/colors';
@@ -39,11 +32,11 @@ class FirstRunScreen extends React.PureComponent {
     skipAccountConfirmed: false,
     showBottomContainer: false,
     walletPassword: null,
-    syncApplyStarted: false
+    syncApplyStarted: false,
   };
 
   componentDidMount() {
-    Linking.getInitialURL().then((url) => {
+    Linking.getInitialURL().then(url => {
       if (url) {
         this.setState({ launchUrl: url });
       }
@@ -72,10 +65,10 @@ class FirstRunScreen extends React.PureComponent {
     if (this.state.emailSubmitted && !emailNewPending) {
       this.setState({ emailSubmitted: false });
       if (emailNewErrorMessage && emailNewErrorMessage.trim().length > 0) {
-        notify ({ message: String(emailNewErrorMessage), isError: true });
+        notify({ message: String(emailNewErrorMessage), isError: true });
       } else {
         // Request successful. Navigate to email verify page.
-        this.showPage(Constants.FIRST_RUN_PAGE_EMAIL_VERIFY)
+        this.showPage(Constants.FIRST_RUN_PAGE_EMAIL_VERIFY);
       }
     }
 
@@ -98,25 +91,26 @@ class FirstRunScreen extends React.PureComponent {
     this.checkVerificationStatus(user);
   }
 
-  checkVerificationStatus = (user) => {
+  checkVerificationStatus = user => {
     const { navigation } = this.props;
 
-    this.setState({
-      isEmailVerified: (user && user.primary_email && user.has_verified_email),
-    }, () => {
-      if (this.state.isEmailVerified) {
-        this.showPage(Constants.FIRST_RUN_PAGE_WALLET);
+    this.setState(
+      {
+        isEmailVerified: user && user.primary_email && user.has_verified_email,
+      },
+      () => {
+        if (this.state.isEmailVerified) {
+          this.showPage(Constants.FIRST_RUN_PAGE_WALLET);
+        }
       }
-    });
-  }
+    );
+  };
 
   launchSplashScreen() {
     const { navigation } = this.props;
     const resetAction = StackActions.reset({
       index: 0,
-      actions: [
-        NavigationActions.navigate({ routeName: 'Splash', params: { launchUri: this.state.launchUri } })
-      ]
+      actions: [NavigationActions.navigate({ routeName: 'Splash', params: { launchUri: this.state.launchUri } })],
     });
     navigation.dispatch(resetAction);
   }
@@ -136,14 +130,14 @@ class FirstRunScreen extends React.PureComponent {
     if (Constants.FIRST_RUN_PAGE_EMAIL_VERIFY === this.state.currentPage) {
       this.showPage(Constants.FIRST_RUN_PAGE_EMAIL_COLLECT);
     }
-  }
+  };
 
   checkWalletPassword = () => {
     const { syncApply, syncHash, syncData } = this.props;
     this.setState({ syncApplyStarted: true, showBottomContainer: false }, () => {
       syncApply(syncHash, syncData, this.state.walletPassword);
     });
-  }
+  };
 
   handleContinuePressed = () => {
     const { notify, user, hasSyncedWallet } = this.props;
@@ -163,7 +157,10 @@ class FirstRunScreen extends React.PureComponent {
       return;
     }
 
-    if (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT !== this.state.currentPage && pageIndex === (FirstRunScreen.pages.length - 1)) {
+    if (
+      Constants.FIRST_RUN_PAGE_EMAIL_COLLECT !== this.state.currentPage &&
+      pageIndex === FirstRunScreen.pages.length - 1
+    ) {
       this.closeFinalPage();
     } else {
       // TODO: Actions and page verification for specific pages
@@ -174,7 +171,7 @@ class FirstRunScreen extends React.PureComponent {
         this.showNextPage();
       }
     }
-  }
+  };
 
   handleEmailCollectPageContinue() {
     const { notify, addUserEmail } = this.props;
@@ -190,19 +187,19 @@ class FirstRunScreen extends React.PureComponent {
     this.setState({ emailSubmitted: true });
   }
 
-  checkBottomContainer = (pageName) => {
+  checkBottomContainer = pageName => {
     if (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === pageName || Constants.FIRST_RUN_PAGE_WALLET === pageName) {
       // do not show the buttons (because we're waiting to get things ready)
       this.setState({ showBottomContainer: false });
     }
-  }
+  };
 
   showNextPage = () => {
     const pageIndex = FirstRunScreen.pages.indexOf(this.state.currentPage);
     const nextPage = FirstRunScreen.pages[pageIndex + 1];
     this.setState({ currentPage: nextPage });
     this.checkBottomContainer(nextPage);
-  }
+  };
 
   showPage(pageName) {
     const pageIndex = FirstRunScreen.pages.indexOf(pageName);
@@ -222,36 +219,36 @@ class FirstRunScreen extends React.PureComponent {
     this.launchSplashScreen();
   }
 
-  onEmailChanged = (email) => {
+  onEmailChanged = email => {
     this.setState({ email });
     if (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT == this.state.currentPage) {
-      this.setState({ showSkip: (!email || email.trim().length === 0) });
+      this.setState({ showSkip: !email || email.trim().length === 0 });
     } else {
       this.setState({ showSkip: false });
     }
-  }
+  };
 
   onEmailViewLayout = () => {
     this.setState({ showBottomContainer: true, showSkip: true });
     AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
     AsyncStorage.removeItem(Constants.KEY_EMAIL_VERIFY_PENDING);
-  }
+  };
 
-  onWalletPasswordChanged = (password) => {
+  onWalletPasswordChanged = password => {
     this.setState({ walletPassword: password });
-  }
+  };
 
   onWalletViewLayout = () => {
     this.setState({ showBottomContainer: true });
-  }
+  };
 
   onWelcomePageLayout = () => {
     this.setState({ showBottomContainer: true });
-  }
+  };
 
-  onSkipSwitchChanged = (checked) => {
+  onSkipSwitchChanged = checked => {
     this.setState({ skipAccountConfirmed: checked });
-  }
+  };
 
   setFreshPassword = () => {
     const { getSync, setClientSetting } = this.props;
@@ -265,7 +262,7 @@ class FirstRunScreen extends React.PureComponent {
         this.closeFinalPage();
       });
     }
-  }
+  };
 
   render() {
     const {
@@ -281,84 +278,113 @@ class FirstRunScreen extends React.PureComponent {
       getSyncIsPending,
       syncApplyIsPending,
       resendVerificationEmail,
-      user
+      user,
     } = this.props;
 
     let page = null;
     switch (this.state.currentPage) {
       case Constants.FIRST_RUN_PAGE_WELCOME:
-        page = (<WelcomePage
-                  authenticating={authenticating}
-                  authToken={authToken}
-                  authenticate={authenticate}
-                  onWelcomePageLayout={this.onWelcomePageLayout} />);
+        page = (
+          <WelcomePage
+            authenticating={authenticating}
+            authToken={authToken}
+            authenticate={authenticate}
+            onWelcomePageLayout={this.onWelcomePageLayout}
+          />
+        );
         break;
 
       case Constants.FIRST_RUN_PAGE_EMAIL_COLLECT:
-        page = (<EmailCollectPage
-                  user={user}
-                  showNextPage={this.showNextPage}
-                  onEmailChanged={this.onEmailChanged}
-                  onEmailViewLayout={this.onEmailViewLayout} />);
+        page = (
+          <EmailCollectPage
+            user={user}
+            showNextPage={this.showNextPage}
+            onEmailChanged={this.onEmailChanged}
+            onEmailViewLayout={this.onEmailViewLayout}
+          />
+        );
         break;
 
       case Constants.FIRST_RUN_PAGE_EMAIL_VERIFY:
-        page = (<EmailVerifyPage
-                  onEmailViewLayout={this.onEmailViewLayout}
-                  email={this.state.email}
-                  notify={notify}
-                  resendVerificationEmail={resendVerificationEmail} />);
+        page = (
+          <EmailVerifyPage
+            onEmailViewLayout={this.onEmailViewLayout}
+            email={this.state.email}
+            notify={notify}
+            resendVerificationEmail={resendVerificationEmail}
+          />
+        );
         break;
 
       case Constants.FIRST_RUN_PAGE_WALLET:
-        page = (<WalletPage
-                  checkSync={checkSync}
-                  hasSyncedWallet={hasSyncedWallet}
-                  getSyncIsPending={getSyncIsPending}
-                  syncApplyIsPending={syncApplyIsPending}
-                  onWalletViewLayout={this.onWalletViewLayout}
-                  onPasswordChanged={this.onWalletPasswordChanged} />);
+        page = (
+          <WalletPage
+            checkSync={checkSync}
+            hasSyncedWallet={hasSyncedWallet}
+            getSyncIsPending={getSyncIsPending}
+            syncApplyIsPending={syncApplyIsPending}
+            onWalletViewLayout={this.onWalletViewLayout}
+            onPasswordChanged={this.onWalletPasswordChanged}
+          />
+        );
         break;
 
       case Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT:
-        page = (<SkipAccountPage
-                onSkipAccountViewLayout={this.onSkipAccountViewLayout}
-                onSkipSwitchChanged={this.onSkipSwitchChanged} />);
+        page = (
+          <SkipAccountPage
+            onSkipAccountViewLayout={this.onSkipAccountViewLayout}
+            onSkipSwitchChanged={this.onSkipSwitchChanged}
+          />
+        );
         break;
     }
 
     return (
       <View style={firstRunStyle.screenContainer}>
         {page}
-        {this.state.currentPage && this.state.showBottomContainer &&
-        <View style={firstRunStyle.bottomContainer}>
-          {emailNewPending &&
-            <ActivityIndicator size="small" color={Colors.White} style={firstRunStyle.pageWaiting} />}
+        {this.state.currentPage && this.state.showBottomContainer && (
+          <View style={firstRunStyle.bottomContainer}>
+            {emailNewPending && (
+              <ActivityIndicator size="small" color={Colors.White} style={firstRunStyle.pageWaiting} />
+            )}
 
-          <View style={firstRunStyle.buttonRow}>
-            {([Constants.FIRST_RUN_PAGE_WELCOME, Constants.FIRST_RUN_PAGE_WALLET].indexOf(this.state.currentPage) > -1) && <View />}
-            {(Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage ||
-             Constants.FIRST_RUN_PAGE_EMAIL_VERIFY === this.state.currentPage) &&
-            <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
-              <Text style={firstRunStyle.buttonText}>
-                « {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage ? 'Setup account' : 'Change email'}</Text>
-            </TouchableOpacity>}
-            {!emailNewPending && (Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage) &&
-            <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
-              <Text style={firstRunStyle.smallLeftButtonText}>No, thanks »</Text>
-            </TouchableOpacity>}
+            <View style={firstRunStyle.buttonRow}>
+              {[Constants.FIRST_RUN_PAGE_WELCOME, Constants.FIRST_RUN_PAGE_WALLET].indexOf(this.state.currentPage) >
+                -1 && <View />}
+              {(Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage ||
+                Constants.FIRST_RUN_PAGE_EMAIL_VERIFY === this.state.currentPage) && (
+                <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
+                  <Text style={firstRunStyle.buttonText}>
+                    «{' '}
+                    {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage
+                      ? 'Setup account'
+                      : 'Change email'}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {!emailNewPending && Constants.FIRST_RUN_PAGE_EMAIL_COLLECT === this.state.currentPage && (
+                <TouchableOpacity style={firstRunStyle.leftButton} onPress={this.handleLeftButtonPressed}>
+                  <Text style={firstRunStyle.smallLeftButtonText}>No, thanks »</Text>
+                </TouchableOpacity>
+              )}
 
-            {!emailNewPending &&
-            <TouchableOpacity style={firstRunStyle.button} onPress={this.handleContinuePressed}>
-              {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage &&
-              <Text style={firstRunStyle.smallButtonText}>Use LBRY »</Text>}
+              {!emailNewPending && (
+                <TouchableOpacity style={firstRunStyle.button} onPress={this.handleContinuePressed}>
+                  {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage && (
+                    <Text style={firstRunStyle.smallButtonText}>Use LBRY »</Text>
+                  )}
 
-              {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT !== this.state.currentPage &&
-               Constants.FIRST_RUN_PAGE_EMAIL_VERIFY !== this.state.currentPage &&
-              <Text style={firstRunStyle.buttonText}>{Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage ? 'Use LBRY' : 'Continue'} »</Text>}
-            </TouchableOpacity>}
+                  {Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT !== this.state.currentPage &&
+                    Constants.FIRST_RUN_PAGE_EMAIL_VERIFY !== this.state.currentPage && (
+                      <Text style={firstRunStyle.buttonText}>
+                        {Constants.FIRST_RUN_PAGE_WALLET === this.state.currentPage ? 'Use LBRY' : 'Continue'} »
+                      </Text>
+                    )}
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        </View>}
+        )}
       </View>
     );
   }

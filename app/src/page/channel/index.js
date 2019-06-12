@@ -4,7 +4,7 @@ import {
   makeSelectClaimForUri,
   makeSelectClaimsInChannelForCurrentPageState,
   makeSelectFetchingChannelClaims,
-  makeSelectTotalPagesForChannel
+  makeSelectTotalPagesForChannel,
 } from 'lbry-redux';
 import { doPopDrawerStack } from 'redux/actions/drawer';
 import { selectDrawerStack } from 'redux/selectors/drawer';
@@ -20,7 +20,10 @@ const select = (state, props) => ({
 
 const perform = dispatch => ({
   fetchClaims: (uri, page) => dispatch(doFetchClaimsByChannel(uri, page)),
-  popDrawerStack: () => dispatch(doPopDrawerStack())
+  popDrawerStack: () => dispatch(doPopDrawerStack()),
 });
 
-export default connect(select, perform)(ChannelPage);
+export default connect(
+  select,
+  perform
+)(ChannelPage);

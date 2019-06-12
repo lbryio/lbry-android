@@ -14,7 +14,10 @@ const select = state => ({
 const perform = dispatch => ({
   fetchTrendingUris: () => dispatch(doFetchTrendingUris()),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_TRENDING)),
-  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false)),
 });
 
-export default connect(select, perform)(TrendingPage);
+export default connect(
+  select,
+  perform
+)(TrendingPage);

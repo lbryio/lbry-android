@@ -1,12 +1,6 @@
 import React from 'react';
 import { normalizeURI, parseURI } from 'lbry-redux';
-import {
-  ActivityIndicator,
-  Platform,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { ActivityIndicator, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { navigateToUri, formatBytes } from 'utils/helper';
 import Colors from 'styles/colors';
 import DateTime from 'component/dateTime';
@@ -18,7 +12,7 @@ import ProgressBar from 'component/progressBar';
 import fileListStyle from 'styles/fileList';
 
 class FileListItem extends React.PureComponent {
-  getStorageForFileInfo = (fileInfo) => {
+  getStorageForFileInfo = fileInfo => {
     if (!fileInfo.completed) {
       const written = formatBytes(fileInfo.written_bytes);
       const total = formatBytes(fileInfo.total_bytes);
@@ -26,19 +20,19 @@ class FileListItem extends React.PureComponent {
     }
 
     return formatBytes(fileInfo.written_bytes);
-  }
+  };
 
-  formatTitle = (title) => {
+  formatTitle = title => {
     if (!title) {
       return title;
     }
 
-    return (title.length > 80) ? title.substring(0, 77).trim() + '...' : title;
-  }
+    return title.length > 80 ? title.substring(0, 77).trim() + '...' : title;
+  };
 
-  getDownloadProgress = (fileInfo) => {
+  getDownloadProgress = fileInfo => {
     return Math.ceil((fileInfo.written_bytes / fileInfo.total_bytes) * 100);
-  }
+  };
 
   componentDidMount() {
     const { claim, resolveUri, uri } = this.props;
@@ -59,7 +53,7 @@ class FileListItem extends React.PureComponent {
       onPress,
       navigation,
       thumbnail,
-      title
+      title,
     } = this.props;
 
     const uri = normalizeURI(this.props.uri);
@@ -82,50 +76,80 @@ class FileListItem extends React.PureComponent {
     return (
       <View style={style}>
         <TouchableOpacity style={style} onPress={onPress}>
-          <FileItemMedia style={fileListStyle.thumbnail}
-                         blurRadius={obscureNsfw ? 15 : 0}
-                         resizeMode="cover"
-                         title={(title || name)}
-                         thumbnail={thumbnail} />
-          {(fileInfo && fileInfo.completed && fileInfo.download_path) &&
-            <Icon style={fileListStyle.downloadedIcon} solid={true} color={Colors.NextLbryGreen} name={"folder"} size={16} />}
+          <FileItemMedia
+            style={fileListStyle.thumbnail}
+            blurRadius={obscureNsfw ? 15 : 0}
+            resizeMode="cover"
+            title={title || name}
+            thumbnail={thumbnail}
+          />
+          {fileInfo && fileInfo.completed && fileInfo.download_path && (
+            <Icon
+              style={fileListStyle.downloadedIcon}
+              solid={true}
+              color={Colors.NextLbryGreen}
+              name={'folder'}
+              size={16}
+            />
+          )}
           <View style={fileListStyle.detailsContainer}>
-            {featuredResult && <Text style={fileListStyle.featuredUri} numberOfLines={1}>{uri}</Text>}
+            {featuredResult && (
+              <Text style={fileListStyle.featuredUri} numberOfLines={1}>
+                {uri}
+              </Text>
+            )}
 
             {!title && !name && !channel && isResolving && (
-            <View>
-              {(!title && !name) && <Text style={fileListStyle.uri}>{uri}</Text>}
-              {(!title && !name) && <View style={fileListStyle.row}>
-                <ActivityIndicator size={"small"} color={featuredResult ? Colors.White : Colors.LbryGreen} />
-              </View>}
-            </View>)}
+              <View>
+                {!title && !name && <Text style={fileListStyle.uri}>{uri}</Text>}
+                {!title && !name && (
+                  <View style={fileListStyle.row}>
+                    <ActivityIndicator size={'small'} color={featuredResult ? Colors.White : Colors.LbryGreen} />
+                  </View>
+                )}
+              </View>
+            )}
 
-            {(title || name) && <Text style={featuredResult ? fileListStyle.featuredTitle : fileListStyle.title}>{this.formatTitle(title) || this.formatTitle(name)}</Text>}
-            {channel &&
-              <Link style={fileListStyle.publisher} text={channel} onPress={() => {
-                navigateToUri(navigation, normalizeURI(fullChannelUri));
-              }} />}
+            {(title || name) && (
+              <Text style={featuredResult ? fileListStyle.featuredTitle : fileListStyle.title}>
+                {this.formatTitle(title) || this.formatTitle(name)}
+              </Text>
+            )}
+            {channel && (
+              <Link
+                style={fileListStyle.publisher}
+                text={channel}
+                onPress={() => {
+                  navigateToUri(navigation, normalizeURI(fullChannelUri));
+                }}
+              />
+            )}
 
             <View style={fileListStyle.info}>
-              {(fileInfo && !isNaN(fileInfo.written_bytes) && fileInfo.written_bytes > 0) &&
-                <Text style={fileListStyle.infoText}>{this.getStorageForFileInfo(fileInfo)}</Text>}
+              {fileInfo && !isNaN(fileInfo.written_bytes) && fileInfo.written_bytes > 0 && (
+                <Text style={fileListStyle.infoText}>{this.getStorageForFileInfo(fileInfo)}</Text>
+              )}
               <DateTime style={fileListStyle.publishInfo} textStyle={fileListStyle.infoText} timeAgo uri={uri} />
             </View>
 
-            {(fileInfo && fileInfo.download_path) &&
+            {fileInfo && fileInfo.download_path && (
               <View style={fileListStyle.downloadInfo}>
-                {!fileInfo.completed &&
+                {!fileInfo.completed && (
                   <ProgressBar
                     borderRadius={3}
                     color={Colors.NextLbryGreen}
                     height={3}
                     style={fileListStyle.progress}
-                    progress={this.getDownloadProgress(fileInfo)} />}
+                    progress={this.getDownloadProgress(fileInfo)}
+                  />
+                )}
               </View>
-            }
+            )}
           </View>
         </TouchableOpacity>
-        {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />}
+        {obscureNsfw && (
+          <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />
+        )}
       </View>
     );
   }

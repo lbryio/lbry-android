@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { NativeModules } from 'react-native';
-import { doSearch, doUpdateSearchQuery }  from 'lbry-redux';
+import { doSearch, doUpdateSearchQuery } from 'lbry-redux';
 import SearchInput from './view';
 
 const perform = dispatch => ({
@@ -10,7 +10,10 @@ const perform = dispatch => ({
     }
     return dispatch(doSearch(search));
   },
-  updateSearchQuery: query => dispatch(doUpdateSearchQuery(query, false))
+  updateSearchQuery: query => dispatch(doUpdateSearchQuery(query, false)),
 });
 
-export default connect(null, perform)(SearchInput);
+export default connect(
+  null,
+  perform
+)(SearchInput);

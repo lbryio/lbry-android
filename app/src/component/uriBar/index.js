@@ -3,7 +3,7 @@ import {
   doUpdateSearchQuery,
   selectSearchState as selectSearch,
   selectSearchValue,
-  selectSearchSuggestions
+  selectSearchSuggestions,
 } from 'lbry-redux';
 import { selectCurrentRoute } from 'redux/selectors/drawer';
 import UriBar from './view';
@@ -15,7 +15,7 @@ const select = state => {
     ...searchState,
     query: selectSearchValue(state),
     currentRoute: selectCurrentRoute(state),
-    suggestions: selectSearchSuggestions(state)
+    suggestions: selectSearchSuggestions(state),
   };
 };
 
@@ -23,4 +23,7 @@ const perform = dispatch => ({
   updateSearchQuery: query => dispatch(doUpdateSearchQuery(query)),
 });
 
-export default connect(select, perform)(UriBar);
+export default connect(
+  select,
+  perform
+)(UriBar);

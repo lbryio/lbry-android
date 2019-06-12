@@ -15,13 +15,19 @@ export default class Address extends React.PureComponent<Props> {
 
     return (
       <View style={[walletStyle.row, style]}>
-        <Text selectable={true} numberOfLines={1} style={walletStyle.address}>{address || ''}</Text>
-        <Button icon={'clipboard'} style={walletStyle.button} onPress={() => {
-          Clipboard.setString(address);
-          doToast({
-            message: 'Address copied',
-          });
-        }} />
+        <Text selectable={true} numberOfLines={1} style={walletStyle.address}>
+          {address || ''}
+        </Text>
+        <Button
+          icon={'clipboard'}
+          style={walletStyle.button}
+          onPress={() => {
+            Clipboard.setString(address);
+            doToast({
+              message: 'Address copied',
+            });
+          }}
+        />
       </View>
     );
   }

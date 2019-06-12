@@ -49,13 +49,14 @@ class FileDownloadButton extends React.PureComponent {
     } = this.props;
 
     if ((fileInfo && !fileInfo.stopped) || loading || downloading) {
-      const progress =
-          fileInfo && fileInfo.written_bytes ? fileInfo.written_bytes / fileInfo.total_bytes * 100 : 0,
+      const progress = fileInfo && fileInfo.written_bytes ? (fileInfo.written_bytes / fileInfo.total_bytes) * 100 : 0,
         label = fileInfo ? progress.toFixed(0) + '% complete' : 'Connecting...';
 
       return (
         <View style={[style, fileDownloadButtonStyle.container]}>
-          <View style={{ width: `${progress}%`, backgroundColor: '#ff0000', position: 'absolute', left: 0, top: 0 }}></View>
+          <View
+            style={{ width: `${progress}%`, backgroundColor: '#ff0000', position: 'absolute', left: 0, top: 0 }}
+          ></View>
           <Text style={fileDownloadButtonStyle.text}>{label}</Text>
         </View>
       );
@@ -68,29 +69,35 @@ class FileDownloadButton extends React.PureComponent {
         );
       }
       return (
-        <Button icon={isPlayable ? 'play' : null}
-                text={(isPlayable ? 'Play' : (isViewable ? 'View' : 'Download'))}
-                onLayout={onButtonLayout}
-                style={[style, fileDownloadButtonStyle.container]} onPress={() => {
-          if (NativeModules.Firebase) {
-            NativeModules.Firebase.track('purchase_uri', { uri: uri });
-          }
-          purchaseUri(uri, costInfo, !isPlayable);
-          if (NativeModules.UtilityModule) {
-            NativeModules.UtilityModule.checkDownloads();
-          }
-          if (isPlayable && onPlay) {
-            this.props.onPlay();
-          }
-          if (isViewable && onView) {
-            this.props.onView();
-          }
-        }} />
+        <Button
+          icon={isPlayable ? 'play' : null}
+          text={isPlayable ? 'Play' : isViewable ? 'View' : 'Download'}
+          onLayout={onButtonLayout}
+          style={[style, fileDownloadButtonStyle.container]}
+          onPress={() => {
+            if (NativeModules.Firebase) {
+              NativeModules.Firebase.track('purchase_uri', { uri: uri });
+            }
+            purchaseUri(uri, costInfo, !isPlayable);
+            if (NativeModules.UtilityModule) {
+              NativeModules.UtilityModule.checkDownloads();
+            }
+            if (isPlayable && onPlay) {
+              this.props.onPlay();
+            }
+            if (isViewable && onView) {
+              this.props.onView();
+            }
+          }}
+        />
       );
     } else if (fileInfo && fileInfo.download_path) {
       return (
-        <TouchableOpacity onLayout={onButtonLayout}
-                          style={[style, fileDownloadButtonStyle.container]} onPress={openFile}>
+        <TouchableOpacity
+          onLayout={onButtonLayout}
+          style={[style, fileDownloadButtonStyle.container]}
+          onPress={openFile}
+        >
           <Text style={fileDownloadButtonStyle.text}>{isViewable ? 'View' : 'Open'}</Text>
         </TouchableOpacity>
       );

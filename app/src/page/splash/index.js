@@ -11,14 +11,14 @@ import {
   doUserEmailVerify,
   doUserEmailVerifyFailure,
   selectUser,
-  selectEmailToVerify
+  selectEmailToVerify,
 } from 'lbryinc';
 import { doSetClientSetting } from 'redux/actions/settings';
 import SplashScreen from './view';
 
 const select = state => ({
   user: selectUser(state),
-  emailToVerify: selectEmailToVerify(state)
+  emailToVerify: selectEmailToVerify(state),
 });
 
 const perform = dispatch => ({
@@ -27,14 +27,17 @@ const perform = dispatch => ({
   blacklistedOutpointsSubscribe: () => dispatch(doBlackListedOutpointsSubscribe()),
   checkSubscriptionsInit: () => dispatch(doCheckSubscriptionsInit()),
   fetchRewardedContent: () => dispatch(doFetchRewardedContent()),
-  fetchSubscriptions: (callback) => dispatch(doFetchMySubscriptions(callback)),
+  fetchSubscriptions: callback => dispatch(doFetchMySubscriptions(callback)),
   getSync: password => dispatch(doGetSync(password)),
   notify: data => dispatch(doToast(data)),
   setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
   setEmailToVerify: email => dispatch(doUserEmailToVerify(email)),
   updateBlockHeight: () => dispatch(doUpdateBlockHeight()),
   verifyUserEmail: (token, recaptcha) => dispatch(doUserEmailVerify(token, recaptcha)),
-  verifyUserEmailFailure: error => dispatch(doUserEmailVerifyFailure(error))
+  verifyUserEmailFailure: error => dispatch(doUserEmailVerifyFailure(error)),
 });
 
-export default connect(select, perform)(SplashScreen);
+export default connect(
+  select,
+  perform
+)(SplashScreen);

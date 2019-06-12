@@ -29,7 +29,11 @@ class DateTime extends React.PureComponent<Props> {
     const locale = 'en-US'; // default to en-US until we get a working i18n module for RN
 
     if (timeAgo) {
-      return date ? <View style={style}><Text style={textStyle}>{moment(date).from(moment())}</Text></View> : null;
+      return date ? (
+        <View style={style}>
+          <Text style={textStyle}>{moment(date).from(moment())}</Text>
+        </View>
+      ) : null;
     }
 
     // TODO: formatOptions not working as expected in RN
@@ -38,13 +42,9 @@ class DateTime extends React.PureComponent<Props> {
     return (
       <View style={style}>
         <Text style={textStyle}>
-          {date &&
-            (show === DateTime.SHOW_BOTH || show === DateTime.SHOW_DATE) &&
-            moment(date).format('MMMM D, YYYY')}
+          {date && (show === DateTime.SHOW_BOTH || show === DateTime.SHOW_DATE) && moment(date).format('MMMM D, YYYY')}
           {show === DateTime.SHOW_BOTH && ' '}
-          {date &&
-            (show === DateTime.SHOW_BOTH || show === DateTime.SHOW_TIME) &&
-            date.toLocaleTimeString()}
+          {date && (show === DateTime.SHOW_BOTH || show === DateTime.SHOW_TIME) && date.toLocaleTimeString()}
           {!date && '...'}
         </Text>
       </View>

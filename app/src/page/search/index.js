@@ -6,14 +6,14 @@ import {
   selectIsSearching,
   selectSearchValue,
   makeSelectQueryWithOptions,
-  selectSearchUrisByQuery
+  selectSearchUrisByQuery,
 } from 'lbry-redux';
 import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import { selectCurrentRoute } from 'redux/selectors/drawer';
 import Constants from 'constants';
 import SearchPage from './view';
 
-const select = (state) => ({
+const select = state => ({
   currentRoute: selectCurrentRoute(state),
   isSearching: selectIsSearching(state),
   query: selectSearchValue(state),
@@ -22,10 +22,13 @@ const select = (state) => ({
 });
 
 const perform = dispatch => ({
-  search: (query) => dispatch(doSearch(query, 25)),
+  search: query => dispatch(doSearch(query, 25)),
   updateSearchQuery: query => dispatch(doUpdateSearchQuery(query)),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_SEARCH)),
-  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false)),
 });
 
-export default connect(select, perform)(SearchPage);
+export default connect(
+  select,
+  perform
+)(SearchPage);

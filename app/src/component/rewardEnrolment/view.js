@@ -17,12 +17,12 @@ class RewardEnrolment extends React.Component {
     const { navigation, setClientSetting } = this.props;
     setClientSetting(Constants.SETTING_REWARDS_NOT_INTERESTED, true);
     navigation.navigate({ routeName: 'DiscoverStack' });
-  }
+  };
 
   onEnrollPressed = () => {
     const { navigation } = this.props;
-    navigation.navigate({ routeName: 'Verification', key: 'verification', params: { syncFlow: false }});
-  }
+    navigation.navigate({ routeName: 'Verification', key: 'verification', params: { syncFlow: false } });
+  };
 
   render() {
     const { fetching, navigation, unclaimedRewardAmount, user } = this.props;
@@ -31,20 +31,20 @@ class RewardEnrolment extends React.Component {
       <View style={rewardStyle.enrollContainer} onPress>
         <View style={rewardStyle.summaryRow}>
           <Icon name="award" size={36} color={Colors.White} />
-          <Text style={rewardStyle.summaryText}>
-            {unclaimedRewardAmount} unclaimed credits
-          </Text>
+          <Text style={rewardStyle.summaryText}>{unclaimedRewardAmount} unclaimed credits</Text>
         </View>
 
         <View style={rewardStyle.onboarding}>
-          <Text style={rewardStyle.enrollDescText}>LBRY credits allow you to purchase content, publish content, and influence the network. You can start earning credits by watching videos on LBRY.</Text>
+          <Text style={rewardStyle.enrollDescText}>
+            LBRY credits allow you to purchase content, publish content, and influence the network. You can start
+            earning credits by watching videos on LBRY.
+          </Text>
         </View>
 
         <View style={rewardStyle.buttonRow}>
-          <Link style={rewardStyle.notInterestedLink} text={"Not interested"} onPress={this.onNotInterestedPressed} />
-          <Button style={rewardStyle.enrollButton} theme={"light"} text={"Enroll"} onPress={this.onEnrollPressed} />
+          <Link style={rewardStyle.notInterestedLink} text={'Not interested'} onPress={this.onNotInterestedPressed} />
+          <Button style={rewardStyle.enrollButton} theme={'light'} text={'Enroll'} onPress={this.onEnrollPressed} />
         </View>
-
       </View>
     );
   }

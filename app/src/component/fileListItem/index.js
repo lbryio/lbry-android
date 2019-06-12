@@ -23,7 +23,10 @@ const select = (state, props) => ({
 });
 
 const perform = dispatch => ({
-  resolveUri: uri => dispatch(doResolveUri(uri))
+  resolveUri: uri => dispatch(doResolveUri(uri)),
 });
 
-export default connect(select, perform)(FileListItem);
+export default connect(
+  select,
+  perform
+)(FileListItem);

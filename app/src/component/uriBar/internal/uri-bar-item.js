@@ -13,16 +13,16 @@ class UriBarItem extends React.PureComponent {
     let icon;
     switch (type) {
       case SEARCH_TYPES.CHANNEL:
-        icon = <Icon name="at" size={18} />
+        icon = <Icon name="at" size={18} />;
         break;
 
       case SEARCH_TYPES.SEARCH:
-        icon = <Icon name="search" size={18} />
+        icon = <Icon name="search" size={18} />;
         break;
 
       case SEARCH_TYPES.FILE:
       default:
-        icon = <Icon name="file" size={18} />
+        icon = <Icon name="file" size={18} />;
         break;
     }
 
@@ -30,7 +30,9 @@ class UriBarItem extends React.PureComponent {
       <TouchableOpacity style={uriBarStyle.item} onPress={onPress}>
         {icon}
         <View style={uriBarStyle.itemContent}>
-          <Text style={uriBarStyle.itemText} numberOfLines={1}>{shorthand || value} - {type === SEARCH_TYPES.SEARCH ? 'Search' : value}</Text>
+          <Text style={uriBarStyle.itemText} numberOfLines={1}>
+            {shorthand || value} - {type === SEARCH_TYPES.SEARCH ? 'Search' : value}
+          </Text>
           <Text style={uriBarStyle.itemDesc} numberOfLines={1}>
             {type === SEARCH_TYPES.SEARCH && `Search for '${value}'`}
             {type === SEARCH_TYPES.CHANNEL && `View the @${shorthand} channel`}
@@ -38,7 +40,7 @@ class UriBarItem extends React.PureComponent {
           </Text>
         </View>
       </TouchableOpacity>
-    )
+    );
   }
 }
 

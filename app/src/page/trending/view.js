@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  NativeModules,
-  FlatList,
-  Text,
-  View
-} from 'react-native';
+import { ActivityIndicator, NativeModules, FlatList, Text, View } from 'react-native';
 import { normalizeURI } from 'lbry-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
@@ -36,7 +30,7 @@ class TrendingPage extends React.PureComponent {
     pushDrawerStack();
     setPlayerVisible();
     fetchTrendingUris();
-  }
+  };
 
   componentDidMount() {
     this.onComponentFocused();
@@ -64,23 +58,24 @@ class TrendingPage extends React.PureComponent {
             <Text style={discoverStyle.title}>Fetching content...</Text>
           </View>
         )}
-        {hasContent &&
-          <FlatList style={discoverStyle.trendingContainer}
-            renderItem={ ({item}) => (
-                <FileItem
-                  style={fileListStyle.fileItem}
-                  mediaStyle={fileListStyle.fileItemMedia}
-                  key={item}
-                  uri={normalizeURI(item)}
-                  navigation={navigation}
-                  showDetails={true}
-                  compactView={false} />
-              )
-            }
+        {hasContent && (
+          <FlatList
+            style={discoverStyle.trendingContainer}
+            renderItem={({ item }) => (
+              <FileItem
+                style={fileListStyle.fileItem}
+                mediaStyle={fileListStyle.fileItemMedia}
+                key={item}
+                uri={normalizeURI(item)}
+                navigation={navigation}
+                showDetails={true}
+                compactView={false}
+              />
+            )}
             data={trendingUris.map(uri => uri.url)}
             keyExtractor={(item, index) => item}
           />
-        }
+        )}
         <FloatingWalletBalance navigation={navigation} />
       </View>
     );

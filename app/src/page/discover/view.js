@@ -1,14 +1,6 @@
 import React from 'react';
 import NavigationActions from 'react-navigation';
-import {
-  Alert,
-  ActivityIndicator,
-  Linking,
-  NativeModules,
-  SectionList,
-  Text,
-  View
-} from 'react-native';
+import { Alert, ActivityIndicator, Linking, NativeModules, SectionList, Text, View } from 'react-native';
 import { Lbry, normalizeURI, parseURI } from 'lbry-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
@@ -33,22 +25,18 @@ class DiscoverPage extends React.PureComponent {
         const delta = now - start;
         AsyncStorage.getItem('firstLaunchSuspended').then(suspended => {
           AsyncStorage.removeItem('firstLaunchSuspended');
-          const appSuspended = (suspended === 'true');
+          const appSuspended = suspended === 'true';
           if (NativeModules.Firebase) {
             NativeModules.Firebase.track('first_run_time', {
-              'total_seconds': delta, 'app_suspended': appSuspended
+              total_seconds: delta,
+              app_suspended: appSuspended,
             });
           }
         });
       }
     });
 
-    const {
-      fetchFeaturedUris,
-      fetchRewardedContent,
-      fetchSubscriptions,
-      fileList
-    } = this.props;
+    const { fetchFeaturedUris, fetchRewardedContent, fetchSubscriptions, fileList } = this.props;
 
     fetchFeaturedUris();
     fetchRewardedContent();
@@ -73,14 +61,15 @@ class DiscoverPage extends React.PureComponent {
     }
 
     return null;
-  }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     const { unreadSubscriptions, enabledChannelNotifications } = this.props;
 
     const utility = NativeModules.UtilityModule;
     if (utility) {
-      const hasUnread = prevProps.unreadSubscriptions &&
+      const hasUnread =
+        prevProps.unreadSubscriptions &&
         prevProps.unreadSubscriptions.length !== unreadSubscriptions.length &&
         unreadSubscriptions.length > 0;
 
@@ -98,10 +87,17 @@ class DiscoverPage extends React.PureComponent {
                   const source = sub.value.stream.source;
                   const metadata = sub.value.stream.metadata;
                   if (source) {
-                    isPlayable = source.contentType && ['audio', 'video'].indexOf(source.contentType.substring(0, 5)) > -1;
+                    isPlayable =
+                      source.contentType && ['audio', 'video'].indexOf(source.contentType.substring(0, 5)) > -1;
                   }
                   if (metadata) {
-                    utility.showNotificationForContent(uri, metadata.title, channelName, metadata.thumbnail, isPlayable);
+                    utility.showNotificationForContent(
+                      uri,
+                      metadata.title,
+                      channelName,
+                      metadata.thumbnail,
+                      isPlayable
+                    );
                   }
                 }
               });
@@ -122,17 +118,23 @@ class DiscoverPage extends React.PureComponent {
         const lastShownTime = parseInt(lastShownParts[0], 10);
         const lastShownCount = parseInt(lastShownParts[1], 10);
         if (!isNaN(lastShownTime) && !isNaN(lastShownCount)) {
-          if (now > (lastShownTime + (Constants.RATING_REMINDER_INTERVAL * lastShownCount))) {
+          if (now > lastShownTime + Constants.RATING_REMINDER_INTERVAL * lastShownCount) {
             Alert.alert(
               'Enjoying LBRY?',
               'Are you enjoying your experience with the LBRY app? You can leave a review for us on the Play Store.',
               [
-                { text: 'Never ask again', onPress: () => setClientSetting(Constants.SETTING_RATING_REMINDER_DISABLED, 'true')},
-                { text: 'Maybe later', onPress: () => this.updateRatingReminderShown(lastShownCount)},
-                { text: 'Rate app', onPress: () => {
-                  setClientSetting(Constants.SETTING_RATING_REMINDER_DISABLED, 'true');
-                  Linking.openURL(Constants.PLAY_STORE_URL);
-                }}
+                {
+                  text: 'Never ask again',
+                  onPress: () => setClientSetting(Constants.SETTING_RATING_REMINDER_DISABLED, 'true'),
+                },
+                { text: 'Maybe later', onPress: () => this.updateRatingReminderShown(lastShownCount) },
+                {
+                  text: 'Rate app',
+                  onPress: () => {
+                    setClientSetting(Constants.SETTING_RATING_REMINDER_DISABLED, 'true');
+                    Linking.openURL(Constants.PLAY_STORE_URL);
+                  },
+                },
               ],
               { cancelable: false }
             );
@@ -144,13 +146,13 @@ class DiscoverPage extends React.PureComponent {
       // first time, so set a value for the next interval multiplier
       this.updateRatingReminderShown(0);
     }
-  }
+  };
 
-  updateRatingReminderShown = (lastShownCount) => {
+  updateRatingReminderShown = lastShownCount => {
     const { setClientSetting } = this.props;
-    const settingString = (moment().unix() + '|' + (lastShownCount + 1));
+    const settingString = moment().unix() + '|' + (lastShownCount + 1);
     setClientSetting(Constants.SETTING_RATING_REMINDER_LAST_SHOWN, settingString);
-  }
+  };
 
   trimClaimIdFromCategory(category) {
     return category.split('#')[0];
@@ -170,27 +172,24 @@ class DiscoverPage extends React.PureComponent {
             <Text style={discoverStyle.title}>Fetching content...</Text>
           </View>
         )}
-        {(!!hasContent) &&
-          (<SectionList
+        {!!hasContent && (
+          <SectionList
             style={discoverStyle.scrollContainer}
             contentContainerStyle={discoverStyle.scrollPadding}
             initialNumToRender={4}
             maxToRenderPerBatch={4}
             removeClippedSubviews={true}
-            renderItem={ ({item, index, section}) => (
-              <CategoryList
-                key={item}
-                category={item}
-                categoryMap={featuredUris}
-                navigation={navigation} />
+            renderItem={({ item, index, section }) => (
+              <CategoryList key={item} category={item} categoryMap={featuredUris} navigation={navigation} />
             )}
-            renderSectionHeader={
-              ({section: {title}}) => (<Text style={discoverStyle.categoryName}>{title}</Text>)
-            }
-            sections={Object.keys(featuredUris).map(category => ({ title: this.trimClaimIdFromCategory(category), data: [category] }))}
+            renderSectionHeader={({ section: { title } }) => <Text style={discoverStyle.categoryName}>{title}</Text>}
+            sections={Object.keys(featuredUris).map(category => ({
+              title: this.trimClaimIdFromCategory(category),
+              data: [category],
+            }))}
             keyExtractor={(item, index) => item}
-          />)
-        }
+          />
+        )}
         <FloatingWalletBalance navigation={navigation} />
       </View>
     );

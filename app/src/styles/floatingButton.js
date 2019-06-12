@@ -8,7 +8,7 @@ const floatingButtonStyle = StyleSheet.create({
     borderRadius: 24,
     padding: 14,
     justifyContent: 'flex-end',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   container: {
     zIndex: 100,
@@ -25,7 +25,7 @@ const floatingButtonStyle = StyleSheet.create({
     shadowOffset: {
       height: StyleSheet.hairlineWidth,
     },
-    elevation: 4
+    elevation: 4,
   },
   pendingContainer: {
     borderRadius: 24,
@@ -37,7 +37,7 @@ const floatingButtonStyle = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.BrighterLbryGreen,
     flexDirection: 'row',
-    elevation: 3
+    elevation: 3,
   },
   text: {
     color: Colors.White,
@@ -46,12 +46,12 @@ const floatingButtonStyle = StyleSheet.create({
   },
   bottomRight: {
     right: 10,
-    bottom: 10
+    bottom: 10,
   },
   rewardIcon: {
     color: Colors.White,
-    marginRight: 4
-  }
+    marginRight: 4,
+  },
 });
 
 export default floatingButtonStyle;

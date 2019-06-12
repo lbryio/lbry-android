@@ -7,7 +7,7 @@ import Link from '../link';
 import rewardStyle from '../../styles/reward';
 
 type Props = {
-  canClaim: bool,
+  canClaim: boolean,
   onClaimPress: object,
   reward: {
     id: string,
@@ -22,7 +22,7 @@ type Props = {
 
 class RewardCard extends React.PureComponent<Props> {
   state = {
-    claimStarted: false
+    claimStarted: false,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -40,13 +40,7 @@ class RewardCard extends React.PureComponent<Props> {
   }
 
   onClaimPress = () => {
-    const {
-      canClaim,
-      claimReward,
-      notify,
-      reward,
-      showVerification
-    } = this.props;
+    const { canClaim, claimReward, notify, reward, showVerification } = this.props;
 
     if (!canClaim) {
       if (showVerification) {
@@ -59,37 +53,52 @@ class RewardCard extends React.PureComponent<Props> {
     this.setState({ claimStarted: true }, () => {
       claimReward(reward);
     });
-  }
+  };
 
   render() {
     const { canClaim, isPending, onClaimPress, reward } = this.props;
     const claimed = !!reward.transaction_id;
 
     return (
-      <TouchableOpacity style={[rewardStyle.rewardCard, rewardStyle.row]} onPress={() => {
-        if (!isPending && !claimed) {
-          this.onClaimPress();
-        }
-      }}>
+      <TouchableOpacity
+        style={[rewardStyle.rewardCard, rewardStyle.row]}
+        onPress={() => {
+          if (!isPending && !claimed) {
+            this.onClaimPress();
+          }
+        }}
+      >
         <View style={rewardStyle.leftCol}>
-          {!isPending && <TouchableOpacity onPress={() => {
-              if (!claimed) {
-                this.onClaimPress();
-              }
-            }}>
-            {claimed && <Icon name={claimed ? "check-circle" : "circle"}
-                  style={claimed ? rewardStyle.claimed : (canClaim ? rewardStyle.unclaimed : rewardStyle.disabled)}
-                  size={20} />}
-          </TouchableOpacity>}
+          {!isPending && (
+            <TouchableOpacity
+              onPress={() => {
+                if (!claimed) {
+                  this.onClaimPress();
+                }
+              }}
+            >
+              {claimed && (
+                <Icon
+                  name={claimed ? 'check-circle' : 'circle'}
+                  style={claimed ? rewardStyle.claimed : canClaim ? rewardStyle.unclaimed : rewardStyle.disabled}
+                  size={20}
+                />
+              )}
+            </TouchableOpacity>
+          )}
           {isPending && <ActivityIndicator size="small" color={Colors.LbryGreen} />}
         </View>
         <View style={rewardStyle.midCol}>
           <Text style={rewardStyle.rewardTitle}>{reward.reward_title}</Text>
           <Text style={rewardStyle.rewardDescription}>{reward.reward_description}</Text>
-          {claimed && <Link style={rewardStyle.link}
-                href={`https://explorer.lbry.com/tx/${reward.transaction_id}`}
-                text={reward.transaction_id.substring(0, 7)}
-                error={'The transaction URL could not be opened'} />}
+          {claimed && (
+            <Link
+              style={rewardStyle.link}
+              href={`https://explorer.lbry.com/tx/${reward.transaction_id}`}
+              text={reward.transaction_id.substring(0, 7)}
+              error={'The transaction URL could not be opened'}
+            />
+          )}
         </View>
         <View style={rewardStyle.rightCol}>
           <Text style={rewardStyle.rewardAmount}>{reward.reward_amount}</Text>
@@ -98,6 +107,6 @@ class RewardCard extends React.PureComponent<Props> {
       </TouchableOpacity>
     );
   }
-};
+}
 
 export default RewardCard;
