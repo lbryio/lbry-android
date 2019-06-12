@@ -8,4 +8,7 @@ const select = state => ({
   myClaims: selectAllMyClaimsByOutpoint(state),
 });
 
-export default connect(select, null)(TransactionList);
+export default connect(
+  select,
+  null
+)(TransactionList);

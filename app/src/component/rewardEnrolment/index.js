@@ -7,7 +7,7 @@ import RewardEnrolment from './view';
 const select = state => ({
   unclaimedRewardAmount: selectUnclaimedRewardValue(state),
   fetching: selectFetchingRewards(state),
-  user: selectUser(state)
+  user: selectUser(state),
 });
 
 const perform = dispatch => ({
@@ -16,4 +16,7 @@ const perform = dispatch => ({
   setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
 });
 
-export default connect(select, perform)(RewardEnrolment);
+export default connect(
+  select,
+  perform
+)(RewardEnrolment);

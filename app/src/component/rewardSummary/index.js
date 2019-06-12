@@ -6,12 +6,15 @@ import RewardSummary from './view';
 const select = state => ({
   unclaimedRewardAmount: selectUnclaimedRewardValue(state),
   fetching: selectFetchingRewards(state),
-  user: selectUser(state)
+  user: selectUser(state),
 });
 
 const perform = dispatch => ({
   fetchRewards: () => dispatch(doRewardList()),
-  notify: data => dispatch(doToast(data))
+  notify: data => dispatch(doToast(data)),
 });
 
-export default connect(select, perform)(RewardSummary);
+export default connect(
+  select,
+  perform
+)(RewardSummary);

@@ -22,4 +22,7 @@ const perform = dispatch => ({
   fetchCostInfo: uri => dispatch(doFetchCostInfoForUri(uri)),
 });
 
-export default connect(select, perform)(FileDownloadButton);
+export default connect(
+  select,
+  perform
+)(FileDownloadButton);

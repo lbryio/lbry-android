@@ -8,7 +8,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Button from 'component/button';
@@ -38,7 +38,7 @@ class PhoneVerifyPage extends React.PureComponent {
       number: null,
       phoneVerifyFailed: false,
       verificationCode: null,
-      phase: Constants.PHASE_COLLECTION
+      phase: Constants.PHASE_COLLECTION,
     };
   }
 
@@ -59,10 +59,10 @@ class PhoneVerifyPage extends React.PureComponent {
       notify,
       phoneNewErrorMessage,
       phoneNewIsPending,
-      onPhoneVerifySuccessful
+      onPhoneVerifySuccessful,
     } = this.props;
 
-    if (!phoneNewIsPending && (phoneNewIsPending !== prevProps.phoneNewIsPending)) {
+    if (!phoneNewIsPending && phoneNewIsPending !== prevProps.phoneNewIsPending) {
       if (phoneNewErrorMessage) {
         notify({ message: String(phoneNewErrorMessage) });
         this.setState({ phoneVerifyFailed: true });
@@ -70,7 +70,7 @@ class PhoneVerifyPage extends React.PureComponent {
         this.setState({ newPhoneAdded: true, phase: Constants.PHASE_VERIFICATION, phoneVerifyFailed: false });
       }
     }
-    if (!phoneVerifyIsPending && (phoneVerifyIsPending !== prevProps.phoneVerifyIsPending)) {
+    if (!phoneVerifyIsPending && phoneVerifyIsPending !== prevProps.phoneVerifyIsPending) {
       if (phoneVerifyErrorMessage) {
         notify({ message: String(phoneVerifyErrorMessage) });
         this.setState({ codeVerifyStarted: false, phoneVerifyFailed: true });
@@ -86,9 +86,9 @@ class PhoneVerifyPage extends React.PureComponent {
 
   onEditPressed = () => {
     this.setState({ newPhoneAdded: false, phase: Constants.PHASE_COLLECTION, phoneVerifyFailed: false });
-  }
+  };
 
-  receiveVerificationCode = (evt) => {
+  receiveVerificationCode = evt => {
     if (!this.state.newPhoneAdded || this.state.codeVerifySuccessful) {
       return;
     }
@@ -96,7 +96,7 @@ class PhoneVerifyPage extends React.PureComponent {
     const { verifyPhone } = this.props;
     this.setState({ codeVerifyStarted: true });
     verifyPhone(evt.code);
-  }
+  };
 
   onSendTextPressed = () => {
     const { addUserPhone, notify } = this.props;
@@ -112,7 +112,7 @@ class PhoneVerifyPage extends React.PureComponent {
     const number = this.phoneInput.getValue().replace('+' + countryCode, '');
     this.setState({ countryCode, number });
     addUserPhone(number, countryCode);
-  }
+  };
 
   onVerifyPressed = () => {
     if (this.state.codeVerifyStarted) {
@@ -122,67 +122,69 @@ class PhoneVerifyPage extends React.PureComponent {
     const { verifyPhone } = this.props;
     this.setState({ codeVerifyStarted: true, phoneVerifyFailed: false });
     verifyPhone(this.state.verificationCode);
-  }
+  };
 
   onPressFlag = () => {
     if (this.picker) {
       this.picker.openModal();
     }
-  }
+  };
 
   selectCountry(country) {
     this.phoneInput.selectCountry(country.cca2.toLowerCase());
     this.setState({ cca2: country.cca2 });
   }
 
-  handleChangeText = (text) => {
+  handleChangeText = text => {
     this.setState({ verificationCode: text });
   };
 
   render() {
-    const {
-      phoneVerifyIsPending,
-      phoneVerifyErrorMessage,
-      phone,
-      phoneErrorMessage,
-      phoneNewIsPending
-    } = this.props;
+    const { phoneVerifyIsPending, phoneVerifyErrorMessage, phone, phoneErrorMessage, phoneNewIsPending } = this.props;
 
     return (
       <View style={firstRunStyle.container}>
-        <Text style={rewardStyle.verificationTitle}>{this.state.phase === Constants.PHASE_VERIFICATION ? 'Verify ' : '' }Phone Number</Text>
+        <Text style={rewardStyle.verificationTitle}>
+          {this.state.phase === Constants.PHASE_VERIFICATION ? 'Verify ' : ''}Phone Number
+        </Text>
 
         <View style={rewardStyle.phoneVerificationContainer}>
-          {this.state.phase == Constants.PHASE_COLLECTION &&
+          {this.state.phase == Constants.PHASE_COLLECTION && (
             <View>
-              <Text style={[rewardStyle.bottomMarginMedium, firstRunStyle.paragraph]}>Please provide a phone number to prevent fraud.</Text>
+              <Text style={[rewardStyle.bottomMarginMedium, firstRunStyle.paragraph]}>
+                Please provide a phone number to prevent fraud.
+              </Text>
               <PhoneInput
-                ref={(ref) => { this.phoneInput = ref; }}
+                ref={ref => {
+                  this.phoneInput = ref;
+                }}
                 style={StyleSheet.flatten(rewardStyle.phoneInput)}
                 textProps={{ placeholder: '(phone number)' }}
                 textStyle={StyleSheet.flatten(rewardStyle.phoneInputText)}
-                onPressFlag={this.onPressFlag} />
+                onPressFlag={this.onPressFlag}
+              />
 
               <View style={rewardStyle.buttonContainer}>
-                {!phoneNewIsPending &&
+                {!phoneNewIsPending && (
                   <Button
                     style={[rewardStyle.verificationButton, rewardStyle.topMarginMedium]}
-                    theme={"light"}
-                    text={"Send verification text"}
-                    onPress={this.onSendTextPressed} />}
-                {phoneNewIsPending &&
+                    theme={'light'}
+                    text={'Send verification text'}
+                    onPress={this.onSendTextPressed}
+                  />
+                )}
+                {phoneNewIsPending && (
                   <View style={firstRunStyle.centerInside}>
-                    <ActivityIndicator
-                      style={rewardStyle.topMarginMedium}
-                      size="small"
-                      color={Colors.White} />
-                  </View>}
+                    <ActivityIndicator style={rewardStyle.topMarginMedium} size="small" color={Colors.White} />
+                  </View>
+                )}
               </View>
-            </View>}
+            </View>
+          )}
 
-          {this.state.phase === Constants.PHASE_VERIFICATION &&
+          {this.state.phase === Constants.PHASE_VERIFICATION && (
             <View>
-              {!phoneVerifyIsPending && !this.codeVerifyStarted &&
+              {!phoneVerifyIsPending && !this.codeVerifyStarted && (
                 <View>
                   <Text style={[rewardStyle.bottomMarginSmall, firstRunStyle.paragraph]}>
                     Please enter the verification code sent to {phone}.
@@ -199,43 +201,52 @@ class PhoneVerifyPage extends React.PureComponent {
                   <View style={rewardStyle.buttonContainer}>
                     <Button
                       style={[rewardStyle.verificationButton, rewardStyle.topMarginSmall]}
-                      theme={"light"}
-                      text={"Verify"}
-                      onPress={this.onVerifyPressed} />
-                    <Link style={rewardStyle.verificationLink} text={"Edit"} onPress={this.onEditPressed} />
+                      theme={'light'}
+                      text={'Verify'}
+                      onPress={this.onVerifyPressed}
+                    />
+                    <Link style={rewardStyle.verificationLink} text={'Edit'} onPress={this.onEditPressed} />
                   </View>
                 </View>
-              }
-              {phoneVerifyIsPending &&
+              )}
+              {phoneVerifyIsPending && (
                 <View style={firstRunStyle.centered}>
                   <Text style={firstRunStyle.paragraph}>Verifying your phone number...</Text>
                   <ActivityIndicator
                     color={Colors.White}
                     size="small"
-                    style={[rewardStyle.topMarginMedium, rewardStyle.leftRightMargin]} />
-                </View>}
+                    style={[rewardStyle.topMarginMedium, rewardStyle.leftRightMargin]}
+                  />
+                </View>
+              )}
             </View>
-          }
-          {this.state.phoneVerifyFailed &&
+          )}
+          {this.state.phoneVerifyFailed && (
             <View style={rewardStyle.failureFootnote}>
               <Text style={rewardStyle.paragraphText}>
-                Sorry, we were unable to verify your phone number. Please go to <Link style={rewardStyle.textLink} href="http://chat.lbry.com" text="chat.lbry.com" /> for manual verification if this keeps happening.
+                Sorry, we were unable to verify your phone number. Please go to{' '}
+                <Link style={rewardStyle.textLink} href="http://chat.lbry.com" text="chat.lbry.com" /> for manual
+                verification if this keeps happening.
               </Text>
-            </View>}
+            </View>
+          )}
         </View>
 
         <CountryPicker
-          ref={(picker) => { this.picker = picker; }}
+          ref={picker => {
+            this.picker = picker;
+          }}
           cca2={this.state.cca2}
           filterable={true}
           onChange={value => this.selectCountry(value)}
           showCallingCode={true}
-          translation="eng">
+          translation="eng"
+        >
           <View />
         </CountryPicker>
       </View>
     );
   }
-};
+}
 
 export default PhoneVerifyPage;

@@ -28,16 +28,20 @@ class WalletAddress extends React.PureComponent<Props> {
     return (
       <View style={walletStyle.card}>
         <Text style={walletStyle.title}>Receive Credits</Text>
-        <Text style={[walletStyle.text, walletStyle.bottomMarginMedium]}>Use this wallet address to receive credits sent by another user (or yourself).</Text>
+        <Text style={[walletStyle.text, walletStyle.bottomMarginMedium]}>
+          Use this wallet address to receive credits sent by another user (or yourself).
+        </Text>
         <Address address={receiveAddress} style={walletStyle.bottomMarginSmall} />
-        <Button style={[walletStyle.button, walletStyle.bottomMarginLarge]}
-                icon={'sync'}
-                text={'Get new address'}
-                onPress={getNewAddress}
-                disabled={gettingNewAddress}
-                />
+        <Button
+          style={[walletStyle.button, walletStyle.bottomMarginLarge]}
+          icon={'sync'}
+          text={'Get new address'}
+          onPress={getNewAddress}
+          disabled={gettingNewAddress}
+        />
         <Text style={walletStyle.smallText}>
-          You can generate a new address at any time, and any previous addresses will continue to work. Using multiple addresses can be helpful for keeping track of incoming payments from multiple sources.
+          You can generate a new address at any time, and any previous addresses will continue to work. Using multiple
+          addresses can be helpful for keeping track of incoming payments from multiple sources.
         </Text>
       </View>
     );

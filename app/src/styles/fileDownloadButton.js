@@ -14,8 +14,8 @@ const fileDownloadButtonStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-Medium',
     color: Colors.White,
     fontSize: 14,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 export default fileDownloadButtonStyle;

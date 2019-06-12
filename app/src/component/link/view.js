@@ -2,13 +2,12 @@ import React from 'react';
 import { Linking, Text, TouchableOpacity } from 'react-native';
 
 export default class Link extends React.PureComponent {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       tappedStyle: false,
-    }
-    this.addTappedStyle = this.addTappedStyle.bind(this)
+    };
+    this.addTappedStyle = this.addTappedStyle.bind(this);
   }
 
   handlePress = () => {
@@ -19,28 +18,27 @@ export default class Link extends React.PureComponent {
     } else {
       if (this.props.effectOnTap) this.addTappedStyle();
       Linking.openURL(href)
-        .then(() => setTimeout(() => { this.setState({ tappedStyle: false }); }, 2000))
-      .catch(err => {
-        notify({ message: error, isError: true })
-        this.setState({tappedStyle: false})
-      }
-    );
+        .then(() =>
+          setTimeout(() => {
+            this.setState({ tappedStyle: false });
+          }, 2000)
+        )
+        .catch(err => {
+          notify({ message: error, isError: true });
+          this.setState({ tappedStyle: false });
+        });
     }
-  }
+  };
 
   addTappedStyle() {
     this.setState({ tappedStyle: true });
-    setTimeout(() => { this.setState({ tappedStyle: false }); }, 2000);
+    setTimeout(() => {
+      this.setState({ tappedStyle: false });
+    }, 2000);
   }
 
   render() {
-    const {
-      ellipsizeMode,
-      numberOfLines,
-      onPress,
-      style,
-      text
-    } = this.props;
+    const { ellipsizeMode, numberOfLines, onPress, style, text } = this.props;
 
     let styles = [];
     if (style) {
@@ -60,9 +58,10 @@ export default class Link extends React.PureComponent {
         style={styles}
         numberOfLines={numberOfLines}
         ellipsizeMode={ellipsizeMode}
-        onPress={onPress ? onPress : this.handlePress}>
+        onPress={onPress ? onPress : this.handlePress}
+      >
         {text}
       </Text>
     );
   }
-};
+}

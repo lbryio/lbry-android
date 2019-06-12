@@ -9,11 +9,21 @@ function getRouteForSpecialUri(uri) {
   const page = uri.substring(8).trim(); // 'lbry://?'.length == 8
 
   switch (page) {
-    case Constants.PAGE_REWARDS: targetRoute = 'Rewards'; break;
-    case Constants.PAGE_SETTINGS: targetRoute = 'Settings'; break;
-    case Constants.PAGE_TRENDING: targetRoute = 'TrendingStack'; break;
-    case Constants.PAGE_WALLET: targetRoute = 'WalletStack'; break;
-    default: targetRoute = 'DiscoverStack'; break;
+    case Constants.PAGE_REWARDS:
+      targetRoute = 'Rewards';
+      break;
+    case Constants.PAGE_SETTINGS:
+      targetRoute = 'Settings';
+      break;
+    case Constants.PAGE_TRENDING:
+      targetRoute = 'TrendingStack';
+      break;
+    case Constants.PAGE_WALLET:
+      targetRoute = 'WalletStack';
+      break;
+    default:
+      targetRoute = 'DiscoverStack';
+      break;
   }
 
   return targetRoute;
@@ -62,12 +72,14 @@ export function formatBytes(bytes, decimalPoints = 0) {
     return '0 KB';
   }
 
-  if (bytes < 1048576) { // < 1MB
+  if (bytes < 1048576) {
+    // < 1MB
     const value = (bytes / 1024.0).toFixed(decimalPoints);
     return `${value} KB`;
   }
 
-  if (bytes < 1073741824) { // < 1GB
+  if (bytes < 1073741824) {
+    // < 1GB
     const value = (bytes / (1024.0 * 1024.0)).toFixed(decimalPoints);
     return `${value} MB`;
   }
@@ -143,7 +155,7 @@ export function navigateBack(navigation, drawerStack, popDrawerStack) {
   if (DrawerRoutes.indexOf(target) === -1 && isURIValid(target)) {
     navigateToUri(navigation, target, null, true);
   } else {
-    navigation.navigate({ routeName: target  });
+    navigation.navigate({ routeName: target });
   }
 }
 
@@ -156,7 +168,9 @@ export function dispatchNavigateBack(dispatch, nav, drawerStack) {
   if (DrawerRoutes.indexOf(target) === -1 && isURIValid(target)) {
     dispatchNavigateToUri(dispatch, nav, target, true);
   } else {
-    const navigateAction = NavigationActions.navigate({ routeName: drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0] });
+    const navigateAction = NavigationActions.navigate({
+      routeName: drawerStack[drawerStack.length > 1 ? drawerStack.length - 2 : 0],
+    });
     dispatch(navigateAction);
   }
 }

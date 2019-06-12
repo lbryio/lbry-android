@@ -1,13 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import {
-  ActivityIndicator,
-  Linking,
-  NativeModules,
-  Platform,
-  Text,
-  View
-} from 'react-native';
+import { ActivityIndicator, Linking, NativeModules, Platform, Text, View } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { decode as atob } from 'base-64';
 import { navigateToUri } from 'utils/helper';
@@ -23,7 +16,7 @@ const BLOCK_HEIGHT_INTERVAL = 1000 * 60 * 2.5; // every 2.5 minutes
 
 class SplashScreen extends React.PureComponent {
   static navigationOptions = {
-    title: 'Splash'
+    title: 'Splash',
   };
 
   componentWillMount() {
@@ -37,7 +30,7 @@ class SplashScreen extends React.PureComponent {
       isDownloadingHeaders: false,
       headersDownloadProgress: 0,
       shouldAuthenticate: false,
-      subscriptionsFetched: false
+      subscriptionsFetched: false,
     });
 
     if (NativeModules.DaemonServiceControl) {
@@ -55,9 +48,7 @@ class SplashScreen extends React.PureComponent {
     const { navigation } = this.props;
     const resetAction = StackActions.reset({
       index: 0,
-      actions: [
-        NavigationActions.navigate({ routeName: 'Main'})
-      ]
+      actions: [NavigationActions.navigate({ routeName: 'Main' })],
     });
     navigation.dispatch(resetAction);
 
@@ -88,16 +79,10 @@ class SplashScreen extends React.PureComponent {
         navigateToUri(navigation, launchUrl);
       }
     }
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
-    const {
-      emailToVerify,
-      getSync,
-      setEmailToVerify,
-      verifyUserEmail,
-      verifyUserEmailFailure
-    } = this.props;
+    const { emailToVerify, getSync, setEmailToVerify, verifyUserEmail, verifyUserEmailFailure } = this.props;
     const { user } = nextProps;
 
     if (this.state.daemonReady && this.state.shouldAuthenticate && user && user.id) {
@@ -128,7 +113,7 @@ class SplashScreen extends React.PureComponent {
       navigation,
       notify,
       updateBlockHeight,
-      user
+      user,
     } = this.props;
 
     Lbry.resolve({ urls: 'lbry://one' }).then(() => {
@@ -137,7 +122,9 @@ class SplashScreen extends React.PureComponent {
       blacklistedOutpointsSubscribe();
       checkSubscriptionsInit();
       updateBlockHeight();
-      setInterval(() => { updateBlockHeight(); }, BLOCK_HEIGHT_INTERVAL);
+      setInterval(() => {
+        updateBlockHeight();
+      }, BLOCK_HEIGHT_INTERVAL);
 
       if (user && user.id && user.has_verified_email) {
         // user already authenticated
@@ -154,7 +141,7 @@ class SplashScreen extends React.PureComponent {
         });
       }
     });
-  }
+  };
 
   _updateStatusCallback(status) {
     const { fetchSubscriptions, getSync, setClientSetting } = this.props;
@@ -174,12 +161,13 @@ class SplashScreen extends React.PureComponent {
         isRunning: true,
       });
 
-
       // For now, automatically unlock the wallet if a password is set so that downloads work
       NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
         if (password && password.trim().length > 0) {
           // unlock the wallet and then finish the splash screen
-          Lbry.account_unlock({ password }).then(() => this.finishSplashScreen()).catch(() => this.finishSplashScreen());
+          Lbry.account_unlock({ password })
+            .then(() => this.finishSplashScreen())
+            .catch(() => this.finishSplashScreen());
           return;
         }
 
@@ -195,7 +183,7 @@ class SplashScreen extends React.PureComponent {
     if (blockchainHeaders) {
       this.setState({
         isDownloadingHeaders: blockchainHeaders.downloading_headers,
-        headersDownloadProgress: blockchainHeaders.download_progress
+        headersDownloadProgress: blockchainHeaders.download_progress,
       });
     } else {
       // set downloading flag to false if blockchain_headers isn't in the status response
@@ -220,7 +208,7 @@ class SplashScreen extends React.PureComponent {
     } else {
       this.setState({
         message: 'Network Loading',
-        details: 'Initializing LBRY service...'
+        details: 'Initializing LBRY service...',
       });
     }
 
@@ -235,7 +223,7 @@ class SplashScreen extends React.PureComponent {
     }
 
     this.props.fetchRewardedContent();
-    Linking.getInitialURL().then((url) => {
+    Linking.getInitialURL().then(url => {
       if (url) {
         this.setState({ launchUrl: url });
       }
@@ -251,17 +239,16 @@ class SplashScreen extends React.PureComponent {
       }
     });
 
-    Lbry
-      .connect()
+    Lbry.connect()
       .then(() => {
         this.updateStatus();
       })
-      .catch((e) => {
+      .catch(e => {
         this.setState({
           isLagging: true,
           message: 'Connection Failure',
           details:
-            'We could not establish a connection to the daemon. Your data connection may be preventing LBRY from connecting. Contact hello@lbry.com if you think this is a software bug.'
+            'We could not establish a connection to the daemon. Your data connection may be preventing LBRY from connecting. Contact hello@lbry.com if you think this is a software bug.',
         });
       });
   }
@@ -272,12 +259,16 @@ class SplashScreen extends React.PureComponent {
     return (
       <View style={splashStyle.container}>
         <Text style={splashStyle.title}>LBRY</Text>
-        {this.state.isDownloadingHeaders &&
+        {this.state.isDownloadingHeaders && (
           <ProgressBar
             color={Colors.White}
             style={splashStyle.progress}
-            progress={this.state.headersDownloadProgress} />}
-        {!this.state.isDownloadingHeaders && <ActivityIndicator color={Colors.White} style={splashStyle.loading} size={"small"} />}
+            progress={this.state.headersDownloadProgress}
+          />
+        )}
+        {!this.state.isDownloadingHeaders && (
+          <ActivityIndicator color={Colors.White} style={splashStyle.loading} size={'small'} />
+        )}
         <Text style={splashStyle.message}>{message}</Text>
         <Text style={splashStyle.details}>{details}</Text>
       </View>

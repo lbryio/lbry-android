@@ -19,7 +19,7 @@ class ProgressBar extends React.PureComponent {
         return new Error('progress should be between 0 and 100');
       }
     },
-    style: PropTypes.any
+    style: PropTypes.any,
   };
 
   render() {
@@ -39,13 +39,15 @@ class ProgressBar extends React.PureComponent {
       borderRadius: borderRadius || defaultBorderRadius,
       flexDirection: 'row',
       height: height || defaultHeight,
-      overflow: 'hidden'
+      overflow: 'hidden',
     });
 
     return (
       <View style={styles}>
-        <View style={{ backgroundColor: color, borderRadius: borderRadius || defaultBorderRadius, flex: currentProgress }} />
-        <View style={{ backgroundColor: color, opacity: 0.2, flex: (100 - currentProgress) }} />
+        <View
+          style={{ backgroundColor: color, borderRadius: borderRadius || defaultBorderRadius, flex: currentProgress }}
+        />
+        <View style={{ backgroundColor: color, opacity: 0.2, flex: 100 - currentProgress }} />
       </View>
     );
   }

@@ -3,61 +3,61 @@ import Colors from './colors';
 
 const screenDimension = Dimensions.get('window');
 const screenWidth = screenDimension.width;
-const containedMediaHeight = ((screenWidth * 9) / 16); // 16:9 display ratio
+const containedMediaHeight = (screenWidth * 9) / 16; // 16:9 display ratio
 const containedMediaHeightWithControls = containedMediaHeight + 17;
 
 const filePageStyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: Colors.PageBackground
+    backgroundColor: Colors.PageBackground,
   },
   pageContainer: {
     flex: 1,
-    backgroundColor: Colors.PageBackground
+    backgroundColor: Colors.PageBackground,
   },
   divider: {
     backgroundColor: Colors.LighterGrey,
     width: '100%',
     height: 1,
     marginTop: 4,
-    marginBottom: 20
+    marginBottom: 20,
   },
   innerPageContainer: {
-    flex: 1
+    flex: 1,
   },
   innerPageContainerFsMode: {
     flex: 1,
-    marginBottom: 0
+    marginBottom: 0,
   },
   mediaContainer: {
     alignItems: 'center',
     width: screenWidth,
     height: containedMediaHeightWithControls,
     marginTop: 60,
-    marginBottom: -17
+    marginBottom: -17,
   },
   emptyClaimText: {
     fontFamily: 'Inter-UI-Regular',
     textAlign: 'center',
     fontSize: 20,
     marginLeft: 16,
-    marginRight: 16
+    marginRight: 16,
   },
   scrollContainer: {
-    flex: 1
+    flex: 1,
   },
   scrollContent: {
-    paddingTop: 10
+    paddingTop: 10,
   },
   scrollContainerActions: {
-    flex: 1
+    flex: 1,
   },
   title: {
     fontFamily: 'Inter-UI-Bold',
     fontSize: 16,
     flex: 18,
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
   },
   titleTouch: {
     flex: 1,
@@ -69,7 +69,7 @@ const filePageStyle = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   channelRow: {
     flexDirection: 'row',
@@ -82,7 +82,7 @@ const filePageStyle = StyleSheet.create({
     flex: 0.6,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginTop: 8
+    marginTop: 8,
   },
   publishInfo: {
     flex: 0.4,
@@ -91,15 +91,15 @@ const filePageStyle = StyleSheet.create({
   channelName: {
     fontFamily: 'Inter-UI-SemiBold',
     fontSize: 14,
-    color: Colors.LbryGreen
+    color: Colors.LbryGreen,
   },
   publishDateText: {
     fontFamily: 'Inter-UI-SemiBold',
     fontSize: 12,
-    color: Colors.DescriptionGrey
+    color: Colors.DescriptionGrey,
   },
   publishDate: {
-    marginTop: 4
+    marginTop: 4,
   },
   description: {
     color: Colors.DescriptionGrey,
@@ -108,40 +108,40 @@ const filePageStyle = StyleSheet.create({
     lineHeight: 18,
     marginTop: -8,
     marginLeft: 12,
-    marginRight: 12
+    marginRight: 12,
   },
   thumbnail: {
     width: screenWidth,
     height: containedMediaHeight,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   downloadButton: {
     position: 'absolute',
-    top: '40%'
+    top: '40%',
   },
   player: {
     position: 'absolute',
     left: 0,
     top: 0,
     zIndex: 301,
-    elevation: 21
+    elevation: 21,
   },
   containedPlayer: {
     width: '100%',
     height: containedMediaHeightWithControls,
-    top: 60
+    top: 60,
   },
   containedPlayerLandscape: {
     width: '100%',
     height: '100%',
-    top: 60
+    top: 60,
   },
   fullscreenPlayer: {
     width: '100%',
     height: '100%',
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   playerBackground: {
     position: 'absolute',
@@ -149,7 +149,7 @@ const filePageStyle = StyleSheet.create({
     top: 0,
     zIndex: 300,
     elevation: 20,
-    backgroundColor: Colors.Black
+    backgroundColor: Colors.Black,
   },
   containedPlayerBackground: {
     width: '100%',
@@ -160,7 +160,7 @@ const filePageStyle = StyleSheet.create({
     width: '100%',
     height: '100%',
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   filePriceContainer: {
     backgroundColor: Colors.NextLbryGreen,
@@ -170,13 +170,13 @@ const filePageStyle = StyleSheet.create({
     top: 16,
     width: 56,
     height: 24,
-    borderRadius: 4
+    borderRadius: 4,
   },
   filePriceText: {
     fontFamily: 'Inter-UI-Bold',
     fontSize: 12,
     textAlign: 'center',
-    color: '#0c604b'
+    color: '#0c604b',
   },
   actions: {
     flexDirection: 'row',
@@ -188,55 +188,55 @@ const filePageStyle = StyleSheet.create({
     width: '100%',
   },
   fileActions: {
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
   },
   socialActions: {
     alignSelf: 'flex-start',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   actionButton: {
     alignSelf: 'flex-start',
     backgroundColor: Colors.White,
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
   },
   bellButton: {
-    marginLeft: 8
+    marginLeft: 8,
   },
   loading: {
     position: 'absolute',
-    top: '40%'
+    top: '40%',
   },
   busyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   dmcaContainer: {
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'center',
     paddingLeft: 24,
-    paddingRight: 24
+    paddingRight: 24,
   },
   dmcaText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 18,
-    lineHeight: 24
+    lineHeight: 24,
   },
   dmcaLink: {
     color: Colors.LbryGreen,
     fontFamily: 'Inter-UI-Regular',
     fontSize: 18,
     lineHeight: 24,
-    marginTop: 24
+    marginTop: 24,
   },
   infoText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 20,
     textAlign: 'center',
-    marginLeft: 10
+    marginLeft: 10,
   },
   viewer: {
     position: 'absolute',
@@ -245,91 +245,91 @@ const filePageStyle = StyleSheet.create({
     right: 0,
     top: 60,
     bottom: 0,
-    zIndex: 100
+    zIndex: 100,
   },
   link: {
-    color: Colors.Grey
+    color: Colors.Grey,
   },
   linkTapped: {
-    color: "rgba(64, 184, 154, .2)"
+    color: 'rgba(64, 184, 154, .2)',
   },
   tipCard: {
     width: '100%',
     marginTop: -12,
     paddingBottom: 8,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   row: {
     flexDirection: 'row',
     flex: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   amountRow: {
     flexDirection: 'row',
-    flex: 0.75
+    flex: 0.75,
   },
   button: {
     backgroundColor: Colors.LbryGreen,
     alignSelf: 'flex-end',
-    marginBottom: 6
+    marginBottom: 6,
   },
   cancelTipLink: {
     alignSelf: 'flex-end',
-    marginBottom: 14
+    marginBottom: 14,
   },
   input: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 14
+    fontSize: 14,
   },
   tipAmountInput: {
     alignSelf: 'flex-start',
     width: 80,
     fontSize: 16,
-    letterSpacing: 1
+    letterSpacing: 1,
   },
   currency: {
     alignSelf: 'flex-start',
     fontSize: 12,
     marginTop: 15,
-    marginLeft: 4
+    marginLeft: 4,
   },
   descriptionToggle: {
     alignItems: 'center',
     justifyContent: 'center',
     width: 36,
     height: 36,
-    marginTop: -8
+    marginTop: -8,
   },
   text: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
-    lineHeight: 24
+    lineHeight: 24,
   },
   tipButton: {
-    marginRight: 8
+    marginRight: 8,
   },
   saveFileButton: {
-    marginRight: 8
+    marginRight: 8,
   },
   tagContainer: {
     marginLeft: 12,
     marginRight: 12,
     marginTop: 16,
     marginBottom: 16,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   tagTitle: {
     fontFamily: 'Inter-UI-SemiBold',
-    flex: 0.2
+    flex: 0.2,
   },
   tagList: {
     fontFamily: 'Inter-UI-Regular',
     flex: 0.8,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   tagItem: {
-    marginRight: 16
+    marginRight: 16,
   },
   rewardDriverCard: {
     alignItems: 'center',
@@ -338,16 +338,16 @@ const filePageStyle = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 12,
-    paddingBottom: 12
+    paddingBottom: 12,
   },
   rewardDriverText: {
     fontFamily: 'Inter-UI-Regular',
     color: Colors.White,
-    fontSize: 14
+    fontSize: 14,
   },
   rewardIcon: {
     color: Colors.White,
-    marginRight: 8
+    marginRight: 8,
   },
   backButton: {
     position: 'absolute',
@@ -356,11 +356,11 @@ const filePageStyle = StyleSheet.create({
     width: 48,
     height: 48,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   backButtonIcon: {
-    color: Colors.White
-  }
+    color: Colors.White,
+  },
 });
 
 export default filePageStyle;

@@ -8,13 +8,13 @@ const buttonStyle = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 12,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   disabled: {
-    backgroundColor: '#999999'
+    backgroundColor: '#999999',
   },
   row: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   iconLight: {
     color: Colors.White,
@@ -26,15 +26,15 @@ const buttonStyle = StyleSheet.create({
     color: Colors.White,
   },
   textDark: {
-    color: Colors.DarkGrey
+    color: Colors.DarkGrey,
   },
   text: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 14
+    fontSize: 14,
   },
   textWithIcon: {
-    marginLeft: 8
-  }
+    marginLeft: 8,
+  },
 });
 
 export default buttonStyle;

@@ -15,4 +15,7 @@ const perform = dispatch => ({
   setPlayerVisible: () => dispatch(doSetPlayerVisible(true)),
 });
 
-export default connect(select, perform)(MediaPlayer);
+export default connect(
+  select,
+  perform
+)(MediaPlayer);

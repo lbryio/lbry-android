@@ -1,9 +1,5 @@
 import { connect } from 'react-redux';
-import {
-  doFileList,
-  selectBalance,
-  selectFileInfosDownloaded,
-} from 'lbry-redux';
+import { doFileList, selectBalance, selectFileInfosDownloaded } from 'lbry-redux';
 import {
   doFetchFeaturedUris,
   doFetchRewardedContent,
@@ -38,7 +34,10 @@ const perform = dispatch => ({
   fetchSubscriptions: () => dispatch(doFetchMySubscriptions()),
   fileList: () => dispatch(doFileList()),
   removeUnreadSubscriptions: () => dispatch(doRemoveUnreadSubscriptions()),
-  setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value))
+  setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
 });
 
-export default connect(select, perform)(DiscoverPage);
+export default connect(
+  select,
+  perform
+)(DiscoverPage);

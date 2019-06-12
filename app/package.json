@@ -3,7 +3,9 @@
     "version": "0.0.1",
     "private": "true",
     "scripts": {
-        "start": "node node_modules/react-native/local-cli/cli.js start"
+        "start": "node node_modules/react-native/local-cli/cli.js start",
+        "format": "prettier 'src/**/*.{js,json}' --write",
+        "precommit": "lint-staged"
     },
     "dependencies": {
         "base-64": "^0.1.0",
@@ -42,6 +44,17 @@
         "babel-preset-react-native": "5.0.2",
         "babel-preset-stage-2": "^6.18.0",
         "babel-plugin-module-resolver": "^3.1.1",
-        "flow-babel-webpack-plugin": "^1.1.1"
+        "eslint": "^5.16.0",
+        "eslint-config-standard": "^12.0.0",
+        "eslint-config-standard-jsx": "^6.0.2",
+        "eslint-plugin-flowtype": "^2.46.1",
+        "eslint-plugin-import": "^2.17.2",
+        "eslint-plugin-node": "^8.0.1",
+        "eslint-plugin-promise": "^4.1.1",
+        "eslint-plugin-react": "^7.12.4",
+        "eslint-plugin-standard": "^4.0.0",
+        "flow-babel-webpack-plugin": "^1.1.1",
+        "lint-staged": "^7.0.4",
+        "prettier": "^1.11.1"
     }
 }

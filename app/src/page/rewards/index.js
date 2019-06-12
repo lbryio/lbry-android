@@ -30,7 +30,10 @@ const perform = dispatch => ({
   fetchRewards: () => dispatch(doRewardList()),
   notify: data => dispatch(doToast(data)),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_REWARDS)),
-  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false)),
 });
 
-export default connect(select, perform)(RewardsPage);
+export default connect(
+  select,
+  perform
+)(RewardsPage);

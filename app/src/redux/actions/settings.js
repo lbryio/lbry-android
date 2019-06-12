@@ -9,4 +9,3 @@ export function doSetClientSetting(key, value) {
     },
   };
 }
-

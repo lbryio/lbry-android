@@ -26,14 +26,14 @@ import {
   doFetchCostInfoForUri,
   makeSelectCostInfoForUri,
   selectRewardContentClaimIds,
-  selectBlackListedOutpoints
+  selectBlackListedOutpoints,
 } from 'lbryinc';
 import {
   doStartDownload,
   doUpdateDownload,
   doCompleteDownload,
   doDeleteFile,
-  doStopDownloadingFile
+  doStopDownloadingFile,
 } from 'redux/actions/file';
 import { doPopDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import { selectDrawerStack } from 'redux/selectors/drawer';
@@ -77,7 +77,8 @@ const perform = dispatch => ({
   purchaseUri: (uri, costInfo, saveFile) => dispatch(doPurchaseUri(uri, costInfo, saveFile)),
   deletePurchasedUri: uri => dispatch(doDeletePurchasedUri(uri)),
   resolveUri: uri => dispatch(doResolveUri(uri)),
-  sendTip: (amount, claimId, uri, successCallback, errorCallback) => dispatch(doSendTip(amount, claimId, uri, successCallback, errorCallback)),
+  sendTip: (amount, claimId, uri, successCallback, errorCallback) =>
+    dispatch(doSendTip(amount, claimId, uri, successCallback, errorCallback)),
   setPlayerVisible: () => dispatch(doSetPlayerVisible(true)),
   stopDownload: (uri, fileInfo) => dispatch(doStopDownloadingFile(uri, fileInfo)),
   startDownload: (uri, outpoint, fileInfo) => dispatch(doStartDownload(uri, outpoint, fileInfo)),
@@ -85,4 +86,7 @@ const perform = dispatch => ({
   completeDownload: (uri, outpoint, fileInfo) => dispatch(doCompleteDownload(uri, outpoint, fileInfo)),
 });
 
-export default connect(select, perform)(FilePage);
+export default connect(
+  select,
+  perform
+)(FilePage);

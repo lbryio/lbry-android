@@ -1,12 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import {
-  NativeModules,
-  Platform,
-  Text,
-  TextInput,
-  View
-} from 'react-native';
+import { NativeModules, Platform, Text, TextInput, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Colors from 'styles/colors';
 import Constants from 'constants';
@@ -16,7 +10,7 @@ class EmailCollectPage extends React.PureComponent {
   state = {
     email: null,
     placeholder: 'you@example.com',
-    verifying: true
+    verifying: true,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -34,7 +28,7 @@ class EmailCollectPage extends React.PureComponent {
     }
   }
 
-  handleChangeText = (text) => {
+  handleChangeText = text => {
     // save the value to the state email
     const { onEmailChanged } = this.props;
     this.setState({ email: text });
@@ -43,7 +37,7 @@ class EmailCollectPage extends React.PureComponent {
     if (onEmailChanged) {
       onEmailChanged(text);
     }
-  }
+  };
 
   render() {
     const { onEmailViewLayout } = this.props;
@@ -51,33 +45,34 @@ class EmailCollectPage extends React.PureComponent {
     const content = (
       <View onLayout={onEmailViewLayout}>
         <Text style={firstRunStyle.title}>Setup account</Text>
-        <TextInput style={firstRunStyle.emailInput}
-            placeholder={this.state.placeholder}
-            underlineColorAndroid="transparent"
-            selectionColor={Colors.NextLbryGreen}
-            value={this.state.email}
-            onChangeText={text => this.handleChangeText(text)}
-            onFocus={() => {
-              if (!this.state.email || this.state.email.length === 0) {
-                this.setState({ placeholder: '' });
-              }
-            }}
-            onBlur={() => {
-              if (!this.state.email || this.state.email.length === 0) {
-                this.setState({ placeholder: 'you@example.com' });
-              }
-            }}
-            />
-        <Text style={firstRunStyle.paragraph}>An account will allow you to earn rewards and keep your account and settings synced.</Text>
-        <Text style={firstRunStyle.infoParagraph}>This information is disclosed only to LBRY, Inc. and not to the LBRY network.</Text>
+        <TextInput
+          style={firstRunStyle.emailInput}
+          placeholder={this.state.placeholder}
+          underlineColorAndroid="transparent"
+          selectionColor={Colors.NextLbryGreen}
+          value={this.state.email}
+          onChangeText={text => this.handleChangeText(text)}
+          onFocus={() => {
+            if (!this.state.email || this.state.email.length === 0) {
+              this.setState({ placeholder: '' });
+            }
+          }}
+          onBlur={() => {
+            if (!this.state.email || this.state.email.length === 0) {
+              this.setState({ placeholder: 'you@example.com' });
+            }
+          }}
+        />
+        <Text style={firstRunStyle.paragraph}>
+          An account will allow you to earn rewards and keep your account and settings synced.
+        </Text>
+        <Text style={firstRunStyle.infoParagraph}>
+          This information is disclosed only to LBRY, Inc. and not to the LBRY network.
+        </Text>
       </View>
     );
 
-    return (
-      <View style={firstRunStyle.container}>
-        {content}
-      </View>
-    );
+    return <View style={firstRunStyle.container}>{content}</View>;
   }
 }
 

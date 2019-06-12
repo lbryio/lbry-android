@@ -35,7 +35,7 @@ const pageHeaderStyle = StyleSheet.create({
   },
   backIcon: {
     marginLeft: 16,
-    marginRight: 16
+    marginRight: 16,
   },
   header: {
     ...StyleSheet.absoluteFillObject,
@@ -78,7 +78,7 @@ const pageHeaderStyle = StyleSheet.create({
   },
   flexOne: {
     flex: 1,
-  }
+  },
 });
 
 export default pageHeaderStyle;

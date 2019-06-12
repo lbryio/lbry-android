@@ -14,11 +14,11 @@ class SubscribeNotificationButton extends React.PureComponent {
       doToast,
       enabledChannelNotifications,
       isSubscribed,
-      style
+      style,
     } = this.props;
 
     if (!isSubscribed) {
-        return null;
+      return null;
     }
 
     let styles = [];
@@ -36,8 +36,8 @@ class SubscribeNotificationButton extends React.PureComponent {
     return (
       <Button
         style={styles}
-        theme={"light"}
-        icon={shouldNotify ? "bell-slash" : "bell"}
+        theme={'light'}
+        icon={shouldNotify ? 'bell-slash' : 'bell'}
         solid={true}
         onPress={() => {
           if (shouldNotify) {
@@ -47,7 +47,8 @@ class SubscribeNotificationButton extends React.PureComponent {
             doChannelSubscriptionEnableNotifications(name);
             doToast({ message: 'You will receive all notifications for new content.' });
           }
-        }} />
+        }}
+      />
     );
   }
 }

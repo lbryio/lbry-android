@@ -4,17 +4,17 @@ import Colors from './colors';
 const downloadsStyle = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.PageBackground
+    backgroundColor: Colors.PageBackground,
   },
   busyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   subContainer: {
     flex: 1,
-    marginTop: 60
+    marginTop: 60,
   },
   itemList: {
     flex: 1,
@@ -24,22 +24,22 @@ const downloadsStyle = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     marginTop: 16,
-    marginBottom: 60
+    marginBottom: 60,
   },
   scrollPadding: {
     marginTop: -16,
-    paddingBottom: 16
+    paddingBottom: 16,
   },
   noDownloadsText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 24,
     marginLeft: 16,
-    marginRight: 16
+    marginRight: 16,
   },
   loading: {
-    position: 'absolute'
-  }
+    position: 'absolute',
+  },
 });
 
 export default downloadsStyle;

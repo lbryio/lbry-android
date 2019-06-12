@@ -8,4 +8,7 @@ const select = state => ({
 
 const perform = dispatch => ({});
 
-export default connect(select, perform)(FileList);
+export default connect(
+  select,
+  perform
+)(FileList);

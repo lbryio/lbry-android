@@ -5,22 +5,22 @@ const splashStyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: Colors.LbryGreen
+    backgroundColor: Colors.LbryGreen,
   },
   title: {
     fontFamily: 'Inter-UI-Bold',
     fontSize: 64,
     textAlign: 'center',
     marginBottom: 48,
-    color: Colors.White
+    color: Colors.White,
   },
   loading: {
-    marginBottom: 36
+    marginBottom: 36,
   },
   progress: {
     alignSelf: 'center',
     marginBottom: 36,
-    width: '50%'
+    width: '50%',
   },
   details: {
     fontFamily: 'Inter-UI-Regular',
@@ -28,7 +28,7 @@ const splashStyle = StyleSheet.create({
     marginLeft: 16,
     marginRight: 16,
     color: Colors.White,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   message: {
     fontFamily: 'Inter-UI-Bold',
@@ -37,8 +37,8 @@ const splashStyle = StyleSheet.create({
     marginLeft: 16,
     marginRight: 16,
     marginBottom: 4,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 export default splashStyle;

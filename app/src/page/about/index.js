@@ -21,4 +21,7 @@ const perform = dispatch => ({
   setPlayerVisible: () => dispatch(doSetPlayerVisible(false)),
 });
 
-export default connect(select, perform)(AboutPage);
+export default connect(
+  select,
+  perform
+)(AboutPage);

@@ -7,7 +7,7 @@ import {
   makeSelectThumbnailForUri,
   makeSelectTitleForUri,
   makeSelectIsUriResolving,
-  makeSelectClaimIsNsfw
+  makeSelectClaimIsNsfw,
 } from 'lbry-redux';
 import { selectRewardContentClaimIds } from 'lbryinc';
 import { selectShowNsfw } from 'redux/selectors/settings';
@@ -29,4 +29,7 @@ const perform = dispatch => ({
   resolveUri: uri => dispatch(doResolveUri(uri)),
 });
 
-export default connect(select, perform)(FileItem);
+export default connect(
+  select,
+  perform
+)(FileItem);

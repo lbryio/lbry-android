@@ -10,7 +10,7 @@ import rewardStyle from '../../styles/reward';
 class CustomRewardCard extends React.PureComponent<Props> {
   state = {
     claimStarted: false,
-    rewardCode: ''
+    rewardCode: '',
   };
 
   componentWillReceiveProps(nextProps) {
@@ -49,31 +49,39 @@ class CustomRewardCard extends React.PureComponent<Props> {
     this.setState({ claimStarted: true }, () => {
       submitRewardCode(rewardCode);
     });
-  }
+  };
 
   render() {
     const { canClaim, rewardIsPending } = this.props;
 
     return (
-      <View style={[rewardStyle.rewardCard, rewardStyle.row]} >
+      <View style={[rewardStyle.rewardCard, rewardStyle.row]}>
         <View style={rewardStyle.leftCol}>
           {rewardIsPending && <ActivityIndicator size="small" color={Colors.LbryGreen} />}
         </View>
         <View style={rewardStyle.midCol}>
           <Text style={rewardStyle.rewardTitle}>Custom Code</Text>
-          <Text style={rewardStyle.rewardDescription}>Are you a supermodel or rockstar that received a custom reward code? Claim it here.</Text>
+          <Text style={rewardStyle.rewardDescription}>
+            Are you a supermodel or rockstar that received a custom reward code? Claim it here.
+          </Text>
 
           <View>
-            <TextInput style={rewardStyle.customCodeInput}
-                       placeholder={"0123abc"}
-                       onChangeText={text => this.setState({ rewardCode: text })}
-                       value={this.state.rewardCode} />
-            <Button style={rewardStyle.redeemButton}
-                    text={"Redeem"}
-                    disabled={(!this.state.rewardCode || this.state.rewardCode.trim().length === 0 || rewardIsPending)}
-                    onPress={() => {
-                      if (!rewardIsPending) { this.onClaimPress(); }
-                    }} />
+            <TextInput
+              style={rewardStyle.customCodeInput}
+              placeholder={'0123abc'}
+              onChangeText={text => this.setState({ rewardCode: text })}
+              value={this.state.rewardCode}
+            />
+            <Button
+              style={rewardStyle.redeemButton}
+              text={'Redeem'}
+              disabled={!this.state.rewardCode || this.state.rewardCode.trim().length === 0 || rewardIsPending}
+              onPress={() => {
+                if (!rewardIsPending) {
+                  this.onClaimPress();
+                }
+              }}
+            />
           </View>
         </View>
         <View style={rewardStyle.rightCol}>
@@ -83,6 +91,6 @@ class CustomRewardCard extends React.PureComponent<Props> {
       </View>
     );
   }
-};
+}
 
 export default CustomRewardCard;

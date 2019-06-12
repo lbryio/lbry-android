@@ -9,12 +9,12 @@ const firstRunStyle = StyleSheet.create({
   },
   screenContainer: {
     flex: 1,
-    backgroundColor: Colors.LbryGreen
+    backgroundColor: Colors.LbryGreen,
   },
   container: {
     flex: 9,
     justifyContent: 'center',
-    backgroundColor: Colors.LbryGreen
+    backgroundColor: Colors.LbryGreen,
   },
   title: {
     fontFamily: 'Inter-UI-SemiBold',
@@ -22,7 +22,7 @@ const firstRunStyle = StyleSheet.create({
     marginLeft: 32,
     marginRight: 32,
     marginBottom: 32,
-    color: Colors.White
+    color: Colors.White,
   },
   paragraph: {
     fontFamily: 'Inter-UI-Regular',
@@ -31,7 +31,7 @@ const firstRunStyle = StyleSheet.create({
     marginLeft: 32,
     marginRight: 32,
     marginBottom: 20,
-    color: Colors.White
+    color: Colors.White,
   },
   spacedParagraph: {
     fontFamily: 'Inter-UI-Regular',
@@ -40,7 +40,7 @@ const firstRunStyle = StyleSheet.create({
     marginLeft: 32,
     marginRight: 32,
     marginBottom: 20,
-    color: Colors.White
+    color: Colors.White,
   },
   infoParagraph: {
     fontFamily: 'Inter-UI-Regular',
@@ -49,22 +49,22 @@ const firstRunStyle = StyleSheet.create({
     marginLeft: 32,
     marginRight: 32,
     marginBottom: 20,
-    color: Colors.White
+    color: Colors.White,
   },
   confirmContainer: {
-    marginTop: 36
+    marginTop: 36,
   },
   rowParagraph: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 24,
     color: Colors.White,
-    flex: 0.7
+    flex: 0.7,
   },
   rowSwitch: {
     justifyContent: 'flex-start',
     flex: 0.2,
-    marginRight: 8
+    marginRight: 8,
   },
   emailInput: {
     fontFamily: 'Inter-UI-Regular',
@@ -73,7 +73,7 @@ const firstRunStyle = StyleSheet.create({
     marginLeft: 32,
     marginRight: 32,
     marginBottom: 20,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   passwordInput: {
     fontFamily: 'Inter-UI-Regular',
@@ -82,22 +82,22 @@ const firstRunStyle = StyleSheet.create({
     marginLeft: 32,
     marginRight: 32,
     marginBottom: 20,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   leftButton: {
     flex: 1,
     alignSelf: 'flex-end',
     paddingBottom: 16,
     marginLeft: 32,
-    marginRight: 32
+    marginRight: 32,
   },
   bottomContainer: {
-    flex: 1
+    flex: 1,
   },
   buttonRow: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   actionButton: {
     backgroundColor: Colors.White,
@@ -105,39 +105,39 @@ const firstRunStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-Regular',
     fontSize: 12,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   button: {
     alignSelf: 'flex-end',
     padding: 20,
     paddingLeft: 32,
-    paddingRight: 32
+    paddingRight: 32,
   },
   buttonText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 18,
-    color: Colors.White
+    color: Colors.White,
   },
   smallButtonText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     color: Colors.White,
-    marginBottom: -2
+    marginBottom: -2,
   },
   smallLeftButtonText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
     color: Colors.White,
-    marginBottom: 6
+    marginBottom: 6,
   },
   waiting: {
-    marginBottom: 24
+    marginBottom: 24,
   },
   pageWaiting: {
-    alignSelf:  'center'
+    alignSelf: 'center',
   },
   titleIcon: {
-    marginTop: 8
+    marginTop: 8,
   },
   closeButton: {
     position: 'absolute',
@@ -146,12 +146,12 @@ const firstRunStyle = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 48,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   closeButtonText: {
     alignSelf: 'center',
     color: Colors.White,
-    fontSize: 16
+    fontSize: 16,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -160,32 +160,32 @@ const firstRunStyle = StyleSheet.create({
     width: '100%',
     paddingLeft: 32,
     paddingRight: 32,
-    marginTop: 16
+    marginTop: 16,
   },
   verificationButton: {
     backgroundColor: Colors.White,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   passwordStrength: {
     marginLeft: 32,
     marginRight: 32,
-    marginBottom: 48
+    marginBottom: 48,
   },
   centered: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   centerInside: {
     flex: 1,
-    alignItems:'center'
+    alignItems: 'center',
   },
   nowrap: {
     flex: 1,
-    flexWrap: 'nowrap'
+    flexWrap: 'nowrap',
   },
   passwordInputContainer: {
     marginLeft: 32,
-    marginRight: 32
+    marginRight: 32,
   },
   revealPasswordIcon: {
     position: 'absolute',
@@ -194,11 +194,11 @@ const firstRunStyle = StyleSheet.create({
     width: 32,
     height: 32,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   revealIcon: {
-    color: Colors.White
-  }
+    color: Colors.White,
+  },
 });
 
 export default firstRunStyle;

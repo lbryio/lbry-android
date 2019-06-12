@@ -28,7 +28,7 @@ export function doStartDownload(uri, outpoint, fileInfo) {
 }
 
 export function doUpdateDownload(uri, outpoint, fileInfo, progress) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({
       type: ACTIONS.DOWNLOADING_PROGRESSED,
       data: {
@@ -42,7 +42,7 @@ export function doUpdateDownload(uri, outpoint, fileInfo, progress) {
 }
 
 export function doCompleteDownload(uri, outpoint, fileInfo) {
-  return (dispatch) => {
+  return dispatch => {
     if (fileInfo.completed) {
       dispatch({
         type: ACTIONS.DOWNLOADING_COMPLETED,
@@ -57,7 +57,7 @@ export function doCompleteDownload(uri, outpoint, fileInfo) {
 }
 
 export function doStopDownloadingFile(uri, fileInfo) {
-  return dispatch  => {
+  return dispatch => {
     let params = { status: 'stop' };
     if (fileInfo.sd_hash) {
       params.sd_hash = fileInfo.sd_hash;
@@ -69,7 +69,7 @@ export function doStopDownloadingFile(uri, fileInfo) {
     Lbry.file_set_status(params).then(() => {
       dispatch({
         type: ACTIONS.DOWNLOADING_CANCELED,
-        data: { uri, outpoint: fileInfo.outpoint }
+        data: { uri, outpoint: fileInfo.outpoint },
       });
 
       // Should also delete the file after the user stops downloading

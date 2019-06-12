@@ -1,9 +1,5 @@
 import { connect } from 'react-redux';
-import {
-  doFetchTransactions,
-  selectTransactionItems,
-  selectIsFetchingTransactions,
-} from 'lbry-redux';
+import { doFetchTransactions, selectTransactionItems, selectIsFetchingTransactions } from 'lbry-redux';
 import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import { selectCurrentRoute } from 'redux/selectors/drawer';
 import Constants from 'constants';
@@ -18,7 +14,10 @@ const select = state => ({
 const perform = dispatch => ({
   fetchTransactions: () => dispatch(doFetchTransactions()),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_TRANSACTION_HISTORY)),
-  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false)),
 });
 
-export default connect(select, perform)(TransactionHistoryPage);
+export default connect(
+  select,
+  perform
+)(TransactionHistoryPage);

@@ -1,13 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import {
-  ActivityIndicator,
-  Linking,
-  NativeModules,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { ActivityIndicator, Linking, NativeModules, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import Colors from 'styles/colors';
@@ -30,7 +23,7 @@ class VerificationScreen extends React.PureComponent {
     isEmailVerificationPhase: false,
     isEmailVerified: false,
     isIdentityVerified: false,
-    isRewardApproved: false
+    isRewardApproved: false,
   };
 
   componentDidMount() {
@@ -38,46 +31,49 @@ class VerificationScreen extends React.PureComponent {
     this.checkVerificationStatus(user);
   }
 
-  setEmailVerificationPhase = (value) => {
+  setEmailVerificationPhase = value => {
     this.setState({ isEmailVerificationPhase: value });
-  }
+  };
 
-  checkVerificationStatus = (user) => {
+  checkVerificationStatus = user => {
     const { deviceWalletSynced, navigation } = this.props;
     const { syncFlow } = navigation.state.params;
 
-    this.setState({
-      isEmailVerified: (user && user.primary_email && user.has_verified_email),
-      isIdentityVerified: (user && user.is_identity_verified),
-      isRewardApproved: (user && user.is_reward_approved)
-    }, () => {
-      if (!this.state.isEmailVerified) {
-        this.setState({ currentPage: 'emailVerify' });
-      }
-
-      if (syncFlow) {
-        if (this.state.isEmailVerified && !deviceWalletSynced) {
-          this.setState({ currentPage: 'syncVerify' });
+    this.setState(
+      {
+        isEmailVerified: user && user.primary_email && user.has_verified_email,
+        isIdentityVerified: user && user.is_identity_verified,
+        isRewardApproved: user && user.is_reward_approved,
+      },
+      () => {
+        if (!this.state.isEmailVerified) {
+          this.setState({ currentPage: 'emailVerify' });
         }
 
-        if (this.state.isEmailVerified && syncFlow && deviceWalletSynced) {
-          navigation.goBack();
-        }
-      } else {
-        if (this.state.isEmailVerified && !this.state.isIdentityVerified && !this.state.isRewardApproved) {
-          this.setState({ currentPage: 'phoneVerify' });
-        }
-        if (this.state.isEmailVerified && this.state.isIdentityVerified && !this.state.isRewardApproved) {
-          this.setState({ currentPage: 'manualVerify' });
-        }
-        if (this.state.isEmailVerified && this.state.isRewardApproved) {
-          // verification steps already completed
-          // simply navigate back to the rewards page
-          navigation.goBack();
+        if (syncFlow) {
+          if (this.state.isEmailVerified && !deviceWalletSynced) {
+            this.setState({ currentPage: 'syncVerify' });
+          }
+
+          if (this.state.isEmailVerified && syncFlow && deviceWalletSynced) {
+            navigation.goBack();
+          }
+        } else {
+          if (this.state.isEmailVerified && !this.state.isIdentityVerified && !this.state.isRewardApproved) {
+            this.setState({ currentPage: 'phoneVerify' });
+          }
+          if (this.state.isEmailVerified && this.state.isIdentityVerified && !this.state.isRewardApproved) {
+            this.setState({ currentPage: 'manualVerify' });
+          }
+          if (this.state.isEmailVerified && this.state.isRewardApproved) {
+            // verification steps already completed
+            // simply navigate back to the rewards page
+            navigation.goBack();
+          }
         }
       }
-    });
-  }
+    );
+  };
 
   componentWillReceiveProps(nextProps) {
     const { user } = nextProps;
@@ -87,7 +83,7 @@ class VerificationScreen extends React.PureComponent {
   onCloseButtonPressed = () => {
     const { navigation } = this.props;
     navigation.goBack();
-  }
+  };
 
   render() {
     const {
@@ -116,7 +112,7 @@ class VerificationScreen extends React.PureComponent {
       phoneNewErrorMessage,
       resendVerificationEmail,
       setClientSetting,
-      verifyPhone
+      verifyPhone,
     } = this.props;
 
     let page = null;
@@ -174,9 +170,7 @@ class VerificationScreen extends React.PureComponent {
         break;
 
       case 'manualVerify':
-        page = (
-          <ManualVerifyPage setEmailVerificationPhase={this.setEmailVerificationPhase} />
-        );
+        page = <ManualVerifyPage setEmailVerificationPhase={this.setEmailVerificationPhase} />;
         break;
     }
 
@@ -184,10 +178,11 @@ class VerificationScreen extends React.PureComponent {
       <View style={firstRunStyle.screenContainer}>
         {page}
 
-        {!this.state.isEmailVerificationPhase &&
-        (<TouchableOpacity style={firstRunStyle.closeButton} onPress={this.onCloseButtonPressed}>
-          <Text style={firstRunStyle.closeButtonText}>x</Text>
-        </TouchableOpacity>)}
+        {!this.state.isEmailVerificationPhase && (
+          <TouchableOpacity style={firstRunStyle.closeButton} onPress={this.onCloseButtonPressed}>
+            <Text style={firstRunStyle.closeButtonText}>x</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
