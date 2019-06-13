@@ -865,7 +865,7 @@ class FilePage extends React.PureComponent {
                         />
                       </View>
                       <View style={filePageStyle.subscriptionRow}>
-                        {((isPlayable && !fileInfo) || (isPlayable && fileInfo && !fileInfo.download_path)) && (
+                        {false && ((isPlayable && !fileInfo) || (isPlayable && fileInfo && !fileInfo.download_path)) && (
                           <Button
                             style={[filePageStyle.actionButton, filePageStyle.saveFileButton]}
                             theme={'light'}
