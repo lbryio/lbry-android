@@ -24,7 +24,7 @@ class TransactionHistoryPage extends React.PureComponent {
     pushDrawerStack();
     setPlayerVisible();
     fetchTransactions();
-  }
+  };
 
   componentDidMount() {
     this.onComponentFocused();
@@ -52,7 +52,7 @@ class TransactionHistoryPage extends React.PureComponent {
             {!fetchingTransactions && transactions.length === 0 && (
               <Text style={walletStyle.infoText}>No transactions to list.</Text>
             )}
-            {!fetchingTransactions && transactions && (transactions.length > 0) && (
+            {!fetchingTransactions && transactions && transactions.length > 0 && (
               <TransactionList navigation={navigation} transactions={transactions} />
             )}
           </View>

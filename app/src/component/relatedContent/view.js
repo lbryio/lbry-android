@@ -50,14 +50,16 @@ export default class RelatedContent extends React.PureComponent<Props> {
     return (
       <View style={relatedContentStyle.container}>
         <Text style={relatedContentStyle.title}>Related Content</Text>
-        {recommendedContent && recommendedContent.map(recommendedUri => (
-          <FileListItem
-            style={fileListStyle.item}
-            key={recommendedUri}
-            uri={recommendedUri}
-            navigation={navigation}
-            onPress={() => navigateToUri(navigation, recommendedUri, { autoplay: true })} />
-        ))}
+        {recommendedContent &&
+          recommendedContent.map(recommendedUri => (
+            <FileListItem
+              style={fileListStyle.item}
+              key={recommendedUri}
+              uri={recommendedUri}
+              navigation={navigation}
+              onPress={() => navigateToUri(navigation, recommendedUri, { autoplay: true })}
+            />
+          ))}
         {isSearching && <ActivityIndicator size="small" color={Colors.LbryGreen} style={relatedContentStyle.loading} />}
       </View>
     );

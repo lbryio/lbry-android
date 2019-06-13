@@ -22,30 +22,29 @@ class SuggestedSubscriptions extends React.PureComponent {
     }
 
     return suggested ? (
-      <SectionList style={subscriptionsStyle.scrollContainer}
-        renderItem={ ({item, index, section}) => (
-            <SuggestedSubscriptionItem
-              key={item}
-              categoryLink={normalizeURI(item)}
-              navigation={navigation} />
-          )
-        }
-        renderSectionHeader={
-          ({section: {title}}) => {
-            const titleParts = title.split(';');
-            const channelName = titleParts[0];
-            const channelUri = normalizeURI(titleParts[1]);
-            return (
-              <View style={subscriptionsStyle.titleRow}>
-                <Link style={subscriptionsStyle.channelTitle} text={channelName} onPress={() => {
+      <SectionList
+        style={subscriptionsStyle.scrollContainer}
+        renderItem={({ item, index, section }) => (
+          <SuggestedSubscriptionItem key={item} categoryLink={normalizeURI(item)} navigation={navigation} />
+        )}
+        renderSectionHeader={({ section: { title } }) => {
+          const titleParts = title.split(';');
+          const channelName = titleParts[0];
+          const channelUri = normalizeURI(titleParts[1]);
+          return (
+            <View style={subscriptionsStyle.titleRow}>
+              <Link
+                style={subscriptionsStyle.channelTitle}
+                text={channelName}
+                onPress={() => {
                   navigateToUri(navigation, normalizeURI(channelUri));
-                }} />
-                <SubscribeButton style={subscriptionsStyle.subscribeButton} uri={channelUri} name={channelName} />
-              </View>
-            )
-          }
-        }
-        sections={suggested.map(({ uri, label }) => ({ title: (label + ';' + uri), data: [uri] }))}
+                }}
+              />
+              <SubscribeButton style={subscriptionsStyle.subscribeButton} uri={channelUri} name={channelName} />
+            </View>
+          );
+        }}
+        sections={suggested.map(({ uri, label }) => ({ title: label + ';' + uri, data: [uri] }))}
         keyExtractor={(item, index) => item}
       />
     ) : null;

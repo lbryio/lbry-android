@@ -1,12 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import {
-  ActivityIndicator,
-  NativeModules,
-  ScrollView,
-  Text,
-  View
-} from 'react-native';
+import { ActivityIndicator, NativeModules, ScrollView, Text, View } from 'react-native';
 import Colors from 'styles/colors';
 import Constants from 'constants';
 import Link from 'component/link';
@@ -25,7 +19,7 @@ class RewardsPage extends React.PureComponent {
     isRewardApproved: false,
     verifyRequestStarted: false,
     revealVerification: true,
-    firstRewardClaimed: false
+    firstRewardClaimed: false,
   };
 
   scrollView = null;
@@ -51,11 +45,11 @@ class RewardsPage extends React.PureComponent {
     fetchRewards();
 
     this.setState({
-      isEmailVerified: (user && user.primary_email && user.has_verified_email),
-      isIdentityVerified: (user && user.is_identity_verified),
-      isRewardApproved: (user && user.is_reward_approved)
+      isEmailVerified: user && user.primary_email && user.has_verified_email,
+      isIdentityVerified: user && user.is_identity_verified,
+      isRewardApproved: user && user.is_reward_approved,
     });
-  }
+  };
 
   componentDidMount() {
     this.onComponentFocused();
@@ -83,9 +77,9 @@ class RewardsPage extends React.PureComponent {
     if (user) {
       // update other checks (if new user data has been retrieved)
       this.setState({
-        isEmailVerified: (user && user.primary_email && user.has_verified_email),
-        isIdentityVerified: (user && user.is_identity_verified),
-        isRewardApproved: (user && user.is_reward_approved)
+        isEmailVerified: user && user.primary_email && user.has_verified_email,
+        isIdentityVerified: user && user.is_identity_verified,
+        isRewardApproved: user && user.is_reward_approved,
       });
     }
 
@@ -111,7 +105,13 @@ class RewardsPage extends React.PureComponent {
         <View style={[rewardStyle.card, rewardStyle.verification]}>
           <Text style={rewardStyle.title}>Manual Reward Verification</Text>
           <Text style={rewardStyle.text}>
-            You need to be manually verified before you can start claiming rewards. Please request to be verified on the <Link style={rewardStyle.greenLink} href="https://discordapp.com/invite/Z3bERWA" text="LBRY Discord server" />.
+            You need to be manually verified before you can start claiming rewards. Please request to be verified on the{' '}
+            <Link
+              style={rewardStyle.greenLink}
+              href="https://discordapp.com/invite/Z3bERWA"
+              text="LBRY Discord server"
+            />
+            .
           </Text>
         </View>
       );
@@ -122,7 +122,7 @@ class RewardsPage extends React.PureComponent {
 
   renderUnclaimedRewards() {
     const { claimed, fetching, rewards, user } = this.props;
-    const unclaimedRewards = (rewards && rewards.length) ? rewards : [];
+    const unclaimedRewards = rewards && rewards.length ? rewards : [];
 
     if (fetching) {
       return (
@@ -142,11 +142,15 @@ class RewardsPage extends React.PureComponent {
     const isNotEligible = !user || !user.primary_email || !user.has_verified_email || !user.is_reward_approved;
     return (
       <View>
-        {unclaimedRewards.map(reward => <RewardCard key={reward.reward_type}
-                                          showVerification={this.showVerification}
-                                          canClaim={!isNotEligible}
-                                          reward={reward}
-                                          reward_type={reward.reward_type} />)}
+        {unclaimedRewards.map(reward => (
+          <RewardCard
+            key={reward.reward_type}
+            showVerification={this.showVerification}
+            canClaim={!isNotEligible}
+            reward={reward}
+            reward_type={reward.reward_type}
+          />
+        ))}
         <CustomRewardCard canClaim={!isNotEligible} showVerification={this.showVerification} />
       </View>
     );
@@ -158,7 +162,9 @@ class RewardsPage extends React.PureComponent {
       const reversed = claimed.reverse();
       return (
         <View>
-          {reversed.map(reward => <RewardCard key={reward.transaction_id} reward={reward} />)}
+          {reversed.map(reward => (
+            <RewardCard key={reward.transaction_id} reward={reward} />
+          ))}
         </View>
       );
     }
@@ -170,7 +176,7 @@ class RewardsPage extends React.PureComponent {
         this.scrollView.scrollTo({ x: 0, y: 0, animated: true });
       }
     });
-  }
+  };
 
   render() {
     const { user, navigation } = this.props;
@@ -178,18 +184,19 @@ class RewardsPage extends React.PureComponent {
     return (
       <View style={rewardStyle.container}>
         <UriBar navigation={navigation} />
-        {(!this.state.isEmailVerified || !this.state.isRewardApproved) &&
-          <RewardEnrolment navigation={navigation} />}
+        {(!this.state.isEmailVerified || !this.state.isRewardApproved) && <RewardEnrolment navigation={navigation} />}
 
-        {(this.state.isEmailVerified && this.state.isRewardApproved) &&
+        {this.state.isEmailVerified && this.state.isRewardApproved && (
           <ScrollView
-            ref={ref => this.scrollView = ref}
+            ref={ref => (this.scrollView = ref)}
             keyboardShouldPersistTaps={'handled'}
             style={rewardStyle.scrollContainer}
-            contentContainerStyle={rewardStyle.scrollContentContainer}>
+            contentContainerStyle={rewardStyle.scrollContentContainer}
+          >
             {this.renderUnclaimedRewards()}
             {this.renderClaimedRewards()}
-          </ScrollView>}
+          </ScrollView>
+        )}
       </View>
     );
   }

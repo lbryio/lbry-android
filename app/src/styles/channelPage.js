@@ -5,39 +5,39 @@ const channelPageStyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: Colors.PageBackground
+    backgroundColor: Colors.PageBackground,
   },
   content: {
-    flex: 1
+    flex: 1,
   },
   viewContainer: {
     flex: 1,
-    marginTop: 60
+    marginTop: 60,
   },
   fileList: {
     flex: 1,
-    paddingTop: 30
+    paddingTop: 30,
   },
   fileListContent: {
-    paddingBottom: 16
+    paddingBottom: 16,
   },
   title: {
     color: Colors.LbryGreen,
     fontFamily: 'Inter-UI-SemiBold',
     fontSize: 30,
-    margin: 16
+    margin: 16,
   },
-   busyContainer: {
+  busyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   infoText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 20,
     textAlign: 'center',
-    marginLeft: 10
+    marginLeft: 10,
   },
   pageButtons: {
     width: '100%',
@@ -46,25 +46,25 @@ const channelPageStyle = StyleSheet.create({
     position: 'absolute',
     bottom: 16,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   button: {
     backgroundColor: Colors.LbryGreen,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   nextButton: {
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
   },
   channelHeader: {
     position: 'absolute',
     left: 120,
-    bottom: 4
+    bottom: 4,
   },
   channelName: {
     color: Colors.White,
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 18
+    fontSize: 18,
   },
   subscribeButton: {
     alignSelf: 'flex-start',
@@ -74,7 +74,7 @@ const channelPageStyle = StyleSheet.create({
     position: 'absolute',
     right: 8,
     bottom: -88,
-    zIndex: 100
+    zIndex: 100,
   },
   cover: {
     width: '100%',
@@ -82,13 +82,13 @@ const channelPageStyle = StyleSheet.create({
   },
   coverImage: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   tabBar: {
     height: 45,
     backgroundColor: Colors.LbryGreen,
     flexDirection: 'row',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   tabTitle: {
     fontFamily: 'Inter-UI-SemiBold',
@@ -98,39 +98,39 @@ const channelPageStyle = StyleSheet.create({
   tab: {
     width: '30%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   activeTabHint: {
     position: 'absolute',
     bottom: 0,
     backgroundColor: Colors.White,
     height: 3,
-    width: '100%'
+    width: '100%',
   },
   contentTab: {
-    flex: 1
+    flex: 1,
   },
   aboutTab: {
-    flex: 1
+    flex: 1,
   },
   aboutScroll: {
     flex: 1,
   },
   aboutItem: {
-    marginBottom: 24
+    marginBottom: 24,
   },
   aboutScrollContent: {
-    padding: 24
+    padding: 24,
   },
   aboutTitle: {
     fontFamily: 'Inter-UI-SemiBold',
     fontSize: 16,
-    lineHeight: 24
+    lineHeight: 24,
   },
   aboutText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
-    lineHeight: 24
+    lineHeight: 24,
   },
   avatarImageContainer: {
     width: 80,
@@ -140,12 +140,12 @@ const channelPageStyle = StyleSheet.create({
     overflow: 'hidden',
     left: 24,
     bottom: -40,
-    zIndex: 100
+    zIndex: 100,
   },
   avatarImage: {
     width: '100%',
     height: '100%',
-  }
+  },
 });
 
 export default channelPageStyle;

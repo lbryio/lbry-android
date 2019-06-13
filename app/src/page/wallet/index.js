@@ -16,7 +16,6 @@ const select = state => ({
   rewardsNotInterested: makeSelectClientSetting(Constants.SETTING_REWARDS_NOT_INTERESTED)(state),
   understandsRisks: makeSelectClientSetting(Constants.SETTING_ALPHA_UNDERSTANDS_RISKS)(state),
   user: selectUser(state),
-
 });
 
 const perform = dispatch => ({
@@ -24,7 +23,10 @@ const perform = dispatch => ({
   getSync: password => dispatch(doGetSync(password)),
   setClientSetting: (key, value) => dispatch(doSetClientSetting(key, value)),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_WALLET)),
-  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false)),
 });
 
-export default connect(select, perform)(WalletPage);
+export default connect(
+  select,
+  perform
+)(WalletPage);

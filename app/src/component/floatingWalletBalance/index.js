@@ -11,4 +11,7 @@ const select = state => ({
   rewardsNotInterested: makeSelectClientSetting(Constants.SETTING_REWARDS_NOT_INTERESTED)(state),
 });
 
-export default connect(select, null)(FloatingWalletBalance);
+export default connect(
+  select,
+  null
+)(FloatingWalletBalance);

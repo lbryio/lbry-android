@@ -1,23 +1,18 @@
 import { StyleSheet } from 'react-native';
-import {
-  screenWidth,
-  horizontalMargin,
-  mediaWidth,
-  mediaHeight
-} from 'styles/discover';
+import { screenWidth, horizontalMargin, mediaWidth, mediaHeight } from 'styles/discover';
 import Colors from 'styles/colors';
 
 const subscriptionsStyle = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.PageBackground
+    backgroundColor: Colors.PageBackground,
   },
   subContainer: {
     flex: 1,
   },
   suggestedSubsContainer: {
     flex: 1,
-    marginTop: 60
+    marginTop: 60,
   },
   button: {
     alignSelf: 'flex-start',
@@ -25,48 +20,48 @@ const subscriptionsStyle = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     marginLeft: 16,
-    marginBottom: 16
+    marginBottom: 16,
   },
   busyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    padding: 16
+    padding: 16,
   },
   scrollContainer: {
-    flex: 1
+    flex: 1,
   },
   scrollPadding: {
-    paddingTop: 24
+    paddingTop: 24,
   },
   infoText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
-    margin: 16
+    margin: 16,
   },
   suggestedContainer: {
     flex: 1,
   },
   contentContainer: {
     flex: 1,
-    marginTop: 16
+    marginTop: 16,
   },
   contentText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     marginLeft: 24,
     marginRight: 24,
-    marginBottom: 8
+    marginBottom: 8,
   },
   fileItem: {
     marginLeft: 24,
     marginRight: 24,
-    marginBottom: 24
+    marginBottom: 24,
   },
   compactMainFileItem: {
     marginLeft: 24,
-    marginRight: 24
+    marginRight: 24,
   },
   compactItems: {
     flex: 1,
@@ -77,24 +72,24 @@ const subscriptionsStyle = StyleSheet.create({
     height: 80,
   },
   compactFileItem: {
-    width: (screenWidth - horizontalMargin - (6 * 3)) / 3,
+    width: (screenWidth - horizontalMargin - 6 * 3) / 3,
     marginLeft: 6,
-    height: '100%'
+    height: '100%',
   },
   compactFileItemMedia: {
     width: (screenWidth - horizontalMargin) / 3,
-    height: '100%'
+    height: '100%',
   },
   fileItemMedia: {
     width: mediaWidth,
     height: mediaHeight,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   fileItemName: {
     fontFamily: 'Inter-UI-Bold',
     marginTop: 8,
-    fontSize: 18
+    fontSize: 18,
   },
   channelTitle: {
     fontFamily: 'Inter-UI-SemiBold',
@@ -102,12 +97,12 @@ const subscriptionsStyle = StyleSheet.create({
     marginLeft: 24,
     marginTop: 16,
     marginBottom: 16,
-    color: Colors.LbryGreen
+    color: Colors.LbryGreen,
   },
   titleRow: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   subscribeButton: {
     alignSelf: 'flex-start',
@@ -121,19 +116,19 @@ const subscriptionsStyle = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 24,
     marginRight: 24,
-    marginTop: 84
+    marginTop: 84,
   },
   viewModeLink: {
     marginRight: 24,
     fontSize: 18,
-    color: Colors.LbryGreen
+    color: Colors.LbryGreen,
   },
   inactiveMode: {
-    fontFamily: 'Inter-UI-Regular'
+    fontFamily: 'Inter-UI-Regular',
   },
   activeMode: {
-    fontFamily: 'Inter-UI-SemiBold'
-  }
+    fontFamily: 'Inter-UI-SemiBold',
+  },
 });
 
 export default subscriptionsStyle;

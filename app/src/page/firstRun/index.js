@@ -24,7 +24,7 @@ import {
 import { doSetClientSetting } from 'redux/actions/settings';
 import FirstRun from './view';
 
-const select = (state) => ({
+const select = state => ({
   authenticating: selectAuthenticationIsPending(state),
   authToken: selectAuthToken(state),
   emailToVerify: selectEmailToVerify(state),
@@ -48,7 +48,10 @@ const perform = dispatch => ({
   checkSync: () => dispatch(doCheckSync()),
   setDefaultAccount: () => dispatch(doSetDefaultAccount()),
   notify: data => dispatch(doToast(data)),
-  resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email))
+  resendVerificationEmail: email => dispatch(doUserResendVerificationEmail(email)),
 });
 
-export default connect(select, perform)(FirstRun);
+export default connect(
+  select,
+  perform
+)(FirstRun);

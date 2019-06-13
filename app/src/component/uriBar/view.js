@@ -16,7 +16,7 @@ class UriBar extends React.PureComponent {
 
   keyboardDidHideListener = null;
 
-  componentDidMount () {
+  componentDidMount() {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     this.setSelection();
   }
@@ -44,7 +44,7 @@ class UriBar extends React.PureComponent {
       inputText: null,
       focused: false,
       // TODO: Add a setting to enable / disable direct search?
-      directSearch: true
+      directSearch: true,
     };
   }
 
@@ -66,15 +66,14 @@ class UriBar extends React.PureComponent {
         if (onSearchSubmitted) {
           onSearchSubmitted(text);
         } else {
-          navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: text }});
+          navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: text } });
         }
       }
-
     }, UriBar.INPUT_TIMEOUT);
     this.setState({ inputText: newValue, currentValue: newValue, changeTextTimeout: timeout });
-  }
+  };
 
-  handleItemPress = (item) => {
+  handleItemPress = item => {
     const { navigation, onSearchSubmitted, updateSearchQuery } = this.props;
     const { type, value } = item;
 
@@ -89,23 +88,23 @@ class UriBar extends React.PureComponent {
         return;
       }
 
-      navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: value }});
+      navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: value } });
     } else {
       const uri = normalizeURI(value);
       navigateToUri(navigation, uri);
     }
-  }
+  };
 
   _keyboardDidHide = () => {
     if (this.textInput) {
       this.textInput.blur();
     }
     this.setState({ focused: false });
-  }
+  };
 
   setSelection() {
     if (this.textInput) {
-      this.textInput.setNativeProps({ selection: { start: 0, end: 0 }});
+      this.textInput.setNativeProps({ selection: { start: 0, end: 0 } });
     }
   }
 
@@ -127,17 +126,17 @@ class UriBar extends React.PureComponent {
         }
 
         // Open the search page with the query populated
-        navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: inputText }});
+        navigation.navigate({ routeName: 'Search', key: 'searchPage', params: { searchQuery: inputText } });
       }
     }
-  }
+  };
 
   onSearchPageBlurred() {
     this.setState({ currenValueSet: false });
   }
 
   render() {
-    const { navigation, suggestions, query, value  } = this.props;
+    const { navigation, suggestions, query, value } = this.props;
     if (this.state.currentValue === null) {
       this.setState({ currentValue: value });
     }
@@ -155,39 +154,46 @@ class UriBar extends React.PureComponent {
             size={24}
             style={uriBarStyle.drawerMenuButton}
             iconStyle={discoverStyle.drawerHamburger}
-            onPress={() => navigation.openDrawer() } />
-          <TextInput ref={(ref) => { this.textInput = ref }}
-                     style={uriBarStyle.uriText}
-                     onLayout={() => { this.setSelection(); }}
-                     selectTextOnFocus={true}
-                     placeholder={'Search movies, music, and more'}
-                     underlineColorAndroid={'transparent'}
-                     numberOfLines={1}
-                     clearButtonMode={'while-editing'}
-                     value={this.state.currentValue}
-                     returnKeyType={'go'}
-                     inlineImageLeft={'baseline_search_black_24'}
-                     inlineImagePadding={16}
-                     onFocus={() => this.setState({ focused: true })}
-                     onBlur={() => {
-                       this.setState({ focused: false });
-                       this.setSelection();
-                     }}
-                     onChangeText={this.handleChangeText}
-                     onSubmitEditing={this.handleSubmitEditing}/>
-          {(this.state.focused && !this.state.directSearch) && (
-          <View style={uriBarStyle.suggestions}>
-            <FlatList style={uriBarStyle.suggestionList}
-                      data={suggestions}
-                      keyboardShouldPersistTaps={'handled'}
-                      keyExtractor={(item, value) => item.value}
-                      renderItem={({item}) => (
-                        <UriBarItem
-                          item={item}
-                          navigation={navigation}
-                          onPress={() => this.handleItemPress(item)}
-                        />)} />
-          </View>)}
+            onPress={() => navigation.openDrawer()}
+          />
+          <TextInput
+            ref={ref => {
+              this.textInput = ref;
+            }}
+            style={uriBarStyle.uriText}
+            onLayout={() => {
+              this.setSelection();
+            }}
+            selectTextOnFocus={true}
+            placeholder={'Search movies, music, and more'}
+            underlineColorAndroid={'transparent'}
+            numberOfLines={1}
+            clearButtonMode={'while-editing'}
+            value={this.state.currentValue}
+            returnKeyType={'go'}
+            inlineImageLeft={'baseline_search_black_24'}
+            inlineImagePadding={16}
+            onFocus={() => this.setState({ focused: true })}
+            onBlur={() => {
+              this.setState({ focused: false });
+              this.setSelection();
+            }}
+            onChangeText={this.handleChangeText}
+            onSubmitEditing={this.handleSubmitEditing}
+          />
+          {this.state.focused && !this.state.directSearch && (
+            <View style={uriBarStyle.suggestions}>
+              <FlatList
+                style={uriBarStyle.suggestionList}
+                data={suggestions}
+                keyboardShouldPersistTaps={'handled'}
+                keyExtractor={(item, value) => item.value}
+                renderItem={({ item }) => (
+                  <UriBarItem item={item} navigation={navigation} onPress={() => this.handleItemPress(item)} />
+                )}
+              />
+            </View>
+          )}
         </View>
       </View>
     );

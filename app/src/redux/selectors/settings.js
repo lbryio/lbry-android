@@ -3,7 +3,10 @@ import { createSelector } from 'reselect';
 
 const selectState = state => state.settings || {};
 
-export const selectDaemonSettings = createSelector(selectState, state => state.daemonSettings);
+export const selectDaemonSettings = createSelector(
+  selectState,
+  state => state.daemonSettings
+);
 
 export const selectClientSettings = createSelector(
   selectState,
@@ -11,7 +14,10 @@ export const selectClientSettings = createSelector(
 );
 
 export const makeSelectClientSetting = setting =>
-  createSelector(selectClientSettings, settings => (settings ? settings[setting] : undefined));
+  createSelector(
+    selectClientSettings,
+    settings => (settings ? settings[setting] : undefined)
+  );
 
 // refactor me
 export const selectShowNsfw = makeSelectClientSetting(SETTINGS.SHOW_NSFW);

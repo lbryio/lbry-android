@@ -1,15 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import {
-  ActivityIndicator,
-  Linking,
-  NativeModules,
-  Platform,
-  Switch,
-  Text,
-  TextInput,
-  View
-} from 'react-native';
+import { ActivityIndicator, Linking, NativeModules, Platform, Switch, Text, TextInput, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Button from 'component/button';
 import Colors from 'styles/colors';
@@ -23,7 +14,7 @@ class EmailVerifyPage extends React.PureComponent {
     resendVerificationEmail(email);
     AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'true');
     notify({ message: 'Please follow the instructions in the email sent to your address to continue.' });
-  }
+  };
 
   render() {
     const { onEmailViewLayout, email } = this.props;
@@ -31,19 +22,26 @@ class EmailVerifyPage extends React.PureComponent {
     const content = (
       <View onLayout={onEmailViewLayout}>
         <Text style={firstRunStyle.title}>Verify Email</Text>
-        <Text style={firstRunStyle.paragraph}>An email has been sent to <Text style={firstRunStyle.nowrap} numberOfLines={1}>{email}</Text>. Please follow the instructions in the message to verify your email address.</Text>
+        <Text style={firstRunStyle.paragraph}>
+          An email has been sent to{' '}
+          <Text style={firstRunStyle.nowrap} numberOfLines={1}>
+            {email}
+          </Text>
+          . Please follow the instructions in the message to verify your email address.
+        </Text>
 
         <View style={firstRunStyle.buttonContainer}>
-          <Button style={firstRunStyle.verificationButton} theme={"light"} text={"Resend"} onPress={this.onResendPressed} />
+          <Button
+            style={firstRunStyle.verificationButton}
+            theme={'light'}
+            text={'Resend'}
+            onPress={this.onResendPressed}
+          />
         </View>
       </View>
     );
 
-    return (
-      <View style={firstRunStyle.container}>
-        {content}
-      </View>
-    );
+    return <View style={firstRunStyle.container}>{content}</View>;
   }
 }
 

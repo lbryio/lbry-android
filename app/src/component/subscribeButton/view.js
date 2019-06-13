@@ -6,14 +6,7 @@ import Colors from 'styles/colors';
 
 class SubscribeButton extends React.PureComponent {
   render() {
-    const {
-      uri,
-      isSubscribed,
-      doChannelSubscribe,
-      doChannelUnsubscribe,
-      style,
-      hideText
-    } = this.props;
+    const { uri, isSubscribed, doChannelSubscribe, doChannelUnsubscribe, style, hideText } = this.props;
 
     let styles = [];
     if (style) {
@@ -32,8 +25,8 @@ class SubscribeButton extends React.PureComponent {
     return (
       <Button
         style={styles}
-        theme={"light"}
-        icon={isSubscribed ? "heart-broken" : "heart"}
+        theme={'light'}
+        icon={isSubscribed ? 'heart-broken' : 'heart'}
         iconColor={iconColor}
         solid={isSubscribed ? false : true}
         text={hideText ? null : subscriptionLabel}
@@ -42,7 +35,8 @@ class SubscribeButton extends React.PureComponent {
             channelName: claimName,
             uri: normalizeURI(uri),
           });
-        }} />
+        }}
+      />
     );
   }
 }

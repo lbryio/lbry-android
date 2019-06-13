@@ -1,14 +1,6 @@
 // @flow
 import React from 'react';
-import {
-  ActivityIndicator,
-  Dimensions,
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { ActivityIndicator, Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { navigateBack } from 'utils/helper';
 import Colors from 'styles/colors';
@@ -25,7 +17,7 @@ class ChannelPage extends React.PureComponent {
   state = {
     page: 1,
     showPageButtons: false,
-    activeTab: Constants.CONTENT_TAB
+    activeTab: Constants.CONTENT_TAB,
   };
 
   componentDidMount() {
@@ -43,7 +35,7 @@ class ChannelPage extends React.PureComponent {
         fetchClaims(uri, this.state.page);
       });
     }
-  }
+  };
 
   handleNextPage = () => {
     const { uri, fetchClaims, totalPages } = this.props;
@@ -52,7 +44,7 @@ class ChannelPage extends React.PureComponent {
         fetchClaims(uri, this.state.page);
       });
     }
-  }
+  };
 
   renderContent = () => {
     const { fetching, claimsInChannel, totalPages, navigation } = this.props;
@@ -68,13 +60,15 @@ class ChannelPage extends React.PureComponent {
     } else {
       contentList =
         claimsInChannel && claimsInChannel.length ? (
-          <FileList sortByHeight
-                    hideFilter
-                    fileInfos={claimsInChannel}
-                    navigation={navigation}
-                    style={channelPageStyle.fileList}
-                    contentContainerStyle={channelPageStyle.fileListContent}
-                    onEndReached={() => this.setState({ showPageButtons: true })} />
+          <FileList
+            sortByHeight
+            hideFilter
+            fileInfos={claimsInChannel}
+            navigation={navigation}
+            style={channelPageStyle.fileList}
+            contentContainerStyle={channelPageStyle.fileListContent}
+            onEndReached={() => this.setState({ showPageButtons: true })}
+          />
         ) : (
           <View style={channelPageStyle.busyContainer}>
             <Text style={channelPageStyle.infoText}>No content found.</Text>
@@ -87,17 +81,23 @@ class ChannelPage extends React.PureComponent {
       pageButtons = (
         <View style={channelPageStyle.pageButtons}>
           <View>
-            {(this.state.page > 1) && <Button
-                                        style={channelPageStyle.button}
-                                        text={"Previous"}
-                                        disabled={!!fetching}
-                                        onPress={this.handlePreviousPage} />}
+            {this.state.page > 1 && (
+              <Button
+                style={channelPageStyle.button}
+                text={'Previous'}
+                disabled={!!fetching}
+                onPress={this.handlePreviousPage}
+              />
+            )}
           </View>
-          {(this.state.page < totalPages) && <Button
-                                               style={[channelPageStyle.button, channelPageStyle.nextButton]}
-                                               text={"Next"}
-                                               disabled={!!fetching}
-                                               onPress={this.handleNextPage} />}
+          {this.state.page < totalPages && (
+            <Button
+              style={[channelPageStyle.button, channelPageStyle.nextButton]}
+              text={'Next'}
+              disabled={!!fetching}
+              onPress={this.handleNextPage}
+            />
+          )}
         </View>
       );
     }
@@ -108,7 +108,7 @@ class ChannelPage extends React.PureComponent {
         {pageButtons}
       </View>
     );
-  }
+  };
 
   renderAbout = () => {
     const { claim } = this.props;
@@ -126,45 +126,41 @@ class ChannelPage extends React.PureComponent {
     const { cover, description, thumbnail, email, website_url, title } = claim.value;
     return (
       <View style={channelPageStyle.aboutTab}>
-        {(!website_url && !email && !description) &&
+        {!website_url && !email && !description && (
           <View style={channelPageStyle.busyContainer}>
             <Text style={channelPageStyle.infoText}>Nothing here yet. Please check back later.</Text>
-          </View>}
+          </View>
+        )}
 
-        {(website_url || email || description) &&
-        <ScrollView style={channelPageStyle.aboutScroll} contentContainerStyle={channelPageStyle.aboutScrollContent}>
-          {(website_url && website_url.trim().length > 0) &&
-          <View style={channelPageStyle.aboutItem}>
-            <Text style={channelPageStyle.aboutTitle}>Website</Text>
-            <Link style={channelPageStyle.aboutText} text={website_url} href={website_url} />
-          </View>}
+        {(website_url || email || description) && (
+          <ScrollView style={channelPageStyle.aboutScroll} contentContainerStyle={channelPageStyle.aboutScrollContent}>
+            {website_url && website_url.trim().length > 0 && (
+              <View style={channelPageStyle.aboutItem}>
+                <Text style={channelPageStyle.aboutTitle}>Website</Text>
+                <Link style={channelPageStyle.aboutText} text={website_url} href={website_url} />
+              </View>
+            )}
 
-          {(email && email.trim().length > 0) &&
-          <View style={channelPageStyle.aboutItem}>
-            <Text style={channelPageStyle.aboutTitle}>Email</Text>
-            <Link style={channelPageStyle.aboutText} text={email} href={`mailto:${email}`} />
-          </View>}
+            {email && email.trim().length > 0 && (
+              <View style={channelPageStyle.aboutItem}>
+                <Text style={channelPageStyle.aboutTitle}>Email</Text>
+                <Link style={channelPageStyle.aboutText} text={email} href={`mailto:${email}`} />
+              </View>
+            )}
 
-          {(description && description.trim().length > 0) &&
-          <View style={channelPageStyle.aboutItem}>
-            <Text style={channelPageStyle.aboutText}>{description}</Text>
-          </View>}
-        </ScrollView>}
+            {description && description.trim().length > 0 && (
+              <View style={channelPageStyle.aboutItem}>
+                <Text style={channelPageStyle.aboutText}>{description}</Text>
+              </View>
+            )}
+          </ScrollView>
+        )}
       </View>
     );
-  }
+  };
 
   render() {
-    const {
-      fetching,
-      claimsInChannel,
-      claim,
-      navigation,
-      totalPages,
-      uri,
-      drawerStack,
-      popDrawerStack
-    } = this.props;
+    const { fetching, claimsInChannel, claim, navigation, totalPages, uri, drawerStack, popDrawerStack } = this.props;
     const { name, permanent_url: permanentUrl } = claim;
 
     let thumbnailUrl, coverUrl, title;
@@ -187,28 +183,44 @@ class ChannelPage extends React.PureComponent {
             <Image
               style={channelPageStyle.coverImage}
               resizeMode={'cover'}
-              source={(coverUrl && coverUrl.trim().length > 0) ? { uri: coverUrl } : require('../../assets/default_channel_cover.png')} />
+              source={
+                coverUrl && coverUrl.trim().length > 0
+                  ? { uri: coverUrl }
+                  : require('../../assets/default_channel_cover.png')
+              }
+            />
 
             <View style={channelPageStyle.channelHeader}>
-              <Text style={channelPageStyle.channelName}>{(title && title.trim().length > 0) ? title : name}</Text>
+              <Text style={channelPageStyle.channelName}>{title && title.trim().length > 0 ? title : name}</Text>
             </View>
 
             <View style={channelPageStyle.avatarImageContainer}>
               <Image
                 style={channelPageStyle.avatarImage}
                 resizeMode={'cover'}
-                source={(thumbnailUrl && thumbnailUrl.trim().length > 0) ? { uri: thumbnailUrl } : require('../../assets/default_avatar.jpg')} />
+                source={
+                  thumbnailUrl && thumbnailUrl.trim().length > 0
+                    ? { uri: thumbnailUrl }
+                    : require('../../assets/default_avatar.jpg')
+                }
+              />
             </View>
 
             <SubscribeButton style={channelPageStyle.subscribeButton} uri={uri} name={name} />
           </View>
 
           <View style={channelPageStyle.tabBar}>
-            <TouchableOpacity style={channelPageStyle.tab} onPress={() => this.setState({ activeTab: Constants.CONTENT_TAB })}>
+            <TouchableOpacity
+              style={channelPageStyle.tab}
+              onPress={() => this.setState({ activeTab: Constants.CONTENT_TAB })}
+            >
               <Text style={channelPageStyle.tabTitle}>CONTENT</Text>
               {Constants.CONTENT_TAB === this.state.activeTab && <View style={channelPageStyle.activeTabHint} />}
             </TouchableOpacity>
-            <TouchableOpacity style={channelPageStyle.tab} onPress={() => this.setState({ activeTab: Constants.ABOUT_TAB })}>
+            <TouchableOpacity
+              style={channelPageStyle.tab}
+              onPress={() => this.setState({ activeTab: Constants.ABOUT_TAB })}
+            >
               <Text style={channelPageStyle.tabTitle}>ABOUT</Text>
               {Constants.ABOUT_TAB === this.state.activeTab && <View style={channelPageStyle.activeTabHint} />}
             </TouchableOpacity>
@@ -218,7 +230,7 @@ class ChannelPage extends React.PureComponent {
           {Constants.ABOUT_TAB === this.state.activeTab && this.renderAbout()}
         </View>
       </View>
-    )
+    );
   }
 }
 

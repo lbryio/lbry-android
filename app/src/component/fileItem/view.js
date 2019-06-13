@@ -40,7 +40,7 @@ class FileItem extends React.PureComponent {
       NativeModules.Firebase.track('explore_click', { uri: normalizedUri });
     }
     navigateToUri(navigation, normalizedUri);
-  }
+  };
 
   render() {
     const {
@@ -56,46 +56,73 @@ class FileItem extends React.PureComponent {
       navigation,
       showDetails,
       compactView,
-      titleBeforeThumbnail
+      titleBeforeThumbnail,
     } = this.props;
 
     const uri = normalizeURI(this.props.uri);
     const obscureNsfw = this.props.obscureNsfw && metadata && metadata.nsfw;
     const isRewardContent = claim && rewardedContentClaimIds.includes(claim.claim_id);
     const channelName = claim ? claim.channel_name : null;
-    const channelClaimId = claim && claim.value && claim.value.publisherSignature && claim.value.publisherSignature.certificateId;
+    const channelClaimId =
+      claim && claim.value && claim.value.publisherSignature && claim.value.publisherSignature.certificateId;
     const fullChannelUri = channelClaimId ? `${channelName}#${channelClaimId}` : channelName;
     const height = claim ? claim.height : null;
 
     return (
       <View style={style}>
         <TouchableOpacity style={discoverStyle.container} onPress={this.navigateToFileUri}>
-          {!compactView && titleBeforeThumbnail && <Text numberOfLines={1} style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>{title}</Text>}
-          <FileItemMedia title={title}
-                         thumbnail={thumbnail}
-                         blurRadius={obscureNsfw ? 15 : 0}
-                         resizeMode="cover"
-                         isResolvingUri={isResolvingUri}
-                         style={mediaStyle} />
+          {!compactView && titleBeforeThumbnail && (
+            <Text numberOfLines={1} style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>
+              {title}
+            </Text>
+          )}
+          <FileItemMedia
+            title={title}
+            thumbnail={thumbnail}
+            blurRadius={obscureNsfw ? 15 : 0}
+            resizeMode="cover"
+            isResolvingUri={isResolvingUri}
+            style={mediaStyle}
+          />
 
-          {(!compactView && fileInfo && fileInfo.completed && fileInfo.download_path) &&
-            <Icon style={discoverStyle.downloadedIcon} solid={true} color={Colors.NextLbryGreen} name={"folder"} size={16} />}
-          {(!compactView && (!fileInfo || !fileInfo.completed || !fileInfo.download_path)) &&
-            <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />}
-          {!compactView && <View style={isRewardContent ? discoverStyle.rewardTitleContainer : null}>
-            <Text numberOfLines={1} style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>{title}</Text>
-            {isRewardContent && <Icon style={discoverStyle.rewardIcon} name="award" size={14} />}
-          </View>}
-          {(!compactView && showDetails) &&
-          <View style={discoverStyle.detailsRow}>
-            {channelName &&
-              <Link style={discoverStyle.channelName} text={channelName} onPress={() => {
-                navigateToUri(navigation, normalizeURI(fullChannelUri));
-              }} />}
-            <DateTime style={discoverStyle.dateTime} textStyle={discoverStyle.dateTimeText} timeAgo uri={uri} />
-          </View>}
+          {!compactView && fileInfo && fileInfo.completed && fileInfo.download_path && (
+            <Icon
+              style={discoverStyle.downloadedIcon}
+              solid={true}
+              color={Colors.NextLbryGreen}
+              name={'folder'}
+              size={16}
+            />
+          )}
+          {!compactView && (!fileInfo || !fileInfo.completed || !fileInfo.download_path) && (
+            <FilePrice uri={uri} style={discoverStyle.filePriceContainer} textStyle={discoverStyle.filePriceText} />
+          )}
+          {!compactView && (
+            <View style={isRewardContent ? discoverStyle.rewardTitleContainer : null}>
+              <Text numberOfLines={1} style={[discoverStyle.fileItemName, discoverStyle.rewardTitle]}>
+                {title}
+              </Text>
+              {isRewardContent && <Icon style={discoverStyle.rewardIcon} name="award" size={14} />}
+            </View>
+          )}
+          {!compactView && showDetails && (
+            <View style={discoverStyle.detailsRow}>
+              {channelName && (
+                <Link
+                  style={discoverStyle.channelName}
+                  text={channelName}
+                  onPress={() => {
+                    navigateToUri(navigation, normalizeURI(fullChannelUri));
+                  }}
+                />
+              )}
+              <DateTime style={discoverStyle.dateTime} textStyle={discoverStyle.dateTimeText} timeAgo uri={uri} />
+            </View>
+          )}
         </TouchableOpacity>
-        {obscureNsfw && <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />}
+        {obscureNsfw && (
+          <NsfwOverlay onPress={() => navigation.navigate({ routeName: 'Settings', key: 'settingsPage' })} />
+        )}
       </View>
     );
   }

@@ -25,7 +25,7 @@ class PublishPage extends React.PureComponent {
     NativeModules.Gallery.getVideos().then(videos => {
       console.log(videos);
     });
-  }
+  };
 
   componentDidMount() {
     this.onComponentFocused();
@@ -46,7 +46,6 @@ class PublishPage extends React.PureComponent {
     return (
       <View style={publishStyle.container}>
         <UriBar navigation={navigation} />
-
       </View>
     );
   }

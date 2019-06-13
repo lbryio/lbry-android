@@ -145,15 +145,7 @@ class FileList extends React.PureComponent<Props, State> {
   sortFunctions: {};
 
   render() {
-    const {
-      contentContainerStyle,
-      fileInfos,
-      hideFilter,
-      checkPending,
-      navigation,
-      onEndReached,
-      style
-    } = this.props;
+    const { contentContainerStyle, fileInfos, hideFilter, checkPending, navigation, onEndReached, style } = this.props;
     const { sortBy } = this.state;
     const items = [];
 
@@ -182,13 +174,16 @@ class FileList extends React.PureComponent<Props, State> {
         data={items}
         onEndReached={onEndReached}
         keyExtractor={(item, index) => item}
-        renderItem={({item}) => (
-          <FileItem style={fileListStyle.fileItem}
-                    uri={item}
-                    navigation={navigation}
-                    showDetails={true}
-                    compactView={false} />
-        )} />
+        renderItem={({ item }) => (
+          <FileItem
+            style={fileListStyle.fileItem}
+            uri={item}
+            navigation={navigation}
+            showDetails={true}
+            compactView={false}
+          />
+        )}
+      />
     );
   }
 }

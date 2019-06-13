@@ -46,9 +46,7 @@ class CreditAmount extends React.PureComponent {
     } else {
       if (this.props.label) {
         const label =
-          typeof this.props.label === 'string'
-            ? this.props.label
-            : parseFloat(amount) == 1 ? 'credit' : 'credits';
+          typeof this.props.label === 'string' ? this.props.label : parseFloat(amount) == 1 ? 'credit' : 'credits';
 
         amountText = `${formattedAmount} ${label}`;
       } else {
@@ -67,9 +65,7 @@ class CreditAmount extends React.PureComponent {
             *
           </span>
         ) : null}*/
-    return (
-      <Text style={style}>{amountText}</Text>
-    );
+    return <Text style={style}>{amountText}</Text>;
   }
 }
 
@@ -100,7 +96,7 @@ class FilePrice extends React.PureComponent {
         <View style={style}>
           <Text style={textStyle}>???</Text>
         </View>
-      )
+      );
     }
 
     return (
@@ -111,7 +107,10 @@ class FilePrice extends React.PureComponent {
           amount={parseFloat(costInfo.cost)}
           isEstimate={isEstimate}
           showFree
-          showFullPrice={showFullPrice}>???</CreditAmount>
+          showFullPrice={showFullPrice}
+        >
+          ???
+        </CreditAmount>
       </View>
     );
   }

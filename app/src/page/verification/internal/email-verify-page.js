@@ -15,8 +15,8 @@ class EmailVerifyPage extends React.PureComponent {
     phase: Constants.PHASE_COLLECTION,
     placeholder: 'you@example.com',
     verifyStarted: false,
-    previousEmail: null
-  }
+    previousEmail: null,
+  };
 
   componentDidMount() {
     const { setEmailVerificationPhase } = this.props;
@@ -30,10 +30,10 @@ class EmailVerifyPage extends React.PureComponent {
     AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
   }
 
-  handleChangeText = (text) => {
+  handleChangeText = text => {
     this.setState({ email: text });
     AsyncStorage.setItem(Constants.KEY_FIRST_RUN_EMAIL, text);
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     const { emailNewErrorMessage, emailNewPending, emailToVerify } = nextProps;
@@ -55,13 +55,7 @@ class EmailVerifyPage extends React.PureComponent {
   }
 
   onSendVerificationPressed = () => {
-    const {
-      addUserEmail,
-      emailNewPending,
-      notify,
-      resendVerificationEmail,
-      setEmailVerificationPhase
-    } = this.props;
+    const { addUserEmail, emailNewPending, notify, resendVerificationEmail, setEmailVerificationPhase } = this.props;
 
     if (emailNewPending) {
       return;
@@ -87,7 +81,7 @@ class EmailVerifyPage extends React.PureComponent {
 
     this.setState({ verifyStarted: true });
     addUserEmail(email);
-  }
+  };
 
   onResendPressed = () => {
     const { resendVerificationEmail, notify } = this.props;
@@ -95,7 +89,7 @@ class EmailVerifyPage extends React.PureComponent {
     resendVerificationEmail(this.state.email);
     AsyncStorage.setItem(Constants.KEY_EMAIL_VERIFY_PENDING, 'true');
     notify({ message: 'Please follow the instructions in the email sent to your address to continue.' });
-  }
+  };
 
   onEditPressed = () => {
     const { setEmailVerificationPhase } = this.props;
@@ -107,18 +101,21 @@ class EmailVerifyPage extends React.PureComponent {
       AsyncStorage.removeItem(Constants.KEY_EMAIL_VERIFY_PENDING);
       AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
     });
-  }
+  };
 
   render() {
     const { emailNewPending } = this.props;
 
     return (
       <View style={firstRunStyle.container}>
-        <Text style={rewardStyle.verificationTitle}>{(Constants.PHASE_COLLECTION === this.state.phase) ? 'Email' : 'Verify Email'}</Text>
-        {(Constants.PHASE_COLLECTION === this.state.phase) &&
+        <Text style={rewardStyle.verificationTitle}>
+          {Constants.PHASE_COLLECTION === this.state.phase ? 'Email' : 'Verify Email'}
+        </Text>
+        {Constants.PHASE_COLLECTION === this.state.phase && (
           <View>
             <Text style={firstRunStyle.paragraph}>Please provide an email address.</Text>
-            <TextInput style={firstRunStyle.emailInput}
+            <TextInput
+              style={firstRunStyle.emailInput}
               placeholder={this.state.placeholder}
               underlineColorAndroid="transparent"
               selectionColor={Colors.NextLbryGreen}
@@ -134,31 +131,43 @@ class EmailVerifyPage extends React.PureComponent {
                   this.setState({ placeholder: 'you@example.com' });
                 }
               }}
-              />
+            />
             <View style={rewardStyle.buttonContainer}>
-              {!this.state.verifyStarted &&
+              {!this.state.verifyStarted && (
                 <Button
                   style={rewardStyle.verificationButton}
-                  theme={"light"}
-                  text={"Send verification email"}
-                  onPress={this.onSendVerificationPressed} />}
-              {this.state.verifyStarted && emailNewPending &&
+                  theme={'light'}
+                  text={'Send verification email'}
+                  onPress={this.onSendVerificationPressed}
+                />
+              )}
+              {this.state.verifyStarted && emailNewPending && (
                 <View style={firstRunStyle.centerInside}>
-                  <ActivityIndicator size={"small"} color={Colors.White} />
-                </View>}
-            </View>
-          </View>}
-
-        {(Constants.PHASE_VERIFICATION === this.state.phase) &&
-          <View>
-            <Text style={firstRunStyle.paragraph}>An email has been sent to <Text style={firstRunStyle.nowrap}>{this.state.email}</Text>. Please follow the instructions in the message to verify your email address.</Text>
-
-            <View style={rewardStyle.buttonContainer}>
-              <Button style={rewardStyle.verificationButton} theme={"light"} text={"Resend"} onPress={this.onResendPressed} />
-              <Link style={rewardStyle.verificationLink} text={"Edit"} onPress={this.onEditPressed} />
+                  <ActivityIndicator size={'small'} color={Colors.White} />
+                </View>
+              )}
             </View>
           </View>
-        }
+        )}
+
+        {Constants.PHASE_VERIFICATION === this.state.phase && (
+          <View>
+            <Text style={firstRunStyle.paragraph}>
+              An email has been sent to <Text style={firstRunStyle.nowrap}>{this.state.email}</Text>. Please follow the
+              instructions in the message to verify your email address.
+            </Text>
+
+            <View style={rewardStyle.buttonContainer}>
+              <Button
+                style={rewardStyle.verificationButton}
+                theme={'light'}
+                text={'Resend'}
+                onPress={this.onResendPressed}
+              />
+              <Link style={rewardStyle.verificationLink} text={'Edit'} onPress={this.onEditPressed} />
+            </View>
+          </View>
+        )}
       </View>
     );
   }

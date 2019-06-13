@@ -14,19 +14,19 @@ class SuggestedSubscriptionItem extends React.PureComponent {
     }
   }
 
-  uriForClaim = (claim) => {
+  uriForClaim = claim => {
     const { name: claimName, claim_name: claimNameDownloaded, claim_id: claimId } = claim;
-      const uriParams = {};
+    const uriParams = {};
 
-      // This is unfortunate
-      // https://github.com/lbryio/lbry/issues/1159
-      const name = claimName || claimNameDownloaded;
-      uriParams.contentName = name;
-      uriParams.claimId = claimId;
-      const uri = buildURI(uriParams);
+    // This is unfortunate
+    // https://github.com/lbryio/lbry/issues/1159
+    const name = claimName || claimNameDownloaded;
+    uriParams.contentName = name;
+    uriParams.claimId = claimId;
+    const uri = buildURI(uriParams);
 
-      return uri;
-  }
+    return uri;
+  };
 
   render() {
     const { categoryLink, fetching, obscureNsfw, claims, navigation } = this.props;
@@ -46,23 +46,26 @@ class SuggestedSubscriptionItem extends React.PureComponent {
             style={subscriptionsStyle.compactMainFileItem}
             mediaStyle={subscriptionsStyle.fileItemMedia}
             uri={this.uriForClaim(claims[0])}
-            navigation={navigation} />
-          {(claims.length > 1) &&
-          <FlatList style={subscriptionsStyle.compactItems}
-            horizontal={true}
-            renderItem={ ({item}) => (
+            navigation={navigation}
+          />
+          {claims.length > 1 && (
+            <FlatList
+              style={subscriptionsStyle.compactItems}
+              horizontal={true}
+              renderItem={({ item }) => (
                 <FileItem
                   style={subscriptionsStyle.compactFileItem}
                   mediaStyle={subscriptionsStyle.compactFileItemMedia}
                   key={item}
                   uri={normalizeURI(item)}
                   navigation={navigation}
-                  compactView={true} />
-              )
-            }
-            data={claims.slice(1, 4).map(claim => this.uriForClaim(claim))}
-            keyExtractor={(item, index) => item}
-          />}
+                  compactView={true}
+                />
+              )}
+              data={claims.slice(1, 4).map(claim => this.uriForClaim(claim))}
+              keyExtractor={(item, index) => item}
+            />
+          )}
         </View>
       );
     }

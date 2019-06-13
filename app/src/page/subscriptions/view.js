@@ -1,14 +1,6 @@
 import React from 'react';
 import NavigationActions from 'react-navigation';
-import {
-  ActivityIndicator,
-  FlatList,
-  NativeModules,
-  SectionList,
-  ScrollView,
-  Text,
-  View
-} from 'react-native';
+import { ActivityIndicator, FlatList, NativeModules, SectionList, ScrollView, Text, View } from 'react-native';
 import { buildURI, parseURI } from 'lbry-redux';
 import { uriFromFileInfo } from 'utils/helper';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -26,7 +18,7 @@ import UriBar from 'component/uriBar';
 
 class SubscriptionsPage extends React.PureComponent {
   state = {
-    showingSuggestedSubs: false
+    showingSuggestedSubs: false,
   };
 
   didFocusListener;
@@ -49,7 +41,7 @@ class SubscriptionsPage extends React.PureComponent {
       doSetViewMode,
       pushDrawerStack,
       setPlayerVisible,
-      subscriptionsViewMode
+      subscriptionsViewMode,
     } = this.props;
 
     pushDrawerStack();
@@ -57,7 +49,7 @@ class SubscriptionsPage extends React.PureComponent {
     doFetchMySubscriptions();
     doFetchRecommendedSubscriptions();
     doSetViewMode(subscriptionsViewMode ? subscriptionsViewMode : Constants.SUBSCRIPTIONS_VIEW_ALL);
-  }
+  };
 
   componentDidMount() {
     this.onComponentFocused();
@@ -71,11 +63,11 @@ class SubscriptionsPage extends React.PureComponent {
     }
   }
 
-  changeViewMode = (viewMode) => {
+  changeViewMode = viewMode => {
     const { setClientSetting, doSetViewMode } = this.props;
     setClientSetting(Constants.SETTING_SUBSCRIPTIONS_VIEW_MODE, viewMode);
     doSetViewMode(viewMode);
-  }
+  };
 
   render() {
     const {
@@ -104,104 +96,128 @@ class SubscriptionsPage extends React.PureComponent {
       <View style={subscriptionsStyle.container}>
         <UriBar navigation={navigation} />
 
-        {(!this.state.showingSuggestedSubs && hasSubscriptions && !loading) &&
-        <View style={subscriptionsStyle.viewModeRow}>
-          <Link
-            text={'All Subscriptions'}
-            style={[subscriptionsStyle.viewModeLink,
-                    ((viewMode === Constants.SUBSCRIPTIONS_VIEW_ALL) ? subscriptionsStyle.activeMode : subscriptionsStyle.inactiveMode)]}
-            onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_ALL)}
-          />
-          <Link
-            text={'Latest Only'}
-            style={[subscriptionsStyle.viewModeLink,
-                    ((viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) ? subscriptionsStyle.activeMode : subscriptionsStyle.inactiveMode)]}
-            onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST)}
-          />
-        </View>}
+        {!this.state.showingSuggestedSubs && hasSubscriptions && !loading && (
+          <View style={subscriptionsStyle.viewModeRow}>
+            <Link
+              text={'All Subscriptions'}
+              style={[
+                subscriptionsStyle.viewModeLink,
+                viewMode === Constants.SUBSCRIPTIONS_VIEW_ALL
+                  ? subscriptionsStyle.activeMode
+                  : subscriptionsStyle.inactiveMode,
+              ]}
+              onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_ALL)}
+            />
+            <Link
+              text={'Latest Only'}
+              style={[
+                subscriptionsStyle.viewModeLink,
+                viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST
+                  ? subscriptionsStyle.activeMode
+                  : subscriptionsStyle.inactiveMode,
+              ]}
+              onPress={() => this.changeViewMode(Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST)}
+            />
+          </View>
+        )}
 
-        {(!this.state.showingSuggestedSubs && hasSubscriptions && !loading) &&
-        <View style={subscriptionsStyle.subContainer}>
-          {(viewMode === Constants.SUBSCRIPTIONS_VIEW_ALL) &&
-          <FlatList
-            style={subscriptionsStyle.scrollContainer}
-            contentContainerStyle={subscriptionsStyle.scrollPadding}
-            renderItem={ ({item}) => (
-              <FileItem
-                style={subscriptionsStyle.fileItem}
-                mediaStyle={fileListStyle.fileItemMedia}
-                key={item}
-                uri={uriFromFileInfo(item)}
-                navigation={navigation}
-                compactView={false}
-                showDetails={true} />
-              )
-            }
-            data={allSubscriptions.sort((a, b) => {
-              return b.height - a.height;
-            })}
-            keyExtractor={(item, index) => uriFromFileInfo(item)} />}
-
-          {(viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST) &&
+        {!this.state.showingSuggestedSubs && hasSubscriptions && !loading && (
           <View style={subscriptionsStyle.subContainer}>
-            {unreadSubscriptions.length ?
-              (<ScrollView
+            {viewMode === Constants.SUBSCRIPTIONS_VIEW_ALL && (
+              <FlatList
                 style={subscriptionsStyle.scrollContainer}
-                contentContainerStyle={subscriptionsStyle.scrollPadding}>
-                {unreadSubscriptions.map(({ channel, uris }) => {
-                    const { claimName } = parseURI(channel);
-                    return uris.map(uri => (
-                      <FileItem
-                        style={subscriptionsStyle.fileItem}
-                        mediaStyle={fileListStyle.fileItemMedia}
-                        key={uri}
-                        uri={uri}
-                        navigation={navigation}
-                        compactView={false}
-                        showDetails={true} />));
+                contentContainerStyle={subscriptionsStyle.scrollPadding}
+                renderItem={({ item }) => (
+                  <FileItem
+                    style={subscriptionsStyle.fileItem}
+                    mediaStyle={fileListStyle.fileItemMedia}
+                    key={item}
+                    uri={uriFromFileInfo(item)}
+                    navigation={navigation}
+                    compactView={false}
+                    showDetails={true}
+                  />
+                )}
+                data={allSubscriptions.sort((a, b) => {
+                  return b.height - a.height;
                 })}
-              </ScrollView>) :
-              (<View style={subscriptionsStyle.contentContainer}>
-                <Text style={subscriptionsStyle.contentText}>All caught up! You might like the channels below.</Text>
-                <SuggestedSubscriptions navigation={navigation} />
-              </View>)
-            }
-          </View>}
+                keyExtractor={(item, index) => uriFromFileInfo(item)}
+              />
+            )}
 
-        </View>}
+            {viewMode === Constants.SUBSCRIPTIONS_VIEW_LATEST_FIRST && (
+              <View style={subscriptionsStyle.subContainer}>
+                {unreadSubscriptions.length ? (
+                  <ScrollView
+                    style={subscriptionsStyle.scrollContainer}
+                    contentContainerStyle={subscriptionsStyle.scrollPadding}
+                  >
+                    {unreadSubscriptions.map(({ channel, uris }) => {
+                      const { claimName } = parseURI(channel);
+                      return uris.map(uri => (
+                        <FileItem
+                          style={subscriptionsStyle.fileItem}
+                          mediaStyle={fileListStyle.fileItemMedia}
+                          key={uri}
+                          uri={uri}
+                          navigation={navigation}
+                          compactView={false}
+                          showDetails={true}
+                        />
+                      ));
+                    })}
+                  </ScrollView>
+                ) : (
+                  <View style={subscriptionsStyle.contentContainer}>
+                    <Text style={subscriptionsStyle.contentText}>
+                      All caught up! You might like the channels below.
+                    </Text>
+                    <SuggestedSubscriptions navigation={navigation} />
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
+        )}
 
-        {(hasSubscriptions && loading) &&
+        {hasSubscriptions && loading && (
           <View style={subscriptionsStyle.busyContainer}>
             <ActivityIndicator size="large" color={Colors.LbryGreen} style={subscriptionsStyle.loading} />
           </View>
-        }
+        )}
 
-        {this.state.showingSuggestedSubs &&
+        {this.state.showingSuggestedSubs && (
           <View style={subscriptionsStyle.suggestedSubsContainer}>
-            {!hasSubscriptions &&
-            <Text style={subscriptionsStyle.infoText}>
-              You are not subscribed to any channels at the moment. Here are some channels that we think you might enjoy.
-            </Text>}
-
-            {hasSubscriptions &&
-            <View>
+            {!hasSubscriptions && (
               <Text style={subscriptionsStyle.infoText}>
-                You are currently subscribed to {numberOfSubscriptions} channel{(numberOfSubscriptions > 1) ? 's' : ''}.
+                You are not subscribed to any channels at the moment. Here are some channels that we think you might
+                enjoy.
               </Text>
-              <Button
-                style={subscriptionsStyle.button}
-                text={"View my subscriptions"}
-                onPress={() => this.setState({ showingSuggestedSubs: false })} />
-            </View>
-            }
+            )}
 
-            {loadingSuggested && <ActivityIndicator size="large" colors={Colors.LbryGreen} style={subscriptionsStyle.loading} />}
+            {hasSubscriptions && (
+              <View>
+                <Text style={subscriptionsStyle.infoText}>
+                  You are currently subscribed to {numberOfSubscriptions} channel{numberOfSubscriptions > 1 ? 's' : ''}.
+                </Text>
+                <Button
+                  style={subscriptionsStyle.button}
+                  text={'View my subscriptions'}
+                  onPress={() => this.setState({ showingSuggestedSubs: false })}
+                />
+              </View>
+            )}
+
+            {loadingSuggested && (
+              <ActivityIndicator size="large" colors={Colors.LbryGreen} style={subscriptionsStyle.loading} />
+            )}
             {!loadingSuggested && <SuggestedSubscriptions navigation={navigation} />}
-          </View>}
+          </View>
+        )}
 
         <FloatingWalletBalance navigation={navigation} />
       </View>
-    )
+    );
   }
 }
 

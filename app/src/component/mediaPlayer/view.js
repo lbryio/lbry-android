@@ -9,16 +9,16 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import Colors from 'styles/colors';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FileItemMedia from 'component/fileItemMedia';
 import mediaPlayerStyle from 'styles/mediaPlayer';
 
-const positionSaveInterval = 10
+const positionSaveInterval = 10;
 
 class MediaPlayer extends React.PureComponent {
   static ControlsTimeout = 3000;
@@ -52,13 +52,15 @@ class MediaPlayer extends React.PureComponent {
       seekerOffset: 0,
       seekerPosition: 0,
       firstPlay: true,
-      seekTimeout: -1
+      seekTimeout: -1,
     };
   }
 
   formatTime(time) {
     let str = '';
-    let minutes = 0, hours = 0, seconds = parseInt(time, 10);
+    let minutes = 0,
+      hours = 0,
+      seconds = parseInt(time, 10);
     if (seconds > 60) {
       minutes = parseInt(seconds / 60, 10);
       seconds = seconds % 60;
@@ -84,9 +86,9 @@ class MediaPlayer extends React.PureComponent {
     return value;
   }
 
-  onLoad = (data) => {
+  onLoad = data => {
     this.setState({
-      duration: data.duration
+      duration: data.duration,
     });
 
     const { position } = this.props;
@@ -98,9 +100,9 @@ class MediaPlayer extends React.PureComponent {
     if (this.props.onMediaLoaded) {
       this.props.onMediaLoaded();
     }
-  }
+  };
 
-  onProgress = (data) => {
+  onProgress = data => {
     const { savePosition, claim } = this.props;
 
     this.setState({ buffering: false, currentTime: data.currentTime });
@@ -121,13 +123,13 @@ class MediaPlayer extends React.PureComponent {
 
       this.hidePlayerControls();
     }
-  }
+  };
 
   clearControlsTimeout = () => {
     if (this.state.controlsTimeout > -1) {
-      clearTimeout(this.state.controlsTimeout)
+      clearTimeout(this.state.controlsTimeout);
     }
-  }
+  };
 
   showPlayerControls = () => {
     this.clearControlsTimeout();
@@ -135,12 +137,12 @@ class MediaPlayer extends React.PureComponent {
       this.setState({ areControlsVisible: true });
     }
     this.hidePlayerControls();
-  }
+  };
 
   manualHidePlayerControls = () => {
     this.clearControlsTimeout();
     this.setState({ areControlsVisible: false });
-  }
+  };
 
   hidePlayerControls() {
     const player = this;
@@ -161,19 +163,19 @@ class MediaPlayer extends React.PureComponent {
     } else {
       this.showPlayerControls();
     }
-  }
+  };
 
   togglePlay = () => {
     this.showPlayerControls();
     this.setState({ paused: !this.state.paused }, this.handlePausedState);
-  }
+  };
 
   handlePausedState = () => {
     if (!this.state.paused) {
       // onProgress will automatically clear this, so it's fine
       this.setState({ buffering: true });
     }
-  }
+  };
 
   toggleFullscreenMode = () => {
     this.showPlayerControls();
@@ -183,7 +185,7 @@ class MediaPlayer extends React.PureComponent {
         onFullscreenToggled(this.state.fullscreenMode);
       }
     });
-  }
+  };
 
   onEnd = () => {
     this.setState({ paused: true });
@@ -191,7 +193,7 @@ class MediaPlayer extends React.PureComponent {
       this.props.onPlaybackFinished();
     }
     this.video.seek(0);
-  }
+  };
 
   setSeekerPosition(position = 0) {
     position = this.checkSeekerPosition(position);
@@ -244,10 +246,14 @@ class MediaPlayer extends React.PureComponent {
           this.onEnd();
         } else {
           this.seekTo(time);
-          this.setState({ seekTimeout: setTimeout(() => { this.setState({ seeking: false }); }, 100) });
+          this.setState({
+            seekTimeout: setTimeout(() => {
+              this.setState({ seeking: false });
+            }, 100),
+          });
         }
         this.hidePlayerControls();
-      }
+      },
     });
   }
 
@@ -268,7 +274,7 @@ class MediaPlayer extends React.PureComponent {
       return parseFloat(this.state.currentTime) / parseFloat(this.state.duration);
     }
     return 0;
-  };
+  }
 
   componentWillMount() {
     this.initSeeker();
@@ -283,7 +289,7 @@ class MediaPlayer extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { assignPlayer, backgroundPlayEnabled  } = this.props;
+    const { assignPlayer, backgroundPlayEnabled } = this.props;
     if (assignPlayer) {
       assignPlayer(this);
     }
@@ -319,21 +325,21 @@ class MediaPlayer extends React.PureComponent {
         this.setState({ paused: false, autoPaused: false });
       }
     }
-  }
+  };
 
   onBuffer = () => {
     if (!this.state.paused) {
       this.setState({ buffering: true }, () => this.manualHidePlayerControls());
     }
-  }
+  };
 
   play = () => {
     this.setState({ paused: false }, this.updateBackgroundMediaNotification);
-  }
+  };
 
   pause = () => {
     this.setState({ paused: true }, this.updateBackgroundMediaNotification);
-  }
+  };
 
   updateBackgroundMediaNotification = () => {
     this.handlePausedState();
@@ -344,7 +350,7 @@ class MediaPlayer extends React.PureComponent {
         NativeModules.BackgroundMedia.showPlaybackNotification(title, channel, uri, this.state.paused);
       }
     }
-  }
+  };
 
   renderPlayerControls() {
     const { onBackButtonPressed } = this.props;
@@ -353,11 +359,10 @@ class MediaPlayer extends React.PureComponent {
       return (
         <View style={mediaPlayerStyle.playerControlsContainer}>
           <TouchableOpacity style={mediaPlayerStyle.backButton} onPress={onBackButtonPressed}>
-            <Icon name={"arrow-left"} size={18} style={mediaPlayerStyle.backButtonIcon} />
-           </TouchableOpacity>
+            <Icon name={'arrow-left'} size={18} style={mediaPlayerStyle.backButtonIcon} />
+          </TouchableOpacity>
 
-          <TouchableOpacity style={mediaPlayerStyle.playPauseButton}
-            onPress={this.togglePlay}>
+          <TouchableOpacity style={mediaPlayerStyle.playPauseButton} onPress={this.togglePlay}>
             {this.state.paused && <Icon name="play" size={40} color="#ffffff" />}
             {!this.state.paused && <Icon name="pause" size={40} color="#ffffff" />}
           </TouchableOpacity>
@@ -376,7 +381,7 @@ class MediaPlayer extends React.PureComponent {
     return null;
   }
 
-  onSeekerTouchAreaPressed = (evt) => {
+  onSeekerTouchAreaPressed = evt => {
     if (evt && evt.nativeEvent) {
       const newSeekerPosition = evt.nativeEvent.locationX;
       if (!isNaN(newSeekerPosition)) {
@@ -385,13 +390,13 @@ class MediaPlayer extends React.PureComponent {
         this.seekTo(time);
       }
     }
-  }
+  };
 
-  onTrackingLayout = (evt) => {
+  onTrackingLayout = evt => {
     this.trackingOffset = evt.nativeEvent.layout.x;
     this.seekerWidth = evt.nativeEvent.layout.width;
     this.setSeekerPosition(this.calculateSeekerPosition());
-  }
+  };
 
   render() {
     const { onLayout, source, style, thumbnail } = this.props;
@@ -406,64 +411,90 @@ class MediaPlayer extends React.PureComponent {
       }
     }
 
-    const trackingStyle = [mediaPlayerStyle.trackingControls, this.state.fullscreenMode ?
-      mediaPlayerStyle.fullscreenTrackingControls : mediaPlayerStyle.containedTrackingControls];
+    const trackingStyle = [
+      mediaPlayerStyle.trackingControls,
+      this.state.fullscreenMode
+        ? mediaPlayerStyle.fullscreenTrackingControls
+        : mediaPlayerStyle.containedTrackingControls,
+    ];
 
     return (
       <View style={styles} onLayout={onLayout}>
-        <Video source={{ uri: source }}
-               bufferConfig={{ minBufferMs: 15000, maxBufferMs: 60000, bufferForPlaybackMs: 5000, bufferForPlaybackAfterRebufferMs: 5000  }}
-               ref={(ref: Video) => { this.video = ref; }}
-               resizeMode={this.state.resizeMode}
-               playInBackground={this.state.backgroundPlayEnabled}
-               style={mediaPlayerStyle.player}
-               rate={this.state.rate}
-               volume={this.state.volume}
-               paused={this.state.paused}
-               onLoad={this.onLoad}
-               onBuffer={this.onBuffer}
-               onProgress={this.onProgress}
-               onEnd={this.onEnd}
-               onError={this.onError}
-               minLoadRetryCount={999}
-               />
+        <Video
+          source={{ uri: source }}
+          bufferConfig={{
+            minBufferMs: 15000,
+            maxBufferMs: 60000,
+            bufferForPlaybackMs: 5000,
+            bufferForPlaybackAfterRebufferMs: 5000,
+          }}
+          ref={(ref: Video) => {
+            this.video = ref;
+          }}
+          resizeMode={this.state.resizeMode}
+          playInBackground={this.state.backgroundPlayEnabled}
+          style={mediaPlayerStyle.player}
+          rate={this.state.rate}
+          volume={this.state.volume}
+          paused={this.state.paused}
+          onLoad={this.onLoad}
+          onBuffer={this.onBuffer}
+          onProgress={this.onProgress}
+          onEnd={this.onEnd}
+          onError={this.onError}
+          minLoadRetryCount={999}
+        />
 
-        {this.state.firstPlay && thumbnail && thumbnail.trim().length > 0 &&
-        <FastImage
-          source={{uri: thumbnail}}
-          resizeMode={FastImage.resizeMode.cover}
-          style={mediaPlayerStyle.playerThumbnail}
-        />}
+        {this.state.firstPlay && thumbnail && thumbnail.trim().length > 0 && (
+          <FastImage
+            source={{ uri: thumbnail }}
+            resizeMode={FastImage.resizeMode.cover}
+            style={mediaPlayerStyle.playerThumbnail}
+          />
+        )}
 
         <TouchableOpacity style={mediaPlayerStyle.playerControls} onPress={this.togglePlayerControls}>
           {this.renderPlayerControls()}
         </TouchableOpacity>
 
-        {(!this.state.fullscreenMode || (this.state.fullscreenMode && this.state.areControlsVisible)) &&
-        <View style={trackingStyle} onLayout={this.onTrackingLayout}>
-          <View style={mediaPlayerStyle.progress}>
-            <View style={[mediaPlayerStyle.innerProgressCompleted, { width: completedWidth }]} />
-            <View style={[mediaPlayerStyle.innerProgressRemaining, { width: remainingWidth }]} />
+        {(!this.state.fullscreenMode || (this.state.fullscreenMode && this.state.areControlsVisible)) && (
+          <View style={trackingStyle} onLayout={this.onTrackingLayout}>
+            <View style={mediaPlayerStyle.progress}>
+              <View style={[mediaPlayerStyle.innerProgressCompleted, { width: completedWidth }]} />
+              <View style={[mediaPlayerStyle.innerProgressRemaining, { width: remainingWidth }]} />
+            </View>
           </View>
-        </View>}
+        )}
 
-        {this.state.buffering &&
-        <View style={mediaPlayerStyle.loadingContainer}>
-          <ActivityIndicator color={Colors.LbryGreen} size="large" />
-        </View>}
-
-        {this.state.areControlsVisible &&
-        <View style={{ left: this.getTrackingOffset(), width: this.seekerWidth }}>
-          <View style={[mediaPlayerStyle.seekerHandle,
-                        (this.state.fullscreenMode ? mediaPlayerStyle.seekerHandleFs : mediaPlayerStyle.seekerHandleContained),
-                        { left: this.state.seekerPosition }]} { ...this.seekResponder.panHandlers }>
-            <View style={this.state.seeking ? mediaPlayerStyle.bigSeekerCircle : mediaPlayerStyle.seekerCircle} />
+        {this.state.buffering && (
+          <View style={mediaPlayerStyle.loadingContainer}>
+            <ActivityIndicator color={Colors.LbryGreen} size="large" />
           </View>
-          <TouchableOpacity
-            style={[mediaPlayerStyle.seekerTouchArea,
-                    (this.state.fullscreenMode ? mediaPlayerStyle.seekerTouchAreaFs : mediaPlayerStyle.seekerTouchAreaContained)]}
-            onPress={this.onSeekerTouchAreaPressed} />
-        </View>}
+        )}
+
+        {this.state.areControlsVisible && (
+          <View style={{ left: this.getTrackingOffset(), width: this.seekerWidth }}>
+            <View
+              style={[
+                mediaPlayerStyle.seekerHandle,
+                this.state.fullscreenMode ? mediaPlayerStyle.seekerHandleFs : mediaPlayerStyle.seekerHandleContained,
+                { left: this.state.seekerPosition },
+              ]}
+              {...this.seekResponder.panHandlers}
+            >
+              <View style={this.state.seeking ? mediaPlayerStyle.bigSeekerCircle : mediaPlayerStyle.seekerCircle} />
+            </View>
+            <TouchableOpacity
+              style={[
+                mediaPlayerStyle.seekerTouchArea,
+                this.state.fullscreenMode
+                  ? mediaPlayerStyle.seekerTouchAreaFs
+                  : mediaPlayerStyle.seekerTouchAreaContained,
+              ]}
+              onPress={this.onSeekerTouchAreaPressed}
+            />
+          </View>
+        )}
       </View>
     );
   }

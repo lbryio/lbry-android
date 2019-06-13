@@ -1,14 +1,6 @@
 import React from 'react';
 import { Lbry } from 'lbry-redux';
-import {
-  ActivityIndicator,
-  Dimensions,
-  NativeModules,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { ActivityIndicator, Dimensions, NativeModules, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { BarPasswordStrengthDisplay } from 'react-native-password-strength-meter';
 import Button from 'component/button';
 import Link from 'component/link';
@@ -18,7 +10,6 @@ import firstRunStyle from 'styles/firstRun';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import rewardStyle from 'styles/reward';
 
-
 class SyncVerifyPage extends React.PureComponent {
   state = {
     checkSyncStarted: false,
@@ -26,8 +17,8 @@ class SyncVerifyPage extends React.PureComponent {
     placeholder: 'password',
     syncApplyStarted: false,
     syncChecked: false,
-    revealPassword: false
-  }
+    revealPassword: false,
+  };
 
   componentDidMount() {
     const { checkSync, setEmailVerificationPhase } = this.props;
@@ -40,31 +31,22 @@ class SyncVerifyPage extends React.PureComponent {
   }
 
   onEnableSyncPressed = () => {
-    const {
-      getSync,
-      hasSyncedWallet,
-      navigation,
-      setClientSetting,
-      syncApply,
-      syncData,
-      syncHash
-    } = this.props;
+    const { getSync, hasSyncedWallet, navigation, setClientSetting, syncApply, syncData, syncHash } = this.props;
 
     this.setState({ syncApplyStarted: true }, () => {
       if (!hasSyncedWallet) {
         // fresh account with no sync
-        Lbry.account_encrypt({ new_password: this.state.password }).then(() => {
-          Lbry.account_unlock({ password: this.state.password }).then(() => {
-            getSync(this.state.password);
-            setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
-            navigation.goBack();
-          });
+        const newPassword = this.state.password ? this.state.password : '';
+        Lbry.account_encrypt({ new_password: newPassword }).then(() => {
+          getSync(newPassword);
+          setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, true);
+          navigation.goBack();
         });
       } else {
         syncApply(syncHash, syncData, this.state.password);
       }
     });
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     const { getSyncIsPending, syncApplyIsPending, syncApplyErrorMessage } = nextProps;
@@ -89,23 +71,27 @@ class SyncVerifyPage extends React.PureComponent {
     }
   }
 
-  handleChangeText = (text) => {
+  handleChangeText = text => {
     // save the value to the state email
     const { onPasswordChanged } = this.props;
     this.setState({ password: text });
     if (onPasswordChanged) {
       onPasswordChanged(text);
     }
-  }
+  };
 
   render() {
     const { hasSyncedWallet, syncApplyIsPending } = this.props;
 
     let paragraph;
     if (!hasSyncedWallet) {
-      paragraph = (<Text style={firstRunStyle.paragraph}>Please enter a password to secure your account and wallet.</Text>);
+      paragraph = (
+        <Text style={firstRunStyle.paragraph}>Please enter a password to secure your account and wallet.</Text>
+      );
     } else {
-      paragraph = (<Text style={firstRunStyle.paragraph}>Please enter the password you used to secure your wallet.</Text>);
+      paragraph = (
+        <Text style={firstRunStyle.paragraph}>Please enter the password you used to secure your wallet.</Text>
+      );
     }
 
     let content;
@@ -122,7 +108,8 @@ class SyncVerifyPage extends React.PureComponent {
           <Text style={rewardStyle.verificationTitle}>Wallet Sync</Text>
           {paragraph}
           <View style={firstRunStyle.passwordInputContainer}>
-            <TextInput style={firstRunStyle.passwordInput}
+            <TextInput
+              style={firstRunStyle.passwordInput}
               placeholder={this.state.placeholder}
               underlineColorAndroid="transparent"
               selectionColor={Colors.NextLbryGreen}
@@ -139,43 +126,47 @@ class SyncVerifyPage extends React.PureComponent {
                   this.setState({ placeholder: 'password' });
                 }
               }}
-              />
+            />
             <TouchableOpacity
               style={firstRunStyle.revealPasswordIcon}
-              onPress={() => this.setState({ revealPassword: !this.state.revealPassword })}>
-              <Icon name={this.state.revealPassword ? "eye-slash" : "eye"} size={16} style={firstRunStyle.revealIcon} />
+              onPress={() => this.setState({ revealPassword: !this.state.revealPassword })}
+            >
+              <Icon name={this.state.revealPassword ? 'eye-slash' : 'eye'} size={16} style={firstRunStyle.revealIcon} />
             </TouchableOpacity>
           </View>
-          {(!hasSyncedWallet && this.state.password && this.state.password.trim().length) > 0 &&
+          {(!hasSyncedWallet && this.state.password && this.state.password.trim().length) > 0 && (
             <View style={firstRunStyle.passwordStrength}>
               <BarPasswordStrengthDisplay
                 width={Dimensions.get('window').width - 80}
                 minLength={1}
-                password={this.state.password} />
-            </View>}
-          <Text style={firstRunStyle.infoParagraph}>Note: for wallet security purposes, LBRY is unable to reset your password.</Text>
+                password={this.state.password}
+              />
+            </View>
+          )}
+          <Text style={firstRunStyle.infoParagraph}>
+            Note: for wallet security purposes, LBRY is unable to reset your password.
+          </Text>
 
           <View style={rewardStyle.buttonContainer}>
-            {!this.state.syncApplyStarted &&
+            {!this.state.syncApplyStarted && (
               <Button
                 style={rewardStyle.verificationButton}
-                theme={"light"}
-                text={"Enable sync"}
-                onPress={this.onEnableSyncPressed} />}
-            {syncApplyIsPending &&
+                theme={'light'}
+                text={'Enable sync'}
+                onPress={this.onEnableSyncPressed}
+              />
+            )}
+            {syncApplyIsPending && (
               <View style={firstRunStyle.centerInside}>
-                <ActivityIndicator size={"small"} color={Colors.White} />
-              </View>}
+                <ActivityIndicator size={'small'} color={Colors.White} />
+              </View>
+            )}
           </View>
         </View>
       );
     }
 
-    return (
-      <View style={firstRunStyle.container}>
-        {content}
-      </View>
-    );
+    return <View style={firstRunStyle.container}>{content}</View>;
   }
 }
 

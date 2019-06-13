@@ -22,14 +22,19 @@ class ManualVerifyPage extends React.PureComponent {
       <View style={firstRunStyle.container}>
         <Text style={rewardStyle.verificationTitle}>Manual Reward Verification</Text>
         <Text style={firstRunStyle.spacedParagraph}>
-          This account must undergo review before you can participate in the rewards program. This can take anywhere from several minutes to several days.
+          This account must undergo review before you can participate in the rewards program. This can take anywhere
+          from several minutes to several days.
         </Text>
         <Text style={firstRunStyle.spacedParagraph}>
-          If you continue to see this message, please request to be verified on the <Link style={rewardStyle.underlinedTextLink} href="https://discordapp.com/invite/Z3bERWA" text="LBRY Discord server" />.
+          If you continue to see this message, please request to be verified on the{' '}
+          <Link
+            style={rewardStyle.underlinedTextLink}
+            href="https://discordapp.com/invite/Z3bERWA"
+            text="LBRY Discord server"
+          />
+          .
         </Text>
-        <Text style={firstRunStyle.spacedParagraph}>
-          Please enjoy free content in the meantime!
-        </Text>
+        <Text style={firstRunStyle.spacedParagraph}>Please enjoy free content in the meantime!</Text>
       </View>
     );
   }

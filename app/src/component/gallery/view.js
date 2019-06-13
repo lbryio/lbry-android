@@ -1,9 +1,7 @@
 import React from 'react';
 
 class Gallery extends React.PureComponent {
-  render() {
-
-  }
+  render() {}
 }
 
 export default Gallery;

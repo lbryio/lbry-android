@@ -16,7 +16,7 @@ class CategoryList extends React.PureComponent {
         initialNumToRender={3}
         maxToRenderPerBatch={3}
         removeClippedSubviews={true}
-        renderItem={ ({item}) => (
+        renderItem={({ item }) => (
           <FileItem
             style={discoverStyle.fileItem}
             mediaStyle={discoverStyle.fileItemMedia}
@@ -24,9 +24,9 @@ class CategoryList extends React.PureComponent {
             uri={normalizeURI(item)}
             navigation={navigation}
             showDetails={true}
-            compactView={false} />
-          )
-        }
+            compactView={false}
+          />
+        )}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         data={categoryMap[category]}

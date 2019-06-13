@@ -51,12 +51,12 @@ class WalletPage extends React.PureComponent {
         }
       });
     }
-  }
+  };
 
   onDismissBackupPressed = () => {
     const { setClientSetting } = this.props;
     setClientSetting(Constants.SETTING_BACKUP_DISMISSED, true);
-  }
+  };
 
   render() {
     const {
@@ -66,7 +66,7 @@ class WalletPage extends React.PureComponent {
       rewardsNotInterested,
       understandsRisks,
       setClientSetting,
-      navigation
+      navigation,
     } = this.props;
 
     if (!understandsRisks) {
@@ -75,18 +75,25 @@ class WalletPage extends React.PureComponent {
           <UriBar navigation={navigation} />
           <View style={walletStyle.warning}>
             <Text style={walletStyle.warningParagraph}>
-              This is beta software. You may lose any credits that you send to your wallet due to software bugs, deleted files, or malicious third-party software. You should not use this wallet as your primary wallet.
+              This is beta software. You may lose any credits that you send to your wallet due to software bugs, deleted
+              files, or malicious third-party software. You should not use this wallet as your primary wallet.
             </Text>
-            {!hasSyncedWallet &&
-            <Text style={walletStyle.warningParagraph}>
-              Since you are not using the LBRY sync service, you will lose all of your credits if you uninstall this application. Instructions on how to enroll as well as how to backup your wallet manually are available on the next page.
-            </Text>}
+            {!hasSyncedWallet && (
+              <Text style={walletStyle.warningParagraph}>
+                Since you are not using the LBRY sync service, you will lose all of your credits if you uninstall this
+                application. Instructions on how to enroll as well as how to backup your wallet manually are available
+                on the next page.
+              </Text>
+            )}
             <Text style={walletStyle.warningText}>
               If you understand the risks and you wish to continue, please tap the button below.
             </Text>
           </View>
-          <Button text={'I understand the risks'} style={[walletStyle.button, walletStyle.understand]}
-                  onPress={() => setClientSetting(Constants.SETTING_ALPHA_UNDERSTANDS_RISKS, true)}/>
+          <Button
+            text={'I understand the risks'}
+            style={[walletStyle.button, walletStyle.understand]}
+            onPress={() => setClientSetting(Constants.SETTING_ALPHA_UNDERSTANDS_RISKS, true)}
+          />
         </View>
       );
     }
@@ -96,7 +103,7 @@ class WalletPage extends React.PureComponent {
         <UriBar navigation={navigation} />
         <ScrollView style={walletStyle.scrollContainer} keyboardShouldPersistTaps={'handled'}>
           <WalletSyncDriver navigation={navigation} />
-          {(!rewardsNotInterested) && (!balance || balance === 0) && <WalletRewardsDriver navigation={navigation} />}
+          {!rewardsNotInterested && (!balance || balance === 0) && <WalletRewardsDriver navigation={navigation} />}
           <WalletBalance />
           <WalletAddress />
           <WalletSend />

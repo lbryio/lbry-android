@@ -15,25 +15,14 @@ import SubscriptionsPage from 'page/subscriptions';
 import TransactionHistoryPage from 'page/transactionHistory';
 import VerificationScreen from 'page/verification';
 import WalletPage from 'page/wallet';
-import {
-  createDrawerNavigator,
-  createStackNavigator,
-  NavigationActions
-} from 'react-navigation';
+import { createDrawerNavigator, createStackNavigator, NavigationActions } from 'react-navigation';
 import {
   createReduxContainer,
   createReactNavigationReduxMiddleware,
-  createNavigationReducer
+  createNavigationReducer,
 } from 'react-navigation-redux-helpers';
 import { connect } from 'react-redux';
-import {
-  AppState,
-  BackHandler,
-  Linking,
-  NativeModules,
-  TextInput,
-  ToastAndroid
-} from 'react-native';
+import { AppState, BackHandler, Linking, NativeModules, TextInput, ToastAndroid } from 'react-native';
 import { selectDrawerStack } from 'redux/selectors/drawer';
 import { SETTINGS, doDismissToast, doToast, selectToast } from 'lbry-redux';
 import {
@@ -44,7 +33,7 @@ import {
   selectEmailToVerify,
   selectEmailVerifyIsPending,
   selectEmailVerifyErrorMessage,
-  selectUser
+  selectUser,
 } from 'lbryinc';
 import { makeSelectClientSetting } from 'redux/selectors/settings';
 import { decode as atob } from 'base-64';
@@ -58,37 +47,43 @@ import discoverStyle from 'styles/discover';
 import searchStyle from 'styles/search';
 import SearchRightHeaderIcon from 'component/searchRightHeaderIcon';
 
-const menuNavigationButton = (navigation) => <NavigationButton
-                                               name="bars"
-                                               size={24}
-                                               style={discoverStyle.drawerMenuButton}
-                                               iconStyle={discoverStyle.drawerHamburger}
-                                               onPress={() => navigation.openDrawer() } />
+const menuNavigationButton = navigation => (
+  <NavigationButton
+    name="bars"
+    size={24}
+    style={discoverStyle.drawerMenuButton}
+    iconStyle={discoverStyle.drawerHamburger}
+    onPress={() => navigation.openDrawer()}
+  />
+);
 
-const discoverStack = createStackNavigator({
-  Discover: {
-    screen: DiscoverPage,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Explore',
-      header: null
-    }),
+const discoverStack = createStackNavigator(
+  {
+    Discover: {
+      screen: DiscoverPage,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Explore',
+        header: null,
+      }),
+    },
+    File: {
+      screen: FilePage,
+      navigationOptions: ({ navigation }) => ({
+        header: null,
+      }),
+    },
+    Search: {
+      screen: SearchPage,
+      navigationOptions: ({ navigation }) => ({
+        header: null,
+      }),
+    },
   },
-  File: {
-    screen: FilePage,
-    navigationOptions: ({ navigation }) => ({
-      header: null
-    })
-  },
-  Search: {
-    screen: SearchPage,
-    navigationOptions: ({ navigation }) => ({
-      header: null
-    })
+  {
+    headerMode: 'screen',
+    transitionConfig: () => ({ screenInterpolator: () => null }),
   }
-}, {
-  headerMode: 'screen',
-  transitionConfig: () => ({ screenInterpolator: () => null }),
-});
+);
 
 discoverStack.navigationOptions = ({ navigation }) => {
   let drawerLockMode = 'unlocked';
@@ -97,105 +92,137 @@ discoverStack.navigationOptions = ({ navigation }) => {
   }*/
 
   return {
-    drawerLockMode
+    drawerLockMode,
   };
 };
 
-const walletStack = createStackNavigator({
-  Wallet: {
-    screen: WalletPage,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Wallet',
-      header: null
-    })
+const walletStack = createStackNavigator(
+  {
+    Wallet: {
+      screen: WalletPage,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Wallet',
+        header: null,
+      }),
+    },
+    TransactionHistory: {
+      screen: TransactionHistoryPage,
+      navigationOptions: {
+        title: 'Transaction History',
+        header: null,
+      },
+    },
   },
-  TransactionHistory: {
-    screen: TransactionHistoryPage,
-    navigationOptions: {
-      title: 'Transaction History',
-      header: null
-    }
+  {
+    headerMode: 'screen',
+    transitionConfig: () => ({ screenInterpolator: () => null }),
   }
-}, {
-  headerMode: 'screen',
-  transitionConfig: () => ({ screenInterpolator: () => null }),
-});
+);
 
-const drawer = createDrawerNavigator({
-  DiscoverStack: { screen: discoverStack, navigationOptions: {
-    title: 'Explore', drawerIcon: ({ tintColor }) => <Icon name="home" size={20} style={{ color: tintColor }} />
-  }},
-  TrendingStack: { screen: TrendingPage, navigationOptions: {
-    title: 'Trending', drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />
-  }},
-  MySubscriptionsStack: { screen: SubscriptionsPage, navigationOptions: {
-    title: 'Subscriptions', drawerIcon: ({ tintColor }) => <Icon name="heart" solid={true} size={20} style={{ color: tintColor }} />
-  }},
-  WalletStack: { screen: walletStack, navigationOptions: {
-    title: 'Wallet', drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />
-  }},
-  Rewards: { screen: RewardsPage, navigationOptions: {
-    drawerIcon: ({ tintColor }) => <Icon name="award" size={20} style={{ color: tintColor }} />
-  }},
-  Publish: { screen: PublishPage, navigationOptions: {
-    drawerIcon: ({ tintColor }) => <Icon name="upload" size={20} style={{ color: tintColor }} />
-  }},
-  MyLBRYStack: { screen: DownloadsPage, navigationOptions: {
-    title: 'Library', drawerIcon: ({ tintColor }) => <Icon name="download" size={20} style={{ color: tintColor }} />
-  }},
-  Settings: { screen: SettingsPage, navigationOptions: {
-    drawerLockMode: 'locked-closed',
-    drawerIcon: ({ tintColor }) => <Icon name="cog" size={20} style={{ color: tintColor }} />
-  }},
-  About: { screen: AboutPage, navigationOptions: {
-    drawerLockMode: 'locked-closed',
-    drawerIcon: ({ tintColor }) => <Icon name="info" size={20} style={{ color: tintColor }} />
-  }}
-}, {
-  drawerWidth: 300,
-  headerMode: 'none',
-  contentComponent: DrawerContent,
-  contentOptions: {
-    activeTintColor: Colors.LbryGreen,
-    labelStyle: discoverStyle.menuText
+const drawer = createDrawerNavigator(
+  {
+    DiscoverStack: {
+      screen: discoverStack,
+      navigationOptions: {
+        title: 'Explore',
+        drawerIcon: ({ tintColor }) => <Icon name="home" size={20} style={{ color: tintColor }} />,
+      },
+    },
+    TrendingStack: {
+      screen: TrendingPage,
+      navigationOptions: {
+        title: 'Trending',
+        drawerIcon: ({ tintColor }) => <Icon name="fire" size={20} style={{ color: tintColor }} />,
+      },
+    },
+    MySubscriptionsStack: {
+      screen: SubscriptionsPage,
+      navigationOptions: {
+        title: 'Subscriptions',
+        drawerIcon: ({ tintColor }) => <Icon name="heart" solid={true} size={20} style={{ color: tintColor }} />,
+      },
+    },
+    WalletStack: {
+      screen: walletStack,
+      navigationOptions: {
+        title: 'Wallet',
+        drawerIcon: ({ tintColor }) => <Icon name="wallet" size={20} style={{ color: tintColor }} />,
+      },
+    },
+    Rewards: {
+      screen: RewardsPage,
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => <Icon name="award" size={20} style={{ color: tintColor }} />,
+      },
+    },
+    MyLBRYStack: {
+      screen: DownloadsPage,
+      navigationOptions: {
+        title: 'Library',
+        drawerIcon: ({ tintColor }) => <Icon name="download" size={20} style={{ color: tintColor }} />,
+      },
+    },
+    Settings: {
+      screen: SettingsPage,
+      navigationOptions: {
+        drawerLockMode: 'locked-closed',
+        drawerIcon: ({ tintColor }) => <Icon name="cog" size={20} style={{ color: tintColor }} />,
+      },
+    },
+    About: {
+      screen: AboutPage,
+      navigationOptions: {
+        drawerLockMode: 'locked-closed',
+        drawerIcon: ({ tintColor }) => <Icon name="info" size={20} style={{ color: tintColor }} />,
+      },
+    },
+  },
+  {
+    drawerWidth: 300,
+    headerMode: 'none',
+    contentComponent: DrawerContent,
+    contentOptions: {
+      activeTintColor: Colors.LbryGreen,
+      labelStyle: discoverStyle.menuText,
+    },
   }
-});
+);
 
-const mainStackNavigator = new createStackNavigator({
-  FirstRun: {
-    screen: FirstRunScreen,
-    navigationOptions: {
-      drawerLockMode: 'locked-closed'
-    }
+const mainStackNavigator = new createStackNavigator(
+  {
+    FirstRun: {
+      screen: FirstRunScreen,
+      navigationOptions: {
+        drawerLockMode: 'locked-closed',
+      },
+    },
+    Splash: {
+      screen: SplashScreen,
+      navigationOptions: {
+        drawerLockMode: 'locked-closed',
+      },
+    },
+    Main: {
+      screen: drawer,
+    },
+    Verification: {
+      screen: VerificationScreen,
+      navigationOptions: {
+        drawerLockMode: 'locked-closed',
+      },
+    },
   },
-  Splash: {
-    screen: SplashScreen,
-    navigationOptions: {
-      drawerLockMode: 'locked-closed'
-    }
-  },
-  Main: {
-    screen: drawer
-  },
-  Verification: {
-    screen: VerificationScreen,
-    navigationOptions: {
-      drawerLockMode: 'locked-closed'
-    }
+  {
+    headerMode: 'none',
   }
-}, {
-  headerMode: 'none'
-});
-
+);
 
 export const AppNavigator = mainStackNavigator;
 export const navigatorReducer = createNavigationReducer(AppNavigator);
-export const reactNavigationMiddleware = createReactNavigationReduxMiddleware(
-  state => state.nav,
-);
+export const reactNavigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav);
 
 const App = createReduxContainer(mainStackNavigator);
-const appMapStateToProps = (state) => ({
+const appMapStateToProps = state => ({
   state: state.nav,
 });
 const ReduxAppNavigator = connect(appMapStateToProps)(App);
@@ -208,29 +235,34 @@ class AppWithNavigationState extends React.Component {
     this.emailVerifyCheckInterval = null;
     this.state = {
       emailVerifyDone: false,
-      verifyPending: false
+      verifyPending: false,
     };
   }
 
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
-    BackHandler.addEventListener('hardwareBackPress', function() {
-      const { dispatch, nav, drawerStack } = this.props;
-      // There should be a better way to check this
-      if (nav.routes.length > 0) {
-        if (nav.routes[0].routeName === 'Main') {
-          const mainRoute = nav.routes[0];
-          if (mainRoute.index > 0 ||
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      function() {
+        const { dispatch, nav, drawerStack } = this.props;
+        // There should be a better way to check this
+        if (nav.routes.length > 0) {
+          if (nav.routes[0].routeName === 'Main') {
+            const mainRoute = nav.routes[0];
+            if (
+              mainRoute.index > 0 ||
               mainRoute.routes[0].index > 0 /* Discover stack index */ ||
               mainRoute.routes[4].index > 0 /* Wallet stack index */ ||
-              mainRoute.index >= 5 /* Settings and About screens */) {
-            dispatchNavigateBack(dispatch, nav, drawerStack);
-            return true;
+              mainRoute.index >= 5 /* Settings and About screens */
+            ) {
+              dispatchNavigateBack(dispatch, nav, drawerStack);
+              return true;
+            }
           }
         }
-      }
-      return false;
-    }.bind(this));
+        return false;
+      }.bind(this)
+    );
   }
 
   componentDidMount() {
@@ -241,12 +273,12 @@ class AppWithNavigationState extends React.Component {
   checkEmailVerification = () => {
     const { dispatch } = this.props;
     AsyncStorage.getItem(Constants.KEY_EMAIL_VERIFY_PENDING).then(pending => {
-      this.setState({ verifyPending: ('true' === pending) });
+      this.setState({ verifyPending: 'true' === pending });
       if ('true' === pending) {
         dispatch(doUserCheckEmailVerified());
       }
     });
-  }
+  };
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
@@ -274,13 +306,7 @@ class AppWithNavigationState extends React.Component {
 
   componentWillUpdate(nextProps) {
     const { dispatch } = this.props;
-    const {
-      toast,
-      emailToVerify,
-      emailVerifyPending,
-      emailVerifyErrorMessage,
-      user
-    } = nextProps;
+    const { toast, emailToVerify, emailVerifyPending, emailVerifyErrorMessage, user } = nextProps;
 
     if (toast) {
       const { message } = toast;
@@ -297,15 +323,13 @@ class AppWithNavigationState extends React.Component {
       dispatch(doDismissToast());
     }
 
-    if (user &&
-        !emailVerifyPending &&
-        !this.state.emailVerifyDone &&
-        (emailToVerify || emailVerifyErrorMessage)) {
+    if (user && !emailVerifyPending && !this.state.emailVerifyDone && (emailToVerify || emailVerifyErrorMessage)) {
       AsyncStorage.getItem(Constants.KEY_SHOULD_VERIFY_EMAIL).then(shouldVerify => {
         if ('true' === shouldVerify) {
           this.setState({ emailVerifyDone: true });
-          const message = emailVerifyErrorMessage ?
-            String(emailVerifyErrorMessage) : 'Your email address was successfully verified.';
+          const message = emailVerifyErrorMessage
+            ? String(emailVerifyErrorMessage)
+            : 'Your email address was successfully verified.';
           if (!emailVerifyErrorMessage) {
             AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
           }
@@ -317,7 +341,7 @@ class AppWithNavigationState extends React.Component {
     }
   }
 
-  _handleAppStateChange = (nextAppState) => {
+  _handleAppStateChange = nextAppState => {
     const { backgroundPlayEnabled, dispatch } = this.props;
     // Check if the app was suspended
     if (AppState.currentState && AppState.currentState.match(/inactive|background/)) {
@@ -341,9 +365,9 @@ class AppWithNavigationState extends React.Component {
         NativeModules.BackgroundMedia.hidePlaybackNotification();
       }
     }
-  }
+  };
 
-  _handleUrl = (evt) => {
+  _handleUrl = evt => {
     const { dispatch, nav } = this.props;
     if (evt.url) {
       if (evt.url.startsWith('lbry://?verify=')) {
@@ -365,15 +389,17 @@ class AppWithNavigationState extends React.Component {
             dispatch(doToast({ message }));
           }
         } else {
-          dispatch(doToast({
-            message: 'Invalid Verification URI',
-          }));
+          dispatch(
+            doToast({
+              message: 'Invalid Verification URI',
+            })
+          );
         }
       } else {
         dispatchNavigateToUri(dispatch, nav, evt.url);
       }
     }
-  }
+  };
 
   render() {
     return <ReduxAppNavigator />;
@@ -390,7 +416,7 @@ const mapStateToProps = state => ({
   emailVerifyPending: selectEmailVerifyIsPending(state),
   emailVerifyErrorMessage: selectEmailVerifyErrorMessage(state),
   showNsfw: makeSelectClientSetting(SETTINGS.SHOW_NSFW)(state),
-  user: selectUser(state)
+  user: selectUser(state),
 });
 
 export default connect(mapStateToProps)(AppWithNavigationState);

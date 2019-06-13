@@ -9,7 +9,7 @@ const relatedContentStyle = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     borderTopColor: Colors.LighterGrey,
-    borderTopWidth: 1
+    borderTopWidth: 1,
   },
   title: {
     fontFamily: 'Inter-UI-Regular',
@@ -23,15 +23,15 @@ const relatedContentStyle = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     marginTop: 16,
-    marginBottom: 60
+    marginBottom: 60,
   },
   scrollPadding: {
     marginTop: -16,
-    paddingBottom: 16
+    paddingBottom: 16,
   },
   loading: {
-    marginTop: 16
-  }
+    marginTop: 16,
+  },
 });
 
 export default relatedContentStyle;

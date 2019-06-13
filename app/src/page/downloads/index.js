@@ -10,7 +10,7 @@ import { selectCurrentRoute } from 'redux/selectors/drawer';
 import Constants from 'constants';
 import DownloadsPage from './view';
 
-const select = (state) => ({
+const select = state => ({
   claims: selectMyClaimsWithoutChannels(state),
   currentRoute: selectCurrentRoute(state),
   fileInfos: selectFileInfosDownloaded(state),
@@ -20,7 +20,10 @@ const select = (state) => ({
 const perform = dispatch => ({
   fileList: () => dispatch(doFileList()),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_MY_LBRY)),
-  setPlayerVisible: () => dispatch(doSetPlayerVisible(false))
+  setPlayerVisible: () => dispatch(doSetPlayerVisible(false)),
 });
 
-export default connect(select, perform)(DownloadsPage);
+export default connect(
+  select,
+  perform
+)(DownloadsPage);

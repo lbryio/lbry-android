@@ -16,7 +16,7 @@ const uriBarStyle = StyleSheet.create({
     shadowOffset: {
       height: StyleSheet.hairlineWidth,
     },
-    elevation: 4
+    elevation: 4,
   },
   uriText: {
     backgroundColor: Colors.VeryLightGrey,
@@ -26,7 +26,7 @@ const uriBarStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     lineHeight: 18,
-    flex: 17
+    flex: 17,
   },
   overlay: {
     position: 'absolute',
@@ -34,26 +34,26 @@ const uriBarStyle = StyleSheet.create({
     top: 0,
     width: '100%',
     zIndex: 200,
-    elevation: 16
+    elevation: 16,
   },
   inFocus: {
-    height: '100%'
+    height: '100%',
   },
   suggestions: {
     backgroundColor: 'white',
-    flex: 1
+    flex: 1,
   },
   item: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 12,
     paddingTop: 8,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   itemContent: {
     marginLeft: 12,
     marginRight: 12,
-    flex: 1
+    flex: 1,
   },
   itemText: {
     fontFamily: 'Inter-UI-Regular',
@@ -62,12 +62,12 @@ const uriBarStyle = StyleSheet.create({
   itemDesc: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
-    color: Colors.UriDescBlue
+    color: Colors.UriDescBlue,
   },
   drawerMenuButton: {
     height: '100%',
     justifyContent: 'center',
-    flex: 3
+    flex: 3,
   },
 });
 

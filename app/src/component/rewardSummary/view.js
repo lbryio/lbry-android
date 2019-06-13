@@ -11,7 +11,7 @@ class RewardSummary extends React.Component {
 
   state = {
     actionsLeft: 0,
-    dismissed: false
+    dismissed: false,
   };
 
   componentDidMount() {
@@ -42,14 +42,14 @@ class RewardSummary extends React.Component {
     this.props.notify({
       message: 'You can always claim your rewards from the Rewards page.',
     });
-  }
+  };
 
   handleSummaryPressed = () => {
     const { showVerification } = this.props;
     if (showVerification) {
       showVerification();
     }
-  }
+  };
 
   render() {
     const { fetching, navigation, unclaimedRewardAmount, user } = this.props;
@@ -58,10 +58,12 @@ class RewardSummary extends React.Component {
       return null;
     }
 
-    if (this.state.dismissed ||
-        (user && user.is_reward_approved) ||
-        this.state.actionsLeft === 0 ||
-        unclaimedRewardAmount === 0) {
+    if (
+      this.state.dismissed ||
+      (user && user.is_reward_approved) ||
+      this.state.actionsLeft === 0 ||
+      unclaimedRewardAmount === 0
+    ) {
       return null;
     }
 
@@ -69,11 +71,9 @@ class RewardSummary extends React.Component {
       <TouchableOpacity style={rewardStyle.summaryContainer} onPress={this.handleSummaryPressed}>
         <View style={rewardStyle.summaryRow}>
           <Icon name="award" size={36} color={Colors.White} />
-          <Text style={rewardStyle.summaryText}>
-            {unclaimedRewardAmount} unclaimed credits
-          </Text>
+          <Text style={rewardStyle.summaryText}>{unclaimedRewardAmount} unclaimed credits</Text>
         </View>
-        <Button style={rewardStyle.dismissButton} theme={"light"} text={"Dismiss"} onPress={this.onDismissPressed} />
+        <Button style={rewardStyle.dismissButton} theme={'light'} text={'Dismiss'} onPress={this.onDismissPressed} />
       </TouchableOpacity>
     );
   }

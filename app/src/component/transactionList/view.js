@@ -38,18 +38,18 @@ class TransactionList extends React.PureComponent {
 
     return filter === 'all' || filter === transaction.type;
   }
-  
+
   render() {
     const { emptyMessage, rewards, transactions, navigation } = this.props;
     const { filter } = this.state;
     const transactionList = transactions.filter(this.filterTransaction);
-    
+
     return (
       <View>
         {!transactionList.length && (
           <Text style={transactionListStyle.noTransactions}>{emptyMessage || 'No transactions to list.'}</Text>
         )}
-      
+
         {!!transactionList.length && (
           <View>
             {transactionList.map(t => (

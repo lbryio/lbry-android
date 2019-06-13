@@ -1,12 +1,7 @@
 import React from 'react';
 import { setJSExceptionHandler } from 'react-native-exception-handler';
 import { Provider, connect } from 'react-redux';
-import {
-  AppRegistry,
-  Text,
-  View,
-  NativeModules
-} from 'react-native';
+import { AppRegistry, Text, View, NativeModules } from 'react-native';
 import {
   Lbry,
   claimsReducer,
@@ -15,7 +10,7 @@ import {
   fileInfoReducer,
   notificationsReducer,
   searchReducer,
-  walletReducer
+  walletReducer,
 } from 'lbry-redux';
 import {
   authReducer,
@@ -25,10 +20,14 @@ import {
   rewardsReducer,
   subscriptionsReducer,
   syncReducer,
-  userReducer
+  userReducer,
 } from 'lbryinc';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import AppWithNavigationState, { AppNavigator, navigatorReducer, reactNavigationMiddleware } from 'component/AppNavigator';
+import AppWithNavigationState, {
+  AppNavigator,
+  navigatorReducer,
+  reactNavigationMiddleware,
+} from 'component/AppNavigator';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
 import FilesystemStorage from 'redux-persist-filesystem-storage';
@@ -39,10 +38,9 @@ import drawerReducer from 'redux/reducers/drawer';
 import settingsReducer from 'redux/reducers/settings';
 import thunk from 'redux-thunk';
 
-
 const globalExceptionHandler = (error, isFatal) => {
   if (error && NativeModules.Firebase) {
-    NativeModules.Firebase.logException(isFatal, error.message ? error.message : "No message", JSON.stringify(error));
+    NativeModules.Firebase.logException(isFatal, error.message ? error.message : 'No message', JSON.stringify(error));
   }
 };
 setJSExceptionHandler(globalExceptionHandler, true);
@@ -97,7 +95,7 @@ const reducers = combineReducers({
   subscriptions: subscriptionsReducer,
   sync: syncReducer,
   user: userReducer,
-  wallet: walletReducer
+  wallet: walletReducer,
 });
 
 const bulkThunk = createBulkThunkMiddleware();
@@ -109,10 +107,7 @@ const composeEnhancers = compose;
 const store = createStore(
   enableBatching(reducers),
   {}, // initial state,
-  composeEnhancers(
-    autoRehydrate(),
-    applyMiddleware(...middleware)
-  )
+  composeEnhancers(autoRehydrate(), applyMiddleware(...middleware))
 );
 window.store = store;
 
@@ -130,7 +125,7 @@ const persistOptions = {
   // read the data
   transforms: [authFilter, saveClaimsFilter, subscriptionsFilter, settingsFilter, walletFilter, compressor],
   debounce: 10000,
-  storage: FilesystemStorage
+  storage: FilesystemStorage,
 };
 
 persistStore(store, persistOptions, err => {
@@ -140,7 +135,7 @@ persistStore(store, persistOptions, err => {
 });
 
 // TODO: Find i18n module that is compatible with react-native
-global.__ = (str) => str;
+global.__ = str => str;
 
 class LBRYApp extends React.Component {
   render() {
