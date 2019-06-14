@@ -71,7 +71,7 @@ class PublishPage extends React.PureComponent {
     const { currentRoute } = nextProps;
     const { currentRoute: prevRoute } = this.props;
 
-    if (Constants.DRAWER_ROUTE_REWARDS === currentRoute && currentRoute !== prevRoute) {
+    if (Constants.DRAWER_ROUTE_PUBLISH === currentRoute && currentRoute !== prevRoute) {
       this.onComponentFocused();
     }
   }
