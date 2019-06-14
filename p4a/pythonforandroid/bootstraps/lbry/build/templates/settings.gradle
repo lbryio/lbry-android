@@ -5,6 +5,8 @@ include ':react-native-exception-handler'
 project(':react-native-exception-handler').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-exception-handler/android')
 include ':react-native-fast-image'
 project(':react-native-fast-image').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-fast-image/android')
+include ':react-native-fs'
+project(':react-native-fs').projectDir = new File(settingsDir, './react/node_modules/react-native-fs/android')
 include ':react-native-gesture-handler'
 project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-gesture-handler/android')
 include ':react-native-video'

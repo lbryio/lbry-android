@@ -11,6 +11,9 @@ const Constants = {
   PHASE_COLLECTION: 'collection',
   PHASE_VERIFICATION: 'verification',
 
+  PHASE_SELECTOR: 'selector',
+  PHASE_DETAILS: 'details',
+
   CONTENT_TAB: 'content',
   ABOUT_TAB: 'about',
 

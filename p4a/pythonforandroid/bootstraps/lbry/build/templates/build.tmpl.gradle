@@ -102,6 +102,7 @@ dependencies {
     compile project(':@react-native-community_async-storage')
     compile project(':react-native-exception-handler')
     compile project(':react-native-fast-image')
+    compile project(':react-native-fs')
     compile project(':react-native-gesture-handler')
     compile project(':react-native-video')
     compile project(':rn-fetch-blob')
