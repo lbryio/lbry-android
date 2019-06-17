@@ -9,7 +9,7 @@ from keyring.backend import KeyringBackend
 from lbrynet import __version__ as lbrynet_version, build_type
 from lbrynet.conf import Config
 from lbrynet.extras.daemon.loggly_handler import get_loggly_handler
-from lbrynet.extras.daemon.Components import HASH_ANNOUNCER_COMPONENT, BLOB_SERVER_COMPONENT
+from lbrynet.extras.daemon.Components import HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT
 from lbrynet.extras.daemon.Daemon import Daemon
 from lbrynet.extras.daemon.loggly_handler import get_loggly_handler
 from lbrynet.utils import check_connection
@@ -79,7 +79,7 @@ def start():
         wallet_dir=f'{private_storage_dir}/lbryum',
         download_dir=f'{lbrynet_android_utils.getInternalStorageDir(service.getApplicationContext())}/Download',
         blob_lru_cache_size=32,
-        components_to_skip=[HASH_ANNOUNCER_COMPONENT, BLOB_SERVER_COMPONENT],
+        components_to_skip=[HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT],
         save_blobs=False,
         save_files=False,
         use_upnp=False
