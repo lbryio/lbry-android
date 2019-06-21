@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-import buttonStyle from '../../styles/button';
-import Colors from '../../styles/colors';
+import buttonStyle from 'styles/button';
+import Colors from 'styles/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default class Button extends React.PureComponent {

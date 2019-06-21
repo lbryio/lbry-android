@@ -101,7 +101,11 @@ class WalletPage extends React.PureComponent {
     return (
       <View style={walletStyle.container}>
         <UriBar navigation={navigation} />
-        <ScrollView style={walletStyle.scrollContainer} keyboardShouldPersistTaps={'handled'}>
+        <ScrollView
+          style={walletStyle.scrollContainer}
+          keyboardShouldPersistTaps={'handled'}
+          removeClippedSubviews={false}
+        >
           <WalletSyncDriver navigation={navigation} />
           {!rewardsNotInterested && (!balance || balance === 0) && <WalletRewardsDriver navigation={navigation} />}
           <WalletBalance />
