@@ -34,7 +34,7 @@ class FirstRunScreen extends React.PureComponent {
     skipAccountConfirmed: false,
     showBottomContainer: false,
     walletPassword: null,
-    syncApplyStarted: false
+    syncApplyStarted: false,
   };
 
   componentDidMount() {
@@ -235,11 +235,13 @@ class FirstRunScreen extends React.PureComponent {
     }
   };
 
-  onEmailViewLayout = (phase) => {
+  onEmailViewLayout = phase => {
     if ('collect' === phase) {
       if (!this.state.emailCollectTracked) {
         // we only want to track this once
-        this.setState({ emailCollectTracked: true }, () => NativeModules.Firebase.track('first_run_email_collect', null));
+        this.setState({ emailCollectTracked: true }, () =>
+          NativeModules.Firebase.track('first_run_email_collect', null)
+        );
       }
     } else if ('verify' === phase) {
       NativeModules.Firebase.track('first_run_email_verify', null);
@@ -254,7 +256,9 @@ class FirstRunScreen extends React.PureComponent {
 
   onWalletViewLayout = () => {
     if (!this.state.enterPasswordTracked) {
-      this.setState({ enterPasswordTracked: true }, () => NativeModules.Firebase.track('first_run_enter_password', null));
+      this.setState({ enterPasswordTracked: true }, () =>
+        NativeModules.Firebase.track('first_run_enter_password', null)
+      );
     }
     this.setState({ showBottomContainer: true });
   };
