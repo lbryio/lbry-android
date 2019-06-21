@@ -1,9 +1,10 @@
 // @flow
 import React from 'react';
 import { regexAddress } from 'lbry-redux';
-import { Alert, TextInput, Text, View } from 'react-native';
-import Button from '../button';
-import walletStyle from '../../styles/wallet';
+import { Alert, Clipboard, TextInput, Text, View } from 'react-native';
+import Button from 'component/button';
+import Colors from 'styles/colors';
+import walletStyle from 'styles/wallet';
 
 type DraftTransaction = {
   address: string,
@@ -99,9 +100,15 @@ class WalletSend extends React.PureComponent<Props> {
             onBlur={this.handleAddressInputBlur}
             onSubmitEditing={this.handleAddressInputSubmit}
             placeholder={'bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs'}
+            underlineColorAndroid={Colors.NextLbryGreen}
             value={this.state.address}
             returnKeyType={'next'}
             style={[walletStyle.input, walletStyle.addressInput, walletStyle.bottomMarginMedium]}
+          />
+          <Button
+            icon={'paste'}
+            style={walletStyle.button}
+            onPress={() => Clipboard.getString().then(value => this.setState({ address: value, addressChanged: true }))}
           />
         </View>
         <Text style={walletStyle.text}>Amount</Text>
@@ -112,6 +119,7 @@ class WalletSend extends React.PureComponent<Props> {
               onChangeText={value => this.setState({ amount: value })}
               keyboardType={'numeric'}
               placeholder={'0'}
+              underlineColorAndroid={Colors.NextLbryGreen}
               value={this.state.amount}
               style={[walletStyle.input, walletStyle.amountInput]}
             />
