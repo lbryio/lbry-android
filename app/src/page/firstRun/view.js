@@ -24,7 +24,9 @@ class FirstRunScreen extends React.PureComponent {
   state = {
     currentPage: null,
     email: null,
+    emailCollectTracked: false,
     emailSubmitted: false,
+    enterPasswordTracked: false,
     isFirstRun: false,
     launchUrl: null,
     showSkip: false,
@@ -32,7 +34,7 @@ class FirstRunScreen extends React.PureComponent {
     skipAccountConfirmed: false,
     showBottomContainer: false,
     walletPassword: null,
-    syncApplyStarted: false,
+    syncApplyStarted: false
   };
 
   componentDidMount() {
@@ -44,7 +46,10 @@ class FirstRunScreen extends React.PureComponent {
 
     if (NativeModules.FirstRun) {
       NativeModules.FirstRun.isFirstRun().then(firstRun => {
+        AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
+        AsyncStorage.removeItem(Constants.KEY_EMAIL_VERIFY_PENDING);
         this.setState({ isFirstRun: firstRun });
+
         if (firstRun) {
           this.setState({ currentPage: FirstRunScreen.pages[0] });
         } else {
@@ -118,6 +123,7 @@ class FirstRunScreen extends React.PureComponent {
   handleLeftButtonPressed = () => {
     // Go to setup account page when "Setup account" is pressed
     if (Constants.FIRST_RUN_PAGE_SKIP_ACCOUNT === this.state.currentPage) {
+      this.setState({ emailCollectTracked: false }); // reset tracked flag
       return this.showPage(Constants.FIRST_RUN_PAGE_EMAIL_COLLECT);
     }
 
@@ -128,6 +134,7 @@ class FirstRunScreen extends React.PureComponent {
 
     // Go to email collection page if user cancels from email verification
     if (Constants.FIRST_RUN_PAGE_EMAIL_VERIFY === this.state.currentPage) {
+      this.setState({ emailCollectTracked: false }); // reset tracked flag
       this.showPage(Constants.FIRST_RUN_PAGE_EMAIL_COLLECT);
     }
   };
@@ -228,10 +235,17 @@ class FirstRunScreen extends React.PureComponent {
     }
   };
 
-  onEmailViewLayout = () => {
+  onEmailViewLayout = (phase) => {
+    if ('collect' === phase) {
+      if (!this.state.emailCollectTracked) {
+        // we only want to track this once
+        this.setState({ emailCollectTracked: true }, () => NativeModules.Firebase.track('first_run_email_collect', null));
+      }
+    } else if ('verify' === phase) {
+      NativeModules.Firebase.track('first_run_email_verify', null);
+    }
+
     this.setState({ showBottomContainer: true, showSkip: true });
-    AsyncStorage.removeItem(Constants.KEY_FIRST_RUN_EMAIL);
-    AsyncStorage.removeItem(Constants.KEY_EMAIL_VERIFY_PENDING);
   };
 
   onWalletPasswordChanged = password => {
@@ -239,10 +253,18 @@ class FirstRunScreen extends React.PureComponent {
   };
 
   onWalletViewLayout = () => {
+    if (!this.state.enterPasswordTracked) {
+      this.setState({ enterPasswordTracked: true }, () => NativeModules.Firebase.track('first_run_enter_password', null));
+    }
     this.setState({ showBottomContainer: true });
   };
 
   onWelcomePageLayout = () => {
+    this.setState({ showBottomContainer: true });
+  };
+
+  onSkipAccountViewLayout = () => {
+    NativeModules.Firebase.track('first_run_skip_account', null);
     this.setState({ showBottomContainer: true });
   };
 

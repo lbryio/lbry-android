@@ -43,7 +43,7 @@ class EmailCollectPage extends React.PureComponent {
     const { onEmailViewLayout } = this.props;
 
     const content = (
-      <View onLayout={onEmailViewLayout}>
+      <View onLayout={() => onEmailViewLayout('collect')}>
         <Text style={firstRunStyle.title}>Setup account</Text>
         <TextInput
           style={firstRunStyle.emailInput}
