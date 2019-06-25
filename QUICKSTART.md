@@ -72,18 +72,20 @@ wget 'https://www.crystax.net/download/crystax-ndk-10.3.2-linux-x86_64.tar.xz' -
 ```
 
 ### Step 7 of 10
-Clone the lbryio/lbry-android git repository and create your buildozer.spec file. The provide buildozer.spec.sample contains defaults provided you followed steps 1 through 5 exactly as described. You can also customise the spec file if you want to.
+Clone the lbryio/lbry-android git repository and create your `buildozer.spec` and `google-services.json` files. The provided `buildozer.spec.sample` contains defaults provided you followed steps 1 through 5 exactly as described. You can also customise the spec file if you want to. The `google-services.sample.json` can be used to ensure the build completes successfully.
 ```
 git clone https://github.com/lbryio/lbry-android
 cd lbry-android
 cp buildozer.spec.sample buildozer.spec
+cp p4a/pythonforandroid/bootstraps/lbry/templates/google-services.sample.json p4a/pythonforandroid/bootstraps/lbry/templates/google-services.json
 ```
 
 ### Step 8 of 10
-Install the npm packages required for the app's React Native code.
+Install the npm packages required for the app's React Native code, and create the React Native app bundle.
 ```
 cd app
 npm install
+./bundle.sh
 cd ..
 ```
 
