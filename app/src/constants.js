@@ -13,6 +13,7 @@ const Constants = {
 
   PHASE_SELECTOR: 'selector',
   PHASE_DETAILS: 'details',
+  PHASE_PUBLISH: 'publish',
 
   CONTENT_TAB: 'content',
   ABOUT_TAB: 'about',
@@ -66,6 +67,9 @@ const Constants = {
   FULL_ROUTE_NAME_MY_LBRY: 'MyLBRYStack',
 
   ROUTE_FILE: 'File',
+
+  ITEM_CREATE_A_CHANNEL: 'Create a channel...',
+  ITEM_ANONYMOUS: 'Publish anonymously',
 
   SUBSCRIPTIONS_VIEW_ALL: 'view_all',
   SUBSCRIPTIONS_VIEW_LATEST_FIRST: 'view_latest_first',

@@ -70,7 +70,8 @@ public class GalleryModule extends ReactContextBaseJavaModule {
 
         List<String> ids = new ArrayList<String>();
         List<GalleryItem> items = new ArrayList<GalleryItem>();
-        Cursor cursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+        Cursor cursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null,
+                                                           String.format("%s DESC", MediaStore.MediaColumns.DATE_MODIFIED));
         while (cursor.moveToNext()) {
             int idColumn = cursor.getColumnIndex(MediaStore.MediaColumns._ID);
             int nameColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);

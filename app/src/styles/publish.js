@@ -31,11 +31,23 @@ const publishStyle = StyleSheet.create({
     padding: 16,
   },
   actionButtons: {
-    margin: 16,
+    marginLeft: 16,
+    marginRight: 16,
+    marginBottom: 16,
+    marginTop: 24,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
+  },
+  rightActionButtons: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  modeButton: {
+    backgroundColor: Colors.NextLbryGreen,
+    alignSelf: 'flex-end',
+    marginRight: 20
   },
   publishButton: {
     backgroundColor: Colors.LbryGreen,
@@ -47,12 +59,12 @@ const publishStyle = StyleSheet.create({
     marginBottom: 8
   },
   actionsView: {
-    flexDirection: 'row',
     width: '100%',
     height: 240,
+    overflow: 'hidden'
   },
   record: {
-    backgroundColor: Colors.Black,
+    backgroundColor: 'transparent',
     flex: 0.5,
     justifyContent: 'center',
     alignItems: 'center'
@@ -69,7 +81,7 @@ const publishStyle = StyleSheet.create({
     marginTop: 8
   },
   photo: {
-    backgroundColor: Colors.Black,
+    backgroundColor: 'transparent',
     height: 120,
     justifyContent: 'center',
     alignItems: 'center'
@@ -109,26 +121,79 @@ const publishStyle = StyleSheet.create({
   cardRow: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   switchRow: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    height: 52
+    marginLeft: 24
+  },
+  switchTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 24,
+    marginTop: -10
   },
   switchText: {
-    marginLeft: 6,
+    marginRight: 4,
     fontSize: 16
-  },
-  channelPicker: {
-    height: 52,
-    width: 160
   },
   loadingView: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  cardText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 14
+  },
+  cameraPreview: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    height: 240
+  },
+  actionsSubView: {
+    flex: 1,
+    flexDirection: 'row',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0
+  },
+  successContainer: {
+    padding: 16
+  },
+  successTitle: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 28,
+    marginBottom: 16
+  },
+  successText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 16,
+    marginBottom: 16,
+    lineHeight: 20
+  },
+  successRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16
+  },
+  successUrl: {
+    fontSize: 32,
+    fontFamily: 'Inter-UI-Regular',
+    color: Colors.NextLbryGreen,
+    marginRight: 16
   }
 });
 
