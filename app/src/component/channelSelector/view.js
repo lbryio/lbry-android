@@ -34,19 +34,19 @@ export default class ChannelSelector extends React.PureComponent {
 
   handleCreateCancel = () => {
     this.setState({ showCreateChannel: false, newChannelName: '', newChannelBid: 0.1 });
-  }
+  };
 
   handlePickerValueChange = (itemValue, itemIndex) => {
     if (Constants.ITEM_CREATE_A_CHANNEL === itemValue) {
       this.setState({ showCreateChannel: true });
     } else {
       this.handleCreateCancel();
-      this.handleChannelChange((Constants.ITEM_ANONYMOUS === itemValue) ? CLAIM_VALUES.CHANNEL_ANONYMOUS : itemValue);
+      this.handleChannelChange(Constants.ITEM_ANONYMOUS === itemValue ? CLAIM_VALUES.CHANNEL_ANONYMOUS : itemValue);
     }
     this.setState({ currentSelectedValue: itemValue });
-  }
+  };
 
-  handleChannelChange = (value) => {
+  handleChannelChange = value => {
     const { onChannelChange } = this.props;
     const { newChannelBid } = this.state;
     const channel = value;
@@ -63,9 +63,9 @@ export default class ChannelSelector extends React.PureComponent {
         onChannelChange(channel);
       }
     }
-  }
+  };
 
-  handleNewChannelNameChange = (value) => {
+  handleNewChannelNameChange = value => {
     const { notify } = this.props;
 
     let newChannelName = value;
@@ -83,9 +83,9 @@ export default class ChannelSelector extends React.PureComponent {
       newChannelNameError,
       newChannelName,
     });
-  }
+  };
 
-  handleNewChannelBidChange = (newChannelBid) => {
+  handleNewChannelBidChange = newChannelBid => {
     const { balance, notify } = this.props;
     let newChannelBidError;
     if (newChannelBid === 0) {
@@ -102,7 +102,7 @@ export default class ChannelSelector extends React.PureComponent {
       newChannelBid,
       newChannelBidError,
     });
-  }
+  };
 
   handleCreateChannelClick = () => {
     const { balance, createChannel, onChannelChange, notify } = this.props;
@@ -114,10 +114,9 @@ export default class ChannelSelector extends React.PureComponent {
     }
 
     if (this.channelExists(newChannelName)) {
-      notify({ message: 'You have already created a channel with the same name.'});
+      notify({ message: 'You have already created a channel with the same name.' });
       return;
     }
-
 
     if (newChannelBid > balance) {
       notify({ message: 'Deposit cannot be higher than your balance' });
@@ -136,7 +135,7 @@ export default class ChannelSelector extends React.PureComponent {
         creatingChannel: false,
         addingChannel: false,
         currentSelectedValue: channelName,
-        showCreateChannel: false
+        showCreateChannel: false,
       });
 
       if (onChannelChange) {
@@ -147,31 +146,34 @@ export default class ChannelSelector extends React.PureComponent {
     const failure = () => {
       notify({ message: 'Unable to create channel due to an internal error.' });
       this.setState({
-        creatingChannel: false
+        creatingChannel: false,
       });
     };
 
     createChannel(channelName, newChannelBid).then(success, failure);
-  }
+  };
 
-  channelExists = (name) => {
+  channelExists = name => {
     const { channels = [] } = this.props;
     for (let channel of channels) {
-      if (name.toLowerCase() === channel.name.toLowerCase() || `@${name}`.toLowerCase() === channel.name.toLowerCase()) {
+      if (
+        name.toLowerCase() === channel.name.toLowerCase() ||
+        `@${name}`.toLowerCase() === channel.name.toLowerCase()
+      ) {
         return true;
       }
     }
 
     return false;
-  }
+  };
 
   render() {
     const channel = this.state.addingChannel ? 'new' : this.props.channel;
     const { fetchingChannels, channels = [] } = this.props;
     console.log(channels);
-    const pickerItems = [
-      { name: Constants.ITEM_ANONYMOUS },
-      { name: Constants.ITEM_CREATE_A_CHANNEL }].concat(channels);
+    const pickerItems = [{ name: Constants.ITEM_ANONYMOUS }, { name: Constants.ITEM_CREATE_A_CHANNEL }].concat(
+      channels
+    );
     const {
       newChannelName,
       newChannelNameError,
@@ -188,45 +190,53 @@ export default class ChannelSelector extends React.PureComponent {
           selectedValue={this.state.currentSelectedValue}
           style={channelSelectorStyle.channelPicker}
           itemStyle={channelSelectorStyle.channelPickerItem}
-          onValueChange={this.handlePickerValueChange}>
-          {pickerItems.map(item => <Picker.Item label={item.name} value={item.name} key={item.name} />)}
+          onValueChange={this.handlePickerValueChange}
+        >
+          {pickerItems.map(item => (
+            <Picker.Item label={item.name} value={item.name} key={item.name} />
+          ))}
         </Picker>
 
         {this.state.showCreateChannel && (
-        <View style={channelSelectorStyle.createChannelContainer}>
-          <TextInput
-            style={channelSelectorStyle.channelNameInput}
-            value={this.state.newChannelName}
-            onChangeText={this.handleNewChannelNameChange}
-            placeholder={'Channel name'}
-            underlineColorAndroid={Colors.NextLbryGreen}
-            />
-          <View style={channelSelectorStyle.bidRow}>
-            <Text style={channelSelectorStyle.label}>Deposit</Text>
+          <View style={channelSelectorStyle.createChannelContainer}>
             <TextInput
-              style={channelSelectorStyle.bidAmountInput}
-              value={String(this.state.newChannelBid)}
-              onChangeText={this.handleNewChannelBidChange}
-              placeholder={'0.00'}
-              keyboardType={'number-pad'}
+              style={channelSelectorStyle.channelNameInput}
+              value={this.state.newChannelName}
+              onChangeText={this.handleNewChannelNameChange}
+              placeholder={'Channel name'}
               underlineColorAndroid={Colors.NextLbryGreen}
+            />
+            <View style={channelSelectorStyle.bidRow}>
+              <Text style={channelSelectorStyle.label}>Deposit</Text>
+              <TextInput
+                style={channelSelectorStyle.bidAmountInput}
+                value={String(this.state.newChannelBid)}
+                onChangeText={this.handleNewChannelBidChange}
+                placeholder={'0.00'}
+                keyboardType={'number-pad'}
+                underlineColorAndroid={Colors.NextLbryGreen}
               />
-            <Text style={channelSelectorStyle.currency}>LBC</Text>
-          </View>
-          <Text style={channelSelectorStyle.helpText}>This LBC remains yours. It is a deposit to reserve the name and can be undone at any time.</Text>
+              <Text style={channelSelectorStyle.currency}>LBC</Text>
+            </View>
+            <Text style={channelSelectorStyle.helpText}>
+              This LBC remains yours. It is a deposit to reserve the name and can be undone at any time.
+            </Text>
 
-          <View style={channelSelectorStyle.buttonContainer}>
-            {creatingChannel && <ActivityIndicator size={'small'} color={Colors.LbryGreen} />}
-            {!creatingChannel &&
-            <View style={channelSelectorStyle.buttons}>
-              <Link style={channelSelectorStyle.cancelLink} text="Cancel" onPress={this.handleCreateCancel} />
-              <Button style={channelSelectorStyle.createButton}
-                disabled={!(this.state.newChannelName.trim().length > 0 && this.state.newChannelBid > 0)}
-                text="Create"
-                onPress={this.handleCreateChannelClick} />
-            </View>}
+            <View style={channelSelectorStyle.buttonContainer}>
+              {creatingChannel && <ActivityIndicator size={'small'} color={Colors.LbryGreen} />}
+              {!creatingChannel && (
+                <View style={channelSelectorStyle.buttons}>
+                  <Link style={channelSelectorStyle.cancelLink} text="Cancel" onPress={this.handleCreateCancel} />
+                  <Button
+                    style={channelSelectorStyle.createButton}
+                    disabled={!(this.state.newChannelName.trim().length > 0 && this.state.newChannelBid > 0)}
+                    text="Create"
+                    onPress={this.handleCreateChannelClick}
+                  />
+                </View>
+              )}
+            </View>
           </View>
-        </View>
         )}
       </View>
     );

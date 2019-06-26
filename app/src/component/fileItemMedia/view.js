@@ -96,7 +96,8 @@ class FileItemMedia extends React.PureComponent {
         )}
         {!isResolvingUri && (
           <Text style={fileItemMediaStyle.autothumbText}>
-            {title && title.trim().length > 0 &&
+            {title &&
+              title.trim().length > 0 &&
               title
                 .replace(/\s+/g, '')
                 .substring(0, Math.min(title.replace(' ', '').length, 5))

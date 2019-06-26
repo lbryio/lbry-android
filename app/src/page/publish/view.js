@@ -10,17 +10,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
-import {
-  isNameValid,
-  buildURI,
-  regexInvalidURI,
-  CLAIM_VALUES,
-  LICENSES,
-  THUMBNAIL_STATUSES
-} from 'lbry-redux';
+import { isNameValid, buildURI, regexInvalidURI, CLAIM_VALUES, LICENSES, THUMBNAIL_STATUSES } from 'lbry-redux';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { RNCamera } from 'react-native-camera';
 import Button from 'component/button';
@@ -53,7 +46,7 @@ class PublishPage extends React.PureComponent {
     title: null,
     name: null,
     price: 0,
-    uri: null
+    uri: null,
   };
 
   didFocusListener;
@@ -72,7 +65,8 @@ class PublishPage extends React.PureComponent {
   getNewUri(name, channel) {
     const { resolveUri } = this.props;
     // If they are midway through a channel creation, treat it as anonymous until it completes
-    const channelName = channel === CLAIM_VALUES.CHANNEL_ANONYMOUS || channel === CLAIM_VALUES.CHANNEL_NEW ? '' : channel;
+    const channelName =
+      channel === CLAIM_VALUES.CHANNEL_ANONYMOUS || channel === CLAIM_VALUES.CHANNEL_NEW ? '' : channel;
 
     // We are only going to store the full uri, but we need to resolve the uri with and without the channel name
     let uri;
@@ -97,21 +91,11 @@ class PublishPage extends React.PureComponent {
 
   handleModePressed = () => {
     this.setState({ advancedMode: !this.state.advancedMode });
-  }
+  };
 
   handlePublishPressed = () => {
     const { notify, publish } = this.props;
-    const {
-      bid,
-      channelName,
-      currentMedia,
-      description,
-      name,
-      price,
-      priceSet,
-      title,
-      uri
-    } = this.state;
+    const { bid, channelName, currentMedia, description, name, price, priceSet, title, uri } = this.state;
     const thumbnail = null;
 
     if (!name) {
@@ -134,13 +118,13 @@ class PublishPage extends React.PureComponent {
       contentIsFree: !priceSet,
       fee: { currency: 'LBC', price },
       uri: uri || undefined,
-      channel: (CLAIM_VALUES.CHANNEL_ANONYMOUS === channelName) ? undefined : channelName,
+      channel: CLAIM_VALUES.CHANNEL_ANONYMOUS === channelName ? undefined : channelName,
       isStillEditing: false,
       claim: null,
     };
 
     this.setState({ currentPhase: Constants.PHASE_PUBLISH }, () => publish(publishParams));
-  }
+  };
 
   onComponentFocused = () => {
     const { pushDrawerStack, setPlayerVisible } = this.props;
@@ -175,13 +159,13 @@ class PublishPage extends React.PureComponent {
       currentMedia: media,
       title: media.name,
       name: this.formatNameForTitle(media.name),
-      currentPhase: Constants.PHASE_DETAILS
+      currentPhase: Constants.PHASE_DETAILS,
     });
   }
 
-  formatNameForTitle = (title) => {
+  formatNameForTitle = title => {
     return title.replace(regexInvalidURI, '-').toLowerCase();
-  }
+  };
 
   showSelector() {
     this.setState({
@@ -200,36 +184,39 @@ class PublishPage extends React.PureComponent {
       title: null,
       name: null,
       price: 0,
-      uri: null
+      uri: null,
     });
   }
 
   handleUploadPressed = () => {
-    DocumentPicker.show({
-      filetype: [DocumentPickerUtil.allFiles()]
-    }, (error, res) => {
-      console.log(error);
-      console.log('***')
-      console.log(res);
-      if (!error) {
+    DocumentPicker.show(
+      {
+        filetype: [DocumentPickerUtil.allFiles()],
+      },
+      (error, res) => {
+        console.log(error);
+        console.log('***');
         console.log(res);
+        if (!error) {
+          console.log(res);
+        }
       }
-    });
-  }
+    );
+  };
 
   handlePublishAgainPressed = () => {
     this.showSelector();
-  }
+  };
 
-  handleBidChange = (bid) => {
+  handleBidChange = bid => {
     this.setState({ bid });
-  }
+  };
 
-  handlePriceChange = (price) => {
+  handlePriceChange = price => {
     this.setState({ price });
-  }
+  };
 
-  handleNameChange = (name) => {
+  handleNameChange = name => {
     const { notify } = this.props;
     this.setState({ name });
     if (!isNameValid(name, false)) {
@@ -239,20 +226,23 @@ class PublishPage extends React.PureComponent {
 
     const uri = this.getNewUri(name, this.state.channelName);
     this.setState({ uri });
-  }
+  };
 
-  handleChannelChanged = (channel) => {
+  handleChannelChanged = channel => {
     this.setState({ channelName: channel });
-  }
+  };
 
-  handleTitleChange = (title) => {
-    this.setState({
-      title,
-      name: this.formatNameForTitle(title)
-    }, () => {
-      this.handleNameChange(this.state.name);
-    });
-  }
+  handleTitleChange = title => {
+    this.setState(
+      {
+        title,
+        name: this.formatNameForTitle(title),
+      },
+      () => {
+        this.handleNameChange(this.state.name);
+      }
+    );
+  };
 
   render() {
     const { navigation, notify } = this.props;
@@ -300,28 +290,30 @@ class PublishPage extends React.PureComponent {
               </View>
             </View>
           </View>
-          {(!this.state.videos || !thumbnailPath) &&
+          {(!this.state.videos || !thumbnailPath) && (
             <View style={publishStyle.loadingView}>
-              <ActivityIndicator size='large' color={Colors.LbryGreen} />
+              <ActivityIndicator size="large" color={Colors.LbryGreen} />
             </View>
-          }
-          {(this.state.videos && thumbnailPath) &&
-          <FlatGrid
-            style={publishStyle.galleryGrid}
-            itemDimension={134}
-            spacing={2}
-            items={this.state.videos}
-            renderItem={({ item, index }) => {
-              return (
-                <TouchableOpacity key={index} onPress={() => this.setCurrentMedia(item)}>
-                  <FastImage
-                    style={publishStyle.galleryGridImage}
-                    resizeMode={FastImage.resizeMode.cover}
-                    source={{ uri: `file://${thumbnailPath}/${item.id}.png` }} />
-                </TouchableOpacity>
-              );
-            }}
-          />}
+          )}
+          {this.state.videos && thumbnailPath && (
+            <FlatGrid
+              style={publishStyle.galleryGrid}
+              itemDimension={134}
+              spacing={2}
+              items={this.state.videos}
+              renderItem={({ item, index }) => {
+                return (
+                  <TouchableOpacity key={index} onPress={() => this.setCurrentMedia(item)}>
+                    <FastImage
+                      style={publishStyle.galleryGridImage}
+                      resizeMode={FastImage.resizeMode.cover}
+                      source={{ uri: `file://${thumbnailPath}/${item.id}.png` }}
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          )}
         </View>
       );
     } else if (Constants.PHASE_DETAILS === this.state.currentPhase && this.state.currentMedia) {
@@ -333,30 +325,30 @@ class PublishPage extends React.PureComponent {
               style={publishStyle.mainThumbnail}
               resizeMode={FastImage.resizeMode.contain}
               source={{ uri: `file://${thumbnailPath}/${currentMedia.id}.png` }}
-              />
+            />
           </View>
 
           <View style={publishStyle.card}>
             <Text style={publishStyle.cardTitle}>Title</Text>
             <TextInput
-              placeholder={"Title"}
+              placeholder={'Title'}
               style={publishStyle.inputText}
               value={this.state.title}
               numberOfLines={1}
               underlineColorAndroid={Colors.NextLbryGreen}
               onChangeText={this.state.handleTitleChange}
-              />
+            />
           </View>
 
           <View style={publishStyle.card}>
             <Text style={publishStyle.cardTitle}>Description</Text>
             <TextInput
-              placeholder={"Description"}
+              placeholder={'Description'}
               style={publishStyle.inputText}
               value={this.state.description}
               underlineColorAndroid={Colors.NextLbryGreen}
               onChangeText={this.state.handleDescriptionChange}
-              />
+            />
           </View>
 
           <View style={publishStyle.card}>
@@ -364,70 +356,85 @@ class PublishPage extends React.PureComponent {
               <Text style={publishStyle.cardTitle}>Channel</Text>
             </View>
 
-            <ChannelSelector onChannelChange={this.handleChannelChange}  />
+            <ChannelSelector onChannelChange={this.handleChannelChange} />
           </View>
 
-          {this.state.advancedMode &&
-          <View style={publishStyle.card}>
-            <View style={publishStyle.titleRow}>
-              <Text style={publishStyle.cardTitle}>Price</Text>
-              <View style={publishStyle.switchTitleRow}>
-                <Switch value={this.state.priceSet} onValueChange={value => this.setState({ priceSet: value }) } />
+          {this.state.advancedMode && (
+            <View style={publishStyle.card}>
+              <View style={publishStyle.titleRow}>
+                <Text style={publishStyle.cardTitle}>Price</Text>
+                <View style={publishStyle.switchTitleRow}>
+                  <Switch value={this.state.priceSet} onValueChange={value => this.setState({ priceSet: value })} />
+                </View>
               </View>
+
+              {!this.state.priceSet && (
+                <Text style={publishStyle.cardText}>Your content will be free. Press the toggle to set a price.</Text>
+              )}
+
+              {this.state.priceSet && (
+                <View style={[publishStyle.inputRow, publishStyle.priceInputRow]}>
+                  <TextInput
+                    placeholder={'0.00'}
+                    keyboardType={'number-pad'}
+                    style={publishStyle.priceInput}
+                    underlineColorAndroid={Colors.NextLbryGreen}
+                    numberOfLines={1}
+                    value={String(this.state.price)}
+                    onChangeText={this.handlePriceChange}
+                  />
+                  <Text style={publishStyle.currency}>LBC</Text>
+                </View>
+              )}
             </View>
+          )}
 
-            {!this.state.priceSet &&
-            <Text style={publishStyle.cardText}>Your content will be free. Press the toggle to set a price.</Text>}
+          {this.state.advancedMode && (
+            <View style={publishStyle.card}>
+              <Text style={publishStyle.cardTitle}>Content Address</Text>
+              <Text style={publishStyle.helpText}>
+                The address where people can find your content (ex. lbry://myvideo)
+              </Text>
 
-            {this.state.priceSet &&
-            <View style={[publishStyle.inputRow, publishStyle.priceInputRow]}>
               <TextInput
-                placeholder={"0.00"}
-                keyboardType={'number-pad'}
-                style={publishStyle.priceInput}
+                placeholder={'lbry://'}
+                style={publishStyle.inputText}
                 underlineColorAndroid={Colors.NextLbryGreen}
                 numberOfLines={1}
-                value={String(this.state.price)}
-                onChangeText={this.handlePriceChange}
+                value={this.state.name}
+                onChangeText={this.handleNameChange}
               />
-              <Text style={publishStyle.currency}>LBC</Text>
-            </View>}
-          </View>}
-
-          {this.state.advancedMode &&
-          <View style={publishStyle.card}>
-            <Text style={publishStyle.cardTitle}>Content Address</Text>
-            <Text style={publishStyle.helpText}>The address where people can find your content (ex. lbry://myvideo)</Text>
-
-            <TextInput
-              placeholder={"lbry://"}
-              style={publishStyle.inputText}
-              underlineColorAndroid={Colors.NextLbryGreen}
-              numberOfLines={1}
-              value={this.state.name}
-              onChangeText={this.handleNameChange}
-              />
-            <View style={publishStyle.inputRow}>
-              <TextInput
-                placeholder={"0.00"}
-                style={publishStyle.priceInput}
-                underlineColorAndroid={Colors.NextLbryGreen}
-                numberOfLines={1}
-                keyboardType={'numeric'}
-                value={String(this.state.bid)}
-                onChangeText={this.handleBidChange} />
-              <Text style={publishStyle.currency}>LBC</Text>
+              <View style={publishStyle.inputRow}>
+                <TextInput
+                  placeholder={'0.00'}
+                  style={publishStyle.priceInput}
+                  underlineColorAndroid={Colors.NextLbryGreen}
+                  numberOfLines={1}
+                  keyboardType={'numeric'}
+                  value={String(this.state.bid)}
+                  onChangeText={this.handleBidChange}
+                />
+                <Text style={publishStyle.currency}>LBC</Text>
+              </View>
+              <Text style={publishStyle.helpText}>
+                This LBC remains yours and the deposit can be undone at any time.
+              </Text>
             </View>
-            <Text style={publishStyle.helpText}>This LBC remains yours and the deposit can be undone at any time.</Text>
-          </View>}
+          )}
 
           <View style={publishStyle.actionButtons}>
-            <Link style={publishStyle.cancelLink} text="Cancel" onPress={() => this.setState({ currentPhase: Constants.PHASE_SELECTOR })} />
+            <Link
+              style={publishStyle.cancelLink}
+              text="Cancel"
+              onPress={() => this.setState({ currentPhase: Constants.PHASE_SELECTOR })}
+            />
 
             <View style={publishStyle.rightActionButtons}>
-              <Button style={publishStyle.modeButton}
+              <Button
+                style={publishStyle.modeButton}
                 text={this.state.advancedMode ? 'Simple' : 'Advanced'}
-                onPress={this.handleModePressed} />
+                onPress={this.handleModePressed}
+              />
               <Button style={publishStyle.publishButton} text="Publish" onPress={this.handlePublishPressed} />
             </View>
           </View>
@@ -441,11 +448,19 @@ class PublishPage extends React.PureComponent {
             <Text style={publishStyle.successText}>Congratulations! Your content was successfully uploaded.</Text>
             <View style={publishStyle.successRow}>
               <Link style={publishStyle.successUrl} text={this.state.uri} href={this.state.uri} />
-              <TouchableOpacity onPress={() => { Clipboard.setString(this.state.uri); notify({ message: 'Copied.' }); }}>
+              <TouchableOpacity
+                onPress={() => {
+                  Clipboard.setString(this.state.uri);
+                  notify({ message: 'Copied.' });
+                }}
+              >
                 <Icon name="clipboard" size={24} color={Colors.LbryGreen} />
               </TouchableOpacity>
             </View>
-            <Text style={publishStyle.successText}>Your content will be live in a few minutes. In the mean time, feel free to publish more content or explore the app.</Text>
+            <Text style={publishStyle.successText}>
+              Your content will be live in a few minutes. In the mean time, feel free to publish more content or explore
+              the app.
+            </Text>
           </View>
           <View style={publishStyle.actionButtons}>
             <Button style={publishStyle.publishButton} text="Publish again" onPress={this.handlePublishAgainPressed} />
@@ -458,7 +473,9 @@ class PublishPage extends React.PureComponent {
       <View style={publishStyle.container}>
         <UriBar navigation={navigation} />
         {content}
-        {(false && Constants.PHASE_SELECTOR !== this.state.currentPhase) && <FloatingWalletBalance navigation={navigation} />}
+        {false && Constants.PHASE_SELECTOR !== this.state.currentPhase && (
+          <FloatingWalletBalance navigation={navigation} />
+        )}
       </View>
     );
   }

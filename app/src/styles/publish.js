@@ -10,18 +10,18 @@ const publishStyle = StyleSheet.create({
     flex: 1,
     marginTop: 62,
     paddingTop: 2,
-    backgroundColor: Colors.DarkGrey
+    backgroundColor: Colors.DarkGrey,
   },
   galleryGrid: {
-    flex: 1
+    flex: 1,
   },
   galleryGridImage: {
     width: 134,
-    height: 90
+    height: 90,
   },
   inputText: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 16
+    fontSize: 16,
   },
   card: {
     backgroundColor: Colors.White,
@@ -38,53 +38,53 @@ const publishStyle = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   rightActionButtons: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   modeButton: {
     backgroundColor: Colors.NextLbryGreen,
     alignSelf: 'flex-end',
-    marginRight: 20
+    marginRight: 20,
   },
   publishButton: {
     backgroundColor: Colors.LbryGreen,
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
   },
   cardTitle: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 20,
-    marginBottom: 8
+    marginBottom: 8,
   },
   actionsView: {
     width: '100%',
     height: 240,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   record: {
     backgroundColor: 'transparent',
     flex: 0.5,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   subActions: {
     flex: 0.5,
     borderLeftWidth: 2,
-    borderLeftColor: Colors.DarkerGrey
+    borderLeftColor: Colors.DarkerGrey,
   },
   actionText: {
     color: Colors.White,
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
-    marginTop: 8
+    marginTop: 8,
   },
   photo: {
     backgroundColor: 'transparent',
     height: 120,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   upload: {
     backgroundColor: Colors.Black,
@@ -92,65 +92,65 @@ const publishStyle = StyleSheet.create({
     borderTopWidth: 2,
     borderTopColor: Colors.DarkerGrey,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   publishDetails: {
-    marginTop: 60
+    marginTop: 60,
   },
   mainThumbnailContainer: {
     backgroundColor: Colors.Black,
     width: '100%',
-    height: 240
+    height: 240,
   },
   mainThumbnail: {
-    height: 240
+    height: 240,
   },
   inputRow: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   priceInput: {
     width: 80,
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 16
+    fontSize: 16,
   },
   currency: {
-    fontFamily: 'Inter-UI-Regular'
+    fontFamily: 'Inter-UI-Regular',
   },
   cardRow: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   switchRow: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 24
+    marginLeft: 24,
   },
   switchTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 24,
-    marginTop: -10
+    marginTop: -10,
   },
   switchText: {
     marginRight: 4,
-    fontSize: 16
+    fontSize: 16,
   },
   loadingView: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   titleRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   cardText: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 14
+    fontSize: 14,
   },
   cameraPreview: {
     position: 'absolute',
@@ -158,7 +158,7 @@ const publishStyle = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
-    height: 240
+    height: 240,
   },
   actionsSubView: {
     flex: 1,
@@ -167,34 +167,34 @@ const publishStyle = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    bottom: 0
+    bottom: 0,
   },
   successContainer: {
-    padding: 16
+    padding: 16,
   },
   successTitle: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 28,
-    marginBottom: 16
+    marginBottom: 16,
   },
   successText: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     marginBottom: 16,
-    lineHeight: 20
+    lineHeight: 20,
   },
   successRow: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16
+    marginBottom: 16,
   },
   successUrl: {
     fontSize: 32,
     fontFamily: 'Inter-UI-Regular',
     color: Colors.NextLbryGreen,
-    marginRight: 16
-  }
+    marginRight: 16,
+  },
 });
 
 export default publishStyle;

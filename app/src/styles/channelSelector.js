@@ -3,60 +3,60 @@ import Colors from './colors';
 
 const channelSelectorStyle = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   channelPicker: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     height: 52,
-    width: '100%'
+    width: '100%',
   },
   bidRow: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   label: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 16
+    fontSize: 16,
   },
   channelNameInput: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 16
- },
+    fontSize: 16,
+  },
   bidAmountInput: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
     marginLeft: 16,
     textAlign: 'right',
-    width: 80
+    width: 80,
   },
   helpText: {
     fontFamily: 'Inter-UI-Regular',
-    fontSize: 12
+    fontSize: 12,
   },
   createChannelContainer: {
     flex: 1,
     marginLeft: 8,
-    marginRight: 8
+    marginRight: 8,
   },
   buttonContainer: {
     flex: 1,
     marginTop: 16,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   buttons: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   cancelLink: {
-    marginRight: 16
+    marginRight: 16,
   },
   createButton: {
-    backgroundColor: Colors.NextLbryGreen
-  }
+    backgroundColor: Colors.NextLbryGreen,
+  },
 });
 
 export default channelSelectorStyle;

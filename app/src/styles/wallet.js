@@ -138,6 +138,7 @@ const walletStyle = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     letterSpacing: 1.5,
+    marginRight: 8,
   },
   warning: {
     backgroundColor: Colors.Orange,

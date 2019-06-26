@@ -20,7 +20,7 @@ class EmailVerifyPage extends React.PureComponent {
     const { onEmailViewLayout, email } = this.props;
 
     const content = (
-      <View onLayout={onEmailViewLayout}>
+      <View onLayout={() => onEmailViewLayout('verify')}>
         <Text style={firstRunStyle.title}>Verify Email</Text>
         <Text style={firstRunStyle.paragraph}>
           An email has been sent to{' '}

@@ -214,7 +214,7 @@ class SplashScreen extends React.PureComponent {
 
     setTimeout(() => {
       this.updateStatus();
-    }, 500);
+    }, 1000);
   }
 
   componentDidMount() {
