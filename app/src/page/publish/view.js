@@ -10,12 +10,14 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { isNameValid, buildURI, regexInvalidURI, CLAIM_VALUES, LICENSES, THUMBNAIL_STATUSES } from 'lbry-redux';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { RNCamera } from 'react-native-camera';
+import { generateCombination } from 'gfycat-style-urls';
 import Button from 'component/button';
 import ChannelSelector from 'component/channelSelector';
 import Colors from 'styles/colors';
@@ -23,12 +25,19 @@ import Constants from 'constants';
 import FastImage from 'react-native-fast-image';
 import FloatingWalletBalance from 'component/floatingWalletBalance';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Feather from 'react-native-vector-icons/Feather';
 import Link from 'component/link';
 import UriBar from 'component/uriBar';
 import publishStyle from 'styles/publish';
 
 class PublishPage extends React.PureComponent {
+  camera = null;
+
   state = {
+    cameraType: RNCamera.Constants.Type.back,
+    videoRecordingMode: false,
+    recordingVideo: false,
+    showCameraOverlay: false,
     thumbnailPath: null,
     videos: null,
     currentMedia: null,
@@ -97,6 +106,11 @@ class PublishPage extends React.PureComponent {
     const { notify, publish } = this.props;
     const { bid, channelName, currentMedia, description, name, price, priceSet, title, uri } = this.state;
     const thumbnail = null;
+
+    if (!title || title.trim().length === 0) {
+      notify({ message: 'Please provide a title' });
+      return;
+    }
 
     if (!name) {
       notify({ message: 'Please specify an address where people can find your content.' });
@@ -188,6 +202,71 @@ class PublishPage extends React.PureComponent {
     });
   }
 
+  handleRecordVideoPressed = () => {
+    if (!this.state.showCameraOverlay) {
+      this.setState({ showCameraOverlay: true, videoRecordingMode: true });
+    }
+  }
+
+  handleTakePhotoPressed = () => {
+    if (!this.state.showCameraOverlay) {
+      this.setState({ showCameraOverlay: true, videoRecordingMode: false });
+    }
+  }
+
+  handleCloseCameraPressed = () => {
+    this.setState({ showCameraOverlay: false, videoRecordingMode: false });
+  }
+
+  handleCameraActionPressed = () => {
+    // check if it's video or photo mode
+    if (this.state.videoRecordingMode) {
+      if (this.state.recordingVideo) {
+        this.camera.stopRecording();
+      } else {
+        this.setState({ recordingVideo: true });
+
+        const options = { quality: RNCamera.Constants.VideoQuality['1080p'] };
+        this.camera.recordAsync(options).then(data => {
+          this.setState({ recordingVideo: false });
+          const currentMedia = {
+            id: -1,
+            filePath: data.uri,
+            name: generateCombination(2, ' ', true),
+            type: 'video/mp4', // always MP4
+            duration: 0
+          };
+          this.setCurrentMedia(currentMedia);
+          this.setState({
+            currentPhase: Constants.PHASE_DETAILS,
+            showCameraOverlay: false,
+            videoRecordingMode: false,
+            recordingVideo: false
+          });
+        });
+      }
+    } else {
+      const options = { quality: 0.7 };
+      this.camera.takePictureAsync(options).then(data => {
+        const currentMedia = {
+          id: -1,
+          filePath: data.uri,
+          name: generateCombination(2, ' ', true),
+          type: 'image/jpg', // always JPEG
+          duration: 0
+        };
+        this.setCurrentMedia(currentMedia);
+        this.setState({ currentPhase: Constants.PHASE_DETAILS, showCameraOverlay: false, videoRecordingMode: false });
+      });
+    }
+  }
+
+  handleSwitchCameraPressed = () => {
+    const { cameraType } = this.state;
+    this.setState({ cameraType: (cameraType === RNCamera.Constants.Type.back) ?
+      RNCamera.Constants.Type.front : RNCamera.Constants.Type.back });
+  }
+
   handleUploadPressed = () => {
     DocumentPicker.show(
       {
@@ -232,6 +311,20 @@ class PublishPage extends React.PureComponent {
     this.setState({ channelName: channel });
   };
 
+  getThumbnailUriForMedia = (media) => {
+    const { thumbnailPath } = this.state;
+    if (media.type) {
+      const mediaType = media.type.substring(0, 5);
+      if ('video' === mediaType && media.id > -1) {
+        return `file://${thumbnailPath}/${media.id}.png`
+      } else if ('image' === mediaType) {
+        return media.filePath;
+      }
+    }
+
+    return null;
+  }
+
   handleTitleChange = title => {
     this.setState(
       {
@@ -255,11 +348,7 @@ class PublishPage extends React.PureComponent {
           <View style={publishStyle.actionsView}>
             <RNCamera
               style={publishStyle.cameraPreview}
-              ref={ref => {
-                this.camera = ref;
-              }}
               type={RNCamera.Constants.Type.back}
-              flashMode={RNCamera.Constants.FlashMode.on}
               androidCameraPermissionOptions={{
                 title: 'Camera',
                 message: 'Please grant access to make use of your camera',
@@ -274,15 +363,15 @@ class PublishPage extends React.PureComponent {
               }}
             />
             <View style={publishStyle.actionsSubView}>
-              <View style={publishStyle.record}>
+              <TouchableOpacity style={publishStyle.record} onPress={this.handleRecordVideoPressed}>
                 <Icon name="video" size={48} color={Colors.White} />
                 <Text style={publishStyle.actionText}>Record</Text>
-              </View>
+              </TouchableOpacity>
               <View style={publishStyle.subActions}>
-                <View style={publishStyle.photo}>
+                <TouchableOpacity style={publishStyle.photo} onPress={this.handleTakePhotoPressed}>
                   <Icon name="camera" size={48} color={Colors.White} />
                   <Text style={publishStyle.actionText}>Take a photo</Text>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity style={publishStyle.upload} onPress={this.handleUploadPressed}>
                   <Icon name="file-upload" size={48} color={Colors.White} />
                   <Text style={publishStyle.actionText}>Upload a file</Text>
@@ -318,15 +407,17 @@ class PublishPage extends React.PureComponent {
       );
     } else if (Constants.PHASE_DETAILS === this.state.currentPhase && this.state.currentMedia) {
       const { currentMedia } = this.state;
+      const thumbnailUri = this.getThumbnailUriForMedia(currentMedia);
       content = (
         <ScrollView style={publishStyle.publishDetails}>
+          {thumbnailUri && thumbnailUri.trim().length > 0 &&
           <View style={publishStyle.mainThumbnailContainer}>
             <FastImage
               style={publishStyle.mainThumbnail}
               resizeMode={FastImage.resizeMode.contain}
-              source={{ uri: `file://${thumbnailPath}/${currentMedia.id}.png` }}
+              source={{ uri: thumbnailUri }}
             />
-          </View>
+          </View>}
 
           <View style={publishStyle.card}>
             <Text style={publishStyle.cardTitle}>Title</Text>
@@ -476,6 +567,51 @@ class PublishPage extends React.PureComponent {
         {false && Constants.PHASE_SELECTOR !== this.state.currentPhase && (
           <FloatingWalletBalance navigation={navigation} />
         )}
+        {this.state.showCameraOverlay &&
+        <View style={publishStyle.cameraOverlay}>
+          <RNCamera
+              style={publishStyle.fullCamera}
+              ref={ref => {
+                this.camera = ref;
+              }}
+              type={this.state.cameraType}
+              flashMode={RNCamera.Constants.FlashMode.off}
+              androidCameraPermissionOptions={{
+                title: 'Camera',
+                message: 'Please grant access to make use of your camera',
+                buttonPositive: 'OK',
+                buttonNegative: 'Cancel',
+              }}
+              androidRecordAudioPermissionOptions={{
+                title: 'Audio',
+                message: 'Please grant access to record audio',
+                buttonPositive: 'OK',
+                buttonNegative: 'Cancel',
+              }}
+            />
+          <View style={[publishStyle.cameraControls, this.state.videoRecordingMode ? publishStyle.transparentControls : opaqueControls ]}>
+            <View style={publishStyle.controlsRow}>
+              <TouchableOpacity onPress={this.handleCloseCameraPressed}>
+                <Icon name="arrow-left" size={28} color={Colors.White} />
+              </TouchableOpacity>
+
+
+              <View style={publishStyle.mainControlsRow}>
+                <TouchableOpacity style={publishStyle.switchCameraToggle} onPress={this.handleSwitchCameraPressed}>
+                    <Feather name="rotate-cw" size={36} color={Colors.White} />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={this.handleCameraActionPressed}>
+                  <View style={publishStyle.cameraAction}>
+                    <Feather style={publishStyle.cameraActionIcon} name="circle" size={72} color={Colors.White} />
+                    {this.state.recordingVideo &&
+                    <Icon style={publishStyle.recordingIcon} name="circle" solid={true} size={44} color={Colors.Red} />}
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>}
       </View>
     );
   }

@@ -195,6 +195,65 @@ const publishStyle = StyleSheet.create({
     color: Colors.NextLbryGreen,
     marginRight: 16,
   },
+  cameraOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: Colors.Black,
+    elevation: 24
+  },
+  fullCamera: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 100
+  },
+  cameraControls: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 120,
+    zIndex: 200,
+    alignItems: 'center'
+  },
+  controlsRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  mainControlsRow: {
+    flex: 0.8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  switchCameraToggle: {
+    marginRight: 48
+  },
+  cameraAction: {
+    width: 72,
+    height: 72,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  cameraActionIcon: {
+    position: 'absolute'
+  },
+  recordingIcon: {
+    position: 'absolute'
+  },
+  transparentControls: {
+    backgroundColor: '#00000022'
+  },
+  opaqueControls: {
+    backgroundColor: Colors.Black
+  }
 });
 
 export default publishStyle;
