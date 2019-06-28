@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,7 +18,10 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
+import io.lbry.browser.Utils;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -57,6 +61,119 @@ public class GalleryModule extends ReactContextBaseJavaModule {
         }
 
         promise.resolve(null);
+    }
+
+    /*
+    @ReactMethod
+    public void copyImage(String sourcePath, String destinationPath, Promise promise) {
+        try {
+            File source = new File(sourcePath);
+            File destination = new File(destinationPath);
+            if (source.exists()) {
+                FileChannel src = new FileInputStream(source).getChannel();
+                FileChannel dst = new FileOutputStream(destination).getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+
+                promise.resolve(true);
+            } else {
+                promise.reject("The source image could not be found. Please try again.");
+            }
+        } catch (Exception ex) {
+            promise.reject("The image could not be saved. Please try again.");
+        }
+    }*/
+
+    @ReactMethod
+    public void getUploadsPath(Promise promise) {
+        if (context != null) {
+            String baseFolder = Utils.getExternalStorageDir(context);
+            String uploadsPath = String.format("%s/LBRY/Uploads", baseFolder);
+            File uploadsDir = new File(uploadsPath);
+            if (!uploadsDir.isDirectory()) {
+                uploadsDir.mkdirs();
+            }
+            promise.resolve(uploadsPath);
+        }
+
+        promise.reject("The content could not be saved to the device. Please check your storage permissions.");
+    }
+
+    @ReactMethod
+    public void createVideoThumbnail(String targetId, String filePath, Promise promise) {
+        (new AsyncTask<Void, Void, String>() {
+            protected String doInBackground(Void... param) {
+                String thumbnailPath = null;
+
+                if (context != null) {
+                    Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Video.Thumbnails.MINI_KIND);
+                    File cacheDir = context.getExternalCacheDir();
+                    thumbnailPath = String.format("%s/thumbnails/%s.png", cacheDir.getAbsolutePath(), targetId);
+
+                    File file = new File(thumbnailPath);
+                    try (FileOutputStream os = new FileOutputStream(thumbnailPath)) {
+                        thumbnail.compress(Bitmap.CompressFormat.PNG, 80, os);
+                        os.close();
+                    } catch (IOException ex) {
+                        promise.reject("Could not create a thumbnail for the video");
+                        return null;
+                    }
+                }
+
+                return thumbnailPath;
+            }
+
+            public void onPostExecute(String thumbnailPath) {
+                if (thumbnailPath != null && thumbnailPath.trim().length() > 0) {
+                    promise.resolve(thumbnailPath);
+                }
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @ReactMethod
+    public void createImageThumbnail(String targetId, String filePath, Promise promise) {
+        (new AsyncTask<Void, Void, String>() {
+            protected String doInBackground(Void... param) {
+                String thumbnailPath = null;
+                FileOutputStream os = null;
+                try {
+                    Bitmap source = BitmapFactory.decodeFile(filePath);
+                    // MINI_KIND dimensions
+                    Bitmap thumbnail = BitmapFactory.createScaledBitmap(source, 512, 384, false);
+
+                    if (context != null) {
+                        File cacheDir = context.getExternalCacheDir();
+                        thumbnailPath = String.format("%s/thumbnails/%s.png", cacheDir.getAbsolutePath(), targetId);
+                        os = new FileOutputStream(thumbnailPath);
+                        if (thumbnail != null) {
+                            thumbnail.compress(Bitmap.CompressFormat.PNG, 80, os);
+                        }
+                        os.close();
+                    }
+                } catch (IOException ex) {
+                    promise.reject("Could not create a thumbnail for the image");
+                    return null;
+                } finally {
+                    if (os != null) {
+                        try {
+                            os.close();
+                        } catch (IOException ex) {
+                            // ignoe
+                        }
+                    }
+                }
+
+                return thumbnailPath;
+            }
+
+            public void onPostExecute(String thumbnailPath) {
+                if (thumbnailPath != null && thumbnailPath.trim().length() > 0) {
+                    promise.resolve(thumbnailPath);
+                }
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private List<GalleryItem> loadVideos() {

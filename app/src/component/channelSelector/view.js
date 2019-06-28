@@ -170,7 +170,6 @@ export default class ChannelSelector extends React.PureComponent {
   render() {
     const channel = this.state.addingChannel ? 'new' : this.props.channel;
     const { fetchingChannels, channels = [] } = this.props;
-    console.log(channels);
     const pickerItems = [{ name: Constants.ITEM_ANONYMOUS }, { name: Constants.ITEM_CREATE_A_CHANNEL }].concat(
       channels
     );
