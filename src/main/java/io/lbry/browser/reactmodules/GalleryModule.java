@@ -141,7 +141,7 @@ public class GalleryModule extends ReactContextBaseJavaModule {
                 try {
                     Bitmap source = BitmapFactory.decodeFile(filePath);
                     // MINI_KIND dimensions
-                    Bitmap thumbnail = BitmapFactory.createScaledBitmap(source, 512, 384, false);
+                    Bitmap thumbnail = Bitmap.createScaledBitmap(source, 512, 384, false);
 
                     if (context != null) {
                         File cacheDir = context.getExternalCacheDir();
