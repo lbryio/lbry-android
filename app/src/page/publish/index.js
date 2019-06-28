@@ -1,11 +1,16 @@
 import { connect } from 'react-redux';
-import { doPublish, doResolveUri, doToast } from 'lbry-redux';
+import { doPublish, doResolveUri, doToast, doUploadThumbnail, selectPublishFormValues } from 'lbry-redux';
 import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import Constants from 'constants';
 import PublishPage from './view';
 
+const select = state => ({
+  publishFormValues: selectPublishFormValues(state),
+});
+
 const perform = dispatch => ({
   notify: data => dispatch(doToast(data)),
+  uploadThumbnail: (filePath, fsAdapter) => dispatch(doUploadThumbnail(filePath, null, fsAdapter)),
   publish: params => dispatch(doPublish(params)),
   resolveUri: uri => dispatch(doResolveUri(uri)),
   pushDrawerStack: () => dispatch(doPushDrawerStack(Constants.DRAWER_ROUTE_PUBLISH)),
@@ -13,6 +18,6 @@ const perform = dispatch => ({
 });
 
 export default connect(
-  null,
+  select,
   perform
 )(PublishPage);

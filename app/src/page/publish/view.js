@@ -18,6 +18,7 @@ import { isNameValid, buildURI, regexInvalidURI, CLAIM_VALUES, LICENSES, THUMBNA
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { RNCamera } from 'react-native-camera';
 import { generateCombination } from 'gfycat-style-urls';
+import RNFS from 'react-native-fs';
 import Button from 'component/button';
 import ChannelSelector from 'component/channelSelector';
 import Colors from 'styles/colors';
@@ -64,6 +65,10 @@ class PublishPage extends React.PureComponent {
     name: null,
     price: 0,
     uri: null,
+    uploadedThumbnailUri: null,
+
+    // other
+    publishStarted: false,
   };
 
   didFocusListener;
@@ -112,8 +117,18 @@ class PublishPage extends React.PureComponent {
 
   handlePublishPressed = () => {
     const { notify, publish } = this.props;
-    const { bid, channelName, currentMedia, description, name, price, priceSet, title, uri } = this.state;
-    const thumbnail = null;
+    const {
+      bid,
+      channelName,
+      currentMedia,
+      description,
+      name,
+      price,
+      priceSet,
+      title,
+      uploadedThumbnailUri: thumbnail,
+      uri,
+    } = this.state;
 
     if (!title || title.trim().length === 0) {
       notify({ message: 'Please provide a title' });
@@ -145,7 +160,7 @@ class PublishPage extends React.PureComponent {
       claim: null,
     };
 
-    this.setState({ currentPhase: Constants.PHASE_PUBLISH }, () => publish(publishParams));
+    this.setState({ publishStarted: true }, () => publish(publishParams));
   };
 
   onComponentFocused = () => {
@@ -169,21 +184,43 @@ class PublishPage extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { currentRoute } = nextProps;
+    const { currentRoute, publishFormValues } = nextProps;
     const { currentRoute: prevRoute } = this.props;
 
     if (Constants.DRAWER_ROUTE_PUBLISH === currentRoute && currentRoute !== prevRoute) {
       this.onComponentFocused();
     }
+
+    if (publishFormValues) {
+      // TODO: Check thumbnail upload progress after thumbnail starts uploading
+      if (publishFormValues.thumbnail && !this.state.uploadedThumbnailUri) {
+        this.setState({ uploadedThumbnailUri: publishFormValues.thumbnail });
+      }
+
+      if (this.state.publishStarted) {
+        if (publishFormValues.publishSuccess) {
+          this.setState({ publishStarted: false, currentPhase: Constants.PHASE_PUBLISH });
+        } else if (publishFormValues.publishError) {
+          // TODO: Display error if any
+        }
+
+        if (!publishFormValues.publishing && this.state.publishStarted) {
+          this.setState({ publishStarted: false });
+        }
+      }
+    }
   }
 
   setCurrentMedia(media) {
-    this.setState({
-      currentMedia: media,
-      title: media.name,
-      name: this.formatNameForTitle(media.name),
-      currentPhase: Constants.PHASE_DETAILS,
-    });
+    this.setState(
+      {
+        currentMedia: media,
+        title: media.name,
+        name: this.formatNameForTitle(media.name),
+        currentPhase: Constants.PHASE_DETAILS,
+      },
+      () => this.handleNameChange(this.state.name)
+    );
   }
 
   formatNameForTitle = title => {
@@ -192,6 +229,8 @@ class PublishPage extends React.PureComponent {
 
   showSelector() {
     this.setState({
+      publishStarted: false,
+
       currentMedia: null,
       currentThumbnailUri: null,
       currentPhase: Constants.PHASE_SELECTOR,
@@ -209,6 +248,7 @@ class PublishPage extends React.PureComponent {
       name: null,
       price: 0,
       uri: null,
+      uploadedThumbnailUri: null,
     });
   }
 
@@ -216,21 +256,21 @@ class PublishPage extends React.PureComponent {
     if (!this.state.showCameraOverlay) {
       this.setState({ showCameraOverlay: true, videoRecordingMode: true });
     }
-  }
+  };
 
   handleTakePhotoPressed = () => {
     if (!this.state.showCameraOverlay) {
       this.setState({ showCameraOverlay: true, videoRecordingMode: false });
     }
-  }
+  };
 
   handleCloseCameraPressed = () => {
     this.setState({ showCameraOverlay: false, videoRecordingMode: false });
-  }
+  };
 
-  getFilePathFromUri = (uri) => {
+  getFilePathFromUri = uri => {
     return uri.substring('file://'.length);
-  }
+  };
 
   handleCameraActionPressed = () => {
     // check if it's video or photo mode
@@ -248,7 +288,7 @@ class PublishPage extends React.PureComponent {
             filePath: this.getFilePathFromUri(data.uri),
             name: generateCombination(2, ' ', true),
             type: 'video/mp4', // always MP4
-            duration: 0
+            duration: 0,
           };
           this.setCurrentMedia(currentMedia);
           this.setState({
@@ -257,7 +297,7 @@ class PublishPage extends React.PureComponent {
             currentPhase: Constants.PHASE_DETAILS,
             showCameraOverlay: false,
             videoRecordingMode: false,
-            recordingVideo: false
+            recordingVideo: false,
           });
         });
       }
@@ -269,7 +309,7 @@ class PublishPage extends React.PureComponent {
           filePath: this.getFilePathFromUri(data.uri),
           name: generateCombination(2, ' ', true),
           type: 'image/jpg', // always JPEG
-          duration: 0
+          duration: 0,
         };
         this.setCurrentMedia(currentMedia);
         this.setState({
@@ -277,17 +317,19 @@ class PublishPage extends React.PureComponent {
           currentThumbnailUri: null,
           updatingThumbnailUri: false,
           showCameraOverlay: false,
-          videoRecordingMode: false
+          videoRecordingMode: false,
         });
       });
     }
-  }
+  };
 
   handleSwitchCameraPressed = () => {
     const { cameraType } = this.state;
-    this.setState({ cameraType: (cameraType === RNCamera.Constants.Type.back) ?
-      RNCamera.Constants.Type.front : RNCamera.Constants.Type.back });
-  }
+    this.setState({
+      cameraType:
+        cameraType === RNCamera.Constants.Type.back ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back,
+    });
+  };
 
   handleUploadPressed = () => {
     DocumentPicker.show(
@@ -309,7 +351,7 @@ class PublishPage extends React.PureComponent {
     // generate a random id for a photo or recorded video between 1 and 20 (for creating thumbnails)
     const id = Math.floor(Math.random() * (20 - 2)) + 1;
     return '_' + id;
-  }
+  };
 
   handlePublishAgainPressed = () => {
     this.showSelector();
@@ -337,14 +379,16 @@ class PublishPage extends React.PureComponent {
 
   handleChannelChanged = channel => {
     this.setState({ channelName: channel });
+    const uri = this.getNewUri(name, this.state.channelName);
+    this.setState({ uri });
   };
 
-  updateThumbnailUriForMedia = (media) => {
+  updateThumbnailUriForMedia = media => {
     if (this.state.updatingThumbnailUri) {
       return;
     }
 
-    const { notify } = this.props;
+    const { notify, uploadThumbnail } = this.props;
     const { thumbnailPath } = this.state;
 
     this.setState({ updatingThumbnailUri: true });
@@ -356,19 +400,30 @@ class PublishPage extends React.PureComponent {
       if ('video' === mediaType && media.id > -1) {
         const uri = `file://${thumbnailPath}/${media.id}.png`;
         this.setState({ currentThumbnailUri: uri, updatingThumbnailUri: false });
-      } else if ('image' === mediaType) {
-        // photo taken or file selected
-        NativeModules.Gallery.createImageThumbnail(tempId, media.filePath).
-          then(path => this.setState({ currentThumbnailUri: `file://${path}`, updatingThumbnailUri: false })).
-          catch(err => { notify({ message: err }); this.setState({ updatingThumbnailUri: false }); });
-      } else if ('video' === mediaType) {
-        // recorded video
-        NativeModules.Gallery.createVideoThumbnail(tempId, media.filePath).
-          then(path => this.setState({ currentThumbnailUri: `file://${path}`, updatingThumbnailUri: false })).
-          catch(err => { notify({ message: err }); this.setState({ updatingThumbnailUri: false }); });
+
+        // upload the thumbnail
+        if (!this.state.uploadedThumbnailUri) {
+          uploadThumbnail(this.getFilePathFromUri(uri), RNFS);
+        }
+      } else if ('image' === mediaType || 'video' === mediaType) {
+        const create =
+          'image' === mediaType
+            ? NativeModules.Gallery.createImageThumbnail
+            : NativeModules.Gallery.createVideoThumbnail;
+        create(tempId, media.filePath)
+          .then(path => {
+            this.setState({ currentThumbnailUri: `file://${path}`, updatingThumbnailUri: false });
+            if (!this.state.uploadedThumbnailUri) {
+              uploadThumbnail(path, RNFS);
+            }
+          })
+          .catch(err => {
+            notify({ message: err });
+            this.setState({ updatingThumbnailUri: false });
+          });
       }
     }
-  }
+  };
 
   handleTitleChange = title => {
     this.setState(
@@ -383,7 +438,7 @@ class PublishPage extends React.PureComponent {
   };
 
   render() {
-    const { navigation, notify } = this.props;
+    const { navigation, notify, publishFormValues } = this.props;
     const { thumbnailPath } = this.state;
 
     let content;
@@ -457,14 +512,15 @@ class PublishPage extends React.PureComponent {
       }
       content = (
         <ScrollView style={publishStyle.publishDetails}>
-          {currentThumbnailUri && currentThumbnailUri.trim().length > 0 &&
-          <View style={publishStyle.mainThumbnailContainer}>
-            <FastImage
-              style={publishStyle.mainThumbnail}
-              resizeMode={FastImage.resizeMode.contain}
-              source={{ uri: currentThumbnailUri }}
-            />
-          </View>}
+          {currentThumbnailUri && currentThumbnailUri.trim().length > 0 && (
+            <View style={publishStyle.mainThumbnailContainer}>
+              <FastImage
+                style={publishStyle.mainThumbnail}
+                resizeMode={FastImage.resizeMode.contain}
+                source={{ uri: currentThumbnailUri }}
+              />
+            </View>
+          )}
 
           <View style={publishStyle.card}>
             <Text style={publishStyle.cardTitle}>Title</Text>
@@ -561,20 +617,35 @@ class PublishPage extends React.PureComponent {
           )}
 
           <View style={publishStyle.actionButtons}>
-            <Link
-              style={publishStyle.cancelLink}
-              text="Cancel"
-              onPress={() => this.setState({ currentPhase: Constants.PHASE_SELECTOR })}
-            />
+            {(this.state.publishStarted || publishFormValues.publishing) && (
+              <View style={publishStyle.progress}>
+                <ActivityIndicator size={'small'} color={Colors.LbryGreen} />
+              </View>
+            )}
 
-            <View style={publishStyle.rightActionButtons}>
-              <Button
-                style={publishStyle.modeButton}
-                text={this.state.advancedMode ? 'Simple' : 'Advanced'}
-                onPress={this.handleModePressed}
+            {!publishFormValues.publishing && !this.state.publishStarted && (
+              <Link
+                style={publishStyle.cancelLink}
+                text="Cancel"
+                onPress={() => this.setState({ currentPhase: Constants.PHASE_SELECTOR })}
               />
-              <Button style={publishStyle.publishButton} text="Publish" onPress={this.handlePublishPressed} />
-            </View>
+            )}
+
+            {!publishFormValues.publishing && !this.state.publishStarted && (
+              <View style={publishStyle.rightActionButtons}>
+                <Button
+                  style={publishStyle.modeButton}
+                  text={this.state.advancedMode ? 'Simple' : 'Advanced'}
+                  onPress={this.handleModePressed}
+                />
+                <Button
+                  style={publishStyle.publishButton}
+                  disabled={!this.state.uploadedThumbnailUri}
+                  text="Publish"
+                  onPress={this.handlePublishPressed}
+                />
+              </View>
+            )}
           </View>
         </ScrollView>
       );
@@ -614,9 +685,9 @@ class PublishPage extends React.PureComponent {
         {false && Constants.PHASE_SELECTOR !== this.state.currentPhase && (
           <FloatingWalletBalance navigation={navigation} />
         )}
-        {this.state.showCameraOverlay &&
-        <View style={publishStyle.cameraOverlay}>
-          <RNCamera
+        {this.state.showCameraOverlay && (
+          <View style={publishStyle.cameraOverlay}>
+            <RNCamera
               style={publishStyle.fullCamera}
               ref={ref => {
                 this.camera = ref;
@@ -636,30 +707,41 @@ class PublishPage extends React.PureComponent {
                 buttonNegative: 'Cancel',
               }}
             />
-          <View style={[publishStyle.cameraControls,
-                        this.state.videoRecordingMode ? publishStyle.transparentControls : publishStyle.opaqueControls ]}>
-            <View style={publishStyle.controlsRow}>
-              <TouchableOpacity onPress={this.handleCloseCameraPressed}>
-                <Icon name="arrow-left" size={28} color={Colors.White} />
-              </TouchableOpacity>
+            <View
+              style={[
+                publishStyle.cameraControls,
+                this.state.videoRecordingMode ? publishStyle.transparentControls : publishStyle.opaqueControls,
+              ]}
+            >
+              <View style={publishStyle.controlsRow}>
+                <TouchableOpacity onPress={this.handleCloseCameraPressed}>
+                  <Icon name="arrow-left" size={28} color={Colors.White} />
+                </TouchableOpacity>
 
-
-              <View style={publishStyle.mainControlsRow}>
-                <TouchableOpacity style={publishStyle.switchCameraToggle} onPress={this.handleSwitchCameraPressed}>
+                <View style={publishStyle.mainControlsRow}>
+                  <TouchableOpacity style={publishStyle.switchCameraToggle} onPress={this.handleSwitchCameraPressed}>
                     <Feather name="rotate-cw" size={36} color={Colors.White} />
-                </TouchableOpacity>
+                  </TouchableOpacity>
 
-                <TouchableOpacity onPress={this.handleCameraActionPressed}>
-                  <View style={publishStyle.cameraAction}>
-                    <Feather style={publishStyle.cameraActionIcon} name="circle" size={72} color={Colors.White} />
-                    {this.state.recordingVideo &&
-                    <Icon style={publishStyle.recordingIcon} name="circle" solid={true} size={44} color={Colors.Red} />}
-                  </View>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={this.handleCameraActionPressed}>
+                    <View style={publishStyle.cameraAction}>
+                      <Feather style={publishStyle.cameraActionIcon} name="circle" size={72} color={Colors.White} />
+                      {this.state.recordingVideo && (
+                        <Icon
+                          style={publishStyle.recordingIcon}
+                          name="circle"
+                          solid={true}
+                          size={44}
+                          color={Colors.Red}
+                        />
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
-        </View>}
+        )}
       </View>
     );
   }

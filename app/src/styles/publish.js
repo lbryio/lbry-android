@@ -190,6 +190,7 @@ const publishStyle = StyleSheet.create({
     marginBottom: 16,
   },
   successUrl: {
+    flex: 0.9,
     fontSize: 32,
     fontFamily: 'Inter-UI-Regular',
     color: Colors.NextLbryGreen,
@@ -202,7 +203,7 @@ const publishStyle = StyleSheet.create({
     top: 0,
     bottom: 0,
     backgroundColor: Colors.Black,
-    elevation: 24
+    elevation: 24,
   },
   fullCamera: {
     position: 'absolute',
@@ -210,7 +211,7 @@ const publishStyle = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
-    zIndex: 100
+    zIndex: 100,
   },
   cameraControls: {
     position: 'absolute',
@@ -219,41 +220,47 @@ const publishStyle = StyleSheet.create({
     right: 0,
     height: 120,
     zIndex: 200,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   controlsRow: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   mainControlsRow: {
     flex: 0.8,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   switchCameraToggle: {
-    marginRight: 48
+    marginRight: 48,
   },
   cameraAction: {
     width: 72,
     height: 72,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   cameraActionIcon: {
-    position: 'absolute'
+    position: 'absolute',
   },
   recordingIcon: {
-    position: 'absolute'
+    position: 'absolute',
   },
   transparentControls: {
-    backgroundColor: '#00000022'
+    backgroundColor: '#00000022',
   },
   opaqueControls: {
-    backgroundColor: Colors.Black
-  }
+    backgroundColor: Colors.Black,
+  },
+  progress: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
 });
 
 export default publishStyle;
