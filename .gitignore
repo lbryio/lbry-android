@@ -1,6 +1,7 @@
 .buildozer
 app/node_modules/
 bin
+dist
 buildozer.spec
 build.log
 recipes/**/*.pyc
