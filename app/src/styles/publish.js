@@ -44,10 +44,9 @@ const publishStyle = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  modeButton: {
+  modeLink: {
     backgroundColor: Colors.NextLbryGreen,
-    alignSelf: 'flex-end',
-    marginRight: 20,
+    alignSelf: 'flex-end'
   },
   publishButton: {
     backgroundColor: Colors.LbryGreen,
@@ -261,6 +260,11 @@ const publishStyle = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
+  toggleContainer: {
+    marginTop: 24,
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  }
 });
 
 export default publishStyle;

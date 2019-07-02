@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.Manifest;
 import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
+import io.lbry.browser.MainActivity;
 import io.lbry.browser.Utils;
 
 import java.io.File;
@@ -309,5 +311,10 @@ public class GalleryModule extends ReactContextBaseJavaModule {
 
             return map;
         }
+    }
+
+    @ReactMethod
+    public void canUseCamera(final Promise promise) {
+        promise.resolve(MainActivity.hasPermission(Manifest.permission.CAMERA, MainActivity.getActivity()));
     }
 }

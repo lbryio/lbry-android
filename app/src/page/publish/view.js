@@ -35,6 +35,8 @@ class PublishPage extends React.PureComponent {
   camera = null;
 
   state = {
+    canUseCamera: false,
+
     // gallery videos
     videos: null,
 
@@ -169,14 +171,9 @@ class PublishPage extends React.PureComponent {
     pushDrawerStack();
     setPlayerVisible();
 
-    NativeModules.Gallery.getThumbnailPath().then(thumbnailPath => {
-      if (thumbnailPath != null) {
-        this.setState({ thumbnailPath });
-      }
-    });
-    NativeModules.Gallery.getVideos().then(videos => {
-      this.setState({ videos });
-    });
+    NativeModules.Gallery.canUseCamera().then(canUseCamera => this.setState({ canUseCamera }));
+    NativeModules.Gallery.getThumbnailPath().then(thumbnailPath => this.setState({ thumbnailPath }));
+    NativeModules.Gallery.getVideos().then(videos => this.setState({ videos }));
   };
 
   componentDidMount() {
@@ -254,13 +251,13 @@ class PublishPage extends React.PureComponent {
 
   handleRecordVideoPressed = () => {
     if (!this.state.showCameraOverlay) {
-      this.setState({ showCameraOverlay: true, videoRecordingMode: true });
+      this.setState({ canUseCamera: true, showCameraOverlay: true, videoRecordingMode: true });
     }
   };
 
   handleTakePhotoPressed = () => {
     if (!this.state.showCameraOverlay) {
-      this.setState({ showCameraOverlay: true, videoRecordingMode: false });
+      this.setState({ canUseCamera: true, showCameraOverlay: true, videoRecordingMode: false });
     }
   };
 
@@ -446,22 +443,11 @@ class PublishPage extends React.PureComponent {
       content = (
         <View style={publishStyle.gallerySelector}>
           <View style={publishStyle.actionsView}>
+            {this.state.canUseCamera &&
             <RNCamera
               style={publishStyle.cameraPreview}
-              type={RNCamera.Constants.Type.back}
-              androidCameraPermissionOptions={{
-                title: 'Camera',
-                message: 'Please grant access to make use of your camera',
-                buttonPositive: 'OK',
-                buttonNegative: 'Cancel',
-              }}
-              androidRecordAudioPermissionOptions={{
-                title: 'Audio',
-                message: 'Please grant access to record audio',
-                buttonPositive: 'OK',
-                buttonNegative: 'Cancel',
-              }}
-            />
+              type={RNCamera.Constants.Type.back} />
+            }
             <View style={publishStyle.actionsSubView}>
               <TouchableOpacity style={publishStyle.record} onPress={this.handleRecordVideoPressed}>
                 <Icon name="video" size={48} color={Colors.White} />
@@ -553,35 +539,33 @@ class PublishPage extends React.PureComponent {
             <ChannelSelector onChannelChange={this.handleChannelChange} />
           </View>
 
-          {this.state.advancedMode && (
-            <View style={publishStyle.card}>
-              <View style={publishStyle.titleRow}>
-                <Text style={publishStyle.cardTitle}>Price</Text>
-                <View style={publishStyle.switchTitleRow}>
-                  <Switch value={this.state.priceSet} onValueChange={value => this.setState({ priceSet: value })} />
-                </View>
+          <View style={publishStyle.card}>
+            <View style={publishStyle.titleRow}>
+              <Text style={publishStyle.cardTitle}>Price</Text>
+              <View style={publishStyle.switchTitleRow}>
+                <Switch value={this.state.priceSet} onValueChange={value => this.setState({ priceSet: value })} />
               </View>
-
-              {!this.state.priceSet && (
-                <Text style={publishStyle.cardText}>Your content will be free. Press the toggle to set a price.</Text>
-              )}
-
-              {this.state.priceSet && (
-                <View style={[publishStyle.inputRow, publishStyle.priceInputRow]}>
-                  <TextInput
-                    placeholder={'0.00'}
-                    keyboardType={'number-pad'}
-                    style={publishStyle.priceInput}
-                    underlineColorAndroid={Colors.NextLbryGreen}
-                    numberOfLines={1}
-                    value={String(this.state.price)}
-                    onChangeText={this.handlePriceChange}
-                  />
-                  <Text style={publishStyle.currency}>LBC</Text>
-                </View>
-              )}
             </View>
-          )}
+
+            {!this.state.priceSet && (
+              <Text style={publishStyle.cardText}>Your content will be free. Press the toggle to set a price.</Text>
+            )}
+
+            {this.state.priceSet && (
+              <View style={[publishStyle.inputRow, publishStyle.priceInputRow]}>
+                <TextInput
+                  placeholder={'0.00'}
+                  keyboardType={'number-pad'}
+                  style={publishStyle.priceInput}
+                  underlineColorAndroid={Colors.NextLbryGreen}
+                  numberOfLines={1}
+                  value={String(this.state.price)}
+                  onChangeText={this.handlePriceChange}
+                />
+                <Text style={publishStyle.currency}>LBC</Text>
+              </View>
+            )}
+          </View>
 
           {this.state.advancedMode && (
             <View style={publishStyle.card}>
@@ -616,6 +600,13 @@ class PublishPage extends React.PureComponent {
             </View>
           )}
 
+          <View style={publishStyle.toggleContainer}>
+            <Link
+              text={this.state.advancedMode ? 'Hide extra fields' : 'Show extra fields'}
+              onPress={this.handleModePressed}
+              style={publishStyle.modeLink} />
+          </View>
+
           <View style={publishStyle.actionButtons}>
             {(this.state.publishStarted || publishFormValues.publishing) && (
               <View style={publishStyle.progress}>
@@ -633,11 +624,6 @@ class PublishPage extends React.PureComponent {
 
             {!publishFormValues.publishing && !this.state.publishStarted && (
               <View style={publishStyle.rightActionButtons}>
-                <Button
-                  style={publishStyle.modeButton}
-                  text={this.state.advancedMode ? 'Simple' : 'Advanced'}
-                  onPress={this.handleModePressed}
-                />
                 <Button
                   style={publishStyle.publishButton}
                   disabled={!this.state.uploadedThumbnailUri}
@@ -685,7 +671,7 @@ class PublishPage extends React.PureComponent {
         {false && Constants.PHASE_SELECTOR !== this.state.currentPhase && (
           <FloatingWalletBalance navigation={navigation} />
         )}
-        {this.state.showCameraOverlay && (
+        {this.state.canUseCamera && this.state.showCameraOverlay && (
           <View style={publishStyle.cameraOverlay}>
             <RNCamera
               style={publishStyle.fullCamera}
