@@ -28,14 +28,47 @@ import FloatingWalletBalance from 'component/floatingWalletBalance';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather';
 import Link from 'component/link';
+import PublishRewardsDriver from 'component/publishRewardsDriver';
+import Tag from 'component/tag';
+import TagSearch from 'component/tagSearch';
 import UriBar from 'component/uriBar';
 import publishStyle from 'styles/publish';
+
+const languages = {
+  en: 'English',
+  zh: 'Chinese',
+  fr: 'French',
+  de: 'German',
+  jp: 'Japanese',
+  ru: 'Russian',
+  es: 'Spanish',
+  id: 'Indonesian',
+  it: 'Italian',
+  nl: 'Dutch',
+  tr: 'Turkish',
+  pl: 'Polish',
+  ms: 'Malay',
+  pt: 'Portuguese',
+  vi: 'Vietnamese',
+  th: 'Thai',
+  ar: 'Arabic',
+  cs: 'Czech',
+  hr: 'Croatian',
+  km: 'Cambodian',
+  ko: 'Korean',
+  no: 'Norwegian',
+  ro: 'Romanian',
+  hi: 'Hindi',
+  el: 'Greek',
+};
 
 class PublishPage extends React.PureComponent {
   camera = null;
 
   state = {
     canUseCamera: false,
+    titleFocused: false,
+    descriptionFocused: false,
 
     // gallery videos
     videos: null,
@@ -64,9 +97,13 @@ class PublishPage extends React.PureComponent {
     bid: 0.1,
     description: null,
     title: null,
+    language: 'en',
+    license: LICENSES.NONE,
+    mature: false,
     name: null,
     price: 0,
     uri: null,
+    tags: [],
     uploadedThumbnailUri: null,
 
     // other
@@ -124,9 +161,13 @@ class PublishPage extends React.PureComponent {
       channelName,
       currentMedia,
       description,
+      language,
+      license,
+      mature,
       name,
       price,
       priceSet,
+      tags,
       title,
       uploadedThumbnailUri: thumbnail,
       uri,
@@ -142,22 +183,28 @@ class PublishPage extends React.PureComponent {
       return;
     }
 
+    const publishTags = tags.slice();
+    if (mature) {
+      publishTags.push('nsfw');
+    }
+
     const publishParams = {
       filePath: currentMedia.filePath,
       bid: bid || 0.1,
+      tags: publishTags,
       title: title || '',
       thumbnail: thumbnail,
       description: description || '',
-      language: 'en',
-      nsfw: false,
-      license: '',
+      language,
+      nsfw: mature,
+      license,
       licenseUrl: '',
       otherLicenseDescription: '',
       name: name || undefined,
       contentIsFree: !priceSet,
       fee: { currency: 'LBC', price },
       uri: uri || undefined,
-      channel: CLAIM_VALUES.CHANNEL_ANONYMOUS === channelName ? undefined : channelName,
+      channel_name: CLAIM_VALUES.CHANNEL_ANONYMOUS === channelName ? undefined : channelName,
       isStillEditing: false,
       claim: null,
     };
@@ -189,7 +236,6 @@ class PublishPage extends React.PureComponent {
     }
 
     if (publishFormValues) {
-      // TODO: Check thumbnail upload progress after thumbnail starts uploading
       if (publishFormValues.thumbnail && !this.state.uploadedThumbnailUri) {
         this.setState({ uploadedThumbnailUri: publishFormValues.thumbnail });
       }
@@ -242,9 +288,12 @@ class PublishPage extends React.PureComponent {
       bid: 0.1,
       description: null,
       title: null,
+      language: 'en',
+      license: LICENSES.NONE,
       name: null,
       price: 0,
       uri: null,
+      tags: [],
       uploadedThumbnailUri: null,
     });
   }
@@ -334,11 +383,8 @@ class PublishPage extends React.PureComponent {
         filetype: [DocumentPickerUtil.allFiles()],
       },
       (error, res) => {
-        console.log(error);
-        console.log('***');
-        console.log(res);
         if (!error) {
-          console.log(res);
+          //console.log(res);
         }
       }
     );
@@ -366,7 +412,7 @@ class PublishPage extends React.PureComponent {
     const { notify } = this.props;
     this.setState({ name });
     if (!isNameValid(name, false)) {
-      notify({ message: 'LBRY names must contain only letters, numbers and dashes.' });
+      notify({ message: 'Your content address contains invalid characters' });
       return;
     }
 
@@ -378,6 +424,37 @@ class PublishPage extends React.PureComponent {
     this.setState({ channelName: channel });
     const uri = this.getNewUri(name, this.state.channelName);
     this.setState({ uri });
+  };
+
+  handleAddTag = tag => {
+    if (!tag) {
+      return;
+    }
+
+    const { notify } = this.props;
+    const { tags } = this.state;
+    const index = tags.indexOf(tag.toLowerCase());
+    if (index === -1) {
+      const newTags = tags.slice();
+      newTags.push(tag);
+      this.setState({ tags: newTags });
+    } else {
+      notify({ message: `You already added the "${tag}" tag.` });
+    }
+  };
+
+  handleRemoveTag = tag => {
+    if (!tag) {
+      return;
+    }
+
+    const newTags = this.state.tags.slice();
+    const index = newTags.indexOf(tag.toLowerCase());
+
+    if (index > -1) {
+      newTags.splice(index, 1);
+      this.setState({ tags: newTags });
+    }
   };
 
   updateThumbnailUriForMedia = media => {
@@ -400,7 +477,7 @@ class PublishPage extends React.PureComponent {
 
         // upload the thumbnail
         if (!this.state.uploadedThumbnailUri) {
-          uploadThumbnail(this.getFilePathFromUri(uri), RNFS);
+          //this.setState({ uploadThumbnailStarted: true }, () => uploadThumbnail(this.getFilePathFromUri(uri), RNFS));
         }
       } else if ('image' === mediaType || 'video' === mediaType) {
         const create =
@@ -411,7 +488,7 @@ class PublishPage extends React.PureComponent {
           .then(path => {
             this.setState({ currentThumbnailUri: `file://${path}`, updatingThumbnailUri: false });
             if (!this.state.uploadedThumbnailUri) {
-              uploadThumbnail(path, RNFS);
+              //this.setState({ uploadThumbnailStarted: true }, () => uploadThumbnail(path, RNFS));
             }
           })
           .catch(err => {
@@ -435,7 +512,7 @@ class PublishPage extends React.PureComponent {
   };
 
   render() {
-    const { navigation, notify, publishFormValues } = this.props;
+    const { balance, navigation, notify, publishFormValues } = this.props;
     const { thumbnailPath } = this.state;
 
     let content;
@@ -443,11 +520,9 @@ class PublishPage extends React.PureComponent {
       content = (
         <View style={publishStyle.gallerySelector}>
           <View style={publishStyle.actionsView}>
-            {this.state.canUseCamera &&
-            <RNCamera
-              style={publishStyle.cameraPreview}
-              type={RNCamera.Constants.Type.back} />
-            }
+            {this.state.canUseCamera && (
+              <RNCamera style={publishStyle.cameraPreview} type={RNCamera.Constants.Type.back} />
+            )}
             <View style={publishStyle.actionsSubView}>
               <TouchableOpacity style={publishStyle.record} onPress={this.handleRecordVideoPressed}>
                 <Icon name="video" size={48} color={Colors.White} />
@@ -458,10 +533,12 @@ class PublishPage extends React.PureComponent {
                   <Icon name="camera" size={48} color={Colors.White} />
                   <Text style={publishStyle.actionText}>Take a photo</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={publishStyle.upload} onPress={this.handleUploadPressed}>
-                  <Icon name="file-upload" size={48} color={Colors.White} />
-                  <Text style={publishStyle.actionText}>Upload a file</Text>
-                </TouchableOpacity>
+                {false && (
+                  <TouchableOpacity style={publishStyle.upload} onPress={this.handleUploadPressed}>
+                    <Icon name="file-upload" size={48} color={Colors.White} />
+                    <Text style={publishStyle.actionText}>Upload a file</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           </View>
@@ -507,34 +584,68 @@ class PublishPage extends React.PureComponent {
               />
             </View>
           )}
+          {balance < 0.1 && <PublishRewardsDriver navigation={navigation} />}
 
-          <View style={publishStyle.card}>
-            <Text style={publishStyle.cardTitle}>Title</Text>
-            <TextInput
-              placeholder={'Title'}
-              style={publishStyle.inputText}
-              value={this.state.title}
-              numberOfLines={1}
-              underlineColorAndroid={Colors.NextLbryGreen}
-              onChangeText={this.state.handleTitleChange}
-            />
-          </View>
-
-          <View style={publishStyle.card}>
-            <Text style={publishStyle.cardTitle}>Description</Text>
-            <TextInput
-              placeholder={'Description'}
-              style={publishStyle.inputText}
-              value={this.state.description}
-              underlineColorAndroid={Colors.NextLbryGreen}
-              onChangeText={this.state.handleDescriptionChange}
-            />
-          </View>
-
-          <View style={publishStyle.card}>
-            <View style={publishStyle.titleRow}>
-              <Text style={publishStyle.cardTitle}>Channel</Text>
+          {this.state.uploadThumbnailStarted && !this.state.uploadedThumbnailUri && (
+            <View style={publishStyle.thumbnailUploadContainer}>
+              <ActivityIndicator size={'small'} color={Colors.LbryGreen} />
+              <Text style={publishStyle.thumbnailUploadText}>Uploading thumbnail...</Text>
             </View>
+          )}
+
+          <View style={publishStyle.card}>
+            <View style={publishStyle.textInputLayout}>
+              {(this.state.titleFocused || (this.state.title != null && this.state.title.trim().length > 0)) && (
+                <Text style={publishStyle.textInputTitle}>Title</Text>
+              )}
+              <TextInput
+                placeholder={this.state.titleFocused ? '' : 'Title'}
+                style={publishStyle.inputText}
+                value={this.state.title}
+                numberOfLines={1}
+                underlineColorAndroid={Colors.NextLbryGreen}
+                onChangeText={this.handleTitleChange}
+                onFocus={() => this.setState({ titleFocused: true })}
+                onBlur={() => this.setState({ titleFocused: false })}
+              />
+            </View>
+
+            <View style={publishStyle.textInputLayout}>
+              {(this.state.descriptionFocused ||
+                (this.state.description != null && this.state.description.trim().length > 0)) && (
+                <Text style={publishStyle.textInputTitle}>Description</Text>
+              )}
+              <TextInput
+                placeholder={this.state.descriptionFocused ? '' : 'Description'}
+                style={publishStyle.inputText}
+                value={this.state.description}
+                underlineColorAndroid={Colors.NextLbryGreen}
+                onChangeText={this.handleDescriptionChange}
+                onFocus={() => this.setState({ descriptionFocused: true })}
+                onBlur={() => this.setState({ descriptionFocused: false })}
+              />
+            </View>
+          </View>
+
+          <View style={publishStyle.card}>
+            <Text style={publishStyle.cardTitle}>Tags</Text>
+            <View style={publishStyle.tagList}>
+              {this.state.tags &&
+                this.state.tags.map(tag => (
+                  <Tag
+                    key={tag}
+                    name={tag}
+                    type={'remove'}
+                    style={publishStyle.tag}
+                    onRemovePress={this.handleRemoveTag}
+                  />
+                ))}
+            </View>
+            <TagSearch handleAddTag={this.handleAddTag} selectedTags={this.state.tags} />
+          </View>
+
+          <View style={publishStyle.card}>
+            <Text style={publishStyle.cardTitle}>Channel</Text>
 
             <ChannelSelector onChannelChange={this.handleChannelChange} />
           </View>
@@ -600,11 +711,54 @@ class PublishPage extends React.PureComponent {
             </View>
           )}
 
+          {this.state.advancedMode && (
+            <View style={publishStyle.card}>
+              <Text style={publishStyle.cardTitle}>Additional Options</Text>
+              <View style={publishStyle.toggleField}>
+                <Switch value={this.state.mature} onValueChange={value => this.setState({ mature: value })} />
+                <Text style={publishStyle.toggleText}>Mature content</Text>
+              </View>
+
+              <View>
+                <Text style={publishStyle.cardText}>Language</Text>
+                <Picker
+                  selectedValue={this.state.language}
+                  style={publishStyle.picker}
+                  itemStyle={publishStyle.pickerItem}
+                  onValueChange={this.handleLanguageValueChange}
+                >
+                  {Object.keys(languages).map(lang => (
+                    <Picker.Item label={languages[lang]} value={lang} key={lang} />
+                  ))}
+                </Picker>
+              </View>
+
+              <View>
+                <Text style={publishStyle.cardText}>License</Text>
+                <Picker
+                  selectedValue={this.state.license}
+                  style={publishStyle.picker}
+                  itemStyle={publishStyle.pickerItem}
+                  onValueChange={this.handleLicenseValueChange}
+                >
+                  <Picker.Item label={'None'} value={LICENSES.NONE} key={LICENSES.NONE} />
+                  <Picker.Item label={'Public Domain'} value={LICENSES.PUBLIC_DOMAIN} key={LICENSES.PUBLIC_DOMAIN} />
+                  {LICENSES.CC_LICENSES.map(({ value, url }) => (
+                    <Picker.Item label={value} value={value} key={value} />
+                  ))}
+                  <Picker.Item label={'Copyrighted...'} value={LICENSES.COPYRIGHT} key={LICENSES.COPYRIGHT} />
+                  <Picker.Item label={'Other...'} value={LICENSES.OTHER} key={LICENSES.OTHER} />
+                </Picker>
+              </View>
+            </View>
+          )}
+
           <View style={publishStyle.toggleContainer}>
             <Link
               text={this.state.advancedMode ? 'Hide extra fields' : 'Show extra fields'}
               onPress={this.handleModePressed}
-              style={publishStyle.modeLink} />
+              style={publishStyle.modeLink}
+            />
           </View>
 
           <View style={publishStyle.actionButtons}>
@@ -626,7 +780,7 @@ class PublishPage extends React.PureComponent {
               <View style={publishStyle.rightActionButtons}>
                 <Button
                   style={publishStyle.publishButton}
-                  disabled={!this.state.uploadedThumbnailUri}
+                  disabled={balance < 0.1 || !this.state.uploadedThumbnailUri}
                   text="Publish"
                   onPress={this.handlePublishPressed}
                 />

@@ -600,9 +600,9 @@ def run_pymodules_install(ctx, modules):
     venv = sh.Command(ctx.virtualenv)
     with current_directory(join(ctx.build_dir)):
         shprint(venv,
-                '--python=python{}'.format(
-                    ctx.python_recipe.major_minor_version_string.
-                    partition(".")[0]
+                '--python=python{}.{}'.format(
+                    ctx.python_recipe.major_minor_version_string.partition(".")[0],
+                    ctx.python_recipe.major_minor_version_string.partition(".")[2]
                     ),
                 'venv'
                )

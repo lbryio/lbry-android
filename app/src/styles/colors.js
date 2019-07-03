@@ -9,6 +9,7 @@ const Colors = {
   LbryGreen: '#2f9176',
   BrighterLbryGreen: '#40b887',
   NextLbryGreen: '#38d9a9',
+  TagGreen: '#e3f6f1',
   LightGrey: '#cccccc',
   LighterGrey: '#e5e5e5',
   Orange: '#ffbb00',

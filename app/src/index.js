@@ -11,6 +11,7 @@ import {
   notificationsReducer,
   publishReducer,
   searchReducer,
+  tagsReducer,
   walletReducer,
 } from 'lbry-redux';
 import {
@@ -41,7 +42,6 @@ import thunk from 'redux-thunk';
 
 const globalExceptionHandler = (error, isFatal) => {
   if (error && NativeModules.Firebase) {
-    console.log(error);
     NativeModules.Firebase.logException(isFatal, error.message ? error.message : 'No message', JSON.stringify(error));
   }
 };
@@ -97,6 +97,7 @@ const reducers = combineReducers({
   search: searchReducer,
   subscriptions: subscriptionsReducer,
   sync: syncReducer,
+  tags: tagsReducer,
   user: userReducer,
   wallet: walletReducer,
 });

@@ -45,8 +45,9 @@ const publishStyle = StyleSheet.create({
     alignItems: 'center',
   },
   modeLink: {
-    backgroundColor: Colors.NextLbryGreen,
-    alignSelf: 'flex-end'
+    color: Colors.LbryGreen,
+    alignSelf: 'flex-end',
+    marginRight: 16,
   },
   publishButton: {
     backgroundColor: Colors.LbryGreen,
@@ -81,7 +82,7 @@ const publishStyle = StyleSheet.create({
   },
   photo: {
     backgroundColor: 'transparent',
-    height: 120,
+    height: 240,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -263,8 +264,68 @@ const publishStyle = StyleSheet.create({
   toggleContainer: {
     marginTop: 24,
     alignItems: 'center',
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
+  rewardDriverCard: {
+    alignItems: 'center',
+    backgroundColor: Colors.BrighterLbryGreen,
+    flexDirection: 'row',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 12,
+    paddingBottom: 12,
+  },
+  rewardDriverText: {
+    fontFamily: 'Inter-UI-Regular',
+    color: Colors.White,
+    fontSize: 14,
+  },
+  rewardIcon: {
+    color: Colors.White,
+    marginRight: 8,
+  },
+  tag: {
+    marginRight: 4,
+    marginBottom: 4,
+  },
+  tagList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  textInputLayout: {
+    marginBottom: 4,
+  },
+  textInputTitle: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 12,
+    marginBottom: -10,
+    marginLeft: 4,
+  },
+  thumbnailUploadContainer: {
+    marginTop: 16,
+    marginLeft: 16,
+    marginRight: 16,
+    paddingLeft: 2,
+    paddingRight: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  thumbnailUploadText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 14,
+    marginLeft: 8,
+  },
+  toggleField: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+    marginBottom: 16,
+  },
+  toggleText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 14,
+    marginLeft: 8,
+  },
 });
 
 export default publishStyle;

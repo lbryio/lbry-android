@@ -23,6 +23,7 @@ const channelSelectorStyle = StyleSheet.create({
   channelNameInput: {
     fontFamily: 'Inter-UI-Regular',
     fontSize: 16,
+    paddingLeft: 20,
   },
   bidAmountInput: {
     fontFamily: 'Inter-UI-Regular',
@@ -39,6 +40,13 @@ const channelSelectorStyle = StyleSheet.create({
     flex: 1,
     marginLeft: 8,
     marginRight: 8,
+  },
+  channelAt: {
+    position: 'absolute',
+    left: 4,
+    top: 13,
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 16,
   },
   buttonContainer: {
     flex: 1,

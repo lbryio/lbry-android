@@ -74,13 +74,7 @@ export default class ChannelSelector extends React.PureComponent {
       newChannelName = newChannelName.slice(1);
     }
 
-    let newChannelNameError;
-    if (newChannelName.length > 1 && !isNameValid(newChannelName.substr(1), false)) {
-      notify({ message: 'LBRY channel names must contain only letters, numbers and dashes.' });
-    }
-
     this.setState({
-      newChannelNameError,
       newChannelName,
     });
   };
@@ -88,8 +82,8 @@ export default class ChannelSelector extends React.PureComponent {
   handleNewChannelBidChange = newChannelBid => {
     const { balance, notify } = this.props;
     let newChannelBidError;
-    if (newChannelBid === 0) {
-      newChannelBidError = __('Your deposit cannot be 0');
+    if (newChannelBid <= 0) {
+      newChannelBidError = __('Please enter a deposit above 0');
     } else if (newChannelBid === balance) {
       newChannelBidError = __('Please decrease your deposit to account for transaction fees');
     } else if (newChannelBid > balance) {
@@ -109,7 +103,7 @@ export default class ChannelSelector extends React.PureComponent {
     const { newChannelBid, newChannelName } = this.state;
 
     if (newChannelName.trim().length === 0 || !isNameValid(newChannelName.substr(1), false)) {
-      notify({ message: 'LBRY channel names must contain only letters, numbers and dashes.' });
+      notify({ message: 'Your channel name contains invalid characters.' });
       return;
     }
 
@@ -198,13 +192,17 @@ export default class ChannelSelector extends React.PureComponent {
 
         {this.state.showCreateChannel && (
           <View style={channelSelectorStyle.createChannelContainer}>
-            <TextInput
-              style={channelSelectorStyle.channelNameInput}
-              value={this.state.newChannelName}
-              onChangeText={this.handleNewChannelNameChange}
-              placeholder={'Channel name'}
-              underlineColorAndroid={Colors.NextLbryGreen}
-            />
+            <View style={channelSelectorStyle.channelInputContainer}>
+              <Text style={channelSelectorStyle.channelAt}>@</Text>
+
+              <TextInput
+                style={channelSelectorStyle.channelNameInput}
+                value={this.state.newChannelName}
+                onChangeText={this.handleNewChannelNameChange}
+                placeholder={'Channel name'}
+                underlineColorAndroid={Colors.NextLbryGreen}
+              />
+            </View>
             <View style={channelSelectorStyle.bidRow}>
               <Text style={channelSelectorStyle.label}>Deposit</Text>
               <TextInput

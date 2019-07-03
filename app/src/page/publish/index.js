@@ -1,10 +1,18 @@
 import { connect } from 'react-redux';
-import { doPublish, doResolveUri, doToast, doUploadThumbnail, selectPublishFormValues } from 'lbry-redux';
+import {
+  doPublish,
+  doResolveUri,
+  doToast,
+  doUploadThumbnail,
+  selectBalance,
+  selectPublishFormValues,
+} from 'lbry-redux';
 import { doPushDrawerStack, doSetPlayerVisible } from 'redux/actions/drawer';
 import Constants from 'constants';
 import PublishPage from './view';
 
 const select = state => ({
+  balance: selectBalance(state),
   publishFormValues: selectPublishFormValues(state),
 });
 
