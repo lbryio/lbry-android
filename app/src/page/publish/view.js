@@ -477,7 +477,7 @@ class PublishPage extends React.PureComponent {
 
         // upload the thumbnail
         if (!this.state.uploadedThumbnailUri) {
-          //this.setState({ uploadThumbnailStarted: true }, () => uploadThumbnail(this.getFilePathFromUri(uri), RNFS));
+          this.setState({ uploadThumbnailStarted: true }, () => uploadThumbnail(this.getFilePathFromUri(uri), RNFS));
         }
       } else if ('image' === mediaType || 'video' === mediaType) {
         const create =
@@ -488,7 +488,7 @@ class PublishPage extends React.PureComponent {
           .then(path => {
             this.setState({ currentThumbnailUri: `file://${path}`, updatingThumbnailUri: false });
             if (!this.state.uploadedThumbnailUri) {
-              //this.setState({ uploadThumbnailStarted: true }, () => uploadThumbnail(path, RNFS));
+              this.setState({ uploadThumbnailStarted: true }, () => uploadThumbnail(path, RNFS));
             }
           })
           .catch(err => {
