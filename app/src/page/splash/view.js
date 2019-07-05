@@ -173,7 +173,7 @@ class SplashScreen extends React.PureComponent {
         if (password && password.trim().length > 0) {
           this.setState({
             message: 'Unlocking account',
-            details: 'Decrypting wallet'
+            details: 'Decrypting wallet',
           });
 
           // unlock the wallet and then finish the splash screen
@@ -181,7 +181,7 @@ class SplashScreen extends React.PureComponent {
             .then(() => {
               this.setState({
                 message: testingNetwork,
-                details: waitingForResolution
+                details: waitingForResolution,
               });
               this.finishSplashScreen();
             })
@@ -190,7 +190,7 @@ class SplashScreen extends React.PureComponent {
         } else {
           this.setState({
             message: testingNetwork,
-            details: waitingForResolution
+            details: waitingForResolution,
           });
           this.finishSplashScreen();
         }
@@ -276,12 +276,15 @@ class SplashScreen extends React.PureComponent {
   }
 
   handleContinueAnywayPressed = () => {
-    this.setState({
-      accountUnlockFailed: false,
-      message: testingNetwork,
-      details: waitingForResolution
-    }, () => this.finishSplashScreen());
-  }
+    this.setState(
+      {
+        accountUnlockFailed: false,
+        message: testingNetwork,
+        details: waitingForResolution,
+      },
+      () => this.finishSplashScreen()
+    );
+  };
 
   render() {
     const { message, details, isLagging, isRunning } = this.state;

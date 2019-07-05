@@ -37,7 +37,7 @@ const splashStyle = StyleSheet.create({
     marginTop: 24,
     marginLeft: 24,
     marginRight: 24,
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
   },
   loading: {
     marginBottom: 36,
