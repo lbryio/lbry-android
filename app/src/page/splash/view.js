@@ -230,7 +230,7 @@ class SplashScreen extends React.PureComponent {
     } else {
       this.setState({
         message: 'Network Loading',
-        details: 'Initializing LBRY service...',
+        details: 'Initializing LBRY service',
       });
     }
 
