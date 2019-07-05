@@ -14,6 +14,31 @@ const splashStyle = StyleSheet.create({
     marginBottom: 48,
     color: Colors.White,
   },
+  errorTitle: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 28,
+    marginBottom: 24,
+    marginLeft: 24,
+    marginRight: 24,
+    color: Colors.White,
+  },
+  paragraph: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 16,
+    lineHeight: 24,
+    marginBottom: 20,
+    marginLeft: 24,
+    marginRight: 24,
+    color: Colors.White,
+  },
+  continueButton: {
+    fontSize: 16,
+    backgroundColor: Colors.White,
+    marginTop: 24,
+    marginLeft: 24,
+    marginRight: 24,
+    alignSelf: 'flex-end'
+  },
   loading: {
     marginBottom: 36,
   },

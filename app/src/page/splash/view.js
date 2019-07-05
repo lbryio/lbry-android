@@ -6,6 +6,7 @@ import { decode as atob } from 'base-64';
 import { navigateToUri } from 'utils/helper';
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
+import Button from 'component/button';
 import ProgressBar from 'component/progressBar';
 import PropTypes from 'prop-types';
 import Colors from 'styles/colors';
@@ -14,25 +15,29 @@ import splashStyle from 'styles/splash';
 
 const BLOCK_HEIGHT_INTERVAL = 1000 * 60 * 2.5; // every 2.5 minutes
 
+const testingNetwork = 'Testing network';
+const waitingForResolution = 'Waiting for name resolution';
+
 class SplashScreen extends React.PureComponent {
   static navigationOptions = {
     title: 'Splash',
   };
 
-  componentWillMount() {
-    this.setState({
-      daemonReady: false,
-      details: 'Starting up...',
-      message: 'Connecting',
-      isRunning: false,
-      isLagging: false,
-      launchUrl: null,
-      isDownloadingHeaders: false,
-      headersDownloadProgress: 0,
-      shouldAuthenticate: false,
-      subscriptionsFetched: false,
-    });
+  state = {
+    accountUnlockFailed: false,
+    daemonReady: false,
+    details: 'Starting up',
+    message: 'Connecting',
+    isRunning: false,
+    isLagging: false,
+    launchUrl: null,
+    isDownloadingHeaders: false,
+    headersDownloadProgress: 0,
+    shouldAuthenticate: false,
+    subscriptionsFetched: false,
+  };
 
+  componentWillMount() {
     if (NativeModules.DaemonServiceControl) {
       NativeModules.DaemonServiceControl.startService();
     }
@@ -143,6 +148,10 @@ class SplashScreen extends React.PureComponent {
     });
   };
 
+  handleAccountUnlockFailed() {
+    this.setState({ accountUnlockFailed: true });
+  }
+
   _updateStatusCallback(status) {
     const { fetchSubscriptions, getSync, setClientSetting } = this.props;
     const startupStatus = status.startup_status;
@@ -155,8 +164,6 @@ class SplashScreen extends React.PureComponent {
       // to give us a better sense of when we are actually started
       this.setState({
         daemonReady: true,
-        message: 'Testing Network',
-        details: 'Waiting for name resolution',
         isLagging: false,
         isRunning: true,
       });
@@ -164,14 +171,29 @@ class SplashScreen extends React.PureComponent {
       // For now, automatically unlock the wallet if a password is set so that downloads work
       NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(password => {
         if (password && password.trim().length > 0) {
+          this.setState({
+            message: 'Unlocking account',
+            details: 'Decrypting wallet'
+          });
+
           // unlock the wallet and then finish the splash screen
           Lbry.account_unlock({ password })
-            .then(() => this.finishSplashScreen())
-            .catch(() => this.finishSplashScreen());
+            .then(() => {
+              this.setState({
+                message: testingNetwork,
+                details: waitingForResolution
+              });
+              this.finishSplashScreen();
+            })
+            .catch(() => this.handleAccountUnlockFailed());
           return;
+        } else {
+          this.setState({
+            message: testingNetwork,
+            details: waitingForResolution
+          });
+          this.finishSplashScreen();
         }
-
-        this.finishSplashScreen();
       });
 
       return;
@@ -253,8 +275,38 @@ class SplashScreen extends React.PureComponent {
       });
   }
 
+  handleContinueAnywayPressed = () => {
+    this.setState({
+      accountUnlockFailed: false,
+      message: testingNetwork,
+      details: waitingForResolution
+    }, () => this.finishSplashScreen());
+  }
+
   render() {
     const { message, details, isLagging, isRunning } = this.state;
+
+    if (this.state.accountUnlockFailed) {
+      return (
+        <View style={splashStyle.container}>
+          <Text style={splashStyle.errorTitle}>Oops! Something went wrong.</Text>
+          <Text style={splashStyle.paragraph}>
+            Your wallet failed to unlock, which means you may not be able to play any videos or access your funds.
+          </Text>
+          <Text style={splashStyle.paragraph}>
+            You can try to fix this by tapping Stop on the LBRY service notification and starting the app again. If the
+            problem continues, you may have to reinstall the app and restore your account.
+          </Text>
+
+          <Button
+            style={splashStyle.continueButton}
+            theme={'light'}
+            text={'Continue anyway'}
+            onPress={this.handleContinueAnywayPressed}
+          />
+        </View>
+      );
+    }
 
     return (
       <View style={splashStyle.container}>
