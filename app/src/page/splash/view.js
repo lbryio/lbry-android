@@ -287,9 +287,9 @@ class SplashScreen extends React.PureComponent {
   };
 
   render() {
-    const { message, details, isLagging, isRunning } = this.state;
+    const { accountUnlockFailed, message, details, isLagging, isRunning } = this.state;
 
-    if (this.state.accountUnlockFailed) {
+    if (accountUnlockFailed) {
       return (
         <View style={splashStyle.container}>
           <Text style={splashStyle.errorTitle}>Oops! Something went wrong.</Text>
