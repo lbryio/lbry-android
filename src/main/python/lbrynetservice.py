@@ -6,13 +6,13 @@ import platform
 import sys
 from jnius import autoclass
 from keyring.backend import KeyringBackend
-from lbrynet import __version__ as lbrynet_version, build_type
-from lbrynet.conf import Config
-from lbrynet.extras.daemon.loggly_handler import get_loggly_handler
-from lbrynet.extras.daemon.Components import DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT
-from lbrynet.extras.daemon.Daemon import Daemon
-from lbrynet.extras.daemon.loggly_handler import get_loggly_handler
-from lbrynet.utils import check_connection
+from lbry import __version__ as lbrynet_version, build_type
+from lbry.conf import Config
+from lbry.extras.daemon.loggly_handler import get_loggly_handler
+from lbry.extras.daemon.Components import DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT
+from lbry.extras.daemon.Daemon import Daemon
+from lbry.extras.daemon.loggly_handler import get_loggly_handler
+from lbry.utils import check_connection
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
