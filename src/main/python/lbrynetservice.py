@@ -52,24 +52,24 @@ def configure_logging(conf):
         conf.log_file_path, maxBytes=2097152, backupCount=5
     )
     file_handler.setFormatter(default_formatter)
-    logging.getLogger('lbrynet').addHandler(file_handler)
+    logging.getLogger('lbry').addHandler(file_handler)
     logging.getLogger('torba').addHandler(file_handler)
 
     handler = logging.StreamHandler()
     handler.setFormatter(default_formatter)
 
     log.addHandler(handler)
-    logging.getLogger('lbrynet').addHandler(handler)
+    logging.getLogger('lbry').addHandler(handler)
     logging.getLogger('torba').addHandler(handler)
 
     logging.getLogger('aioupnp').setLevel(logging.WARNING)
     logging.getLogger('aiohttp').setLevel(logging.CRITICAL)
-    logging.getLogger('lbrynet').setLevel(logging.DEBUG if lbrynet_android_utils.isDebug() else logging.INFO)
+    logging.getLogger('lbry').setLevel(logging.DEBUG if lbrynet_android_utils.isDebug() else logging.INFO)
     logging.getLogger('torba').setLevel(logging.INFO)
 
     loggly_handler = get_loggly_handler()
     loggly_handler.setLevel(logging.ERROR)
-    logging.getLogger('lbrynet').addHandler(loggly_handler)
+    logging.getLogger('lbry').addHandler(loggly_handler)
 
 def start():
     keyring.set_keyring(LbryAndroidKeyring())
