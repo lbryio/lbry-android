@@ -37,6 +37,7 @@ class WalletSyncDriver extends React.PureComponent<Props> {
 
     return (
       <View style={walletStyle.syncDriverCard}>
+        <Text style={walletStyle.syncDriverTitle}>Wallet Sync</Text>
         <View style={walletStyle.switchRow}>
           <View style={walletStyle.tableCol}>
             <Text style={walletStyle.labelText}>Sync status</Text>

@@ -221,9 +221,13 @@ const walletStyle = StyleSheet.create({
     marginRight: 16,
   },
   syncDriverTitle: {
-    color: Colors.White,
     fontFamily: 'Inter-UI-SemiBold',
     fontSize: 20,
+    paddingLeft: 16,
+    marginTop: 16,
+    paddingBottom: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.PageBackground
   },
   syncDriverLink: {
     color: Colors.LbryGreen,
