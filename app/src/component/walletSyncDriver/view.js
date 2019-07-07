@@ -1,5 +1,5 @@
 import React from 'react';
-import { NativeModules, Switch, Text, View } from 'react-native';
+import { Alert, NativeModules, Switch, Text, View } from 'react-native';
 import Button from 'component/button';
 import Constants from 'constants';
 import Link from 'component/link';
@@ -12,9 +12,23 @@ class WalletSyncDriver extends React.PureComponent<Props> {
       // enabling
       navigation.navigate({ routeName: 'Verification', key: 'verification', params: { syncFlow: true } });
     } else {
-      // set deviceWalletSynced to false
-      setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, false);
-      notify({ message: 'Wallet sync was successfully disabled.' });
+      // turning off
+      // set deviceWalletSynced to false (if confirmed)
+      Alert.alert(
+        'Disable wallet sync',
+        'Are you sure you want to turn off wallet sync?',
+        [
+          { text: 'No' },
+          {
+            text: 'Yes',
+            onPress: () => {
+              setClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED, false);
+              notify({ message: 'Wallet sync was successfully disabled.' });
+            },
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
 
