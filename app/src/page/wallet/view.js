@@ -43,8 +43,8 @@ class WalletPage extends React.PureComponent {
     pushDrawerStack();
     setPlayerVisible();
 
-    const { getSync, user } = this.props;
-    if (user && user.has_verified_email) {
+    const { deviceWalletSynced, getSync, user } = this.props;
+    if (deviceWalletSynced && user && user.has_verified_email) {
       NativeModules.UtilityModule.getSecureValue(Constants.KEY_FIRST_RUN_PASSWORD).then(walletPassword => {
         if (walletPassword && walletPassword.trim().length > 0) {
           getSync(walletPassword);
@@ -106,12 +106,12 @@ class WalletPage extends React.PureComponent {
           keyboardShouldPersistTaps={'handled'}
           removeClippedSubviews={false}
         >
-          <WalletSyncDriver navigation={navigation} />
           {!rewardsNotInterested && (!balance || balance === 0) && <WalletRewardsDriver navigation={navigation} />}
           <WalletBalance />
           <WalletAddress />
           <WalletSend />
           <TransactionListRecent navigation={navigation} />
+          <WalletSyncDriver navigation={navigation} />
         </ScrollView>
       </View>
     );

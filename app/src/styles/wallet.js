@@ -13,6 +13,14 @@ const walletStyle = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  linkRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
   amountRow: {
     flexDirection: 'row',
   },
@@ -30,14 +38,14 @@ const walletStyle = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   enrollButton: {
-    backgroundColor: Colors.White,
-    alignSelf: 'flex-start',
+    backgroundColor: Colors.LbryGreen,
+    marginLeft: 12,
   },
   historyList: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.White,
   },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.White,
     marginTop: 16,
     marginLeft: 16,
     marginRight: 16,
@@ -51,7 +59,7 @@ const walletStyle = StyleSheet.create({
     marginRight: 16,
   },
   transactionsCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.White,
     margin: 16,
   },
   title: {
@@ -96,7 +104,7 @@ const walletStyle = StyleSheet.create({
     height: '100%',
   },
   balanceTitle: {
-    color: '#ffffff',
+    color: Colors.White,
     fontFamily: 'Inter-UI-SemiBold',
     fontSize: 20,
     marginLeft: 16,
@@ -111,7 +119,7 @@ const walletStyle = StyleSheet.create({
     marginBottom: 96,
   },
   balance: {
-    color: '#ffffff',
+    color: Colors.White,
     fontFamily: 'Inter-UI-Bold',
     fontSize: 36,
     marginLeft: 16,
@@ -188,8 +196,10 @@ const walletStyle = StyleSheet.create({
     marginTop: 60,
   },
   rewardDriverCard: {
+    alignItems: 'center',
+    backgroundColor: Colors.BrighterLbryGreen,
+    flexDirection: 'row',
     padding: 16,
-    backgroundColor: Colors.LbryGreen,
     marginLeft: 16,
     marginTop: 16,
     marginRight: 16,
@@ -200,11 +210,14 @@ const walletStyle = StyleSheet.create({
     fontSize: 14,
     lineHeight: 16,
   },
+  rewardIcon: {
+    color: Colors.White,
+    marginRight: 8,
+  },
   syncDriverCard: {
-    padding: 16,
-    backgroundColor: Colors.LbryGreen,
+    backgroundColor: Colors.White,
     marginLeft: 16,
-    marginTop: 16,
+    marginBottom: 16,
     marginRight: 16,
   },
   syncDriverTitle: {
@@ -212,8 +225,8 @@ const walletStyle = StyleSheet.create({
     fontFamily: 'Inter-UI-SemiBold',
     fontSize: 20,
   },
-  syncDriverText: {
-    color: Colors.White,
+  syncDriverLink: {
+    color: Colors.LbryGreen,
     fontFamily: 'Inter-UI-Regular',
     fontSize: 14,
   },
@@ -227,6 +240,49 @@ const walletStyle = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  switchRow: {
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 14,
+    paddingBottom: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.PageBackground,
+  },
+  tableRow: {
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.PageBackground,
+  },
+  tableCol: {
+    flex: 0.5,
+  },
+  tableColRow: {
+    flex: 0.5,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  rightTableCol: {
+    flex: 0.5,
+    justifyContent: 'flex-end',
+  },
+  labelText: {
+    fontFamily: 'Inter-UI-SemiBold',
+    fontSize: 16,
+  },
+  valueText: {
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 16,
+  },
+  rightLink: {
+    alignSelf: 'flex-end',
+  },
+  syncSwitch: {
+    marginLeft: 8,
   },
 });
 
