@@ -115,6 +115,15 @@ class WalletPage extends React.PureComponent {
               <Icon name={this.state.revealPassword ? 'eye-slash' : 'eye'} size={16} style={firstRunStyle.revealIcon} />
             </TouchableOpacity>
           </View>
+          {(!this.state.password || this.state.password.trim().length === 0) && (
+            <View style={firstRunStyle.passwordWarning}>
+              <Text style={firstRunStyle.passwordWarningText}>
+                {hasSyncedWallet
+                  ? 'If you did not provide a password, please press Use LBRY to continue.'
+                  : 'You can proceed without a password, but this is not recommended.'}
+              </Text>
+            </View>
+          )}
 
           {(!hasSyncedWallet && this.state.password && this.state.password.trim().length) > 0 && (
             <View style={firstRunStyle.passwordStrength}>

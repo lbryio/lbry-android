@@ -172,6 +172,16 @@ const firstRunStyle = StyleSheet.create({
     marginRight: 32,
     marginBottom: 48,
   },
+  passwordWarning: {
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 24,
+  },
+  passwordWarningText: {
+    color: Colors.BrightRed,
+    fontFamily: 'Inter-UI-Regular',
+    fontSize: 16,
+  },
   centered: {
     alignItems: 'center',
   },
