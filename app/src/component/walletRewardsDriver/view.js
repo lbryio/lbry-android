@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import walletStyle from 'styles/wallet';
 
 class WalletRewardsDriver extends React.PureComponent<Props> {
@@ -8,7 +9,8 @@ class WalletRewardsDriver extends React.PureComponent<Props> {
 
     return (
       <TouchableOpacity style={walletStyle.rewardDriverCard} onPress={() => navigation.navigate('Rewards')}>
-        <Text style={walletStyle.rewardDriverText}>Earn credits while using the LBRY app. Tap to get started.</Text>
+        <Icon name="award" size={16} style={walletStyle.rewardIcon} />
+        <Text style={walletStyle.rewardDriverText}>Earn credits while using the LBRY app.</Text>
       </TouchableOpacity>
     );
   }

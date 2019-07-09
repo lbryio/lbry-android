@@ -102,7 +102,7 @@ class AboutPage extends React.PureComponent {
             <View style={aboutStyle.verticalRow}>
               <View style={aboutStyle.innerRow}>
                 <View style={aboutStyle.col}>
-                  <Text style={aboutStyle.text}>Connected Email</Text>
+                  <Text style={aboutStyle.text}>Connected email</Text>
                 </View>
                 <View style={aboutStyle.col}>
                   <Text selectable={true} style={aboutStyle.valueText}>

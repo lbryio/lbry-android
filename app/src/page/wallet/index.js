@@ -12,6 +12,7 @@ const select = state => ({
   currentRoute: selectCurrentRoute(state),
   backupDismissed: makeSelectClientSetting(Constants.SETTING_BACKUP_DISMISSED)(state),
   balance: selectBalance(state),
+  deviceWalletSynced: makeSelectClientSetting(Constants.SETTING_DEVICE_WALLET_SYNCED)(state),
   hasSyncedWallet: selectHasSyncedWallet(state),
   rewardsNotInterested: makeSelectClientSetting(Constants.SETTING_REWARDS_NOT_INTERESTED)(state),
   understandsRisks: makeSelectClientSetting(Constants.SETTING_ALPHA_UNDERSTANDS_RISKS)(state),
