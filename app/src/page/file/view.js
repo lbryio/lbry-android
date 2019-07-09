@@ -22,6 +22,7 @@ import { navigateBack, navigateToUri } from 'utils/helper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Button from 'component/button';
+import Tag from 'component/tag';
 import ChannelPage from 'page/channel';
 import Colors from 'styles/colors';
 import Constants from 'constants';
@@ -502,11 +503,7 @@ class FilePage extends React.PureComponent {
   };
 
   renderTags = tags => {
-    return tags.map((tag, i) => (
-      <Text style={filePageStyle.tagItem} key={`${tag}-${i}`}>
-        {tag}
-      </Text>
-    ));
+    return tags.map((tag, i) => <Tag style={filePageStyle.tagItem} key={`${tag}-${i}`} name={tag} />);
   };
 
   onFileDownloadButtonPlayed = () => {
@@ -618,7 +615,8 @@ class FilePage extends React.PureComponent {
         const description = metadata.description ? metadata.description : null;
         const mediaType = Lbry.getMediaType(contentType);
         const isPlayable = mediaType === 'video' || mediaType === 'audio';
-        const { height, channel_name: channelName, value } = claim;
+        const { height, signing_channel: signingChannel, value } = claim;
+        const channelName = signingChannel && signingChannel.name;
         const showActions =
           fileInfo &&
           fileInfo.download_path &&

@@ -11,6 +11,10 @@ const Constants = {
   PHASE_COLLECTION: 'collection',
   PHASE_VERIFICATION: 'verification',
 
+  PHASE_SELECTOR: 'selector',
+  PHASE_DETAILS: 'details',
+  PHASE_PUBLISH: 'publish',
+
   CONTENT_TAB: 'content',
   ABOUT_TAB: 'about',
 
@@ -48,6 +52,7 @@ const Constants = {
   DRAWER_ROUTE_TRENDING: 'Trending',
   DRAWER_ROUTE_SUBSCRIPTIONS: 'Subscriptions',
   DRAWER_ROUTE_MY_LBRY: 'Downloads',
+  DRAWER_ROUTE_PUBLISH: 'Publish',
   DRAWER_ROUTE_REWARDS: 'Rewards',
   DRAWER_ROUTE_WALLET: 'Wallet',
   DRAWER_ROUTE_SETTINGS: 'Settings',
@@ -62,6 +67,9 @@ const Constants = {
   FULL_ROUTE_NAME_MY_LBRY: 'MyLBRYStack',
 
   ROUTE_FILE: 'File',
+
+  ITEM_CREATE_A_CHANNEL: 'Create a channel...',
+  ITEM_ANONYMOUS: 'Publish anonymously',
 
   SUBSCRIPTIONS_VIEW_ALL: 'view_all',
   SUBSCRIPTIONS_VIEW_LATEST_FIRST: 'view_latest_first',

@@ -322,14 +322,16 @@ const filePageStyle = StyleSheet.create({
   tagTitle: {
     fontFamily: 'Inter-UI-SemiBold',
     flex: 0.2,
+    marginTop: 4,
   },
   tagList: {
     fontFamily: 'Inter-UI-Regular',
     flex: 0.8,
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   tagItem: {
-    marginRight: 16,
+    marginRight: 4,
   },
   rewardDriverCard: {
     alignItems: 'center',

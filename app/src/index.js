@@ -9,7 +9,9 @@ import {
   fileReducer,
   fileInfoReducer,
   notificationsReducer,
+  publishReducer,
   searchReducer,
+  tagsReducer,
   walletReducer,
 } from 'lbry-redux';
 import {
@@ -90,11 +92,13 @@ const reducers = combineReducers({
   homepage: homepageReducer,
   nav: navigatorReducer,
   notifications: notificationsReducer,
+  publish: publishReducer,
   rewards: rewardsReducer,
   settings: settingsReducer,
   search: searchReducer,
   subscriptions: subscriptionsReducer,
   sync: syncReducer,
+  tags: tagsReducer,
   user: userReducer,
   wallet: walletReducer,
 });

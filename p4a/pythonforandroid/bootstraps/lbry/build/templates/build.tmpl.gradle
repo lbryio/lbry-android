@@ -3,10 +3,11 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
-        classpath 'com.google.gms:google-services:4.0.1'
+        classpath 'com.google.gms:google-services:4.2.0'
     }
 }
 
@@ -36,6 +37,8 @@ android {
         targetSdkVersion {{ android_api }}
         versionCode {{ args.numeric_version }}
         versionName '{{ args.version }}'
+        missingDimensionStrategy 'react-native-camera', 'general'
+        multiDexEnabled true
 
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -85,6 +88,8 @@ ext {
     minSdkVersion = {{ args.min_sdk_version }}
     targetSdkVersion = {{ android_api }}
     supportLibVersion = '27.1.1'
+    googlePlayServicesVersion = '16.1.0'
+    googlePlayServicesVisionVersion = '17.0.2'
 }
 
 subprojects {
@@ -100,8 +105,11 @@ subprojects {
 
 dependencies {
     compile project(':@react-native-community_async-storage')
+    compile project(':react-native-camera')
+    compile project(':react-native-document-picker')
     compile project(':react-native-exception-handler')
     compile project(':react-native-fast-image')
+    compile project(':react-native-fs')
     compile project(':react-native-gesture-handler')
     compile project(':react-native-video')
     compile project(':rn-fetch-blob')

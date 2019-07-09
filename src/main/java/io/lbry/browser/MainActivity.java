@@ -1,5 +1,6 @@
 package io.lbry.browser;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
@@ -31,9 +32,13 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.modules.core.PermissionAwareActivity;
+import com.facebook.react.modules.core.PermissionListener;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.react.ReactRootView;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
+import com.rnfs.RNFSPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -54,8 +59,9 @@ import java.util.Random;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.reactnative.camera.RNCameraPackage;
 
-public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
+public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity {
 
     private static Activity currentActivity = null;
 
@@ -99,6 +105,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     private boolean receivedStopService;
 
+    private PermissionListener permissionListener;
+
     protected String getMainComponentName() {
         return "LBRYApp";
     }
@@ -139,8 +147,11 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .addPackage(new MainReactPackage())
                 .addPackage(new AsyncStoragePackage())
                 .addPackage(new FastImageViewPackage())
+                .addPackage(new ReactNativeDocumentPicker())
                 .addPackage(new ReactVideoPackage())
+                .addPackage(new RNCameraPackage())
                 .addPackage(new RNFetchBlobPackage())
+                .addPackage(new RNFSPackage())
                 .addPackage(new RNGestureHandlerPackage())
                 .addPackage(new LbryReactPackage())
                 .setUseDeveloperSupport(true)
@@ -352,6 +363,10 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 }
                 break;
         }
+
+        if (permissionListener != null) {
+            permissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     public static String acquireDeviceId(Context context) {
@@ -471,6 +486,12 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         } else {
             super.onBackPressed();
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public void requestPermissions(String[] permissions, int requestCode, PermissionListener listener) {
+        permissionListener = listener;
+        ActivityCompat.requestPermissions(this, permissions, requestCode);
     }
 
     @Override

@@ -62,7 +62,8 @@ class FileItem extends React.PureComponent {
     const uri = normalizeURI(this.props.uri);
     const obscureNsfw = this.props.obscureNsfw && metadata && metadata.nsfw;
     const isRewardContent = claim && rewardedContentClaimIds.includes(claim.claim_id);
-    const channelName = claim ? claim.channel_name : null;
+    const signingChannel = claim ? claim.signing_channel : null;
+    const channelName = signingChannel ? signingChannel.name : null;
     const channelClaimId =
       claim && claim.value && claim.value.publisherSignature && claim.value.publisherSignature.certificateId;
     const fullChannelUri = channelClaimId ? `${channelName}#${channelClaimId}` : channelName;

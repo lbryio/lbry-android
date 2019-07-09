@@ -12,7 +12,6 @@ from lbry.extras.daemon.loggly_handler import get_loggly_handler
 from lbry.extras.daemon.Components import DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT
 from lbry.extras.daemon.Daemon import Daemon
 from lbry.extras.daemon.loggly_handler import get_loggly_handler
-from lbry.utils import check_connection
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)

@@ -9,6 +9,7 @@ import io.lbry.browser.reactmodules.BackgroundMediaModule;
 import io.lbry.browser.reactmodules.DaemonServiceControlModule;
 import io.lbry.browser.reactmodules.FirstRunModule;
 import io.lbry.browser.reactmodules.FirebaseModule;
+import io.lbry.browser.reactmodules.GalleryModule;
 import io.lbry.browser.reactmodules.ScreenOrientationModule;
 import io.lbry.browser.reactmodules.VersionInfoModule;
 import io.lbry.browser.reactmodules.UtilityModule;;
@@ -31,6 +32,7 @@ public class LbryReactPackage implements ReactPackage {
         modules.add(new DaemonServiceControlModule(reactContext));
         modules.add(new FirstRunModule(reactContext));
         modules.add(new FirebaseModule(reactContext));
+        modules.add(new GalleryModule(reactContext));
         modules.add(new ScreenOrientationModule(reactContext));
         modules.add(new UtilityModule(reactContext));
         modules.add(new VersionInfoModule(reactContext));
