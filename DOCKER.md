@@ -24,7 +24,9 @@ tar -xvf ~/.buildozer/android/crystax-ndk-10.3.2-linux-x86_64.tar.xz -C ~/.build
 rm -rf ~/.buildozer/android/crystax-ndk-10.3.2/platforms/android-9
 ln -s ~/.buildozer/android/crystax-ndk-10.3.2/platforms/android-21 ~/.buildozer/android/crystax-ndk-10.3.2/platforms/android-9
 git clone https://github.com/lbryio/lbry-android
-cd lbry-android;cp buildozer.spec.sample buildozer.spec
+cd lbry-android
+git submodule update --init --recursive
+cp buildozer.spec.sample buildozer.spec
 cd app;npm i;cd ..
 cp scripts/build-target-python.sh ~/.buildozer/android/crystax-ndk-10.3.2/build/tools/build-target-python.sh
 cp scripts/mangled-glibc-syscalls.h ~/.buildozer/android/crystax-ndk-10.3.2/platforms/android-21/arch-arm/usr/include/crystax/bionic/libc/include/sys/mangled-glibc-syscalls.h

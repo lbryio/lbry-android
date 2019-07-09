@@ -14,6 +14,7 @@ build apk:
   script:
     - export PATH=/usr/bin:$PATH
     - echo "$PGP_PRIVATE_KEY" | gpg --batch --import
+    - git submodule update --init --recursive
     - cd app
     - npm install
     - cd ..
