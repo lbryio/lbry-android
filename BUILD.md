@@ -118,6 +118,8 @@ echo $'\nd56f5187479451eabf01fb78af6dfcb131a6481e' > ~/.buildozer/android/platfo
 #### Build and Deploy
 Run `npm install -g react-native-cli` to install React Native CLI tools.
 
+Initialise git submodules by running `git submodule update --init --recursive` in the `lbry-android` folder.
+
 Run `npm i` in the `lbry-android/app` folder to install the necessary modules required by the React Native user interface, and then run `./bundle.sh`.
 
 Run `./build.sh` in `lbry-android` to build the APK. The output can be found in the `bin` subdirectory.
