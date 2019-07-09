@@ -12,6 +12,7 @@ const Colors = {
   LighterGrey: '#e5e5e5',
   Orange: '#ffbb00',
   Red: '#ff0000',
+  BrightRed: '#e35454',
   VeryLightGrey: '#f1f1f1',
   White: '#ffffff',
   UriDescBlue: '#3971db',
