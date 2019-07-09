@@ -8,13 +8,13 @@ build apk:
   image: lbry/android-base:latest
   before_script:
     - export BUILD_VERSION=$(cat $CI_PROJECT_DIR/src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
+    - git submodule update --init --recursive
   artifacts:
     paths:
       - bin/browser-*-release.apk
   script:
     - export PATH=/usr/bin:$PATH
     - echo "$PGP_PRIVATE_KEY" | gpg --batch --import
-    - git submodule update --init --recursive
     - cd app
     - npm install
     - cd ..
