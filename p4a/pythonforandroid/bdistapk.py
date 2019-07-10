@@ -70,7 +70,7 @@ class BdistAPK(Command):
             sys.argv.append('--version={}'.format(version))
 
         if not argv_contains('--arch'):
-            arch = 'armeabi'
+            arch = 'arm64-v8a'
             self.arch = arch
             sys.argv.append('--arch={}'.format(arch))
 
