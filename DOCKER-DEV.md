@@ -44,6 +44,7 @@ LBRY_GIT=$HOME/git/vendor/lbryio/
 mkdir -p $LBRY_GIT
 git clone https://github.com/lbryio/lbry-android.git $LBRY_GIT
 cd $LBRY_GIT/lbry-android
+git submodule update --init --recursive
 ```
 
 Install a bash alias to the [scripts/lbry-android.sh](scripts/lbry-android.sh)

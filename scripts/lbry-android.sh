@@ -108,6 +108,10 @@
             return 1
         else
             exe git clone $LBRY_ANDROID_REPO $LBRY_ANDROID_HOME
+            (
+                cd $LBRY_ANDROID_HOME
+                exe git submodule update --init --recursive
+            )
             echo ""
             echo "lbry-android clone complete."
             echo "LBRY_ANDROID_HOME=$LBRY_ANDROID_HOME"
