@@ -64,6 +64,7 @@ class OpenSSLRecipe(Recipe):
 
             makefile = join(self.get_build_dir(arch.arch), 'Makefile')
             sh.sed('-i', 's/CROSS_COMPILE=arm-linux-androideabi-/CROSS_COMPILE=/g', makefile)
+            sh.sed('-i', 's/CROSS_COMPILE=aarch64-linux-android-/CROSS_COMPILE=/g', makefile)
             shprint(sh.make, 'build_libs', _env=env)
 
             self.install_libs(arch, 'libssl.a', 'libssl' + self.version + '.so',

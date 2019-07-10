@@ -288,7 +288,7 @@ class ToolchainCL(object):
 
         generic_parser.add_argument(
             '--arch', help='The archs to build for, separated by commas.',
-            default='armeabi-v7a')
+            default='arm64-v8a')
 
         # Options for specifying the Distribution
         generic_parser.add_argument(
