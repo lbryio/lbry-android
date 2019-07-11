@@ -1,4 +1,6 @@
 .buildozer
+.buildozer-downloads
+.gradle
 app/node_modules/
 bin
 buildozer.spec
