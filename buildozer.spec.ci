@@ -148,7 +148,7 @@ android.react_src = ./app
 
 # (list) Gradle dependencies to add (currently works only with sdl2_gradle
 # bootstrap)
-android.gradle_dependencies = com.android.support:support-v4:27.1.1, com.android.support:support-media-compat:27.1.1, com.android.support:appcompat-v7:27.1.1, com.facebook.react:react-native:0.59.3, com.google.android.gms:play-services-gcm:11.0.4+, com.facebook.fresco:fresco:1.9.0, com.facebook.fresco:animated-gif:1.9.0, com.squareup.picasso:picasso:2.71828, com.google.firebase:firebase-core:16.0.1, com.google.android.gms:play-services-base:16.1.0, com.android.support:exifinterface:27.1.1
+android.gradle_dependencies = com.android.support:support-v4:27.1.1, com.android.support:support-media-compat:27.1.1, com.android.support:appcompat-v7:27.1.1, com.facebook.react:react-native:0.59.10, com.google.android.gms:play-services-gcm:11.0.4+, com.facebook.fresco:fresco:1.9.0, com.facebook.fresco:animated-gif:1.9.0, com.squareup.picasso:picasso:2.71828, com.google.firebase:firebase-core:16.0.1, com.google.android.gms:play-services-base:16.1.0, com.android.support:exifinterface:27.1.1
 
 # (str) python-for-android branch to use, defaults to master
 #p4a.branch = stable
@@ -187,7 +187,7 @@ android.gradle_dependencies = com.android.support:support-v4:27.1.1, com.android
 #android.copy_libs = 1
 
 # (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86
-android.arch = arm64-v8a
+android.arch = arm64-v8
 
 #
 # Python for android (p4a) specific
