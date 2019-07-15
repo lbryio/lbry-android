@@ -58,7 +58,8 @@
         exe $HOME/Android/Sdk/tools/bin/sdkmanager "platforms;android-27"
         if [ -d $LBRY_ANDROID_BUILDOZER_HOME ]; then
             echo "Buildozer path already exists: $LBRY_ANDROID_BUILDOZER_HOME"
-            echo "If you would like to re-install from scratch, delete that directory first."
+            echo "If you would like to re-install from scratch, delete that directory first:"
+            echo "    sudo rm -rf $LBRY_ANDROID_BUILDOZER_HOME"
         else
             mkdir -p $LBRY_ANDROID_BUILDOZER_HOME
             mkdir -p $LBRY_ANDROID_BUILDOZER_DOWNLOADS
@@ -118,7 +119,16 @@
         fi
     }
 
-    SUBCOMMANDS_NO_ARGS=(setup clone docker-build build)
+    clean() {
+        exe sudo docker run --rm -it \
+            -v $LBRY_ANDROID_HOME:/src \
+            -v $LBRY_ANDROID_BUILDOZER_HOME:/home/lbry-android/.buildozer/ \
+            -v $LBRY_ANDROID_HOME/.gradle:/home/lbry-android/.gradle/ \
+            -v $ANDROID_SDK_LICENSE:/home/lbry-android/.buildozer/android/platform/android-sdk-23/licenses/android-sdk-license \
+            $LBRY_ANDROID_IMAGE /bin/bash -c "cd /src && buildozer android clean"
+    }
+
+    SUBCOMMANDS_NO_ARGS=(setup clone docker-build build clean)
     SUBCOMMANDS_PASS_ARGS=(none)
 
     check-dependencies || return 1
