@@ -24,4 +24,5 @@ exe mkdir -p $BUILDOZER_HOME/android/crystax-ndk-10.3.2/build/tools/
 exe mkdir -p $BUILDOZER_HOME/android/crystax-ndk-10.3.2/platforms/android-21/arch-arm/usr/include/crystax/bionic/libc/include/sys/
 exe cp /src/scripts/build-target-python.sh ~/.buildozer/android/crystax-ndk-10.3.2/build/tools/build-target-python.sh
 exe cp /src/scripts/mangled-glibc-syscalls.h ~/.buildozer/android/crystax-ndk-10.3.2/platforms/android-21/arch-arm/usr/include/crystax/bionic/libc/include/sys/mangled-glibc-syscalls.h
+exe cp /src/scripts/mangled-glibc-syscalls__arm64.h ~/.buildozer/android/crystax-ndk-10.3.2/platforms/android-21/arch-arm64/usr/include/crystax/bionic/libc/include/sys/mangled-glibc-syscalls.h
 exe mv $BUILDOZER_HOME/android/platform/android-sdk-23/build-tools/android-8.1.0 $BUILDOZER_HOME/android/platform/android-sdk-23/build-tools/26.0.2

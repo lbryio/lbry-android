@@ -42,7 +42,7 @@ Clone `lbry-android`:
 ```
 LBRY_GIT=$HOME/git/vendor/lbryio/
 mkdir -p $LBRY_GIT
-git clone https://github.com/lbryio/lbry-android.git $LBRY_GIT
+git clone https://github.com/lbryio/lbry-android.git $LBRY_GIT/lbry-android
 cd $LBRY_GIT/lbry-android
 git submodule update --init --recursive
 ```
