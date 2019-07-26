@@ -97,8 +97,8 @@ def start():
     daemon = Daemon(conf)
     try:
         loop.run_until_complete(daemon.start())
-        loop.run_until_complete(daemon.stop_event.wait())
-    except (GracefulExit):
+        loop.run_forever()
+    except (GracefulExit, asyncio.CancelledError):
         pass
     finally:
         loop.run_until_complete(daemon.stop())
