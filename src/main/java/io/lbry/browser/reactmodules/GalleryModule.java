@@ -18,6 +18,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.Utils;
@@ -64,28 +65,6 @@ public class GalleryModule extends ReactContextBaseJavaModule {
 
         promise.resolve(null);
     }
-
-    /*
-    @ReactMethod
-    public void copyImage(String sourcePath, String destinationPath, Promise promise) {
-        try {
-            File source = new File(sourcePath);
-            File destination = new File(destinationPath);
-            if (source.exists()) {
-                FileChannel src = new FileInputStream(source).getChannel();
-                FileChannel dst = new FileOutputStream(destination).getChannel();
-                dst.transferFrom(src, 0, src.size());
-                src.close();
-                dst.close();
-
-                promise.resolve(true);
-            } else {
-                promise.reject("The source image could not be found. Please try again.");
-            }
-        } catch (Exception ex) {
-            promise.reject("The image could not be saved. Please try again.");
-        }
-    }*/
 
     @ReactMethod
     public void getUploadsPath(Promise promise) {
@@ -246,6 +225,13 @@ public class GalleryModule extends ReactContextBaseJavaModule {
                 }
 
                 return null;
+            }
+            
+            protected void onPostExecute(Void result) {
+                if (GalleryModule.this.context != null) {
+                    ((ReactApplicationContext) GalleryModule.this.context).getJSModule(
+                        DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onGalleryThumbnailsChecked", null);
+                }
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
