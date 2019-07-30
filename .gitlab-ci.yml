@@ -13,6 +13,7 @@ build apk:
   artifacts:
     paths:
       - bin/browser-*-release.apk
+    expire_in: 1 week
   script:
     - export PATH=/usr/bin:$PATH
     - echo "$PGP_PRIVATE_KEY" | gpg --batch --import
