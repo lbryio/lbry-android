@@ -10,7 +10,14 @@ import io.lbry.browser.BuildConfig;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.DataOutputStream;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
@@ -21,6 +28,7 @@ import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -28,8 +36,11 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.SecretKeySpec;
 import javax.security.auth.x500.X500Principal;
 
-public final class Utils {
+import org.json.JSONObject;
+import org.json.JSONException;
 
+public final class Utils {
+    
     private static final String TAG = Utils.class.getName();
 
     private static final String AES_MODE = "AES/ECB/PKCS7Padding";
@@ -45,7 +56,9 @@ public final class Utils {
     private static final String SP_ENCRYPTION_KEY = "key";
 
     private static final String SP_API_SECRET_KEY = "api_secret";
-
+    
+    public static final String SDK_URL = "http://127.0.0.1:5279";
+    
     public static String getAndroidRelease() {
         return android.os.Build.VERSION.RELEASE;
     }
@@ -241,6 +254,105 @@ public final class Utils {
         }
 
         return ks;
+    }
+    
+    public static String performRequest(String url) throws ConnectException {
+        return performRequest(url, "GET", null);
+    }
+    
+    public static String performRequest(String requestUrl, String requestMethod, String json) throws ConnectException {
+        BufferedReader reader = null;
+        DataOutputStream dos = null;
+        HttpURLConnection conn = null;
+
+        try {
+            URL url = new URL(requestUrl);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoInput(true);
+            conn.setUseCaches(false);
+            conn.setRequestMethod(requestMethod);
+            if ("POST".equals(requestMethod)) {
+                conn.setDoOutput(true);
+                conn.setRequestProperty("Content-type", "application/json");
+            }
+            
+            if (json != null) {
+                dos = new DataOutputStream(conn.getOutputStream());
+                dos.writeBytes(json);
+                dos.flush();
+                dos.close();
+            }
+            
+            if (conn.getResponseCode() == 200) {
+                reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+                StringBuilder sb = new StringBuilder();
+                String input;
+                while ((input = reader.readLine()) != null) {
+                    sb.append(input);
+                }
+
+                return sb.toString();
+            } else {
+                reader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
+                StringBuilder sb = new StringBuilder();
+                String error;
+                while ((error = reader.readLine()) != null) {
+                    sb.append(error);
+                }
+                return sb.toString();
+            }
+        } catch (ConnectException ex) {
+            // unable to connect. rethrow
+            throw ex;
+        } catch (IOException ex) {
+            Log.e(TAG, ex.getMessage(), ex);
+            // pass
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage(), ex);
+            // pass
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (conn != null) {
+                    conn.disconnect();
+                }
+            } catch (IOException ex) {
+                // pass
+            }
+        }
+
+        return null;
+    }
+    
+    public static String sdkCall(String method) throws ConnectException {
+        return sdkCall(method, null);
+    }
+
+    public static String sdkCall(String method, Map<String, String> params) throws ConnectException {
+        try {
+            JSONObject request = new JSONObject();
+            request.put("method", method);
+            if (params != null) {
+                JSONObject requestParams = new JSONObject();
+                for (Map.Entry<String, String> entry : params.entrySet()) {
+                    requestParams.put(entry.getKey(), entry.getValue());
+                }
+                request.put("params", requestParams);
+            }
+            
+            return performRequest(SDK_URL, "POST", request.toString());
+        } catch (ConnectException ex) {
+            // sdk not started yet. rethrow
+            throw ex;
+        } catch (JSONException ex) {
+            // normally shouldn't happen
+            Log.e(TAG, ex.getMessage(), ex);
+            // pass
+        }
+
+        return null;
     }
 
     private static byte[] rsaEncrypt(byte[] secret, KeyStore keyStore) throws Exception {
