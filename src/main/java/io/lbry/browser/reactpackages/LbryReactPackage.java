@@ -10,9 +10,11 @@ import io.lbry.browser.reactmodules.DaemonServiceControlModule;
 import io.lbry.browser.reactmodules.FirstRunModule;
 import io.lbry.browser.reactmodules.FirebaseModule;
 import io.lbry.browser.reactmodules.GalleryModule;
+import io.lbry.browser.reactmodules.RequestsModule;
 import io.lbry.browser.reactmodules.ScreenOrientationModule;
+import io.lbry.browser.reactmodules.StatePersistorModule;
 import io.lbry.browser.reactmodules.VersionInfoModule;
-import io.lbry.browser.reactmodules.UtilityModule;;
+import io.lbry.browser.reactmodules.UtilityModule;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +35,9 @@ public class LbryReactPackage implements ReactPackage {
         modules.add(new FirstRunModule(reactContext));
         modules.add(new FirebaseModule(reactContext));
         modules.add(new GalleryModule(reactContext));
+        modules.add(new RequestsModule(reactContext));
         modules.add(new ScreenOrientationModule(reactContext));
+        modules.add(new StatePersistorModule(reactContext));
         modules.add(new UtilityModule(reactContext));
         modules.add(new VersionInfoModule(reactContext));
 

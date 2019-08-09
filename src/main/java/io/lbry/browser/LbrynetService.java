@@ -74,8 +74,6 @@ public class LbrynetService extends PythonService {
 
     public static LbrynetService serviceInstance;
 
-    private static final String SDK_URL = "http://127.0.0.1:5279";
-
     private static final int SDK_POLL_INTERVAL = 500; // 500 milliseconds
 
     private BroadcastReceiver stopServiceReceiver;
@@ -192,86 +190,10 @@ public class LbrynetService extends PythonService {
         }
     }
 
-    private String sdkCall(String method) throws ConnectException {
-        return sdkCall(method, null);
-    }
-
-    private String sdkCall(String method, Map<String, String> params) throws ConnectException {
-        BufferedReader reader = null;
-        DataOutputStream dos = null;
-        HttpURLConnection conn = null;
-
-        try {
-            JSONObject request = new JSONObject();
-            request.put("method", method);
-            if (params != null) {
-                JSONObject requestParams = new JSONObject();
-                for (Map.Entry<String, String> entry : params.entrySet()) {
-                    requestParams.put(entry.getKey(), entry.getValue());
-                }
-                request.put("params", requestParams);
-            }
-
-            URL url = new URL(SDK_URL);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            conn.setUseCaches(false);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-type", "application/json");
-
-            dos = new DataOutputStream(conn.getOutputStream());
-            dos.writeBytes(request.toString());
-            dos.flush();
-            dos.close();
-
-            if (conn.getResponseCode() == 200) {
-                reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-                StringBuilder sb = new StringBuilder();
-                String input;
-                while ((input = reader.readLine()) != null) {
-                    sb.append(input);
-                }
-
-                return sb.toString();
-            } else {
-                reader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
-                StringBuilder sb = new StringBuilder();
-                String error;
-                while ((error = reader.readLine()) != null) {
-                    sb.append(error);
-                }
-                return sb.toString();
-            }
-        } catch (ConnectException ex) {
-            // sdk not started yet. rethrow
-            throw ex;
-        } catch (IOException ex) {
-            Log.e(TAG, ex.getMessage(), ex);
-            // ignore and continue
-        } catch (Exception ex) {
-            Log.e(TAG, ex.getMessage(), ex);
-            // ignore
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-                if (conn != null) {
-                    conn.disconnect();
-                }
-            } catch (IOException ex) {
-                // pass
-            }
-        }
-
-        return null;
-    }
-
     private void pollFileList() {
         try {
             if (!streamManagerReady) {
-                String statusResponse = sdkCall("status");
+                String statusResponse = Utils.sdkCall("status");
                 if (statusResponse != null) {
                     JSONObject status = new JSONObject(statusResponse);
                     if (status.has("error")) {
@@ -288,7 +210,7 @@ public class LbrynetService extends PythonService {
             }
 
             if (streamManagerReady) {
-                String fileList = sdkCall("file_list");
+                String fileList = Utils.sdkCall("file_list");
                 if (fileList != null) {
                     JSONObject response = new JSONObject(fileList);
                     if (!response.has("error")) {
@@ -309,7 +231,7 @@ public class LbrynetService extends PythonService {
                 try {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("outpoint", outpoint);
-                    return sdkCall("file_list", params);
+                    return Utils.sdkCall("file_list", params);
                 } catch (ConnectException ex) {
                     return null;
                 }
