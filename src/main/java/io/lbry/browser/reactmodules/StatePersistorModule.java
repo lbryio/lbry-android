@@ -29,6 +29,8 @@ public class StatePersistorModule extends ReactContextBaseJavaModule {
 
     private List<ReadableMap> queue;
     
+    private ReadableMap filter;
+    
     private ReadableMap lastState;
 
     private AsyncTask persistTask;
@@ -55,7 +57,10 @@ public class StatePersistorModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void update(ReadableMap state) {
+    public void update(ReadableMap state, ReadableMap filter) {
+        if (this.filter == null) {
+            this.filter = filter;
+        }
         // process state updates from the queue using a background task
         synchronized (this) {
             queue.add(state);
@@ -94,10 +99,10 @@ public class StatePersistorModule extends ReactContextBaseJavaModule {
                         
                         try {
                             JSONObject json = readableMapToJSON(state);
-                            //android.util.Log.d("ReactNativeJS", json.toString());
-                        
+                            
                             // save the state file
-                            return true;
+                            // TODO: explore this option at a later date
+                            throw new UnsupportedOperationException();
                         } catch (JSONException ex) {
                             // normally shouldn't happen, but if it does, reinsert into the queue
                             if (queuedState != null) {
