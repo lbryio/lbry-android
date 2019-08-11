@@ -1,5 +1,6 @@
 stages:
   - build
+  - build2
   - deploy
   - release
 
@@ -34,7 +35,7 @@ build arm64 apk:
     - cp $CI_PROJECT_DIR/bin/browser-$BUILD_VERSION-release.apk /dev/null
 
 build arm apk:
-  stage: build
+  stage: build2
   image: lbry/android-base:latest
   before_script:
     - export BUILD_VERSION=$(cat $CI_PROJECT_DIR/src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
