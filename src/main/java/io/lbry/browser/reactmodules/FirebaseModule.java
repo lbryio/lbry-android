@@ -65,7 +65,7 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
             Toast.makeText(context,
                            "An application error occurred which has been automatically logged. " +
                            "If you keep seeing this message, please provide feedback to the LBRY " +
-                           "team by emailing hello@lbry.io.",
+                           "team by emailing hello@lbry.com.",
                             Toast.LENGTH_LONG).show();
         }
     }
