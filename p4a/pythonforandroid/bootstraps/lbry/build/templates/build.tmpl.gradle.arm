@@ -35,7 +35,7 @@ android {
      defaultConfig {
         minSdkVersion {{ args.min_sdk_version }}
         targetSdkVersion {{ android_api }}
-        versionCode {{ args.numeric_version }}
+        versionCode {{ args.numeric_version }}  * 10 + 1
         versionName '{{ args.version }}'
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
