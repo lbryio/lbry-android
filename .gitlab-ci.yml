@@ -95,4 +95,4 @@ release apk:
     - export BUILD_APK_FILENAME__64=browser-$BUILD_VERSION-release__arm64.apk
   script:
     - githubrelease release lbryio/lbry-android create $CI_COMMIT_TAG --publish bin/$BUILD_APK_FILENAME__64 bin/$BUILD_APK_FILENAME__32
-    - aws s3 cp bin/$BUILD_APK_FILENAME s3://build.lbry.io/android/latest.apk
+    - aws s3 cp bin/$BUILD_APK_FILENAME__64 s3://build.lbry.io/android/latest.apk
