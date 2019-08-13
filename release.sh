@@ -10,6 +10,6 @@ jarsigner -verbose -sigalg SHA1withRSA \
     -storepass $KEYSTORE_PASSWORD \
     bin/browser-$version-release-unsigned.apk lbry-android > /dev/null \
     && mv bin/browser-$version-release-unsigned.apk bin/browser-$version-release-signed.apk
-~/.buildozer/android/platform/android-sdk-23/build-tools/26.0.2/zipalign -v 4 \
+~/.buildozer/android/platform/android-sdk-23/build-tools/28.0.3/zipalign -v 4 \
     bin/browser-$version-release-signed.apk bin/browser-$version-release.apk > /dev/null \
     && rm bin/browser-$version-release-signed.apk
