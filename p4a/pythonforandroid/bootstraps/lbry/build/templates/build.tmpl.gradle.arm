@@ -87,7 +87,7 @@ ext {
     buildToolsVersion = '{{ build_tools_version }}'
     minSdkVersion = {{ args.min_sdk_version }}
     targetSdkVersion = {{ android_api }}
-    supportLibVersion = '27.1.1'
+    supportLibVersion = '28.0.0'
     googlePlayServicesVersion = '16.1.0'
     googlePlayServicesVisionVersion = '17.0.2'
 }
@@ -99,7 +99,7 @@ subprojects {
                 compileSdkVersion {{ android_api }}
                 buildToolsVersion '{{ build_tools_version }}'
             }
-        }https\://services.gradle.org/distributions/gradle-4.10-all.zip
+        }
     }
 }
 
