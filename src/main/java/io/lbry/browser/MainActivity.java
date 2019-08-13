@@ -41,6 +41,7 @@ import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
 import com.rnfs.RNFSPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.swmansion.reanimated.ReanimatedPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 
 import io.lbry.browser.reactpackages.LbryReactPackage;
@@ -149,6 +150,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .addPackage(new FastImageViewPackage())
                 .addPackage(new ReactNativeDocumentPicker())
                 .addPackage(new ReactVideoPackage())
+                .addPackage(new ReanimatedPackage())
                 .addPackage(new RNCameraPackage())
                 .addPackage(new RNFetchBlobPackage())
                 .addPackage(new RNFSPackage())

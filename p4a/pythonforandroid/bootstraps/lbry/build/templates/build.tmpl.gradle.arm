@@ -6,7 +6,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.3.0'
         classpath 'com.google.gms:google-services:4.2.0'
     }
 }
@@ -99,7 +99,7 @@ subprojects {
                 compileSdkVersion {{ android_api }}
                 buildToolsVersion '{{ build_tools_version }}'
             }
-        }
+        }https\://services.gradle.org/distributions/gradle-4.10-all.zip
     }
 }
 
@@ -111,6 +111,7 @@ dependencies {
     compile project(':react-native-fast-image')
     compile project(':react-native-fs')
     compile project(':react-native-gesture-handler')
+    compile project(':react-native-reanimated')
     compile project(':react-native-video')
     compile project(':rn-fetch-blob')
     {%- for aar in aars %}
