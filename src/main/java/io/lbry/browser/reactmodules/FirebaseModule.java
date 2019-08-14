@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import io.lbry.browser.BuildConfig;
+import io.lbry.browser.MainActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,14 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "Firebase";
     }
-
+    
+    @ReactMethod
+    public void setCurrentScreen(String name) {
+        if (firebaseAnalytics != null) {
+            firebaseAnalytics.setCurrentScreen(MainActivity.getActivity(), name, null);
+        }
+    }
+    
     @ReactMethod
     public void track(String name, ReadableMap payload) {
         Bundle bundle = new Bundle();
