@@ -221,17 +221,17 @@ public class GalleryModule extends ReactContextBaseJavaModule {
                                 }
                             }
                         }
+                        
+                        if (file.exists() && file.length() > 0 && GalleryModule.this.context != null) {
+                            WritableMap params = Arguments.createMap();
+                            params.putString("id", id);
+                            ((ReactApplicationContext) GalleryModule.this.context).getJSModule(
+                                DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onGalleryThumbnailChecked", params);
+                        }
                     }
                 }
 
                 return null;
-            }
-            
-            protected void onPostExecute(Void result) {
-                if (GalleryModule.this.context != null) {
-                    ((ReactApplicationContext) GalleryModule.this.context).getJSModule(
-                        DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onGalleryThumbnailsChecked", null);
-                }
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
