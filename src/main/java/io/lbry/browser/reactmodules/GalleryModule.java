@@ -233,6 +233,13 @@ public class GalleryModule extends ReactContextBaseJavaModule {
 
                 return null;
             }
+            
+            public void onPostExecute(Void result) {
+                if (GalleryModule.this.context != null) {
+                    ((ReactApplicationContext) GalleryModule.this.context).getJSModule(
+                        DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onAllGalleryThumbnailsChecked", null);
+                }
+            }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
