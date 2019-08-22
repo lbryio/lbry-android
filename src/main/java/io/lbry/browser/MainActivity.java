@@ -37,7 +37,7 @@ import com.facebook.react.modules.core.PermissionListener;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.react.ReactRootView;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
+import io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage;
 import com.rnfs.RNFSPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -148,7 +148,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .addPackage(new MainReactPackage())
                 .addPackage(new AsyncStoragePackage())
                 .addPackage(new FastImageViewPackage())
-                .addPackage(new ReactNativeDocumentPicker())
+                .addPackage(new DocumentPickerPackage())
                 .addPackage(new ReactVideoPackage())
                 .addPackage(new ReanimatedPackage())
                 .addPackage(new RNCameraPackage())
