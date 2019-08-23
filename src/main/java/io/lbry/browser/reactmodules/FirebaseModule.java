@@ -12,6 +12,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
+import io.lbry.browser.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setCurrentScreen(String name) {
         if (firebaseAnalytics != null) {
-            firebaseAnalytics.setCurrentScreen(MainActivity.getActivity(), name, null);
+            firebaseAnalytics.setCurrentScreen(MainActivity.getActivity(), name, Utils.capitalizeAndStrip(name));
         }
     }
     
