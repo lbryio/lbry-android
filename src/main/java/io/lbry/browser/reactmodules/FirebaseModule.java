@@ -1,9 +1,11 @@
 package io.lbry.browser.reactmodules;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -37,10 +39,16 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
     }
     
     @ReactMethod
-    public void setCurrentScreen(String name) {
-        if (firebaseAnalytics != null) {
-            firebaseAnalytics.setCurrentScreen(MainActivity.getActivity(), name, Utils.capitalizeAndStrip(name));
+    public void setCurrentScreen(String name, final Promise promise) {
+        final Activity activity = getCurrentActivity();
+        if (activity != null && firebaseAnalytics != null) {
+            activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    firebaseAnalytics.setCurrentScreen(activity, name, Utils.capitalizeAndStrip(name));
+                }
+            });
         }
+        promise.resolve(true);
     }
     
     @ReactMethod
