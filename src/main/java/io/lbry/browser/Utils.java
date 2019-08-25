@@ -412,4 +412,14 @@ public final class Utils {
         }
         return new SecretKeySpec(rsaDecrypt(Base64.decode(base64Key, Base64.DEFAULT), keyStore), "AES");
     }
+    
+    public static String capitalizeAndStrip(String text) {
+        String[] parts = text.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < parts.length; i++) {
+            sb.append(parts[i].substring(0, 1).toUpperCase()).append(parts[i].substring(1));
+        }
+        
+        return sb.toString();
+    }
 }
