@@ -3,8 +3,6 @@ include ':@react-native-community_async-storage'
 project(':@react-native-community_async-storage').projectDir = new File(rootProject.projectDir, './react/node_modules/@react-native-community/async-storage/android')
 include ':react-native-camera'
 project(':react-native-camera').projectDir = new File(rootProject.projectDir, 	'./react/node_modules/react-native-camera/android')
-include ':react-native-document-picker'
-project(':react-native-document-picker').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-document-picker/android')
 include ':react-native-exception-handler'
 project(':react-native-exception-handler').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-exception-handler/android')
 include ':react-native-fast-image'
