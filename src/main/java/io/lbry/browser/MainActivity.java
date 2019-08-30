@@ -11,8 +11,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.Manifest;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -37,7 +39,6 @@ import com.facebook.react.modules.core.PermissionListener;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.react.ReactRootView;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage;
 import com.rnfs.RNFSPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -47,8 +48,10 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import io.lbry.browser.reactpackages.LbryReactPackage;
 import io.lbry.browser.reactmodules.BackgroundMediaModule;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -73,6 +76,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     private static final int PHONE_STATE_PERMISSION_REQ_CODE = 202;
 
     private static final int RECEIVE_SMS_PERMISSION_REQ_CODE = 203;
+    
+    public static final int DOCUMENT_PICKER_RESULT_CODE = 301;
 
     private BroadcastReceiver notificationsReceiver;
 
@@ -148,7 +153,6 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .addPackage(new MainReactPackage())
                 .addPackage(new AsyncStoragePackage())
                 .addPackage(new FastImageViewPackage())
-                .addPackage(new DocumentPickerPackage())
                 .addPackage(new ReactVideoPackage())
                 .addPackage(new ReanimatedPackage())
                 .addPackage(new RNCameraPackage())
@@ -289,6 +293,33 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         };
         registerReceiver(smsReceiver, smsFilter);
     }
+    
+    public static String getUriPath(Context context, Uri uri) throws URISyntaxException {
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = { MediaStore.MediaColumns.DATA };
+            Cursor cursor = null;
+    
+            try {
+                cursor = context.getContentResolver().query(uri, projection, null, null, null);
+                int index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(index);
+                }
+            } catch (Exception e) {
+                // pass
+                android.util.Log.e("ReactNativeJS", e.getMessage(), e);
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+    
+        return null;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -296,6 +327,32 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!Settings.canDrawOverlays(this)) {
                     // SYSTEM_ALERT_WINDOW permission not granted...
+                }
+            }
+        }
+        
+        if (requestCode == DOCUMENT_PICKER_RESULT_CODE) {
+            ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+            if (reactContext != null) {
+                if (resultCode == RESULT_OK) {
+                    Uri fileUri = data.getData();
+                    try {
+                        String filePath = getUriPath(this, fileUri);
+                        android.util.Log.d("ReactNativeJS", "fileUri=" + filePath);
+                        
+                        WritableMap params = Arguments.createMap();
+                        params.putString("path", filePath);
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("onDocumentPickerFilePicked", params);
+                    } catch (URISyntaxException ex) {
+                        // failed to get a file path
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("onDocumentPickerCanceled", null);
+                    }
+                } else if (resultCode == RESULT_CANCELED) {
+                    // user canceled or request failed
+                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("onDocumentPickerCanceled", null);
                 }
             }
         }
