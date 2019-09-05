@@ -354,4 +354,15 @@ public class UtilityModule extends ReactContextBaseJavaModule {
             context.sendBroadcast(intent);
         }
     }
+    
+    @ReactMethod
+    public void openDocumentPicker(String type) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType(type);
+        Activity activity = MainActivity.getActivity();
+        if (activity != null) {
+            activity.startActivityForResult(
+                Intent.createChooser(intent, "Select a file"), MainActivity.DOCUMENT_PICKER_RESULT_CODE);
+        }
+    }
 }
