@@ -1,7 +1,7 @@
 # LBRY Android
 [![pipeline status](https://ci.lbry.tech/lbry/lbry-android/badges/master/pipeline.svg)](https://ci.lbry.tech/lbry/lbry-android/commits/master)
 
-An Android browser and wallet for the [LBRY](https://lbry.com) network. This app bundles [lbrynet-daemon](https://github.com/lbryio/lbry) as a background service with a UI layer built with React Native. The APK is built using buildozer and the Gradle build tool.
+LBRY is a secure, open, and community-run digital marketplace.An LBRY Android browser and wallet for the [LBRY](https://lbry.com) network. This app bundles [lbrynet-daemon](https://github.com/lbryio/lbry) as a background service with a UI layer built with React Native. The APK is built using buildozer and the Gradle build tool.
 
 <img src="https://spee.ch/8/lbry-android.png" alt="LBRY Android Screenshot" width="384px" />
 
