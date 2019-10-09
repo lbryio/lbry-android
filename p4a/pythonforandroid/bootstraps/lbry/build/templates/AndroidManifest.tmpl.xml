@@ -58,6 +58,13 @@
                  android:hardwareAccelerated="true"
                  android:usesCleartextTraffic="true">
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_lbry" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/lbryGreen" />
+
         {% for m in args.meta_data %}
         <meta-data android:name="{{ m.split('=', 1)[0] }}" android:value="{{ m.split('=', 1)[-1] }}"/>{% endfor %}
         <meta-data android:name="wakelock" android:value="{% if args.wakelock %}1{% else %}0{% endif %}"/>
@@ -130,6 +137,14 @@
 				 android:process=":service_lbrynet" />
 		<service android:name="{{ args.package }}.LbrynetTestRunnerService"
 				 android:process=":service_lbrynet_testrunner" />
+
+        <service
+            android:name="{{ args.package }}.LbrynetMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         {% if args.billing_pubkey %}
         <service android:name="org.kivy.android.billing.BillingReceiver"
