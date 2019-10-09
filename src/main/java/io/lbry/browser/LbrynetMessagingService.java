@@ -19,7 +19,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "LbrynetMessagingService";
 
-    private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.LBRY_NOTIFICATION_CHANNEL";
+    private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.LBRY_ENGAGEMENT_CHANNEL";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
