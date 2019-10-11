@@ -4,7 +4,8 @@
     <string name="private_version">{{ private_version }}</string>
     <string name="presplash_color">{{ args.presplash_color }}</string>
     <string name="urlScheme">{{ url_scheme }}</string>
-    
+    <string name="default_notification_channel_id">io.lbry.browser.LBRY_ENGAGEMENT_CHANNEL</string>
+
     <string name="running">Running</string>
     <string name="service_status">Service Status</string>
     <string name="stopped">Stopped</string>

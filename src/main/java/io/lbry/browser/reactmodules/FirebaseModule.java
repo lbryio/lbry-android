@@ -11,6 +11,10 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
@@ -37,7 +41,7 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "Firebase";
     }
-    
+
     @ReactMethod
     public void setCurrentScreen(String name, final Promise promise) {
         final Activity activity = getCurrentActivity();
@@ -50,7 +54,7 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
         }
         promise.resolve(true);
     }
-    
+
     @ReactMethod
     public void track(String name, ReadableMap payload) {
         Bundle bundle = new Bundle();
@@ -85,5 +89,23 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
                            "team by emailing hello@lbry.com.",
                             Toast.LENGTH_LONG).show();
         }
+    }
+
+    @ReactMethod
+    public void getMessagingToken(final Promise promise) {
+        FirebaseInstanceId.getInstance().getInstanceId()
+            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                @Override
+                public void onComplete(Task<InstanceIdResult> task) {
+                    if (!task.isSuccessful()) {
+                        promise.reject("getInstanceId failed");
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    String token = task.getResult().getToken();
+                    promise.resolve(token);
+                }
+            });
     }
 }
