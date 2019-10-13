@@ -1,5 +1,5 @@
 # Introduction
-The purpose of this guide is to help whomever is interested in running the LBRY Android application from scratch on their device, but they're main computing platform is not Linux but macOS.
+The purpose of this guide is to help whoever is interested in running the LBRY Android application from scratch on their device, but their main computing platform is not Linux but macOS.
 
 ## Estimated build time
 25 - 40 minutes (depending on Internet connection speeds)
@@ -50,7 +50,7 @@ Paste more lines and I guess check your email, this will take some time:
 cd /lbry-android/app
 ./bundle.sh
 cd ..
-buildozer android debug
+bulldozer android debug
 ```
 
 When the build is complete, you should see a message like: `[INFO]:    # APK renamed to browser-0.7.3-debug.apk`. You will need this filename for the next step.
@@ -66,6 +66,6 @@ docker cp CONTAINER_NAME:/lbry-android/bin/STEP_4_FILENAME ~/Desktop/ # copies S
 ## Step 6/6
 - Download [Android File Transfer](https://www.android.com/filetransfer) and install it.
 - On your Android device, install [File Explorer](https://play.google.com/store/apps/details?id=com.mauriciotogneri.fileexplorer).
-- Plug in your Android device and swipe down from the top into the "USB for file transfer" settings (or similar name on your device) and make sure "Transfer files" is selected.
+- Plugin your Android device and swipe down from the top into the "USB for file transfer" settings (or similar name on your device) and make sure "Transfer files" is selected.
 - Open **Android File Transfer** on your computer and drag and drop `STEP_4_FILENAME` from your Desktop to the `Downloads` folder on the Android device.
-- Back on the Android device, navigate to `STEP_4_FILENAME` in the `Downloads` folder and tap it to begin installation.
+- Back on the Android device, navigate to `STEP_4_FILENAME` in the `Downloads` folder and tap it to begin the installation.
