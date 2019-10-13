@@ -32,7 +32,7 @@ sudo -H pip install --upgrade cython==0.28.1 setuptools
 ```
 
 ### Step 3 of 10
-Install buildozer, a tool for creating the apk package using the python for android toolcahin.
+Install buildozer, a tool for creating the apk package using the python for android toolchain.
 ```
 git clone https://github.com/lbryio/buildozer.git
 cd buildozer && python2.7 setup.py install && cd ..
