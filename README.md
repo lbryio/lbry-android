@@ -20,6 +20,10 @@ The app is built from source via [Buildozer](https://github.com/kivy/buildozer).
 ## Contributing
 Contributions to this project are welcome, encouraged, and compensated. For more details, see https://lbry.io/faq/contributing
 
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/lbryio/lbry-desktop/issues) [![GitHub contributors](https://img.shields.io/github/contributors/lbryio/lbry-android.svg)](https://github.com/lbryio/lbry-android/graphs/contributors)
+
+
+
 ## License
 This project is MIT licensed. For the full license, see [LICENSE](LICENSE).
 
