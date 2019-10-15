@@ -209,6 +209,18 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void shareUrl(String url) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, url);
+
+        Intent shareUrlIntent = Intent.createChooser(shareIntent, "Share LBRY content");
+        shareUrlIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(shareUrlIntent);
+    }
+
+    @ReactMethod
     public void showNotificationForContent(final String uri, String title, String publisher, final String thumbnail, boolean isPlayable) {
         final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -354,7 +366,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
             context.sendBroadcast(intent);
         }
     }
-    
+
     @ReactMethod
     public void openDocumentPicker(String type) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
