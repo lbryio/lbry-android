@@ -2,6 +2,7 @@ package io.lbry.browser;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.security.KeyPairGeneratorSpec;
 import android.util.Base64;
 import android.util.Log;
@@ -25,6 +26,8 @@ import java.security.Key;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,7 +43,7 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 public final class Utils {
-    
+
     private static final String TAG = Utils.class.getName();
 
     private static final String AES_MODE = "AES/ECB/PKCS7Padding";
@@ -56,9 +59,9 @@ public final class Utils {
     private static final String SP_ENCRYPTION_KEY = "key";
 
     private static final String SP_API_SECRET_KEY = "api_secret";
-    
+
     public static final String SDK_URL = "http://127.0.0.1:5279";
-    
+
     public static String getAndroidRelease() {
         return android.os.Build.VERSION.RELEASE;
     }
@@ -153,6 +156,7 @@ public final class Utils {
         try {
             SharedPreferences pref = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
             String encryptedValue = pref.getString(key, null);
+
             if (encryptedValue == null || encryptedValue.trim().length() == 0) {
                 return null;
             }
@@ -255,11 +259,11 @@ public final class Utils {
 
         return ks;
     }
-    
+
     public static String performRequest(String url) throws ConnectException {
         return performRequest(url, "GET", null);
     }
-    
+
     public static String performRequest(String requestUrl, String requestMethod, String json) throws ConnectException {
         BufferedReader reader = null;
         DataOutputStream dos = null;
@@ -275,14 +279,14 @@ public final class Utils {
                 conn.setDoOutput(true);
                 conn.setRequestProperty("Content-type", "application/json");
             }
-            
+
             if (json != null) {
                 dos = new DataOutputStream(conn.getOutputStream());
                 dos.writeBytes(json);
                 dos.flush();
                 dos.close();
             }
-            
+
             if (conn.getResponseCode() == 200) {
                 reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
                 StringBuilder sb = new StringBuilder();
@@ -325,7 +329,7 @@ public final class Utils {
 
         return null;
     }
-    
+
     public static String sdkCall(String method) throws ConnectException {
         return sdkCall(method, null);
     }
@@ -341,7 +345,7 @@ public final class Utils {
                 }
                 request.put("params", requestParams);
             }
-            
+
             return performRequest(SDK_URL, "POST", request.toString());
         } catch (ConnectException ex) {
             // sdk not started yet. rethrow
@@ -356,11 +360,24 @@ public final class Utils {
     }
 
     private static byte[] rsaEncrypt(byte[] secret, KeyStore keyStore) throws Exception {
-        KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
+        PrivateKey privateKey = null;
+        PublicKey publicKey = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            privateKey = (PrivateKey) keyStore.getKey(KEY_ALIAS, null);
+            publicKey = keyStore.getCertificate(KEY_ALIAS).getPublicKey();
+        } else {
+            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
+            privateKey = privateKeyEntry.getPrivateKey();
+            publicKey = privateKeyEntry.getCertificate().getPublicKey();
+        }
+
+        if (publicKey == null) {
+            throw new Exception("Could not obtain public key for encryption.");
+        }
 
         // Encrypt the text
         Cipher inputCipher = Cipher.getInstance(RSA_MODE);
-        inputCipher.init(Cipher.ENCRYPT_MODE, privateKeyEntry.getCertificate().getPublicKey());
+        inputCipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, inputCipher);
@@ -371,9 +388,20 @@ public final class Utils {
     }
 
     private static byte[] rsaDecrypt(byte[] encrypted, KeyStore keyStore) throws Exception {
-        KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
+        PrivateKey privateKey = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            privateKey = (PrivateKey) keyStore.getKey(KEY_ALIAS, null);
+        } else {
+            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
+            privateKey = privateKeyEntry.getPrivateKey();
+        }
+
+        if (privateKey == null) {
+            throw new Exception("Could not obtain private key for decryption");
+        }
+
         Cipher output = Cipher.getInstance(RSA_MODE);
-        output.init(Cipher.DECRYPT_MODE, privateKeyEntry.getPrivateKey());
+        output.init(Cipher.DECRYPT_MODE, privateKey);
         CipherInputStream cipherInputStream = new CipherInputStream(new ByteArrayInputStream(encrypted), output);
         ArrayList<Byte> values = new ArrayList<Byte>();
         int nextByte;
@@ -412,14 +440,14 @@ public final class Utils {
         }
         return new SecretKeySpec(rsaDecrypt(Base64.decode(base64Key, Base64.DEFAULT), keyStore), "AES");
     }
-    
+
     public static String capitalizeAndStrip(String text) {
         String[] parts = text.split(" ");
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < parts.length; i++) {
             sb.append(parts[i].substring(0, 1).toUpperCase()).append(parts[i].substring(1));
         }
-        
+
         return sb.toString();
     }
 }
