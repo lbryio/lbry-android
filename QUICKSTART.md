@@ -8,7 +8,7 @@ If you would like to contribute to the Android app, but find the build documenta
 * A computer running Ubuntu 18.04
 * Internet access to download modules and packages.
 * At least 15GB of free disk space.
-* Alternatively, Docker. You can skip steps 1 through 5 if you make use of the `lbry/android-base` Docker base image. Scroll down to Fast track if you would prefer to use Docker.
+* Alternatively, Docker. You can skip steps 1 through 5 if you make use of the `lbry/android-base` Docker base image. Scroll down to [Fast track](#fast-track) if you would prefer to use Docker.
 
 ### Step 1 of 10
 Install all the apt packages required by running the following commands. You can copy-paste directly to your terminal.
