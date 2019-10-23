@@ -1,17 +1,17 @@
-### Introduction
+# Introduction
 If you would like to contribute to the Android app, but find the build documentation a little daunting, this guide lets you copy-paste your way to a successful APK build.
 
-#### Estimated build time
+### Estimated build time
 25 - 40 minutes (depending on Internet connection speeds)
 
-#### What do you need?
-* A computer running Ubuntu 18.04
+### What do you need?
+* A computer running [Ubuntu 18.04](https://ubuntu.com/download/desktop)
 * Internet access to download modules and packages.
 * At least 15GB of free disk space.
-* Alternatively, Docker. You can skip steps 1 through 5 if you make use of the `lbry/android-base` Docker base image. Scroll down to Fast track if you would prefer to use Docker.
+* Alternatively, Docker. You can skip steps 1 through 5 if you make use of the `lbry/android-base` Docker base image. Scroll down to [Fast Track](#Fast-Track) at the bottom of the page if you would prefer to use Docker.
 
 ### Step 1 of 10
-Install all the apt packages required by running the following commands. You can copy-paste directly to your terminal.
+Install all the apt packages required by running the following commands. You can copy-paste this directly to your terminal.
 ```
 sudo dpkg --add-architecture i386
 sudo apt-get -y update
@@ -32,7 +32,7 @@ sudo -H pip install --upgrade cython==0.28.1 setuptools
 ```
 
 ### Step 3 of 10
-Install buildozer, a tool for creating the apk package using the python for android toolchain.
+Install [buildozer](https://github.com/lbryio/buildozer.git), a tool for creating the apk package using the python for android toolchain.
 ```
 git clone https://github.com/lbryio/buildozer.git
 cd buildozer && python2.7 setup.py install && cd ..
@@ -72,7 +72,7 @@ wget 'https://www.crystax.net/download/crystax-ndk-10.3.2-linux-x86_64.tar.xz' -
 ```
 
 ### Step 7 of 10
-Clone the lbryio/lbry-android git repository, initialise submodules and create your `buildozer.spec` and `google-services.json` files. The provided `buildozer.spec.sample` contains defaults provided you followed steps 1 through 5 exactly as described. You can also customise the spec file if you want to. The `google-services.sample.json` can be used to ensure the build completes successfully.
+Clone the [lbryio/lbry-android git repository](https://github.com/lbryio/lbry-android), initialise submodules and create your `buildozer.spec` and `google-services.json` files. The provided `buildozer.spec.sample` contains defaults provided you followed steps 1 through 5 exactly as described. You can also customise the spec file if you want to. The `google-services.sample.json` can be used to ensure the build completes successfully.
 ```
 git clone https://github.com/lbryio/lbry-android
 cd lbry-android
@@ -110,4 +110,4 @@ sudo apt-get install docker-ce
 docker run -it lbry/android-base:latest /bin/bash
 ```
 
-**Protip:** You can also make use of Docker to run your builds on macOS or Windows.
+**Pro Tip:** You can also make use of Docker to run your builds on macOS or Windows.
