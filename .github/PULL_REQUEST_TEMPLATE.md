@@ -1,26 +1,32 @@
-<!---
-    Thank you for contributing to LBRY.
-    Fields marked with (*) are required. Please don't remove the template.
--->
+## PR Checklist
 
-## Description (*)
-<!---
-   Please provide a brief description of this PR.
--->
+<!-- For the checkbox formatting to work properly, make sure there are no spaces on either side of the "x" -->
 
-## Fixed Issues (if necessary)
-<!---
-    Please mention all the relevant issues this PR fixes.
--->
+Please check all that apply to this PR using "x":
 
-## Screenshots (if necessary)
-<!---
-  Provide relevant screenshots for the error fixed or the feature introduced. You can upload JPEGs, PNGs, or GIFs.
--->
+- [ ] I have checked that this PR is not a duplicate of an existing PR (open, closed or merged)
+- [ ] I have checked that this PR does not introduce a breaking change
+- [ ] This PR introduces breaking changes and I have provided a detailed explanation below
 
-## Contribution checklist (*)
- - [ ] I have read the Contributing Guidelines
- - [ ] Commits have been made with meaningful commit messages
- - [ ] All automated tests have passed successfully 
+## PR Type
 
- 
+What kind of change does this PR introduce?
+
+- [ ] Bugfix
+- [ ] Feature
+- [ ] Code style update (formatting)
+- [ ] Refactoring (no functional changes)
+- [ ] Documentation changes
+- [ ] Other - Please describe:
+
+## Fixes
+
+Issue Number:
+
+## What is the current behavior?
+
+## What is the new behavior?
+
+## Other information
+
+<!-- If this PR contains a breaking change, please describe the impact and solution strategy for existing applications below. -->
