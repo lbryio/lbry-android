@@ -103,7 +103,7 @@ If you made it this far, you're finally ready to build the package! You just hav
 buildozer android debug
 ```
 
-### Fast Track
+### Fast Track {#Fast-Track}
 Install Docker and start a container using the `lbry/android-base` image, which is about 1.72GB in size. Run the following commands for Ubuntu and then follow steps 6 through 10 in the container's bash prompt.
 ```
 sudo apt-get install docker-ce
