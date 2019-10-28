@@ -71,7 +71,7 @@ Assuming `lbry-android` as the current working folder:
 The `google-services.json` file is required for the build to be successful due to the Firebase implementation. Simply copy the provided sample file into the same destination folder.
 ```
 cd lbry-android
-cp p4a/pythonforandroid/bootstraps/lbry/templates/google-services.sample.json p4a/pythonforandroid/bootstraps/lbry/templates/google-services.json
+cp p4a/pythonforandroid/bootstraps/lbry/build/templates/google-services.sample.json p4a/pythonforandroid/bootstraps/lbry/build/templates/google-services.json
 ```
 
 #### Setup Android SDK for buildozer
