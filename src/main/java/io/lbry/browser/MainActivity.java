@@ -80,7 +80,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     private static final int PHONE_STATE_PERMISSION_REQ_CODE = 202;
 
     private static final int RECEIVE_SMS_PERMISSION_REQ_CODE = 203;
-    
+
     public static final int DOCUMENT_PICKER_RESULT_CODE = 301;
 
     private BroadcastReceiver notificationsReceiver;
@@ -297,7 +297,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         };
         registerReceiver(smsReceiver, smsFilter);
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
@@ -307,7 +307,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 }
             }
         }
-        
+
         if (requestCode == DOCUMENT_PICKER_RESULT_CODE) {
             ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
             if (reactContext != null) {
@@ -534,6 +534,17 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
                 notificationManager.cancel(sourceNotificationId);
             }
+
+            // check for target (notification payload)
+            String target = intent.getStringExtra("target");
+            if (target != null && target.trim().length() > 0) {
+                ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+                if (reactContext != null) {
+                    WritableMap params = Arguments.createMap();
+                    params.putString("url", target);
+                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onNotificationTargetLaunch", params);
+                }
+            }
         }
 
         super.onNewIntent(intent);
@@ -637,7 +648,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         return array;
     }
-    
+
     /**
      * https://gist.github.com/HBiSoft/15899990b8cd0723c3a894c1636550a8
      */

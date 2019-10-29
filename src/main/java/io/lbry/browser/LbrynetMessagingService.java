@@ -45,7 +45,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
         String url = null;
         if (payload != null) {
             type = payload.get("type");
-            url = payload.get("url");
+            url = payload.get("target");
         }
 
         if (type != null && getEnabledTypes().indexOf(type) > -1) {
