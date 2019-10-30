@@ -98,7 +98,7 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
                 @Override
                 public void onComplete(Task<InstanceIdResult> task) {
                     if (!task.isSuccessful()) {
-                        promise.reject("getInstanceId failed");
+                        promise.reject("Firebase getInstanceId call failed");
                         return;
                     }
 

@@ -52,6 +52,15 @@ public class UtilityModule extends ReactContextBaseJavaModule {
 
     public static final String ACTION_NOTIFICATION_LATER = "io.lbry.browser.ACTION_NOTIFICATION_LATER";
 
+    public static final String RECEIVE_SUBSCRIPTION_NOTIFICATIONS = "receiveSubscriptionNotifications";
+
+    public static final String RECEIVE_REWARD_NOTIFICATIONS = "receiveRewardNotifications";
+
+    public static final String RECEIVE_INTERESTS_NOTIFICATIONS = "receiveInterestsNotifications";
+
+    public static final String RECEIVE_CREATOR_NOTIFICATIONS = "receiveCreatorNotifications";
+
+
     private Context context;
 
     private KeyStore keyStore;
@@ -375,6 +384,16 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         if (activity != null) {
             activity.startActivityForResult(
                 Intent.createChooser(intent, "Select a file"), MainActivity.DOCUMENT_PICKER_RESULT_CODE);
+        }
+    }
+
+    @ReactMethod
+    public void setNativeBooleanSetting(String key, boolean value) {
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean(key, value);
+            editor.commit();
         }
     }
 }

@@ -534,6 +534,17 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
                 notificationManager.cancel(sourceNotificationId);
             }
+
+            // check for target (notification payload)
+            String target = intent.getStringExtra("target");
+            if (target != null && target.trim().length() > 0) {
+                ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+                if (reactContext != null) {
+                    WritableMap params = Arguments.createMap();
+                    params.putString("url", target);
+                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onNotificationTargetLaunch", params);
+                }
+            }
         }
 
         super.onNewIntent(intent);
