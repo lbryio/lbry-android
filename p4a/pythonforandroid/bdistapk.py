@@ -123,7 +123,7 @@ class BdistAPK(Command):
             exit(1)
         if len(main_py_dirs) > 1:
             print('WARNING: Multiple main.py dirs found, using the shortest path')
-        main_py_dirs = sorted(main_py_dirs, key=lambda j: len(split(j)))
+        main_py_dirs.sort(key=lambda j: len(split(j)))
 
         if not argv_contains('--launcher'):
             sys.argv.append('--private={}'.format(
