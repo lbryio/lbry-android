@@ -396,4 +396,21 @@ public class UtilityModule extends ReactContextBaseJavaModule {
             editor.commit();
         }
     }
+
+    @ReactMethod
+    public void getNotificationLaunchTarget(Promise promise) {
+        Activity activity = MainActivity.getActivity();
+        if (activity != null) {
+            Intent intent = activity.getIntent();
+            if (intent != null) {
+                String target = intent.getStringExtra("target");
+                if (target != null && target.trim().length() > 0) {
+                    promise.resolve(target);
+                    return;
+                }
+            }
+        }
+
+        promise.resolve(null);
+    }
 }
