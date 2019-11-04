@@ -41,19 +41,14 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         Map<String, String> payload = remoteMessage.getData();
-        String type = null;
-        String url = null;
         if (payload != null) {
-            type = payload.get("type");
-            url = payload.get("target");
-        }
-
-        if (type != null && getEnabledTypes().indexOf(type) > -1) {
-            // Check if message contains a notification payload.
-            RemoteMessage.Notification remoteNotification = remoteMessage.getNotification();
-            if (remoteNotification != null) {
-                Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-                sendNotification(remoteNotification.getTitle(), remoteNotification.getBody(), type, url);
+            String type = payload.get("type");
+            String url = payload.get("target");
+            String title = payload.get("title");
+            String body = payload.get("body");
+            if (type != null && getEnabledTypes().indexOf(type) > -1 && body != null && body.trim().length() > 0) {
+                Log.d(TAG, "Message Notification Body: " + body);
+                sendNotification(title, body, type, url);
             }
         }
     }
