@@ -42,6 +42,7 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.react.ReactRootView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.rnfs.RNFSPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
@@ -90,6 +91,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     private BroadcastReceiver stopServiceReceiver;
 
     private BroadcastReceiver downloadEventReceiver;
+
+    private FirebaseAnalytics firebaseAnalytics;
 
     private ReactRootView mReactRootView;
 
@@ -149,6 +152,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
 
+        checkNotificationOpenIntent(getIntent());
+
         mReactRootView = new RNGestureHandlerEnabledRootView(this);
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
@@ -172,6 +177,25 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         registerNotificationsReceiver();
 
         setContentView(mReactRootView);
+    }
+
+    private void checkNotificationOpenIntent(Intent intent) {
+        if (intent != null) {
+            String notificationName = intent.getStringExtra("notification_name");
+            if (notificationName != null) {
+                logNotificationOpen(notificationName);
+            }
+        }
+    }
+
+    private void logNotificationOpen(String name) {
+        if (firebaseAnalytics == null) {
+            firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putString("name", name);
+        firebaseAnalytics.logEvent("lbry_notification_open", bundle);
     }
 
     private void registerDownloadEventReceiver() {
@@ -534,6 +558,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
                 notificationManager.cancel(sourceNotificationId);
             }
+
+            checkNotificationOpenIntent(intent);
         }
 
         super.onNewIntent(intent);
