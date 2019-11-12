@@ -9,10 +9,12 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -36,9 +38,14 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
 
     private static final String TYPE_CREATOR = "creator";
 
+    private FirebaseAnalytics firebaseAnalytics;
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+        if (firebaseAnalytics == null) {
+            firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        }
 
         Map<String, String> payload = remoteMessage.getData();
         if (payload != null) {
@@ -46,9 +53,16 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             String url = payload.get("target");
             String title = payload.get("title");
             String body = payload.get("body");
+            String name = payload.get("name"); // notification name
             if (type != null && getEnabledTypes().indexOf(type) > -1 && body != null && body.trim().length() > 0) {
-                Log.d(TAG, "Message Notification Body: " + body);
-                sendNotification(title, body, type, url);
+                // only log the receive event for valid notifications received
+                if (firebaseAnalytics != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", name);
+                    firebaseAnalytics.logEvent("lbry_notification_receive", bundle);
+                }
+
+                sendNotification(title, body, type, url, name);
             }
         }
     }
@@ -80,7 +94,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String title, String messageBody, String type, String url) {
+    private void sendNotification(String title, String messageBody, String type, String url, String name) {
         //Intent intent = new Intent(this, MainActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (url == null) {
@@ -93,6 +107,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
         }
 
         Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        launchIntent.putExtra("notification_name", name);
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent, PendingIntent.FLAG_ONE_SHOT);
 
