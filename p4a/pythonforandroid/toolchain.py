@@ -822,8 +822,7 @@ class ToolchainCL(object):
 
                 build_tools_versions = os.listdir(join(ctx.sdk_dir,
                                                        'build-tools'))
-                build_tools_versions = sorted(build_tools_versions,
-                                              key=LooseVersion)
+                build_tools_versions.sort(key=LooseVersion)
                 build_tools_version = build_tools_versions[-1]
                 info(('Detected highest available build tools '
                       'version to be {}').format(build_tools_version))

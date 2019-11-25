@@ -344,8 +344,7 @@ main.py that loads it.''')
 
     # Try to build with the newest available build tools
     build_tools_versions = listdir(join(sdk_dir, 'build-tools'))
-    build_tools_versions = sorted(build_tools_versions,
-                                  key=LooseVersion)
+    build_tools_versions.sort(key=LooseVersion)
     build_tools_version = build_tools_versions[-1]
 
 

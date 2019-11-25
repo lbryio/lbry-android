@@ -293,8 +293,7 @@ def get_recipe_order_and_bootstrap(ctx, names, bs=None, blacklist=None):
         orders.append(list(order))
 
     # prefer python3 and SDL2 if available
-    orders = sorted(orders,
-                    key=lambda order: -('python3' in order) - ('sdl2' in order))
+    orders.sort(key=lambda order: -('python3' in order) - ('sdl2' in order))
 
     if not orders:
         raise BuildInterruptingException(

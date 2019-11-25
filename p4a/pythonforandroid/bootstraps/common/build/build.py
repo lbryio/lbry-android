@@ -447,8 +447,7 @@ main.py that loads it.''')
     # Try to build with the newest available build tools
     ignored = {".DS_Store", ".ds_store"}
     build_tools_versions = [x for x in listdir(join(sdk_dir, 'build-tools')) if x not in ignored]
-    build_tools_versions = sorted(build_tools_versions,
-                                  key=LooseVersion)
+    build_tools_versions.sort(key=LooseVersion)
     build_tools_version = build_tools_versions[-1]
 
     # Folder name for launcher (used by SDL2 bootstrap)
