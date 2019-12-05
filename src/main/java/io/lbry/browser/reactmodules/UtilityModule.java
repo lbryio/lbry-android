@@ -25,6 +25,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.common.MapBuilder;
 
 import com.squareup.picasso.Picasso;
 
@@ -60,6 +61,10 @@ public class UtilityModule extends ReactContextBaseJavaModule {
 
     public static final String RECEIVE_CREATOR_NOTIFICATIONS = "receiveCreatorNotifications";
 
+    // the last language set to be loaded
+    private static final String LANGUAGE_SETTING_KEY = "language";
+
+    private String language;
 
     private Context context;
 
@@ -73,6 +78,16 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         } catch (Exception ex) {
             // continue without keystore
         }
+
+        SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        language = sp.getString(LANGUAGE_SETTING_KEY, "en");
+    }
+
+    @Override
+    public Map<String, Object> getConstants() {
+        final Map<String, Object> constants = MapBuilder.newHashMap();
+        constants.put("language", language);
+        return constants;
     }
 
     @Override
@@ -122,7 +137,6 @@ public class UtilityModule extends ReactContextBaseJavaModule {
                                                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
                 }
             });
-
         }
     }
 
@@ -394,6 +408,26 @@ public class UtilityModule extends ReactContextBaseJavaModule {
             SharedPreferences.Editor editor = sp.edit();
             editor.putBoolean(key, value);
             editor.commit();
+        }
+    }
+
+    @ReactMethod
+    public void setNativeStringSetting(String key, String value) {
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(key, value);
+            editor.commit();
+        }
+    }
+
+    @ReactMethod
+    public void getNativeStringSetting(String key, String defaultValue, Promise promise) {
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+            promise.resolve(sp.getString(key, defaultValue));
+        } else {
+            promise.resolve(null);
         }
     }
 
