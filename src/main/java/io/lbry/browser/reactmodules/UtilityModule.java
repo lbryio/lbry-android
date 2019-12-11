@@ -30,6 +30,9 @@ import com.facebook.react.common.MapBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.Closeable;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
