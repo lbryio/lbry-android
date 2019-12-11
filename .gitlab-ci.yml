@@ -61,6 +61,7 @@ build arm apk:
     - rm ~/.buildozer/android/crystax-ndk-10.3.2-linux-x86_64.tar.xz
     - git secret reveal
     - mv buildozer.spec.arm.ci buildozer.spec
+    - wget -q https://headers.lbry.io/blockchain_headers_latest -O $CI_PROJECT_DIR/src/main/assets/blockchain/headers
     - "./release.sh | grep -Fv -e 'working:' -e 'copy' -e 'Compiling' --line-buffered"
     - cp $CI_PROJECT_DIR/bin/browser-$BUILD_VERSION-release.apk $CI_PROJECT_DIR/bin/browser-$BUILD_VERSION-release__arm.apk
     - cp $CI_PROJECT_DIR/bin/browser-$BUILD_VERSION-release.apk /dev/null
