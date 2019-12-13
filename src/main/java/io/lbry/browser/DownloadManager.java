@@ -86,6 +86,7 @@ public class DownloadManager {
             NotificationChannel channel = new NotificationChannel(
                 NOTIFICATION_CHANNEL_ID, "LBRY Downloads", NotificationManager.IMPORTANCE_LOW);
             channel.setDescription("LBRY file downloads");
+            channel.setSound(null, null);
             notificationManager.createNotificationChannel(channel);
         }
     }
