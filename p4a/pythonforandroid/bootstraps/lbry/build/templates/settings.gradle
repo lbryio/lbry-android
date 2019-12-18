@@ -13,6 +13,8 @@ include ':react-native-gesture-handler'
 project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-gesture-handler/android')
 include ':react-native-reanimated'
 project(':react-native-reanimated').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-reanimated/android')
+include ':react-native-snackbar'
+project(':react-native-snackbar').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-snackbar/android')
 include ':react-native-video'
 project(':react-native-video').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-video/android-exoplayer')
 include ':rn-fetch-blob'

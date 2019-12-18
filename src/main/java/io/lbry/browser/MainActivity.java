@@ -27,6 +27,7 @@ import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
+import com.azendoo.reactnativesnackbar.SnackbarPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.facebook.react.common.LifecycleState;
@@ -168,6 +169,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .addPackage(new RNFetchBlobPackage())
                 .addPackage(new RNFSPackage())
                 .addPackage(new RNGestureHandlerPackage())
+                .addPackage(new SnackbarPackage())
                 .addPackage(new LbryReactPackage())
                 .setUseDeveloperSupport(true)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
