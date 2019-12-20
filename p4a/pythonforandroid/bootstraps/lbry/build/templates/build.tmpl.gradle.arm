@@ -111,6 +111,7 @@ dependencies {
     compile project(':react-native-fs')
     compile project(':react-native-gesture-handler')
     compile project(':react-native-reanimated')
+    compile project(':react-native-snackbar')
     compile project(':react-native-video')
     compile project(':rn-fetch-blob')
     {%- for aar in aars %}
