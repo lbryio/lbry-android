@@ -73,10 +73,12 @@ def configure_logging(conf):
 def start():
     keyring.set_keyring(LbryAndroidKeyring())
     private_storage_dir = lbrynet_android_utils.getAppInternalStorageDir(service.getApplicationContext())
+    configured_download_dir = lbrynet_android_utils.getConfiguredDownloadDirectory(service.getApplicationContext())
+    print('configured_download_dir={}'.format(configured_download_dir))
     conf = Config(
         data_dir=f'{private_storage_dir}/lbrynet',
         wallet_dir=f'{private_storage_dir}/lbryum',
-        download_dir=f'{lbrynet_android_utils.getInternalStorageDir(service.getApplicationContext())}/Download',
+        download_dir=configured_download_dir,
         blob_lru_cache_size=32,
         components_to_skip=[DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT],
         save_blobs=False,

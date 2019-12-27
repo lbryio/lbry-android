@@ -127,14 +127,6 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // Request external storage permission on Android version >= 6
-            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            STORAGE_PERMISSION_REQ_CODE,
-                            "LBRY requires access to your device storage to be able to download files and media.",
-                            this);
-        }
-
         super.onCreate(savedInstanceState);
         currentActivity = this;
 
@@ -361,6 +353,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
         switch (requestCode) {
             case STORAGE_PERMISSION_REQ_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -369,22 +362,25 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                                                    Uri.parse("package:" + getPackageName()));
                         startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
                     }
-                } else {
-                    // Permission not granted. Show a message and terminate the application
-                    Toast.makeText(this,
-                        "LBRY requires access to your device storage to be able to download files and media." +
-                        " Please enable the storage permission and restart the app.", Toast.LENGTH_LONG).show();
-                    if (serviceRunning) {
-                        ServiceHelper.stop(this, LbrynetService.class);
+                    if (reactContext != null) {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("onStoragePermissionGranted", null);
                     }
-                    finish();
+                } else {
+                    // Permission not granted
+                    /*Toast.makeText(this,
+                        "LBRY requires access to your device storage to be able to download files and media." +
+                        " Please enable the storage permission and restart the app.", Toast.LENGTH_LONG).show();*/
+                    if (reactContext != null) {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("onStoragePermissionRefused", null);
+                    }
                 }
                 break;
 
             case PHONE_STATE_PERMISSION_REQ_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted. Emit an onPhoneStatePermissionGranted event
-                    ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
                     if (reactContext != null) {
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                             .emit("onPhoneStatePermissionGranted", null);
@@ -399,7 +395,6 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             case RECEIVE_SMS_PERMISSION_REQ_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted. Emit an onPhoneStatePermissionGranted event
-                    ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
                     if (reactContext != null) {
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                             .emit("onReceiveSmsPermissionGranted", null);
@@ -601,6 +596,15 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         checkPermission(Manifest.permission.RECEIVE_SMS,
                         RECEIVE_SMS_PERMISSION_REQ_CODE,
                         "LBRY requires access to be able to read a verification text message for rewards.",
+                        context,
+                        true);
+    }
+
+    public static void checkStoragePermission(Context context) {
+        // Request read phone state permission
+        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        STORAGE_PERMISSION_REQ_CODE,
+                        "LBRY requires access to your device storage to be able to download files and media.",
                         context,
                         true);
     }

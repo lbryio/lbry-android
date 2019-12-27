@@ -208,6 +208,19 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void canReadWriteStorage(final Promise promise) {
+        promise.resolve(MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, MainActivity.getActivity()));
+    }
+
+    @ReactMethod
+    public void requestStoragePermission() {
+        MainActivity activity = (MainActivity) MainActivity.getActivity();
+        if (activity != null) {
+            MainActivity.checkStoragePermission(activity);
+        }
+    }
+
+    @ReactMethod
     public void shareLogFile(Callback errorCallback) {
         String logFileName = "lbrynet.log";
         File logFile = new File(String.format("%s/%s", Utils.getAppInternalStorageDir(context), "lbrynet"), logFileName);
@@ -449,5 +462,11 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         }
 
         promise.resolve(null);
+    }
+
+    @ReactMethod
+    public void getDownloadDirectory(Promise promise) {
+        // This obtains a public default download directory after the storage permission has been granted
+        promise.resolve(Utils.getConfiguredDownloadDirectory(context));
     }
 }
