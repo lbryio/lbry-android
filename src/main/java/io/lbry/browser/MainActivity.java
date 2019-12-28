@@ -20,9 +20,9 @@ import android.net.Uri;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
@@ -134,8 +134,6 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         currentActivity = this;
 
         SoLoader.init(this, false);
-        ReadableNativeArray.setUseNativeAccessor(true);
-        ReadableNativeMap.setUseNativeAccessor(true);
 
         // Register the stop service receiver (so that we close the activity if the user requests the service to stop)
         registerStopReceiver();
@@ -157,6 +155,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         mReactRootView = new RNGestureHandlerEnabledRootView(this);
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
+                .setCurrentActivity(this)
                 .setBundleAssetName("index.android.bundle")
                 .setJSMainModulePath("index")
                 .addPackage(new MainReactPackage())
@@ -170,7 +169,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .addPackage(new RNGestureHandlerPackage())
                 .addPackage(new SnackbarPackage())
                 .addPackage(new LbryReactPackage())
-                .setUseDeveloperSupport(true)
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
         mReactRootView.startReactApplication(mReactInstanceManager, "LBRYApp", null);
