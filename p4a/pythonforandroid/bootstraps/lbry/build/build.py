@@ -406,6 +406,8 @@ main.py that loads it.''')
 
     render('settings.gradle', 'settings.gradle')
 
+    render('gradle.properties', 'gradle.properties')
+
     ## google-services.json for firebase
     render('google-services.json', 'google-services.json')
 

@@ -6,7 +6,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.4.2'
         classpath 'com.google.gms:google-services:4.2.0'
     }
 }
@@ -21,6 +21,10 @@ allprojects {
             // All of React Native (JS, Android binaries) is installed from npm
             url "$rootDir/react/node_modules/react-native/android"
         }
+        maven {
+            // Android JSC is installed from npm
+            url("$rootDir/react/node_modules/jsc-android/dist")
+        }
         flatDir {
             dirs 'libs'
         }
@@ -28,6 +32,14 @@ allprojects {
 }
 
 apply plugin: 'com.android.application'
+
+project.ext.react = [
+    enableHermes: true,
+    entryFile: "index.js"
+]
+
+def enableHermes = project.ext.react.get("enableHermes", false);
+def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     compileSdkVersion {{ android_api }}
@@ -122,6 +134,15 @@ dependencies {
     compile '{{ depend }}'
     {%- endfor %}
     {%- endif %}
+
+    if (enableHermes) {
+        def hermesPath = "$rootDir/react/node_modules/hermes-engine/android/";
+
+        debugImplementation files(hermesPath + "hermes-debug.aar")
+        releaseImplementation files(hermesPath + "hermes-release.aar")
+    } else {
+        implementation jscFlavor
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'
