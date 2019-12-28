@@ -391,6 +391,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         Intent intent = new Intent();
         intent.setAction(LbrynetService.ACTION_QUEUE_DOWNLOAD);
         intent.putExtra("outpoint", outpoint);
+
         if (context != null) {
             context.sendBroadcast(intent);
         }

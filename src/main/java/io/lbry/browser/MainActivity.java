@@ -38,11 +38,14 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.ReadableNativeArray;
+import com.facebook.react.bridge.ReadableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.react.ReactRootView;
+import com.facebook.soloader.SoLoader;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.rnfs.RNFSPackage;
@@ -129,6 +132,10 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         currentActivity = this;
+
+        SoLoader.init(this, false);
+        ReadableNativeArray.setUseNativeAccessor(true);
+        ReadableNativeMap.setUseNativeAccessor(true);
 
         // Register the stop service receiver (so that we close the activity if the user requests the service to stop)
         registerStopReceiver();
