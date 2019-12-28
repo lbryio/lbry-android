@@ -62,6 +62,8 @@ public final class Utils {
 
     public static final String SDK_URL = "http://127.0.0.1:5279";
 
+    public static final String SP_DOWNLOAD_DIR_KEY = "download_dir";
+
     public static String getAndroidRelease() {
         return android.os.Build.VERSION.RELEASE;
     }
@@ -112,6 +114,16 @@ public final class Utils {
         }
 
         return file.getAbsolutePath();
+    }
+
+    public static String getConfiguredDownloadDirectory(Context context) {
+        // use the default folder (usually [private files]/Download with WRITE_EXTERNAL_STOAGE permission not granted)
+        // if none is configured or specified
+        String defaultDirectory = String.format("%s/Download", getInternalStorageDir(context));
+
+        SharedPreferences pref = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        String downloadDirectory = pref.getString(SP_DOWNLOAD_DIR_KEY, defaultDirectory);
+        return downloadDirectory;
     }
 
     public static void saveApiSecret(String secret, Context context, KeyStore keyStore) {

@@ -242,27 +242,30 @@ public class LbrynetService extends PythonService {
                     try {
                         JSONObject response = new JSONObject(fileList);
                         if (!response.has("error")) {
-                            JSONArray fileItems = response.optJSONArray("result");
-                            if (fileItems != null && fileItems.length() > 0) {
-                                // TODO: Create Java FileItem class
-                                JSONObject item = fileItems.getJSONObject(0);
-                                String downloadPath = item.isNull("download_path") ? null : item.getString("download_path");
-                                if (downloadPath == null || downloadPath.trim().length() == 0) {
-                                    return;
-                                }
-                                String claimId = item.getString("claim_id");
-                                String claimName = item.getString("claim_name");
-                                String uri = String.format("lbry://%s#%s", claimName, claimId);
+                            JSONObject result = response.getJSONObject("result");
+                            if (result != null) {
+                                JSONArray fileItems = response.optJSONArray("items");
+                                if (fileItems != null && fileItems.length() > 0) {
+                                    // TODO: Create Java FileItem class
+                                    JSONObject item = fileItems.getJSONObject(0);
+                                    String downloadPath = item.isNull("download_path") ? null : item.getString("download_path");
+                                    if (downloadPath == null || downloadPath.trim().length() == 0) {
+                                        return;
+                                    }
+                                    String claimId = item.getString("claim_id");
+                                    String claimName = item.getString("claim_name");
+                                    String uri = String.format("lbry://%s#%s", claimName, claimId);
 
-                                if (!downloadManager.isDownloadActive(uri) && !downloadManager.isDownloadCompleted(uri)) {
-                                    File file = new File(downloadPath);
-                                    Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
-                                    intent.putExtra("action", "start");
-                                    downloadManager.startDownload(uri, file.getName());
+                                    if (!downloadManager.isDownloadActive(uri) && !downloadManager.isDownloadCompleted(uri)) {
+                                        File file = new File(downloadPath);
+                                        Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
+                                        intent.putExtra("action", "start");
+                                        downloadManager.startDownload(uri, file.getName());
 
-                                    Context context = getApplicationContext();
-                                    if (context != null) {
-                                        context.sendBroadcast(intent);
+                                        Context context = getApplicationContext();
+                                        if (context != null) {
+                                            context.sendBroadcast(intent);
+                                        }
                                     }
                                 }
                             }
@@ -287,74 +290,78 @@ public class LbrynetService extends PythonService {
     private void handlePollFileResponse(JSONObject response) {
         Context context = getApplicationContext();
         if (response.has("result")) {
-            JSONArray fileItems = response.optJSONArray("result");
-            if (fileItems != null) {
-                try {
-                    //List<String> itemUris = new ArrayList<String>();
-                    for (int i = 0; i < fileItems.length(); i++) {
-                        JSONObject item = fileItems.getJSONObject(i);
-                        String downloadPath = item.isNull("download_path") ? null : item.getString("download_path");
-                        if (downloadPath == null || downloadPath.trim().length() == 0) {
-                            continue;
-                        }
-
-                        String claimId = item.getString("claim_id");
-                        String claimName = item.getString("claim_name");
-                        String uri = String.format("lbry://%s#%s", claimName, claimId);
-                        boolean completed = item.getBoolean("completed");
-                        double writtenBytes = item.optDouble("written_bytes", -1);
-                        double totalBytes = item.optDouble("total_bytes", -1);
-                        String outpoint = item.getString("outpoint");
-
-                        if (downloadManager.isDownloadActive(uri) && (writtenBytes == -1 || totalBytes == -1)) {
-                            // possibly deleted, abort the download
-                            downloadManager.abortDownload(uri);
-                            continue;
-                        }
-
-                        File file = new File(downloadPath);
-                        Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
-                        if (downloadManager.isDownloadActive(uri)) {
-                            if (writtenBytes >= totalBytes || completed) {
-                                // completed download
-                                intent.putExtra("action", "complete");
-                                downloadManager.completeDownload(uri, file.getName(), totalBytes);
-                            } else {
-                                intent.putExtra("action", "update");
-                                intent.putExtra("progress", (writtenBytes / totalBytes) * 100);
-                                downloadManager.updateDownload(uri, file.getName(), writtenBytes, totalBytes);
-                            }
-
-                            if (context != null) {
-                                context.sendBroadcast(intent);
-                            }
-                        } else {
-                            if (writtenBytes == -1 || writtenBytes >= totalBytes) {
-                                // do not start a download that is considered completed
+            JSONObject result = response.optJSONObject("result");
+            if (result != null) {
+                JSONArray fileItems = result.optJSONArray("items");
+                if (fileItems != null) {
+                    try {
+                        //List<String> itemUris = new ArrayList<String>();
+                        for (int i = 0; i < fileItems.length(); i++) {
+                            JSONObject item = fileItems.getJSONObject(i);
+                            String downloadPath = item.isNull("download_path") ? null : item.getString("download_path");
+                            if (downloadPath == null || downloadPath.trim().length() == 0) {
                                 continue;
                             }
-                            if (!completed && downloadPath != null) {
-                                intent.putExtra("action", "start");
-                                downloadManager.startDownload(uri, file.getName());
+
+                            String claimId = item.getString("claim_id");
+                            String claimName = item.getString("claim_name");
+                            String uri = String.format("lbry://%s#%s", claimName, claimId);
+
+                            boolean completed = item.getBoolean("completed");
+                            double writtenBytes = item.optDouble("written_bytes", -1);
+                            double totalBytes = item.optDouble("total_bytes", -1);
+                            String outpoint = item.getString("outpoint");
+
+                            if (downloadManager.isDownloadActive(uri) && (writtenBytes == -1 || totalBytes == -1)) {
+                                // possibly deleted, abort the download
+                                downloadManager.abortDownload(uri);
+                                continue;
+                            }
+
+                            File file = new File(downloadPath);
+                            Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
+                            if (downloadManager.isDownloadActive(uri)) {
+                                if (writtenBytes >= totalBytes || completed) {
+                                    // completed download
+                                    intent.putExtra("action", "complete");
+                                    downloadManager.completeDownload(uri, file.getName(), totalBytes);
+                                } else {
+                                    intent.putExtra("action", "update");
+                                    intent.putExtra("progress", (writtenBytes / totalBytes) * 100);
+                                    downloadManager.updateDownload(uri, file.getName(), writtenBytes, totalBytes);
+                                }
+
                                 if (context != null) {
                                     context.sendBroadcast(intent);
                                 }
+                            } else {
+                                if (writtenBytes == -1 || writtenBytes >= totalBytes) {
+                                    // do not start a download that is considered completed
+                                    continue;
+                                }
+                                if (!completed && downloadPath != null) {
+                                    intent.putExtra("action", "start");
+                                    downloadManager.startDownload(uri, file.getName());
+                                    if (context != null) {
+                                        context.sendBroadcast(intent);
+                                    }
+                                }
                             }
                         }
-                    }
 
-                    // check download manager uris and clear downloads that may have been cancelled / deleted
-                    /*List<String> activeUris = downloadManager.getActiveDownloads();
-                    for (int i = 0; i < activeUris.size(); i++) {
-                        String activeUri = activeUris.get(i);
-                        if (!itemUris.contains(activeUri)) {
-                            downloadManager.abortDownload(activeUri);
-                            fileListUris.remove(activeUri); // remove URIs from the session that may have been deleted
-                        }
-                    }*/
-                } catch (JSONException ex) {
-                    // pass
-                    Log.e(TAG, ex.getMessage(), ex);
+                        // check download manager uris and clear downloads that may have been cancelled / deleted
+                        /*List<String> activeUris = downloadManager.getActiveDownloads();
+                        for (int i = 0; i < activeUris.size(); i++) {
+                            String activeUri = activeUris.get(i);
+                            if (!itemUris.contains(activeUri)) {
+                                downloadManager.abortDownload(activeUri);
+                                fileListUris.remove(activeUri); // remove URIs from the session that may have been deleted
+                            }
+                        }*/
+                    } catch (JSONException ex) {
+                        // pass
+                        Log.e(TAG, ex.getMessage(), ex);
+                    }
                 }
             }
         }
