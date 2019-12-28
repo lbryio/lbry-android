@@ -10,9 +10,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -66,7 +66,7 @@ public class BackgroundMediaModule extends ReactContextBaseJavaModule {
                .setGroup(LbrynetService.GROUP_SERVICE)
                .setOngoing(!paused)
                .setSmallIcon(paused ? android.R.drawable.ic_media_pause : android.R.drawable.ic_media_play)
-               .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+               .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                          .setShowActionsInCompactView(0))
                .addAction(paused ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause,
                           paused ? "Play" : "Pause",
