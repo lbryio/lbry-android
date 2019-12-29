@@ -23,6 +23,7 @@ import android.provider.Settings;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
@@ -74,7 +75,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.reactnative.camera.RNCameraPackage;
 
-public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity {
+public class MainActivity extends FragmentActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity {
 
     private static Activity currentActivity = null;
 
