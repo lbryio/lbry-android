@@ -34,7 +34,7 @@ allprojects {
 apply plugin: 'com.android.application'
 
 project.ext.react = [
-    enableHermes: true,
+    enableHermes: false,
     entryFile: "index.js"
 ]
 
