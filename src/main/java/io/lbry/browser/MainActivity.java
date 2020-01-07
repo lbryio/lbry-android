@@ -49,6 +49,7 @@ import com.facebook.react.ReactRootView;
 import com.facebook.soloader.SoLoader;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.rnfs.RNFSPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -162,6 +163,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
                 .addPackage(new MainReactPackage())
                 .addPackage(new AsyncStoragePackage())
                 .addPackage(new FastImageViewPackage())
+                .addPackage(new RNCWebViewPackage())
                 .addPackage(new ReactVideoPackage())
                 .addPackage(new ReanimatedPackage())
                 .addPackage(new RNCameraPackage())

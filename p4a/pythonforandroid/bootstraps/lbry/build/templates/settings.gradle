@@ -17,5 +17,7 @@ include ':react-native-snackbar'
 project(':react-native-snackbar').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-snackbar/android')
 include ':react-native-video'
 project(':react-native-video').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-video/android-exoplayer')
+include ':react-native-webview'
+project(':react-native-webview').projectDir = new File(rootProject.projectDir, './react/node_modules/react-native-webview/android')
 include ':rn-fetch-blob'
 project(':rn-fetch-blob').projectDir = new File(rootProject.projectDir, './react/node_modules/rn-fetch-blob/android')
