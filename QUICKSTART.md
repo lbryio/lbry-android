@@ -8,7 +8,7 @@ If you would like to contribute to the Android app, but find the build documenta
 * A computer running [Ubuntu 18.04](https://ubuntu.com/download/desktop)
 * Internet access to download modules and packages.
 * At least 15GB of free disk space.
-* Alternatively, Docker. You can skip steps 1 through 5 if you make use of the `lbry/android-base` Docker base image. Scroll down to [Fast Track](#Fast-Track) at the bottom of the page if you would prefer to use Docker.
+* Alternatively, Docker. You can skip steps 1 through 5 if you make use of the `lbry/android-base` Docker base image. Scroll down to [Fast Track](#fast-track) at the bottom of the page if you would prefer to use Docker.
 
 ### Step 1 of 10
 Install all the apt packages required by running the following commands. You can copy-paste this directly to your terminal.
@@ -103,7 +103,7 @@ If you made it this far, you're finally ready to build the package! You just hav
 buildozer android debug
 ```
 
-### Fast Track {#Fast-Track}
+### Fast Track
 Install Docker and start a container using the `lbry/android-base` image, which is about 1.72GB in size. Run the following commands for Ubuntu and then follow steps 6 through 10 in the container's bash prompt.
 ```
 sudo apt-get install docker-ce
