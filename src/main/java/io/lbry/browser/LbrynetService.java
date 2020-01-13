@@ -257,6 +257,7 @@ public class LbrynetService extends PythonService {
                                     String uri = String.format("lbry://%s#%s", claimName, claimId);
 
                                     if (!downloadManager.isDownloadActive(uri) && !downloadManager.isDownloadCompleted(uri)) {
+                                        downloadManager.clearWrittenBytesForDownload(uri);
                                         File file = new File(downloadPath);
                                         Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
                                         intent.putExtra("action", "start");
@@ -320,18 +321,29 @@ public class LbrynetService extends PythonService {
 
                             File file = new File(downloadPath);
                             Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
+                            boolean shouldSendBroadcast = true;
                             if (downloadManager.isDownloadActive(uri)) {
                                 if (writtenBytes >= totalBytes || completed) {
                                     // completed download
+                                    downloadManager.clearWrittenBytesForDownload(uri);
                                     intent.putExtra("action", "complete");
                                     downloadManager.completeDownload(uri, file.getName(), totalBytes);
                                 } else {
-                                    intent.putExtra("action", "update");
-                                    intent.putExtra("progress", (writtenBytes / totalBytes) * 100);
-                                    downloadManager.updateDownload(uri, file.getName(), writtenBytes, totalBytes);
+                                    double prevWrittenBytes = downloadManager.getWrittenBytesForDownload(uri);
+                                    if (prevWrittenBytes == writtenBytes) {
+                                        // no change, don't send an update event
+                                        shouldSendBroadcast = false;
+                                    }
+                                    downloadManager.updateWrittenBytesForDownload(uri, writtenBytes);
+
+                                    if (shouldSendBroadcast) {
+                                        intent.putExtra("action", "update");
+                                        intent.putExtra("progress", (writtenBytes / totalBytes) * 100);
+                                        downloadManager.updateDownload(uri, file.getName(), writtenBytes, totalBytes);
+                                    }
                                 }
 
-                                if (context != null) {
+                                if (context != null && shouldSendBroadcast) {
                                     context.sendBroadcast(intent);
                                 }
                             } else {
@@ -340,6 +352,7 @@ public class LbrynetService extends PythonService {
                                     continue;
                                 }
                                 if (!completed && downloadPath != null) {
+                                    downloadManager.clearWrittenBytesForDownload(uri);
                                     intent.putExtra("action", "start");
                                     downloadManager.startDownload(uri, file.getName());
                                     if (context != null) {

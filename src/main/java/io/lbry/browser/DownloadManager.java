@@ -18,10 +18,11 @@ import com.facebook.react.bridge.ReactMethod;
 import io.lbry.browser.receivers.NotificationDeletedReceiver;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.Random;
 
 public class DownloadManager {
     private Context context;
@@ -29,6 +30,9 @@ public class DownloadManager {
     private List<String> activeDownloads = new ArrayList<String>();
 
     private List<String> completedDownloads = new ArrayList<String>();
+
+    // maintain a map of uris to writtenBytes, so that we check if it's changed and don't flood RN with update events every 500ms
+    private Map<String, Double> writtenDownloadBytes = new HashMap<String, Double>();
 
     private HashMap<Integer, NotificationCompat.Builder> builders = new HashMap<Integer, NotificationCompat.Builder>();
 
@@ -118,6 +122,26 @@ public class DownloadManager {
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent intent = PendingIntent.getActivity(context, 0, launchIntent, 0);
         return intent;
+    }
+
+    public void updateWrittenBytesForDownload(String id, double writtenBytes) {
+        if (!writtenDownloadBytes.containsKey(id)) {
+            writtenDownloadBytes.put(id, writtenBytes);
+        }
+    }
+
+    public double getWrittenBytesForDownload(String id) {
+        if (writtenDownloadBytes.containsKey(id)) {
+            return writtenDownloadBytes.get(id);
+        }
+
+        return -1;
+    }
+
+    public void clearWrittenBytesForDownload(String id) {
+        if (writtenDownloadBytes.containsKey(id)) {
+            writtenDownloadBytes.remove(id);
+        }
     }
 
     public void startDownload(String id, String filename) {
