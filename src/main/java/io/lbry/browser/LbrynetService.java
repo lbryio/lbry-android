@@ -244,7 +244,7 @@ public class LbrynetService extends PythonService {
                         if (!response.has("error")) {
                             JSONObject result = response.getJSONObject("result");
                             if (result != null) {
-                                JSONArray fileItems = response.optJSONArray("items");
+                                JSONArray fileItems = result.optJSONArray("items");
                                 if (fileItems != null && fileItems.length() > 0) {
                                     // TODO: Create Java FileItem class
                                     JSONObject item = fileItems.getJSONObject(0);
@@ -296,7 +296,6 @@ public class LbrynetService extends PythonService {
                 JSONArray fileItems = result.optJSONArray("items");
                 if (fileItems != null) {
                     try {
-                        //List<String> itemUris = new ArrayList<String>();
                         for (int i = 0; i < fileItems.length(); i++) {
                             JSONObject item = fileItems.getJSONObject(i);
                             String downloadPath = item.isNull("download_path") ? null : item.getString("download_path");
