@@ -346,13 +346,13 @@ public final class Utils {
         return sdkCall(method, null);
     }
 
-    public static String sdkCall(String method, Map<String, String> params) throws ConnectException {
+    public static String sdkCall(String method, Map<String, Object> params) throws ConnectException {
         try {
             JSONObject request = new JSONObject();
             request.put("method", method);
             if (params != null) {
                 JSONObject requestParams = new JSONObject();
-                for (Map.Entry<String, String> entry : params.entrySet()) {
+                for (Map.Entry<String, Object> entry : params.entrySet()) {
                     requestParams.put(entry.getKey(), entry.getValue());
                 }
                 request.put("params", requestParams);

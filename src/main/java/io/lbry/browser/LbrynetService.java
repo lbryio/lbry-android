@@ -74,7 +74,7 @@ public class LbrynetService extends PythonService {
 
     public static LbrynetService serviceInstance;
 
-    private static final int SDK_POLL_INTERVAL = 500; // 500 milliseconds
+    private static final int SDK_POLL_INTERVAL = 1000; // 1 second
 
     private BroadcastReceiver stopServiceReceiver;
 
@@ -210,7 +210,12 @@ public class LbrynetService extends PythonService {
             }
 
             if (streamManagerReady) {
-                String fileList = Utils.sdkCall("file_list");
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("page_size", 100);
+                params.put("reverse", true);
+                params.put("sort", "added_on");
+
+                String fileList = Utils.sdkCall("file_list", params);
                 if (fileList != null) {
                     JSONObject response = new JSONObject(fileList);
                     if (!response.has("error")) {
@@ -229,7 +234,7 @@ public class LbrynetService extends PythonService {
         (new AsyncTask<Void, Void, String>() {
             protected String doInBackground(Void... param) {
                 try {
-                    Map<String, String> params = new HashMap<String, String>();
+                    Map<String, Object> params = new HashMap<String, Object>();
                     params.put("outpoint", outpoint);
                     return Utils.sdkCall("file_list", params);
                 } catch (ConnectException ex) {
@@ -350,6 +355,7 @@ public class LbrynetService extends PythonService {
                                     // do not start a download that is considered completed
                                     continue;
                                 }
+
                                 if (!completed && downloadPath != null) {
                                     downloadManager.clearWrittenBytesForDownload(uri);
                                     intent.putExtra("action", "start");
