@@ -212,8 +212,8 @@ public class LbrynetService extends PythonService {
             if (streamManagerReady) {
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("page_size", 100);
-                params.put("reverse", true);
-                params.put("sort", "added_on");
+                params.put("status", "stopped");
+                params.put("comparison", "ne");
 
                 String fileList = Utils.sdkCall("file_list", params);
                 if (fileList != null) {
