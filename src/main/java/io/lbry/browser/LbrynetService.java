@@ -316,6 +316,7 @@ public class LbrynetService extends PythonService {
                     if (context != null) {
                         context.sendBroadcast(intent);
                     }
+                    removeDownloadFromManager(uri);
                 }
             }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
