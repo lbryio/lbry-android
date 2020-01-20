@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -30,6 +31,8 @@ public class DownloadManager {
     private List<String> activeDownloads = new ArrayList<String>();
 
     private List<String> completedDownloads = new ArrayList<String>();
+
+    private Map<String, String> downloadIdOutpointsMap = new HashMap<String, String>();
 
     // maintain a map of uris to writtenBytes, so that we check if it's changed and don't flood RN with update events every 500ms
     private Map<String, Double> writtenDownloadBytes = new HashMap<String, Double>();
@@ -144,7 +147,15 @@ public class DownloadManager {
         }
     }
 
-    public void startDownload(String id, String filename) {
+    private Intent getDeleteDownloadIntent(String uri) {
+        Intent intent = new Intent();
+        intent.setAction(LbrynetService.ACTION_DELETE_DOWNLOAD);
+        intent.putExtra("uri", uri);
+        intent.putExtra("nativeDelete", true);
+        return intent;
+    }
+
+    public void startDownload(String id, String filename, String outpoint) {
         if (filename == null || filename.trim().length() == 0) {
             return;
         }
@@ -152,20 +163,26 @@ public class DownloadManager {
         synchronized (this) {
             if (!isDownloadActive(id)) {
                 activeDownloads.add(id);
+                downloadIdOutpointsMap.put(id, outpoint);
             }
 
             createNotificationChannel();
             createNotificationGroup();
 
+            PendingIntent stopDownloadIntent = PendingIntent.getBroadcast(context, 0, getDeleteDownloadIntent(id), PendingIntent.FLAG_CANCEL_CURRENT);
+
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
             // The file URI is used as the unique ID
-            builder.setContentIntent(getLaunchPendingIntent(id, context))
+            builder.setColor(ContextCompat.getColor(context, R.color.lbryGreen))
+                   .setContentIntent(getLaunchPendingIntent(id, context))
                    .setContentTitle(String.format("Downloading %s", truncateFilename(filename)))
                    .setGroup(GROUP_DOWNLOADS)
                    .setPriority(NotificationCompat.PRIORITY_LOW)
                    .setProgress(MAX_PROGRESS, 0, false)
-                   .setSmallIcon(android.R.drawable.stat_sys_download);
+                   .setSmallIcon(android.R.drawable.stat_sys_download)
+                   .setOngoing(true)
+                   .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Stop", stopDownloadIntent);
 
             int notificationId = getNotificationId(id);
             downloadIdNotificationIdMap.put(id, notificationId);
@@ -194,9 +211,13 @@ public class DownloadManager {
             if (builders.containsKey(notificationId)) {
                 builder = builders.get(notificationId);
             } else {
+                PendingIntent stopDownloadIntent = PendingIntent.getBroadcast(context, 0, getDeleteDownloadIntent(id), PendingIntent.FLAG_CANCEL_CURRENT);
                 builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-                builder.setContentTitle(String.format("Downloading %s", truncateFilename(filename)))
-                       .setPriority(NotificationCompat.PRIORITY_LOW);
+                builder.setColor(ContextCompat.getColor(context, R.color.lbryGreen))
+                       .setContentTitle(String.format("Downloading %s", truncateFilename(filename)))
+                       .setPriority(NotificationCompat.PRIORITY_LOW)
+                       .setOngoing(true)
+                       .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Stop", stopDownloadIntent);
                 builders.put(notificationId, builder);
             }
 
@@ -213,7 +234,9 @@ public class DownloadManager {
                        .setContentText(String.format("%s", formatBytes(totalBytes)))
                        .setGroup(GROUP_DOWNLOADS)
                        .setProgress(0, 0, false)
-                       .setSmallIcon(android.R.drawable.stat_sys_download_done);
+                       .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                       .setOngoing(false);
+                builder.mActions.clear();
                 notificationManager.notify(notificationId, builder.build());
 
                 if (downloadIdNotificationIdMap.containsKey(id)) {
@@ -258,11 +281,13 @@ public class DownloadManager {
                    .setContentText(String.format("%s", formatBytes(totalBytes)))
                    .setGroup(GROUP_DOWNLOADS)
                    .setProgress(0, 0, false)
-                   .setSmallIcon(android.R.drawable.stat_sys_download_done);
-             notificationManager.notify(notificationId, builder.build());
+                   .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                   .setOngoing(false);
+            builder.mActions.clear();
+            notificationManager.notify(notificationId, builder.build());
 
-             // If there are no more downloads and the group exists, set the icon to stop animating
-             checkGroupDownloadIcon(notificationManager);
+            // If there are no more downloads and the group exists, set the icon to stop animating
+            checkGroupDownloadIcon(notificationManager);
         }
     }
 
@@ -295,11 +320,22 @@ public class DownloadManager {
         return completedDownloads;
     }
 
+    public String getOutpointForDownload(String uri) {
+        if (downloadIdOutpointsMap.containsKey(uri)) {
+            return downloadIdOutpointsMap.get(uri);
+        }
+
+        return null;
+    }
+
     public void deleteDownloadUri(String uri) {
         synchronized (this) {
             activeDownloads.remove(uri);
             completedDownloads.remove(uri);
 
+            if (downloadIdOutpointsMap.containsKey(uri)) {
+                downloadIdOutpointsMap.remove(uri);
+            }
             if (downloadIdNotificationIdMap.containsKey(uri)) {
                 removeDownloadNotification(uri);
             }

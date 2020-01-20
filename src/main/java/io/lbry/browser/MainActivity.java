@@ -212,17 +212,28 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
                 String outpoint = intent.getStringExtra("outpoint");
                 String fileInfoJson = intent.getStringExtra("file_info");
 
-                if (uri == null || outpoint == null || fileInfoJson == null) {
+
+                if (uri == null || outpoint == null || (fileInfoJson == null && !"abort".equals(downloadAction))) {
+                    return;
+                }
+
+                String eventName = null;
+                WritableMap params = Arguments.createMap();
+                params.putString("uri", uri);
+                params.putString("outpoint", outpoint);
+
+                ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+                if ("abort".equals(downloadAction)) {
+                    eventName = "onDownloadAborted";
+                    if (reactContext != null) {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
+                    }
                     return;
                 }
 
                 try {
-                    String eventName = null;
                     JSONObject json = new JSONObject(fileInfoJson);
                     WritableMap fileInfo = JSONObjectToMap(json);
-                    WritableMap params = Arguments.createMap();
-                    params.putString("uri", uri);
-                    params.putString("outpoint", outpoint);
                     params.putMap("fileInfo", fileInfo);
 
                     if (DownloadManager.ACTION_UPDATE.equals(downloadAction)) {
@@ -233,7 +244,6 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
                         eventName = (DownloadManager.ACTION_START.equals(downloadAction)) ? "onDownloadStarted" : "onDownloadCompleted";
                     }
 
-                    ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
                     if (reactContext != null) {
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
                     }

@@ -123,7 +123,8 @@ public class LbrynetService extends PythonService {
                     }
                 } else if (ACTION_DELETE_DOWNLOAD.equals(action)) {
                     String uri = intent.getStringExtra("uri");
-                    LbrynetService.this.deleteDownload(uri);
+                    boolean nativeDelete = intent.getBooleanExtra("nativeDelete", false);
+                    LbrynetService.this.deleteDownload(uri, nativeDelete);
                 } else if (ACTION_CHECK_DOWNLOADS.equals(action)) {
                     LbrynetService.this.checkDownloads();
                 }
@@ -212,8 +213,10 @@ public class LbrynetService extends PythonService {
             if (streamManagerReady) {
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("page_size", 100);
-                params.put("status", "stopped");
-                params.put("comparison", "ne");
+                params.put("reverse", true);
+                params.put("sort", "added_on");
+                /*params.put("status", "stopped");
+                params.put("comparison", "ne");*/
 
                 String fileList = Utils.sdkCall("file_list", params);
                 if (fileList != null) {
@@ -266,7 +269,7 @@ public class LbrynetService extends PythonService {
                                         File file = new File(downloadPath);
                                         Intent intent = createDownloadEventIntent(uri, outpoint, item.toString());
                                         intent.putExtra("action", "start");
-                                        downloadManager.startDownload(uri, file.getName());
+                                        downloadManager.startDownload(uri, file.getName(), outpoint);
 
                                         Context context = getApplicationContext();
                                         if (context != null) {
@@ -286,10 +289,45 @@ public class LbrynetService extends PythonService {
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void deleteDownload(String uri) {
+    private void deleteDownload(String uri, boolean nativeDelete) {
+        final String outpoint = downloadManager.getOutpointForDownload(uri);
+        if (nativeDelete && outpoint != null) {
+            // send call sdk to delete the file on the corresponding outpoint
+            removeDownloadFromManager(uri);
+
+            (new AsyncTask<Void, Void, String>() {
+                protected String doInBackground(Void... param) {
+                    try {
+                        Map<String, Object> params = new HashMap<String, Object>();
+                        params.put("outpoint", outpoint);
+                        params.put("delete_from_download_dir", true);
+                        return Utils.sdkCall("file_delete", params);
+                    } catch (ConnectException ex) {
+                        return null;
+                    }
+                }
+
+                protected void onPostExecute(String response) {
+                    // after deletion, remove the download from the download manager
+                    Intent intent = createDownloadEventIntent(uri, outpoint, null);
+                    intent.putExtra("action", "abort");
+
+                    Context context = getApplicationContext();
+                    if (context != null) {
+                        context.sendBroadcast(intent);
+                    }
+                }
+            }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            removeDownloadFromManager(uri);
+        }
+    }
+
+    private void removeDownloadFromManager(String uri) {
         if (downloadManager.isDownloadActive(uri)) {
             downloadManager.abortDownload(uri);
         }
+
         downloadManager.deleteDownloadUri(uri);
     }
 
@@ -359,23 +397,13 @@ public class LbrynetService extends PythonService {
                                 if (!completed && downloadPath != null) {
                                     downloadManager.clearWrittenBytesForDownload(uri);
                                     intent.putExtra("action", "start");
-                                    downloadManager.startDownload(uri, file.getName());
+                                    downloadManager.startDownload(uri, file.getName(), outpoint);
                                     if (context != null) {
                                         context.sendBroadcast(intent);
                                     }
                                 }
                             }
                         }
-
-                        // check download manager uris and clear downloads that may have been cancelled / deleted
-                        /*List<String> activeUris = downloadManager.getActiveDownloads();
-                        for (int i = 0; i < activeUris.size(); i++) {
-                            String activeUri = activeUris.get(i);
-                            if (!itemUris.contains(activeUri)) {
-                                downloadManager.abortDownload(activeUri);
-                                fileListUris.remove(activeUri); // remove URIs from the session that may have been deleted
-                            }
-                        }*/
                     } catch (JSONException ex) {
                         // pass
                         Log.e(TAG, ex.getMessage(), ex);
