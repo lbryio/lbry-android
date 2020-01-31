@@ -8,7 +8,7 @@ import lbry.wallet
 
 from jnius import autoclass
 from keyring.backend import KeyringBackend
-from lbry import __version__ as lbrynet_version, build_type
+from lbry import __version__ as lbrynet_version, build_info
 from lbry.conf import Config
 from lbry.extras.daemon.loggly_handler import get_loggly_handler
 from lbry.extras.daemon.components import DHT_COMPONENT, HASH_ANNOUNCER_COMPONENT, PEER_PROTOCOL_SERVER_COMPONENT
@@ -21,7 +21,7 @@ log.setLevel(logging.DEBUG)
 lbrynet_android_utils = autoclass('io.lbry.browser.Utils')
 service = autoclass('io.lbry.browser.LbrynetService').serviceInstance
 platform.platform = lambda: 'Android %s (API %s)' % (lbrynet_android_utils.getAndroidRelease(), lbrynet_android_utils.getAndroidSdk())
-build_type.BUILD = 'dev' if lbrynet_android_utils.isDebug() else 'release'
+build_info.BUILD = 'dev' if lbrynet_android_utils.isDebug() else 'release'
 
 # Keyring backend
 class LbryAndroidKeyring(KeyringBackend):
