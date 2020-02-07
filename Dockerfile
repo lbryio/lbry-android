@@ -10,8 +10,9 @@ RUN dpkg --add-architecture i386 && \
       python-pip zlib1g-dev m4 zlib1g:i386 libc6-dev-i386 gawk nodejs npm unzip openjdk-8-jdk \
       autoconf autogen automake libtool libffi-dev build-essential \
       ccache git libncurses5:i386 libstdc++6:i386 \
-      libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 && \
-    npm install -g yarn react-native-cli && \
+      libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386
+RUN npm install -g npm@latest
+RUN npm install -g yarn react-native-cli && \
     pip2 install --upgrade cython setuptools && \
     pip2 install git+https://github.com/lbryio/buildozer.git@master && \
     ln -s /src/scripts/build-docker.sh /usr/local/bin/build && \
