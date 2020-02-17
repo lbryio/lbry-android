@@ -20,6 +20,7 @@ import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.Utils;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONObject;
@@ -107,5 +108,24 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
                     promise.resolve(token);
                 }
             });
+    }
+    
+    @ReactMethod
+    public void logLaunchTiming() {
+        Date end = new Date();
+        MainActivity.LaunchTiming currentTiming = MainActivity.CurrentLaunchTiming;
+        if (currentTiming == null) {
+            // no start timing data, so skip this
+            return;
+        }
+        
+        long totalTimeMs = end.getTime() - currentTiming.getStart().getTime();
+        String eventName = currentTiming.isColdStart() ? "app_cold_start" : "app_warm_start";
+        Bundle bundle = new Bundle();
+        bundle.putLong("total_ms", totalTimeMs);
+        bundle.putLong("total_seconds", new Double(Math.ceil(totalTimeMs / 1000.0)).longValue());
+        if (firebaseAnalytics != null) {
+            firebaseAnalytics.logEvent(eventName, bundle);
+        }
     }
 }

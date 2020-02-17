@@ -66,6 +66,7 @@ import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -129,9 +130,12 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
     protected String getMainComponentName() {
         return "LBRYApp";
     }
-
+    
+    public static LaunchTiming CurrentLaunchTiming;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        CurrentLaunchTiming = new LaunchTiming(new Date());
         super.onCreate(savedInstanceState);
         currentActivity = this;
 
@@ -149,6 +153,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         // Start the daemon service if it is not started
         serviceRunning = isServiceRunning(LbrynetService.class);
         if (!serviceRunning) {
+            CurrentLaunchTiming.setColdStart(true);
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
 
@@ -844,5 +849,27 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
      */
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+    
+    public static class LaunchTiming {
+        private Date start;
+        private boolean coldStart;
+        
+        public LaunchTiming(Date start) {
+            this.start = start;
+        }
+        
+        public Date getStart() {
+            return start;
+        }
+        public void setStart(Date start) {
+            this.start = start;
+        }
+        public boolean isColdStart() {
+            return coldStart;
+        }
+        public void setColdStart(boolean coldStart) {
+            this.coldStart = coldStart;
+        }
     }
 }
