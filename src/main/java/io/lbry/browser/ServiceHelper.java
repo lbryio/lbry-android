@@ -13,6 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ServiceHelper {
+    
+    public static final String SHARED_PREFERENCES_NAME = "LBRY";
 
     private static final String TAG = "io.lbry.browser.ServiceHelper";
 
@@ -34,7 +36,7 @@ public class ServiceHelper {
 
     public static void start(final Context ctx, String pythonServiceArgument, Class serviceClass, String pythonName) {
         // always check initial headers status before starting the service
-        final SharedPreferences sp = ctx.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        final SharedPreferences sp = ctx.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         boolean initHeaders = sp.getBoolean(HEADERS_ASSET_KEY, false);
         if (initHeaders) {
             // initial headers asset copy already done. simply start the service

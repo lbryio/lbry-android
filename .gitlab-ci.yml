@@ -6,7 +6,7 @@ stages:
 
 build arm64 apk:
   stage: build
-  image: lbry/android-base:latest
+  image: lbry/android-base:platform-28
   before_script:
     - export BUILD_VERSION=$(cat $CI_PROJECT_DIR/src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
     - git submodule sync --recursive
@@ -37,7 +37,7 @@ build arm64 apk:
 
 build arm apk:
   stage: build2
-  image: lbry/android-base:latest
+  image: lbry/android-base:platform-28
   before_script:
     - export BUILD_VERSION=$(cat $CI_PROJECT_DIR/src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
     - git submodule sync --recursive
