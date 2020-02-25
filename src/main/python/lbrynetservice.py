@@ -68,7 +68,7 @@ def configure_logging(conf):
     logging.getLogger('lbry').setLevel(logging.DEBUG if lbrynet_android_utils.isDebug() else logging.INFO)
     logging.getLogger('torba').setLevel(logging.INFO)
 
-    loggly_handler = get_loggly_handler()
+    loggly_handler = get_loggly_handler(conf)
     loggly_handler.setLevel(logging.ERROR)
     logging.getLogger('lbry').addHandler(loggly_handler)
 
