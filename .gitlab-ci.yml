@@ -7,7 +7,7 @@ build apk:
   stage: build
   image: ubuntu:18.04
   before_script:
-    - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent nodejs npm openjdk-8-jdk software-properties-common wget zipalign
+    - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign
     - chmod u+x $CI_PROJECT_DIR/gradlew
     - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)
   artifacts:
@@ -18,13 +18,14 @@ build apk:
   script:
     - export PATH=/usr/bin:$PATH
     - echo "$PGP_PRIVATE_KEY" | gpg --batch --import
-    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && \
+      curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
       echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
       echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | tee -a /etc/apt/sources.list && \
       wget -O - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | apt-key add -
-    - apt-get -y update && apt-get -y install yarn git-secret
+    - apt-get -y update && apt-get -y install nodejs yarn git-secret
     - git secret reveal
-    - npm install -g react-native-cli@2.0.1
+    - npm install -g react-native-cli
     - git clone https://github.com/lbryio/lbry-react-native
     - cd lbry-react-native
     - yarn
