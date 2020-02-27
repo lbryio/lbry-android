@@ -8,6 +8,7 @@ build apk:
   image: ubuntu:18.04
   before_script:
     - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk nodejs npm software-properties-common wget zipalign
+    - chmod u+x $CI_PROJECT_DIR/gradlew
     - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)
   artifacts:
     paths:
@@ -30,6 +31,7 @@ build apk:
     - rm -rf android # temporary, should be a submodule init?
     - ln -s $CI_PROJECT_DIR android # create symbolic link
     - cd android
+    - chmod u+x ./release.sh
     - ./release.sh
     
 deploy build.lbry.io:
