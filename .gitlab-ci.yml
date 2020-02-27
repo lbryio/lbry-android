@@ -7,7 +7,7 @@ build apk:
   stage: build
   image: ubuntu:18.04
   before_script:
-    - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign
+    - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common tar wget zipalign
     - chmod u+x $CI_PROJECT_DIR/gradlew
     - wget https://nodejs.org/dist/latest-v10.x/node-v10.19.0-linux-x64.tar.gz && \
       tar xf node-v10.19.0-linux-x64.tar.gz -C /opt && \
