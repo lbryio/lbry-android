@@ -64,4 +64,4 @@ app/google-services.json
 .vagrant
 *.hprof
 app/build
-app/bin
+bin
