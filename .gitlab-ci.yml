@@ -7,7 +7,7 @@ build apk:
   stage: build
   image: ubuntu:18.04
   before_script:
-    - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk nodejs npm software-properties-common wget zipalign
+    - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign
     - chmod u+x $CI_PROJECT_DIR/gradlew
     - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)
   artifacts:
@@ -24,6 +24,7 @@ build apk:
       wget -O - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | apt-key add -
     - apt-get -y update && apt-get -y install yarn git-secret
     - git secret reveal
+    - npm install -g npm@latest
     - npm install -g react-native-cli
     - git clone https://github.com/lbryio/lbry-react-native
     - cd lbry-react-native
