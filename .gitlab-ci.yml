@@ -24,8 +24,7 @@ build apk:
       wget -O - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | apt-key add -
     - apt-get -y update && apt-get -y install yarn git-secret
     - git secret reveal
-    - npm install -g npm@latest
-    - npm install -g react-native-cli
+    - npm install -g react-native-cli@2.0.1
     - git clone https://github.com/lbryio/lbry-react-native
     - cd lbry-react-native
     - yarn
