@@ -46,7 +46,7 @@ build apk:
     - cp bin/browser-$BUILD_VERSION-release__arm64.apk /dev/null
     
 deploy build.lbry.io:
-  image: python:buster
+  image: python:stretch
   stage: deploy
   dependencies:
     - build apk
@@ -64,7 +64,7 @@ deploy build.lbry.io:
     - aws s3 cp bin/$BUILD_APK_FILENAME__64 s3://build.lbry.io/android/push.apk
 
 release apk:
-  image: python:buster
+  image: python:stretch
   stage: release
   only:
     - tags
