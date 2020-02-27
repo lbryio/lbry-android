@@ -1,16 +1,33 @@
 #!/bin/bash
-cd app
-react-native bundle --platform android --dev false --entry-file src/index.js --bundle-output ../src/main/assets/index.android.bundle --assets-dest ../src/main/res/
-cd ..
-cp src/main/assets/index.android.bundle /dev/null
-version=$(cat src/main/python/main.py | grep --color=never -oP '([0-9]+\.?)+')
-buildozer android release <<< y
+./gradlew assembleRelease --console=plain
+version=$(./gradlew -q printVersionName --console=plain | tail -1)
+mkdir -p bin/
+rm -f bin/*
+cp app/build/outputs/apk/__32bit/release/app-__32bit-release.apk bin/browser-$version-release-unsigned__arm.apk
+cp app/build/outputs/apk/__64bit/release/app-__64bit-release.apk bin/browser-$version-release-unsigned__arm64.apk
+
+# sign 32-bit
+echo "Signing 32-bit APK..."
 jarsigner -verbose -sigalg SHA1withRSA \
     -digestalg SHA1 \
     -keystore lbry-android.keystore \
     -storepass $KEYSTORE_PASSWORD \
-    bin/browser-$version-release-unsigned.apk lbry-android > /dev/null \
-    && mv bin/browser-$version-release-unsigned.apk bin/browser-$version-release-signed.apk
-~/.buildozer/android/platform/android-sdk-23/build-tools/28.0.3/zipalign -v 4 \
-    bin/browser-$version-release-signed.apk bin/browser-$version-release.apk > /dev/null \
-    && rm bin/browser-$version-release-signed.apk
+    bin/browser-$version-release-unsigned__arm.apk lbry-android > /dev/null \
+    && mv bin/browser-$version-release-unsigned__arm.apk bin/browser-$version-release-signed__arm.apk
+zipalign -v 4 \
+    bin/browser-$version-release-signed__arm.apk bin/browser-$version-release__arm.apk > /dev/null \
+    && rm bin/browser-$version-release-signed__arm.apk
+echo "32-bit APK successfully built."
+
+# sign 64-bit
+echo "Signing 64-bit APK..."
+jarsigner -verbose -sigalg SHA1withRSA \
+    -digestalg SHA1 \
+    -keystore lbry-android.keystore \
+    -storepass $KEYSTORE_PASSWORD \
+    bin/browser-$version-release-unsigned__arm64.apk lbry-android > /dev/null \
+    && mv bin/browser-$version-release-unsigned__arm64.apk bin/browser-$version-release-signed__arm64.apk
+zipalign -v 4 \
+    bin/browser-$version-release-signed__arm64.apk bin/browser-$version-release__arm64.apk > /dev/null \
+    && rm bin/browser-$version-release-signed__arm64.apk
+echo "64-bit APK successfully built."

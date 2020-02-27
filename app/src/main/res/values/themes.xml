@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LbryAppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/lbryGreen</item>
+        <item name="colorControlActivated">@color/nextLbryGreen</item>
+        <item name="android:spinnerItemStyle">@style/LbrySpinnerItem</item>
+        <item name="android:spinnerDropDownItemStyle">@style/LbrySpinnerDropDownItem</item>
+    </style>
+
+    <style name="LbrySpinnerItem" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:fontFamily">Inter-Regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="LbrySpinnerDropDownItem" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:fontFamily">Inter-Regular</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>
