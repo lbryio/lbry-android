@@ -27,7 +27,7 @@ build apk:
       echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
       echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | tee -a /etc/apt/sources.list && \
       wget -O - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | apt-key add -
-    - apt-get -y update && apt-get -y install nodejs npm yarn git-secret
+    - apt-get -y update && apt-get -y install yarn git-secret
     - git secret reveal
     - npm install -g react-native-cli
     - git clone https://github.com/lbryio/lbry-react-native
