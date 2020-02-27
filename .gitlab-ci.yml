@@ -40,7 +40,7 @@ build apk:
     - cd android
     - chmod u+x ./release.sh
     - ./release.sh
-    - cp bin/*.apk $CI_PROJECT_DIR/bin/
+    - mkdir -p $CI_PROJECT_DIR/bin/ && cp bin/*.apk $CI_PROJECT_DIR/bin/
     - cp $CI_PROJECT_DIR/bin/browser-$BUILD_VERSION-release__arm.apk /dev/null
     - cp $CI_PROJECT_DIR/bin/browser-$BUILD_VERSION-release__arm64.apk /dev/null
     
