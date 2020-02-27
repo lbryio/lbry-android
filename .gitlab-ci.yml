@@ -7,7 +7,7 @@ build apk:
   stage: build
   image: ubuntu:18.04
   before_script:
-    - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign
+    - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent nodejs npm openjdk-8-jdk software-properties-common wget zipalign
     - chmod u+x $CI_PROJECT_DIR/gradlew
     - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)
   artifacts:
