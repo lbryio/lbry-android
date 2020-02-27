@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LBRY</string>
+    <string name="default_notification_channel_id">io.lbry.browser.LBRY_ENGAGEMENT_CHANNEL</string>
+
+    <string name="running">Running</string>
+    <string name="service_status">Service Status</string>
+    <string name="stopped">Stopped</string>
+    <string name="start">START</string>
+    <string name="stop">STOP</string>
+
+    <string name="unit_tests">Unit tests</string>
+    <string name="run_tests">RUN</string>
+</resources>

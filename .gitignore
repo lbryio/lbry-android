@@ -65,4 +65,3 @@ app/google-services.json
 *.hprof
 app/build
 bin
-app/app/google-services.json
