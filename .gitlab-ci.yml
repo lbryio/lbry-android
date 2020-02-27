@@ -1,5 +1,5 @@
 stages:
-  - build apk
+  - build
   - deploy
   - release
 
