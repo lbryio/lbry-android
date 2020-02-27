@@ -31,14 +31,16 @@ build apk:
     - apt-get -y update && apt-get -y install yarn git-secret
     - git secret reveal
     - npm install -g react-native-cli
+    - cd ~/
     - git clone https://github.com/lbryio/lbry-react-native
     - cd lbry-react-native
     - yarn
     - rm -rf android # temporary, should be a submodule init?
-    - ln -s $CI_PROJECT_DIR android # create symbolic link
+    - cp -rf $CI_PROJECT_DIR/ android/
     - cd android
     - chmod u+x ./release.sh
     - ./release.sh
+    - cp android/bin/*.apk $CI_PROJECT_DIR/bin/
     - cp $CI_PROJECT_DIR/bin/browser-$BUILD_VERSION-release__arm.apk /dev/null
     - cp $CI_PROJECT_DIR/bin/browser-$BUILD_VERSION-release__arm64.apk /dev/null
     
