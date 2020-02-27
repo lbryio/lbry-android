@@ -8,8 +8,7 @@ build apk:
   image: lbry/android-base:platform-28
   before_script:
     - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign
-    - wget -q https://nodejs.org/dist/latest-v10.x/node-v10.19.0-linux-x64.tar.gz
-    - tar xf node-v10.19.0-linux-x64.tar.gz -C /opt
+    - wget -q https://nodejs.org/dist/latest-v10.x/node-v10.19.0-linux-x64.tar.gz && tar xf node-v10.19.0-linux-x64.tar.gz -C /opt
     - ln -fs /opt/node-v10.19.0-linux-x64/bin/node /usr/bin/node
     - ln -fs /opt/node-v10.19.0-linux-x64/bin/npm /usr/bin/npm
     - ln -fs /opt/node-v10.19.0-linux-x64/bin/npx /usr/bin/npx
