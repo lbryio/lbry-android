@@ -5,8 +5,14 @@ stages:
 
 build apk:
   stage: build
-  image: lbry/android-base:latest
+  image: lbry/android-base:platform-28
   before_script:
+    - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign
+    - wget -q https://nodejs.org/dist/latest-v10.x/node-v10.19.0-linux-x64.tar.gz
+    - tar xf node-v10.19.0-linux-x64.tar.gz -C /opt
+    - ln -s /opt/node-v10.19.0-linux-x64/bin/node /usr/bin/node
+    - ln -s /opt/node-v10.19.0-linux-x64/bin/npm /usr/bin/npm
+    - ln -s /opt/node-v10.19.0-linux-x64/bin/npx /usr/bin/npx
     - chmod u+x $CI_PROJECT_DIR/gradlew
     - export ANDROID_SDK_ROOT=~/.buildozer/android/platform/android-sdk-23
     - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)  
@@ -33,6 +39,8 @@ build apk:
     - cd android
     - chmod u+x ./release.sh
     - ./release.sh
+    - cp $CI_PROJECT_DIR/bin/browser-$BUILD_VERSION-release__arm.apk /dev/null
+    - cp $CI_PROJECT_DIR/bin/browser-$BUILD_VERSION-release__arm64.apk /dev/null
     
 deploy build.lbry.io:
   image: python:latest
