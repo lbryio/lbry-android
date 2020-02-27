@@ -50,6 +50,7 @@ deploy build.lbry.io:
   dependencies:
     - build apk
   before_script:
+    - chmod u+x $CI_PROJECT_DIR/gradlew
     - pip install awscli
     - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)
     - export BUILD_APK_FILENAME__32=browser-$BUILD_VERSION-release__arm.apk
@@ -67,6 +68,7 @@ release apk:
   dependencies:
     - build apk
   before_script:
+    - chmod u+x $CI_PROJECT_DIR/gradlew
     - pip install awscli githubrelease
     - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)
     - export BUILD_APK_FILENAME__32=browser-$BUILD_VERSION-release__arm.apk
