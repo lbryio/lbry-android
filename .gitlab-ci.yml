@@ -34,6 +34,7 @@ build apk:
     - cd ~/
     - git clone https://github.com/lbryio/lbry-react-native
     - cd lbry-react-native
+    - chmod u+x bundle-android.sh
     - yarn
     - rm -rf android # temporary, should be a submodule init?
     - cp -rf $CI_PROJECT_DIR/ android/
