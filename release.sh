@@ -3,8 +3,8 @@
 version=$(./gradlew -q printVersionName --console=plain | tail -1)
 mkdir -p bin/
 rm -f bin/*
-cp app/build/outputs/apk/__32bit/release/app-__32bit-release.apk bin/browser-$version-release-unsigned__arm.apk
-cp app/build/outputs/apk/__64bit/release/app-__64bit-release.apk bin/browser-$version-release-unsigned__arm64.apk
+cp app/build/outputs/apk/__32bit/release/app-__32bit-release-unsigned.apk bin/browser-$version-release-unsigned__arm.apk
+cp app/build/outputs/apk/__64bit/release/app-__64bit-release-unsigned.apk bin/browser-$version-release-unsigned__arm64.apk
 
 # sign 32-bit
 echo "Signing 32-bit APK..."
