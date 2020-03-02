@@ -60,6 +60,7 @@ buck-out/
 
 # Other Files
 app/google-services.json
+app/src/main/assets/index.android.bundle
 *.log
 .vagrant
 *.hprof
