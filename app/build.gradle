@@ -155,11 +155,13 @@ android {
     }
     productFlavors {
         __32bit {
+            versionCode android.defaultConfig.versionCode * 10 + 1
             ndk {
                 abiFilter "armeabi-v7a"
             }
         }
         __64bit {
+            versionCode android.defaultConfig.versionCode * 10 + 2
             ndk {
                 abiFilter "arm64-v8a"
             }
@@ -178,20 +180,6 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-        }
-    }
-    // applicationVariants are e.g. debug, release
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            // For each separate APK per architecture, set a unique version code as described here:
-            // https://developer.android.com/studio/build/configure-apk-splits.html
-            def versionCodes = ["armeabi-v7a": 1, "arm64-v8a": 2]
-            def abi = output.getFilter(OutputFile.ABI)
-            if (abi != null) {  // null for the universal-debug, universal-release variants
-                output.versionCodeOverride =
-                        defaultConfig.versionCode * 10 + versionCodes.get(abi)
-            }
-
         }
     }
 }
