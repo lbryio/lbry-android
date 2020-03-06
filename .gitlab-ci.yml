@@ -14,7 +14,7 @@ build apk:
     - ln -fs /opt/node-v10.19.0-linux-x64/bin/npx /usr/bin/npx
     - chmod u+x $CI_PROJECT_DIR/gradlew
     - export ANDROID_SDK_ROOT=~/.buildozer/android/platform/android-sdk-23
-    - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)  
+    - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)
   artifacts:
     paths:
       - bin/browser-*-release__arm.apk
@@ -31,7 +31,7 @@ build apk:
     - git secret reveal
     - npm install -g react-native-cli
     - cd ~/
-    - git clone https://github.com/lbryio/lbry-react-native
+    - git clone --single-branch --branch fast-lite-mode https://github.com/lbryio/lbry-react-native
     - cd lbry-react-native
     - chmod u+x bundle-android.sh
     - yarn
@@ -44,7 +44,7 @@ build apk:
     - cd $CI_PROJECT_DIR
     - cp bin/browser-$BUILD_VERSION-release__arm.apk /dev/null
     - cp bin/browser-$BUILD_VERSION-release__arm64.apk /dev/null
-    
+
 deploy build.lbry.io:
   image: python:stretch
   stage: deploy

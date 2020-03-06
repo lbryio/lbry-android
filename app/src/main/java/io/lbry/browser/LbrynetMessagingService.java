@@ -18,6 +18,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.browser.reactmodules.UtilityModule;
 
 import java.util.ArrayList;
@@ -103,6 +104,11 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             } else {
                 // default to home page
                 url = "lbry://?discover";
+            }
+        } else {
+            if (!MainActivity.isServiceRunning(this, LbrynetService.class)) {
+                // cold start
+                url = url + ((url.indexOf("?") > -1) ? "&liteMode=1" : "?liteMode=1");
             }
         }
 
