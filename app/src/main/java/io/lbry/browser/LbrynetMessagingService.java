@@ -21,6 +21,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.browser.reactmodules.UtilityModule;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +57,12 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             String title = payload.get("title");
             String body = payload.get("body");
             String name = payload.get("name"); // notification name
+            String contentTitle = payload.get("contentTitle");
+            String channelUrl = payload.get("channelUrl");
+            String publishTime = payload.get("publishTime");
+            for (Map.Entry<String, String> entry : payload.entrySet()) {
+                android.util.Log.d("ReactNativeJS", "payload[" + entry.getKey() + "]=" + entry.getValue());
+            }
             if (type != null && getEnabledTypes().indexOf(type) > -1 && body != null && body.trim().length() > 0) {
                 // only log the receive event for valid notifications received
                 if (firebaseAnalytics != null) {
@@ -63,7 +71,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                     firebaseAnalytics.logEvent("lbry_notification_receive", bundle);
                 }
 
-                sendNotification(title, body, type, url, name);
+                sendNotification(title, body, type, url, name, contentTitle, channelUrl, publishTime);
             }
         }
     }
@@ -95,7 +103,8 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String title, String messageBody, String type, String url, String name) {
+    private void sendNotification(String title, String messageBody, String type, String url, String name,
+                                  String contentTitle, String channelUrl, String publishTime) {
         //Intent intent = new Intent(this, MainActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (url == null) {
@@ -109,6 +118,19 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             if (!MainActivity.isServiceRunning(this, LbrynetService.class)) {
                 // cold start
                 url = url + ((url.indexOf("?") > -1) ? "&liteMode=1" : "?liteMode=1");
+                try {
+                    if (contentTitle != null) {
+                        url = url + "&contentTitle=" + URLEncoder.encode(contentTitle, "UTF-8");
+                    }
+                    if (channelUrl != null) {
+                        url = url + "&channelUrl=" + URLEncoder.encode(channelUrl, "UTF-8");
+                    }
+                    if (publishTime != null) {
+                        url = url + "&publishTime=" + URLEncoder.encode(publishTime, "UTF-8");
+                    }
+                } catch (UnsupportedEncodingException ex) {
+                    // shouldn't happen
+                }
             }
         }
 
