@@ -2,6 +2,7 @@ package io.lbry.browser;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.PendingIntent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -157,6 +158,14 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         if (!serviceRunning) {
             CurrentLaunchTiming.setColdStart(true);
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
+        }
+
+        if (LbrynetService.serviceInstance != null) {
+            // TODO: Add a broadcast receiver to listen for  the service started event, so that we can set this properly
+            Context context = getApplicationContext();
+            Intent contextIntent = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            LbrynetService.serviceInstance.setPendingContextIntent(pendingIntent);
         }
 
         checkNotificationOpenIntent(getIntent());
