@@ -3,6 +3,9 @@ stages:
   - deploy
   - release
 
+variables:
+  REACT_NATIVE_BRANCH: "master"
+
 build apk:
   stage: build
   image: lbry/android-base:platform-28
@@ -31,7 +34,7 @@ build apk:
     - git secret reveal
     - npm install -g react-native-cli
     - cd ~/
-    - git clone --single-branch --branch fast-lite-mode https://github.com/lbryio/lbry-react-native
+    - git clone --single-branch --branch $REACT_NATIVE_BRANCH https://github.com/lbryio/lbry-react-native
     - cd lbry-react-native
     - chmod u+x bundle-android.sh
     - yarn
