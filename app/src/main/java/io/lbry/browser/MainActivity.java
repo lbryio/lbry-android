@@ -2,6 +2,7 @@ package io.lbry.browser;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.PendingIntent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -153,10 +154,18 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         registerDownloadEventReceiver();
 
         // Start the daemon service if it is not started
-        serviceRunning = isServiceRunning(LbrynetService.class);
+        serviceRunning = isServiceRunning(this, LbrynetService.class);
         if (!serviceRunning) {
             CurrentLaunchTiming.setColdStart(true);
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
+        }
+
+        if (LbrynetService.serviceInstance != null) {
+            // TODO: Add a broadcast receiver to listen for  the service started event, so that we can set this properly
+            Context context = getApplicationContext();
+            Intent contextIntent = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            LbrynetService.serviceInstance.setPendingContextIntent(pendingIntent);
         }
 
         checkNotificationOpenIntent(getIntent());
@@ -383,9 +392,9 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         switch (requestCode) {
             case STORAGE_PERMISSION_REQ_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (BuildConfig.DEBUG && !Settings.canDrawOverlays(this)) {
+                    if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this)) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                                   Uri.parse("package:" + getPackageName()));
+                                Uri.parse("package:" + getPackageName()));
                         startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
                     }
                     if (reactContext != null) {
@@ -444,37 +453,6 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         }
     }
 
-    public static String acquireDeviceId(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        String id = null;
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                id = telephonyManager.getImei(); // GSM
-                if (id == null) {
-                    id = telephonyManager.getMeid(); // CDMA
-                }
-            } else {
-                id = telephonyManager.getDeviceId();
-            }
-        } catch (SecurityException ex) {
-            // Maybe the permission was not granted? Try to acquire permission
-            checkPhoneStatePermission(context);
-        } catch (Exception ex) {
-            // id could not be obtained. Display a warning that rewards cannot be claimed.
-        }
-
-        if (id == null || id.trim().length() == 0) {
-            Toast.makeText(context, "Rewards cannot be claimed because we could not identify your device.", Toast.LENGTH_LONG).show();
-        }
-
-        SharedPreferences sp = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(DEVICE_ID_KEY, id);
-        editor.commit();
-
-        return id;
-    }
-
     @Override
     public void invokeDefaultOnBackPressed() {
         super.onBackPressed();
@@ -494,7 +472,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         super.onResume();
 
         SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        serviceRunning = isServiceRunning(LbrynetService.class);
+        serviceRunning = isServiceRunning(this, LbrynetService.class);
         if (!serviceRunning) {
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
@@ -510,7 +488,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         boolean shouldKeepDaemonRunning = sp.getBoolean(SETTING_KEEP_DAEMON_RUNNING, true);
         if (!shouldKeepDaemonRunning) {
-            serviceRunning = isServiceRunning(LbrynetService.class);
+            serviceRunning = isServiceRunning(this, LbrynetService.class);
             if (serviceRunning) {
                ServiceHelper.stop(this, LbrynetService.class);
             }
@@ -544,7 +522,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
                 notificationManager.cancel(downloadNotificationIds.get(i));
             }
         }
-        if (receivedStopService || !isServiceRunning(LbrynetService.class)) {
+        if (receivedStopService || !isServiceRunning(this, LbrynetService.class)) {
             notificationManager.cancelAll();
         }
         super.onDestroy();
@@ -635,8 +613,8 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
                         true);
     }
 
-    private boolean isServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+    public static boolean isServiceRunning(Context context, Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(serviceInfo.service.getClassName())) {
                 return true;

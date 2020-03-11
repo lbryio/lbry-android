@@ -470,4 +470,16 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         // This obtains a public default download directory after the storage permission has been granted
         promise.resolve(Utils.getConfiguredDownloadDirectory(context));
     }
+
+    @ReactMethod
+    public void getLbrynetDirectory(Promise promise) {
+        String path = String.format("%s/%s", Utils.getAppInternalStorageDir(context), "lbrynet");
+        promise.resolve(path);
+    }
+
+    @ReactMethod
+    public void getPlatform(Promise promise) {
+        String platform = String.format("Android %s (API %s)", Utils.getAndroidRelease(), Utils.getAndroidSdk());
+        promise.resolve(platform);
+    }
 }
