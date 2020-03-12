@@ -57,12 +57,10 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             String title = payload.get("title");
             String body = payload.get("body");
             String name = payload.get("name"); // notification name
-            String contentTitle = payload.get("contentTitle");
-            String channelUrl = payload.get("channelUrl");
-            String publishTime = payload.get("publishTime");
-            for (Map.Entry<String, String> entry : payload.entrySet()) {
-                android.util.Log.d("ReactNativeJS", "payload[" + entry.getKey() + "]=" + entry.getValue());
-            }
+            String contentTitle = payload.get("content_title");
+            String channelUrl = payload.get("channel_url");
+            //String publishTime = payload.get("publish_time");
+            String publishTime = null;
             if (type != null && getEnabledTypes().indexOf(type) > -1 && body != null && body.trim().length() > 0) {
                 // only log the receive event for valid notifications received
                 if (firebaseAnalytics != null) {
