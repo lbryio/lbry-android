@@ -4,7 +4,7 @@ stages:
   - release
 
 variables:
-  REACT_NATIVE_BRANCH: "master"
+  REACT_NATIVE_BRANCH: "fix-related-content"
 
 build apk:
   stage: build
