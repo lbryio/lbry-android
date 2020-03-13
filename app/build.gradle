@@ -210,8 +210,8 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:1.10.0'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
 
-    __32bitImplementation files('libs/lbrysdk-0.62.0-release__arm.aar')
-    __64bitImplementation files('libs/lbrysdk-0.62.0-release__arm64.aar')
+    __32bitImplementation files('libs/lbrysdk-0.64.0-release__arm.aar')
+    __64bitImplementation files('libs/lbrysdk-0.64.0-release__arm64.aar')
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";

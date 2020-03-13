@@ -57,6 +57,7 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 
+import io.lbry.browser.reactmodules.UtilityModule;
 import io.lbry.browser.reactpackages.LbryReactPackage;
 import io.lbry.browser.reactmodules.BackgroundMediaModule;
 import io.lbry.lbrysdk.LbrynetService;
@@ -153,7 +154,13 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         // Register the receiver to emit download events
         registerDownloadEventReceiver();
 
-        // Start the daemon service if it is not started
+        // Start the sdk service if it is not started
+        // Check the dht setting
+        SharedPreferences sp = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        android.util.Log.d("ReactNativeJS", "getBooleanValue=" + sp.getBoolean(UtilityModule.DHT_ENABLED, false));
+        LbrynetService.setDHTEnabled(sp.getBoolean(UtilityModule.DHT_ENABLED, false));
+        android.util.Log.d("ReactNativeJS", "DHTEnabled=" + LbrynetService.isDHTEnabled());
+
         serviceRunning = isServiceRunning(this, LbrynetService.class);
         if (!serviceRunning) {
             CurrentLaunchTiming.setColdStart(true);

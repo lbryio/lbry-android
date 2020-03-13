@@ -56,6 +56,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
 
     public static final String ACTION_NOTIFICATION_LATER = "io.lbry.browser.ACTION_NOTIFICATION_LATER";
 
+    // Setting keys from React Native
     public static final String RECEIVE_SUBSCRIPTION_NOTIFICATIONS = "receiveSubscriptionNotifications";
 
     public static final String RECEIVE_REWARD_NOTIFICATIONS = "receiveRewardNotifications";
@@ -63,6 +64,8 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     public static final String RECEIVE_INTERESTS_NOTIFICATIONS = "receiveInterestsNotifications";
 
     public static final String RECEIVE_CREATOR_NOTIFICATIONS = "receiveCreatorNotifications";
+
+    public static final String DHT_ENABLED = "dhtEnabled";
 
     // the last language set to be loaded
     private static final String LANGUAGE_SETTING_KEY = "language";
