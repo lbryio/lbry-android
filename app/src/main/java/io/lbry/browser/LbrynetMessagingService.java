@@ -61,6 +61,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             String channelUrl = payload.get("channel_url");
             //String publishTime = payload.get("publish_time");
             String publishTime = null;
+
             if (type != null && getEnabledTypes().indexOf(type) > -1 && body != null && body.trim().length() > 0) {
                 // only log the receive event for valid notifications received
                 if (firebaseAnalytics != null) {

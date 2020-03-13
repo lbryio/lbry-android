@@ -482,4 +482,9 @@ public class UtilityModule extends ReactContextBaseJavaModule {
         String platform = String.format("Android %s (API %s)", Utils.getAndroidRelease(), Utils.getAndroidSdk());
         promise.resolve(platform);
     }
+
+    @ReactMethod
+    public void log(String tag, String message) {
+        android.util.Log.d(tag, message);
+    }
 }
