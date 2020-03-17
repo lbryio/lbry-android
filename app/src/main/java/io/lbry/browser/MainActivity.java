@@ -157,9 +157,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         // Start the sdk service if it is not started
         // Check the dht setting
         SharedPreferences sp = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        android.util.Log.d("ReactNativeJS", "getBooleanValue=" + sp.getBoolean(UtilityModule.DHT_ENABLED, false));
         LbrynetService.setDHTEnabled(sp.getBoolean(UtilityModule.DHT_ENABLED, false));
-        android.util.Log.d("ReactNativeJS", "DHTEnabled=" + LbrynetService.isDHTEnabled());
 
         serviceRunning = isServiceRunning(this, LbrynetService.class);
         if (!serviceRunning) {
