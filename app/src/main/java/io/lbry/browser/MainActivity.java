@@ -3,6 +3,7 @@ package io.lbry.browser;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +19,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.Manifest;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -62,10 +64,12 @@ import io.lbry.browser.reactpackages.LbryReactPackage;
 import io.lbry.browser.reactmodules.BackgroundMediaModule;
 import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.ServiceHelper;
+import io.lbry.lbrysdk.Utils;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.ConnectException;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -84,51 +88,34 @@ import org.reactnative.camera.RNCameraPackage;
 public class MainActivity extends FragmentActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity {
 
     private static Activity currentActivity = null;
-
     private static final int OVERLAY_PERMISSION_REQ_CODE = 101;
-
     private static final int STORAGE_PERMISSION_REQ_CODE = 201;
-
     private static final int PHONE_STATE_PERMISSION_REQ_CODE = 202;
-
     private static final int RECEIVE_SMS_PERMISSION_REQ_CODE = 203;
-
     public static final int DOCUMENT_PICKER_RESULT_CODE = 301;
+    public static final String SHARED_PREFERENCES_NAME = "LBRY";
+    public static final String SALT_KEY = "salt";
+    public static final String DEVICE_ID_KEY = "deviceId";
+    public static final String SOURCE_NOTIFICATION_ID_KEY = "sourceNotificationId";
+    public static final String SETTING_KEEP_DAEMON_RUNNING = "keepDaemonRunning";
+    public static List<Integer> downloadNotificationIds = new ArrayList<Integer>();
 
     private BroadcastReceiver notificationsReceiver;
-
     private BroadcastReceiver smsReceiver;
-
     private BroadcastReceiver stopServiceReceiver;
-
     private BroadcastReceiver downloadEventReceiver;
-
     private FirebaseAnalytics firebaseAnalytics;
-
     private ReactRootView mReactRootView;
-
     private ReactInstanceManager mReactInstanceManager;
-
-    public static final String SHARED_PREFERENCES_NAME = "LBRY";
-
-    public static final String SALT_KEY = "salt";
-
-    public static final String DEVICE_ID_KEY = "deviceId";
-
-    public static final String SOURCE_NOTIFICATION_ID_KEY = "sourceNotificationId";
-
-    public static final String SETTING_KEEP_DAEMON_RUNNING = "keepDaemonRunning";
-
-    public static List<Integer> downloadNotificationIds = new ArrayList<Integer>();
 
     /**
      * Flag which indicates whether or not the service is running. Will be updated in the
      * onResume method.
      */
     private boolean serviceRunning;
-
+    private CheckSdkReadyTask checkSdkReadyTask;
+    private boolean lbrySdkReady;
     private boolean receivedStopService;
-
     private PermissionListener permissionListener;
 
     protected String getMainComponentName() {
@@ -164,6 +151,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
             CurrentLaunchTiming.setColdStart(true);
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
+        checkSdkReady();
 
         if (LbrynetService.serviceInstance != null) {
             // TODO: Add a broadcast receiver to listen for  the service started event, so that we can set this properly
@@ -201,6 +189,22 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         registerNotificationsReceiver();
 
         setContentView(mReactRootView);
+    }
+
+    private void checkSdkReady() {
+        if (!lbrySdkReady) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (checkSdkReadyTask != null && checkSdkReadyTask.getStatus() != AsyncTask.Status.FINISHED) {
+                        // task already running
+                        return;
+                    }
+                    checkSdkReadyTask = new CheckSdkReadyTask();
+                    checkSdkReadyTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+            }, 1000);
+        }
     }
 
     private void checkNotificationOpenIntent(Intent intent) {
@@ -481,6 +485,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         if (!serviceRunning) {
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
+        checkSdkReady();
 
         if (mReactInstanceManager != null) {
             mReactInstanceManager.onHostResume(this, this);
@@ -684,7 +689,6 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
      */
     @SuppressLint("NewApi")
     public static String getRealPathFromURI_API19(final Context context, final Uri uri) {
-
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
         // DocumentProvider
@@ -834,6 +838,40 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
      */
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    private class CheckSdkReadyTask extends AsyncTask<Void, Void, Boolean> {
+        public Boolean doInBackground(Void... params) {
+            boolean sdkReady = false;
+            try {
+                String response = Utils.sdkCall("status");
+                if (response != null) {
+                    JSONObject result = new JSONObject(response);
+                    JSONObject status = result.getJSONObject("result");
+                    JSONObject startupStatus = status.getJSONObject("startup_status");
+                    sdkReady = startupStatus.has("stream_manager") && startupStatus.has("wallet") &&
+                            startupStatus.getBoolean("stream_manager") && startupStatus.getBoolean("wallet") &&
+                            (status.getJSONObject("wallet").getLong("blocks_behind") <= 0);
+                }
+            } catch (ConnectException ex) {
+                // pass
+            } catch (JSONException ex) {
+                // pass
+            }
+
+            return sdkReady;
+        }
+        protected void onPostExecute(Boolean sdkReady) {
+            lbrySdkReady = sdkReady;
+            ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+            if (sdkReady && reactContext != null) {
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onSdkReady", null);
+            }
+
+            if (!sdkReady) {
+                checkSdkReady();
+            }
+        }
     }
     
     public static class LaunchTiming {

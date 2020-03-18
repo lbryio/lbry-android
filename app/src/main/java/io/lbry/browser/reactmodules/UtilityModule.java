@@ -93,6 +93,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = MapBuilder.newHashMap();
         constants.put("language", language);
+        constants.put("dhtEnabled", LbrynetService.isDHTEnabled());
         return constants;
     }
 
