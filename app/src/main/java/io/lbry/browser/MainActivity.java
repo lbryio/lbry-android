@@ -841,6 +841,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
     }
 
     private class CheckSdkReadyTask extends AsyncTask<Void, Void, Boolean> {
+
         public Boolean doInBackground(Void... params) {
             boolean sdkReady = false;
             try {
@@ -848,6 +849,16 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
                 if (response != null) {
                     JSONObject result = new JSONObject(response);
                     JSONObject status = result.getJSONObject("result");
+
+                    // send status response for splash page updates
+                    WritableMap sdkStatus = JSONObjectToMap(status);
+                    ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
+                    if (reactContext != null) {
+                        WritableMap evtParams = Arguments.createMap();
+                        evtParams.putMap("status", sdkStatus);
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onSdkStatusResponse", evtParams);
+                    }
+
                     JSONObject startupStatus = status.getJSONObject("startup_status");
                     sdkReady = startupStatus.has("stream_manager") && startupStatus.has("wallet") &&
                             startupStatus.getBoolean("stream_manager") && startupStatus.getBoolean("wallet") &&
