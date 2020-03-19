@@ -116,7 +116,8 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
         } else {
             if (!MainActivity.isServiceRunning(this, LbrynetService.class) &&
                     contentTitle != null &&
-                    channelUrl != null
+                    channelUrl != null &&
+                    !url.startsWith("lbry://?") /* not a special url */
             ) {
                 // only enter lite mode when contentTitle and channelUrl are set (and the service isn't running yet)
                 // cold start
