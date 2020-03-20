@@ -23,10 +23,12 @@ import android.view.WindowManager;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.common.MapBuilder;
 
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -507,6 +509,15 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     public void getPlatform(Promise promise) {
         String platform = String.format("Android %s (API %s)", Utils.getAndroidRelease(), Utils.getAndroidSdk());
         promise.resolve(platform);
+    }
+
+    @ReactMethod
+    public void checkSdkReady() {
+        // check that the sdk ready when the service is already running so that we can send the ready event
+        ReactContext reactContext = (ReactContext) context;
+        if (MainActivity.lbrySdkReady && reactContext != null) {
+            reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onSdkReady", null);
+        }
     }
 
     @ReactMethod

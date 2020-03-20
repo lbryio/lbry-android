@@ -106,9 +106,9 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
      */
     private boolean serviceRunning;
     private CheckSdkReadyTask checkSdkReadyTask;
-    private boolean lbrySdkReady;
     private boolean receivedStopService;
     private PermissionListener permissionListener;
+    public static boolean lbrySdkReady;
 
     protected String getMainComponentName() {
         return "LBRYApp";

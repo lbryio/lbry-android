@@ -77,8 +77,8 @@ public class FirebaseModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void logException(boolean fatal, String message, String error) {
         Bundle bundle = new Bundle();
-        bundle.putString("message", message);
-        bundle.putString("error", error);
+        bundle.putString("exception_message", message);
+        bundle.putString("exception_error", error);
         if (firebaseAnalytics != null) {
             firebaseAnalytics.logEvent(fatal ? "reactjs_exception" : "reactjs_warning", bundle);
         }
