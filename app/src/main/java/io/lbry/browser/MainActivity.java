@@ -2,6 +2,8 @@ package io.lbry.browser;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -24,11 +26,11 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import android.telephony.SmsMessage;
-import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.azendoo.reactnativesnackbar.SnackbarPackage;
@@ -42,13 +44,10 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.ReadableNativeArray;
-import com.facebook.react.bridge.ReadableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.facebook.react.shell.MainReactPackage;
-import com.facebook.react.ReactRootView;
 import com.facebook.soloader.SoLoader;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -67,18 +66,11 @@ import io.lbry.lbrysdk.ServiceHelper;
 import io.lbry.lbrysdk.Utils;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.net.ConnectException;
-import java.net.URISyntaxException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -102,7 +94,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
 
     private BroadcastReceiver notificationsReceiver;
     private BroadcastReceiver smsReceiver;
-    private BroadcastReceiver stopServiceReceiver;
+    private BroadcastReceiver serviceActionsReceiver;
     private BroadcastReceiver downloadEventReceiver;
     private FirebaseAnalytics firebaseAnalytics;
     private ReactRootView mReactRootView;
@@ -133,7 +125,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         SoLoader.init(this, false);
 
         // Register the stop service receiver (so that we close the activity if the user requests the service to stop)
-        registerStopReceiver();
+        registerServiceActionsReceiver();
 
         // Register SMS receiver for handling verification texts
         registerSmsReceiver();
@@ -151,14 +143,6 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
         checkSdkReady();
-
-        if (LbrynetService.serviceInstance != null) {
-            // TODO: Add a broadcast receiver to listen for  the service started event, so that we can set this properly
-            Context context = getApplicationContext();
-            Intent contextIntent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            LbrynetService.serviceInstance.setPendingContextIntent(pendingIntent);
-        }
 
         checkNotificationOpenIntent(getIntent());
 
@@ -279,17 +263,53 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         registerReceiver(downloadEventReceiver, intentFilter);
     }
 
-    private void registerStopReceiver() {
+    private void registerServiceActionsReceiver() {
         IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(LbrynetService.LBRY_SDK_SERVICE_STARTED);
         intentFilter.addAction(LbrynetService.ACTION_STOP_SERVICE);
-        stopServiceReceiver = new BroadcastReceiver() {
+        serviceActionsReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                MainActivity.this.receivedStopService = true;
-                MainActivity.this.finish();
+                String action = intent.getAction();
+                if (LbrynetService.ACTION_STOP_SERVICE.equals(action)) {
+                    MainActivity.this.receivedStopService = true;
+                    MainActivity.this.finish();
+                } else if (LbrynetService.LBRY_SDK_SERVICE_STARTED.equals(action)) {
+                    // Rebuild the service notification
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Notification svcNotification = buildServiceNotification();
+                            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            notificationManager.notify(1, svcNotification);
+                        }
+                    }, 1000);
+                }
             }
         };
-        registerReceiver(stopServiceReceiver, intentFilter);
+        registerReceiver(serviceActionsReceiver, intentFilter);
+    }
+
+    private Notification buildServiceNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, LbrynetService.NOTIFICATION_CHANNEL_ID);
+        Intent contextIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, contextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent stopIntent = new Intent(LbrynetService.ACTION_STOP_SERVICE);
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
+
+        String serviceDescription = "The LBRY service is running in the background.";
+        Notification notification = builder.setColor(ContextCompat.getColor(this, R.color.lbryGreen))
+                .setContentIntent(pendingIntent)
+                .setContentText(serviceDescription)
+                .setGroup(LbrynetService.GROUP_SERVICE)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.ic_lbry)
+                .setOngoing(true)
+                .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Stop", stopPendingIntent)
+                .build();
+
+        return notification;
     }
 
     private void registerNotificationsReceiver() {
@@ -520,9 +540,9 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
             downloadEventReceiver = null;
         }
 
-        if (stopServiceReceiver != null) {
-            unregisterReceiver(stopServiceReceiver);
-            stopServiceReceiver = null;
+        if (serviceActionsReceiver != null) {
+            unregisterReceiver(serviceActionsReceiver);
+            serviceActionsReceiver = null;
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
