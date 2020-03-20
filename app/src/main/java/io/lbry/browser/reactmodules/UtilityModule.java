@@ -34,6 +34,7 @@ import java.io.Closeable;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -93,6 +94,7 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = MapBuilder.newHashMap();
         constants.put("language", language);
+        constants.put("dhtEnabled", LbrynetService.isDHTEnabled());
         return constants;
     }
 
@@ -422,12 +424,33 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setNativeBooleanSetting(String key, boolean value) {
+    public void setNativeBooleanSetting(String key, final boolean value) {
         if (context != null) {
             SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putBoolean(key, value);
             editor.commit();
+        }
+
+        if (DHT_ENABLED.equalsIgnoreCase(key)) {
+            (new AsyncTask<Void, Void, Void>() {
+                protected Void doInBackground(Void... params) {
+                    String fileContent = value ? "on" : "off";
+                    String path = String.format("%s/%s", Utils.getAppInternalStorageDir(context), "dht");
+                    PrintStream out = null;
+                    try {
+                        out = new PrintStream(new FileOutputStream(path));
+                        out.print(fileContent);
+                    } catch (Exception ex) {
+                        // pass
+                    } finally {
+                        if (out != null) {
+                            out.close();
+                        }
+                    }
+                    return null;
+                }
+            }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
