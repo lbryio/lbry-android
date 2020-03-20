@@ -4,7 +4,7 @@ stages:
   - release
 
 variables:
-  REACT_NATIVE_BRANCH: "lbry-tv-experiment"
+  REACT_NATIVE_BRANCH: "master"
 
 build apk:
   stage: build
