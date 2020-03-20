@@ -145,7 +145,6 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         // Check the dht setting
         SharedPreferences sp = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         LbrynetService.setDHTEnabled(sp.getBoolean(UtilityModule.DHT_ENABLED, false));
-
         serviceRunning = isServiceRunning(this, LbrynetService.class);
         if (!serviceRunning) {
             CurrentLaunchTiming.setColdStart(true);
@@ -481,6 +480,8 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         super.onResume();
 
         SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        LbrynetService.setDHTEnabled(sp.getBoolean(UtilityModule.DHT_ENABLED, false));
+
         serviceRunning = isServiceRunning(this, LbrynetService.class);
         if (!serviceRunning) {
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
