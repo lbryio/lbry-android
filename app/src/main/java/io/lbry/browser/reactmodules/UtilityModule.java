@@ -457,6 +457,16 @@ public class UtilityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getNativeBooleanSetting(String key, boolean defaultValue, Promise promise) {
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+            promise.resolve(sp.getBoolean(key, defaultValue));
+        } else {
+            promise.resolve(null);
+        }
+    }
+
+    @ReactMethod
     public void setNativeStringSetting(String key, String value) {
         if (context != null) {
             SharedPreferences sp = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
