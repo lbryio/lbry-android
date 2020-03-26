@@ -143,8 +143,8 @@ android {
         applicationId "io.lbry.browser"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1400
-        versionName "0.14.0"
+        versionCode 1401
+        versionName "0.14.1"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
     }
