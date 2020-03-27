@@ -203,12 +203,9 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:1.9.0'
     implementation 'com.facebook.fresco:animated-gif:1.9.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.google.firebase:firebase-analytics:17.2.1'
-    implementation 'com.google.android.gms:play-services-base:17.1.0'
     implementation 'androidx.exifinterface:exifinterface:1.0.0'
     implementation 'com.facebook.fresco:animated-base-support:1.3.0'
     implementation 'com.facebook.fresco:animated-gif:1.10.0'
-    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 
     __32bitImplementation files('libs/lbrysdk-0.65.0-release__arm.aar')
     __64bitImplementation files('libs/lbrysdk-0.65.0-release__arm64.aar')
@@ -228,6 +225,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
-
-apply plugin: 'com.google.gms.google-services'
-com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

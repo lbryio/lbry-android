@@ -49,7 +49,6 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.rnfs.RNFSPackage;
@@ -96,7 +95,6 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
     private BroadcastReceiver smsReceiver;
     private BroadcastReceiver serviceActionsReceiver;
     private BroadcastReceiver downloadEventReceiver;
-    private FirebaseAnalytics firebaseAnalytics;
     private ReactRootView mReactRootView;
     private ReactInstanceManager mReactInstanceManager;
 
@@ -200,13 +198,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
     }
 
     private void logNotificationOpen(String name) {
-        if (firebaseAnalytics == null) {
-            firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        }
 
-        Bundle bundle = new Bundle();
-        bundle.putString("name", name);
-        firebaseAnalytics.logEvent("lbry_notification_open", bundle);
     }
 
     private void registerDownloadEventReceiver() {
