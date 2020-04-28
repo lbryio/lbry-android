@@ -41,7 +41,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+}
 
+task printVersionName {
+    doLast {
+        println android.defaultConfig.versionName
+    }
 }
 
 dependencies {
