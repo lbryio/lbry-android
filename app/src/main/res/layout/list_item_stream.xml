@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground">
+    <RelativeLayout
+        android:id="@+id/claim_media_container"
+        android:layout_width="160dp"
+        android:layout_height="90dp">
+        <RelativeLayout
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_thumbnail_icon"
+            android:id="@+id/claim_no_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/claim_thumbnail_alpha"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textAllCaps="true"
+                android:textSize="24sp"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/claim_thumbnail"
+            android:layout_width="160dp"
+            android:layout_height="90dp" />
+        <TextView
+            android:background="@android:color/black"
+            android:id="@+id/claim_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/inter"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:textFontWeight="300"
+            android:padding="2dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@id/claim_media_container">
+        <TextView
+            android:id="@+id/claim_vanity_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+        <TextView
+            android:id="@+id/claim_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter"
+            android:textSize="14sp"
+            android:textFontWeight="600" />
+        <TextView
+            android:id="@+id/claim_publisher"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/lbryGreen"
+            android:fontFamily="@font/inter"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/claim_publish_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:textSize="11sp"
+            android:textFontWeight="300" />
+
+        <!-- download progress bar -->
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,266 +1,1114 @@
 package io.lbry.browser;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.app.Activity;
-import android.app.ActivityManager;
+import android.app.PictureInPictureParams;
 import android.content.BroadcastReceiver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.Manifest;
-import android.net.Uri;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
-import android.provider.Settings;
-import androidx.core.app.ActivityCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+import android.view.Menu;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-import android.telephony.SmsMessage;
-import android.widget.Toast;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.preference.PreferenceManager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.azendoo.reactnativesnackbar.SnackbarPackage;
-import com.brentvatne.react.ReactVideoPackage;
-import com.dylanvann.fastimage.FastImageViewPackage;
-import com.facebook.react.common.LifecycleState;
-import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
-import com.facebook.react.ReactRootView;
-import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.facebook.react.modules.core.PermissionAwareActivity;
-import com.facebook.react.modules.core.PermissionListener;
-import com.facebook.react.shell.MainReactPackage;
-import com.facebook.soloader.SoLoader;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
-import com.rnfs.RNFSPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.swmansion.reanimated.ReanimatedPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import io.lbry.browser.reactmodules.UtilityModule;
-import io.lbry.browser.reactpackages.LbryReactPackage;
-import io.lbry.browser.reactmodules.BackgroundMediaModule;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import io.lbry.browser.adapter.NavigationMenuAdapter;
+import io.lbry.browser.adapter.UrlSuggestionListAdapter;
+import io.lbry.browser.data.DatabaseHelper;
+import io.lbry.browser.exceptions.ApiCallException;
+import io.lbry.browser.listener.SdkStatusListener;
+import io.lbry.browser.listener.WalletBalanceListener;
+import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.ClaimCacheKey;
+import io.lbry.browser.model.NavMenuItem;
+import io.lbry.browser.model.UrlSuggestion;
+import io.lbry.browser.model.WalletBalance;
+import io.lbry.browser.model.WalletSync;
+import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
+import io.lbry.browser.tasks.ResolveTask;
+import io.lbry.browser.tasks.wallet.DefaultSyncTaskHandler;
+import io.lbry.browser.tasks.wallet.SyncGetTask;
+import io.lbry.browser.tasks.wallet.SyncTaskHandler;
+import io.lbry.browser.tasks.wallet.WalletBalanceTask;
+import io.lbry.browser.ui.BaseFragment;
+import io.lbry.browser.ui.channel.ChannelFragment;
+import io.lbry.browser.ui.following.FollowingFragment;
+import io.lbry.browser.ui.search.SearchFragment;
+import io.lbry.browser.ui.settings.SettingsFragment;
+import io.lbry.browser.ui.allcontent.AllContentFragment;
+import io.lbry.browser.ui.wallet.WalletFragment;
+import io.lbry.browser.utils.Helper;
+import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryUri;
+import io.lbry.browser.utils.Lbryio;
 import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.ServiceHelper;
 import io.lbry.lbrysdk.Utils;
+import lombok.Getter;
 
-import java.io.File;
-import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+public class MainActivity extends AppCompatActivity implements SdkStatusListener {
 
-import org.json.JSONObject;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.reactnative.camera.RNCameraPackage;
+    public static SimpleExoPlayer appPlayer;
+    public static Claim nowPlayingClaim;
+    public static boolean startingFileViewActivity = false;
+    public static boolean mainActive = false;
+    private boolean enteringPIPMode = false;
 
-public class MainActivity extends FragmentActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity {
+    private Map<String, Fragment> openNavFragments;
+    private static final Map<Class, Integer> fragmentClassNavIdMap = new HashMap<>();
+    static {
+        fragmentClassNavIdMap.put(FollowingFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
+        fragmentClassNavIdMap.put(WalletFragment.class, NavMenuItem.ID_ITEM_WALLET);
+        fragmentClassNavIdMap.put(SettingsFragment.class, NavMenuItem.ID_ITEM_SETTINGS);
+        fragmentClassNavIdMap.put(AllContentFragment.class, NavMenuItem.ID_ITEM_ALL_CONTENT);
 
-    private static Activity currentActivity = null;
-    private static final int OVERLAY_PERMISSION_REQ_CODE = 101;
-    private static final int STORAGE_PERMISSION_REQ_CODE = 201;
-    private static final int PHONE_STATE_PERMISSION_REQ_CODE = 202;
-    private static final int RECEIVE_SMS_PERMISSION_REQ_CODE = 203;
-    public static final int DOCUMENT_PICKER_RESULT_CODE = 301;
-    public static final String SHARED_PREFERENCES_NAME = "LBRY";
-    public static final String SALT_KEY = "salt";
-    public static final String DEVICE_ID_KEY = "deviceId";
-    public static final String SOURCE_NOTIFICATION_ID_KEY = "sourceNotificationId";
-    public static final String SETTING_KEEP_DAEMON_RUNNING = "keepDaemonRunning";
-    public static List<Integer> downloadNotificationIds = new ArrayList<Integer>();
+        // Internal (sub-)pages
+        fragmentClassNavIdMap.put(ChannelFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
+        fragmentClassNavIdMap.put(SearchFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
+    }
 
-    private BroadcastReceiver notificationsReceiver;
-    private BroadcastReceiver smsReceiver;
+    public static final int REQUEST_SIMPLE_SIGN_IN = 2001;
+    public static final int REQUEST_WALLET_SYNC_SIGN_IN = 2002;
+
+    // broadcast action names
+    public static final String ACTION_SDK_READY = "io.lbry.browser.Broadcast.SdkReady";
+    public static final String ACTION_AUTH_TOKEN_GENERATED = "io.lbry.browser.Broadcast.AuthTokenGenerated";
+    public static final String ACTION_USER_AUTHENTICATION_SUCCESS = "io.lbry.browser.Broadcast.UserAuthenticationSuccess";
+    public static final String ACTION_USER_SIGN_IN_SUCCESS = "io.lbry.browser.Broadcast.UserSignInSuccess";
+    public static final String ACTION_USER_AUTHENTICATION_FAILED = "io.lbry.browser.Broadcast.UserAuthenticationFailed";
+    public static final String ACTION_NOW_PLAYING_CLAIM_UPDATED = "io.lbry.browser.Broadcast.NowPlayingClaimUpdated";
+    public static final String ACTION_NOW_PLAYING_CLAIM_CLEARED = "io.lbry.browser.Broadcast.NowPlayingClaimCleared";
+    public static final String ACTION_OPEN_ALL_CONTENT_TAG = "io.lbry.browser.Broadcast.OpenAllContentTag";
+
+    // preference keys
+    public static final String PREFERENCE_KEY_DARK_MODE = "io.lbry.browser.preference.userinterface.DarkMode";
+    public static final String PREFERENCE_KEY_NOTIFICATION_URL_SUGGESTIONS = "io.lbry.browser.preference.userinterface.UrlSuggestions";
+    public static final String PREFERENCE_KEY_NOTIFICATION_SUBSCRIPTIONS = "io.lbry.browser.preference.notifications.Subscriptions";
+    public static final String PREFERENCE_KEY_NOTIFICATION_REWARDS = "io.lbry.browser.preference.notifications.Rewards";
+    public static final String PREFERENCE_KEY_NOTIFICATION_CONTENT_INTERESTS = "io.lbry.browser.preference.notifications.ContentInterests";
+    public static final String PREFERENCE_KEY_KEEP_SDK_BACKGROUND = "io.lbry.browser.preference.other.KeepSdkInBackground";
+    public static final String PREFERENCE_KEY_PARTICIPATE_DATA_NETWORK = "io.lbry.browser.preference.other.ParticipateInDataNetwork";
+
+    // Internal flags / setting preferences
+    public static final String PREFERENCE_KEY_INTERNAL_SKIP_WALLET_ACCOUNT = "io.lbry.browser.preference.internal.WalletSkipAccount";
+    public static final String PREFERENCE_KEY_INTERNAL_WALLET_SYNC_ENABLED = "io.lbry.browser.preference.internal.WalletSyncEnabled";
+    public static final String PREFERENCE_KEY_INTERNAL_WALLET_RECEIVE_ADDRESS = "io.lbry.browser.preference.internal.WalletReceiveAddress";
+
+    private final int CHECK_SDK_READY_INTERVAL = 1000;
+
+    public static final String PREFERENCE_KEY_FIRST_RUN_COMPLETED = "io.lbry.browser.Preference.FirstRunCompleted";
+    public static final String PREFERENCE_KEY_AUTH_TOKEN = "io.lbry.browser.Preference.AuthToken";
+
+    public static final String SECURE_VALUE_KEY_SAVED_PASSWORD = "io.lbry.browser.PX";
+
+    private static final String TAG = "io.lbry.browser.Main";
+
+    private NavigationMenuAdapter navMenuAdapter;
+    private UrlSuggestionListAdapter urlSuggestionListAdapter;
+
+    // broadcast receivers
     private BroadcastReceiver serviceActionsReceiver;
-    private BroadcastReceiver downloadEventReceiver;
-    private FirebaseAnalytics firebaseAnalytics;
-    private ReactRootView mReactRootView;
-    private ReactInstanceManager mReactInstanceManager;
+    private BroadcastReceiver requestsReceiver;
+    private BroadcastReceiver userActionsReceiver;
 
-    /**
-     * Flag which indicates whether or not the service is running. Will be updated in the
-     * onResume method.
-     */
+    private boolean userAuthenticated = false;
+
+    private boolean appStarted;
     private boolean serviceRunning;
     private CheckSdkReadyTask checkSdkReadyTask;
     private boolean receivedStopService;
-    private PermissionListener permissionListener;
-    public static boolean lbrySdkReady;
+    private AppBarConfiguration mAppBarConfiguration;
+    private ActionBarDrawerToggle toggle;
+    @Getter
+    private DatabaseHelper dbHelper;
+    private int selectedMenuItemId = -1;
+    private List<SdkStatusListener> sdkStatusListeners;
+    private List<WalletBalanceListener> walletBalanceListeners;
+    @Getter
+    private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private boolean walletBalanceUpdateScheduled;
+    private String pendingAllContentTag;
+    private String pendingChannelUrl;
+    private boolean pendingFollowingReload;
 
-    protected String getMainComponentName() {
-        return "LBRYApp";
-    }
-    
-    public static LaunchTiming CurrentLaunchTiming;
-    
+    private final List<Integer> supportedMenuItemIds = Arrays.asList(
+            NavMenuItem.ID_ITEM_FOLLOWING, NavMenuItem.ID_ITEM_ALL_CONTENT, NavMenuItem.ID_ITEM_WALLET, NavMenuItem.ID_ITEM_SETTINGS
+    );
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CurrentLaunchTiming = new LaunchTiming(new Date());
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean darkMode = sp.getBoolean(PREFERENCE_KEY_DARK_MODE, false);
+        AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
+        initKeyStore();
+        loadAuthToken();
+
+        dbHelper = new DatabaseHelper(this);
+        if (!darkMode) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
         super.onCreate(savedInstanceState);
-        currentActivity = this;
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        SoLoader.init(this, false);
-
-        // Register the stop service receiver (so that we close the activity if the user requests the service to stop)
+        // register receivers
+        registerRequestsReceiver();
         registerServiceActionsReceiver();
+        registerUserActionsReceiver();
 
-        // Register SMS receiver for handling verification texts
-        registerSmsReceiver();
+        // setup uri bar
+        setupUriBar();
 
-        // Register the receiver to emit download events
-        registerDownloadEventReceiver();
+        // other
+        openNavFragments = new HashMap<>();
+        sdkStatusListeners = new ArrayList<>();
+        walletBalanceListeners = new ArrayList<>();
 
-        // Start the sdk service if it is not started
-        // Check the dht setting
-        SharedPreferences sp = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        LbrynetService.setDHTEnabled(sp.getBoolean(UtilityModule.DHT_ENABLED, false));
-        serviceRunning = isServiceRunning(this, LbrynetService.class);
-        if (!serviceRunning) {
-            CurrentLaunchTiming.setColdStart(true);
-            ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
-        }
-        checkSdkReady();
+        sdkStatusListeners.add(this);
 
-        checkNotificationOpenIntent(getIntent());
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(backStackChangedListener);
 
-        mReactRootView = new RNGestureHandlerEnabledRootView(this);
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getApplication())
-                .setCurrentActivity(this)
-                .setBundleAssetName("index.android.bundle")
-                .setJSMainModulePath("index")
-                .addPackage(new MainReactPackage())
-                .addPackage(new AsyncStoragePackage())
-                .addPackage(new FastImageViewPackage())
-                .addPackage(new RNCWebViewPackage())
-                .addPackage(new ReactVideoPackage())
-                .addPackage(new ReanimatedPackage())
-                .addPackage(new RNCameraPackage())
-                .addPackage(new RNFetchBlobPackage())
-                .addPackage(new RNFSPackage())
-                .addPackage(new RNGestureHandlerPackage())
-                .addPackage(new SnackbarPackage())
-                .addPackage(new LbryReactPackage())
-                .setUseDeveloperSupport(BuildConfig.DEBUG)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build();
-        mReactRootView.startReactApplication(mReactInstanceManager, "LBRYApp", null);
-
-        registerNotificationsReceiver();
-
-        setContentView(mReactRootView);
-    }
-
-    private void checkSdkReady() {
-        if (!lbrySdkReady) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (checkSdkReadyTask != null && checkSdkReadyTask.getStatus() != AsyncTask.Status.FINISHED) {
-                        // task already running
-                        return;
-                    }
-                    checkSdkReadyTask = new CheckSdkReadyTask();
-                    checkSdkReadyTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                }
-            }, 1000);
-        }
-    }
-
-    private void checkNotificationOpenIntent(Intent intent) {
-        if (intent != null) {
-            String notificationName = intent.getStringExtra("notification_name");
-            if (notificationName != null) {
-                logNotificationOpen(notificationName);
-            }
-        }
-    }
-
-    private void logNotificationOpen(String name) {
-        if (firebaseAnalytics == null) {
-            firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        }
-
-        Bundle bundle = new Bundle();
-        bundle.putString("name", name);
-        firebaseAnalytics.logEvent("lbry_notification_open", bundle);
-    }
-
-    private void registerDownloadEventReceiver() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_EVENT);
-        downloadEventReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String downloadAction = intent.getStringExtra("action");
-                String uri = intent.getStringExtra("uri");
-                String outpoint = intent.getStringExtra("outpoint");
-                String fileInfoJson = intent.getStringExtra("file_info");
-
-
-                if (uri == null || outpoint == null || (fileInfoJson == null && !"abort".equals(downloadAction))) {
-                    return;
-                }
-
-                String eventName = null;
-                WritableMap params = Arguments.createMap();
-                params.putString("uri", uri);
-                params.putString("outpoint", outpoint);
-
-                ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
-                if ("abort".equals(downloadAction)) {
-                    eventName = "onDownloadAborted";
-                    if (reactContext != null) {
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
-                    }
-                    return;
-                }
-
-                try {
-                    JSONObject json = new JSONObject(fileInfoJson);
-                    WritableMap fileInfo = JSONObjectToMap(json);
-                    params.putMap("fileInfo", fileInfo);
-
-                    if (DownloadManager.ACTION_UPDATE.equals(downloadAction)) {
-                        double progress = intent.getDoubleExtra("progress", 0);
-                        params.putDouble("progress", progress);
-                        eventName = "onDownloadUpdated";
-                    } else {
-                        eventName = (DownloadManager.ACTION_START.equals(downloadAction)) ? "onDownloadStarted" : "onDownloadCompleted";
-                    }
-
-                    if (reactContext != null) {
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
-                    }
-                } catch (JSONException ex) {
-                    // pass
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                if (shouldOpenUserSelectedMenuItem) {
+                    openSelectedMenuItem();
+                    shouldOpenUserSelectedMenuItem = false;
                 }
             }
         };
-        registerReceiver(downloadEventReceiver, intentFilter);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        toggle.setToolbarNavigationClickListener((view) -> {
+            if (toggle != null && !toggle.isDrawerIndicatorEnabled()) {
+                FragmentManager manager = getSupportFragmentManager();
+                if (manager != null) {
+                    manager.popBackStack();
+                    setSelectedNavMenuItemForFragment(getCurrentFragment());
+                }
+            }
+        });
+
+        findViewById(R.id.global_now_playing_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopExoplayer();
+                nowPlayingClaim = null;
+                findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
+            }
+        });
+
+        findViewById(R.id.global_now_playing_card).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (nowPlayingClaim != null) {
+                    Intent intent = new Intent(MainActivity.this, FileViewActivity.class);
+                    intent.putExtra("claimId", nowPlayingClaim.getClaimId());
+                    intent.putExtra("url", nowPlayingClaim.getPermanentUrl());
+                    startingFileViewActivity = true;
+                    startActivity(intent);
+                }
+            }
+        });
+
+        // display custom navigation menu
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        RecyclerView navItemsView = findViewById(R.id.nav_view_items);
+        navItemsView.setLayoutManager(llm);
+        navMenuAdapter = new NavigationMenuAdapter(flattenNavMenu(buildNavMenu(this)), this);
+        navMenuAdapter.setListener(new NavigationMenuAdapter.NavigationMenuItemClickListener() {
+            @Override
+            public void onNavigationMenuItemClicked(NavMenuItem menuItem) {
+                if (navMenuAdapter.getCurrentItemId() == menuItem.getId() && menuItem.getId() != NavMenuItem.ID_ITEM_ALL_CONTENT) {
+                    // already open
+                    navMenuAdapter.setCurrentItem(menuItem);
+                    closeDrawer();
+                    return;
+                }
+
+                if (!supportedMenuItemIds.contains(menuItem.getId())) {
+                    Snackbar.make(navItemsView, R.string.not_yet_implemented, Snackbar.LENGTH_LONG).show();
+                } else {
+                    navMenuAdapter.setCurrentItem(menuItem);
+                    shouldOpenUserSelectedMenuItem = true;
+                    selectedMenuItemId = menuItem.getId();
+                }
+                closeDrawer();
+            }
+        });
+        navItemsView.setAdapter(navMenuAdapter);
+
+        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                walletSyncSignIn();
+            }
+        });
+    }
+
+    private boolean shouldOpenUserSelectedMenuItem;
+
+    public void addSdkStatusListener(SdkStatusListener listener) {
+        if (!sdkStatusListeners.contains(listener)) {
+            sdkStatusListeners.add(listener);
+        }
+    }
+
+    public void removeSdkStatusListener(SdkStatusListener listener) {
+        sdkStatusListeners.remove(listener);
+    }
+
+    public void addWalletBalanceListener(WalletBalanceListener listener) {
+        if (!walletBalanceListeners.contains(listener)) {
+            walletBalanceListeners.add(listener);
+        }
+    }
+
+    public void removeWalletBalanceListener(WalletBalanceListener listener) {
+        walletBalanceListeners.remove(listener);
+    }
+
+    private void openSelectedMenuItem() {
+        switch (selectedMenuItemId) {
+            // TODO: reverse map lookup for class?
+            case NavMenuItem.ID_ITEM_FOLLOWING:
+                openFragment(FollowingFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING);
+                break;
+            case NavMenuItem.ID_ITEM_ALL_CONTENT:
+                openFragment(AllContentFragment.class, true, NavMenuItem.ID_ITEM_ALL_CONTENT);
+                break;
+            case NavMenuItem.ID_ITEM_WALLET:
+                openFragment(WalletFragment.class, true, NavMenuItem.ID_ITEM_WALLET);
+                break;
+
+            case NavMenuItem.ID_ITEM_SETTINGS:
+                openFragment(SettingsFragment.class, true, NavMenuItem.ID_ITEM_SETTINGS);
+                break;
+        }
+    }
+
+    public void openChannelClaim(Claim claim) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("url", claim.getPermanentUrl());
+        params.put("claim", getCachedClaimForUrl(claim.getPermanentUrl()));
+        openFragment(ChannelFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
+        setWunderbarValue(claim.getShortUrl());
+    }
+
+    public void openChannelUrl(String url) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("url", url);
+        params.put("claim", getCachedClaimForUrl(url));
+        openFragment(ChannelFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
+        setWunderbarValue(url);
+    }
+
+    private Claim getCachedClaimForUrl(String url) {
+        ClaimCacheKey key = new ClaimCacheKey();
+        key.setCanonicalUrl(url);
+        key.setPermanentUrl(url);
+        key.setShortUrl(url);
+        return Lbry.claimCache.containsKey(key) ? Lbry.claimCache.get(key) : null;
+    }
+
+    public void setWunderbarValue(String value) {
+        EditText wunderbar = findViewById(R.id.wunderbar);
+        wunderbar.setText(value);
+        wunderbar.setSelection(0);
+    }
+
+    private void openAllContentFragmentWithTag(String tag) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("singleTag", tag);
+        openFragment(AllContentFragment.class, true, NavMenuItem.ID_ITEM_ALL_CONTENT, params);
+    }
+
+    public static void openFileUrl(String url, Context context) {
+        Intent intent = new Intent(context, FileViewActivity.class);
+        intent.putExtra("url", url);
+        startingFileViewActivity = true;
+        context.startActivity(intent);
+    }
+
+    public static void openFileClaim(Claim claim, Context context) {
+        Intent intent = new Intent(context, FileViewActivity.class);
+        intent.putExtra("claimId", claim.getClaimId());
+        intent.putExtra("url", claim.getPermanentUrl());
+        startingFileViewActivity = true;
+        context.startActivity(intent);
+    }
+
+    private FragmentManager.OnBackStackChangedListener backStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
+        @Override
+        public void onBackStackChanged() {
+            FragmentManager manager = getSupportFragmentManager();
+            if (manager != null) {
+                Fragment currentFragment = getCurrentFragment();
+
+            }
+        }
+    };
+
+    public void setSelectedMenuItemForFragment(Fragment fragment) {
+        if (fragment != null) {
+            Class fragmentClass = fragment.getClass();
+            if (fragmentClassNavIdMap.containsKey(fragmentClass)) {
+                navMenuAdapter.setCurrentItem(fragmentClassNavIdMap.get(fragmentClass));
+            }
+        }
+    }
+
+    private void renderPictureInPictureMode() {
+        findViewById(R.id.content_main).setVisibility(View.GONE);
+        findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
+        getSupportActionBar().hide();
+
+        PlayerView pipPlayer = findViewById(R.id.pip_player);
+        pipPlayer.setVisibility(View.VISIBLE);
+        pipPlayer.setPlayer(appPlayer);
+    }
+    private void renderFullMode() {
+        getSupportActionBar().show();
+        findViewById(R.id.content_main).setVisibility(View.VISIBLE);
+        findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
+
+        PlayerView pipPlayer = findViewById(R.id.pip_player);
+        pipPlayer.setVisibility(View.INVISIBLE);
+        pipPlayer.setPlayer(null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceivers();
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        if (receivedStopService || !isServiceRunning(this, LbrynetService.class)) {
+            notificationManager.cancelAll();
+        }
+        if (dbHelper != null) {
+            dbHelper.close();
+        }
+        stopExoplayer();
+        super.onDestroy();
+    }
+
+    private static void stopExoplayer() {
+        if (appPlayer != null) {
+            appPlayer.stop(true);
+            appPlayer.release();
+            appPlayer = null;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        //getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    public void updateWalletBalance() {
+        WalletBalanceTask task = new WalletBalanceTask(new WalletBalanceTask.WalletBalanceHandler() {
+            @Override
+            public void onSuccess(WalletBalance walletBalance) {
+                for (WalletBalanceListener listener : walletBalanceListeners) {
+                    if (listener != null) {
+                        listener.onWalletBalanceUpdated(walletBalance);
+                    }
+                }
+                Lbry.walletBalance = walletBalance;
+            }
+
+            @Override
+            public void onError(Exception error) {
+
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mainActive = true;
+
+        checkFirstRun();
+        checkNowPlaying();
+
+        // check (and start) the LBRY SDK service
+        serviceRunning = isServiceRunning(this, LbrynetService.class);
+        if (!serviceRunning) {
+            ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
+        }
+        checkSdkReady();
+        showSignedInUser();
+
+        if (!Helper.isNullOrEmpty(pendingAllContentTag)) {
+            openAllContentFragmentWithTag(pendingAllContentTag);
+            pendingAllContentTag = null;
+        }
+        if (pendingFollowingReload) {
+            loadFollowingContent();
+            pendingFollowingReload = false;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        mainActive = false;
+        super.onPause();
+    }
+
+    private void toggleUrlSuggestions(boolean visible) {
+        View container = findViewById(R.id.url_suggestions_container);
+        View closeIcon = findViewById(R.id.wunderbar_close);
+        container.setVisibility(visible ? View.VISIBLE : View.GONE);
+        closeIcon.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    private void setupUriBar() {
+        findViewById(R.id.wunderbar_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.wunderbar).clearFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        });
+        findViewById(R.id.wunderbar).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                toggleUrlSuggestions(hasFocus);
+            }
+        });
+
+        ((EditText) findViewById(R.id.wunderbar)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence != null) {
+                    handleUriInputChanged(charSequence.toString().trim());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        urlSuggestionListAdapter = new UrlSuggestionListAdapter(this);
+        urlSuggestionListAdapter.setListener(new UrlSuggestionListAdapter.UrlSuggestionClickListener() {
+            @Override
+            public void onUrlSuggestionClicked(UrlSuggestion urlSuggestion) {
+                switch (urlSuggestion.getType()) {
+                    case UrlSuggestion.TYPE_CHANNEL:
+                        // open channel page
+                        break;
+                    case UrlSuggestion.TYPE_FILE:
+                        Context context = MainActivity.this;
+                        if (urlSuggestion.getClaim() != null) {
+                            openFileClaim(urlSuggestion.getClaim(), context);
+                        } else {
+                            openFileUrl(urlSuggestion.getUri().toString(), context);
+                        }
+                        break;
+                    case UrlSuggestion.TYPE_SEARCH:
+                        launchSearch(urlSuggestion.getText());
+                        break;
+                    case UrlSuggestion.TYPE_TAG:
+                        // open tag page
+                        break;
+                }
+                findViewById(R.id.wunderbar).clearFocus();
+                //findViewById(R.id.url_suggestions_container).setVisibility(View.GONE);
+            }
+        });
+
+        RecyclerView urlSuggestionList = findViewById(R.id.url_suggestions);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        urlSuggestionList.setLayoutManager(llm);
+        urlSuggestionList.setAdapter(urlSuggestionListAdapter);
+    }
+
+    private void launchSearch(String text) {
+        Fragment currentFragment = getCurrentFragment();
+        if (currentFragment instanceof SearchFragment) {
+            ((SearchFragment) currentFragment).search(text, 0);
+        } else {
+            try {
+                SearchFragment fragment = SearchFragment.class.newInstance();
+                fragment.setCurrentQuery(text);
+                openFragment(fragment, true);
+            } catch (Exception ex) {
+                // pass
+            }
+        }
+    }
+
+    private void resolveUrlSuggestions(List<String> urls) {
+        ResolveTask task = new ResolveTask(urls, Lbry.LBRY_TV_CONNECTION_STRING, null, new ResolveTask.ResolveResultHandler() {
+            @Override
+            public void onSuccess(List<Claim> claims) {
+                for (int i = 0; i < claims.size(); i++) {
+                    // build a simple url from the claim for matching
+                    Claim claim = claims.get(i);
+                    if (Helper.isNullOrEmpty(claim.getName())) {
+                        continue;
+                    }
+
+                    LbryUri simpleUrl = new LbryUri();
+                    if (claim.getName().startsWith("@")) {
+                        // channel
+                        simpleUrl.setChannelName(claim.getName());
+                    } else {
+                        simpleUrl.setStreamName(claim.getName());
+                    }
+
+                    urlSuggestionListAdapter.setClaimForUrl(simpleUrl, claim);
+                }
+                urlSuggestionListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Exception error) {
+
+            }
+        });
+        task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    private void handleUriInputChanged(String text) {
+        // build the default suggestions
+        urlSuggestionListAdapter.clear();
+        if (Helper.isNullOrEmpty(text)) {
+            return;
+        }
+
+        List<UrlSuggestion> defaultSuggestions = buildDefaultSuggestions(text);
+        urlSuggestionListAdapter.addUrlSuggestions(defaultSuggestions);
+
+        LighthouseAutoCompleteTask task = new LighthouseAutoCompleteTask(text, null, new LighthouseAutoCompleteTask.AutoCompleteResultHandler() {
+            @Override
+            public void onSuccess(List<UrlSuggestion> suggestions) {
+                urlSuggestionListAdapter.addUrlSuggestions(suggestions);
+
+                List<String> urls = urlSuggestionListAdapter.getItemUrls();
+                resolveUrlSuggestions(urls);
+            }
+
+            @Override
+            public void onError(Exception error) {
+
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private List<UrlSuggestion> buildDefaultSuggestions(String text) {
+        List<UrlSuggestion> suggestions = new ArrayList<UrlSuggestion>();
+
+        // First item is always search
+        UrlSuggestion searchSuggestion = new UrlSuggestion(UrlSuggestion.TYPE_SEARCH, text);
+        suggestions.add(searchSuggestion);
+
+        if (!text.matches(LbryUri.REGEX_INVALID_URI)) {
+            boolean isChannel = text.startsWith("@");
+            if (!isChannel) {
+                LbryUri uri = new LbryUri();
+                uri.setStreamName(text);
+                UrlSuggestion fileSuggestion = new UrlSuggestion(UrlSuggestion.TYPE_FILE, text);
+                fileSuggestion.setUri(uri);
+                suggestions.add(fileSuggestion);
+            }
+
+            if (text.indexOf(' ') == -1) {
+                // channels and tags should not contain spaces
+                if (isChannel) {
+                    LbryUri uri = new LbryUri();
+                    uri.setChannelName(text);
+                    UrlSuggestion suggestion = new UrlSuggestion(UrlSuggestion.TYPE_CHANNEL, text);
+                    suggestion.setUri(uri);
+                    suggestions.add(suggestion);
+                } else {
+                    UrlSuggestion suggestion = new UrlSuggestion(UrlSuggestion.TYPE_TAG, text);
+                    suggestions.add(suggestion);
+                }
+            }
+        }
+
+        return suggestions;
+    }
+
+    private void checkNowPlaying() {
+        if (nowPlayingClaim != null) {
+            findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.global_now_playing_title)).setText(nowPlayingClaim.getTitle());
+            ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(nowPlayingClaim.getPublisherTitle());
+        }
+        if (appPlayer != null) {
+            PlayerView playerView = findViewById(R.id.global_now_playing_player_view);
+            playerView.setPlayer(null);
+            playerView.setPlayer(appPlayer);
+            playerView.setUseController(false);
+        }
+    }
+
+    private void initKeyStore() {
+        try {
+            Lbry.KEYSTORE = Utils.initKeyStore(this);
+        } catch (Exception ex) {
+            // This shouldn't happen, but in case it does.
+            Toast.makeText(this, "The keystore could not be initialized. The app requires a secure keystore to run properly.", Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+    private void checkFirstRun() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean firstRunCompleted = sp.getBoolean(PREFERENCE_KEY_FIRST_RUN_COMPLETED, false);
+        if (!firstRunCompleted) {
+            startActivity(new Intent(this, FirstRunActivity.class));
+        } else if (!appStarted) {
+            // first run completed, startup
+            startup();
+        }
+    }
+
+    public static boolean isServiceRunning(Context context, Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(serviceInfo.service.getClassName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void loadAuthToken() {
+        // Check if an auth token is present and then set it for Lbryio
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String encryptedAuthToken = sp.getString(PREFERENCE_KEY_AUTH_TOKEN, null);
+        if (!Helper.isNullOrEmpty(encryptedAuthToken)) {
+            try {
+                Lbryio.AUTH_TOKEN = new String(Utils.decrypt(
+                        Base64.decode(encryptedAuthToken, Base64.NO_WRAP), this, Lbry.KEYSTORE), "UTF8");
+            } catch (Exception ex) {
+                // pass. A new auth token would have to be generated if the old one cannot be decrypted
+                android.util.Log.e(TAG, "Could not decrypt existing auth token.", ex);
+            }
+        }
+    }
+
+    private void checkSdkReady() {
+        if (!Lbry.SDK_READY) {
+            new Handler().postDelayed(() -> {
+                if (checkSdkReadyTask != null && checkSdkReadyTask.getStatus() != AsyncTask.Status.FINISHED) {
+                    // task already running
+                    return;
+                }
+                checkSdkReadyTask = new CheckSdkReadyTask(MainActivity.this, sdkStatusListeners);
+                checkSdkReadyTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }, CHECK_SDK_READY_INTERVAL);
+        } else {
+            scheduleWalletBalanceUpdate();
+        }
+    }
+
+    public void onSdkReady() {
+        if (Lbryio.isSignedIn()) {
+            checkSyncedWallet();
+        }
+        scheduleWalletBalanceUpdate();
+    }
+
+    private void scheduleWalletBalanceUpdate() {
+        if (scheduler != null && !walletBalanceUpdateScheduled) {
+            scheduler.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    updateWalletBalance();
+                }
+            }, 0, 5, TimeUnit.SECONDS);
+            walletBalanceUpdateScheduled = true;
+        }
+    }
+
+    private void registerRequestsReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_AUTH_TOKEN_GENERATED);
+        intentFilter.addAction(ACTION_OPEN_ALL_CONTENT_TAG);
+        intentFilter.addAction(ACTION_USER_SIGN_IN_SUCCESS);
+        requestsReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (ACTION_AUTH_TOKEN_GENERATED.equalsIgnoreCase(action)) {
+                    handleAuthTokenGenerated(intent);
+                } else if (ACTION_OPEN_ALL_CONTENT_TAG.equalsIgnoreCase(action)) {
+                    handleOpenContentTag(intent);
+                } else if (ACTION_USER_SIGN_IN_SUCCESS.equalsIgnoreCase(action)) {
+                    handleUserSignInSuccess(intent);
+                }
+            }
+
+            private void handleAuthTokenGenerated(Intent intent) {
+                // store the value
+                String encryptedAuthToken = intent.getStringExtra("authToken");
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                sp.edit().putString(PREFERENCE_KEY_AUTH_TOKEN, encryptedAuthToken).apply();
+            }
+
+            private void handleOpenContentTag(Intent intent) {
+                String tag = intent.getStringExtra("tag");
+                if (!Helper.isNullOrEmpty(tag)) {
+                    pendingAllContentTag = tag;
+                }
+            }
+            private void handleUserSignInSuccess(Intent intent) {
+                pendingFollowingReload = true;
+            }
+            private void handleOpenChannelUrl(String url) {
+                pendingChannelUrl = url;
+            }
+        };
+        registerReceiver(requestsReceiver, intentFilter);
+    }
+
+    private void loadFollowingContent() {
+        for (Fragment fragment : openNavFragments.values()) {
+            if (fragment instanceof FollowingFragment) {
+                ((FollowingFragment) fragment).loadFollowing();
+            }
+        }
+    }
+
+    private void registerUserActionsReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_NOW_PLAYING_CLAIM_UPDATED);
+        intentFilter.addAction(ACTION_NOW_PLAYING_CLAIM_CLEARED);
+        userActionsReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (ACTION_NOW_PLAYING_CLAIM_UPDATED.equals(action)) {
+                    handleNowPlayingClaimUpdated();
+                } else if (ACTION_NOW_PLAYING_CLAIM_CLEARED.equals(action)) {
+                    handleNowPlayingClaimCleared();
+                }
+            }
+
+            private void handleNowPlayingClaimUpdated() {
+                if (nowPlayingClaim != null) {
+                    ((TextView) findViewById(R.id.global_now_playing_title)).setText(nowPlayingClaim.getTitle());
+                    ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(nowPlayingClaim.getPublisherTitle());
+                }
+            }
+
+            private void handleNowPlayingClaimCleared() {
+                findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
+                ((TextView) findViewById(R.id.global_now_playing_title)).setText(null);
+                ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(null);
+            }
+        };
+        registerReceiver(userActionsReceiver, intentFilter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            // check fragment and nav history
+            FragmentManager manager = getSupportFragmentManager();
+            int backCount = getSupportFragmentManager().getBackStackEntryCount();
+            if (backCount > 0) {
+                // we can pop the stack
+                manager.popBackStack();
+                setSelectedNavMenuItemForFragment(getCurrentFragment());
+            } else if (!enterPIPMode()) {
+                // we're at the top of the stack
+                moveTaskToBack(true);
+                return;
+            }
+        }
+    }
+
+    public void simpleSignIn() {
+        Intent intent = new Intent(this, VerificationActivity.class);
+        intent.putExtra("flow", VerificationActivity.VERIFICATION_FLOW_SIGN_IN);
+        startActivityForResult(intent, REQUEST_SIMPLE_SIGN_IN);
+    }
+
+    public void walletSyncSignIn() {
+        Intent intent = new Intent(this, VerificationActivity.class);
+        intent.putExtra("flow", VerificationActivity.VERIFICATION_FLOW_WALLET);
+        startActivityForResult(intent, REQUEST_WALLET_SYNC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            // user signed in
+            showSignedInUser();
+
+            if (requestCode == REQUEST_WALLET_SYNC_SIGN_IN) {
+                for (Fragment fragment : openNavFragments.values()) {
+                    if (fragment instanceof WalletFragment) {
+                        ((WalletFragment) fragment).onWalletSyncEnabled();
+                    }
+                }
+            }
+        }
+    }
+
+    private void showSignedInUser() {
+        if (Lbryio.isSignedIn()) {
+            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            findViewById(R.id.signed_in_email_container).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.signed_in_email)).setText(Lbryio.getSignedInEmail());
+            findViewById(R.id.sign_in_header_divider).setBackgroundColor(getResources().getColor(R.color.lightDivider));
+        }
+    }
+
+    private Fragment getCurrentFragment() {
+        int backCount = getSupportFragmentManager().getBackStackEntryCount();
+        if (backCount > 0) {
+            try {
+                Fragment fragment = getSupportFragmentManager().getFragments().get(backCount - 1);
+                return fragment;
+            } catch (IndexOutOfBoundsException ex) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public void hideActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
+    }
+    public void showActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.show();
+        }
+    }
+
+    private void startup() {
+        final Context context = this;
+        // perform some tasks before launching
+        (new AsyncTask<Void, Void, Boolean>() {
+            protected void onPreExecute() {
+                hideActionBar();
+                lockDrawer();
+                findViewById(R.id.splash_view).setVisibility(View.VISIBLE);
+            }
+            protected Boolean doInBackground(Void... params) {
+                BufferedReader reader = null;
+                try {
+                    // Load the installation id from the file system
+                    String lbrynetDir = String.format("%s/%s", Utils.getAppInternalStorageDir(context), "lbrynet");
+                    String installIdPath = String.format("%s/install_id", lbrynetDir);
+                    reader = new BufferedReader(new InputStreamReader(new FileInputStream(installIdPath)));
+                    String installId = reader.readLine();
+                    if (Helper.isNullOrEmpty(installId)) {
+                        // no install_id found (first run didn't start the sdk successfully?)
+                        return false;
+                    }
+
+                    // load the exchange rate
+                    if (Lbryio.LBCUSDRate == 0) {
+                        Lbryio.loadExchangeRate();
+                    }
+
+                    Lbry.INSTALLATION_ID = installId;
+                    if (Lbryio.currentUser == null) {
+                        Lbryio.authenticate(context);
+                    }
+                    Lbryio.newInstall(context);
+
+                    // (light) fetch subscriptions
+                    if (Lbryio.cacheSubscriptions.size() == 0) {
+                        List<Subscription> subscriptions = new ArrayList<>();
+                        List<String> subUrls = new ArrayList<>();
+                        JSONArray array = (JSONArray) Lbryio.parseResponse(Lbryio.call("subscription", "list", context));
+                        if (array != null) {
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject item = array.getJSONObject(i);
+                                String claimId = item.getString("claim_id");
+                                String channelName = item.getString("channel_name");
+
+                                LbryUri url = new LbryUri();
+                                url.setChannelName(channelName);
+                                url.setClaimId(claimId);
+                                subscriptions.add(new Subscription(channelName, url.toString()));
+                                subUrls.add(url.toString());
+                            }
+                            Lbryio.cacheSubscriptions = subscriptions;
+
+                            // resolve subscriptions
+                            if (subUrls.size() > 0 && Lbryio.cacheResolvedSubscriptions.size() != Lbryio.cacheSubscriptions.size()) {
+                                List<Claim> resolvedSubs = Lbry.resolve(subUrls, Lbry.LBRY_TV_CONNECTION_STRING);
+                                Lbryio.cacheResolvedSubscriptions = resolvedSubs;
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    // nope
+                    android.util.Log.e(TAG, String.format("App startup failed: %s", ex.getMessage()), ex);
+                    return false;
+                } finally {
+                    Helper.closeCloseable(reader);
+                }
+
+                return true;
+            }
+            protected void onPostExecute(Boolean startupSuccessful) {
+                if (!startupSuccessful) {
+                    Toast.makeText(context, R.string.startup_failed, Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+                }
+
+                findViewById(R.id.splash_view).setVisibility(View.GONE);
+                unlockDrawer();
+                showActionBar();
+
+                if (navMenuAdapter != null) {
+                    navMenuAdapter.setCurrentItem(NavMenuItem.ID_ITEM_FOLLOWING);
+                }
+
+                loadLastFragment();
+                showSignedInUser();
+
+                appStarted = true;
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void loadLastFragment() {
+        Fragment fragment = getCurrentFragment();
+
+        if (fragment != null) {
+            openFragment(fragment, true);
+        } else {
+            openFragment(FollowingFragment.class, false, NavMenuItem.ID_ITEM_FOLLOWING);
+        }
+    }
+
+    private void setSelectedNavMenuItemForFragment(Fragment fragment) {
+        if (fragment == null) {
+            // assume the first fragment is selected
+            navMenuAdapter.setCurrentItem(NavMenuItem.ID_ITEM_FOLLOWING);
+            return;
+        }
+
+        Class fragmentClass = fragment.getClass();
+        if (fragmentClassNavIdMap.containsKey(fragmentClass)) {
+            navMenuAdapter.setCurrentItem(fragmentClassNavIdMap.get(fragmentClass));
+        }
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        enterPIPMode();
+    }
+
+    protected boolean enterPIPMode() {
+        if (enteringPIPMode) {
+            return true;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                appPlayer != null &&
+                FileViewActivity.instance == null &&
+                !startingFileViewActivity) {
+            enteringPIPMode = true;
+
+            getSupportActionBar().hide();
+            findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
+            findViewById(R.id.pip_player).setVisibility(View.VISIBLE);
+
+            PictureInPictureParams params = new PictureInPictureParams.Builder().build();
+            enterPictureInPictureMode(params);
+            return true;
+        }
+
+        return false;
     }
 
     private void registerServiceActionsReceiver() {
@@ -290,6 +1138,12 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         registerReceiver(serviceActionsReceiver, intentFilter);
     }
 
+    private void unregisterReceivers() {
+        Helper.unregisterReceiver(requestsReceiver, this);
+        Helper.unregisterReceiver(serviceActionsReceiver, this);
+        Helper.unregisterReceiver(userActionsReceiver, this);
+    }
+
     private Notification buildServiceNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, LbrynetService.NOTIFICATION_CHANNEL_ID);
         Intent contextIntent = new Intent(this, MainActivity.class);
@@ -312,556 +1166,73 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         return notification;
     }
 
-    private void registerNotificationsReceiver() {
-        // Background media receiver
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(BackgroundMediaModule.ACTION_PLAY);
-        filter.addAction(BackgroundMediaModule.ACTION_PAUSE);
-        notificationsReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
-                if (reactContext != null) {
-                    if (BackgroundMediaModule.ACTION_PLAY.equals(action)) {
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("onBackgroundPlayPressed", null);
-                    }
-                    if (BackgroundMediaModule.ACTION_PAUSE.equals(action)) {
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("onBackgroundPausePressed", null);
-                    }
-                }
-            }
-        };
-        registerReceiver(notificationsReceiver, filter);
+    private static List<NavMenuItem> buildNavMenu(Context context) {
+        NavMenuItem findContentGroup = new NavMenuItem(NavMenuItem.ID_GROUP_FIND_CONTENT, R.string.find_content, true, context);
+        NavMenuItem yourContentGroup = new NavMenuItem(NavMenuItem.ID_GROUP_YOUR_CONTENT, R.string.your_content, true, context);
+        NavMenuItem walletGroup = new NavMenuItem(NavMenuItem.ID_GROUP_WALLET, R.string.wallet, true, context);
+        NavMenuItem otherGroup = new NavMenuItem(NavMenuItem.ID_GROUP_OTHER, 0, true, context);
+
+        findContentGroup.setItems(Arrays.asList(
+                new NavMenuItem(NavMenuItem.ID_ITEM_FOLLOWING, R.string.fa_heart, R.string.following, "Following", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_EDITORS_CHOICE, R.string.fa_star, R.string.editors_choice, "EditorsChoice", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_YOUR_TAGS, R.string.fa_hashtag, R.string.your_tags, "YourTags", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_ALL_CONTENT, R.string.fa_globe_americas, R.string.all_content, "AllContent", context)
+        ));
+
+        yourContentGroup.setItems(Arrays.asList(
+                new NavMenuItem(NavMenuItem.ID_ITEM_NEW_PUBLISH, R.string.fa_upload, R.string.new_publish, "NewPublish", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_CHANNELS, R.string.fa_at, R.string.channels, "Channels", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_LIBRARY, R.string.fa_download, R.string.library, "Library", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_PUBLISHES, R.string.fa_cloud_upload, R.string.publishes, "Publishes", context)
+        ));
+
+        walletGroup.setItems(Arrays.asList(
+                new NavMenuItem(NavMenuItem.ID_ITEM_WALLET, R.string.fa_wallet, R.string.wallet, "Wallet", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_REWARDS, R.string.fa_award, R.string.rewards, "Rewards", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_INVITES, R.string.fa_user_friends, R.string.invites, "Invites", context)
+        ));
+
+        otherGroup.setItems(Arrays.asList(
+                new NavMenuItem(NavMenuItem.ID_ITEM_SETTINGS, R.string.fa_cog, R.string.settings, "Settings", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_ABOUT, R.string.fa_mobile_alt, R.string.about, "About", context)
+        ));
+
+        return Arrays.asList(findContentGroup, yourContentGroup, walletGroup, otherGroup);
     }
 
-    public void registerSmsReceiver() {
-        if (!hasPermission(Manifest.permission.RECEIVE_SMS, this)) {
-            // don't create the receiver if we don't have the read sms permission
-            return;
-        }
-
-        IntentFilter smsFilter = new IntentFilter();
-        smsFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
-        smsReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                // Get the message
-                Bundle bundle = intent.getExtras();
-                if (bundle != null) {
-                    Object[] pdus = (Object[]) bundle.get("pdus");
-                    if (pdus != null && pdus.length > 0) {
-                        SmsMessage sms  = SmsMessage.createFromPdu((byte[]) pdus[0]);
-                        String text = sms.getMessageBody();
-                        if (text == null || text.trim().length() == 0) {
-                            return;
-                        }
-
-                        // Retrieve verification code from the text message if it contains
-                        // the strings "lbry", "verification code" and the colon (following the expected format)
-                        text = text.toLowerCase();
-                        if (text.indexOf("lbry") > -1 &&  text.indexOf("verification code") > -1 && text.indexOf(":") > -1) {
-                            String code = text.substring(text.lastIndexOf(":") + 1).trim();
-                            ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
-                            if (reactContext != null) {
-                                WritableMap params = Arguments.createMap();
-                                params.putString("code", code);
-                                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                    .emit("onVerificationCodeReceived", params);
-                            }
-                        }
-                    }
-                }
-            }
-        };
-        registerReceiver(smsReceiver, smsFilter);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (!Settings.canDrawOverlays(this)) {
-                    // SYSTEM_ALERT_WINDOW permission not granted...
+    // Flatten the structure into a single list for the RecyclerView
+    private static List<NavMenuItem> flattenNavMenu(List<NavMenuItem> navMenuItems) {
+        List<NavMenuItem> flatMenu = new ArrayList<>();
+        for (NavMenuItem item : navMenuItems) {
+            flatMenu.add(item);
+            if (item.getItems() != null) {
+                for (NavMenuItem subItem : item.getItems()) {
+                    flatMenu.add(subItem);
                 }
             }
         }
 
-        if (requestCode == DOCUMENT_PICKER_RESULT_CODE) {
-            ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
-            if (reactContext != null) {
-                if (resultCode == RESULT_OK) {
-                    Uri fileUri = data.getData();
-                    String filePath = getRealPathFromURI_API19(this, fileUri);
-                    WritableMap params = Arguments.createMap();
-                    params.putString("path", filePath);
-                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("onDocumentPickerFilePicked", params);
-                } else if (resultCode == RESULT_CANCELED) {
-                    // user canceled or request failed
-                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("onDocumentPickerCanceled", null);
-                }
-            }
-        }
+        return flatMenu;
     }
 
-    public static Activity getActivity() {
-        Activity activity = new Activity();
-        activity = currentActivity;
-        return activity;
+    public static void setNowPlayingClaim(Claim claim, Context context) {
+        nowPlayingClaim = claim;
+        context.sendBroadcast(new Intent(ACTION_NOW_PLAYING_CLAIM_UPDATED));
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
-        switch (requestCode) {
-            case STORAGE_PERMISSION_REQ_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this)) {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                Uri.parse("package:" + getPackageName()));
-                        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
-                    }
-                    if (reactContext != null) {
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("onStoragePermissionGranted", null);
-                    }
-                } else {
-                    // Permission not granted
-                    /*Toast.makeText(this,
-                        "LBRY requires access to your device storage to be able to download files and media." +
-                        " Please enable the storage permission and restart the app.", Toast.LENGTH_LONG).show();*/
-                    if (reactContext != null) {
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("onStoragePermissionRefused", null);
-                    }
-                }
-                break;
-
-            case PHONE_STATE_PERMISSION_REQ_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted. Emit an onPhoneStatePermissionGranted event
-                    if (reactContext != null) {
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("onPhoneStatePermissionGranted", null);
-                    }
-                } else {
-                    // Permission not granted. Simply show a message.
-                    Toast.makeText(this,
-                        "No permission granted to read your device state. Rewards cannot be claimed.", Toast.LENGTH_LONG).show();
-                }
-                break;
-
-            case RECEIVE_SMS_PERMISSION_REQ_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted. Emit an onPhoneStatePermissionGranted event
-                    if (reactContext != null) {
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("onReceiveSmsPermissionGranted", null);
-                    }
-
-                    // register the receiver
-                    if (smsReceiver == null) {
-                        registerSmsReceiver();
-                    }
-                } else {
-                    // Permission not granted. Simply show a message.
-                    Toast.makeText(this,
-                        "No permission granted to receive your SMS messages. You may have to enter the verification code manually.",
-                        Toast.LENGTH_LONG).show();
-                }
-                break;
-        }
-
-        if (permissionListener != null) {
-            permissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
+    public static void clearNowPlayingClaim(Context context) {
+        nowPlayingClaim = null;
+        context.sendBroadcast(new Intent(ACTION_NOW_PLAYING_CLAIM_CLEARED));
     }
 
-    @Override
-    public void invokeDefaultOnBackPressed() {
-        super.onBackPressed();
-    }
+    private static class CheckSdkReadyTask extends AsyncTask<Void, Void, Boolean> {
+        private Context context;
+        private List<SdkStatusListener> listeners;
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostPause(this);
+        public CheckSdkReadyTask(Context context, List<SdkStatusListener> listeners) {
+            this.context = context;
+            this.listeners = new ArrayList<>(listeners);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        LbrynetService.setDHTEnabled(sp.getBoolean(UtilityModule.DHT_ENABLED, false));
-
-        serviceRunning = isServiceRunning(this, LbrynetService.class);
-        if (!serviceRunning) {
-            ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
-        }
-        checkSdkReady();
-
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostResume(this, this);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        // check service running setting and end it here
-        SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        boolean shouldKeepDaemonRunning = sp.getBoolean(SETTING_KEEP_DAEMON_RUNNING, true);
-        if (!shouldKeepDaemonRunning) {
-            serviceRunning = isServiceRunning(this, LbrynetService.class);
-            if (serviceRunning) {
-               ServiceHelper.stop(this, LbrynetService.class);
-            }
-        }
-
-        if (notificationsReceiver != null) {
-            unregisterReceiver(notificationsReceiver);
-            notificationsReceiver = null;
-        }
-
-        if (smsReceiver != null) {
-            unregisterReceiver(smsReceiver);
-            smsReceiver = null;
-        }
-
-        if (downloadEventReceiver != null) {
-            unregisterReceiver(downloadEventReceiver);
-            downloadEventReceiver = null;
-        }
-
-        if (serviceActionsReceiver != null) {
-            unregisterReceiver(serviceActionsReceiver);
-            serviceActionsReceiver = null;
-        }
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.cancel(BackgroundMediaModule.NOTIFICATION_ID);
-        notificationManager.cancel(DownloadManager.DOWNLOAD_NOTIFICATION_GROUP_ID);
-        if (downloadNotificationIds != null) {
-            for (int i = 0; i < downloadNotificationIds.size(); i++) {
-                notificationManager.cancel(downloadNotificationIds.get(i));
-            }
-        }
-        if (receivedStopService || !isServiceRunning(this, LbrynetService.class)) {
-            notificationManager.cancelAll();
-        }
-        super.onDestroy();
-
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostDestroy(this);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onBackPressed();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    public void requestPermissions(String[] permissions, int requestCode, PermissionListener listener) {
-        permissionListener = listener;
-        ActivityCompat.requestPermissions(this, permissions, requestCode);
-    }
-
-    @Override
-    public void onNewIntent(Intent intent) {
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onNewIntent(intent);
-        }
-
-        if (intent != null) {
-            int sourceNotificationId = intent.getIntExtra(SOURCE_NOTIFICATION_ID_KEY, -1);
-            if (sourceNotificationId > -1) {
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                notificationManager.cancel(sourceNotificationId);
-            }
-
-            checkNotificationOpenIntent(intent);
-        }
-
-        super.onNewIntent(intent);
-    }
-
-    private static void checkPermission(String permission, int requestCode, String rationale, Context context, boolean forceRequest) {
-        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
-            if (!forceRequest && ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
-                Toast.makeText(context, rationale, Toast.LENGTH_LONG).show();
-            } else {
-                ActivityCompat.requestPermissions((Activity) context, new String[] { permission }, requestCode);
-            }
-        }
-    }
-
-    private static void checkPermission(String permission, int requestCode, String rationale, Context context) {
-        checkPermission(permission, requestCode, rationale, context, false);
-    }
-
-    public static boolean hasPermission(String permission, Context context) {
-        return (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
-    }
-
-    public static void checkPhoneStatePermission(Context context) {
-        // Request read phone state permission
-        checkPermission(Manifest.permission.READ_PHONE_STATE,
-                        PHONE_STATE_PERMISSION_REQ_CODE,
-                        "LBRY requires optional access to be able to identify your device for rewards. " +
-                        "You cannot claim rewards without this permission.",
-                        context,
-                        true);
-    }
-
-    public static void checkReceiveSmsPermission(Context context) {
-        // Request read phone state permission
-        checkPermission(Manifest.permission.RECEIVE_SMS,
-                        RECEIVE_SMS_PERMISSION_REQ_CODE,
-                        "LBRY requires access to be able to read a verification text message for rewards.",
-                        context,
-                        true);
-    }
-
-    public static void checkStoragePermission(Context context) {
-        // Request read phone state permission
-        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        STORAGE_PERMISSION_REQ_CODE,
-                        "LBRY requires access to your device storage to be able to download files and media.",
-                        context,
-                        true);
-    }
-
-    public static boolean isServiceRunning(Context context, Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(serviceInfo.service.getClassName())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static WritableMap JSONObjectToMap(JSONObject jsonObject) throws JSONException {
-        WritableMap map = Arguments.createMap();
-        Iterator<String> keys = jsonObject.keys();
-        while(keys.hasNext()) {
-            String key = keys.next();
-            Object value = jsonObject.get(key);
-            if (value instanceof JSONArray) {
-                map.putArray(key, JSONArrayToList((JSONArray) value));
-            } else if (value instanceof JSONObject) {
-                map.putMap(key, JSONObjectToMap((JSONObject) value));
-            } else if (value instanceof  Boolean) {
-                map.putBoolean(key, (Boolean) value);
-            } else if (value instanceof  Integer) {
-                map.putInt(key, (Integer) value);
-            } else if (value instanceof  Double) {
-                map.putDouble(key, (Double) value);
-            } else if (value instanceof String)  {
-                map.putString(key, (String) value);
-            } else {
-                map.putString(key, value.toString());
-            }
-        }
-
-        return map;
-    }
-
-    private static WritableArray JSONArrayToList(JSONArray jsonArray) throws JSONException {
-        WritableArray array = Arguments.createArray();
-        for(int i = 0; i < jsonArray.length(); i++) {
-            Object value = jsonArray.get(i);
-            if (value instanceof JSONArray) {
-                array.pushArray(JSONArrayToList((JSONArray) value));
-            } else if (value instanceof JSONObject) {
-                array.pushMap(JSONObjectToMap((JSONObject) value));
-            } else if (value instanceof  Boolean) {
-                array.pushBoolean((Boolean) value);
-            } else if (value instanceof  Integer) {
-                array.pushInt((Integer) value);
-            } else if (value instanceof  Double) {
-                array.pushDouble((Double) value);
-            } else if (value instanceof String)  {
-                array.pushString((String) value);
-            } else {
-                array.pushString(value.toString());
-            }
-        }
-
-        return array;
-    }
-
-    /**
-     * https://gist.github.com/HBiSoft/15899990b8cd0723c3a894c1636550a8
-     */
-    @SuppressLint("NewApi")
-    public static String getRealPathFromURI_API19(final Context context, final Uri uri) {
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-
-        // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                // This is for checking Main Memory
-                if ("primary".equalsIgnoreCase(type)) {
-                    if (split.length > 1) {
-                        return Environment.getExternalStorageDirectory() + "/" + split[1];
-                    } else {
-                        return Environment.getExternalStorageDirectory() + "/";
-                    }
-                    // This is for checking SD Card
-                } else {
-                    return "storage" + "/" + docId.replace(":", "/");
-                }
-
-            }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
-                String fileName = getFilePath(context, uri);
-                if (fileName != null) {
-                    return Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName;
-                }
-
-                String id = DocumentsContract.getDocumentId(uri);
-                if (id.startsWith("raw:")) {
-                    id = id.replaceFirst("raw:", "");
-                    File file = new File(id);
-                    if (file.exists())
-                        return id;
-                }
-
-                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-                return getDataColumn(context, contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[]{
-                        split[1]
-                };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
-            }
-        }
-        // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
-
-            // Return the remote address
-            if (isGooglePhotosUri(uri))
-                return uri.getLastPathSegment();
-
-            return getDataColumn(context, uri, null, null);
-        }
-        // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-
-        return null;
-    }
-
-    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
-        Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = {
-                column
-        };
-
-        try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(index);
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return null;
-    }
-
-
-    public static String getFilePath(Context context, Uri uri) {
-        Cursor cursor = null;
-        final String[] projection = { MediaStore.MediaColumns.DISPLAY_NAME };
-
-        try {
-            cursor = context.getContentResolver().query(uri, projection, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME);
-                return cursor.getString(index);
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return null;
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is ExternalStorageProvider.
-     */
-    public static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
-    public static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is MediaProvider.
-     */
-    public static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is Google Photos.
-     */
-    public static boolean isGooglePhotosUri(Uri uri) {
-        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
-    }
-
-    private class CheckSdkReadyTask extends AsyncTask<Void, Void, Boolean> {
 
         public Boolean doInBackground(Void... params) {
             boolean sdkReady = false;
@@ -870,20 +1241,13 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
                 if (response != null) {
                     JSONObject result = new JSONObject(response);
                     JSONObject status = result.getJSONObject("result");
-
-                    // send status response for splash page updates
-                    WritableMap sdkStatus = JSONObjectToMap(status);
-                    ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
-                    if (reactContext != null) {
-                        WritableMap evtParams = Arguments.createMap();
-                        evtParams.putMap("status", sdkStatus);
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onSdkStatusResponse", evtParams);
+                    if (!Lbry.IS_STATUS_PARSED) {
+                        Lbry.parseStatus(status.toString());
                     }
 
+                    // TODO: Broadcast startup status changes
                     JSONObject startupStatus = status.getJSONObject("startup_status");
-                    sdkReady = startupStatus.has("stream_manager") && startupStatus.has("wallet") &&
-                            startupStatus.getBoolean("stream_manager") && startupStatus.getBoolean("wallet") &&
-                            (status.getJSONObject("wallet").getLong("blocks_behind") <= 0);
+                    sdkReady = startupStatus.getBoolean("stream_manager") && startupStatus.getBoolean("wallet");
                 }
             } catch (ConnectException ex) {
                 // pass
@@ -894,37 +1258,167 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
             return sdkReady;
         }
         protected void onPostExecute(Boolean sdkReady) {
-            lbrySdkReady = sdkReady;
-            ReactContext reactContext = mReactInstanceManager.getCurrentReactContext();
-            if (sdkReady && reactContext != null) {
-                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onSdkReady", null);
-            }
+            Lbry.SDK_READY = sdkReady;
+            if (context != null) {
+                if (sdkReady) {
+                    context.sendBroadcast(new Intent(ACTION_SDK_READY));
 
-            if (!sdkReady) {
-                checkSdkReady();
+                    // update listeners
+                    for (SdkStatusListener listener : listeners) {
+                        if (listener != null) {
+                            listener.onSdkReady();
+                        }
+                    }
+                } else if (context instanceof MainActivity) {
+                    ((MainActivity) context).checkSdkReady();
+                }
             }
         }
     }
-    
-    public static class LaunchTiming {
-        private Date start;
-        private boolean coldStart;
-        
-        public LaunchTiming(Date start) {
-            this.start = start;
+
+    public void showNavigationBackIcon() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        
-        public Date getStart() {
-            return start;
+        if (toggle != null) {
+            TypedArray a = getTheme().obtainStyledAttributes(R.style.AppTheme, new int[] {R.attr.homeAsUpIndicator});
+            int attributeResourceId = a.getResourceId(0, 0);
+            Drawable drawable = ResourcesCompat.getDrawable(getResources(), attributeResourceId, null);
+            DrawableCompat.setTint(drawable, ContextCompat.getColor(this, R.color.actionBarForeground));
+
+            toggle.setDrawerIndicatorEnabled(false);
+            toggle.setHomeAsUpIndicator(drawable);
         }
-        public void setStart(Date start) {
-            this.start = start;
+    }
+
+    private void closeDrawer() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
+    public void lockDrawer() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    public void unlockDrawer() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    public void restoreToggle() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setTitle(null);
         }
-        public boolean isColdStart() {
-            return coldStart;
+        if (toggle != null) {
+            toggle.setDrawerIndicatorEnabled(true);
         }
-        public void setColdStart(boolean coldStart) {
-            this.coldStart = coldStart;
+        unlockDrawer();
+        showSearchBar();
+    }
+
+    public void hideSearchBar() {
+        findViewById(R.id.wunderbar_container).setVisibility(View.GONE);
+    }
+
+    public void showSearchBar() {
+        findViewById(R.id.wunderbar_container).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
+        enteringPIPMode = false;
+        if (isInPictureInPictureMode) {
+            // Hide the full-screen UI (controls, etc.) while in picture-in-picture mode.
+            renderPictureInPictureMode();
+        } else {
+            // Restore the full-screen UI.
+            renderFullMode();
         }
+    }
+
+    protected void onStop() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (!MainActivity.startingFileViewActivity && appPlayer != null && isInPictureInPictureMode()) {
+                appPlayer.setPlayWhenReady(false);
+            }
+        }
+        super.onStop();
+    }
+
+    public void openFragment(Fragment fragment, boolean allowNavigateBack) {
+        Fragment currentFragment = getCurrentFragment();
+        if (currentFragment != null && currentFragment.equals(fragment)) {
+            return;
+        }
+
+        try {
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction().replace(R.id.content_main, fragment);
+            if (allowNavigateBack) {
+                transaction.addToBackStack(null);
+            }
+            transaction.commit();
+        } catch (Exception ex) {
+            // pass
+        }
+    }
+
+    public void openFragment(Class fragmentClass, boolean allowNavigateBack, int navItemId) {
+        openFragment(fragmentClass, allowNavigateBack, navItemId, null);
+    }
+
+    private static String buildNavFragmentKey(Class fragmentClass, int navItemId) {
+        return String.format("%s-%d", fragmentClass.getName(), navItemId);
+    }
+
+    public void openFragment(Class fragmentClass, boolean allowNavigateBack, int navItemId, Map<String, Object> params) {
+        try {
+            String key = buildNavFragmentKey(fragmentClass, navItemId);
+            Fragment fragment = openNavFragments.containsKey(key) ? openNavFragments.get(key) : (Fragment) fragmentClass.newInstance();
+            if (fragment instanceof BaseFragment) {
+                ((BaseFragment) fragment).setParams(params);
+                }
+            Fragment currentFragment = getCurrentFragment();
+            if (currentFragment != null && currentFragment.equals(fragment)) {
+                return;
+            }
+
+            fragment.setRetainInstance(true);
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction().replace(R.id.content_main, fragment);
+            if (allowNavigateBack) {
+                transaction.addToBackStack(null);
+            }
+            transaction.commit();
+
+            if (navItemId > -1) {
+                openNavFragments.put(key, fragment);
+            }
+        } catch (Exception ex) {
+            // pass
+        }
+    }
+
+    private void checkSyncedWallet() {
+        String password = Utils.getSecureValue(SECURE_VALUE_KEY_SAVED_PASSWORD, this, Lbry.KEYSTORE);
+        // Just check if the current user has a synced wallet, no need to do anything else here
+        SyncGetTask task = new SyncGetTask(password, false, null, new DefaultSyncTaskHandler() {
+            @Override
+            public void onSyncGetSuccess(WalletSync walletSync) {
+                Lbryio.userHasSyncedWallet = true;
+                Lbryio.setLastWalletSync(walletSync);
+                Lbryio.setLastRemoteHash(walletSync.getHash());
+            }
+
+            @Override
+            public void onSyncGetWalletNotFound() { }
+            @Override
+            public void onSyncGetError(Exception error) { }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

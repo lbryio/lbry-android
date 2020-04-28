@@ -1,14 +1,232 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LBRY</string>
-    <string name="default_notification_channel_id">io.lbry.browser.LBRY_ENGAGEMENT_CHANNEL</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 
-    <string name="running">Running</string>
-    <string name="service_status">Service Status</string>
-    <string name="stopped">Stopped</string>
-    <string name="start">START</string>
-    <string name="stop">STOP</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
 
-    <string name="unit_tests">Unit tests</string>
-    <string name="run_tests">RUN</string>
+    <string name="home_second">Home Second</string>
+
+
+    <!-- Nav menu -->
+    <string name="find_content">Find Content</string>
+    <string name="your_content">Your Content</string>
+    <string name="wallet">Wallet</string>
+
+    <string name="following">Following</string>
+    <string name="editors_choice">Editor\'s Choice</string>
+    <string name="your_tags">Your Tags</string>
+    <string name="all_content">All Content</string>
+    <string name="channels">Channels</string>
+    <string name="library">Library</string>
+    <string name="publishes">Publishes</string>
+    <string name="new_publish">New Publish</string>
+    <string name="rewards">Rewards</string>
+    <string name="invites">Invites</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+
+    <string name="sign_in">Sign In</string>
+    <string name="startup_failed">App startup failed. Please check your data connection and try again. If this problem persists, please email hello@lbry.com</string>
+
+    <!-- Welcome Page -->
+    <string name="welcome_to_lbry">Welcome to LBRY.</string>
+    <string name="welcome_paragraph">LBRY is a community-controlled content platform where you can find and publish videos, music, books, and more.</string>
+    <string name="welcome_tos">By continuing, I agree to the &lt;a href="https://lbry.com/termsofservice"&gt;Terms of Service&lt;/a&gt; and confirm I am over the age of 13.</string>
+    <string name="welcome_please_wait">Please wait while we get some things ready...</string>
+    <string name="use_lbry">Use LBRY »</string>
+
+    <!-- URI bar -->
+    <string name="uri_placeholder">Search videos, music and more</string>
+
+    <!-- Following page -->
+    <string name="find_channels_to_follow">Find Channels to follow</string>
+    <string name="channels_you_follow">Channels you follow</string>
+    <string name="discover">Discover</string>
+    <string name="lbry_works_better">LBRY works better if you follow at least 5 creators you like. Sign in to show creators you follow if you already have an account.</string>
+    <string name="select_five_subscriptions">Please select up to 5 creators to continue.</string>
+    <string name="n_remaining">%1$d remaining...</string>
+    <string name="done">Done</string>
+    <string name="all">ALL</string>
+
+    <!-- Claim lists -->
+    <string name="anonymous">Anonymous</string>
+
+    <!-- File view -->
+    <string name="tags">Tags</string>
+
+    <string name="share">Share</string>
+    <string name="repost">Repost</string>
+    <string name="tip">Tip</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="download">Download</string>
+    <string name="report">Report</string>
+    <string name="loading_decentralized_data">Loading decentralized data...</string>
+    <string name="related_content">Related Content</string>
+
+    <string name="unsupported_content">Unsupported Content</string>
+    <string name="unsupported_content_desc">Sorry, we are unable to display this content in the app. You can find the file named %1$s in your downloads folder.</string>
+
+    <!-- Channel view -->
+    <string name="no_channel_info">There\'s nothing here yet.\nPlease check back later.</string>
+    <string name="content">Content</string>
+    <string name="website">Website</string>
+
+    <!-- Settings -->
+    <string name="user_interface">User interface</string>
+    <string name="other">Other</string>
+    <string name="enable_dark_mode">Enable dark theme</string>
+    <string name="show_url_suggestions">Show URL suggestsions</string>
+    <string name="notifications">Notifications</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="content_interests">Content Interests</string>
+
+    <string name="keep_sdk_in_background">Keep the LBRY service running in the background for improved wallet and network performance</string>
+    <string name="participate_in_data_network">Participate in the data network</string>
+
+    <!-- URL suggestions -->
+    <string name="search_url_title">%1$s - Search</string>
+    <string name="tag_url_title">%1$s - Tag</string>
+    <string name="search_url_desc">Search for \'%1$s\'</string>
+    <string name="explore_tag_url_desc">Explore the \'%1$s\' tag</string>
+    <string name="view_file_url_desc">View content at %1$s</string>
+    <string name="view_channel_url_desc">View the %1$s channel</string>
+
+    <!-- Search -->
+    <string name="search_no_results">No results found for "%1$s". Please enter a different search term.</string>
+    <string name="search_no_query">You can search for anything including movies, music, ebooks, software and more.</string>
+
+    <!-- Wallet -->
+    <string name="balance">Balance</string>
+    <string name="you_currently_have">You currently have</string>
+    <string name="convert_credits">You can convert your credits to USD and withdraw the converted amount using an exchange. &lt;a href="https://lbry.com/faq/exchanges"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="convert_credits_bittrex">&lt;a href="https://bittrex.com/Account/Register?referralCode=4M1-P30-BON"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
+    <string name="you_also_have">You also have</string>
+    <string name="you_staked">You staked</string>
+    <string name="in_tips">in tips</string>
+    <string name="in_your_publishes">in your publishes</string>
+    <string name="in_your_supports">in your supports</string>
+    <string name="earn_more_tips">Earn more tips by uploading cool videos</string>
+    <string name="sdk_initializing">The background service is still initializing. You can explore and watch content in the mean time.</string>
+
+    <string name="backup_synced">A backup of your wallet is synced with lbry.tv</string>
+    <string name="backup_notsynced">Your wallet is not currently synced with lbry.tv. You are responsible for backing up your wallet.</string>
+    <string name="synced_what_does_this_mean">&lt;a href="https://lbry.com/faq/account-sync"&gt;What does this mean?&lt;/a&gt;</string>
+    <string name="backup_what_does_this_mean">&lt;a href="https://lbry.com/faq/how-to-backup-wallet#android"&gt;What does this mean?&lt;/a&gt;</string>
+
+    <string name="receive_credits">Receive Credits</string>
+    <string name="use_this_address_hint">Use this wallet address to receive credits sent by another user (or yourself).</string>
+    <string name="get_new_address">Get new address</string>
+    <string name="generate_address_hint">You can generate a new address at any time, and any previous addresses will conintue to work. Using multiple addresses can be helpful for keeping track of incoming payments from multiple sources.</string>
+
+    <string name="send_credits">Send Credits</string>
+    <string name="recipient_address">Recipient address</string>
+    <string name="recipient_address_placeholder">bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs</string>
+    <string name="amount">Amount</string>
+    <string name="send">Send</string>
+
+    <string name="recent_transactions">Recent Transactions</string>
+    <string name="view_all">View All</string>
+    <string name="receive">Receive</string>
+    <string name="spend">Spend</string>
+    <string name="publish">Publish</string>
+    <string name="support">Support</string>
+    <string name="abandon">Abandon</string>
+    <string name="channel">Channel</string>
+
+    <string name="wallet_sync">Wallet Sync</string>
+    <string name="sync_status">Sync status</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="email">Email</string>
+    <string name="no_connected_email">No connected email</string>
+    <string name="manual_backup">&lt;a href="https://lbry.com/faq/how-to-backup-wallet#android"&gt;Manual backup&lt;/a&gt;</string>
+    <string name="sync_faq">&lt;a href="https://lbry.com/faq/how-to-backup-wallet#sync"&gt;Sync FAQ&lt;/a&gt;</string>
+    <string name="zero">0</string>
+    <string name="lbc">LBC</string>
+
+    <string name="account_recommended">Account Recommended</string>
+    <string name="wallet_account_desc">A lbry.tv account allows you to earn rewards, backup your wallet, and keep everything in sync.</string>
+    <string name="wallet_without_account">Without an account, you assume all responsibility for securing your wallet and LBRY data.</string>
+    <string name="skip_account">Skip Account</string>
+    <string name="sign_up">Sign up</string>
+    <string name="address_copied">Address copied</string>
+
+    <string name="invalid_recipient_address">Please enter a valid address to send credits to</string>
+    <string name="insufficient_balance">Insufficient balance</string>
+    <string name="invalid_amount">Please enter a valid amount</string>
+    <string name="send_credit_error">Your credits could not be sent at this time. Please try again later.</string>
+    <string name="loading_transactions">Loading transactions...</string>
+    <string name="no_recent_transactions">There are no recent transactions to display.</string>
+    <string name="tx_list_fee">fee %1$s</string>
+
+    <plurals name="you_sent_credits">
+        <item quantity="one">You sent %1$s credit</item>
+        <item quantity="other">You sent %1$s credits</item>
+    </plurals>
+
+    <!-- Dialogs -->
+    <string name="sort_content_by">Sort content by</string>
+    <string name="content_from">Content from</string>
+    <string name="trending_content">Trending content</string>
+    <string name="new_content">New content</string>
+    <string name="top_content">Top content</string>
+    <string name="trending">Trending</string>
+    <string name="top">Top</string>
+    <string name="new_text">New</string>
+    <string name="past_24_hours">Past 24 hours</string>
+    <string name="past_week">Past week</string>
+    <string name="past_month">Past month</string>
+    <string name="past_year">Past year</string>
+    <string name="all_time">All time</string>
+    <string name="from">from</string>
+    <string name="for_text">for</string>
+    <string name="everyone">Everyone</string>
+    <string name="customize">Customize</string>
+    <string name="not_yet_implemented">The selected view is not yet available.</string>
+
+    <!-- Verification -->
+    <string name="provide_email_address">Please provide an email address.</string>
+    <string name="email_placeholder">you@example.com</string>
+    <string name="email_sent_to">An email has been sent to</string>
+    <string name="please_click_link">Please click the link in the message to complete signing in.</string>
+    <string name="resend">Resend</string>
+    <string name="continue_text">Continue</string>
+    <string name="provide_valid_email">Please enter a valid email address</string>
+    <string name="please_follow_instructions">Please follow the instructions in the email sent to your address to continue.</string>
+    <string name="sign_in_successful">You have successfully signed in to lbry.tv</string>
+    <string name="retrieving_account_information">Retrieving account information...</string>
+    <string name="apply_wallet_data">Applying wallet data...</string>
+    <string name="please_enter_your_password">Please enter the password you used to secure your wallet.</string>
+    <string name="please_enter_a_password">Please enter a password to secure your wallet.</string>
+    <string name="wallet_security_purposes">Note: for wallet security purposes, LBRY is unable to reset your password.</string>
+    <string name="password">Password</string>
+    <string name="enable_sync">Enable sync</string>
+    <string name="wallet_sync_op_failed">The wallet sync operation could not be completed at this time. Please try again later. If this problem persists, please send an email to hello@lbry.com.</string>
+
+    <!-- Font Awesome -->
+    <string name="fa_gift">&#xf06b;</string>
+    <string name="fa_lock">&#xf023;</string>
+    <string name="fa_coins">&#xf51e;</string>
+    <string name="fa_file">&#xf15b;</string>
+    <string name="fa_hashtag">&#xf292;</string>
+    <string name="fa_search">&#xf002;</string>
+    <string name="fa_at">&#xf1fa;</string>
+
+    <string name="fa_heart">&#xf004;</string>
+    <string name="fa_star">&#xf005;</string>
+    <string name="fa_globe_americas">&#xf57d;</string>
+    <string name="fa_upload">&#xf093;</string>
+    <string name="fa_download">&#xf019;</string>
+    <string name="fa_cloud_upload">&#xf382;</string>
+    <string name="fa_wallet">&#xf555;</string>
+    <string name="fa_award">&#xf559;</string>
+    <string name="fa_user_friends">&#xf500;</string>
+    <string name="fa_cog">&#xf013;</string>
+    <string name="fa_mobile_alt">&#xf3cd;</string>
 </resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#40B887</color>
+    <color name="colorPrimaryDark">#2F9176</color>
+    <color name="colorAccent">#38D9A9</color>
+
+    <color name="pageBackground">#101010</color>
+    <color name="actionBarBackground">#000000</color>
+    <color name="statusBarColor">#000000</color>
+    <color name="actionBarForeground">#CCCCCC</color>
+    <color name="drawerBackground">#000000</color>
+    <color name="menuItemForeground">#AAAAAA</color>
+    <color name="selectedNavItem">#0E0E0E</color>
+    <color name="channelCoverBackground">#CC000000</color>
+
+    <color name="foreground">#999999</color>
+    <color name="mediaContainerBackground">#333333</color>
+    <color name="borderTextArea">#5F5F5F</color>
+    <color name="backgroundTextArea">#333333</color>
+
+    <color name="brighterLbryGreen">#40B887</color>
+    <color name="lbryGreen">#2F9176</color>
+    <color name="nextLbryGreen">#38D9A9</color>
+    <color name="tagGreen">#E3F6F1</color>
+    <color name="tagGrape">#77F255DA</color>
+
+    <color name="divider">#454545</color>
+    <color name="lightDivider">#0A0A0A</color>
+
+    <color name="lightGrey">#CCCCCC</color>
+    <color name="actionGrey">#AAAAAA</color>
+    <color name="lighterGrey">#E5E5E5</color>
+    <color name="veryLightGrey">#F1F1F1</color>
+    <color name="orange">#FFBB00</color>
+    <color name="red">#FF0000</color>
+    <color name="brightRed">#E35454</color>
+    <color name="white">#FFFFFF</color>
+    <color name="uriDescBlue">#3971DB</color>
+    <color name="rewardDriverBlue">#2196f3</color>
+
+    <color name="statsAudio">#F6A637</color>
+    <color name="statsImage">#FF4A7D</color>
+    <color name="statsOther">#26BCF7</color>
+
+    <color name="thumbnailPlaceholder">#D5D5D5</color>
+
+    <color name="caption">#CAEDB9</color>
+</resources>

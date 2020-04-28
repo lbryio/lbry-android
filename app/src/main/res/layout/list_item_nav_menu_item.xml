@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@drawable/bg_selected_nav_item"
+    android:foreground="?attr/selectableItemBackground">
+    <io.lbry.browser.ui.controls.SolidIconView
+        android:id="@+id/nav_menu_item_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:textColor="@drawable/fg_nav_menu_item"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/nav_menu_title"
+        android:fontFamily="@font/inter"
+        android:layout_marginLeft="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@drawable/fg_nav_menu_item"
+        android:textSize="14sp" />
+</LinearLayout>
