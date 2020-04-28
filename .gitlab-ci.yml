@@ -27,7 +27,6 @@ build apk:
     - yarn
     - chmod u+x ./release.sh
     - ./release.sh
-    - mkdir -p $CI_PROJECT_DIR/bin/ && cp bin/*.apk $CI_PROJECT_DIR/bin/
     - cp bin/browser-$BUILD_VERSION-release__arm.apk /dev/null
     - cp bin/browser-$BUILD_VERSION-release__arm64.apk /dev/null
 
