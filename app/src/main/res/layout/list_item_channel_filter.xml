@@ -27,14 +27,20 @@
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
         </RelativeLayout>
-        <TextView
-            android:id="@+id/channel_filter_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/inter"
-            android:textFontWeight="300"
-            android:text="@string/all" />
+        <RelativeLayout
+            android:id="@+id/channel_filter_all_container"
+            android:background="@drawable/bg_all_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/channel_filter_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/inter"
+                android:textFontWeight="300"
+                android:text="@string/all" />
+        </RelativeLayout>
         <ImageView
             android:id="@+id/channel_filter_thumbnail"
             android:layout_width="match_parent"

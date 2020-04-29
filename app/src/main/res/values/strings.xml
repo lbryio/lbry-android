@@ -52,6 +52,7 @@
     <string name="n_remaining">%1$d remaining...</string>
     <string name="done">Done</string>
     <string name="all">ALL</string>
+    <string name="discover_channels">Discover new channels</string>
 
     <!-- Claim lists -->
     <string name="anonymous">Anonymous</string>

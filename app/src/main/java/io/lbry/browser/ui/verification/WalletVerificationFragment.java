@@ -95,6 +95,7 @@ public class WalletVerificationFragment extends Fragment {
             @Override
             public void onSyncGetSuccess(WalletSync walletSync) {
                 currentWalletSync = walletSync;
+                Lbryio.lastRemoteHash = walletSync.getHash();
                 processExistingWallet(walletSync);
             }
 
@@ -124,8 +125,8 @@ public class WalletVerificationFragment extends Fragment {
             public void onSyncApplySuccess(String hash, String data) {
                 // check if local and remote hash are different, and then run sync set
                 Utils.setSecureValue(MainActivity.SECURE_VALUE_KEY_SAVED_PASSWORD, "", getContext(), Lbry.KEYSTORE);
-                if (!hash.equalsIgnoreCase(Lbryio.lastRemoteHash)) {
-                    setSyncAfterApply(Lbryio.lastRemoteHash);
+                if (!hash.equalsIgnoreCase(Lbryio.lastRemoteHash) && !Helper.isNullOrEmpty(Lbryio.lastRemoteHash)) {
+                    new SyncSetTask(Lbryio.lastRemoteHash, hash, data, null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
                 if (listener != null) {
                     listener.onWalletSyncEnabled();
@@ -146,21 +147,6 @@ public class WalletVerificationFragment extends Fragment {
         applyTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public void setSyncAfterApply(String oldHash) {
-        SyncApplyTask fetchTask = new SyncApplyTask(true, new DefaultSyncTaskHandler() {
-            @Override
-            public void onSyncApplySuccess(String hash, String data) {
-                SyncSetTask setTask = new SyncSetTask(oldHash, hash, data, null);
-                setTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            }
-            @Override
-            public void onSyncApplyError(Exception error) {
-                // pass
-            }
-        });
-        fetchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
     public void processExistingWalletWithPassword(String password) {
         Helper.setViewVisibility(loading, View.VISIBLE);
         Helper.setViewVisibility(textLoading, View.VISIBLE);
@@ -178,9 +164,8 @@ public class WalletVerificationFragment extends Fragment {
             public void onSyncApplySuccess(String hash, String data) {
                 Utils.setSecureValue(MainActivity.SECURE_VALUE_KEY_SAVED_PASSWORD, password, getContext(), Lbry.KEYSTORE);
                 // check if local and remote hash are different, and then run sync set
-                if (!hash.equalsIgnoreCase(Lbryio.lastRemoteHash)) {
-                    SyncSetTask setTask = new SyncSetTask(Lbryio.lastRemoteHash, hash, data, null);
-                    setTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                if (!hash.equalsIgnoreCase(Lbryio.lastRemoteHash) && !Helper.isNullOrEmpty(Lbryio.lastRemoteHash)) {
+                    new SyncSetTask(Lbryio.lastRemoteHash, hash, data, null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
                 if (listener != null) {
                     listener.onWalletSyncEnabled();

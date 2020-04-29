@@ -43,7 +43,7 @@ public class ChannelFilterListAdapter extends RecyclerView.Adapter<ChannelFilter
     public static class ViewHolder extends RecyclerView.ViewHolder {
         protected View mediaContainer;
         protected View alphaContainer;
-        protected TextView allTextView;
+        protected View allView;
         protected ImageView thumbnailView;
         protected TextView alphaView;
         protected TextView titleView;
@@ -54,7 +54,7 @@ public class ChannelFilterListAdapter extends RecyclerView.Adapter<ChannelFilter
             alphaView = v.findViewById(R.id.channel_filter_alpha_view);
             thumbnailView = v.findViewById(R.id.channel_filter_thumbnail);
             titleView = v.findViewById(R.id.channel_filter_title);
-            allTextView = v.findViewById(R.id.channel_filter_all);
+            allView = v.findViewById(R.id.channel_filter_all_container);
         }
     }
 
@@ -85,8 +85,8 @@ public class ChannelFilterListAdapter extends RecyclerView.Adapter<ChannelFilter
     public void onBindViewHolder(ChannelFilterListAdapter.ViewHolder vh, int position) {
         Claim claim = items.get(position);
         vh.alphaView.setVisibility(claim.isPlaceholder() ? View.GONE : View.VISIBLE);
-        vh.titleView.setVisibility(claim.isPlaceholder() ? View.GONE : View.VISIBLE);
-        vh.allTextView.setVisibility(claim.isPlaceholder() ? View.VISIBLE : View.GONE);
+        vh.titleView.setVisibility(claim.isPlaceholder() ? View.INVISIBLE : View.VISIBLE);
+        vh.allView.setVisibility(claim.isPlaceholder() ? View.VISIBLE : View.GONE);
 
         vh.titleView.setText(Helper.isNullOrEmpty(claim.getTitle()) ? claim.getName() : claim.getTitle());
         String thumbnailUrl = claim.getThumbnailUrl();

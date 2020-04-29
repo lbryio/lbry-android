@@ -31,6 +31,7 @@ import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.adapter.SuggestedChannelGridAdapter;
 import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
+import io.lbry.browser.dialog.DiscoverDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.Subscription;
@@ -50,6 +51,8 @@ public class FollowingFragment extends BaseFragment implements FetchSubscription
     private static final int SUGGESTED_PAGE_SIZE = 45;
     private static final int MIN_SUGGESTED_SUBSCRIBE_COUNT = 5;
 
+    private DiscoverDialogFragment discoverDialog;
+    private List<String> excludeChannelIdsForDiscover;
     private MaterialButton suggestedDoneButton;
     private TextView titleView;
     private TextView infoView;
@@ -64,11 +67,13 @@ public class FollowingFragment extends BaseFragment implements FetchSubscription
     private TextView sortLinkText;
     private View contentFromLink;
     private TextView contentFromLinkText;
+    private View discoverLink;
     private int currentSortBy;
     private int currentContentFrom;
     private String contentReleaseTime;
     private List<String> contentSortOrder;
     private boolean contentClaimSearchLoading = false;
+    private boolean suggestedClaimSearchLoading = false;
 
     private List<Integer> queuedContentPages = new ArrayList<>();
     private List<Integer> queuedSuggestedPages = new ArrayList<>();
@@ -116,10 +121,33 @@ public class FollowingFragment extends BaseFragment implements FetchSubscription
         bigContentLoading = root.findViewById(R.id.following_main_progress);
         contentLoading = root.findViewById(R.id.following_content_progress);
         channelListLoading = root.findViewById(R.id.following_channel_load_progress);
+        discoverLink = root.findViewById(R.id.following_discover_link);
 
         Context context = getContext();
         GridLayoutManager glm = new GridLayoutManager(context, 3);
         suggestedChannelGrid.setLayoutManager(glm);
+        suggestedChannelGrid.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (suggestedClaimSearchLoading) {
+                    return;
+                }
+
+                GridLayoutManager lm = (GridLayoutManager) recyclerView.getLayoutManager();
+                if (lm != null) {
+                    int visibleItemCount = lm.getChildCount();
+                    int totalItemCount = lm.getItemCount();
+                    int pastVisibleItems = lm.findFirstVisibleItemPosition();
+                    if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+                        if (!suggestedHasReachedEnd) {
+                            // load more
+                            currentSuggestedPage++;
+                            fetchSuggestedChannels();
+                        }
+                    }
+                }
+            }
+        });
 
         LinearLayoutManager cllm = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
         horizontalChannelList.setLayoutManager(cllm);
@@ -132,7 +160,6 @@ public class FollowingFragment extends BaseFragment implements FetchSubscription
                 if (contentClaimSearchLoading) {
                     return;
                 }
-
                 LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
                 if (lm != null) {
                     int visibleItemCount = lm.getChildCount();
@@ -198,6 +225,43 @@ public class FollowingFragment extends BaseFragment implements FetchSubscription
                 if (context instanceof MainActivity) {
                     MainActivity activity = (MainActivity) context;
                     dialog.show(activity.getSupportFragmentManager(), ContentFromDialogFragment.TAG);
+                }
+            }
+        });
+        discoverLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                discoverDialog = DiscoverDialogFragment.newInstance();
+                excludeChannelIdsForDiscover = channelIds != null ? new ArrayList<>(channelIds) : null;
+                discoverDialog.setAdapter(suggestedChannelAdapter);
+                discoverDialog.setDialogActionsListener(new DiscoverDialogFragment.DiscoverDialogListener() {
+                    @Override
+                    public void onScrollEndReached() {
+                        if (suggestedClaimSearchLoading) {
+                            return;
+                        }
+                        currentSuggestedPage++;
+                        fetchSuggestedChannels();
+                    }
+                    @Override
+                    public void onCancel() {
+                        discoverDialog = null;
+                        excludeChannelIdsForDiscover = null;
+                    }
+                    @Override
+                    public void onResume() {
+                        if (suggestedChannelAdapter == null || suggestedChannelAdapter.getItemCount() == 0) {
+                            discoverDialog.setLoading(true);
+                            fetchSuggestedChannels();
+                        }
+                    }
+                });
+
+
+                Context context = getContext();
+                if (context instanceof MainActivity) {
+                    MainActivity activity = (MainActivity) context;
+                    discoverDialog.show(activity.getSupportFragmentManager(), DiscoverDialogFragment.TAG);
                 }
             }
         });
@@ -291,7 +355,7 @@ public class FollowingFragment extends BaseFragment implements FetchSubscription
                 null,
                 null,
                 null,
-                null,
+                excludeChannelIdsForDiscover,
                 Arrays.asList(Claim.ORDER_BY_EFFECTIVE_AMOUNT),
                 null,
                 currentSuggestedPage == 0 ? 1 : currentSuggestedPage,
@@ -506,6 +570,50 @@ public class FollowingFragment extends BaseFragment implements FetchSubscription
         }
     }
 
+    private void fetchSuggestedChannels() {
+        suggestedClaimSearchLoading = true;
+        if (discoverDialog != null) {
+            discoverDialog.setLoading(true);
+        }
+        suggestedChannelClaimSearchTask = new ClaimSearchTask(
+                buildSuggestedOptions(),
+                Lbry.LBRY_TV_CONNECTION_STRING,
+                suggestedChannelAdapter == null || suggestedChannelAdapter.getItemCount() == 0 ? bigContentLoading : contentLoading,
+                new ClaimSearchTask.ClaimSearchResultHandler() {
+                    @Override
+                    public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
+                        suggestedHasReachedEnd = hasReachedEnd;
+                        suggestedClaimSearchLoading = false;
+                        if (discoverDialog != null) {
+                            discoverDialog.setLoading(true);
+                        }
+
+                        if (suggestedChannelAdapter == null) {
+                            suggestedChannelAdapter = new SuggestedChannelGridAdapter(claims, getContext());
+                            suggestedChannelAdapter.setListener(FollowingFragment.this);
+                            if (suggestedChannelGrid != null) {
+                                suggestedChannelGrid.setAdapter(suggestedChannelAdapter);
+                            }
+                            if (discoverDialog != null) {
+                                discoverDialog.setAdapter(suggestedChannelAdapter);
+                            }
+                        } else {
+                            suggestedChannelAdapter.addClaims(claims);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        suggestedClaimSearchLoading = false;
+                        if (discoverDialog != null) {
+                            discoverDialog.setLoading(false);
+                        }
+                    }
+                });
+
+        suggestedChannelClaimSearchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
     // handler methods
     public void onSuccess(List<Subscription> subscriptions) {
         if (subscriptions.size() == 0) {
@@ -516,30 +624,7 @@ public class FollowingFragment extends BaseFragment implements FetchSubscription
             loadingSuggested = true;
             loadingContent = false;
 
-            suggestedChannelClaimSearchTask = new ClaimSearchTask(
-                    buildSuggestedOptions(),
-                    Lbry.LBRY_TV_CONNECTION_STRING,
-                    suggestedChannelAdapter == null ? bigContentLoading : contentLoading,
-                    new ClaimSearchTask.ClaimSearchResultHandler() {
-                @Override
-                public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
-                    if (suggestedChannelAdapter == null) {
-                        suggestedChannelAdapter = new SuggestedChannelGridAdapter(claims, getContext());
-                        suggestedChannelAdapter.setListener(FollowingFragment.this);
-                        if (suggestedChannelGrid != null) {
-                            suggestedChannelGrid.setAdapter(suggestedChannelAdapter);
-                        }
-                    } else {
-                        suggestedChannelAdapter.addClaims(claims);
-                    }
-                }
-
-                @Override
-                public void onError(Exception error) {
-
-                }
-            });
-            suggestedChannelClaimSearchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            fetchSuggestedChannels();
             showSuggestedChannels();
         } else {
             Lbryio.cacheSubscriptions = subscriptions;
@@ -563,6 +648,10 @@ public class FollowingFragment extends BaseFragment implements FetchSubscription
         ChannelSubscribeTask task = new ChannelSubscribeTask(getContext(), channelClaimId, subscription, false, null);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         updateSuggestedDoneButtonText();
+
+        if (discoverDialog != null) {
+            fetchSubscriptions();
+        }
     }
     public void onChannelItemDeselected(Claim claim) {
         // unsubscribe
@@ -574,6 +663,10 @@ public class FollowingFragment extends BaseFragment implements FetchSubscription
         ChannelSubscribeTask task = new ChannelSubscribeTask(getContext(), channelClaimId, subscription, true, null);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         updateSuggestedDoneButtonText();
+
+        if (discoverDialog != null) {
+            fetchSubscriptions();
+        }
     }
     public void onChannelSelectionCleared() {
 

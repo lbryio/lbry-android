@@ -35,12 +35,14 @@ public class SuggestedChannelGridAdapter extends RecyclerView.Adapter<SuggestedC
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        protected View noThumbnailView;
         protected ImageView thumbnailView;
         protected TextView alphaView;
         protected TextView titleView;
         protected TextView tagView;
         public ViewHolder(View v) {
             super(v);
+            noThumbnailView = v.findViewById(R.id.suggested_channel_no_thumbnail);
             alphaView = v.findViewById(R.id.suggested_channel_alpha_view);
             thumbnailView = v.findViewById(R.id.suggested_channel_thumbnail);
             titleView = v.findViewById(R.id.suggested_channel_title);
@@ -82,18 +84,18 @@ public class SuggestedChannelGridAdapter extends RecyclerView.Adapter<SuggestedC
     @Override
     public void onBindViewHolder(SuggestedChannelGridAdapter.ViewHolder vh, int position) {
         Claim claim = items.get(position);
-
         String thumbnailUrl = claim.getThumbnailUrl();
+
+        int bgColor = Helper.generateRandomColorForValue(claim.getClaimId());
+        Helper.setIconViewBackgroundColor(vh.noThumbnailView, bgColor, false, context);
+        vh.noThumbnailView.setVisibility(Helper.isNullOrEmpty(thumbnailUrl) ? View.INVISIBLE : View.VISIBLE);
+        vh.alphaView.setText(claim.getName().substring(1, 2));
         if (!Helper.isNullOrEmpty(thumbnailUrl)) {
-            vh.alphaView.setVisibility(View.GONE);
             vh.thumbnailView.setVisibility(View.VISIBLE);
             Glide.with(context.getApplicationContext()).load(thumbnailUrl).apply(RequestOptions.circleCropTransform()).into(vh.thumbnailView);
         } else {
-            vh.alphaView.setVisibility(View.VISIBLE);
             vh.thumbnailView.setVisibility(View.GONE);
         }
-
-        vh.alphaView.setText(claim.getFirstCharacter());
         vh.titleView.setText(Helper.isNullOrEmpty(claim.getTitle()) ? claim.getName() : claim.getTitle());
 
         String firstTag = claim.getFirstTag();
