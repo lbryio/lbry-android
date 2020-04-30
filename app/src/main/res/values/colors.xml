@@ -13,6 +13,7 @@
     <color name="selectedNavItem">#F1F1F1</color>
     <color name="channelCoverBackground">#CC000000</color>
 
+    <color name="darkForeground">#222222</color>
     <color name="foreground">#333333</color>
     <color name="mediaContainerBackground">#333333</color>
     <color name="borderTextArea">#777777</color>

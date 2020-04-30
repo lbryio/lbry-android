@@ -2,6 +2,7 @@ package io.lbry.browser.ui.channel;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +12,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +31,10 @@ import io.lbry.browser.model.Claim;
 import io.lbry.browser.tasks.ClaimSearchTask;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.Predefined;
 import lombok.Setter;
 
-public class ChannelContentFragment extends Fragment {
+public class ChannelContentFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Setter
     private String channelId;
@@ -45,6 +49,7 @@ public class ChannelContentFragment extends Fragment {
     private List<String> contentSortOrder;
     private View contentLoading;
     private View bigContentLoading;
+    private View noContentView;
     private ClaimListAdapter contentListAdapter;
     private boolean contentClaimSearchLoading;
     private boolean contentHasReachedEnd;
@@ -66,6 +71,7 @@ public class ChannelContentFragment extends Fragment {
 
         bigContentLoading = root.findViewById(R.id.channel_content_main_progress);
         contentLoading = root.findViewById(R.id.channel_content_load_progress);
+        noContentView = root.findViewById(R.id.channel_content_no_claim_search_content);
 
         contentList = root.findViewById(R.id.channel_content_list);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -183,18 +189,23 @@ public class ChannelContentFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
         fetchClaimSearchContent();
     }
 
-    public void refresh() {
-        fetchClaimSearchContent(true);
+    public void onPause() {
+        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        super.onPause();
     }
 
     private Map<String, Object> buildContentOptions() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+
         return Lbry.buildClaimSearchOptions(
                 Claim.TYPE_STREAM,
                 null,
-                null, // TODO: Check mature
+                canShowMatureContent ? null : new ArrayList<>(Predefined.MATURE_TAGS),
                 Arrays.asList(channelId),
                 null,
                 getContentSortOrder(),
@@ -225,6 +236,7 @@ public class ChannelContentFragment extends Fragment {
         }
 
         contentClaimSearchLoading = true;
+        Helper.setViewVisibility(noContentView, View.GONE);
         Map<String, Object> claimSearchOptions = buildContentOptions();
         contentClaimSearchTask = new ClaimSearchTask(claimSearchOptions, Lbry.LBRY_TV_CONNECTION_STRING, getLoadingView(), new ClaimSearchTask.ClaimSearchResultHandler() {
             @Override
@@ -261,13 +273,26 @@ public class ChannelContentFragment extends Fragment {
 
                 contentHasReachedEnd = hasReachedEnd;
                 contentClaimSearchLoading = false;
+                checkNoContent();
             }
 
             @Override
             public void onError(Exception error) {
                 contentClaimSearchLoading = false;
+                checkNoContent();
             }
         });
         contentClaimSearchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void checkNoContent() {
+        boolean noContent = contentListAdapter == null || contentListAdapter.getItemCount() == 0;
+        Helper.setViewVisibility(noContentView, noContent ? View.VISIBLE : View.GONE);
+    }
+
+    public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+        if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT)) {
+            fetchClaimSearchContent(true);
+        }
     }
 }

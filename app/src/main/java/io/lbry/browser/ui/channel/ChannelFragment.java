@@ -96,7 +96,6 @@ public class ChannelFragment extends BaseFragment {
             }
         }
         if (updateRequired) {
-            resetFragments();
             if (!Helper.isNullOrEmpty(url)) {
                 resolveUrl();
             } else if (claim == null) {
@@ -177,25 +176,6 @@ public class ChannelFragment extends BaseFragment {
                 tab.setText(position == 0 ? R.string.content : R.string.about);
             }
         }).attach();
-    }
-
-    private void resetFragments() {
-        try {
-            Context context = getContext();
-            if (context instanceof MainActivity) {
-                MainActivity activity = (MainActivity) getContext();
-                FragmentManager manager = activity.getSupportFragmentManager();
-                FragmentTransaction tx = manager.beginTransaction();
-                for (Fragment fragment : manager.getFragments()) {
-                    if (fragment.getClass().equals(ChannelAboutFragment.class) || fragment.getClass().equals(ChannelContentFragment.class)) {
-                        tx.remove(fragment);
-                    }
-                }
-                tx.commitAllowingStateLoss();
-            }
-        } catch (Exception ex) {
-            // pass
-        }
     }
 
     private static class ChannelPagerAdapter extends FragmentStateAdapter {

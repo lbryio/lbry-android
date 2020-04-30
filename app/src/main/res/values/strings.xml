@@ -2,21 +2,11 @@
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-
-    <string name="home_second">Home Second</string>
-
 
     <!-- Nav menu -->
     <string name="find_content">Find Content</string>
     <string name="your_content">Your Content</string>
     <string name="wallet">Wallet</string>
-
     <string name="following">Following</string>
     <string name="editors_choice">Editor\'s Choice</string>
     <string name="your_tags">Your Tags</string>
@@ -29,9 +19,9 @@
     <string name="invites">Invites</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
-
     <string name="sign_in">Sign In</string>
     <string name="startup_failed">App startup failed. Please check your data connection and try again. If this problem persists, please email hello@lbry.com</string>
+    <string name="no_claim_search_content">No content to display at this time. Please refine your selection or check back later.</string>
 
     <!-- Welcome Page -->
     <string name="welcome_to_lbry">Welcome to LBRY.</string>
@@ -59,7 +49,6 @@
 
     <!-- File view -->
     <string name="tags">Tags</string>
-
     <string name="share">Share</string>
     <string name="repost">Repost</string>
     <string name="tip">Tip</string>
@@ -79,10 +68,11 @@
     <string name="website">Website</string>
 
     <!-- Settings -->
-    <string name="user_interface">User interface</string>
+    <string name="user_interface">Content &amp; User interface</string>
     <string name="other">Other</string>
     <string name="enable_dark_mode">Enable dark theme</string>
-    <string name="show_url_suggestions">Show URL suggestsions</string>
+    <string name="show_mature_content">Show mature content</string>
+    <string name="show_url_suggestions">Show URL suggestions</string>
     <string name="notifications">Notifications</string>
     <string name="subscriptions">Subscriptions</string>
     <string name="content_interests">Content Interests</string>
@@ -172,6 +162,7 @@
     </plurals>
 
     <!-- Dialogs -->
+    <string name="customize_your_tags">Customize your tags</string>
     <string name="sort_content_by">Sort content by</string>
     <string name="content_from">Content from</string>
     <string name="trending_content">Trending content</string>
@@ -187,9 +178,16 @@
     <string name="all_time">All time</string>
     <string name="from">from</string>
     <string name="for_text">for</string>
+    <string name="filter_for">Filter for</string>
     <string name="everyone">Everyone</string>
+    <string name="tags_you_follow">Tags you follow</string>
     <string name="customize">Customize</string>
     <string name="not_yet_implemented">The selected view is not yet available.</string>
+    <string name="customize_tags_hint">It looks like you have not followed any tags yet.</string>
+    <string name="search_for_more_tags">Search for more tags</string>
+    <string name="no_followed_tags">You have not followed any tags yet. Get started by adding tags that you are interested in!</string>
+    <string name="no_tag_results">We could not find new tags that you\'re not following.</string>
+    <string name="tag_already_followed">The \'%1$s\' tag has already been added.</string>
 
     <!-- Verification -->
     <string name="provide_email_address">Please provide an email address.</string>

@@ -1,14 +1,22 @@
 package io.lbry.browser.model;
 
-import io.lbry.browser.utils.Helper;
+import java.util.Comparator;
+
+import io.lbry.browser.utils.Predefined;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Tag {
+public class Tag implements Comparator<Tag> {
     @Getter
     @Setter
     private String name;
+    @Getter
+    @Setter
+    private boolean followed;
 
+    public Tag() {
+
+    }
     public Tag(String name) {
         this.name = name;
     }
@@ -18,13 +26,16 @@ public class Tag {
     }
 
     public boolean isMature() {
-        return Helper.MATURE_TAG_NAMES.contains(name.toLowerCase());
+        return Predefined.MATURE_TAGS.contains(name.toLowerCase());
     }
 
     public boolean equals(Object o) {
         return (o instanceof Tag) && ((Tag) o).getName().equalsIgnoreCase(name);
     }
     public int hashCode() {
-        return name.hashCode();
+        return name.toLowerCase().hashCode();
+    }
+    public int compare(Tag a, Tag b) {
+        return a.getLowercaseName().compareToIgnoreCase(b.getLowercaseName());
     }
 }

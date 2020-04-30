@@ -1,5 +1,6 @@
 package io.lbry.browser.ui.search;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +31,8 @@ import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryUri;
 import lombok.Setter;
 
-public class SearchFragment extends BaseFragment implements ClaimListAdapter.ClaimListItemListener {
+public class SearchFragment extends BaseFragment implements
+        ClaimListAdapter.ClaimListItemListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private ClaimListAdapter resultListAdapter;
     private static final int PAGE_SIZE = 25;
 
@@ -84,16 +87,18 @@ public class SearchFragment extends BaseFragment implements ClaimListAdapter.Cla
 
     public void onResume() {
         super.onResume();
-        if (resultListAdapter == null || resultListAdapter.getItemCount() == 0) {
-            // new search
-            if (!Helper.isNullOrEmpty(currentQuery)) {
-                search(currentQuery, currentFrom);
-            }
-        }
-        if (Helper.isNullOrEmpty(currentQuery)) {
+        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        if (!Helper.isNullOrEmpty(currentQuery)) {
+            search(currentQuery, currentFrom);
+        } else {
             noQueryView.setVisibility(View.VISIBLE);
             noResultsView.setVisibility(View.GONE);
         }
+    }
+
+    public void onPause() {
+        PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
     }
 
     private boolean checkQuery(String query) {
@@ -176,7 +181,10 @@ public class SearchFragment extends BaseFragment implements ClaimListAdapter.Cla
         }
 
         searchLoading = true;
-        LighthouseSearchTask task = new LighthouseSearchTask(currentQuery, PAGE_SIZE, currentFrom, false, null, loadingView, new ClaimSearchTask.ClaimSearchResultHandler() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+        LighthouseSearchTask task = new LighthouseSearchTask(
+                currentQuery, PAGE_SIZE, currentFrom, canShowMatureContent, null, loadingView, new ClaimSearchTask.ClaimSearchResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
                 contentHasReachedEnd = hasReachedEnd;
@@ -225,6 +233,12 @@ public class SearchFragment extends BaseFragment implements ClaimListAdapter.Cla
         } else {
             // not a channel
             MainActivity.openFileClaim(claim, getContext());
+        }
+    }
+
+    public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+        if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT)) {
+            search(currentQuery, currentFrom);
         }
     }
 }

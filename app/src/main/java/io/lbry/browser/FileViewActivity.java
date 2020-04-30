@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -292,11 +294,13 @@ public class FileViewActivity extends AppCompatActivity {
         TagListAdapter tagListAdapter = new TagListAdapter(tags, this);
         tagListAdapter.setClickListener(new TagListAdapter.TagClickListener() {
             @Override
-            public void onTagClicked(Tag tag) {
-                Intent intent = new Intent(MainActivity.ACTION_OPEN_ALL_CONTENT_TAG);
-                intent.putExtra("tag", tag.getName());
-                sendBroadcast(intent);
-                moveTaskToBack(true);
+            public void onTagClicked(Tag tag, int customizeMode) {
+                if (customizeMode == TagListAdapter.CUSTOMIZE_MODE_NONE) {
+                    Intent intent = new Intent(MainActivity.ACTION_OPEN_ALL_CONTENT_TAG);
+                    intent.putExtra("tag", tag.getName());
+                    sendBroadcast(intent);
+                    moveTaskToBack(true);
+                }
             }
         });
         descTagsList.setAdapter(tagListAdapter);
@@ -378,7 +382,11 @@ public class FileViewActivity extends AppCompatActivity {
         String title = claim.getTitle();
         String claimId = claim.getClaimId();
         ProgressBar relatedLoading = findViewById(R.id.file_view_related_content_progress);
-        LighthouseSearchTask relatedTask = new LighthouseSearchTask(title, RELATED_CONTENT_SIZE, 0, false, claimId, relatedLoading, new ClaimSearchTask.ClaimSearchResultHandler() {
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+        LighthouseSearchTask relatedTask = new LighthouseSearchTask(
+                title, RELATED_CONTENT_SIZE, 0, canShowMatureContent, claimId, relatedLoading, new ClaimSearchTask.ClaimSearchResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
                 List<Claim> filteredClaims = new ArrayList<>();

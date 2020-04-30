@@ -13,6 +13,7 @@
     <color name="selectedNavItem">#0E0E0E</color>
     <color name="channelCoverBackground">#CC000000</color>
 
+    <color name="darkForeground">#EEEEEE</color>
     <color name="foreground">#999999</color>
     <color name="mediaContainerBackground">#333333</color>
     <color name="borderTextArea">#5F5F5F</color>
@@ -21,8 +22,8 @@
     <color name="brighterLbryGreen">#40B887</color>
     <color name="lbryGreen">#2F9176</color>
     <color name="nextLbryGreen">#38D9A9</color>
-    <color name="tagGreen">#E3F6F1</color>
-    <color name="tagGrape">#77F255DA</color>
+    <color name="tagGreen">#329A7E</color>
+    <color name="tagGrape">#77D510B8</color>
 
     <color name="divider">#454545</color>
     <color name="lightDivider">#0A0A0A</color>

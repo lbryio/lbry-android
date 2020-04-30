@@ -148,7 +148,8 @@
                                 android:layout_marginRight="24dp"
                                 android:fontFamily="@font/inter"
                                 android:textSize="12sp"
-                                android:textFontWeight="300" />
+                                android:textFontWeight="300"
+                                android:visibility="gone" />
                             <TextView
                                 android:id="@+id/file_view_publish_time"
                                 android:layout_width="wrap_content"

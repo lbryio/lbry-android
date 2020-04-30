@@ -16,7 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -159,6 +158,17 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/following_no_claim_search_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/no_claim_search_content"
+                android:textSize="14sp"
+                android:textFontWeight="300"
+                android:visibility="gone" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/following_suggested_grid"
                 android:clipToPadding="false"

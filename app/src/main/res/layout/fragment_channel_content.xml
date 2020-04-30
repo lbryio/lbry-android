@@ -98,6 +98,17 @@
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/channel_content_no_claim_search_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/no_claim_search_content"
+            android:textSize="14sp"
+            android:textFontWeight="300"
+            android:visibility="gone" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/channel_content_list"
             android:clipToPadding="false"

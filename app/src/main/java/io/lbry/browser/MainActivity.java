@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -20,7 +21,6 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.inputmethod.InputMethodManager;
@@ -63,6 +63,7 @@ import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,12 +74,13 @@ import java.util.concurrent.TimeUnit;
 import io.lbry.browser.adapter.NavigationMenuAdapter;
 import io.lbry.browser.adapter.UrlSuggestionListAdapter;
 import io.lbry.browser.data.DatabaseHelper;
-import io.lbry.browser.exceptions.ApiCallException;
+import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.NavMenuItem;
+import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.WalletSync;
@@ -87,7 +89,6 @@ import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.ResolveTask;
 import io.lbry.browser.tasks.wallet.DefaultSyncTaskHandler;
 import io.lbry.browser.tasks.wallet.SyncGetTask;
-import io.lbry.browser.tasks.wallet.SyncTaskHandler;
 import io.lbry.browser.tasks.wallet.WalletBalanceTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.ui.channel.ChannelFragment;
@@ -103,6 +104,7 @@ import io.lbry.browser.utils.Lbryio;
 import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.ServiceHelper;
 import io.lbry.lbrysdk.Utils;
+import lombok.Data;
 import lombok.Getter;
 
 public class MainActivity extends AppCompatActivity implements SdkStatusListener {
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     // preference keys
     public static final String PREFERENCE_KEY_DARK_MODE = "io.lbry.browser.preference.userinterface.DarkMode";
+    public static final String PREFERENCE_KEY_SHOW_MATURE_CONTENT = "io.lbry.browser.preference.userinterface.ShowMatureContent";
     public static final String PREFERENCE_KEY_NOTIFICATION_URL_SUGGESTIONS = "io.lbry.browser.preference.userinterface.UrlSuggestions";
     public static final String PREFERENCE_KEY_NOTIFICATION_SUBSCRIPTIONS = "io.lbry.browser.preference.notifications.Subscriptions";
     public static final String PREFERENCE_KEY_NOTIFICATION_REWARDS = "io.lbry.browser.preference.notifications.Rewards";
@@ -164,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     private NavigationMenuAdapter navMenuAdapter;
     private UrlSuggestionListAdapter urlSuggestionListAdapter;
+    private List<UrlSuggestion> recentHistory;
 
     // broadcast receivers
     private BroadcastReceiver serviceActionsReceiver;
@@ -526,8 +530,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private void toggleUrlSuggestions(boolean visible) {
         View container = findViewById(R.id.url_suggestions_container);
         View closeIcon = findViewById(R.id.wunderbar_close);
+        EditText wunderbar = findViewById(R.id.wunderbar);
+        wunderbar.setPadding(0, 0, visible ? getScaledValue(36) : 0, 0);
+
         container.setVisibility(visible ? View.VISIBLE : View.GONE);
         closeIcon.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    private int getScaledValue(int value) {
+        float scale = getResources().getDisplayMetrics().density;
+        return (int) (value * scale + 0.5f);
     }
 
     private void setupUriBar() {
@@ -543,6 +555,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 toggleUrlSuggestions(hasFocus);
+                if (hasFocus && Helper.isNullOrEmpty(Helper.getValue(((EditText) view).getText()))) {
+                    displayUrlSuggestionsForNoInput();
+                }
             }
         });
 
@@ -572,6 +587,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 switch (urlSuggestion.getType()) {
                     case UrlSuggestion.TYPE_CHANNEL:
                         // open channel page
+                        openChannelUrl(urlSuggestion.getUri().toString());
                         break;
                     case UrlSuggestion.TYPE_FILE:
                         Context context = MainActivity.this;
@@ -586,6 +602,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         break;
                     case UrlSuggestion.TYPE_TAG:
                         // open tag page
+                        openAllContentFragmentWithTag(urlSuggestion.getText());
                         break;
                 }
                 findViewById(R.id.wunderbar).clearFocus();
@@ -618,24 +635,26 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         ResolveTask task = new ResolveTask(urls, Lbry.LBRY_TV_CONNECTION_STRING, null, new ResolveTask.ResolveResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
-                for (int i = 0; i < claims.size(); i++) {
-                    // build a simple url from the claim for matching
-                    Claim claim = claims.get(i);
-                    if (Helper.isNullOrEmpty(claim.getName())) {
-                        continue;
-                    }
+                if (findViewById(R.id.url_suggestions_container).getVisibility() == View.VISIBLE) {
+                    for (int i = 0; i < claims.size(); i++) {
+                        // build a simple url from the claim for matching
+                        Claim claim = claims.get(i);
+                        if (Helper.isNullOrEmpty(claim.getName())) {
+                            continue;
+                        }
 
-                    LbryUri simpleUrl = new LbryUri();
-                    if (claim.getName().startsWith("@")) {
-                        // channel
-                        simpleUrl.setChannelName(claim.getName());
-                    } else {
-                        simpleUrl.setStreamName(claim.getName());
-                    }
+                        LbryUri simpleUrl = new LbryUri();
+                        if (claim.getName().startsWith("@")) {
+                            // channel
+                            simpleUrl.setChannelName(claim.getName());
+                        } else {
+                            simpleUrl.setStreamName(claim.getName());
+                        }
 
-                    urlSuggestionListAdapter.setClaimForUrl(simpleUrl, claim);
+                        urlSuggestionListAdapter.setClaimForUrl(simpleUrl, claim);
+                    }
+                    urlSuggestionListAdapter.notifyDataSetChanged();
                 }
-                urlSuggestionListAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -646,10 +665,19 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
+    private void displayUrlSuggestionsForNoInput() {
+        urlSuggestionListAdapter.clear();
+        List<UrlSuggestion> blankSuggestions = buildDefaultSuggestionsForBlankUrl();
+        urlSuggestionListAdapter.addUrlSuggestions(blankSuggestions);
+        List<String> urls = urlSuggestionListAdapter.getItemUrls();
+        resolveUrlSuggestions(urls);
+    }
+
     private void handleUriInputChanged(String text) {
         // build the default suggestions
         urlSuggestionListAdapter.clear();
-        if (Helper.isNullOrEmpty(text)) {
+        if (Helper.isNullOrEmpty(text) || text.trim().equals("@")) {
+            displayUrlSuggestionsForNoInput();
             return;
         }
 
@@ -659,10 +687,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         LighthouseAutoCompleteTask task = new LighthouseAutoCompleteTask(text, null, new LighthouseAutoCompleteTask.AutoCompleteResultHandler() {
             @Override
             public void onSuccess(List<UrlSuggestion> suggestions) {
-                urlSuggestionListAdapter.addUrlSuggestions(suggestions);
-
-                List<String> urls = urlSuggestionListAdapter.getItemUrls();
-                resolveUrlSuggestions(urls);
+                String wunderBarText = Helper.getValue(((EditText) findViewById(R.id.wunderbar)).getText());
+                if (wunderBarText.equalsIgnoreCase(text)) {
+                    urlSuggestionListAdapter.addUrlSuggestions(suggestions);
+                    List<String> urls = urlSuggestionListAdapter.getItemUrls();
+                    resolveUrlSuggestions(urls);
+                }
             }
 
             @Override
@@ -673,12 +703,37 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    private List<UrlSuggestion> buildDefaultSuggestionsForBlankUrl() {
+        List<UrlSuggestion> suggestions = new ArrayList<>();
+        if (recentHistory != null && recentHistory.size() > 0) {
+            // show recent history if avaiable
+            suggestions = new ArrayList<>(recentHistory);
+        } else {
+            try {
+                suggestions.add(new UrlSuggestion(
+                        UrlSuggestion.TYPE_FILE, "What is LBRY?", LbryUri.parse("lbry://what#19b9c243bea0c45175e6a6027911abbad53e983e")));
+                suggestions.add(new UrlSuggestion(
+                        UrlSuggestion.TYPE_CHANNEL, "LBRYCast", LbryUri.parse("lbry://@lbrycast#4c29f8b013adea4d5cca1861fb2161d5089613ea")));
+                suggestions.add(new UrlSuggestion(
+                        UrlSuggestion.TYPE_CHANNEL, "The LBRY Channel", LbryUri.parse("lbry://@lbry#3fda836a92faaceedfe398225fb9b2ee2ed1f01a")));
+                for (UrlSuggestion suggestion : suggestions) {
+                    suggestion.setUseTextAsDescription(true);
+                }
+            } catch (LbryUriException ex) {
+                // pass
+            }
+        }
+        return suggestions;
+    }
+
     private List<UrlSuggestion> buildDefaultSuggestions(String text) {
         List<UrlSuggestion> suggestions = new ArrayList<UrlSuggestion>();
 
         // First item is always search
-        UrlSuggestion searchSuggestion = new UrlSuggestion(UrlSuggestion.TYPE_SEARCH, text);
-        suggestions.add(searchSuggestion);
+        if (!text.startsWith(LbryUri.PROTO_DEFAULT)) {
+            UrlSuggestion searchSuggestion = new UrlSuggestion(UrlSuggestion.TYPE_SEARCH, text);
+            suggestions.add(searchSuggestion);
+        }
 
         if (!text.matches(LbryUri.REGEX_INVALID_URI)) {
             boolean isChannel = text.startsWith("@");
@@ -990,6 +1045,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         return false;
                     }
 
+                    SQLiteDatabase db = dbHelper.getReadableDatabase();
+                    List<Tag> fetchedTags = DatabaseHelper.getTags(db);
+                    Lbry.knownTags = Helper.mergeKnownTags(fetchedTags);
+                    Collections.sort(Lbry.knownTags, new Tag());
+                    Lbry.followedTags = Helper.filterFollowedTags(Lbry.knownTags);
+
                     // load the exchange rate
                     if (Lbryio.LBCUSDRate == 0) {
                         Lbryio.loadExchangeRate();
@@ -1175,7 +1236,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findContentGroup.setItems(Arrays.asList(
                 new NavMenuItem(NavMenuItem.ID_ITEM_FOLLOWING, R.string.fa_heart, R.string.following, "Following", context),
                 new NavMenuItem(NavMenuItem.ID_ITEM_EDITORS_CHOICE, R.string.fa_star, R.string.editors_choice, "EditorsChoice", context),
-                new NavMenuItem(NavMenuItem.ID_ITEM_YOUR_TAGS, R.string.fa_hashtag, R.string.your_tags, "YourTags", context),
                 new NavMenuItem(NavMenuItem.ID_ITEM_ALL_CONTENT, R.string.fa_globe_americas, R.string.all_content, "AllContent", context)
         ));
 
@@ -1420,5 +1480,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onSyncGetError(Exception error) { }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void loadTags() {
+
     }
 }

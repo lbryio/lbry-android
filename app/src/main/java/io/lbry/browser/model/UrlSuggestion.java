@@ -14,20 +14,35 @@ public class UrlSuggestion {
     private String text;
     private LbryUri uri;
     private Claim claim; // associated claim if resolved
+    private boolean titleTextOnly;
+    private boolean useTextAsDescription;
 
+    public UrlSuggestion() {
+
+    }
     public UrlSuggestion(int type, String text) {
         this.type = type;
         this.text = text;
     }
+    public UrlSuggestion(int type, String text, LbryUri uri) {
+        this(type, text);
+        this.uri = uri;
+    }
+    public UrlSuggestion(int type, String text, LbryUri uri, boolean titleTextOnly) {
+        this(type, text, uri);
+        this.titleTextOnly = titleTextOnly;
+    }
 
     public String getTitle() {
-        switch (type) {
-            case TYPE_CHANNEL:
-                return String.format("%s - %s", text.startsWith("@") ? text.substring(1) : text, uri.toString());
-            case TYPE_FILE:
-                return String.format("%s - %s", text, uri.toString());
-            case TYPE_TAG:
-                return String.format("%s - #%s", text, text);
+        if (!titleTextOnly) {
+            switch (type) {
+                case TYPE_CHANNEL:
+                    return String.format("%s - %s", text.startsWith("@") ? text.substring(1) : text, uri.toVanityString());
+                case TYPE_FILE:
+                    return String.format("%s - %s", text, uri.toVanityString());
+                case TYPE_TAG:
+                    return String.format("%s - #%s", text, text);
+            }
         }
 
         return text;

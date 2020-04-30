@@ -68,6 +68,10 @@ public class LbryUri {
             }
         }
 
+        if (components.size() == 0) {
+            throw new LbryUriException("Regular expression error occurred while trying to parse the value");
+        }
+
         // components[0] = proto
         // components[1] = streamNameOrChannelName
         // components[2] = primaryModSeparator
@@ -141,7 +145,7 @@ public class LbryUri {
         return uri;
     }
 
-    public String build(boolean includeProto, String protoDefault) {
+    public String build(boolean includeProto, String protoDefault, boolean vanity) {
         String formattedChannelName = null;
         if (channelName != null) {
             formattedChannelName = channelName.startsWith("@") ? channelName : String.format("@%s", channelName);
@@ -162,6 +166,15 @@ public class LbryUri {
             primaryClaimId = !Helper.isNullOrEmpty(formattedChannelName) ? channelClaimId : streamClaimId;
         }
 
+        StringBuilder sb = new StringBuilder();
+        if (includeProto) {
+            sb.append(protoDefault);
+        }
+        sb.append(primaryClaimName);
+        if (vanity) {
+            return sb.toString();
+        }
+
         String secondaryClaimName = null;
         if (Helper.isNullOrEmpty(claimName) && !Helper.isNullOrEmpty(contentName)) {
             secondaryClaimName = contentName;
@@ -171,11 +184,6 @@ public class LbryUri {
         }
         String secondaryClaimId = !Helper.isNullOrEmpty(secondaryClaimName) ? streamClaimId : null;
 
-        StringBuilder sb = new StringBuilder();
-        if (includeProto) {
-            sb.append(protoDefault);
-        }
-        sb.append(primaryClaimName);
         if (!Helper.isNullOrEmpty(primaryClaimId)) {
             sb.append('#').append(primaryClaimId);
         }
@@ -205,8 +213,11 @@ public class LbryUri {
         return parse(url).toString();
     }
 
+    public String toVanityString() {
+        return build(true, PROTO_DEFAULT, true);
+    }
     public String toString() {
-        return build(true, PROTO_DEFAULT);
+        return build(true, PROTO_DEFAULT, false);
     }
     public int hashCode() {
         return toString().hashCode();

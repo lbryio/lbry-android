@@ -32,14 +32,15 @@ import java.util.Random;
 import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.Tag;
 import okhttp3.MediaType;
 
 public final class Helper {
     public static final String METHOD_GET = "GET";
     public static final String METHOD_POST = "POST";
+    public static final String ISO_DATE_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
     public static final MediaType FORM_MEDIA_TYPE = MediaType.parse("application/x-www-form-urlencoded");
     public static final MediaType JSON_MEDIA_TYPE = MediaType.get("application/json; charset=utf-8");
-    public static final List<String> MATURE_TAG_NAMES = Arrays.asList("mature", "nsfw", "porn", "xxx");
     public static final int CONTENT_PAGE_SIZE = 25;
 
     public static boolean isNull(String value) {
@@ -282,5 +283,44 @@ public final class Helper {
         } else if (bg instanceof ColorDrawable) {
             ((ColorDrawable) bg).setColor(isPlaceholder ? ContextCompat.getColor(context, android.R.color.transparent) : color);
         }
+    }
+
+    public static List<Tag> getTagObjectsForTags(List<String> tags) {
+        List<Tag> tagObjects = new ArrayList<>(tags.size());
+        for (String tag : tags) {
+            tagObjects.add(new Tag(tag));
+        }
+        return tagObjects;
+    }
+    public static List<String> getTagsForTagObjects(List<Tag> tagObjects) {
+        List<String> tags = new ArrayList<>(tagObjects.size());
+        for (Tag tagObject : tagObjects) {
+            tags.add(tagObject.getLowercaseName());
+        }
+        return tags;
+    }
+    public static List<Tag> mergeKnownTags(List<Tag> fetchedTags) {
+        List<Tag> allKnownTags = getTagObjectsForTags(Predefined.DEFAULT_KNOWN_TAGS);
+        List<Integer> followIndexes = new ArrayList<>();
+        for (Tag tag : fetchedTags) {
+            if (!allKnownTags.contains(tag)) {
+                allKnownTags.add(tag);
+            } else if (tag.isFollowed()) {
+                followIndexes.add(allKnownTags.indexOf(tag));
+            }
+        }
+        for (int index : followIndexes) {
+            allKnownTags.get(index).setFollowed(true);
+        }
+        return allKnownTags;
+    }
+    public static List<Tag> filterFollowedTags(List<Tag> tags) {
+        List<Tag> followedTags = new ArrayList<>();
+        for (Tag tag : followedTags) {
+            if (tag.isFollowed()) {
+                followedTags.add(tag);
+            }
+        }
+        return followedTags;
     }
 }

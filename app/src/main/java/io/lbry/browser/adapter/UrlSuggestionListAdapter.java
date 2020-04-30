@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.lbry.browser.R;
+import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.ui.controls.SolidIconView;
@@ -52,8 +53,15 @@ public class UrlSuggestionListAdapter extends RecyclerView.Adapter<UrlSuggestion
     public void setClaimForUrl(LbryUri url, Claim claim) {
         for (int i = 0; i < items.size(); i++) {
             LbryUri thisUrl = items.get(i).getUri();
-            if (thisUrl != null && thisUrl.equals(url)) {
-                items.get(i).setClaim(claim);
+            try {
+                if (thisUrl != null) {
+                    LbryUri vanity = LbryUri.parse(thisUrl.toVanityString());
+                    if (thisUrl.equals(url) || vanity.equals(url)) {
+                        items.get(i).setClaim(claim);
+                    }
+                }
+            } catch (LbryUriException ex) {
+                // pass
             }
         }
     }
@@ -88,7 +96,7 @@ public class UrlSuggestionListAdapter extends RecyclerView.Adapter<UrlSuggestion
                 iconStringId = R.string.fa_at;
                 fullTitle = item.getTitle();
                 desc = item.getClaim() != null ? item.getClaim().getTitle() :
-                        String.format(context.getString(R.string.view_channel_url_desc), item.getText());
+                        (item.isUseTextAsDescription() ? item.getText() : String.format(context.getString(R.string.view_channel_url_desc), item.getText()));
                 break;
             case UrlSuggestion.TYPE_TAG:
                 iconStringId = R.string.fa_hashtag;
@@ -105,7 +113,7 @@ public class UrlSuggestionListAdapter extends RecyclerView.Adapter<UrlSuggestion
                 iconStringId = R.string.fa_file;
                 fullTitle = item.getTitle();
                 desc = item.getClaim() != null ? item.getClaim().getTitle() :
-                        String.format(context.getString(R.string.view_file_url_desc), item.getText());
+                        (item.isUseTextAsDescription() ? item.getText() : String.format(context.getString(R.string.view_file_url_desc), item.getText()));
                 break;
         }
 

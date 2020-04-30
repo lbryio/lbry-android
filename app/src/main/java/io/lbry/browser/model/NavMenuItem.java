@@ -19,8 +19,7 @@ public class NavMenuItem {
     // Find Content
     public static final int ID_ITEM_FOLLOWING = 101;
     public static final int ID_ITEM_EDITORS_CHOICE = 102;
-    public static final int ID_ITEM_YOUR_TAGS = 103;
-    public static final int ID_ITEM_ALL_CONTENT = 104;
+    public static final int ID_ITEM_ALL_CONTENT = 103;
 
     // Your Content
     public static final int ID_ITEM_CHANNELS = 201;

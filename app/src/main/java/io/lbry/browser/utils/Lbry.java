@@ -28,7 +28,9 @@ import io.lbry.browser.exceptions.LbryRequestException;
 import io.lbry.browser.exceptions.LbryResponseException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
+import io.lbry.browser.model.ClaimSearchCacheValue;
 import io.lbry.browser.model.File;
+import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.Transaction;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.lbryinc.User;
@@ -39,13 +41,16 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public final class Lbry {
-    public static final String TAG = "Lbry";
     public static LinkedHashMap<ClaimCacheKey, Claim> claimCache = new LinkedHashMap<>();
-    public static LinkedHashMap<Map<String, Object>, List<Claim>> claimSearchCache = new LinkedHashMap<>();
+    public static LinkedHashMap<Map<String, Object>, ClaimSearchCacheValue> claimSearchCache = new LinkedHashMap<>();
     public static WalletBalance walletBalance = new WalletBalance();
+    public static List<Tag> knownTags = new ArrayList<>();
+    public static List<Tag> followedTags = new ArrayList<>();
 
+    public static final int TTL_CLAIM_SEARCH_VALUE = 120000; // 2-minute TTL for cache
     public static final String SDK_CONNECTION_STRING = "http://127.0.0.1:5279";
     public static final String LBRY_TV_CONNECTION_STRING = "https://api.lbry.tv/api/v1/proxy";
+    public static final String TAG = "Lbry";
 
     // Values to obtain from LBRY SDK status
     public static boolean IS_STATUS_PARSED = false; // Check if the status has been parsed at least once
@@ -360,7 +365,10 @@ public final class Lbry {
 
     public static List<Claim> claimSearch(Map<String, Object> options, String connectionString) throws ApiCallException {
         if (claimSearchCache.containsKey(options)) {
-            return claimSearchCache.get(options);
+            ClaimSearchCacheValue value = claimSearchCache.get(options);
+            if (!value.isExpired(TTL_CLAIM_SEARCH_VALUE)) {
+                return claimSearchCache.get(options).getClaims();
+            }
         }
 
         List<Claim> claims = new ArrayList<>();
@@ -377,7 +385,7 @@ public final class Lbry {
                 }
             }
 
-            claimSearchCache.put(options, claims);
+            claimSearchCache.put(options, new ClaimSearchCacheValue(claims, System.currentTimeMillis()));
         } catch (LbryRequestException | LbryResponseException | JSONException ex) {
             throw new ApiCallException("Could not execute resolve call", ex);
         }

@@ -2,6 +2,7 @@ package io.lbry.browser.ui.allcontent;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,8 +11,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,19 +27,24 @@ import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.dialog.ContentFromDialogFragment;
+import io.lbry.browser.dialog.ContentScopeDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
+import io.lbry.browser.dialog.CustomizeTagsDialogFragment;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.Tag;
 import io.lbry.browser.tasks.ClaimSearchTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.Predefined;
 
 // TODO: Similar code to FollowingFragment and Channel page fragment. Probably make common operations (sorting/filtering) into a control
-public class AllContentFragment extends BaseFragment {
+public class AllContentFragment extends BaseFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private boolean singleTagView;
     private List<String> tags;
     private View layoutFilterContainer;
+    private View customizeLink;
     private View sortLink;
     private View contentFromLink;
     private View scopeLink;
@@ -46,13 +55,14 @@ public class AllContentFragment extends BaseFragment {
     private RecyclerView contentList;
     private int currentSortBy;
     private int currentContentFrom;
-    private int currentScope;
+    private int currentContentScope;
     private String contentReleaseTime;
     private List<String> contentSortOrder;
     private View fromPrefix;
     private View forPrefix;
     private View contentLoading;
     private View bigContentLoading;
+    private View noContentView;
     private ClaimListAdapter contentListAdapter;
     private boolean contentClaimSearchLoading;
     private boolean contentHasReachedEnd;
@@ -72,6 +82,7 @@ public class AllContentFragment extends BaseFragment {
         sortLink = root.findViewById(R.id.all_content_sort_link);
         contentFromLink = root.findViewById(R.id.all_content_time_link);
         scopeLink = root.findViewById(R.id.all_content_scope_link);
+        customizeLink = root.findViewById(R.id.all_content_customize_link);
         fromPrefix = root.findViewById(R.id.all_content_from_prefix);
         forPrefix = root.findViewById(R.id.all_content_for_prefix);
 
@@ -81,6 +92,7 @@ public class AllContentFragment extends BaseFragment {
 
         bigContentLoading = root.findViewById(R.id.all_content_main_progress);
         contentLoading = root.findViewById(R.id.all_content_load_progress);
+        noContentView = root.findViewById(R.id.all_content_no_claim_search_content);
 
         contentList = root.findViewById(R.id.all_content_list);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -127,6 +139,25 @@ public class AllContentFragment extends BaseFragment {
                 }
             }
         });
+        scopeLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ContentScopeDialogFragment dialog = ContentScopeDialogFragment.newInstance();
+                dialog.setCurrentScopeItem(currentContentScope);
+                dialog.setContentScopeListener(new ContentScopeDialogFragment.ContentScopeListener() {
+                    @Override
+                    public void onContentScopeItemSelected(int scopeItem) {
+                        onContentScopeChanged(scopeItem);
+                    }
+                });
+
+                Context context = getContext();
+                if (context instanceof MainActivity) {
+                    MainActivity activity = (MainActivity) context;
+                    dialog.show(activity.getSupportFragmentManager(), ContentScopeDialogFragment.TAG);
+                }
+            }
+        });
         contentFromLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,6 +174,12 @@ public class AllContentFragment extends BaseFragment {
                     MainActivity activity = (MainActivity) context;
                     dialog.show(activity.getSupportFragmentManager(), ContentFromDialogFragment.TAG);
                 }
+            }
+        });
+        customizeLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCustomizeTagsDialog();
             }
         });
 
@@ -188,6 +225,51 @@ public class AllContentFragment extends BaseFragment {
         fetchClaimSearchContent(true);
     }
 
+    private void onContentScopeChanged(int contentScope) {
+        currentContentScope = contentScope;
+
+        // rebuild options and search
+        updateContentScopeLinkText();
+        boolean isTagScope = currentContentScope == ContentScopeDialogFragment.ITEM_TAGS;
+        if (isTagScope) {
+            tags = Helper.getTagsForTagObjects(Lbry.followedTags);
+            // Update tags list with the user's followed tags
+            if (tags == null || tags.size() == 0) {
+                Snackbar.make(getView(), R.string.customize_tags_hint, Snackbar.LENGTH_LONG).setAction(R.string.customize, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // show customize
+                        showCustomizeTagsDialog();
+                    }
+                }).show();
+            }
+        }
+        Helper.setViewVisibility(customizeLink, isTagScope ? View.VISIBLE : View.GONE);
+        fetchClaimSearchContent(true);
+    }
+
+    private void showCustomizeTagsDialog() {
+        CustomizeTagsDialogFragment dialog = CustomizeTagsDialogFragment.newInstance();
+        dialog.setListener(new CustomizeTagsDialogFragment.TagListener() {
+            @Override
+            public void onTagAdded(Tag tag) {
+                // heavy-lifting
+                // save to local, save to wallet and then sync
+            }
+
+            @Override
+            public void onTagRemoved(Tag tag) {
+                // heavy-lifting
+                // save to local, save to wallet and then sync
+            }
+        });
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            dialog.show(activity.getSupportFragmentManager(), CustomizeTagsDialogFragment.TAG);
+        }
+    }
+
     private void onSortByChanged(int sortBy) {
         currentSortBy = sortBy;
 
@@ -214,6 +296,16 @@ public class AllContentFragment extends BaseFragment {
         Helper.setViewText(sortLinkText, stringResourceId);
     }
 
+    private void updateContentScopeLinkText() {
+        int stringResourceId = -1;
+        switch (currentContentScope) {
+            case ContentScopeDialogFragment.ITEM_EVERYONE: default: stringResourceId = R.string.everyone; break;
+            case ContentScopeDialogFragment.ITEM_TAGS: stringResourceId = R.string.tags; break;
+        }
+
+        Helper.setViewText(scopeLinkText, stringResourceId);
+    }
+
     private void updateContentFromLinkText() {
         int stringResourceId = -1;
         switch (currentContentFrom) {
@@ -229,14 +321,26 @@ public class AllContentFragment extends BaseFragment {
 
     public void onResume() {
         super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        updateContentFromLinkText();
+        updateContentScopeLinkText();
+        updateSortByLinkText();
         fetchClaimSearchContent();
     }
 
+    public void onPause() {
+        PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
     private Map<String, Object> buildContentOptions() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+
         return Lbry.buildClaimSearchOptions(
                 Claim.TYPE_STREAM,
-                tags != null ? tags : null,
-                null, // TODO: Check mature
+                (currentContentScope == ContentScopeDialogFragment.ITEM_EVERYONE) ? null : tags,
+                canShowMatureContent ? null : new ArrayList<>(Predefined.MATURE_TAGS),
                 null,
                 null,
                 getContentSortOrder(),
@@ -267,6 +371,7 @@ public class AllContentFragment extends BaseFragment {
         }
 
         contentClaimSearchLoading = true;
+        Helper.setViewVisibility(noContentView, View.GONE);
         Map<String, Object> claimSearchOptions = buildContentOptions();
         contentClaimSearchTask = new ClaimSearchTask(claimSearchOptions, Lbry.LBRY_TV_CONNECTION_STRING, getLoadingView(), new ClaimSearchTask.ClaimSearchResultHandler() {
             @Override
@@ -303,13 +408,26 @@ public class AllContentFragment extends BaseFragment {
 
                 contentHasReachedEnd = hasReachedEnd;
                 contentClaimSearchLoading = false;
+                checkNoContent();
             }
 
             @Override
             public void onError(Exception error) {
                 contentClaimSearchLoading = false;
+                checkNoContent();
             }
         });
         contentClaimSearchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void checkNoContent() {
+        boolean noContent = contentListAdapter == null || contentListAdapter.getItemCount() == 0;
+        Helper.setViewVisibility(noContentView, noContent ? View.VISIBLE : View.GONE);
+    }
+
+    public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+        if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT)) {
+            fetchClaimSearchContent(true);
+        }
     }
 }
