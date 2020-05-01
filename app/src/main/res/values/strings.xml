@@ -90,8 +90,9 @@
     <string name="view_channel_url_desc">View the %1$s channel</string>
 
     <!-- Search -->
-    <string name="search_no_results">No results found for "%1$s". Please enter a different search term.</string>
+    <string name="search_no_results">No results found for \'%1$s\'. Please enter a different search term.</string>
     <string name="search_no_query">You can search for anything including movies, music, ebooks, software and more.</string>
+    <string name="no_related_content">No related content to display at this time.</string>
 
     <!-- Wallet -->
     <string name="balance">Balance</string>

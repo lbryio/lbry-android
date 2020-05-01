@@ -411,6 +411,8 @@ public class FileViewActivity extends AppCompatActivity {
                 RecyclerView relatedContentList = findViewById(R.id.file_view_related_content_list);
                 relatedContentList.setAdapter(relatedContentAdapter);
                 relatedContentAdapter.notifyDataSetChanged();
+
+                Helper.setViewVisibility(findViewById(R.id.file_view_no_related_content), relatedContentAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
             }
 
             @Override
