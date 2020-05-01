@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -333,16 +332,8 @@ public class FollowingFragment extends BaseFragment implements
             showSuggestedChannels();
         }
 
-        if (Lbryio.cacheSubscriptions != null && Lbryio.cacheSubscriptions.size() > 0) {
-            subscriptionsList = new ArrayList<>(Lbryio.cacheSubscriptions);
-            buildChannelIdsAndUrls();
-            if (Lbryio.cacheResolvedSubscriptions.size() > 0) {
-                updateChannelFilterListAdapter(Lbryio.cacheResolvedSubscriptions);
-            } else {
-                fetchAndResolveChannelList();
-            }
-            fetchClaimSearchContent();
-            showSubscribedContent();
+        if (Lbryio.subscriptions != null && Lbryio.subscriptions.size() > 0) {
+            fetchLoadedSubscriptions();
         } else {
             fetchSubscriptions();
         }
@@ -350,6 +341,17 @@ public class FollowingFragment extends BaseFragment implements
     public void onPause() {
         PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
+    }
+    public void fetchLoadedSubscriptions() {
+        subscriptionsList = new ArrayList<>(Lbryio.subscriptions);
+        buildChannelIdsAndUrls();
+        if (Lbryio.cacheResolvedSubscriptions.size() > 0) {
+            updateChannelFilterListAdapter(Lbryio.cacheResolvedSubscriptions);
+        } else {
+            fetchAndResolveChannelList();
+        }
+        fetchClaimSearchContent();
+        showSubscribedContent();
     }
 
     public void loadFollowing() {
@@ -662,7 +664,7 @@ public class FollowingFragment extends BaseFragment implements
             fetchSuggestedChannels();
             showSuggestedChannels();
         } else {
-            Lbryio.cacheSubscriptions = subscriptions;
+            Lbryio.subscriptions = subscriptions;
             subscriptionsList = new ArrayList<>(subscriptions);
             showSubscribedContent();
             fetchAndResolveChannelList();
@@ -686,6 +688,7 @@ public class FollowingFragment extends BaseFragment implements
                 if (discoverDialog != null) {
                     fetchSubscriptions();
                 }
+                saveSharedUserState();
             }
 
             @Override
@@ -709,6 +712,7 @@ public class FollowingFragment extends BaseFragment implements
                 if (discoverDialog != null) {
                     fetchSubscriptions();
                 }
+                saveSharedUserState();
             }
 
             @Override
@@ -727,6 +731,13 @@ public class FollowingFragment extends BaseFragment implements
         RecyclerView.Adapter adpater = suggested ? suggestedChannelAdapter : contentListAdapter;
         boolean noContent = adpater == null || adpater.getItemCount() == 0;
         Helper.setViewVisibility(noContentView, noContent ? View.VISIBLE : View.GONE);
+    }
+
+    private void saveSharedUserState() {
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).saveSharedUserState();
+        }
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.SQLInput;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,8 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_GET_RECENT_HISTORY = "SELECT value, url, type FROM history ORDER BY timestamp DESC LIMIT 10";
 
     private static final String SQL_INSERT_TAG = "REPLACE INTO tags (name, is_followed) VALUES (?, ?)";
-    private static final String SQL_SET_TAG_FOLLOWED = "UPDATE tags SET is_followed = ? WHERE name = ?";
-    private static final String SQL_GET_KNOWN_TAGS = "SELECT name FROM tags";
+    private static final String SQL_GET_KNOWN_TAGS = "SELECT name, is_followed FROM tags";
+    private static final String SQL_UNFOLLOW_TAGS = "UPDATE tags SET is_followed = 0";
     private static final String SQL_GET_FOLLOWED_TAGS = "SELECT name FROM tags WHERE is_followed = 1";
 
     public DatabaseHelper(Context context) {
@@ -108,8 +109,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static void createOrUpdateTag(Tag tag, SQLiteDatabase db) {
         db.execSQL(SQL_INSERT_TAG, new Object[] { tag.getLowercaseName(), tag.isFollowed() ? 1 : 0 });
     }
-    public static void setTagFollowed(boolean followed, String name, SQLiteDatabase db) {
-        db.execSQL(SQL_SET_TAG_FOLLOWED, new Object[] { followed ? 1 : 0, name });
+    public static void setAllTagsUnfollowed(SQLiteDatabase db) {
+        db.execSQL(SQL_UNFOLLOW_TAGS);
     }
     public static List<Tag> getTags(SQLiteDatabase db) {
         List<Tag> tags = new ArrayList<>();

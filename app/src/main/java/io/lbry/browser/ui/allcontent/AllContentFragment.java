@@ -33,14 +33,19 @@ import io.lbry.browser.dialog.CustomizeTagsDialogFragment;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.tasks.ClaimSearchTask;
+import io.lbry.browser.tasks.FollowUnfollowTagTask;
+import io.lbry.browser.tasks.GenericTaskHandler;
+import io.lbry.browser.tasks.wallet.SaveSharedUserStateTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.Predefined;
+import lombok.Getter;
 
 // TODO: Similar code to FollowingFragment and Channel page fragment. Probably make common operations (sorting/filtering) into a control
 public class AllContentFragment extends BaseFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    @Getter
     private boolean singleTagView;
     private List<String> tags;
     private View layoutFilterContainer;
@@ -55,6 +60,7 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
     private RecyclerView contentList;
     private int currentSortBy;
     private int currentContentFrom;
+    @Getter
     private int currentContentScope;
     private String contentReleaseTime;
     private List<String> contentSortOrder;
@@ -184,7 +190,6 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
         });
 
         checkParams(false);
-
         return root;
     }
 
@@ -204,7 +209,12 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
             titleView.setText(Helper.capitalize(tagName));
         } else {
             singleTagView = false;
-            tags = null;
+            // default to followed Tags scope if any tags are followed
+            tags = Helper.getTagsForTagObjects(Lbry.followedTags);
+            if (tags.size() > 0) {
+                currentContentScope = ContentScopeDialogFragment.ITEM_TAGS;
+                Helper.setViewVisibility(customizeLink, View.VISIBLE);
+            }
             titleView.setText(getString(R.string.all_content));
         }
 
@@ -255,12 +265,16 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
             public void onTagAdded(Tag tag) {
                 // heavy-lifting
                 // save to local, save to wallet and then sync
+                FollowUnfollowTagTask task = new FollowUnfollowTagTask(tag, false, getContext(), followUnfollowHandler);
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
 
             @Override
             public void onTagRemoved(Tag tag) {
                 // heavy-lifting
                 // save to local, save to wallet and then sync
+                FollowUnfollowTagTask task = new FollowUnfollowTagTask(tag, true, getContext(), followUnfollowHandler);
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
         Context context = getContext();
@@ -269,6 +283,30 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
             dialog.show(activity.getSupportFragmentManager(), CustomizeTagsDialogFragment.TAG);
         }
     }
+
+    private FollowUnfollowTagTask.FollowUnfollowTagHandler followUnfollowHandler = new FollowUnfollowTagTask.FollowUnfollowTagHandler() {
+        @Override
+        public void onSuccess(Tag tag, boolean unfollowing) {
+            if (tags != null) {
+                if (unfollowing) {
+                    tags.remove(tag.getLowercaseName());
+                } else {
+                    tags.add(tag.getLowercaseName());
+                }
+                fetchClaimSearchContent(true);
+            }
+
+            Context context = getContext();
+            if (context instanceof MainActivity) {
+                ((MainActivity) context).saveSharedUserState();
+            }
+        }
+
+        @Override
+        public void onError(Exception error) {
+            // pass
+        }
+    };
 
     private void onSortByChanged(int sortBy) {
         currentSortBy = sortBy;
@@ -364,7 +402,7 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
         fetchClaimSearchContent(false);
     }
 
-    private void fetchClaimSearchContent(boolean reset) {
+    public void fetchClaimSearchContent(boolean reset) {
         if (reset && contentListAdapter != null) {
             contentListAdapter.clearItems();
             currentClaimSearchPage = 1;

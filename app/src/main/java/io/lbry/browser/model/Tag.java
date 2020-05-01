@@ -29,6 +29,9 @@ public class Tag implements Comparator<Tag> {
         return Predefined.MATURE_TAGS.contains(name.toLowerCase());
     }
 
+    public String toString() {
+        return getLowercaseName();
+    }
     public boolean equals(Object o) {
         return (o instanceof Tag) && ((Tag) o).getName().equalsIgnoreCase(name);
     }

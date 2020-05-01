@@ -61,7 +61,7 @@ public class FetchSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                     }
                 }
             }
-        } catch (LbryioRequestException | LbryioResponseException | JSONException | ClassCastException ex) {
+        } catch (ClassCastException | LbryioRequestException | LbryioResponseException | JSONException | IllegalStateException ex) {
             error = ex;
             return null;
         } finally {

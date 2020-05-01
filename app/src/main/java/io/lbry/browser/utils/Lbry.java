@@ -41,6 +41,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public final class Lbry {
+    private static final Object lock = new Object();
     public static LinkedHashMap<ClaimCacheKey, Claim> claimCache = new LinkedHashMap<>();
     public static LinkedHashMap<Map<String, Object>, ClaimSearchCacheValue> claimSearchCache = new LinkedHashMap<>();
     public static WalletBalance walletBalance = new WalletBalance();
@@ -84,7 +85,6 @@ public final class Lbry {
     public static final String METHOD_SYNC_APPLY = "sync_apply";
     public static final String METHOD_PREFERENCE_GET = "preference_get";
     public static final String METHOD_PREFERENCE_SET = "preference_set";
-
 
     public static KeyStore KEYSTORE;
     public static boolean SDK_READY = false;
@@ -165,8 +165,10 @@ public final class Lbry {
             JSONObject json = new JSONObject(responseString);
             if (response.code() >= 200 && response.code() < 300) {
                 if (json.has("result")) {
-                    Object result = json.get("result");
-                    return result;
+                    if (json.isNull("result")) {
+                        return null;
+                    }
+                    return json.get("result");
                 } else {
                     processErrorJson(json);
                 }
@@ -416,5 +418,24 @@ public final class Lbry {
     }
     public static Object genericApiCall(String method) throws ApiCallException {
         return genericApiCall(method, null);
+    }
+    public static void addFollowedTag(Tag tag) {
+        synchronized (lock) {
+            if (!followedTags.contains(tag)) {
+                followedTags.add(tag);
+            }
+        }
+    }
+    public static void removeFollowedTag(Tag tag) {
+        synchronized (lock) {
+            followedTags.remove(tag);
+        }
+    }
+    public static void addKnownTag(Tag tag) {
+        synchronized (lock) {
+            if (!knownTags.contains(tag)) {
+                knownTags.add(tag);
+            }
+        }
     }
 }

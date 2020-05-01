@@ -48,7 +48,7 @@ public class SyncGetTask extends AsyncTask<Void, Void, WalletSync> {
             boolean unlockSuccessful =
                     !isLocked || (boolean) Lbry.genericApiCall(Lbry.METHOD_WALLET_UNLOCK, Lbry.buildSingleParam("password", password));
             if (!unlockSuccessful) {
-                throw new WalletException("The wallet could be unlocked with the provided password.");
+                throw new WalletException("The wallet could not be unlocked with the provided password.");
             }
 
             String hash = (String) Lbry.genericApiCall(Lbry.METHOD_SYNC_HASH);

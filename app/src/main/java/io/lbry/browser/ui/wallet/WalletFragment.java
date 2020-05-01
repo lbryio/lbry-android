@@ -308,8 +308,6 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     }
 
     public void onWalletSyncEnabled() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        sp.edit().putBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_WALLET_SYNC_ENABLED, true).apply();
         switchSyncStatus.setText(R.string.on);
         switchSyncStatus.setChecked(true);
         textWalletHintSyncStatus.setText(R.string.backup_synced);

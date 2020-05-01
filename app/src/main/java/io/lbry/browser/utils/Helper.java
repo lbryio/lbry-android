@@ -316,7 +316,7 @@ public final class Helper {
     }
     public static List<Tag> filterFollowedTags(List<Tag> tags) {
         List<Tag> followedTags = new ArrayList<>();
-        for (Tag tag : followedTags) {
+        for (Tag tag : tags) {
             if (tag.isFollowed()) {
                 followedTags.add(tag);
             }

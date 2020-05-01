@@ -55,6 +55,12 @@ public class ChannelSubscribeTask extends AsyncTask<Void, Void, Boolean> {
 
             String action = isUnsubscribing ? "delete" : "new";
             Lbryio.call("subscription", action, options, context);
+
+            if (!isUnsubscribing) {
+                Lbryio.addSubscription(subscription);
+            } else {
+                Lbryio.removeSubscription(subscription);
+            }
         } catch (LbryioRequestException | LbryioResponseException | SQLiteException ex) {
             error = ex;
             return false;

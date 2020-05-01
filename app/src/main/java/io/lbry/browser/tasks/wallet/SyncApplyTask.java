@@ -3,6 +3,7 @@ package io.lbry.browser.tasks.wallet;
 import android.os.AsyncTask;
 import android.view.View;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -24,8 +25,9 @@ public class SyncApplyTask extends AsyncTask<Void, Void, Boolean> {
     private String syncHash;
     private String syncData;
 
-    public SyncApplyTask(boolean fetch, SyncTaskHandler handler) {
+    public SyncApplyTask(boolean fetch, String password, SyncTaskHandler handler) {
         this.fetch = fetch;
+        this.password = password;
         this.handler = handler;
     }
 

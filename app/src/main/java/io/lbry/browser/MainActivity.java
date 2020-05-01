@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.inputmethod.InputMethodManager;
@@ -74,6 +75,7 @@ import java.util.concurrent.TimeUnit;
 import io.lbry.browser.adapter.NavigationMenuAdapter;
 import io.lbry.browser.adapter.UrlSuggestionListAdapter;
 import io.lbry.browser.data.DatabaseHelper;
+import io.lbry.browser.dialog.ContentScopeDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.WalletBalanceListener;
@@ -86,9 +88,14 @@ import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.WalletSync;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
+import io.lbry.browser.tasks.MergeSubscriptionsTask;
 import io.lbry.browser.tasks.ResolveTask;
 import io.lbry.browser.tasks.wallet.DefaultSyncTaskHandler;
+import io.lbry.browser.tasks.wallet.LoadSharedUserStateTask;
+import io.lbry.browser.tasks.wallet.SaveSharedUserStateTask;
+import io.lbry.browser.tasks.wallet.SyncApplyTask;
 import io.lbry.browser.tasks.wallet.SyncGetTask;
+import io.lbry.browser.tasks.wallet.SyncSetTask;
 import io.lbry.browser.tasks.wallet.WalletBalanceTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.ui.channel.ChannelFragment;
@@ -104,7 +111,6 @@ import io.lbry.browser.utils.Lbryio;
 import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.ServiceHelper;
 import io.lbry.lbrysdk.Utils;
-import lombok.Data;
 import lombok.Getter;
 
 public class MainActivity extends AppCompatActivity implements SdkStatusListener {
@@ -190,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     @Getter
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private boolean walletBalanceUpdateScheduled;
+    private boolean walletSyncScheduled;
     private String pendingAllContentTag;
     private String pendingChannelUrl;
     private boolean pendingFollowingReload;
@@ -836,6 +843,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }, CHECK_SDK_READY_INTERVAL);
         } else {
             scheduleWalletBalanceUpdate();
+            scheduleWalletSyncTask();
         }
     }
 
@@ -843,7 +851,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (Lbryio.isSignedIn()) {
             checkSyncedWallet();
         }
+
+        //overrideRemoteWallet();
         scheduleWalletBalanceUpdate();
+        scheduleWalletSyncTask();
     }
 
     private void scheduleWalletBalanceUpdate() {
@@ -856,6 +867,157 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }, 0, 5, TimeUnit.SECONDS);
             walletBalanceUpdateScheduled = true;
         }
+    }
+
+    private void scheduleWalletSyncTask() {
+        if (scheduler != null && !walletSyncScheduled) {
+            scheduler.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    syncWalletAndLoadPreferences();
+                }
+            }, 0, 5, TimeUnit.MINUTES);
+            walletSyncScheduled = true;
+        }
+    }
+
+    public void saveSharedUserState() {
+        if (!userSyncEnabled()) {
+            return;
+        }
+        SaveSharedUserStateTask saveTask = new SaveSharedUserStateTask(new SaveSharedUserStateTask.SaveSharedUserStateHandler() {
+            @Override
+            public void onSuccess() {
+                // push wallet sync changes
+                pushCurrentWalletSync();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                // pass
+            }
+        });
+        saveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void loadSharedUserState() {
+        // load wallet preferences
+        LoadSharedUserStateTask loadTask = new LoadSharedUserStateTask(MainActivity.this, new LoadSharedUserStateTask.LoadSharedUserStateHandler() {
+            @Override
+            public void onSuccess(List<Subscription> subscriptions, List<Tag> followedTags) {
+                if (subscriptions != null && subscriptions.size() > 0) {
+                    // reload subscriptions if wallet fragment is FollowingFragment
+                    //openNavFragments.get
+                    MergeSubscriptionsTask mergeTask = new MergeSubscriptionsTask(
+                            subscriptions, MainActivity.this, new MergeSubscriptionsTask.MergeSubscriptionsHandler() {
+                        @Override
+                        public void onSuccess(List<Subscription> subscriptions, List<Subscription> diff) {
+                            Lbryio.subscriptions = new ArrayList<>(subscriptions);
+                            if (diff != null && diff.size() > 0) {
+                                saveSharedUserState();
+                            }
+                            for (Fragment fragment : openNavFragments.values()) {
+                                if (fragment instanceof FollowingFragment) {
+                                    // reload local subscriptions
+                                    ((FollowingFragment) fragment).fetchLoadedSubscriptions();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            Log.e(TAG, String.format("merge subscriptions failed: %s", error.getMessage()), error);
+                        }
+                    });
+                    mergeTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+
+                if (followedTags != null && followedTags.size() > 0) {
+                    List<Tag> previousTags = new ArrayList<>(Lbry.followedTags);
+                    Lbry.followedTags = new ArrayList<>(followedTags);
+                    for (Fragment fragment : openNavFragments.values()) {
+                        if (fragment instanceof AllContentFragment) {
+                            AllContentFragment acFragment = (AllContentFragment) fragment;
+                            if (!acFragment.isSingleTagView() &&
+                                    acFragment.getCurrentContentScope() == ContentScopeDialogFragment.ITEM_TAGS &&
+                                    !previousTags.equals(followedTags)) {
+                                acFragment.fetchClaimSearchContent(true);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.e(TAG, String.format("load shared user state failed: %s", error != null ? error.getMessage() : "no error message"), error);
+            }
+        });
+        loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void pushCurrentWalletSync() {
+        String password = Utils.getSecureValue(SECURE_VALUE_KEY_SAVED_PASSWORD, this, Lbry.KEYSTORE);
+        SyncApplyTask fetchTask = new SyncApplyTask(true, password, new DefaultSyncTaskHandler() {
+            @Override
+            public void onSyncApplySuccess(String hash, String data) {
+                SyncSetTask setTask = new SyncSetTask(Lbryio.lastRemoteHash, hash, data, null);
+                setTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+            @Override
+            public void onSyncApplyError(Exception error) { }
+        });
+        fetchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private boolean userSyncEnabled() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean walletSyncEnabled = sp.getBoolean(PREFERENCE_KEY_INTERNAL_WALLET_SYNC_ENABLED, false);
+        return walletSyncEnabled && Lbryio.isSignedIn();
+    }
+
+    private void syncWalletAndLoadPreferences() {
+        if (!userSyncEnabled()) {
+            return;
+        }
+
+        String password = Utils.getSecureValue(SECURE_VALUE_KEY_SAVED_PASSWORD, this, Lbry.KEYSTORE);
+        SyncGetTask task = new SyncGetTask(password, true, null, new DefaultSyncTaskHandler() {
+            @Override
+            public void onSyncGetSuccess(WalletSync walletSync) {
+                Lbryio.lastWalletSync = walletSync;
+                Lbryio.lastRemoteHash = walletSync.getHash();
+                loadSharedUserState();
+            }
+
+            @Override
+            public void onSyncGetWalletNotFound() {
+                // pass. This actually shouldn't happen at this point.
+            }
+
+            @Override
+            public void onSyncGetError(Exception error) {
+                // pass
+                Log.e(TAG, String.format("sync get failed: %s", error != null ? error.getMessage() : "no error message"), error);
+            }
+
+            @Override
+            public void onSyncApplySuccess(String hash, String data) {
+                if (!hash.equalsIgnoreCase(Lbryio.lastRemoteHash)) {
+                    SyncSetTask setTask = new SyncSetTask(Lbryio.lastRemoteHash, hash, data, null);
+                    setTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+
+                loadSharedUserState();
+            }
+
+            @Override
+            public void onSyncApplyError(Exception error) {
+                // pass
+                Log.e(TAG, String.format("sync apply failed: %s", error != null ? error.getMessage() : "no error message"), error);
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void registerRequestsReceiver() {
@@ -979,11 +1141,15 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             showSignedInUser();
 
             if (requestCode == REQUEST_WALLET_SYNC_SIGN_IN) {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                sp.edit().putBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_WALLET_SYNC_ENABLED, true).apply();
+
                 for (Fragment fragment : openNavFragments.values()) {
                     if (fragment instanceof WalletFragment) {
                         ((WalletFragment) fragment).onWalletSyncEnabled();
                     }
                 }
+                scheduleWalletSyncTask();
             }
         }
     }
@@ -1063,7 +1229,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     Lbryio.newInstall(context);
 
                     // (light) fetch subscriptions
-                    if (Lbryio.cacheSubscriptions.size() == 0) {
+                    if (Lbryio.subscriptions.size() == 0) {
                         List<Subscription> subscriptions = new ArrayList<>();
                         List<String> subUrls = new ArrayList<>();
                         JSONArray array = (JSONArray) Lbryio.parseResponse(Lbryio.call("subscription", "list", context));
@@ -1079,10 +1245,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                                 subscriptions.add(new Subscription(channelName, url.toString()));
                                 subUrls.add(url.toString());
                             }
-                            Lbryio.cacheSubscriptions = subscriptions;
+                            Lbryio.subscriptions = subscriptions;
 
                             // resolve subscriptions
-                            if (subUrls.size() > 0 && Lbryio.cacheResolvedSubscriptions.size() != Lbryio.cacheSubscriptions.size()) {
+                            if (subUrls.size() > 0 && Lbryio.cacheResolvedSubscriptions.size() != Lbryio.subscriptions.size()) {
                                 List<Claim> resolvedSubs = Lbry.resolve(subUrls, Lbry.LBRY_TV_CONNECTION_STRING);
                                 Lbryio.cacheResolvedSubscriptions = resolvedSubs;
                             }
@@ -1480,9 +1646,5 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onSyncGetError(Exception error) { }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    private void loadTags() {
-
     }
 }

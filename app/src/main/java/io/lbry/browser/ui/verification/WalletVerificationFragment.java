@@ -188,7 +188,7 @@ public class WalletVerificationFragment extends Fragment {
     }
 
     public void processNewWallet() {
-        SyncApplyTask fetchTask = new SyncApplyTask(true, new DefaultSyncTaskHandler() {
+        SyncApplyTask fetchTask = new SyncApplyTask(true, null, new DefaultSyncTaskHandler() {
             @Override
             public void onSyncApplySuccess(String hash, String data) { createNewRemoteSync(hash, data); }
             @Override

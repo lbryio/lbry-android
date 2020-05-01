@@ -51,7 +51,7 @@ public final class Lbryio {
     public static final String TAG = "Lbryio";
     public static final String CONNECTION_STRING = "https://api.lbry.com";
     public static final String AUTH_TOKEN_PARAM = "auth_token";
-    public static List<Subscription> cacheSubscriptions = new ArrayList<>();
+    public static List<Subscription> subscriptions = new ArrayList<>();
     public static List<Claim> cacheResolvedSubscriptions = new ArrayList<>();
     public static double LBCUSDRate = 0;
     public static String AUTH_TOKEN;
@@ -278,6 +278,19 @@ public final class Lbryio {
     public static void setLastRemoteHash(String hash) {
         synchronized (lock) {
             lastRemoteHash = hash;
+        }
+    }
+
+    public static void addSubscription(Subscription subscription) {
+        synchronized (lock) {
+            if (!subscriptions.contains(subscription)) {
+                subscriptions.add(subscription);
+            }
+        }
+    }
+    public static void removeSubscription(Subscription subscription) {
+        synchronized (lock) {
+            subscriptions.remove(subscription);
         }
     }
 }
