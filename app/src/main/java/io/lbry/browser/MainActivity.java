@@ -99,6 +99,7 @@ import io.lbry.browser.tasks.wallet.SyncSetTask;
 import io.lbry.browser.tasks.wallet.WalletBalanceTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.ui.channel.ChannelFragment;
+import io.lbry.browser.ui.editorschoice.EditorsChoiceFragment;
 import io.lbry.browser.ui.following.FollowingFragment;
 import io.lbry.browser.ui.search.SearchFragment;
 import io.lbry.browser.ui.settings.SettingsFragment;
@@ -202,7 +203,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private boolean pendingFollowingReload;
 
     private final List<Integer> supportedMenuItemIds = Arrays.asList(
-            NavMenuItem.ID_ITEM_FOLLOWING, NavMenuItem.ID_ITEM_ALL_CONTENT, NavMenuItem.ID_ITEM_WALLET, NavMenuItem.ID_ITEM_SETTINGS
+            NavMenuItem.ID_ITEM_FOLLOWING,
+            NavMenuItem.ID_ITEM_EDITORS_CHOICE,
+            NavMenuItem.ID_ITEM_ALL_CONTENT,
+            NavMenuItem.ID_ITEM_WALLET,
+            NavMenuItem.ID_ITEM_SETTINGS
     );
 
     @Override
@@ -349,6 +354,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             // TODO: reverse map lookup for class?
             case NavMenuItem.ID_ITEM_FOLLOWING:
                 openFragment(FollowingFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING);
+                break;
+            case NavMenuItem.ID_ITEM_EDITORS_CHOICE:
+                openFragment(EditorsChoiceFragment.class, true, NavMenuItem.ID_ITEM_EDITORS_CHOICE);
                 break;
             case NavMenuItem.ID_ITEM_ALL_CONTENT:
                 openFragment(AllContentFragment.class, true, NavMenuItem.ID_ITEM_ALL_CONTENT);
@@ -553,9 +561,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.wunderbar_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findViewById(R.id.wunderbar).clearFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                clearWunderbarFocus(view);
             }
         });
         findViewById(R.id.wunderbar).setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -612,8 +618,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         openAllContentFragmentWithTag(urlSuggestion.getText());
                         break;
                 }
-                findViewById(R.id.wunderbar).clearFocus();
-                //findViewById(R.id.url_suggestions_container).setVisibility(View.GONE);
+                clearWunderbarFocus(findViewById(R.id.wunderbar));
             }
         });
 
@@ -621,6 +626,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         LinearLayoutManager llm = new LinearLayoutManager(this);
         urlSuggestionList.setLayoutManager(llm);
         urlSuggestionList.setAdapter(urlSuggestionListAdapter);
+    }
+
+    private void clearWunderbarFocus(View view) {
+        findViewById(R.id.wunderbar).clearFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void launchSearch(String text) {

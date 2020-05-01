@@ -330,6 +330,9 @@ public class FollowingFragment extends BaseFragment implements
         // check if subscriptions exist
         if (suggestedChannelAdapter != null) {
             showSuggestedChannels();
+            if (suggestedChannelGrid != null) {
+                suggestedChannelGrid.setAdapter(suggestedChannelAdapter);
+            }
         }
 
         if (Lbryio.subscriptions != null && Lbryio.subscriptions.size() > 0) {

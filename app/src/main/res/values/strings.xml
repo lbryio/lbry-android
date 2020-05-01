@@ -66,6 +66,7 @@
     <string name="no_channel_info">There\'s nothing here yet.\nPlease check back later.</string>
     <string name="content">Content</string>
     <string name="website">Website</string>
+    <string name="reposted">reposted</string>
 
     <!-- Settings -->
     <string name="user_interface">Content &amp; User interface</string>
@@ -228,4 +229,5 @@
     <string name="fa_user_friends">&#xf500;</string>
     <string name="fa_cog">&#xf013;</string>
     <string name="fa_mobile_alt">&#xf3cd;</string>
+    <string name="fa_repost">&#xf079;</string>
 </resources>

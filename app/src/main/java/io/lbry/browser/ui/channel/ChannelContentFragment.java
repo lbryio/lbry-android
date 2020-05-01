@@ -203,7 +203,7 @@ public class ChannelContentFragment extends Fragment implements SharedPreference
         boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
 
         return Lbry.buildClaimSearchOptions(
-                Claim.TYPE_STREAM,
+                null,
                 null,
                 canShowMatureContent ? null : new ArrayList<>(Predefined.MATURE_TAGS),
                 Arrays.asList(channelId),

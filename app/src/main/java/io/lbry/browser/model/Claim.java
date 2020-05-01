@@ -32,6 +32,7 @@ public class Claim {
 
     public static final String TYPE_STREAM = "stream";
     public static final String TYPE_CHANNEL = "channel";
+    public static final String TYPE_REPOST = "repost";
 
     public static final String STREAM_TYPE_AUDIO = "audio";
     public static final String STREAM_TYPE_IMAGE = "image";
@@ -73,7 +74,8 @@ public class Claim {
     private String shortUrl;
     private String txid;
     private String type; // claim | update | support
-    private String valueType; // stream | channel
+    private String valueType; // stream | channel | repost
+    private Claim repostedClaim;
     private Claim signingChannel;
     private String repostChannelUrl;
     private boolean isChannelSignatureValid;
@@ -158,24 +160,30 @@ public class Claim {
     }
 
     public static Claim fromJSONObject(JSONObject claimObject) {
+        Claim claim = null;
         String claimJson = claimObject.toString();
         Type type = new TypeToken<Claim>(){}.getType();
         Type streamMetadataType = new TypeToken<StreamMetadata>(){}.getType();
         Type channelMetadataType = new TypeToken<ChannelMetadata>(){}.getType();
 
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-        Claim claim = gson.fromJson(claimJson, type);
+        claim = gson.fromJson(claimJson, type);
 
-        // Specific value parsing
         try {
-            JSONObject value = claimObject.getJSONObject("value");
             String valueType = claim.getValueType();
-            if (value != null) {
-                String valueJson = value.toString();
-                if (TYPE_STREAM.equalsIgnoreCase(valueType)) {
-                    claim.setValue(gson.fromJson(valueJson, streamMetadataType));
-                } else if (TYPE_CHANNEL.equalsIgnoreCase(valueType)) {
-                    claim.setValue(gson.fromJson(valueJson, channelMetadataType));
+            // Specific value type parsing
+            if (TYPE_REPOST.equalsIgnoreCase(valueType)) {
+                JSONObject repostedClaimObject = claimObject.getJSONObject("reposted_claim");
+                claim.setRepostedClaim(Claim.fromJSONObject(repostedClaimObject));
+            } else {
+                JSONObject value = claimObject.getJSONObject("value");
+                if (value != null) {
+                    String valueJson = value.toString();
+                    if (TYPE_STREAM.equalsIgnoreCase(valueType)) {
+                        claim.setValue(gson.fromJson(valueJson, streamMetadataType));
+                    } else if (TYPE_CHANNEL.equalsIgnoreCase(valueType)) {
+                        claim.setValue(gson.fromJson(valueJson, channelMetadataType));
+                    }
                 }
             }
         } catch (JSONException ex) {

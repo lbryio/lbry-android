@@ -87,6 +87,8 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         protected TextView titleView;
         protected TextView publisherView;
         protected TextView publishTimeView;
+        protected View repostInfoView;
+        protected TextView repostChannelView;
         public ViewHolder(View v) {
             super(v);
             alphaView = v.findViewById(R.id.claim_thumbnail_alpha);
@@ -97,6 +99,8 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             titleView = v.findViewById(R.id.claim_title);
             publisherView = v.findViewById(R.id.claim_publisher);
             publishTimeView = v.findViewById(R.id.claim_publish_time);
+            repostInfoView = v.findViewById(R.id.claim_repost_info);
+            repostChannelView = v.findViewById(R.id.claim_repost_channel);
         }
     }
 
@@ -111,7 +115,11 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             return VIEW_TYPE_FEATURED;
         }
 
-        return Claim.TYPE_CHANNEL.equalsIgnoreCase(items.get(position).getValueType()) ? VIEW_TYPE_CHANNEL : VIEW_TYPE_STREAM;
+        Claim claim = items.get(position);
+        String valueType = items.get(position).getValueType();
+        Claim actualClaim = Claim.TYPE_REPOST.equalsIgnoreCase(valueType) ? claim.getRepostedClaim() : claim;
+
+        return Claim.TYPE_CHANNEL.equalsIgnoreCase(actualClaim.getValueType()) ? VIEW_TYPE_CHANNEL : VIEW_TYPE_STREAM;
     }
 
     @Override
@@ -130,7 +138,10 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     @Override
     public void onBindViewHolder(ClaimListAdapter.ViewHolder vh, int position) {
         int type = getItemViewType(position);
-        Claim item = items.get(position);
+
+        Claim original = items.get(position);
+        boolean isRepost = Claim.TYPE_REPOST.equalsIgnoreCase(original.getValueType());
+        final Claim item = Claim.TYPE_REPOST.equalsIgnoreCase(original.getValueType()) ? original.getRepostedClaim() : original;
         Claim.GenericMetadata metadata = item.getValue();
         Claim signingChannel = item.getSigningChannel();
         Claim.StreamMetadata streamMetadata = null;
@@ -162,6 +173,16 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             }
         });
 
+        vh.repostInfoView.setVisibility(isRepost ? View.VISIBLE : View.GONE);
+        vh.repostChannelView.setText(isRepost ? original.getSigningChannel().getName() : null);
+        vh.repostChannelView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onClaimClicked(original.getSigningChannel());
+                }
+            }
+        });
 
         vh.titleView.setText(Helper.isNullOrEmpty(item.getTitle()) ? item.getName() : item.getTitle());
         if (type == VIEW_TYPE_FEATURED) {

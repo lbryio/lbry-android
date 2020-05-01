@@ -376,7 +376,7 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
         boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
 
         return Lbry.buildClaimSearchOptions(
-                Claim.TYPE_STREAM,
+                null,
                 (currentContentScope == ContentScopeDialogFragment.ITEM_EVERYONE) ? null : tags,
                 canShowMatureContent ? null : new ArrayList<>(Predefined.MATURE_TAGS),
                 null,
