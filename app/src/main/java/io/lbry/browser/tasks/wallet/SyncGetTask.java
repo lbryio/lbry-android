@@ -64,7 +64,7 @@ public class SyncGetTask extends AsyncTask<Void, Void, WalletSync> {
                     //Lbry.sync_apply({ password, data: response.data, blocking: true });
                     try {
                         Map<String, Object> options = new HashMap<>();
-                        options.put("hash", walletSync.getHash());
+                        options.put("password", Helper.isNullOrEmpty(password) ? "" : password);
                         options.put("data", walletSync.getData());
                         options.put("blocking", true);
 

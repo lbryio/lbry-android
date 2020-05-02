@@ -4,7 +4,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.gesture.Gesture;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
-import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +36,7 @@ import io.lbry.browser.R;
 import io.lbry.browser.adapter.TransactionListAdapter;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.WalletBalanceListener;
+import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.Transaction;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.tasks.wallet.TransactionListTask;
@@ -219,7 +218,6 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         recentTransactionsList.setLayoutManager(llm);
         recentTransactionsList.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
 
-
         buttonGetNewAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -269,6 +267,16 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
                 sp.edit().putBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_SKIP_WALLET_ACCOUNT, true).apply();
                 layoutAccountRecommended.setVisibility(View.GONE);
+            }
+        });
+
+        linkViewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = getContext();
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).openFragment(TransactionHistoryFragment.class, true, NavMenuItem.ID_ITEM_WALLET);
+                }
             }
         });
 
@@ -398,12 +406,21 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         hasFetchedRecentTransactions = false;
         super.onPause();
     }
+    public void onStart() {
+        super.onStart();
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            activity.hideFloatingWalletBalance();
+        }
+    }
 
     public void onStop() {
         Context context = getContext();
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             activity.removeWalletBalanceListener(this);
+            activity.showFloatingWalletBalance();
         }
         super.onStop();
     }

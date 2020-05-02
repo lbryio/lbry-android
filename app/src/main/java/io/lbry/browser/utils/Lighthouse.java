@@ -22,6 +22,19 @@ import okhttp3.Response;
 public class Lighthouse {
     public static final String CONNECTION_STRING = "https://lighthouse.lbry.com";
     public static Map<String, List<UrlSuggestion>> autocompleteCache = new HashMap<>();
+    public static Map<Map<String, Object>, List<Claim>> searchCache = new HashMap<>();
+
+    private static Map<String, Object> buildSearchOptionsKey(String rawQuery, int size, int from, boolean nsfw, String relatedTo) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("s", rawQuery);
+        options.put("size", size);
+        options.put("from", from);
+        options.put("nsfw", nsfw);
+        if (!Helper.isNullOrEmpty(relatedTo)) {
+            options.put("related_to", relatedTo);
+        }
+        return options;
+    }
 
     public static List<Claim> search(String rawQuery, int size, int from, boolean nsfw, String relatedTo) throws LbryRequestException, LbryResponseException {
         Uri.Builder uriBuilder = Uri.parse(String.format("%s/search", CONNECTION_STRING)).buildUpon().
@@ -32,6 +45,11 @@ public class Lighthouse {
                 appendQueryParameter("from", String.valueOf(from));
         if (!Helper.isNullOrEmpty(relatedTo)) {
             uriBuilder.appendQueryParameter("related_to", relatedTo);
+        }
+
+        Map<String, Object> cacheKey = buildSearchOptionsKey(rawQuery, size, from, nsfw, relatedTo);
+        if (searchCache.containsKey(cacheKey)) {
+            return searchCache.get(cacheKey);
         }
 
         List<Claim> results = new ArrayList<>();
@@ -45,6 +63,7 @@ public class Lighthouse {
                     Claim claim = Claim.fromSearchJSONObject(array.getJSONObject(i));
                     results.add(claim);
                 }
+                searchCache.put(cacheKey, results);
             } else {
                 throw new LbryResponseException(response.message());
             }

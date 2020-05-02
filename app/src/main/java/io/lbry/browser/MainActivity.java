@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private NavigationMenuAdapter navMenuAdapter;
     private UrlSuggestionListAdapter urlSuggestionListAdapter;
     private List<UrlSuggestion> recentHistory;
+    private boolean hasLoadedFirstBalance;
 
     // broadcast receivers
     private BroadcastReceiver serviceActionsReceiver;
@@ -500,6 +501,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     }
                 }
                 Lbry.walletBalance = walletBalance;
+                updateFloatingWalletBalance();
             }
 
             @Override
@@ -855,6 +857,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         } else {
             scheduleWalletBalanceUpdate();
             scheduleWalletSyncTask();
+            initFloatingWalletBalance();
         }
     }
 
@@ -863,9 +866,37 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             checkSyncedWallet();
         }
 
-        //overrideRemoteWallet();
         scheduleWalletBalanceUpdate();
         scheduleWalletSyncTask();
+        initFloatingWalletBalance();
+    }
+
+    public void showFloatingWalletBalance() {
+        findViewById(R.id.floating_balance_main_container).setVisibility(View.VISIBLE);
+    }
+    public void hideFloatingWalletBalance() {
+        findViewById(R.id.floating_balance_main_container).setVisibility(View.GONE);
+    }
+
+    private void initFloatingWalletBalance() {
+
+        findViewById(R.id.floating_balance_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFragment(WalletFragment.class, true, NavMenuItem.ID_ITEM_WALLET);
+            }
+        });
+    }
+
+    private void updateFloatingWalletBalance() {
+        if (!hasLoadedFirstBalance) {
+            findViewById(R.id.floating_balance_loading).setVisibility(View.GONE);
+            findViewById(R.id.floating_balance_value).setVisibility(View.VISIBLE);
+            hasLoadedFirstBalance = true;
+        }
+
+        ((TextView) findViewById(R.id.floating_balance_value)).setText(Helper.shortCurrencyFormat(
+                Lbry.walletBalance == null ? 0 : Lbry.walletBalance.getAvailable().doubleValue()));
     }
 
     private void scheduleWalletBalanceUpdate() {

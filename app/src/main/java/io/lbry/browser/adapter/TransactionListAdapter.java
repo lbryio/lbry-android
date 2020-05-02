@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,13 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.lbry.browser.R;
-import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.Transaction;
-import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 import lombok.Setter;
@@ -76,11 +72,21 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
         vh.amountView.setText(TX_LIST_AMOUNT_FORMAT.format(item.getValue().doubleValue()));
         vh.claimView.setText(item.getClaim());
         vh.feeView.setText(context.getString(R.string.tx_list_fee, TX_LIST_AMOUNT_FORMAT.format(item.getFee().doubleValue())));
-        vh.txidLinkView.setText(item.getTxid().substring(0, 8));
+        vh.txidLinkView.setText(item.getTxid().substring(0, 7));
         vh.dateView.setText(TX_LIST_DATE_FORMAT.format(item.getTxDate()));
 
         vh.infoFeeContainer.setVisibility(!Helper.isNullOrEmpty(item.getClaim()) || Math.abs(item.getFee().doubleValue()) > 0 ?
                 View.VISIBLE : View.GONE);
+
+        vh.claimView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LbryUri claimUrl = item.getClaimUrl();
+                if (claimUrl != null && listener != null) {
+                    listener.onClaimUrlClicked(claimUrl);
+                }
+            }
+        });
 
         vh.txidLinkView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,5 +128,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
 
     public interface TransactionClickListener {
         void onTransactionClicked(Transaction transaction);
+        void onClaimUrlClicked(LbryUri uri);
     }
 }

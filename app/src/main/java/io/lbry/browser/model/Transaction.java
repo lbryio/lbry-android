@@ -1,5 +1,6 @@
 package io.lbry.browser.model;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,7 +8,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import io.lbry.browser.R;
+import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.utils.Helper;
+import io.lbry.browser.utils.LbryUri;
 import lombok.Data;
 
 @Data
@@ -16,6 +19,7 @@ public class Transaction {
     private Date txDate;
     private String date;
     private String claim;
+    private String claimId;
     private String txid;
     private BigDecimal value;
     private BigDecimal fee;
@@ -24,6 +28,17 @@ public class Transaction {
     private TransactionInfo abandonInfo;
     private TransactionInfo claimInfo;
     private TransactionInfo supportInfo;
+
+    public LbryUri getClaimUrl() {
+        if (!Helper.isNullOrEmpty(claim) && !Helper.isNullOrEmpty(claimId)) {
+            try {
+                return LbryUri.parse(LbryUri.normalize(String.format("%s#%s", claim, claimId)));
+            } catch (LbryUriException ex) {
+                // pass
+            }
+        }
+        return null;
+    }
 
     public static Transaction fromJSONObject(JSONObject jsonObject) {
         Transaction transaction = new Transaction();
@@ -39,24 +54,39 @@ public class Transaction {
         TransactionInfo info = null;
         try {
             if (jsonObject.has("abandon_info")) {
-                info = TransactionInfo.fromJSONObject(jsonObject.getJSONObject("abandon_info"));
-                descStringId = R.string.abandon;
-                transaction.setAbandonInfo(info);
-            } else if (jsonObject.has("claim_info")) {
-                info = TransactionInfo.fromJSONObject(jsonObject.getJSONObject("claim_info"));
-                descStringId = info.getClaimName().startsWith("@") ? R.string.channel : R.string.publish;
-                transaction.setClaimInfo(info);
-            } else if (jsonObject.has("support_info")) {
-                info = TransactionInfo.fromJSONObject(jsonObject.getJSONObject("support_info"));
-                descStringId = info.isTip() ? R.string.tip : R.string.support;
-                transaction.setSupportInfo(info);
+                JSONArray array = jsonObject.getJSONArray("abandon_info");
+                if (array.length() > 0) {
+                    info = TransactionInfo.fromJSONObject(array.getJSONObject(0));
+                    descStringId = R.string.abandon;
+                    transaction.setAbandonInfo(info);
+                }
             }
-
+            if (info == null && jsonObject.has("claim_info")) {
+                JSONArray array = jsonObject.getJSONArray("claim_info");
+                if (array.length() > 0) {
+                    info = TransactionInfo.fromJSONObject(array.getJSONObject(0));
+                    descStringId = info.getClaimName().startsWith("@") ? R.string.channel : R.string.publish;
+                    transaction.setClaimInfo(info);
+                }
+            }
+            if (info == null && jsonObject.has("support_info")) {
+                JSONArray array = jsonObject.getJSONArray("support_info");
+                if (array.length() > 0) {
+                    info = TransactionInfo.fromJSONObject(array.getJSONObject(0));
+                    descStringId = info.isTip() ? R.string.tip : R.string.support;
+                    transaction.setSupportInfo(info);
+                }
+            }
             if (info != null) {
                 transaction.setClaim(info.getClaimName());
+                transaction.setClaimId(info.getClaimId());
             }
         } catch (JSONException ex) {
             // pass
+        }
+
+        if (transaction.getValue().doubleValue() == 0 && info != null && info.getBalanceDelta().doubleValue() != 0) {
+            transaction.setValue(info.getBalanceDelta());
         }
 
         if (descStringId == -1) {
@@ -71,6 +101,7 @@ public class Transaction {
     public static class TransactionInfo {
         private String address;
         private BigDecimal amount;
+        private BigDecimal balanceDelta;
         private String claimId;
         private String claimName;
         private boolean isTip;
@@ -81,6 +112,7 @@ public class Transaction {
 
             info.setAddress(Helper.getJSONString("address", null, jsonObject));
             info.setAmount(new BigDecimal(Helper.getJSONString("amount", "0", jsonObject)));
+            info.setBalanceDelta(new BigDecimal(Helper.getJSONString("balance_delta", "0", jsonObject)));
             info.setClaimId(Helper.getJSONString("claim_id", null, jsonObject));
             info.setClaimName(Helper.getJSONString("claim_name", null, jsonObject));
             info.setTip(Helper.getJSONBoolean("is_tip", false, jsonObject));

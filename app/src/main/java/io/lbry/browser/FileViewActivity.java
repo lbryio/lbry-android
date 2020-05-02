@@ -11,12 +11,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
@@ -39,6 +41,7 @@ import java.util.List;
 
 import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.adapter.TagListAdapter;
+import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.File;
@@ -49,11 +52,14 @@ import io.lbry.browser.tasks.LighthouseSearchTask;
 import io.lbry.browser.tasks.ResolveTask;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryUri;
 
 public class FileViewActivity extends AppCompatActivity {
 
     public static FileViewActivity instance = null;
     private static final int RELATED_CONTENT_SIZE = 16;
+    private static final int SHARE_REQUEST_CODE = 3001;
+    private static boolean startingShareActivity;
 
     private SimpleExoPlayer player;
     private boolean loadFilePending;
@@ -63,6 +69,14 @@ public class FileViewActivity extends AppCompatActivity {
     private File file;
     private BroadcastReceiver sdkReadyReceiver;
     private Player.EventListener fileViewPlayerListener;
+
+    private View buttonShareAction;
+    private View buttonTipAction;
+    private View buttonRepostAction;
+    private View buttonDownloadAction;
+    private View buttonEditAction;
+    private View buttonDeleteAction;
+    private View buttonReportAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,6 +247,14 @@ public class FileViewActivity extends AppCompatActivity {
             public void onSuccess(List<Claim> claims) {
                 if (claims.size() > 0) {
                     claim = claims.get(0);
+                    if (Claim.TYPE_REPOST.equalsIgnoreCase(claim.getValueType())) {
+                        claim = claim.getRepostedClaim();
+
+                        // cache the reposted claim too for subsequent loads
+                        ClaimCacheKey key = ClaimCacheKey.fromClaim(claim);
+                        Lbry.claimCache.put(key, claim);
+                    }
+
                     checkAndResetNowPlayingClaim();
                     loadFile();
                     renderClaim();
@@ -259,6 +281,29 @@ public class FileViewActivity extends AppCompatActivity {
                 } else {
                     descriptionArea.setVisibility(View.GONE);
                     descIndicator.setImageResource(R.drawable.ic_arrow_dropdown);
+                }
+            }
+        });
+
+        findViewById(R.id.file_view_action_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (claim != null) {
+                    try {
+                        String shareUrl = LbryUri.parse(
+                                !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl()).toTvString();
+                        Intent shareIntent = new Intent();
+                        shareIntent.setAction(Intent.ACTION_SEND);
+                        shareIntent.setType("text/plain");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, shareUrl);
+
+                        startingShareActivity = true;
+                        Intent shareUrlIntent = Intent.createChooser(shareIntent, getString(R.string.share_lbry_content));
+                        shareUrlIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(shareUrlIntent);
+                    } catch (LbryUriException ex) {
+                        // pass
+                    }
                 }
             }
         });
@@ -375,6 +420,10 @@ public class FileViewActivity extends AppCompatActivity {
         MainActivity.appPlayer.prepare(mediaSource, true, true);
     }
 
+    private void loadViewCount() {
+
+    }
+
     private void loadRelatedContent() {
         // reset the list view
         ((RecyclerView) findViewById(R.id.file_view_related_content_list)).setAdapter(null);
@@ -431,6 +480,16 @@ public class FileViewActivity extends AppCompatActivity {
     }
 
     protected void onUserLeaveHint() {
+        if (startingShareActivity) {
+            // share activity triggered this, so reset the flag at this point
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startingShareActivity = false;
+                }
+            }, 1000);
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !MainActivity.mainActive) {
             PictureInPictureParams params = new PictureInPictureParams.Builder().build();
             enterPictureInPictureMode(params);

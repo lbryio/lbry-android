@@ -58,6 +58,7 @@
     <string name="report">Report</string>
     <string name="loading_decentralized_data">Loading decentralized data...</string>
     <string name="related_content">Related Content</string>
+    <string name="share_lbry_content">Share LBRY content</string>
 
     <string name="unsupported_content">Unsupported Content</string>
     <string name="unsupported_content_desc">Sorry, we are unable to display this content in the app. You can find the file named %1$s in your downloads folder.</string>
@@ -156,7 +157,9 @@
     <string name="send_credit_error">Your credits could not be sent at this time. Please try again later.</string>
     <string name="loading_transactions">Loading transactions...</string>
     <string name="no_recent_transactions">There are no recent transactions to display.</string>
+    <string name="no_transactions">There are no transactions to display at this time.</string>
     <string name="tx_list_fee">fee %1$s</string>
+    <string name="transaction_history">Transaction History</string>
 
     <plurals name="you_sent_credits">
         <item quantity="one">You sent %1$s credit</item>

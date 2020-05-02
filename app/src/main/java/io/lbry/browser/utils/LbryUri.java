@@ -10,6 +10,7 @@ import lombok.Data;
 
 @Data
 public class LbryUri {
+    public static final String LBRY_TV_BASE_URL = "https://lbry.tv";
     public static final String PROTO_DEFAULT = "lbry://";
     public static final String REGEX_INVALID_URI = "[ =&#:$@%?;/\\\\\"<>%\\{\\}|^~\\[\\]`\u0000-\u0008\u000b-\u000c\u000e-\u001F\uD800-\uDFFF\uFFFE-\uFFFF]";
     public static final String REGEX_ADDRESS = "^(b|r)(?=[^0OIl]{32,33})[0-9A-Za-z]{32,33}$";
@@ -37,6 +38,10 @@ public class LbryUri {
     private String claimId;
     private String contentName;
     private String queryString;
+
+    private boolean isChannelUrl() {
+        return (!Helper.isNullOrEmpty(channelName) && Helper.isNullOrEmpty(streamName)) || (!Helper.isNullOrEmpty(claimName) && claimName.startsWith("@"));
+    }
 
     public static LbryUri parse(String url) throws LbryUriException {
         return parse(url, false);
@@ -204,6 +209,59 @@ public class LbryUri {
         }
         if (secondaryBidPosition > 0) {
             sb.append('$').append(secondaryBidPosition);
+        }
+
+        return sb.toString();
+    }
+
+    public String toTvString() {
+        String formattedChannelName = null;
+        if (channelName != null) {
+            formattedChannelName = channelName.startsWith("@") ? channelName : String.format("@%s", channelName);
+        }
+        String primaryClaimName = claimName;
+        if (Helper.isNullOrEmpty(primaryClaimName)) {
+            primaryClaimName = contentName;
+        }
+        if (Helper.isNullOrEmpty(primaryClaimName)) {
+            primaryClaimName = formattedChannelName;
+        }
+        if (Helper.isNullOrEmpty(primaryClaimName)) {
+            primaryClaimName = streamName;
+        }
+
+        String primaryClaimId = claimId;
+        if (Helper.isNullOrEmpty(primaryClaimId)) {
+            primaryClaimId = !Helper.isNullOrEmpty(formattedChannelName) ? channelClaimId : streamClaimId;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(LBRY_TV_BASE_URL).append('/');
+        sb.append(primaryClaimName);
+
+        String secondaryClaimName = null;
+        if (Helper.isNullOrEmpty(claimName) && !Helper.isNullOrEmpty(contentName)) {
+            secondaryClaimName = contentName;
+        }
+        if (Helper.isNullOrEmpty(secondaryClaimName)) {
+            secondaryClaimName = !Helper.isNullOrEmpty(formattedChannelName) ? streamName : null;
+        }
+        String secondaryClaimId = !Helper.isNullOrEmpty(secondaryClaimName) ? streamClaimId : null;
+
+        if (!Helper.isNullOrEmpty(primaryClaimId)) {
+            sb.append('#').append(primaryClaimId);
+        }
+        if (primaryClaimSequence > 0) {
+            sb.append(':').append(primaryClaimSequence);
+        }
+        if (!Helper.isNullOrEmpty(secondaryClaimName)) {
+            sb.append('/').append(secondaryClaimName);
+        }
+        if (!Helper.isNullOrEmpty(secondaryClaimId)) {
+            sb.append('#').append(secondaryClaimId);
+        }
+        if (secondaryClaimSequence > 0) {
+            sb.append(':').append(secondaryClaimSequence);
         }
 
         return sb.toString();

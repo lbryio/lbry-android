@@ -3,9 +3,6 @@ package io.lbry.browser.ui.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -22,14 +19,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        view.setBackgroundColor(getResources().getColor(R.color.pageBackground));
-
-        return view;
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         MainActivity activity = (MainActivity) getContext();
@@ -37,6 +26,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             activity.hideSearchBar();
             activity.showNavigationBackIcon();
             activity.lockDrawer();
+            activity.hideFloatingWalletBalance();
 
             ActionBar actionBar = activity.getSupportActionBar();
             if (actionBar != null) {
@@ -59,7 +49,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onStop() {
         Context context = getContext();
         if (context instanceof MainActivity) {
-            ((MainActivity) context).restoreToggle();
+            MainActivity activity = (MainActivity) getContext();
+            activity.restoreToggle();
+            activity.showFloatingWalletBalance();
         }
         super.onStop();
     }
@@ -68,6 +60,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_DARK_MODE)) {
             boolean darkMode = sp.getBoolean(MainActivity.PREFERENCE_KEY_DARK_MODE, false);
             AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
+            Context context = getContext();
+            if (context instanceof MainActivity) {
+                MainActivity activity = (MainActivity) context;
+                activity.getDelegate().applyDayNight();
+                activity.recreate();
+            }
         }
     }
 }

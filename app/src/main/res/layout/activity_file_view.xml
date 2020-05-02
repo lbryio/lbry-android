@@ -39,13 +39,20 @@
         android:layout_weight="10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible">
+        android:visibility="visible">
         <RelativeLayout
             android:id="@+id/file_view_media_container"
             android:background="@color/mediaContainerBackground"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3.25">
+            <!--RelativeLayout
+                android:id="@+id/file_view_media_meta_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </RelativeLayout-->
+
             <RelativeLayout
                 android:id="@+id/file_view_exoplayer_container"
                 android:background="@android:color/black"
@@ -196,7 +203,112 @@
                         <TextView
                             android:fontFamily="@font/inter"
                             android:textSize="12sp"
-                            android:text="Share"
+                            android:text="@string/share"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/file_vew_action_tip"
+                        android:clickable="true"
+                        android:background="?attr/selectableItemBackground"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+                        <io.lbry.browser.ui.controls.SolidIconView
+                            android:textColor="@color/foreground"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_horizontal"
+                            android:textSize="20dp"
+                            android:text="@string/fa_gift"/>
+                        <TextView
+                            android:fontFamily="@font/inter"
+                            android:textSize="12sp"
+                            android:text="@string/tip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/file_vew_action_repost"
+                        android:clickable="true"
+                        android:background="?attr/selectableItemBackground"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+                        <io.lbry.browser.ui.controls.SolidIconView
+                            android:textColor="@color/foreground"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_horizontal"
+                            android:textSize="20dp"
+                            android:text="@string/fa_repost"/>
+                        <TextView
+                            android:fontFamily="@font/inter"
+                            android:textSize="12sp"
+                            android:text="@string/repost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/file_view_action_edit"
+                        android:clickable="true"
+                        android:background="?attr/selectableItemBackground"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:visibility="gone"
+                        >
+                        <ImageView
+                            android:tint="@color/foreground"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_edit" />
+                        <TextView
+                            android:fontFamily="@font/inter"
+                            android:textSize="12sp"
+                            android:text="@string/edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/file_view_action_delete"
+                        android:clickable="true"
+                        android:background="?attr/selectableItemBackground"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:visibility="gone">
+                        <ImageView
+                            android:tint="@color/foreground"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_delete" />
+                        <TextView
+                            android:fontFamily="@font/inter"
+                            android:textSize="12sp"
+                            android:text="@string/delete"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal" />
