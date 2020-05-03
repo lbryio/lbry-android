@@ -86,6 +86,7 @@ public class SearchFragment extends BaseFragment implements
 
     public void onResume() {
         super.onResume();
+        Helper.setWunderbarValue(currentQuery, getContext());
         PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
         if (!Helper.isNullOrEmpty(currentQuery)) {
             search(currentQuery, currentFrom);

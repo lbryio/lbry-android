@@ -219,6 +219,15 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         recentTransactionsList.setLayoutManager(llm);
         recentTransactionsList.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
 
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = getContext();
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).walletSyncSignIn();
+                }
+            }
+        });
         buttonGetNewAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -392,6 +401,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
 
     public void onResume() {
         super.onResume();
+        Helper.setWunderbarValue(null, getContext());
         if (!Lbry.SDK_READY) {
             Context context = getContext();
             if (context instanceof MainActivity) {
@@ -415,6 +425,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         Context context = getContext();
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
+            activity.setWunderbarValue(null);
             activity.hideFloatingWalletBalance();
         }
     }

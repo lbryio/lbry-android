@@ -326,6 +326,7 @@ public class FollowingFragment extends BaseFragment implements
 
     public void onResume() {
         super.onResume();
+        Helper.setWunderbarValue(null, getContext());
         PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
 
         // check if subscriptions exist

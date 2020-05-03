@@ -359,6 +359,7 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
 
     public void onResume() {
         super.onResume();
+        Helper.setWunderbarValue(null, getContext());
         PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
         updateContentFromLinkText();
         updateContentScopeLinkText();

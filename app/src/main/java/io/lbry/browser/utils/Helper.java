@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import io.lbry.browser.MainActivity;
 import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
 import io.lbry.browser.model.Claim;
@@ -323,5 +324,11 @@ public final class Helper {
             }
         }
         return followedTags;
+    }
+
+    public static void setWunderbarValue(String value, Context context) {
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).setWunderbarValue(value);
+        }
     }
 }

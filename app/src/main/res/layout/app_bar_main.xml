@@ -29,16 +29,17 @@
                 <EditText
                     android:id="@+id/wunderbar"
                     android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/ic_search"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/actionBarForeground"
                     android:fontFamily="@font/inter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/uri_placeholder"
+                    android:selectAllOnFocus="true"
                     android:singleLine="true"
                     android:textFontWeight="300"
-                    android:textSize="14sp"
-                    android:drawableLeft="@drawable/ic_search"
-                    android:drawablePadding="8dp"
-                    android:drawableTint="@color/actionBarForeground" />
+                    android:textSize="14sp" />
                 <LinearLayout
                     android:id="@+id/wunderbar_close"
                     android:clickable="true"

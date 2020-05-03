@@ -81,6 +81,7 @@ public class EditorsChoiceFragment extends BaseFragment {
 
     public void onResume() {
         super.onResume();
+        Helper.setWunderbarValue(null, getContext());
         if (contentListAdapter == null || contentListAdapter.getItemCount() == 0) {
             fetchClaimSearchContent();
         } else {

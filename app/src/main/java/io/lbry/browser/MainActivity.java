@@ -14,6 +14,7 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -184,13 +185,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private BroadcastReceiver requestsReceiver;
     private BroadcastReceiver userActionsReceiver;
 
-    private boolean userAuthenticated = false;
-
     private boolean appStarted;
     private boolean serviceRunning;
     private CheckSdkReadyTask checkSdkReadyTask;
     private boolean receivedStopService;
-    private AppBarConfiguration mAppBarConfiguration;
     private ActionBarDrawerToggle toggle;
     @Getter
     private DatabaseHelper dbHelper;
@@ -200,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     @Getter
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private boolean walletBalanceUpdateScheduled;
+    private boolean shouldOpenUserSelectedMenuItem;
     private boolean walletSyncScheduled;
     private String pendingAllContentTag;
     private String pendingChannelUrl;
@@ -303,7 +302,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         navMenuAdapter.setListener(new NavigationMenuAdapter.NavigationMenuItemClickListener() {
             @Override
             public void onNavigationMenuItemClicked(NavMenuItem menuItem) {
-                if (navMenuAdapter.getCurrentItemId() == menuItem.getId() && menuItem.getId() != NavMenuItem.ID_ITEM_ALL_CONTENT) {
+                if (navMenuAdapter.getCurrentItemId() == menuItem.getId() && !Arrays.asList(
+                        NavMenuItem.ID_ITEM_FOLLOWING, NavMenuItem.ID_ITEM_ALL_CONTENT, NavMenuItem.ID_ITEM_WALLET).contains(menuItem.getId())) {
                     // already open
                     navMenuAdapter.setCurrentItem(menuItem);
                     closeDrawer();
@@ -330,7 +330,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         });
     }
 
-    private boolean shouldOpenUserSelectedMenuItem;
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        checkUrlIntent(intent);
+    }
 
     public void addSdkStatusListener(SdkStatusListener listener) {
         if (!sdkStatusListeners.contains(listener)) {
@@ -376,10 +379,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void openChannelClaim(Claim claim) {
         Map<String, Object> params = new HashMap<>();
-        params.put("url", claim.getPermanentUrl());
+        params.put("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
         params.put("claim", getCachedClaimForUrl(claim.getPermanentUrl()));
         openFragment(ChannelFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
-        setWunderbarValue(claim.getShortUrl());
     }
 
     public void openChannelUrl(String url) {
@@ -387,7 +389,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         params.put("url", url);
         params.put("claim", getCachedClaimForUrl(url));
         openFragment(ChannelFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
-        setWunderbarValue(url); // TODO: Move this to fragment onResume
     }
 
     private Claim getCachedClaimForUrl(String url) {
@@ -447,6 +448,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     private void renderPictureInPictureMode() {
         findViewById(R.id.content_main).setVisibility(View.GONE);
+        findViewById(R.id.floating_balance_main_container).setVisibility(View.GONE);
         findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
         getSupportActionBar().hide();
 
@@ -457,6 +459,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private void renderFullMode() {
         getSupportActionBar().show();
         findViewById(R.id.content_main).setVisibility(View.VISIBLE);
+        findViewById(R.id.floating_balance_main_container).setVisibility(View.VISIBLE);
         findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
 
         PlayerView pipPlayer = findViewById(R.id.pip_player);
@@ -573,6 +576,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.wunderbar).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(view, 0);
+                }
                 toggleUrlSuggestions(hasFocus);
                 if (hasFocus && Helper.isNullOrEmpty(Helper.getValue(((EditText) view).getText()))) {
                     displayUrlSuggestionsForNoInput();
@@ -707,6 +714,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         List<UrlSuggestion> defaultSuggestions = buildDefaultSuggestions(text);
         urlSuggestionListAdapter.addUrlSuggestions(defaultSuggestions);
+        if (LbryUri.PROTO_DEFAULT.equalsIgnoreCase(text)) {
+            return;
+        }
 
         LighthouseAutoCompleteTask task = new LighthouseAutoCompleteTask(text, null, new LighthouseAutoCompleteTask.AutoCompleteResultHandler() {
             @Override
@@ -753,6 +763,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private List<UrlSuggestion> buildDefaultSuggestions(String text) {
         List<UrlSuggestion> suggestions = new ArrayList<UrlSuggestion>();
 
+        if (LbryUri.PROTO_DEFAULT.equalsIgnoreCase(text)) {
+            return buildDefaultSuggestionsForBlankUrl();
+        }
+
         // First item is always search
         if (!text.startsWith(LbryUri.PROTO_DEFAULT)) {
             UrlSuggestion searchSuggestion = new UrlSuggestion(UrlSuggestion.TYPE_SEARCH, text);
@@ -760,27 +774,44 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
 
         if (!text.matches(LbryUri.REGEX_INVALID_URI)) {
+            boolean isUrlWithScheme = text.startsWith(LbryUri.PROTO_DEFAULT);
             boolean isChannel = text.startsWith("@");
+            LbryUri uri = null;
+            if (isUrlWithScheme && text.length() > 7) {
+                try {
+                    uri = LbryUri.parse(text);
+                    isChannel = uri.isChannel();
+                } catch (LbryUriException ex) {
+                    // pass
+                }
+            }
+
             if (!isChannel) {
-                LbryUri uri = new LbryUri();
-                uri.setStreamName(text);
+                if (uri == null) {
+                    uri = new LbryUri();
+                    uri.setStreamName(text);
+                }
                 UrlSuggestion fileSuggestion = new UrlSuggestion(UrlSuggestion.TYPE_FILE, text);
                 fileSuggestion.setUri(uri);
                 suggestions.add(fileSuggestion);
             }
 
             if (text.indexOf(' ') == -1) {
-                // channels and tags should not contain spaces
+                // channels should not contain spaces
                 if (isChannel) {
-                    LbryUri uri = new LbryUri();
-                    uri.setChannelName(text);
+                    if (uri == null) {
+                        uri = new LbryUri();
+                        uri.setChannelName(text);
+                    }
                     UrlSuggestion suggestion = new UrlSuggestion(UrlSuggestion.TYPE_CHANNEL, text);
                     suggestion.setUri(uri);
                     suggestions.add(suggestion);
-                } else {
-                    UrlSuggestion suggestion = new UrlSuggestion(UrlSuggestion.TYPE_TAG, text);
-                    suggestions.add(suggestion);
                 }
+            }
+
+            if (!isUrlWithScheme) {
+                UrlSuggestion suggestion = new UrlSuggestion(UrlSuggestion.TYPE_TAG, text);
+                suggestions.add(suggestion);
             }
         }
 
@@ -843,7 +874,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         Base64.decode(encryptedAuthToken, Base64.NO_WRAP), this, Lbry.KEYSTORE), "UTF8");
             } catch (Exception ex) {
                 // pass. A new auth token would have to be generated if the old one cannot be decrypted
-                android.util.Log.e(TAG, "Could not decrypt existing auth token.", ex);
+                Log.e(TAG, "Could not decrypt existing auth token.", ex);
             }
         }
     }
@@ -1328,9 +1359,36 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 loadLastFragment();
                 showSignedInUser();
 
+                checkUrlIntent(getIntent());
                 appStarted = true;
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void checkUrlIntent(Intent intent) {
+        if (intent != null) {
+            Uri data = intent.getData();
+            if (data != null) {
+                String url = data.toString();
+                // check special urls
+                if (url.startsWith("lbry://?")) {
+                    String pagePath = url.substring(8);
+
+                    // TODO: Handle special page paths
+                } else {
+                    try {
+                        LbryUri uri = LbryUri.parse(url);
+                        if (uri.isChannel()) {
+                            openChannelUrl(uri.toString());
+                        } else {
+                            openFileUrl(uri.toString(), this);
+                        }
+                    } catch (LbryUriException ex) {
+                        // pass
+                    }
+                }
+            }
+        }
     }
 
     private void loadLastFragment() {
@@ -1663,7 +1721,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             Fragment fragment = openNavFragments.containsKey(key) ? openNavFragments.get(key) : (Fragment) fragmentClass.newInstance();
             if (fragment instanceof BaseFragment) {
                 ((BaseFragment) fragment).setParams(params);
-                }
+            }
             Fragment currentFragment = getCurrentFragment();
             if (currentFragment != null && currentFragment.equals(fragment)) {
                 return;

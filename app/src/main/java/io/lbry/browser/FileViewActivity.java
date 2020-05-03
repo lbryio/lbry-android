@@ -567,9 +567,11 @@ public class FileViewActivity extends AppCompatActivity {
     private void renderPictureInPictureMode() {
         findViewById(R.id.file_view_scroll_view).setVisibility(View.GONE);
         findViewById(R.id.file_view_exoplayer_control_view).setVisibility(View.GONE);
+        findViewById(R.id.floating_balance_main_container).setVisibility(View.GONE);
     }
     private void renderFullMode() {
         findViewById(R.id.file_view_scroll_view).setVisibility(View.VISIBLE);
+        findViewById(R.id.floating_balance_main_container).setVisibility(View.VISIBLE);
 
         PlayerControlView controlView = findViewById(R.id.file_view_exoplayer_control_view);
         controlView.setPlayer(null);

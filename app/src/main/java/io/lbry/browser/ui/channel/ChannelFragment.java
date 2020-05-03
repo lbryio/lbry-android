@@ -203,6 +203,9 @@ public class ChannelFragment extends BaseFragment {
 
     public void onResume() {
         super.onResume();
+        Map<String, Object> params = getParams();
+        String url = params != null && params.containsKey("url") ? (String) params.get("url") : null;
+        Helper.setWunderbarValue(url, getContext());
         checkParams();
     }
 
