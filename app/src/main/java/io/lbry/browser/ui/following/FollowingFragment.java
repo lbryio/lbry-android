@@ -53,6 +53,7 @@ public class FollowingFragment extends BaseFragment implements
         FetchSubscriptionsTask.FetchSubscriptionsHandler,
         ChannelItemSelectionListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
+    public static boolean resetClaimSearchContent;
     private static final int SUGGESTED_PAGE_SIZE = 45;
     private static final int MIN_SUGGESTED_SUBSCRIBE_COUNT = 5;
 
@@ -353,7 +354,9 @@ public class FollowingFragment extends BaseFragment implements
         } else {
             fetchAndResolveChannelList();
         }
-        fetchClaimSearchContent();
+
+        fetchClaimSearchContent(resetClaimSearchContent);
+        resetClaimSearchContent = false;
         showSubscribedContent();
     }
 

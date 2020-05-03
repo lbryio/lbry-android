@@ -106,7 +106,9 @@
     <string name="in_your_publishes">in your publishes</string>
     <string name="in_your_supports">in your supports</string>
     <string name="earn_more_tips">Earn more tips by uploading cool videos</string>
-    <string name="sdk_initializing">The background service is still initializing. You can explore and watch content in the mean time.</string>
+    <string name="sdk_initializing">The background service is initializing...</string>
+    <string name="sdk_still_initializing">The background service is still initializing. You can explore and watch content in the mean time.</string>
+    <string name="sdk_initializing_functionality">You cannot do this right now because the background service is still initializing.</string>
 
     <string name="backup_synced">A backup of your wallet is synced with lbry.tv</string>
     <string name="backup_notsynced">Your wallet is not currently synced with lbry.tv. You are responsible for backing up your wallet.</string>
@@ -193,6 +195,16 @@
     <string name="no_followed_tags">You have not followed any tags yet. Get started by adding tags that you are interested in!</string>
     <string name="no_tag_results">We could not find new tags that you\'re not following.</string>
     <string name="tag_already_followed">The \'%1$s\' tag has already been added.</string>
+    <string name="send_a_tip">Send a tip</string>
+    <string name="send_a_tip_to">Send a tip to %1$s</string>
+    <string name="send_tip_info_content">This will appear as a tip for %1$s, which will boost its ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="send_tip_info_channel">This will appear as a tip for %1$s, which will boost the channel\'s ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="cancel">Cancel</string>
+
+    <plurals name="you_sent_a_tip">
+        <item quantity="one">You sent %1$s credit as a tip, Mahalo!</item>
+        <item quantity="other">You sent %1$s credits as a tip, Mahalo!</item>
+    </plurals>
 
     <!-- Verification -->
     <string name="provide_email_address">Please provide an email address.</string>
@@ -223,6 +235,7 @@
     <string name="fa_at">&#xf1fa;</string>
 
     <string name="fa_heart">&#xf004;</string>
+    <string name="fa_heart_broken">&#xf7a9;</string>
     <string name="fa_star">&#xf005;</string>
     <string name="fa_globe_americas">&#xf57d;</string>
     <string name="fa_upload">&#xf093;</string>

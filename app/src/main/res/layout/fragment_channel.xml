@@ -123,14 +123,95 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/channel_view_actions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/channel_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:elevation="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="8dp">
+                <RelativeLayout
+                    android:id="@+id/channel_view_edit"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginRight="8dp"
+                    android:visibility="gone">
+                    <ImageView
+                        android:layout_centerInParent="true"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:tint="@color/foreground"
+                        android:src="@drawable/ic_edit" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/channel_view_delete"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginRight="8dp"
+                    android:visibility="gone">
+                    <ImageView
+                        android:layout_centerInParent="true"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:tint="@color/foreground"
+                        android:src="@drawable/ic_delete" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/channel_view_share"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginRight="8dp">
+                    <ImageView
+                        android:layout_centerInParent="true"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:tint="@color/foreground"
+                        android:src="@drawable/ic_share" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/channel_view_tip"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginRight="8dp">
+                    <io.lbry.browser.ui.controls.SolidIconView
+                        android:layout_centerInParent="true"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:text="@string/fa_gift"
+                        android:textColor="@color/foreground"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/channel_view_follow_unfollow"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp">
+                    <io.lbry.browser.ui.controls.SolidIconView
+                        android:id="@+id/channel_view_icon_follow_unfollow"
+                        android:layout_centerInParent="true"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:text="@string/fa_heart"
+                        android:textColor="@color/red"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+            </LinearLayout>
         </RelativeLayout>
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/channel_view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

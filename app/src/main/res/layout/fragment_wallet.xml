@@ -49,7 +49,7 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/gerbil_happy" />
             <TextView
-                android:text="@string/sdk_initializing"
+                android:text="@string/sdk_still_initializing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"

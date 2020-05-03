@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:id="@+id/tip_send_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter"
+            android:singleLine="true"
+            android:text="@string/send_a_tip"
+            android:textSize="20sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <RelativeLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tip_input_layout_amount"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/amount">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tip_input_amount"
+                    android:fontFamily="@font/inter"
+                    android:textSize="14sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tip_input_currency"
+                android:layout_toRightOf="@id/tip_input_layout_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/lbc"
+                android:textAllCaps="true"
+                android:textSize="10sp"
+                android:textFontWeight="300" />
+
+            <LinearLayout
+                android:id="@+id/tip_inline_balance_container"
+                android:layout_toRightOf="@id/tip_input_currency"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="invisible">
+                <io.lbry.browser.ui.controls.SolidIconView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:text="@string/fa_coins" />
+                <TextView
+                    android:id="@+id/tip_inline_balance_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:textFontWeight="300"
+                    android:layout_marginLeft="2dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tip_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/send_tip_info_content"
+            android:textFontWeight="300"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tip_cancel_link"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter"
+                android:text="@string/cancel"
+                android:textFontWeight="300"
+                android:textSize="14sp" />
+
+            <ProgressBar
+                android:id="@+id/tip_send_progress"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toLeftOf="@id/tip_send"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tip_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/send"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public static SimpleExoPlayer appPlayer;
     public static Claim nowPlayingClaim;
+    public static boolean startingShareActivity = false;
     public static boolean startingFileViewActivity = false;
     public static boolean mainActive = false;
     private boolean enteringPIPMode = false;
@@ -147,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String ACTION_NOW_PLAYING_CLAIM_UPDATED = "io.lbry.browser.Broadcast.NowPlayingClaimUpdated";
     public static final String ACTION_NOW_PLAYING_CLAIM_CLEARED = "io.lbry.browser.Broadcast.NowPlayingClaimCleared";
     public static final String ACTION_OPEN_ALL_CONTENT_TAG = "io.lbry.browser.Broadcast.OpenAllContentTag";
+    public static final String ACTION_WALLET_BALANCE_UPDATED = "io.lbry.browser.Broadcast.WalletBalanceUpdated";
 
     // preference keys
     public static final String PREFERENCE_KEY_DARK_MODE = "io.lbry.browser.preference.userinterface.DarkMode";
@@ -385,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         params.put("url", url);
         params.put("claim", getCachedClaimForUrl(url));
         openFragment(ChannelFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
-        setWunderbarValue(url);
+        setWunderbarValue(url); // TODO: Move this to fragment onResume
     }
 
     private Claim getCachedClaimForUrl(String url) {
@@ -502,6 +504,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 }
                 Lbry.walletBalance = walletBalance;
                 updateFloatingWalletBalance();
+
+                sendBroadcast(new Intent(ACTION_WALLET_BALANCE_UPDATED));
             }
 
             @Override
@@ -1354,6 +1358,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onUserLeaveHint() {
+        if (startingShareActivity) {
+            // share activity triggered this, so reset the flag at this point
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startingShareActivity = false;
+                }
+            }, 1000);
+            return;
+        }
         enterPIPMode();
     }
 

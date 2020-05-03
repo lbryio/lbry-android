@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
@@ -35,12 +34,16 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.adapter.TagListAdapter;
+import io.lbry.browser.dialog.SendTipDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
@@ -62,12 +65,13 @@ public class FileViewActivity extends AppCompatActivity {
     private static boolean startingShareActivity;
 
     private SimpleExoPlayer player;
+    private boolean hasLoadedFirstBalance;
     private boolean loadFilePending;
     private boolean resolving;
     private Claim claim;
     private ClaimListAdapter relatedContentAdapter;
     private File file;
-    private BroadcastReceiver sdkReadyReceiver;
+    private BroadcastReceiver sdkReceiver;
     private Player.EventListener fileViewPlayerListener;
 
     private View buttonShareAction;
@@ -117,7 +121,7 @@ public class FileViewActivity extends AppCompatActivity {
             resolveUrl(url);
         }
 
-        registerSdkReadyReceiver();
+        registerSdkReceiver();
 
         fileViewPlayerListener = new Player.EventListener() {
             @Override
@@ -129,6 +133,7 @@ public class FileViewActivity extends AppCompatActivity {
         };
 
         initUi();
+        onWalletBalanceUpdated();
         renderClaim();
     }
 
@@ -181,19 +186,38 @@ public class FileViewActivity extends AppCompatActivity {
         }
     }
 
-    private void registerSdkReadyReceiver() {
+    private void registerSdkReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(MainActivity.ACTION_SDK_READY);
-        sdkReadyReceiver = new BroadcastReceiver() {
+        filter.addAction(MainActivity.ACTION_WALLET_BALANCE_UPDATED);
+        sdkReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                // authenticate after we receive the sdk ready event
-                if (loadFilePending) {
-                    loadFile();
+                String action = intent.getAction();
+                if (action.equalsIgnoreCase(MainActivity.ACTION_SDK_READY)) {
+                    // authenticate after we receive the sdk ready event
+                    if (loadFilePending) {
+                        loadFile();
+                    }
+                } else if (action.equalsIgnoreCase(MainActivity.ACTION_WALLET_BALANCE_UPDATED)) {
+                    onWalletBalanceUpdated();
                 }
             }
         };
-        registerReceiver(sdkReadyReceiver, filter);
+        registerReceiver(sdkReceiver, filter);
+    }
+
+    private void onWalletBalanceUpdated() {
+        if (Lbry.SDK_READY) {
+            if (!hasLoadedFirstBalance) {
+                findViewById(R.id.floating_balance_loading).setVisibility(View.GONE);
+                findViewById(R.id.floating_balance_value).setVisibility(View.VISIBLE);
+                hasLoadedFirstBalance = true;
+            }
+
+            ((TextView) findViewById(R.id.floating_balance_value)).setText(
+                    Helper.shortCurrencyFormat(Lbry.walletBalance.getAvailable().doubleValue()));
+        }
     }
 
     private String getStreamingUrl() {
@@ -304,6 +328,32 @@ public class FileViewActivity extends AppCompatActivity {
                     } catch (LbryUriException ex) {
                         // pass
                     }
+                }
+            }
+        });
+
+        findViewById(R.id.file_view_action_tip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Lbry.SDK_READY) {
+                    Snackbar.make(findViewById(R.id.file_view_claim_display_area), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (claim != null) {
+                    SendTipDialogFragment dialog = SendTipDialogFragment.newInstance();
+                    dialog.setClaim(claim);
+                    dialog.setListener(new SendTipDialogFragment.SendTipListener() {
+                        @Override
+                        public void onTipSent(BigDecimal amount) {
+                            double sentAmount = amount.doubleValue();
+                            String message = getResources().getQuantityString(
+                                    R.plurals.you_sent_a_tip, sentAmount == 1.0 ? 1 : 2,
+                                    new DecimalFormat("#,###.##").format(sentAmount));
+                            Snackbar.make(findViewById(R.id.file_view_claim_display_area), message, Snackbar.LENGTH_LONG).show();
+                        }
+                    });
+                    dialog.show(getSupportFragmentManager(), SendTipDialogFragment.TAG);
                 }
             }
         });
@@ -506,7 +556,7 @@ public class FileViewActivity extends AppCompatActivity {
     }
 
     protected void onDestroy() {
-        Helper.unregisterReceiver(sdkReadyReceiver, this);
+        Helper.unregisterReceiver(sdkReceiver, this);
         if (MainActivity.appPlayer != null && fileViewPlayerListener != null) {
             MainActivity.appPlayer.removeListener(fileViewPlayerListener);
         }

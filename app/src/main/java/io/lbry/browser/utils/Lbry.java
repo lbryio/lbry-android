@@ -80,6 +80,7 @@ public final class Lbry {
     public static final String METHOD_ADDRESS_LIST = "address_list";
     public static final String METHOD_TRANSACTION_LIST = "transaction_list";
     public static final String METHOD_UTXO_RELEASE = "utxo_release";
+    public static final String METHOD_SUPPORT_CREATE = "support_create";
     public static final String METHOD_SUPPORT_ABANDON = "support_abandon";
     public static final String METHOD_SYNC_HASH = "sync_hash";
     public static final String METHOD_SYNC_APPLY = "sync_apply";
@@ -148,7 +149,11 @@ public final class Lbry {
                     if (value instanceof List) {
                         value = Helper.jsonArrayFromList((List) value);
                     }
-                    jsonParams.put(param.getKey(), value);
+                    if (value instanceof Double) {
+                        jsonParams.put(param.getKey(), (double) value);
+                    } else {
+                        jsonParams.put(param.getKey(), value);
+                    }
                 }
             } catch (JSONException ex) {
                 // pass
@@ -412,7 +417,7 @@ public final class Lbry {
         try {
             response = parseResponse(apiCall(method, params));
         } catch (LbryRequestException | LbryResponseException ex) {
-            throw new ApiCallException(String.format("Could not execute %s call", method), ex);
+            throw new ApiCallException(String.format("Could not execute %s call: %s", method, ex.getMessage()), ex);
         }
         return response;
     }

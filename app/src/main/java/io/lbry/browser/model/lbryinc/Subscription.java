@@ -1,5 +1,6 @@
 package io.lbry.browser.model.lbryinc;
 
+import io.lbry.browser.model.Claim;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,13 @@ public class Subscription {
     public Subscription(String channelName, String url) {
         this.channelName = channelName;
         this.url = url;
+    }
+
+    public static Subscription fromClaim(Claim claim) {
+        return new Subscription(claim.getName(), claim.getPermanentUrl());
+    }
+    public String toString() {
+        return url;
     }
 
     public boolean equals(Object o) {

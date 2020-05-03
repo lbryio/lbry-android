@@ -125,6 +125,7 @@ public class Claim {
         return "Anonymous";
     }
 
+
     public List<String> getTags() {
         return (value != null && value.getTags() != null) ? new ArrayList<>(value.getTags()) : new ArrayList<>();
     }
@@ -141,6 +142,9 @@ public class Claim {
 
     public String getTitle() {
         return (value != null) ? value.getTitle() : null;
+    }
+    public String getTitleOrName() {
+        return (value != null) ? value.getTitle() : getName();
     }
 
     public long getDuration() {

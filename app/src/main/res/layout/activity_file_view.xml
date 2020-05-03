@@ -6,452 +6,366 @@
     android:layout_height="match_parent"
     android:background="@color/pageBackground"
     android:fitsSystemWindows="true">
-    <RelativeLayout
-        android:id="@+id/file_view_loading_state"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/file_view_loading_container"
-            android:visibility="gone"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-            <ProgressBar
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginRight="8dp"
-                android:layout_gravity="center_vertical" />
-            <TextView
+        <RelativeLayout
+            android:id="@+id/file_view_loading_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/file_view_loading_container"
+                android:visibility="gone"
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:fontFamily="@font/inter"
-                android:text="@string/loading_decentralized_data"
-                android:textSize="16sp"
-                android:textFontWeight="300" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/file_view_claim_display_area"
-        android:orientation="vertical"
-        android:layout_weight="10"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
-        <RelativeLayout
-            android:id="@+id/file_view_media_container"
-            android:background="@color/mediaContainerBackground"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3.25">
-            <!--RelativeLayout
-                android:id="@+id/file_view_media_meta_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </RelativeLayout-->
-
-            <RelativeLayout
-                android:id="@+id/file_view_exoplayer_container"
-                android:background="@android:color/black"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone">
-                <com.google.android.exoplayer2.ui.PlayerView
-                    android:id="@+id/file_view_exoplayer_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <com.google.android.exoplayer2.ui.PlayerControlView
-                    android:id="@+id/file_view_exoplayer_control_view"
-                    android:layout_width="match_parent"
+                android:layout_centerInParent="true">
+                <ProgressBar
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/file_view_unsupported_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="36dp"
-                android:visibility="gone">
-                <ImageView
-                    android:id="@+id/file_view_unsupported_gerbil"
-                    android:src="@drawable/gerbil_happy"
-                    android:layout_width="64dp"
-                    android:layout_centerVertical="true"
-                    android:layout_height="wrap_content" />
-                <LinearLayout
-                    android:layout_toRightOf="@id/file_view_unsupported_gerbil"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_centerVertical="true">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:text="@string/unsupported_content" />
-                    <TextView
-                        android:fontFamily="@font/inter"
-                        android:text="@string/unsupported_content_desc"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:textFontWeight="300"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </RelativeLayout>
-
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/loading_decentralized_data"
+                    android:textSize="16sp"
+                    android:textFontWeight="300" />
+            </LinearLayout>
         </RelativeLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/file_view_scroll_view"
+        <LinearLayout
+            android:id="@+id/file_view_claim_display_area"
+            android:orientation="vertical"
+            android:layout_weight="10"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6.75"
-            android:clipToPadding="false">
-            <LinearLayout
-                android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+            <RelativeLayout
+                android:id="@+id/file_view_media_container"
+                android:background="@color/mediaContainerBackground"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <RelativeLayout
-                    android:id="@+id/file_view_title_area"
+                android:layout_height="0dp"
+                android:layout_weight="3.25">
+                <!--RelativeLayout
+                    android:id="@+id/file_view_media_meta_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:background="?attr/selectableItemBackground"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="4dp">
-                    <LinearLayout
-                        android:id="@+id/file_view_title_layout"
-                        android:orientation="vertical"
-                        android:layout_centerVertical="true"
+                    android:layout_height="match_parent">
+
+                </RelativeLayout-->
+
+                <RelativeLayout
+                    android:id="@+id/file_view_exoplayer_container"
+                    android:background="@android:color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+                    <com.google.android.exoplayer2.ui.PlayerView
+                        android:id="@+id/file_view_exoplayer_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                    <com.google.android.exoplayer2.ui.PlayerControlView
+                        android:id="@+id/file_view_exoplayer_control_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="48dp">
-                        <TextView
-                            android:id="@+id/file_view_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                        <LinearLayout
-                            android:layout_marginTop="4dp"
-                            android:orientation="horizontal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:id="@+id/file_view_view_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="24dp"
-                                android:fontFamily="@font/inter"
-                                android:textSize="12sp"
-                                android:textFontWeight="300"
-                                android:visibility="gone" />
-                            <TextView
-                                android:id="@+id/file_view_publish_time"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/inter"
-                                android:textSize="12sp"
-                                android:textFontWeight="300" />
-                        </LinearLayout>
-                    </LinearLayout>
+                        android:layout_alignParentBottom="true" />
+                </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/file_view_unsupported_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="36dp"
+                    android:visibility="gone">
                     <ImageView
-                        android:id="@+id/file_view_desc_toggle_arrow"
-                        android:src="@drawable/ic_arrow_dropdown"
-                        android:layout_toLeftOf="@+id/file_view_title_layout"
-                        android:layout_alignParentRight="true"
+                        android:id="@+id/file_view_unsupported_gerbil"
+                        android:src="@drawable/gerbil_happy"
+                        android:layout_width="64dp"
                         android:layout_centerVertical="true"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:tint="@color/foreground" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:id="@+id/file_view_actions_area"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="5">
+                        android:layout_height="wrap_content" />
                     <LinearLayout
-                        android:id="@+id/file_view_action_share"
-                        android:clickable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/file_view_unsupported_gerbil"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <ImageView
-                            android:tint="@color/foreground"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center_horizontal"
-                            android:src="@drawable/ic_share" />
-                        <TextView
-                            android:fontFamily="@font/inter"
-                            android:textSize="12sp"
-                            android:text="@string/share"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/file_vew_action_tip"
-                        android:clickable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <io.lbry.browser.ui.controls.SolidIconView
-                            android:textColor="@color/foreground"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center_horizontal"
-                            android:textSize="20dp"
-                            android:text="@string/fa_gift"/>
-                        <TextView
-                            android:fontFamily="@font/inter"
-                            android:textSize="12sp"
-                            android:text="@string/tip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/file_vew_action_repost"
-                        android:clickable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <io.lbry.browser.ui.controls.SolidIconView
-                            android:textColor="@color/foreground"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center_horizontal"
-                            android:textSize="20dp"
-                            android:text="@string/fa_repost"/>
-                        <TextView
-                            android:fontFamily="@font/inter"
-                            android:textSize="12sp"
-                            android:text="@string/repost"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/file_view_action_edit"
-                        android:clickable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:visibility="gone"
-                        >
-                        <ImageView
-                            android:tint="@color/foreground"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center_horizontal"
-                            android:src="@drawable/ic_edit" />
-                        <TextView
-                            android:fontFamily="@font/inter"
-                            android:textSize="12sp"
-                            android:text="@string/edit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/file_view_action_delete"
-                        android:clickable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:visibility="gone">
-                        <ImageView
-                            android:tint="@color/foreground"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center_horizontal"
-                            android:src="@drawable/ic_delete" />
-                        <TextView
-                            android:fontFamily="@font/inter"
-                            android:textSize="12sp"
-                            android:text="@string/delete"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/file_view_action_download"
-                        android:clickable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <ImageView
-                            android:tint="@color/foreground"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center_horizontal"
-                            android:src="@drawable/ic_download" />
-                        <TextView
-                            android:fontFamily="@font/inter"
-                            android:textSize="12sp"
-                            android:text="@string/download"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/file_view_action_report"
-                        android:clickable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <ImageView
-                            android:tint="@color/foreground"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center_horizontal"
-                            android:src="@drawable/ic_report" />
-                        <TextView
-                            android:fontFamily="@font/inter"
-                            android:textSize="12sp"
-                            android:text="@string/report"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <View
-                    android:background="@color/divider"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:layout_height="1dp" />
-
-                <RelativeLayout
-                    android:id="@+id/file_view_publisher_area"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp">
-                    <LinearLayout
-                        android:id="@+id/file_view_publisher_name_area"
-                        android:clickable="true"
-                        android:orientation="vertical"
-                        android:layout_centerVertical="true"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_centerVertical="true">
                         <TextView
-                            android:id="@+id/file_view_publisher_name"
-                            android:background="?attr/selectableItemBackground"
-                            android:clickable="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:textColor="@color/lbryGreen"
                             android:fontFamily="@font/inter"
-                            android:textFontWeight="600" />
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:text="@string/unsupported_content" />
+                        <TextView
+                            android:fontFamily="@font/inter"
+                            android:text="@string/unsupported_content_desc"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:textFontWeight="300"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
-                    <ImageButton
-                        android:background="@null"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_following"
-                        android:tint="@color/red" />
                 </RelativeLayout>
 
-                <View
-                    android:background="@color/divider"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:layout_height="1dp" />
+            </RelativeLayout>
 
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/file_view_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6.75"
+                android:clipToPadding="false">
                 <LinearLayout
-                    android:id="@+id/file_view_description_area"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone">
-                    <TextView
-                        android:id="@+id/file_view_description"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:autoLink="all"
-                        android:textFontWeight="300"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp" />
-                    <LinearLayout
-                        android:id="@+id/file_view_tag_area"
-                        android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:id="@+id/file_view_title_area"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="10"
-                        android:layout_marginTop="36dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp">
-                        <TextView
-                            android:layout_weight="2"
+                        android:clickable="true"
+                        android:background="?attr/selectableItemBackground"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="4dp">
+                        <LinearLayout
+                            android:id="@+id/file_view_title_layout"
+                            android:orientation="vertical"
+                            android:layout_centerVertical="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="48dp">
+                            <TextView
+                                android:id="@+id/file_view_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                            <LinearLayout
+                                android:layout_marginTop="4dp"
+                                android:orientation="horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/file_view_view_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="24dp"
+                                    android:fontFamily="@font/inter"
+                                    android:textSize="12sp"
+                                    android:textFontWeight="300"
+                                    android:visibility="gone" />
+                                <TextView
+                                    android:id="@+id/file_view_publish_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter"
+                                    android:textSize="12sp"
+                                    android:textFontWeight="300" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/file_view_desc_toggle_arrow"
+                            android:src="@drawable/ic_arrow_dropdown"
+                            android:layout_toLeftOf="@+id/file_view_title_layout"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:tint="@color/foreground" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/file_view_actions_area"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="5">
+                        <LinearLayout
+                            android:id="@+id/file_view_action_share"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter"
-                            android:text="@string/tags"
-                            android:textSize="12sp"
-                            android:textFontWeight="600" />
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/file_view_tag_list"
-                            android:layout_weight="8"
-                            android:layout_marginLeft="8dp"
+                            android:orientation="vertical"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
+                            <ImageView
+                                android:tint="@color/foreground"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/ic_share" />
+                            <TextView
+                                android:fontFamily="@font/inter"
+                                android:textSize="12sp"
+                                android:text="@string/share"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/file_view_action_tip"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_weight="1"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
+                            <io.lbry.browser.ui.controls.SolidIconView
+                                android:textColor="@color/foreground"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_horizontal"
+                                android:textSize="20dp"
+                                android:text="@string/fa_gift"/>
+                            <TextView
+                                android:fontFamily="@font/inter"
+                                android:textSize="12sp"
+                                android:text="@string/tip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/file_vew_action_repost"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
+                            <io.lbry.browser.ui.controls.SolidIconView
+                                android:textColor="@color/foreground"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_horizontal"
+                                android:textSize="20dp"
+                                android:text="@string/fa_repost"/>
+                            <TextView
+                                android:fontFamily="@font/inter"
+                                android:textSize="12sp"
+                                android:text="@string/repost"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/file_view_action_edit"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:visibility="gone"
+                            >
+                            <ImageView
+                                android:tint="@color/foreground"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/ic_edit" />
+                            <TextView
+                                android:fontFamily="@font/inter"
+                                android:textSize="12sp"
+                                android:text="@string/edit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/file_view_action_delete"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:visibility="gone">
+                            <ImageView
+                                android:tint="@color/foreground"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/ic_delete" />
+                            <TextView
+                                android:fontFamily="@font/inter"
+                                android:textSize="12sp"
+                                android:text="@string/delete"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/file_view_action_download"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
+                            <ImageView
+                                android:tint="@color/foreground"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/ic_download" />
+                            <TextView
+                                android:fontFamily="@font/inter"
+                                android:textSize="12sp"
+                                android:text="@string/download"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/file_view_action_report"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
+                            <ImageView
+                                android:tint="@color/foreground"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/ic_report" />
+                            <TextView
+                                android:fontFamily="@font/inter"
+                                android:textSize="12sp"
+                                android:text="@string/report"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <View
@@ -460,53 +374,145 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginBottom="12dp"
                         android:layout_height="1dp" />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/file_view_related_content_area"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
                     <RelativeLayout
+                        android:id="@+id/file_view_publisher_area"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp">
-                        <TextView
+                        <LinearLayout
+                            android:id="@+id/file_view_publisher_name_area"
+                            android:clickable="true"
+                            android:orientation="vertical"
+                            android:layout_centerVertical="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/file_view_publisher_name"
+                                android:background="?attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:textColor="@color/lbryGreen"
+                                android:fontFamily="@font/inter"
+                                android:textFontWeight="600" />
+                        </LinearLayout>
+                        <ImageButton
+                            android:background="@null"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/related_content"
-                            android:fontFamily="@font/inter"
-                            android:textSize="16sp"
-                            android:layout_centerVertical="true" />
-                        <ProgressBar
-                            android:id="@+id/file_view_related_content_progress"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:visibility="gone" />
+                            android:src="@drawable/ic_following"
+                            android:tint="@color/red" />
                     </RelativeLayout>
-                    <TextView
-                        android:id="@+id/file_view_no_related_content"
+
+                    <View
+                        android:background="@color/divider"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_height="1dp" />
+
+                    <LinearLayout
+                        android:id="@+id/file_view_description_area"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+                        <TextView
+                            android:id="@+id/file_view_description"
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter"
+                            android:autoLink="all"
+                            android:textFontWeight="300"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp" />
+                        <LinearLayout
+                            android:id="@+id/file_view_tag_area"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            android:layout_marginTop="36dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp">
+                            <TextView
+                                android:layout_weight="2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:text="@string/tags"
+                                android:textSize="12sp"
+                                android:textFontWeight="600" />
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/file_view_tag_list"
+                                android:layout_weight="8"
+                                android:layout_marginLeft="8dp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <View
+                            android:background="@color/divider"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:layout_height="1dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/file_view_related_content_area"
+                        android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:fontFamily="@font/inter"
-                        android:text="@string/no_related_content"
-                        android:textSize="14sp"
-                        android:textFontWeight="300"
-                        android:visibility="gone" />
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/file_view_related_content_list"
-                        android:overScrollMode="never"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_marginBottom="8dp">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/related_content"
+                                android:fontFamily="@font/inter"
+                                android:textSize="16sp"
+                                android:layout_centerVertical="true" />
+                            <ProgressBar
+                                android:id="@+id/file_view_related_content_progress"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+                        <TextView
+                            android:id="@+id/file_view_no_related_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/no_related_content"
+                            android:textSize="14sp"
+                            android:textFontWeight="300"
+                            android:visibility="gone" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/file_view_related_content_list"
+                            android:overScrollMode="never"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-    </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+
+        <include layout="@layout/floating_wallet_balance" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

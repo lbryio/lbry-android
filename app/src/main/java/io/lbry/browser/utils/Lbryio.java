@@ -293,4 +293,23 @@ public final class Lbryio {
             subscriptions.remove(subscription);
         }
     }
+    public static void addCachedResolvedSubscription(Claim claim) {
+        synchronized (lock) {
+            if (!cacheResolvedSubscriptions.contains(claim)) {
+                cacheResolvedSubscriptions.add(claim);
+            }
+        }
+    }
+    public static void removeCachedResolvedSubscription(Claim claim) {
+        synchronized (lock) {
+            cacheResolvedSubscriptions.remove(claim);
+        }
+    }
+
+    public static boolean isFollowing(Subscription subscription) {
+        return subscriptions.contains(subscription);
+    }
+    public static boolean isFollowing(Claim claim) {
+        return subscriptions.contains(Subscription.fromClaim(claim));
+    }
 }

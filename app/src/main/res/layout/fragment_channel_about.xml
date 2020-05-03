@@ -32,7 +32,8 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/channel_about_info_area"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,6 +43,7 @@
                 android:id="@+id/channel_about_website_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -60,7 +62,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:id="@+id/channel_about_email_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,7 +88,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:layout_marginTop="16dp"
                 android:fontFamily="@font/inter"
                 android:textSize="14sp"
                 android:textFontWeight="300" />

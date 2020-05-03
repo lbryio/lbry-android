@@ -28,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -341,13 +342,16 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         // wallet_send task
         String recipientAddress = Helper.getValue(inputSendAddress.getText());
         String amountString = Helper.getValue(inputSendAmount.getText());
-        String amount = String.valueOf(Double.valueOf(amountString));
+        String amount = new DecimalFormat(Helper.SDK_AMOUNT_FORMAT).format(new BigDecimal(amountString).doubleValue());
 
         disableSendControls();
         WalletSendTask task = new WalletSendTask(recipientAddress, amount, walletSendProgress, new WalletSendTask.WalletSendHandler() {
             @Override
             public void onSuccess() {
-                String message = getResources().getQuantityString(R.plurals.you_sent_credits, Double.valueOf(amount) == 1.0 ? 1 : 2, amountString);
+                double sentAmount = Double.valueOf(amount);
+                String message = getResources().getQuantityString(
+                        R.plurals.you_sent_credits, sentAmount == 1.0 ? 1 : 2,
+                        new DecimalFormat("#,###.##").format(sentAmount));
                 Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
                 inputSendAddress.setText(null);
                 inputSendAmount.setText(null);
