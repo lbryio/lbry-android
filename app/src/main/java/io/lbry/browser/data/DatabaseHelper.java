@@ -13,6 +13,7 @@ import java.util.List;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.UrlSuggestion;
+import io.lbry.browser.model.ViewHistory;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
@@ -25,27 +26,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             // local subscription store
             "CREATE TABLE subscriptions (url TEXT PRIMARY KEY NOT NULL, channel_name TEXT NOT NULL)",
             // url entry / suggestion history
-            "CREATE TABLE history (id INTEGER PRIMARY KEY NOT NULL, value TEXT NOT NULL, url TEXT, type INTEGER NOT NULL, timestamp TEXT NOT NULL)",
+            "CREATE TABLE url_history (id INTEGER PRIMARY KEY NOT NULL, value TEXT NOT NULL, url TEXT, type INTEGER NOT NULL, timestamp TEXT NOT NULL)",
             // tags (known and followed)
-            "CREATE TABLE tags (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, is_followed INTEGER NOT NULL)"
-            // local claim cache store for quick load / refresh (or offline mode)?
-
+            "CREATE TABLE tags (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, is_followed INTEGER NOT NULL)",
+            // view history (stores only stream claims that have resolved)
+            "CREATE TABLE view_history (" +
+                    "  id INTEGER PRIMARY KEY NOT NULL" +
+                    ", url TEXT NOT NULL" +
+                    ", claim_id TEXT" +
+                    ", claim_name TEXT" +
+                    ", cost REAL " +
+                    ", title TEXT " +
+                    ", publisher_claim_id TEXT" +
+                    ", publisher_name TEXT" +
+                    ", publisher_title TEXT" +
+                    ", thumbnail_url TEXT" +
+                    ", release_time INTEGER " +
+                    ", device TEXT" +
+                    ", timestamp TEXT NOT NULL)"
     };
     private static final String[] SQL_CREATE_INDEXES = {
             "CREATE UNIQUE INDEX idx_subscription_url ON subscriptions (url)",
-            "CREATE UNIQUE INDEX idx_history_value ON history (value)",
-            "CREATE UNIQUE INDEX idx_history_url ON history (url)",
-            "CREATE UNIQUE INDEX idx_tag_name ON tags (name)"
+            "CREATE UNIQUE INDEX idx_url_history_value ON url_history (value)",
+            "CREATE UNIQUE INDEX idx_url_history_url ON url_history (url)",
+            "CREATE UNIQUE INDEX idx_tag_name ON tags (name)",
+            "CREATE UNIQUE INDEX idx_view_history_url_device ON view_history (url, device)",
+            "CREATE INDEX idx_view_history_device ON view_history (device)"
     };
 
     private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
     private static final String SQL_DELETE_SUBSCRIPTION = "DELETE FROM subscriptions WHERE url = ?";
     private static final String SQL_GET_SUBSCRIPTIONS = "SELECT channel_name, url FROM subscriptions";
 
-    private static final String SQL_INSERT_HISTORY = "REPLACE INTO history (value, url, type, timestamp) VALUES (?, ?, ?)";
-    private static final String SQL_CLEAR_HISTORY = "DELETE FROM history";
-    private static final String SQL_CLEAR_HISTORY_BEFORE_TIME = "DELETE FROM history WHERE timestamp < ?";
-    private static final String SQL_GET_RECENT_HISTORY = "SELECT value, url, type FROM history ORDER BY timestamp DESC LIMIT 10";
+    private static final String SQL_INSERT_URL_HISTORY = "REPLACE INTO url_history (value, url, type, timestamp) VALUES (?, ?, ?)";
+    private static final String SQL_CLEAR_URL_HISTORY = "DELETE FROM url_history";
+    private static final String SQL_CLEAR_URL_HISTORY_BEFORE_TIME = "DELETE FROM url_history WHERE timestamp < ?";
+    private static final String SQL_GET_RECENT_URL_HISTORY = "SELECT value, url, type FROM url_history ORDER BY timestamp DESC LIMIT 10";
+
+    private static final String SQL_INSERT_VIEW_HISTORY =
+            "REPLACE INTO view_history (url, claim_id, claim_name, cost, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_CLEAR_VIEW_HISTORY = "DELETE FROM view_history";
+    private static final String SQL_CLEAR_VIEW_HISTORY_BY_DEVICE = "DELETE FROM view_history WHERE device = ?";
+    private static final String SQL_CLEAR_VIEW_HISTORY_BEFORE_TIME = "DELETE FROM view_history WHERE timestamp < ?";
+    private static final String SQL_CLEAR_VIEW_HISTORY_BY_DEVICE_BEFORE_TIME = "DELETE FROM view_history WHERE device = ? AND timestamp < ?";
 
     private static final String SQL_INSERT_TAG = "REPLACE INTO tags (name, is_followed) VALUES (?, ?)";
     private static final String SQL_GET_KNOWN_TAGS = "SELECT name, is_followed FROM tags";
@@ -70,23 +93,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public static void createOrUpdateHistoryItem(String text, String url, int type, SQLiteDatabase db) {
-        db.execSQL(SQL_INSERT_HISTORY, new Object[] {
+    public static void createOrUpdateUrlHistoryItem(String text, String url, int type, SQLiteDatabase db) {
+        db.execSQL(SQL_INSERT_URL_HISTORY, new Object[] {
                 text, url, type, new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).format(new Date())
         });
     }
-    public static void clearHistory(SQLiteDatabase db) {
-        db.execSQL(SQL_CLEAR_HISTORY);
+    public static void clearUrlHistory(SQLiteDatabase db) {
+        db.execSQL(SQL_CLEAR_URL_HISTORY);
     }
-    public static void clearHistoryBefore(Date date, SQLiteDatabase db) {
-        db.execSQL(SQL_CLEAR_HISTORY_BEFORE_TIME, new Object[] { new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).format(new Date()) });
+    public static void clearUrlHistoryBefore(Date date, SQLiteDatabase db) {
+        db.execSQL(SQL_CLEAR_URL_HISTORY_BEFORE_TIME, new Object[] { new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).format(new Date()) });
     }
     // History items are essentially url suggestions
     public static List<UrlSuggestion> getRecentHistory(SQLiteDatabase db) {
         List<UrlSuggestion> suggestions = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery(SQL_GET_RECENT_HISTORY, null);
+            cursor = db.rawQuery(SQL_GET_RECENT_URL_HISTORY, null);
             while (cursor.moveToNext()) {
                 UrlSuggestion suggestion = new UrlSuggestion();
                 suggestion.setText(cursor.getString(0));
@@ -103,6 +126,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Helper.closeCursor(cursor);
         }
         return suggestions;
+    }
+
+    // View history items are stream claims
+    public static void createOrUpdateViewHistoryItem(ViewHistory viewHistory, SQLiteDatabase db) {
+        db.execSQL(SQL_INSERT_VIEW_HISTORY, new Object[] {
+                viewHistory.getUri().toString(),
+                viewHistory.getClaimId(),
+                viewHistory.getClaimName(),
+                viewHistory.getCost() != null ? viewHistory.getCost().doubleValue() : 0,
+                viewHistory.getTitle(),
+                viewHistory.getPublisherClaimId(),
+                viewHistory.getPublisherName(),
+                viewHistory.getPublisherTitle(),
+                viewHistory.getThumbnailUrl(),
+                viewHistory.getDevice(),
+                viewHistory.getReleaseTime(),
+                new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).format(new Date())
+        });
     }
 
     public static void createOrUpdateTag(Tag tag, SQLiteDatabase db) {

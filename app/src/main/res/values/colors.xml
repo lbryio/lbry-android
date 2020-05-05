@@ -12,6 +12,7 @@
     <color name="menuItemForeground">#444444</color>
     <color name="selectedNavItem">#F1F1F1</color>
     <color name="channelCoverBackground">#CC000000</color>
+    <color name="costBackground">#F4E866</color>
 
     <color name="darkForeground">#222222</color>
     <color name="lightForeground">#AAAAAA</color>

@@ -12,6 +12,7 @@
     <color name="menuItemForeground">#AAAAAA</color>
     <color name="selectedNavItem">#0E0E0E</color>
     <color name="channelCoverBackground">#CC000000</color>
+    <color name="costBackground">#F4E866</color>
 
     <!-- At some point, these colours have to be renamed -->
     <color name="darkForeground">#EEEEEE</color>

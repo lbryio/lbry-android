@@ -43,6 +43,13 @@ public class LbryUri {
         return (!Helper.isNullOrEmpty(channelName) && Helper.isNullOrEmpty(streamName)) || (!Helper.isNullOrEmpty(claimName) && claimName.startsWith("@"));
     }
 
+    public static LbryUri tryParse(String url) {
+        try {
+            return parse(url, false);
+        } catch (LbryUriException ex) {
+            return null;
+        }
+    }
     public static LbryUri parse(String url) throws LbryUriException {
         return parse(url, false);
     }
@@ -93,7 +100,7 @@ public class LbryUri {
             throw new LbryUriException("URL does not include name.");
         }
 
-        for (String component : components.subList(1, components.size() - 1)) {
+        for (String component : components.subList(1, components.size())) {
             if (component.indexOf(' ') > -1) {
                 throw new LbryUriException("URL cannot include a space.");
             }
@@ -132,7 +139,7 @@ public class LbryUri {
 
         LbryUri uri = new LbryUri();
         uri.setChannel(isChannel);
-        uri.setPath(Helper.join(components.subList(1, components.size() - 1), ""));
+        uri.setPath(Helper.join(components.subList(1, components.size()), ""));
         uri.setStreamName(streamName);
         uri.setStreamClaimId(streamClaimId);
         uri.setChannelName(channelName);

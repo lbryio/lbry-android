@@ -610,13 +610,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         urlSuggestionListAdapter.setListener(new UrlSuggestionListAdapter.UrlSuggestionClickListener() {
             @Override
             public void onUrlSuggestionClicked(UrlSuggestion urlSuggestion) {
+                Context context = MainActivity.this;
                 switch (urlSuggestion.getType()) {
                     case UrlSuggestion.TYPE_CHANNEL:
                         // open channel page
-                        openChannelUrl(urlSuggestion.getUri().toString());
+                        if (urlSuggestion.getClaim() != null) {
+                            openChannelClaim(urlSuggestion.getClaim());
+                        } else {
+                            openChannelUrl(urlSuggestion.getUri().toString());
+                        }
                         break;
                     case UrlSuggestion.TYPE_FILE:
-                        Context context = MainActivity.this;
                         if (urlSuggestion.getClaim() != null) {
                             openFileClaim(urlSuggestion.getClaim(), context);
                         } else {
@@ -809,7 +813,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 }
             }
 
-            if (!isUrlWithScheme) {
+            if (!isUrlWithScheme && !isChannel) {
                 UrlSuggestion suggestion = new UrlSuggestion(UrlSuggestion.TYPE_TAG, text);
                 suggestions.add(suggestion);
             }

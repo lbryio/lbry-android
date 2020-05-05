@@ -26,6 +26,7 @@ public class ChannelFilterListAdapter extends RecyclerView.Adapter<ChannelFilter
     private Context context;
     private List<Claim> items;
     @Getter
+    @Setter
     private Claim selectedItem;
     @Setter
     private ChannelItemSelectionListener listener;
@@ -64,6 +65,11 @@ public class ChannelFilterListAdapter extends RecyclerView.Adapter<ChannelFilter
 
     public boolean isClaimSelected(Claim claim) {
         return claim.equals(selectedItem);
+    }
+
+    public void clearClaims() {
+        items = new ArrayList<>(items.subList(0, 1));
+        notifyDataSetChanged();
     }
 
     public void addClaims(List<Claim> claims) {

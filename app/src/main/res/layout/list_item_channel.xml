@@ -46,7 +46,7 @@
             android:textColor="@color/lightForeground"
             android:textFontWeight="300"
             android:textSize="12sp" />
-    </LinearLayout>w
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -76,6 +76,36 @@
                     android:textColor="@color/white"
                     android:textFontWeight="300" />
             </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/claim_fee_container"
+                android:background="@color/nextLbryGreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="4dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:visibility="gone">
+                <io.lbry.browser.ui.controls.SolidIconView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="12dp"
+                    android:text="@string/fa_coins" />
+                <TextView
+                    android:id="@+id/claim_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="2dp"
+                    android:fontFamily="@font/inter"
+                    android:textSize="14sp"
+                    android:textFontWeight="300" />
+            </LinearLayout>
         </RelativeLayout>
 
         <LinearLayout

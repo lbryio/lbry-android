@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,8 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        protected View feeContainer;
+        protected TextView feeView;
         protected ImageView thumbnailView;
         protected View noThumbnailView;
         protected TextView alphaView;
@@ -91,6 +94,8 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         protected TextView repostChannelView;
         public ViewHolder(View v) {
             super(v);
+            feeContainer = v.findViewById(R.id.claim_fee_container);
+            feeView = v.findViewById(R.id.claim_fee);
             alphaView = v.findViewById(R.id.claim_thumbnail_alpha);
             noThumbnailView = v.findViewById(R.id.claim_no_thumbnail);
             thumbnailView = v.findViewById(R.id.claim_thumbnail);
@@ -191,6 +196,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             vh.vanityUrlView.setText(vanityUrl.toString());
         }
 
+        vh.feeContainer.setVisibility(item.isUnresolved() || !Claim.TYPE_STREAM.equalsIgnoreCase(item.getValueType()) ? View.GONE : View.VISIBLE);
         vh.noThumbnailView.setVisibility(Helper.isNullOrEmpty(thumbnailUrl) ? View.VISIBLE : View.GONE);
         Helper.setIconViewBackgroundColor(vh.noThumbnailView, bgColor, false, context);
 
@@ -209,6 +215,9 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                             into(vh.thumbnailView);
                 }
 
+                BigDecimal cost = streamMetadata != null && streamMetadata.getFee() != null ? new BigDecimal(streamMetadata.getFee().getAmount()) : new BigDecimal(0);
+                vh.feeContainer.setVisibility(cost.doubleValue() > 0 ? View.VISIBLE : View.GONE);
+                vh.feeView.setText(cost.doubleValue() > 0 ? Helper.shortCurrencyFormat(cost.divide(new BigDecimal(100000000)).doubleValue()) : null);
                 vh.alphaView.setText(item.getName().substring(0, Math.min(5, item.getName().length() - 1)));
                 vh.publisherView.setText(signingChannel != null ? signingChannel.getName() : context.getString(R.string.anonymous));
                 vh.publishTimeView.setText(DateUtils.getRelativeTimeSpanString(

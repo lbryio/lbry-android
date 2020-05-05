@@ -239,6 +239,7 @@ public class FollowingFragment extends BaseFragment implements
         discoverLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                buildChannelIdsAndUrls();
                 discoverDialog = DiscoverDialogFragment.newInstance();
                 excludeChannelIdsForDiscover = channelIds != null ? new ArrayList<>(channelIds) : null;
                 discoverDialog.setAdapter(suggestedChannelAdapter);
@@ -351,7 +352,7 @@ public class FollowingFragment extends BaseFragment implements
         subscriptionsList = new ArrayList<>(Lbryio.subscriptions);
         buildChannelIdsAndUrls();
         if (Lbryio.cacheResolvedSubscriptions.size() > 0) {
-            updateChannelFilterListAdapter(Lbryio.cacheResolvedSubscriptions);
+            updateChannelFilterListAdapter(Lbryio.cacheResolvedSubscriptions, resetClaimSearchContent);
         } else {
             fetchAndResolveChannelList();
         }
@@ -469,7 +470,7 @@ public class FollowingFragment extends BaseFragment implements
             ResolveTask resolveSubscribedTask = new ResolveTask(channelUrls, Lbry.LBRY_TV_CONNECTION_STRING, channelListLoading, new ResolveTask.ResolveResultHandler() {
                 @Override
                 public void onSuccess(List<Claim> claims) {
-                    updateChannelFilterListAdapter(claims);
+                    updateChannelFilterListAdapter(claims, true);
                     Lbryio.cacheResolvedSubscriptions = claims;
                 }
 
@@ -488,7 +489,7 @@ public class FollowingFragment extends BaseFragment implements
         return (contentListAdapter == null || contentListAdapter.getItemCount() == 0) ? bigContentLoading : contentLoading;
     }
 
-    private void updateChannelFilterListAdapter(List<Claim> resolvedSubs) {
+    private void updateChannelFilterListAdapter(List<Claim> resolvedSubs, boolean reset) {
         if (channelFilterListAdapter == null) {
             channelFilterListAdapter = new ChannelFilterListAdapter(getContext());
             channelFilterListAdapter.setListener(new ChannelItemSelectionListener() {
@@ -527,6 +528,10 @@ public class FollowingFragment extends BaseFragment implements
 
         if (horizontalChannelList != null && horizontalChannelList.getAdapter() == null) {
             horizontalChannelList.setAdapter(channelFilterListAdapter);
+        }
+        if (reset) {
+            channelFilterListAdapter.clearClaims();
+            channelFilterListAdapter.setSelectedItem(null);
         }
         channelFilterListAdapter.addClaims(resolvedSubs);
     }
@@ -622,7 +627,7 @@ public class FollowingFragment extends BaseFragment implements
                         suggestedHasReachedEnd = hasReachedEnd;
                         suggestedClaimSearchLoading = false;
                         if (discoverDialog != null) {
-                            discoverDialog.setLoading(true);
+                            discoverDialog.setLoading(false);
                         }
 
                         if (suggestedChannelAdapter == null) {
@@ -684,46 +689,45 @@ public class FollowingFragment extends BaseFragment implements
 
     public void onChannelItemSelected(Claim claim) {
         // subscribe
-        Subscription subscription = new Subscription();
-        subscription.setChannelName(claim.getName());
-        subscription.setUrl(claim.getPermanentUrl());
+        Subscription subscription = Subscription.fromClaim(claim);
         String channelClaimId = claim.getClaimId();
 
         ChannelSubscribeTask task = new ChannelSubscribeTask(getContext(), channelClaimId, subscription, false, new ChannelSubscribeTask.ChannelSubscribeHandler() {
             @Override
             public void onSuccess() {
                 if (discoverDialog != null) {
-                    fetchSubscriptions();
+                    Lbryio.addSubscription(subscription);
+                    Lbryio.addCachedResolvedSubscription(claim);
+                    resetClaimSearchContent = true;
+                    fetchLoadedSubscriptions();
                 }
                 saveSharedUserState();
             }
 
             @Override
-            public void onError(Exception exception) {
-
-            }
+            public void onError(Exception error) { }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         updateSuggestedDoneButtonText();
     }
     public void onChannelItemDeselected(Claim claim) {
         // unsubscribe
-        Subscription subscription = new Subscription();
-        subscription.setChannelName(claim.getName());
-        subscription.setUrl(claim.getPermanentUrl());
+        Subscription subscription = Subscription.fromClaim(claim);
         String channelClaimId = claim.getClaimId();
-
         ChannelSubscribeTask task = new ChannelSubscribeTask(getContext(), channelClaimId, subscription, true, new ChannelSubscribeTask.ChannelSubscribeHandler() {
             @Override
             public void onSuccess() {
                 if (discoverDialog != null) {
-                    fetchSubscriptions();
+                    Lbryio.removeSubscription(subscription);
+                    Lbryio.removeCachedResolvedSubscription(claim);
+                    resetClaimSearchContent = true;
+                    fetchLoadedSubscriptions();
                 }
                 saveSharedUserState();
             }
 
             @Override
-            public void onError(Exception exception) {
+            public void onError(Exception error) {
 
             }
         });
@@ -735,8 +739,8 @@ public class FollowingFragment extends BaseFragment implements
     }
 
     private void checkNoContent(boolean suggested) {
-        RecyclerView.Adapter adpater = suggested ? suggestedChannelAdapter : contentListAdapter;
-        boolean noContent = adpater == null || adpater.getItemCount() == 0;
+        RecyclerView.Adapter adapter = suggested ? suggestedChannelAdapter : contentListAdapter;
+        boolean noContent = adapter == null || adapter.getItemCount() == 0;
         Helper.setViewVisibility(noContentView, noContent ? View.VISIBLE : View.GONE);
     }
 

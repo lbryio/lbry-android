@@ -160,7 +160,7 @@ public class ChannelFragment extends BaseFragment {
                         public void onSuccess() {
                             if (isFollowing) {
                                 Lbryio.removeSubscription(subscription);
-                                Lbryio.addCachedResolvedSubscription(claim);
+                                Lbryio.removeCachedResolvedSubscription(claim);
                             } else {
                                 Lbryio.addSubscription(subscription);
                                 Lbryio.addCachedResolvedSubscription(claim);

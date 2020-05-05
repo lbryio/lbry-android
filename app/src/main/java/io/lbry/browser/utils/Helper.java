@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ import io.lbry.browser.model.Tag;
 import okhttp3.MediaType;
 
 public final class Helper {
+    public static final String UNKNOWN = "Unknown";
     public static final String METHOD_GET = "GET";
     public static final String METHOD_POST = "POST";
     public static final String ISO_DATE_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
@@ -330,5 +332,12 @@ public final class Helper {
         if (context instanceof MainActivity) {
             ((MainActivity) context).setWunderbarValue(value);
         }
+    }
+
+    public static String getDeviceName() {
+        if (Helper.isNullOrEmpty(Build.MANUFACTURER) || UNKNOWN.equalsIgnoreCase(Build.MANUFACTURER)) {
+            return Build.MODEL;
+        }
+        return String.format("%s %s", Build.MANUFACTURER, Build.MODEL);
     }
 }

@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
@@ -158,6 +159,45 @@ public class Claim {
         }
 
         return 0;
+    }
+
+    public static Claim fromViewHistory(ViewHistory viewHistory) {
+        // only for stream claims
+        Claim claim = new Claim();
+        claim.setClaimId(viewHistory.getClaimId());
+        claim.setName(viewHistory.getClaimName());
+        claim.setValueType(TYPE_STREAM);
+        claim.setPermanentUrl(viewHistory.getUri().toString());
+
+        StreamMetadata value = new StreamMetadata();
+        value.setTitle(viewHistory.getTitle());
+        value.setReleaseTime(viewHistory.getReleaseTime());
+        if (!Helper.isNullOrEmpty(viewHistory.getThumbnailUrl())) {
+            Resource thumbnail = new Resource();
+            thumbnail.setUrl(viewHistory.getThumbnailUrl());
+            value.setThumbnail(thumbnail);
+        }
+        if (viewHistory.getCost() != null && viewHistory.getCost().doubleValue() > 0) {
+            Fee fee = new Fee();
+            fee.setAmount(String.valueOf(viewHistory.getCost().doubleValue()));
+            fee.setCurrency("LBC"); // always LBC
+        }
+
+        claim.setValue(value);
+
+        if (!Helper.isNullOrEmpty(viewHistory.getPublisherClaimId())) {
+            Claim signingChannel = new Claim();
+            signingChannel.setClaimId(viewHistory.getPublisherClaimId());
+            signingChannel.setName(viewHistory.getPublisherName());
+            if (!Helper.isNullOrEmpty(viewHistory.getPublisherTitle())) {
+                GenericMetadata channelValue = new GenericMetadata();
+                channelValue.setTitle(viewHistory.getPublisherTitle());
+                signingChannel.setValue(channelValue);
+            }
+            claim.setSigningChannel(signingChannel);
+        }
+
+        return claim;
     }
 
     public static Claim fromJSONObject(JSONObject claimObject) {
