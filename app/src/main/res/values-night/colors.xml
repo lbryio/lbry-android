@@ -25,6 +25,7 @@
     <color name="brighterLbryGreen">#40B887</color>
     <color name="lbryGreen">#2F9176</color>
     <color name="nextLbryGreen">#38D9A9</color>
+    <color name="nextLbryGreenSemiTransparent">#3338D9A9</color>
     <color name="tagGreen">#329A7E</color>
     <color name="tagGrape">#77D510B8</color>
 
@@ -49,4 +50,5 @@
     <color name="thumbnailPlaceholder">#D5D5D5</color>
 
     <color name="caption">#CAEDB9</color>
+    <color name="overlay">#CC333333</color>
 </resources>

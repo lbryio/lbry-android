@@ -43,6 +43,10 @@ public class LbryUri {
         return (!Helper.isNullOrEmpty(channelName) && Helper.isNullOrEmpty(streamName)) || (!Helper.isNullOrEmpty(claimName) && claimName.startsWith("@"));
     }
 
+    public static boolean isNameValid(String name) {
+        return !name.matches(REGEX_INVALID_URI);
+    }
+
     public static LbryUri tryParse(String url) {
         try {
             return parse(url, false);

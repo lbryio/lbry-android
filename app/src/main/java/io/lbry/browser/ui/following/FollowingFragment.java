@@ -38,6 +38,7 @@ import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.ChannelSubscribeTask;
+import io.lbry.browser.tasks.ClaimListResultHandler;
 import io.lbry.browser.tasks.ClaimSearchTask;
 import io.lbry.browser.tasks.FetchSubscriptionsTask;
 import io.lbry.browser.tasks.ResolveTask;
@@ -266,7 +267,6 @@ public class FollowingFragment extends BaseFragment implements
                     }
                 });
 
-
                 Context context = getContext();
                 if (context instanceof MainActivity) {
                     MainActivity activity = (MainActivity) context;
@@ -389,8 +389,12 @@ public class FollowingFragment extends BaseFragment implements
     }
 
     private Map<String, Object> buildContentOptions() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+        Context context = getContext();
+        boolean canShowMatureContent = false;
+        if (context != null) {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+            canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+        }
 
         return Lbry.buildClaimSearchOptions(
                 Claim.TYPE_STREAM,
@@ -467,7 +471,7 @@ public class FollowingFragment extends BaseFragment implements
     private void fetchAndResolveChannelList() {
         buildChannelIdsAndUrls();
         if (channelIds.size() > 0) {
-            ResolveTask resolveSubscribedTask = new ResolveTask(channelUrls, Lbry.LBRY_TV_CONNECTION_STRING, channelListLoading, new ResolveTask.ResolveResultHandler() {
+            ResolveTask resolveSubscribedTask = new ResolveTask(channelUrls, Lbry.LBRY_TV_CONNECTION_STRING, channelListLoading, new ClaimListResultHandler() {
                 @Override
                 public void onSuccess(List<Claim> claims) {
                     updateChannelFilterListAdapter(claims, true);

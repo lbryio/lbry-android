@@ -121,6 +121,20 @@
                     android:textSize="14sp"
                     android:textFontWeight="300" />
             </LinearLayout>
+            <RelativeLayout
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_stream_overlay_icon"
+                android:id="@+id/claim_selected_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_check"
+                    android:tint="@color/nextLbryGreen" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <LinearLayout

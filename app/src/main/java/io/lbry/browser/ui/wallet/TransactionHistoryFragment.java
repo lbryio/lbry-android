@@ -122,6 +122,7 @@ public class TransactionHistoryFragment extends BaseFragment implements Transact
         MainActivity activity = (MainActivity) getContext();
         if (activity != null) {
             activity.hideSearchBar();
+            activity.hideFloatingWalletBalance();
             activity.showNavigationBackIcon();
             activity.lockDrawer();
 
@@ -136,7 +137,9 @@ public class TransactionHistoryFragment extends BaseFragment implements Transact
     public void onStop() {
         Context context = getContext();
         if (context instanceof MainActivity) {
-            ((MainActivity) context).restoreToggle();
+            MainActivity activity = (MainActivity) context;
+            activity.restoreToggle();
+            activity.showFloatingWalletBalance();
         }
         super.onStop();
     }

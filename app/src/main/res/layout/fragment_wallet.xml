@@ -30,35 +30,7 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <RelativeLayout
-        android:id="@+id/wallet_sdk_initializing_container"
-        android:background="@color/pageBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="36dp">
-            <ImageView
-                android:layout_gravity="center_horizontal"
-                android:layout_width="160dp"
-                android:layout_height="300dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/gerbil_happy" />
-            <TextView
-                android:text="@string/sdk_still_initializing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:textAlignment="center" />
-        </LinearLayout>
-    </RelativeLayout>
+    <include layout="@layout/container_sdk_initializing" />
 
     <RelativeLayout
         android:id="@+id/wallet_account_recommended_container"

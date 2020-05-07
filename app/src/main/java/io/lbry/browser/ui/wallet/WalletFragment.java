@@ -51,8 +51,6 @@ import io.lbry.browser.utils.Lbryio;
 
 public class WalletFragment extends BaseFragment implements SdkStatusListener, WalletBalanceListener {
 
-    private boolean sdkReady;
-
     private View layoutAccountRecommended;
     private View layoutSdkInitializing;
     private View linkSkipAccount;
@@ -96,7 +94,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
 
         loadingRecentContainer = root.findViewById(R.id.wallet_loading_recent_container);
         layoutAccountRecommended = root.findViewById(R.id.wallet_account_recommended_container);
-        layoutSdkInitializing = root.findViewById(R.id.wallet_sdk_initializing_container);
+        layoutSdkInitializing = root.findViewById(R.id.container_sdk_initializing);
         linkSkipAccount = root.findViewById(R.id.wallet_skip_account_link);
         buttonSignUp = root.findViewById(R.id.wallet_sign_up_button);
 
@@ -441,7 +439,6 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     }
 
     public void onSdkReady() {
-        sdkReady = true;
         Context context = getContext();
         if (context instanceof MainActivity) {
             ((MainActivity) context).removeSdkStatusListener(this);

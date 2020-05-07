@@ -49,6 +49,7 @@ import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.File;
 import io.lbry.browser.model.Tag;
+import io.lbry.browser.tasks.ClaimListResultHandler;
 import io.lbry.browser.tasks.ClaimSearchTask;
 import io.lbry.browser.tasks.FileListTask;
 import io.lbry.browser.tasks.LighthouseSearchTask;
@@ -266,7 +267,7 @@ public class FileViewActivity extends AppCompatActivity {
     private void resolveUrl(String url) {
         resolving = true;
         View loadingView = findViewById(R.id.file_view_loading_container);
-        ResolveTask task = new ResolveTask(url, Lbry.LBRY_TV_CONNECTION_STRING, loadingView, new ResolveTask.ResolveResultHandler() {
+        ResolveTask task = new ResolveTask(url, Lbry.LBRY_TV_CONNECTION_STRING, loadingView, new ClaimListResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
                 if (claims.size() > 0) {

@@ -1,5 +1,6 @@
 package io.lbry.browser;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,6 +40,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -47,7 +50,6 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.preference.PreferenceManager;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,6 +65,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
+import java.nio.channels.Channel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -88,6 +91,7 @@ import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.WalletSync;
 import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.ClaimListResultHandler;
 import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.MergeSubscriptionsTask;
 import io.lbry.browser.tasks.ResolveTask;
@@ -99,7 +103,9 @@ import io.lbry.browser.tasks.wallet.SyncGetTask;
 import io.lbry.browser.tasks.wallet.SyncSetTask;
 import io.lbry.browser.tasks.wallet.WalletBalanceTask;
 import io.lbry.browser.ui.BaseFragment;
+import io.lbry.browser.ui.channel.ChannelFormFragment;
 import io.lbry.browser.ui.channel.ChannelFragment;
+import io.lbry.browser.ui.channel.ChannelManagerFragment;
 import io.lbry.browser.ui.editorschoice.EditorsChoiceFragment;
 import io.lbry.browser.ui.following.FollowingFragment;
 import io.lbry.browser.ui.search.SearchFragment;
@@ -132,13 +138,22 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fragmentClassNavIdMap.put(SettingsFragment.class, NavMenuItem.ID_ITEM_SETTINGS);
         fragmentClassNavIdMap.put(AllContentFragment.class, NavMenuItem.ID_ITEM_ALL_CONTENT);
 
+        fragmentClassNavIdMap.put(ChannelManagerFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
+
+
         // Internal (sub-)pages
         fragmentClassNavIdMap.put(ChannelFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
         fragmentClassNavIdMap.put(SearchFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
+
+        //fragmentClassNavIdMap.put(ChannelFormFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
     }
 
+
+    public static final int REQUEST_STORAGE_PERMISSION = 1001;
     public static final int REQUEST_SIMPLE_SIGN_IN = 2001;
     public static final int REQUEST_WALLET_SYNC_SIGN_IN = 2002;
+
+    public static final int REQUEST_FILE_PICKER = 5001;
 
     // broadcast action names
     public static final String ACTION_SDK_READY = "io.lbry.browser.Broadcast.SdkReady";
@@ -205,24 +220,33 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private boolean pendingFollowingReload;
 
     private final List<Integer> supportedMenuItemIds = Arrays.asList(
+            // find content
             NavMenuItem.ID_ITEM_FOLLOWING,
             NavMenuItem.ID_ITEM_EDITORS_CHOICE,
             NavMenuItem.ID_ITEM_ALL_CONTENT,
+
+            // your content
+            NavMenuItem.ID_ITEM_CHANNELS,
+
+            // wallet
             NavMenuItem.ID_ITEM_WALLET,
             NavMenuItem.ID_ITEM_SETTINGS
     );
 
+    public boolean isDarkMode() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        return sp.getBoolean(PREFERENCE_KEY_DARK_MODE, false);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean darkMode = sp.getBoolean(PREFERENCE_KEY_DARK_MODE, false);
-        AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        AppCompatDelegate.setDefaultNightMode(isDarkMode() ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
         initKeyStore();
         loadAuthToken();
 
         dbHelper = new DatabaseHelper(this);
-        if (!darkMode) {
+        if (!isDarkMode()) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
@@ -367,6 +391,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             case NavMenuItem.ID_ITEM_ALL_CONTENT:
                 openFragment(AllContentFragment.class, true, NavMenuItem.ID_ITEM_ALL_CONTENT);
                 break;
+
+            case NavMenuItem.ID_ITEM_CHANNELS:
+                openFragment(ChannelManagerFragment.class, true, NavMenuItem.ID_ITEM_CHANNELS);
+                break;
+
             case NavMenuItem.ID_ITEM_WALLET:
                 openFragment(WalletFragment.class, true, NavMenuItem.ID_ITEM_WALLET);
                 break;
@@ -382,6 +411,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         params.put("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
         params.put("claim", getCachedClaimForUrl(claim.getPermanentUrl()));
         openFragment(ChannelFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
+    }
+
+    public void openChannelForm(Claim claim) {
+        Map<String, Object> params = new HashMap<>();
+        if (claim != null) {
+            params.put("claim", claim);
+        }
+        openFragment(ChannelFormFragment.class, true, NavMenuItem.ID_ITEM_CHANNELS, params);
     }
 
     public void openChannelUrl(String url) {
@@ -667,7 +704,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     private void resolveUrlSuggestions(List<String> urls) {
-        ResolveTask task = new ResolveTask(urls, Lbry.LBRY_TV_CONNECTION_STRING, null, new ResolveTask.ResolveResultHandler() {
+        ResolveTask task = new ResolveTask(urls, Lbry.LBRY_TV_CONNECTION_STRING, null, new ClaimListResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
                 if (findViewById(R.id.url_suggestions_container).getVisibility() == View.VISIBLE) {
@@ -1181,23 +1218,50 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         registerReceiver(userActionsReceiver, intentFilter);
     }
 
+    public void showMessage(int stringResourceId) {
+        Snackbar.make(findViewById(R.id.content_main), stringResourceId, Snackbar.LENGTH_LONG).show();
+    }
+    public void showMessage(String message) {
+        Snackbar.make(findViewById(R.id.content_main), message, Snackbar.LENGTH_LONG).show();
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            // check fragment and nav history
-            FragmentManager manager = getSupportFragmentManager();
-            int backCount = getSupportFragmentManager().getBackStackEntryCount();
-            if (backCount > 0) {
-                // we can pop the stack
-                manager.popBackStack();
-                setSelectedNavMenuItemForFragment(getCurrentFragment());
-            } else if (!enterPIPMode()) {
-                // we're at the top of the stack
-                moveTaskToBack(true);
-                return;
+            boolean handled = false;
+            if (findViewById(R.id.url_suggestions_container).getVisibility() == View.VISIBLE) {
+                clearWunderbarFocus(findViewById(R.id.wunderbar));
+                handled = true;
+            } else {
+                ChannelFormFragment channelFormFragment = null;
+                for (Fragment fragment : openNavFragments.values()) {
+                    if (fragment instanceof ChannelFormFragment) {
+                        channelFormFragment = ((ChannelFormFragment) fragment);
+                        break;
+                    }
+                }
+                if (channelFormFragment != null && channelFormFragment.isSaveInProgress()) {
+                    handled = true;
+                    return;
+                }
+            }
+
+            if (!handled) {
+                // check fragment and nav history
+                FragmentManager manager = getSupportFragmentManager();
+                int backCount = getSupportFragmentManager().getBackStackEntryCount();
+                if (backCount > 0) {
+                    // we can pop the stack
+                    manager.popBackStack();
+                    setSelectedNavMenuItemForFragment(getCurrentFragment());
+                } else if (!enterPIPMode()) {
+                    // we're at the top of the stack
+                    moveTaskToBack(true);
+                    return;
+                }
             }
         }
     }
@@ -1215,22 +1279,72 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            // user signed in
-            showSignedInUser();
-
-            if (requestCode == REQUEST_WALLET_SYNC_SIGN_IN) {
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-                sp.edit().putBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_WALLET_SYNC_ENABLED, true).apply();
-
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_STORAGE_PERMISSION:
+                ChannelFormFragment channelFormFragment = null;
+                //PublishFormFragment publishFormFragment = null;
                 for (Fragment fragment : openNavFragments.values()) {
-                    if (fragment instanceof WalletFragment) {
-                        ((WalletFragment) fragment).onWalletSyncEnabled();
+                    if (fragment instanceof ChannelFormFragment) {
+                        channelFormFragment = ((ChannelFormFragment) fragment);
+                        break;
                     }
                 }
-                scheduleWalletSyncTask();
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (channelFormFragment != null) {
+                        channelFormFragment.onStoragePermissionGranted();
+                    }
+                } else {
+                    if (channelFormFragment != null) {
+                        channelFormFragment.onStoragePermissionRefused();
+                    }
+                }
+                break;
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_FILE_PICKER) {
+            ChannelFormFragment channelFormFragment = null;
+            //PublishFormFragment publishFormFragment = null;
+            for (Fragment fragment : openNavFragments.values()) {
+                if (fragment instanceof ChannelFormFragment) {
+                    channelFormFragment = ((ChannelFormFragment) fragment);
+                    break;
+                }
+            }
+
+            if (resultCode == RESULT_OK) {
+                Uri fileUri = data.getData();
+                String filePath = Helper.getRealPathFromURI_API19(this, fileUri);
+                if (channelFormFragment != null) {
+                    channelFormFragment.onFilePicked(filePath);
+                }
+            } else {
+                if (channelFormFragment != null) {
+                    channelFormFragment.onFilePicked(null);
+                }
+            }
+        } else if (requestCode == REQUEST_SIMPLE_SIGN_IN || requestCode == REQUEST_WALLET_SYNC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                // user signed in
+                showSignedInUser();
+
+                if (requestCode == REQUEST_WALLET_SYNC_SIGN_IN) {
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                    sp.edit().putBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_WALLET_SYNC_ENABLED, true).apply();
+
+                    for (Fragment fragment : openNavFragments.values()) {
+                        if (fragment instanceof WalletFragment) {
+                            ((WalletFragment) fragment).onWalletSyncEnabled();
+                        }
+                    }
+                    scheduleWalletSyncTask();
+                }
             }
         }
     }
@@ -1765,4 +1879,19 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
+
+    public static void requestPermission(String permission, int requestCode, String rationale, Context context, boolean forceRequest) {
+        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (!forceRequest && ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
+                Toast.makeText(context, rationale, Toast.LENGTH_LONG).show();
+            } else {
+                ActivityCompat.requestPermissions((Activity) context, new String[] { permission }, requestCode);
+            }
+        }
+    }
+
+    public static boolean hasPermission(String permission, Context context) {
+        return (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
+    }
+
 }

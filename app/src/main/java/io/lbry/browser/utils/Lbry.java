@@ -47,6 +47,8 @@ public final class Lbry {
     public static WalletBalance walletBalance = new WalletBalance();
     public static List<Tag> knownTags = new ArrayList<>();
     public static List<Tag> followedTags = new ArrayList<>();
+    public static List<Claim> ownClaims = new ArrayList<>();
+    public static List<Claim> ownChannels = new ArrayList<>(); // Make this a subset of ownClaims?
 
     public static final int TTL_CLAIM_SEARCH_VALUE = 120000; // 2-minute TTL for cache
     public static final String SDK_CONNECTION_STRING = "http://127.0.0.1:5279";
@@ -86,6 +88,12 @@ public final class Lbry {
     public static final String METHOD_SYNC_APPLY = "sync_apply";
     public static final String METHOD_PREFERENCE_GET = "preference_get";
     public static final String METHOD_PREFERENCE_SET = "preference_set";
+
+    public static final String METHOD_CHANNEL_ABANDON = "channel_abandon";
+    public static final String METHOD_CHANNEL_CREATE = "channel_create";
+    public static final String METHOD_CHANNEL_UPDATE = "channel_update";
+
+    public static final String METHOD_CLAIM_LIST = "claim_list";
 
     public static KeyStore KEYSTORE;
     public static boolean SDK_READY = false;

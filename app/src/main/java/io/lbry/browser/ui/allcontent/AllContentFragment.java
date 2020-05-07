@@ -30,12 +30,11 @@ import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentScopeDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
 import io.lbry.browser.dialog.CustomizeTagsDialogFragment;
+import io.lbry.browser.listener.TagListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.tasks.ClaimSearchTask;
 import io.lbry.browser.tasks.FollowUnfollowTagTask;
-import io.lbry.browser.tasks.GenericTaskHandler;
-import io.lbry.browser.tasks.wallet.SaveSharedUserStateTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
@@ -260,7 +259,7 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
 
     private void showCustomizeTagsDialog() {
         CustomizeTagsDialogFragment dialog = CustomizeTagsDialogFragment.newInstance();
-        dialog.setListener(new CustomizeTagsDialogFragment.TagListener() {
+        dialog.setListener(new TagListener() {
             @Override
             public void onTagAdded(Tag tag) {
                 // heavy-lifting
@@ -373,8 +372,12 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
     }
 
     private Map<String, Object> buildContentOptions() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+        Context context = getContext();
+        boolean canShowMatureContent = false;
+        if (context != null) {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+            canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+        }
 
         return Lbry.buildClaimSearchOptions(
                 null,

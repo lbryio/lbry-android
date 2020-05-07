@@ -28,7 +28,7 @@ public class Subscription {
     }
 
     public boolean equals(Object o) {
-        return (o instanceof Subscription) && url.equalsIgnoreCase(((Subscription) o).getUrl());
+        return (o instanceof Subscription) && url != null && url.equalsIgnoreCase(((Subscription) o).getUrl());
     }
     public int hashCode() {
         return url.toLowerCase().hashCode();

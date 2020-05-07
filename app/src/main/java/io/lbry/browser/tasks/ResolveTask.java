@@ -14,15 +14,15 @@ import io.lbry.browser.utils.Lbry;
 public class ResolveTask extends AsyncTask<Void, Void, List<Claim>> {
     private List<String> urls;
     private String connectionString;
-    private ResolveResultHandler handler;
+    private ClaimListResultHandler handler;
     private View progressView;
     private ApiCallException error;
 
-    public ResolveTask(String url, String connectionString, View progressView, ResolveResultHandler handler) {
+    public ResolveTask(String url, String connectionString, View progressView, ClaimListResultHandler handler) {
         this(Arrays.asList(url), connectionString, progressView, handler);
     }
 
-    public ResolveTask(List<String> urls, String connectionString, View progressView, ResolveResultHandler handler) {
+    public ResolveTask(List<String> urls, String connectionString, View progressView, ClaimListResultHandler handler) {
         this.urls = urls;
         this.connectionString = connectionString;
         this.progressView = progressView;
@@ -50,8 +50,4 @@ public class ResolveTask extends AsyncTask<Void, Void, List<Claim>> {
         }
     }
 
-    public interface ResolveResultHandler {
-        void onSuccess(List<Claim> claims);
-        void onError(Exception error);
-    }
 }

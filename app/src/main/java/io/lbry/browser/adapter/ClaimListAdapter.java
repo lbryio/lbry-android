@@ -18,9 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.lbry.browser.R;
+import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
+import lombok.Getter;
 import lombok.Setter;
 
 public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.ViewHolder> {
@@ -33,6 +35,11 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     private List<Claim> selectedItems;
     @Setter
     private ClaimListItemListener listener;
+    @Getter
+    @Setter
+    private boolean inSelectionMode;
+    @Setter
+    private SelectionModeListener selectionModeListener;
 
     public ClaimListAdapter(List<Claim> items, Context context) {
         this.context = context;
@@ -42,6 +49,9 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
 
     public List<Claim> getSelectedItems() {
         return this.selectedItems;
+    }
+    public int getSelectedCount() {
+        return selectedItems != null ? selectedItems.size() : 0;
     }
     public void clearSelectedItems() {
         this.selectedItems.clear();
@@ -78,6 +88,16 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         }
         notifyDataSetChanged();
     }
+    public void setItems(List<Claim> claims) {
+        items = new ArrayList<>(claims);
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(Claim claim) {
+        items.remove(claim);
+        selectedItems.remove(claim);
+        notifyDataSetChanged();
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         protected View feeContainer;
@@ -92,6 +112,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         protected TextView publishTimeView;
         protected View repostInfoView;
         protected TextView repostChannelView;
+        protected View selectedOverlayView;
         public ViewHolder(View v) {
             super(v);
             feeContainer = v.findViewById(R.id.claim_fee_container);
@@ -106,6 +127,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             publishTimeView = v.findViewById(R.id.claim_publish_time);
             repostInfoView = v.findViewById(R.id.claim_repost_info);
             repostChannelView = v.findViewById(R.id.claim_repost_channel);
+            selectedOverlayView = v.findViewById(R.id.claim_selected_overlay);
         }
     }
 
@@ -160,12 +182,32 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             bgColor = Helper.generateRandomColorForValue(item.getName());
         }
 
+        boolean isSelected = isClaimSelected(item);
+        vh.itemView.setSelected(isSelected);
+        vh.selectedOverlayView.setVisibility(isSelected ? View.VISIBLE : View.GONE);
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (listener != null) {
-                    listener.onClaimClicked(item);
+                if (inSelectionMode) {
+                    toggleSelectedClaim(item);
+                } else {
+                    if (listener != null) {
+                        listener.onClaimClicked(item);
+                    }
                 }
+            }
+        });
+        vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (!inSelectionMode) {
+                    inSelectionMode = true;
+                    if (selectionModeListener != null) {
+                        selectionModeListener.onEnterSelectionMode();
+                    }
+                }
+                toggleSelectedClaim(item);
+                return true;
             }
         });
 
@@ -239,6 +281,27 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                         publishTime, System.currentTimeMillis(), 0, DateUtils.FORMAT_ABBREV_RELATIVE));
             }
         }
+    }
+
+    private void toggleSelectedClaim(Claim claim) {
+        if (selectedItems.contains(claim)) {
+            selectedItems.remove(claim);
+        } else {
+            selectedItems.add(claim);
+        }
+
+        if (selectionModeListener != null) {
+            selectionModeListener.onItemSelectionToggled();
+        }
+
+        if (selectedItems.size() == 0) {
+            inSelectionMode = false;
+            if (selectionModeListener != null) {
+                selectionModeListener.onExitSelectionMode();
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     public interface ClaimListItemListener {

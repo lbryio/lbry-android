@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pageBackground">
+    <LinearLayout
+        android:id="@+id/channel_form_display_area"
+        android:clipChildren="false"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:layout_weight="10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/channel_form_cover_edit_area"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="220dp">
+            <ImageView
+                android:id="@+id/channel_form_cover_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/default_channel_cover"
+                android:scaleType="centerCrop" />
+            <ImageView
+                android:id="@+id/channel_form_cover_edit_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/ic_edit"
+                android:tint="@color/white" />
+
+            <LinearLayout
+                android:id="@+id/channel_form_upload_progress"
+                android:background="@color/channelCoverBackground"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:visibility="gone">
+                <ProgressBar
+                    android:layout_width="16dp"
+                    android:layout_height="16dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/uploading"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/channel_form_icon_container"
+                android:foreground=" ?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16dp"
+                android:layout_centerHorizontal="true">
+                <RelativeLayout
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/bg_channel_icon"
+                    android:id="@+id/channel_form_no_thumbnail"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp">
+                    <TextView
+                        android:id="@+id/channel_form_icon_alpha"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter"
+                        android:textAllCaps="true"
+                        android:textSize="48sp"
+                        android:textColor="@color/white"
+                        android:textFontWeight="300" />
+                </RelativeLayout>
+                <ImageView
+                    android:id="@+id/channel_form_thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_edit"
+                    android:tint="@color/white" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/title">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/channel_form_input_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter"
+                            android:singleLine="true"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/channel_form_input_channel_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:hint="@string/channel_name"
+                                android:singleLine="true"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <TextView
+                            android:id="@+id/channel_form_at_prefix"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            android:layout_marginLeft="12dp"
+                            android:text="@string/at"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_marginTop="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/channel_form_input_layout_deposit"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/deposit">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/channel_form_input_deposit"
+                                android:fontFamily="@font/inter"
+                                android:singleLine="true"
+                                android:textSize="14sp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:id="@+id/channel_form_input_currency"
+                            android:layout_toRightOf="@id/channel_form_input_layout_deposit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="30dp"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/lbc"
+                            android:textAllCaps="true"
+                            android:textSize="10sp"
+                            android:textFontWeight="300" />
+
+                        <LinearLayout
+                            android:id="@+id/channel_form_inline_balance_container"
+                            android:layout_toRightOf="@id/channel_form_input_currency"
+                            android:layout_marginLeft="24dp"
+                            android:layout_marginTop="28dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="invisible">
+                            <io.lbry.browser.ui.controls.SolidIconView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:text="@string/fa_coins" />
+                            <TextView
+                                android:id="@+id/channel_form_inline_balance_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:textFontWeight="300"
+                                android:layout_marginLeft="2dp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/deposit_remains_yours"
+                        android:textFontWeight="300"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:id="@+id/channel_form_optional_fields_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/description">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/channel_form_input_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:inputType="textMultiLine"
+                                android:singleLine="false"
+                                android:scrollbars="vertical"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:hint="@string/website">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/channel_form_input_website"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:singleLine="true"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:hint="@string/email">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/channel_form_input_email"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:singleLine="true"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/tags"
+                            android:textFontWeight="600"
+                            android:textSize="14sp" />
+                        <include layout="@layout/form_tag_search" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp">
+                        <TextView
+                            android:id="@+id/channel_form_cancel_link"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="@font/inter"
+                            android:textSize="12sp"
+                            android:text="@string/cancel" />
+
+                        <TextView
+                            android:id="@+id/channel_form_toggle_optional"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="24dp"
+                            android:layout_toLeftOf="@id/channel_form_save_button"
+                            android:fontFamily="@font/inter"
+                            android:textSize="12sp"
+                            android:text="@string/show_optional_fields" />
+                        <ProgressBar
+                            android:id="@+id/channel_form_save_progress"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="24dp"
+                            android:layout_toLeftOf="@+id/channel_form_save_button"
+                            android:visibility="gone" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/channel_form_save_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/save" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

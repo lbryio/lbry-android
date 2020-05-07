@@ -14,8 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -37,6 +35,7 @@ import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.ChannelSubscribeTask;
+import io.lbry.browser.tasks.ClaimListResultHandler;
 import io.lbry.browser.tasks.ResolveTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.ui.controls.SolidIconView;
@@ -196,7 +195,10 @@ public class ChannelFragment extends BaseFragment {
             boolean isFollowing = Lbryio.isFollowing(claim);
             if (iconFollowUnfollow != null) {
                 iconFollowUnfollow.setText(isFollowing ? R.string.fa_heart_broken : R.string.fa_heart);
-                iconFollowUnfollow.setTextColor(ContextCompat.getColor(getContext(), isFollowing ? R.color.foreground : R.color.red));
+                Context context = getContext();
+                if (context != null) {
+                    iconFollowUnfollow.setTextColor(ContextCompat.getColor(context, isFollowing ? R.color.foreground : R.color.red));
+                }
             }
         }
     }
@@ -244,7 +246,7 @@ public class ChannelFragment extends BaseFragment {
 
     private void resolveUrl() {
         layoutDisplayArea.setVisibility(View.INVISIBLE);
-        ResolveTask task = new ResolveTask(url, Lbry.LBRY_TV_CONNECTION_STRING, layoutResolving, new ResolveTask.ResolveResultHandler() {
+        ResolveTask task = new ResolveTask(url, Lbry.LBRY_TV_CONNECTION_STRING, layoutResolving, new ClaimListResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
                 if (claims.size() > 0) {
@@ -300,7 +302,9 @@ public class ChannelFragment extends BaseFragment {
             int bgColor = Helper.generateRandomColorForValue(claim.getClaimId());
             Helper.setIconViewBackgroundColor(noThumbnailView, bgColor, false, getContext());
             noThumbnailView.setVisibility(View.VISIBLE);
-            textAlpha.setText(claim.getName().substring(1, 2));
+            if (claim.getName() != null) {
+                textAlpha.setText(claim.getName().substring(1, 2));
+            }
         }
 
         try {
@@ -332,16 +336,20 @@ public class ChannelFragment extends BaseFragment {
             switch (position) {
                 case 0:
                     ChannelContentFragment contentFragment = ChannelContentFragment.class.newInstance();
-                    contentFragment.setChannelId(channelClaim.getClaimId());
+                    if (channelClaim != null) {
+                        contentFragment.setChannelId(channelClaim.getClaimId());
+                    }
                     return contentFragment;
 
                 case 1:
                     ChannelAboutFragment aboutFragment = ChannelAboutFragment.class.newInstance();
                     try {
                         Claim.ChannelMetadata metadata = (Claim.ChannelMetadata) channelClaim.getValue();
-                        aboutFragment.setDescription(metadata.getDescription());
-                        aboutFragment.setEmail(metadata.getEmail());
-                        aboutFragment.setWebsite(metadata.getWebsiteUrl());
+                        if (metadata != null) {
+                            aboutFragment.setDescription(metadata.getDescription());
+                            aboutFragment.setEmail(metadata.getEmail());
+                            aboutFragment.setWebsite(metadata.getWebsiteUrl());
+                        }
                     } catch (ClassCastException ex) {
                         // pass
                     }

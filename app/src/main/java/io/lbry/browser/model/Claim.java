@@ -112,6 +112,14 @@ public class Claim {
         return (value != null) ? value.getDescription() : null;
     }
 
+    public String getWebsiteUrl() {
+        return (value instanceof ChannelMetadata) ? ((ChannelMetadata) value).getWebsiteUrl() : null;
+    }
+
+    public String getEmail() {
+        return (value instanceof ChannelMetadata) ? ((ChannelMetadata) value).getEmail() : null;
+    }
+
     public String getPublisherName() {
         if (signingChannel != null) {
             return signingChannel.getName();

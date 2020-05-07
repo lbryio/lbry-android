@@ -194,7 +194,7 @@
     <string name="search_for_more_tags">Search for more tags</string>
     <string name="no_followed_tags">You have not followed any tags yet. Get started by adding tags that you are interested in!</string>
     <string name="no_tag_results">We could not find new tags that you\'re not following.</string>
-    <string name="tag_already_followed">The \'%1$s\' tag has already been added.</string>
+    <string name="tag_already_added">The \'%1$s\' tag has already been added.</string>
     <string name="send_a_tip">Send a tip</string>
     <string name="send_a_tip_to">Send a tip to %1$s</string>
     <string name="send_tip_info_content">This will appear as a tip for %1$s, which will boost its ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
@@ -224,6 +224,52 @@
     <string name="password">Password</string>
     <string name="enable_sync">Enable sync</string>
     <string name="wallet_sync_op_failed">The wallet sync operation could not be completed at this time. Please try again later. If this problem persists, please send an email to hello@lbry.com.</string>
+
+    <!-- Forms -->
+    <string name="no_added_tags">You have not added any tags yet. Add tags to improve discovery.</string>
+    <string name="form_no_tag_results">We could not find new tags that have not been added yet.</string>
+
+    <!-- Channels -->
+    <string name="no_channel_created">You have not created a channel.\nStart now by creating a new channel!</string>
+    <string name="create_a_channel">Create a channel</string>
+    <string name="edit_channel">Edit channel</string>
+    <string name="delete_selection">Delete selection?</string>
+    <string name="description">Description</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="show_extra">Show extra</string>
+    <string name="hide_extra">Hide extra</string>
+    <string name="show_optional_fields">Show optional fields</string>
+    <string name="hide_optional_fields">Hide optional fields</string>
+    <string name="save">Save</string>
+    <string name="channel_name">Channel name</string>
+    <string name="title">Title</string>
+    <string name="at">\@</string>
+    <string name="deposit">Deposit</string>
+    <string name="deposit_remains_yours">This LBC remains yours. It is a deposit to reserve the name and can be undone at any time.</string>
+    <string name="storage_permission_rationale_images">LBRY requires access to load images from your device storage.</string>
+    <string name="select_thumbnail">Select thumbnail</string>
+    <string name="select_cover">Select cover image</string>
+    <string name="undetermined_image_filepath">The file path could not be determined for the selected image. Please select an image in a different location.</string>
+    <string name="wait_for_upload">Please wait for the current upload to finish.</string>
+    <string name="image_upload_failed">The image upload request failed. Please try again.</string>
+    <string name="uploading">Uploading...</string>
+    <string name="please_enter_channel_name">Please enter a channel name.</string>
+    <string name="channel_name_invalid_characters">Your channel name contains invalid characters.</string>
+    <string name="channel_name_already_created">You have already created a channel with the same name.</string>
+    <string name="please_enter_valid_deposit">Please enter a valid deposit amount.</string>
+    <string name="deposit_more_than_balance">Deposit cannot be higher than your balance.</string>
+    <string name="channel_save_failed">The channel save request failed. Please try again.</string>
+    <string name="channel_save_successful">The channel was successfully saved.</string>
+    <string name="channel_pending_blockchain">The channel is pending publish on the blockchain. You will be able to access or edit the channel in a few moments.</string>
+    <plurals name="min_deposit_required">
+        <item quantity="one">A minimum deposit of %1$s credit is required.</item>
+        <item quantity="other">A minimum deposit of %1$s credits is required.</item>
+    </plurals>
+    <plurals name="confirm_delete_channels">
+        <item quantity="one">Are you sure you want to delete the selected channel?</item>
+        <item quantity="other">Are you sure you want to delete the selected channels?</item>
+    </plurals>
 
     <!-- Font Awesome -->
     <string name="fa_gift">&#xf06b;</string>

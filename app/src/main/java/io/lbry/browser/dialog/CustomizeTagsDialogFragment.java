@@ -18,11 +18,12 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.TagListAdapter;
+import io.lbry.browser.listener.TagListener;
 import io.lbry.browser.model.Tag;
+import io.lbry.browser.tasks.UpdateSuggestedTagsTask;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import lombok.Setter;
@@ -49,7 +50,7 @@ public class CustomizeTagsDialogFragment extends BottomSheetDialogFragment {
     }
     public void addTag(Tag tag) {
         if (followedTagsAdapter.getTags().contains(tag)) {
-            Snackbar.make(getView(), getString(R.string.tag_already_followed, tag.getName()), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getView(), getString(R.string.tag_already_added, tag.getName()), Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -158,37 +159,9 @@ public class CustomizeTagsDialogFragment extends BottomSheetDialogFragment {
     }
 
     private void updateKnownTags(String filter, int limit, boolean clearPrevious) {
-        (new AsyncTask<Void, Void, List<Tag>>() {
-            protected List<Tag> doInBackground(Void... params) {
-                List<Tag> tags = new ArrayList<>();
-                if (Helper.isNullOrEmpty(filter)) {
-                    Random random = new Random();
-                    if (suggestedTagsAdapter != null && !clearPrevious) {
-                        tags = new ArrayList<>(suggestedTagsAdapter.getTags());
-                    }
-                    while (tags.size() < limit) {
-                        Tag randomTag = Lbry.knownTags.get(random.nextInt(Lbry.knownTags.size()));
-                        if (!Lbry.followedTags.contains(randomTag) && (followedTagsAdapter == null || !followedTagsAdapter.getTags().contains(randomTag))) {
-                            tags.add(randomTag);
-                        }
-                    }
-                } else {
-                    Tag filterTag = new Tag(filter);
-                    if (followedTagsAdapter == null || !followedTagsAdapter.getTags().contains(filterTag)) {
-                        tags.add(new Tag(filter));
-                    }
-                    for (int i = 0; i < Lbry.knownTags.size() && tags.size() < SUGGESTED_LIMIT - 1; i++) {
-                        Tag knownTag = Lbry.knownTags.get(i);
-                        if ((knownTag.getLowercaseName().startsWith(filter) || knownTag.getLowercaseName().matches(filter)) &&
-                                (!tags.contains(knownTag) &&
-                                        !Lbry.followedTags.contains(knownTag) && (followedTagsAdapter == null || !followedTagsAdapter.getTags().contains(knownTag)))) {
-                            tags.add(knownTag);
-                        }
-                    }
-                }
-                return tags;
-            }
-            protected void onPostExecute(List<Tag> tags) {
+        UpdateSuggestedTagsTask task = new UpdateSuggestedTagsTask(filter, SUGGESTED_LIMIT, followedTagsAdapter, suggestedTagsAdapter, clearPrevious, new UpdateSuggestedTagsTask.KnownTagsHandler() {
+            @Override
+            public void onSuccess(List<Tag> tags) {
                 if (suggestedTagsAdapter == null) {
                     suggestedTagsAdapter = new TagListAdapter(tags, getContext());
                     suggestedTagsAdapter.setCustomizeMode(TagListAdapter.CUSTOMIZE_MODE_ADD);
@@ -201,11 +174,7 @@ public class CustomizeTagsDialogFragment extends BottomSheetDialogFragment {
                 }
                 checkNoResults();
             }
-        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    public interface TagListener {
-        void onTagAdded(Tag tag);
-        void onTagRemoved(Tag tag);
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
