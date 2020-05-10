@@ -16,10 +16,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,6 +56,10 @@ public final class Helper {
     public static final MediaType JSON_MEDIA_TYPE = MediaType.get("application/json; charset=utf-8");
     public static final int CONTENT_PAGE_SIZE = 25;
     public static final double MIN_DEPOSIT = 0.05;
+    public static final String LBC_CURRENCY_FORMAT_PATTERN = "#,###.##";
+    public static final DecimalFormat LBC_CURRENCY_FORMAT = new DecimalFormat(LBC_CURRENCY_FORMAT_PATTERN);
+    public static final DecimalFormat USD_CURRENCY_FORMAT = new DecimalFormat("#,##0.00");
+    public static final String EXPLORER_TX_PREFIX = "https://explorer.lbry.com/tx";
 
     public static boolean isNull(String value) {
         return value == null;
@@ -148,6 +154,14 @@ public final class Helper {
     public static int parseInt(Object value, int defaultValue) {
         try {
             return Integer.parseInt(String.valueOf(value), 10);
+        } catch (NumberFormatException ex) {
+            return defaultValue;
+        }
+    }
+
+    public static Double parseDouble(Object value, double defaultValue) {
+        try {
+            return Double.parseDouble(String.valueOf(value));
         } catch (NumberFormatException ex) {
             return defaultValue;
         }
@@ -535,5 +549,10 @@ public final class Helper {
      */
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    public static void applyHtmlForTextView(TextView textView) {
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setText(HtmlCompat.fromHtml(textView.getText().toString(), HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 }

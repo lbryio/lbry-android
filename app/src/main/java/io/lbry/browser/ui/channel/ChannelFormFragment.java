@@ -32,17 +32,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.TagListAdapter;
 import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.tasks.UpdateSuggestedTagsTask;
 import io.lbry.browser.tasks.UploadImageTask;
 import io.lbry.browser.tasks.content.ChannelCreateUpdateTask;
+import io.lbry.browser.tasks.content.ClaimResultHandler;
+import io.lbry.browser.tasks.content.LogPublishTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
@@ -63,6 +67,7 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
     private TextView linkShowOptional;
     private MaterialButton buttonSave;
 
+    private View inlineBalanceContainer;
     private TextView inlineBalanceValue;
     private View uploadProgress;
     private View containerOptionalFields;
@@ -120,6 +125,7 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
         iconContainer = root.findViewById(R.id.channel_form_icon_container);
         imageCover = root.findViewById(R.id.channel_form_cover_image);
         imageThumbnail = root.findViewById(R.id.channel_form_thumbnail);
+        inlineBalanceContainer = root.findViewById(R.id.channel_form_inline_balance_container);
         inlineBalanceValue = root.findViewById(R.id.channel_form_inline_balance_value);
         uploadProgress = root.findViewById(R.id.channel_form_upload_progress);
         channelSaveProgress = root.findViewById(R.id.channel_form_save_progress);
@@ -146,6 +152,12 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
 
         buttonSave = root.findViewById(R.id.channel_form_save_button);
 
+        inputDeposit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                Helper.setViewVisibility(inlineBalanceContainer, hasFocus ? View.VISIBLE : View.INVISIBLE);
+            }
+        });
         linkShowOptional.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,6 +173,8 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
         linkCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clearInputFocus();
+
                 Context context = getContext();
                 if (context instanceof MainActivity) {
                     ((MainActivity) context).onBackPressed();
@@ -295,15 +309,22 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
             return;
         }
 
-        ChannelCreateUpdateTask task = new ChannelCreateUpdateTask(claim, new BigDecimal(depositString), editMode, channelSaveProgress, new GenericTaskHandler() {
+        ChannelCreateUpdateTask task = new ChannelCreateUpdateTask(claim, new BigDecimal(depositString), editMode, channelSaveProgress, new ClaimResultHandler() {
             @Override
             public void beforeStart() {
                 preSave();
             }
 
             @Override
-            public void onSuccess() {
+            public void onSuccess(Claim claimResult) {
                 postSave();
+
+                // Run the logPublish task
+                if (!BuildConfig.DEBUG) {
+                    LogPublishTask logPublish = new LogPublishTask(claimResult);
+                    logPublish.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+
                 Context context = getContext();
                 if (context instanceof MainActivity) {
                     MainActivity activity = (MainActivity) context;
@@ -354,13 +375,18 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
     private void launchFilePicker() {
         Context context = getContext();
         if (context instanceof MainActivity) {
+            MainActivity.startingFilePickerActivity = true;
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("image/*");
             ((MainActivity) context).startActivityForResult(
                     Intent.createChooser(intent, getString(coverFilePickerActive ? R.string.select_cover : R.string.select_thumbnail)),
                     MainActivity.REQUEST_FILE_PICKER);
         }
+    }
 
+    public void onFilePickerCancelled() {
+        coverFilePickerActive = false;
+        thumbnailFilePickerActive = false;
     }
 
     public void onFilePicked(String filePath) {
@@ -456,6 +482,12 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
     }
 
     @Override
+    public void onPause() {
+        clearInputFocus();
+        super.onPause();
+    }
+
+    @Override
     public void onStop() {
         Context context = getContext();
         if (context instanceof MainActivity) {
@@ -463,6 +495,9 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
             activity.removeWalletBalanceListener(this);
             activity.restoreToggle();
             activity.showFloatingWalletBalance();
+            if (!MainActivity.startingFilePickerActivity) {
+                activity.removeNavFragment(ChannelFormFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
+            }
         }
         super.onStop();
     }
@@ -472,6 +507,16 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
         checkParams();
         updateFieldsFromCurrentClaim();
 
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            if (editMode) {
+                ActionBar actionBar = activity.getSupportActionBar();
+                if (actionBar != null) {
+                    actionBar.setTitle(R.string.edit_channel);
+                }
+            }
+        }
         String filterText = Helper.getValue(inputTagFilter.getText());
         updateSuggestedTags(filterText, SUGGESTED_LIMIT, true);
     }
@@ -583,7 +628,20 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
         Helper.setViewVisibility(linkShowOptional, View.VISIBLE);
         Helper.setViewEnabled(linkCancel, true);
         Helper.setViewEnabled(buttonSave,  true);
+
+        clearInputFocus();
+
         saveInProgress = false;
+    }
+
+    public void clearInputFocus() {
+        inputChannelName.clearFocus();
+        inputDeposit.clearFocus();
+        inputWebsite.clearFocus();
+        inputEmail.clearFocus();
+        inputDescription.clearFocus();
+        inputTitle.clearFocus();
+        inputTagFilter.clearFocus();
     }
 
     @Override

@@ -3,6 +3,8 @@ package io.lbry.browser.tasks.content;
 import android.os.AsyncTask;
 import android.view.View;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
@@ -16,15 +18,15 @@ import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
-public class ChannelCreateUpdateTask extends AsyncTask<Void, Void, Boolean> {
+public class ChannelCreateUpdateTask extends AsyncTask<Void, Void, Claim> {
     private Claim claim;
     private BigDecimal deposit;
     private boolean update;
     private Exception error;
-    private GenericTaskHandler handler;
+    private ClaimResultHandler handler;
     private View progressView;
 
-    public ChannelCreateUpdateTask(Claim claim, BigDecimal deposit, boolean update, View progressView, GenericTaskHandler handler) {
+    public ChannelCreateUpdateTask(Claim claim, BigDecimal deposit, boolean update, View progressView, ClaimResultHandler handler) {
         this.claim = claim;
         this.deposit = deposit;
         this.update = update;
@@ -38,7 +40,7 @@ public class ChannelCreateUpdateTask extends AsyncTask<Void, Void, Boolean> {
             handler.beforeStart();
         }
     }
-    protected Boolean doInBackground(Void... params) {
+    protected Claim doInBackground(Void... params) {
         Map<String, Object> options = new HashMap<>();
         if (!update) {
             options.put("name", claim.getName());
@@ -55,21 +57,43 @@ public class ChannelCreateUpdateTask extends AsyncTask<Void, Void, Boolean> {
         options.put("tags", claim.getTags());
         options.put("blocking", true);
 
+        Claim claimResult = null;
         String method = !update ? Lbry.METHOD_CHANNEL_CREATE : Lbry.METHOD_CHANNEL_UPDATE;
         try {
-            Lbry.genericApiCall(method, options);
-        } catch (ApiCallException | ClassCastException ex) {
+            JSONObject result = (JSONObject) Lbry.genericApiCall(method, options);
+            if (result.has("outputs")) {
+                JSONArray outputs = result.getJSONArray("outputs");
+                for (int i = 0; i < outputs.length(); i++) {
+                    JSONObject output = outputs.getJSONObject(i);
+                    if (output.has("claim_id") && output.has("claim_op")) {
+                        claimResult = claimFromResult(output);
+                        break;
+                    }
+                }
+            }
+        } catch (ApiCallException | ClassCastException | JSONException ex) {
             error = ex;
-            return false;
         }
 
-        return true;
+        return claimResult;
     }
-    protected void onPostExecute(Boolean result) {
+
+    private static Claim claimFromResult(JSONObject item) {
+        // we only need name, permanent_url, txid and nout
+        Claim claim = new Claim();
+        claim.setClaimId(Helper.getJSONString("claim_id", null, item));
+        claim.setName(Helper.getJSONString("name", null, item));
+        claim.setPermanentUrl(Helper.getJSONString("permanent_url", null, item));
+        claim.setTxid(Helper.getJSONString("txid", null, item));
+        claim.setNout(Helper.getJSONInt("nout", -1, item));
+        return claim;
+    }
+
+    protected void onPostExecute(Claim result) {
         Helper.setViewVisibility(progressView, View.GONE);
         if (handler != null) {
-            if (result) {
-                handler.onSuccess();
+            if (result != null) {
+                handler.onSuccess(result);
             } else {
                 handler.onError(error);
             }

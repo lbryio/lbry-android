@@ -76,6 +76,8 @@ dependencies {
 
     implementation 'com.google.android:flexbox:2.0.1'
 
+    implementation 'com.hbb20:ccp:2.3.8'
+
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'

@@ -81,6 +81,7 @@ import io.lbry.browser.adapter.UrlSuggestionListAdapter;
 import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.ContentScopeDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
+import io.lbry.browser.listener.FetchChannelsListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
@@ -90,8 +91,11 @@ import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.WalletSync;
+import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.ClaimListResultHandler;
+import io.lbry.browser.tasks.ClaimListTask;
+import io.lbry.browser.tasks.FetchRewardsTask;
 import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.MergeSubscriptionsTask;
 import io.lbry.browser.tasks.ResolveTask;
@@ -111,6 +115,7 @@ import io.lbry.browser.ui.following.FollowingFragment;
 import io.lbry.browser.ui.search.SearchFragment;
 import io.lbry.browser.ui.settings.SettingsFragment;
 import io.lbry.browser.ui.allcontent.AllContentFragment;
+import io.lbry.browser.ui.wallet.RewardsFragment;
 import io.lbry.browser.ui.wallet.WalletFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
@@ -125,8 +130,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public static SimpleExoPlayer appPlayer;
     public static Claim nowPlayingClaim;
+    public static boolean startingFilePickerActivity = false;
     public static boolean startingShareActivity = false;
     public static boolean startingFileViewActivity = false;
+    public static boolean startingSignInFlowActivity = false;
     public static boolean mainActive = false;
     private boolean enteringPIPMode = false;
 
@@ -152,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final int REQUEST_STORAGE_PERMISSION = 1001;
     public static final int REQUEST_SIMPLE_SIGN_IN = 2001;
     public static final int REQUEST_WALLET_SYNC_SIGN_IN = 2002;
+    public static final int REQUEST_REWARDS_VERIFY_SIGN_IN = 2003;
 
     public static final int REQUEST_FILE_PICKER = 5001;
 
@@ -180,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_INTERNAL_SKIP_WALLET_ACCOUNT = "io.lbry.browser.preference.internal.WalletSkipAccount";
     public static final String PREFERENCE_KEY_INTERNAL_WALLET_SYNC_ENABLED = "io.lbry.browser.preference.internal.WalletSyncEnabled";
     public static final String PREFERENCE_KEY_INTERNAL_WALLET_RECEIVE_ADDRESS = "io.lbry.browser.preference.internal.WalletReceiveAddress";
+    public static final String PREFERENCE_KEY_INTERNAL_REWARDS_NOT_INTERESTED = "io.lbry.browser.preference.internal.RewardsNotInterested";
 
     private final int CHECK_SDK_READY_INTERVAL = 1000;
 
@@ -210,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private int selectedMenuItemId = -1;
     private List<SdkStatusListener> sdkStatusListeners;
     private List<WalletBalanceListener> walletBalanceListeners;
+    private List<FetchChannelsListener> fetchChannelsListeners;
     @Getter
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private boolean walletBalanceUpdateScheduled;
@@ -230,6 +240,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
             // wallet
             NavMenuItem.ID_ITEM_WALLET,
+            NavMenuItem.ID_ITEM_REWARDS,
+
+
             NavMenuItem.ID_ITEM_SETTINGS
     );
 
@@ -267,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         openNavFragments = new HashMap<>();
         sdkStatusListeners = new ArrayList<>();
         walletBalanceListeners = new ArrayList<>();
+        fetchChannelsListeners = new ArrayList<>();
 
         sdkStatusListeners.add(this);
 
@@ -379,6 +393,22 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         walletBalanceListeners.remove(listener);
     }
 
+    public void removeNavFragment(Class fragmentClass, int navItemId) {
+        String key = buildNavFragmentKey(fragmentClass, navItemId);
+        if (openNavFragments.containsKey(key)) {
+            openNavFragments.remove(key);
+        }
+    }
+
+    public void addFetchChannelsListener(FetchChannelsListener listener) {
+        if (!fetchChannelsListeners.contains(listener)) {
+            fetchChannelsListeners.add(listener);
+        }
+    }
+    public void removeFetchChannelsListener(FetchChannelsListener listener) {
+        fetchChannelsListeners.remove(listener);
+    }
+
     private void openSelectedMenuItem() {
         switch (selectedMenuItemId) {
             // TODO: reverse map lookup for class?
@@ -398,6 +428,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
             case NavMenuItem.ID_ITEM_WALLET:
                 openFragment(WalletFragment.class, true, NavMenuItem.ID_ITEM_WALLET);
+                break;
+            case NavMenuItem.ID_ITEM_REWARDS:
+                openFragment(RewardsFragment.class, true, NavMenuItem.ID_ITEM_REWARDS);
                 break;
 
             case NavMenuItem.ID_ITEM_SETTINGS:
@@ -567,6 +600,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         // check (and start) the LBRY SDK service
         serviceRunning = isServiceRunning(this, LbrynetService.class);
         if (!serviceRunning) {
+            Lbry.SDK_READY = false;
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
         checkSdkReady();
@@ -682,10 +716,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         urlSuggestionList.setAdapter(urlSuggestionListAdapter);
     }
 
-    private void clearWunderbarFocus(View view) {
+    public void clearWunderbarFocus(View view) {
         findViewById(R.id.wunderbar).clearFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    public View getWunderbar() {
+        return findViewById(R.id.wunderbar);
     }
 
     private void launchSearch(String text) {
@@ -944,6 +981,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         scheduleWalletBalanceUpdate();
         scheduleWalletSyncTask();
+        fetchChannels();
         initFloatingWalletBalance();
     }
 
@@ -955,11 +993,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     private void initFloatingWalletBalance() {
-
         findViewById(R.id.floating_balance_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openFragment(WalletFragment.class, true, NavMenuItem.ID_ITEM_WALLET);
+            }
+        });
+        findViewById(R.id.floating_reward_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFragment(RewardsFragment.class, true, NavMenuItem.ID_ITEM_REWARDS);
             }
         });
     }
@@ -1278,6 +1321,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         startActivityForResult(intent, REQUEST_WALLET_SYNC_SIGN_IN);
     }
 
+    public void rewardsSignIn() {
+        Intent intent = new Intent(this, VerificationActivity.class);
+        intent.putExtra("flow", VerificationActivity.VERIFICATION_FLOW_REWARDS);
+        startActivityForResult(intent, REQUEST_REWARDS_VERIFY_SIGN_IN);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -1309,6 +1358,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_FILE_PICKER) {
+            startingFilePickerActivity = false;
             ChannelFormFragment channelFormFragment = null;
             //PublishFormFragment publishFormFragment = null;
             for (Fragment fragment : openNavFragments.values()) {
@@ -1326,7 +1376,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 }
             } else {
                 if (channelFormFragment != null) {
-                    channelFormFragment.onFilePicked(null);
+                    channelFormFragment.onFilePickerCancelled();
                 }
             }
         } else if (requestCode == REQUEST_SIMPLE_SIGN_IN || requestCode == REQUEST_WALLET_SYNC_SIGN_IN) {
@@ -1476,11 +1526,36 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                 loadLastFragment();
                 showSignedInUser();
+                fetchRewards();
 
                 checkUrlIntent(getIntent());
                 appStarted = true;
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void fetchRewards() {
+        FetchRewardsTask task = new FetchRewardsTask(null, new FetchRewardsTask.FetchRewardsHandler() {
+            @Override
+            public void onSuccess(List<Reward> rewards) {
+                Lbryio.updateRewardsLists(rewards);
+                for (Fragment fragment : openNavFragments.values()) {
+                    if (fragment instanceof RewardsFragment) {
+                        ((RewardsFragment) fragment).updateUnclaimedRewardsValue();
+                    }
+                }
+
+                if (Lbryio.totalUnclaimedRewardAmount > 0) {
+                    ((TextView) findViewById(R.id.floating_reward_value)).setText(Helper.shortCurrencyFormat(Lbryio.totalUnclaimedRewardAmount));
+                    findViewById(R.id.floating_reward_container).setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void checkUrlIntent(Intent intent) {
@@ -1555,7 +1630,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 appPlayer != null &&
                 FileViewActivity.instance == null &&
-                !startingFileViewActivity) {
+                !startingFileViewActivity &&
+                !startingFilePickerActivity &&
+                !startingSignInFlowActivity) {
             enteringPIPMode = true;
 
             getSupportActionBar().hide();
@@ -1784,6 +1861,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void showSearchBar() {
         findViewById(R.id.wunderbar_container).setVisibility(View.VISIBLE);
+        clearWunderbarFocus(findViewById(R.id.wunderbar));
     }
 
     @Override
@@ -1859,6 +1937,24 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         } catch (Exception ex) {
             // pass
         }
+    }
+
+    public void fetchChannels() {
+        ClaimListTask task = new ClaimListTask(Claim.TYPE_CHANNEL, null, new ClaimListResultHandler() {
+            @Override
+            public void onSuccess(List<Claim> claims) {
+                Lbry.ownChannels = new ArrayList<>(claims);
+                for (FetchChannelsListener listener : fetchChannelsListeners) {
+                    listener.onChannelsFetched(claims);
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                // pass
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void checkSyncedWallet() {

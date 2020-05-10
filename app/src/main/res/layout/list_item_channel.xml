@@ -158,6 +158,16 @@
                 android:fontFamily="@font/inter"
                 android:textSize="11sp"
                 android:textFontWeight="300" />
+            <TextView
+                android:id="@+id/claim_pending_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="@string/pending"
+                android:textSize="11sp"
+                android:textStyle="italic"
+                android:textFontWeight="300"
+                android:visibility="gone" />
             <!-- download progress bar -->
         </LinearLayout>
     </RelativeLayout>

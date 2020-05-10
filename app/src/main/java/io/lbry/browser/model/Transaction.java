@@ -28,6 +28,7 @@ public class Transaction {
     private TransactionInfo abandonInfo;
     private TransactionInfo claimInfo;
     private TransactionInfo supportInfo;
+    private TransactionInfo updateInfo;
 
     public LbryUri getClaimUrl() {
         if (!Helper.isNullOrEmpty(claim) && !Helper.isNullOrEmpty(claimId)) {
@@ -75,6 +76,14 @@ public class Transaction {
                     info = TransactionInfo.fromJSONObject(array.getJSONObject(0));
                     descStringId = info.isTip() ? R.string.tip : R.string.support;
                     transaction.setSupportInfo(info);
+                }
+            }
+            if (info == null && jsonObject.has("update_info")) {
+                JSONArray array = jsonObject.getJSONArray("update_info");
+                if (array.length() > 0) {
+                    info = TransactionInfo.fromJSONObject(array.getJSONObject(0));
+                    descStringId = info.getClaimName().startsWith("@") ? R.string.channel_update : R.string.publish_update;
+                    transaction.setUpdateInfo(info);
                 }
             }
             if (info != null) {

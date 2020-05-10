@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:visibility="visible"
+        android:layout_margin="36dp">
+
+        <TextView
+            android:textSize="28sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/manual_reward_verification"
+            android:textColor="@color/white"
+            android:textFontWeight="300" />
+        <TextView
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/account_undergo_review"
+            android:textColor="@color/white"
+            android:textFontWeight="300" />
+        <TextView
+            android:id="@+id/verification_manual_discord_verify"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/request_to_be_verified"
+            android:textColor="@color/white"
+            android:textFontWeight="300" />
+        <TextView
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/enjoy_free_content"
+            android:textColor="@color/white"
+            android:textFontWeight="300" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/verification_manual_continue_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/continue_text" />
+    </LinearLayout>
+</RelativeLayout>

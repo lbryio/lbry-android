@@ -30,6 +30,7 @@ import io.lbry.browser.exceptions.LbryioRequestException;
 import io.lbry.browser.exceptions.LbryioResponseException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.WalletSync;
+import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.model.lbryinc.User;
 import io.lbry.lbrysdk.Utils;
@@ -56,6 +57,10 @@ public final class Lbryio {
     public static double LBCUSDRate = 0;
     public static String AUTH_TOKEN;
     private static boolean generatingAuthToken = false;
+
+    public static List<Reward> allRewards = new ArrayList<>();
+    public static List<Reward> unclaimedRewards = new ArrayList<>();
+    public static double totalUnclaimedRewardAmount = 0;
 
     public static Response call(String resource, String action, Context context) throws LbryioRequestException, LbryioResponseException {
         return call(resource, action, null, Helper.METHOD_GET, context);
@@ -311,5 +316,21 @@ public final class Lbryio {
     }
     public static boolean isFollowing(Claim claim) {
         return subscriptions.contains(Subscription.fromClaim(claim));
+    }
+
+    public static void updateRewardsLists(List<Reward> rewards) {
+        synchronized (lock) {
+            allRewards.clear();
+            unclaimedRewards.clear();
+            totalUnclaimedRewardAmount = 0;
+            for (int i = 0; i < rewards.size(); i++) {
+                Reward reward = rewards.get(i);
+                allRewards.add(reward);
+                if (!reward.isClaimed()) {
+                    unclaimedRewards.add(reward);
+                    totalUnclaimedRewardAmount += reward.getRewardAmount();
+                }
+            }
+        }
     }
 }

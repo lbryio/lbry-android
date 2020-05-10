@@ -32,6 +32,8 @@ import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.dialog.SendTipDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
+import io.lbry.browser.listener.FetchChannelsListener;
+import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.ChannelSubscribeTask;
@@ -46,7 +48,7 @@ import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
 import lombok.SneakyThrows;
 
-public class ChannelFragment extends BaseFragment {
+public class ChannelFragment extends BaseFragment implements FetchChannelsListener {
     private Claim claim;
     private boolean subscribing;
     private String url;
@@ -62,6 +64,8 @@ public class ChannelFragment extends BaseFragment {
     private TabLayout tabLayout;
     private ViewPager2 tabPager;
 
+    private View buttonEdit;
+    private View buttonDelete;
     private View buttonShare;
     private View buttonTip;
     private View buttonFollowUnfollow;
@@ -81,6 +85,8 @@ public class ChannelFragment extends BaseFragment {
         textTitle = root.findViewById(R.id.channel_view_title);
         textFollowerCount = root.findViewById(R.id.channel_view_follower_count);
 
+        buttonEdit = root.findViewById(R.id.channel_view_edit);
+        buttonDelete = root.findViewById(R.id.channel_view_delete);
         buttonShare = root.findViewById(R.id.channel_view_share);
         buttonTip = root.findViewById(R.id.channel_view_tip);
         buttonFollowUnfollow = root.findViewById(R.id.channel_view_follow_unfollow);
@@ -89,6 +95,27 @@ public class ChannelFragment extends BaseFragment {
         tabPager = root.findViewById(R.id.channel_view_pager);
         tabLayout = root.findViewById(R.id.channel_view_tabs);
         tabPager.setSaveEnabled(false);
+
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (claim != null) {
+                    Context context = getContext();
+                    if (context instanceof MainActivity) {
+                        ((MainActivity) context).openChannelForm(claim);
+                    }
+                }
+            }
+        });
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (claim != null) {
+                    // show confirmation?
+                    // delete claim task and redirect
+                }
+            }
+        });
 
         buttonShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,12 +230,39 @@ public class ChannelFragment extends BaseFragment {
         }
     }
 
+    public void onChannelsFetched(List<Claim> channels) {
+        checkOwnChannel();
+    }
+
+    private void checkOwnChannel() {
+        if (claim != null) {
+            boolean isOwnChannel = Lbry.ownChannels.contains(claim);
+            Helper.setViewVisibility(buttonEdit, isOwnChannel ? View.VISIBLE : View.GONE);
+            Helper.setViewVisibility(buttonDelete, isOwnChannel ? View.VISIBLE : View.GONE);
+        }
+    }
+
     public void onResume() {
         super.onResume();
+        Context context = getContext();
+
         Map<String, Object> params = getParams();
         String url = params != null && params.containsKey("url") ? (String) params.get("url") : null;
-        Helper.setWunderbarValue(url, getContext());
+        Helper.setWunderbarValue(url, context);
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).addFetchChannelsListener(this);
+        }
+
         checkParams();
+        checkOwnChannel();
+    }
+
+    public void onPause() {
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).removeFetchChannelsListener(this);
+        }
+        super.onPause();
     }
 
     private void checkParams() {
@@ -252,7 +306,7 @@ public class ChannelFragment extends BaseFragment {
                 if (claims.size() > 0) {
                     claim = claims.get(0);
                     renderClaim();
-                    // TODO: Load follower count
+                    checkOwnChannel();
                 } else {
                     renderNothingAtLocation();
                 }

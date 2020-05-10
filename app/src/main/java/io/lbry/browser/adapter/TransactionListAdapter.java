@@ -23,7 +23,6 @@ import lombok.Setter;
 
 public class TransactionListAdapter extends RecyclerView.Adapter<TransactionListAdapter.ViewHolder> {
 
-    private static final String EXPLORER_TX_PREFIX = "https://explorer.lbry.com/tx";
     private static final DecimalFormat TX_LIST_AMOUNT_FORMAT = new DecimalFormat("#,##0.0000");
     private static final SimpleDateFormat TX_LIST_DATE_FORMAT = new SimpleDateFormat("MMM d");
 
@@ -92,7 +91,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
             @Override
             public void onClick(View view) {
                 if (context != null) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s/%s", EXPLORER_TX_PREFIX, item.getTxid())));
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s/%s", Helper.EXPLORER_TX_PREFIX, item.getTxid())));
                     context.startActivity(intent);
                 }
             }

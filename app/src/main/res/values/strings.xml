@@ -41,7 +41,7 @@
     <string name="select_five_subscriptions">Please select up to 5 creators to continue.</string>
     <string name="n_remaining">%1$d remaining...</string>
     <string name="done">Done</string>
-    <string name="all">ALL</string>
+    <string name="all">All</string>
     <string name="discover_channels">Discover new channels</string>
 
     <!-- Claim lists -->
@@ -134,6 +134,8 @@
     <string name="support">Support</string>
     <string name="abandon">Abandon</string>
     <string name="channel">Channel</string>
+    <string name="channel_update">Channel Update</string>
+    <string name="publish_update">Publish Update</string>
 
     <string name="wallet_sync">Wallet Sync</string>
     <string name="sync_status">Sync status</string>
@@ -224,6 +226,19 @@
     <string name="password">Password</string>
     <string name="enable_sync">Enable sync</string>
     <string name="wallet_sync_op_failed">The wallet sync operation could not be completed at this time. Please try again later. If this problem persists, please send an email to hello@lbry.com.</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="enter_phone_number">Please enter your phone number.</string>
+    <string name="not_interested">Not interested</string>
+    <string name="manual_reward_verification">Manual Reward Verification</string>
+    <string name="account_undergo_review">This account must undergo review before you can participate in the rewards program. This can take anywhere from several minutes to several days.</string>
+    <string name="request_to_be_verified">If you continue to see this message, please request to be verified on the &lt;a href="https://discordapp.com/invite/Z3bERWA"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="enjoy_free_content">Please enjoy free content in the meantime!</string>
+    <string name="verify_phone_number">Verify Phone Number</string>
+    <string name="enter_phone_verify_code">Please enter the verification code sent to %1$s</string>
+    <string name="code_placeholder">0000</string>
+    <string name="verify">Verify</string>
+    <string name="please_enter_valid_phone">Please enter a valid phone number.</string>
+    <string name="please_enter_verification_code">Please enter the verification code sent to your phone number.</string>
 
     <!-- Forms -->
     <string name="no_added_tags">You have not added any tags yet. Add tags to improve discovery.</string>
@@ -261,7 +276,8 @@
     <string name="deposit_more_than_balance">Deposit cannot be higher than your balance.</string>
     <string name="channel_save_failed">The channel save request failed. Please try again.</string>
     <string name="channel_save_successful">The channel was successfully saved.</string>
-    <string name="channel_pending_blockchain">The channel is pending publish on the blockchain. You will be able to access or edit the channel in a few moments.</string>
+    <string name="item_pending_blockchain">The claim is pending publish on the blockchain. You will be able to access or edit the claim in a few moments.</string>
+    <string name="pending">Pending</string>
     <plurals name="min_deposit_required">
         <item quantity="one">A minimum deposit of %1$s credit is required.</item>
         <item quantity="other">A minimum deposit of %1$s credits is required.</item>
@@ -269,6 +285,27 @@
     <plurals name="confirm_delete_channels">
         <item quantity="one">Are you sure you want to delete the selected channel?</item>
         <item quantity="other">Are you sure you want to delete the selected channels?</item>
+    </plurals>
+
+    <!-- Rewards -->
+    <string name="lbry_credits_allow">LBRY credits allow you to publish or purchase content.</string>
+    <string name="free_credits_worth">You can obtain free credits worth $%1$s after you provide an email address.</string>
+    <string name="rewards_learn_more">&lt;a href="https://lbry.com/faq/earn-credits"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="get_started">Get started</string>
+    <string name="reward_code_placeholder">abc123</string>
+    <string name="claim">Claim</string>
+    <string name="please_enter_claim_code">Please enter a custom reward code to claim.</string>
+    <string name="unclaimed">Unclaimed</string>
+    <string name="custom_reward_title">Custom Code</string>
+    <string name="up_to">up to</string>
+    <string name="custom_reward_description">Are you a supermodel or rockstar that received a custom reward code? Claim it here.</string>
+    <plurals name="claim_reward_message">
+        <item quantity="one">You have claimed %1$s credit as a reward.</item>
+        <item quantity="other">You have claimed %1$s credits as a reward.</item>
+    </plurals>
+    <plurals name="available_credits">
+        <item quantity="one">%1$s available credit</item>
+        <item quantity="other">%1$s available credits</item>
     </plurals>
 
     <!-- Font Awesome -->

@@ -1,6 +1,8 @@
 package io.lbry.browser;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -11,13 +13,22 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.adapter.VerificationPagerAdapter;
 import io.lbry.browser.listener.SignInListener;
 import io.lbry.browser.listener.WalletSyncListener;
+import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.User;
+import io.lbry.browser.tasks.ClaimListResultHandler;
+import io.lbry.browser.tasks.ClaimListTask;
 import io.lbry.browser.tasks.FetchCurrentUserTask;
+import io.lbry.browser.ui.channel.ChannelManagerFragment;
+import io.lbry.browser.utils.Helper;
+import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.Lbryio;
 
 public class VerificationActivity extends FragmentActivity implements SignInListener, WalletSyncListener {
@@ -59,10 +70,6 @@ public class VerificationActivity extends FragmentActivity implements SignInList
         viewPager.setSaveEnabled(false);
         viewPager.setAdapter(new VerificationPagerAdapter(this));
 
-        if (Lbryio.isSignedIn() && flow == VERIFICATION_FLOW_WALLET) {
-            viewPager.setCurrentItem(1);
-        }
-
         findViewById(R.id.verification_close_button).setVisibility(View.VISIBLE);
         findViewById(R.id.verification_close_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +78,51 @@ public class VerificationActivity extends FragmentActivity implements SignInList
                 finish();
             }
         });
+    }
+
+    public void onResume() {
+        super.onResume();
+        checkFlow();
+    }
+
+    public void checkFlow() {
+        ViewPager2 viewPager = findViewById(R.id.verification_pager);
+        if (Lbryio.isSignedIn()) {
+            boolean flowHandled = false;
+            if (flow == VERIFICATION_FLOW_WALLET) {
+                viewPager.setCurrentItem(VerificationPagerAdapter.PAGE_VERIFICATION_WALLET, false);
+                flowHandled = true;
+            } else if (flow == VERIFICATION_FLOW_REWARDS) {
+                User user = Lbryio.currentUser;
+                if (!user.isIdentityVerified()) {
+                    // phone number verification required
+                    viewPager.setCurrentItem(VerificationPagerAdapter.PAGE_VERIFICATION_PHONE, false);
+                    flowHandled = true;
+                } else if (!user.isRewardApproved()) {
+                    // manual verification required
+                    viewPager.setCurrentItem(VerificationPagerAdapter.PAGE_VERIFICATION_MANUAL, false);
+                    flowHandled = true;
+                }
+            }
+
+            if (!flowHandled) {
+                // user has already been verified and or reward approved
+                setResult(RESULT_CANCELED);
+                finish();
+                return;
+            }
+        }
+    }
+
+    public void showLoading() {
+        findViewById(R.id.verification_loading_progress).setVisibility(View.VISIBLE);
+        findViewById(R.id.verification_pager).setVisibility(View.INVISIBLE);
+        findViewById(R.id.verification_close_button).setVisibility(View.GONE);
+    }
+
+    public void hideLoading() {
+        findViewById(R.id.verification_loading_progress).setVisibility(View.GONE);
+        findViewById(R.id.verification_pager).setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -96,6 +148,7 @@ public class VerificationActivity extends FragmentActivity implements SignInList
             resultIntent.putExtra("email", email);
 
             // only sign in required, don't do anything else
+            showLoading();
             FetchCurrentUserTask task = new FetchCurrentUserTask(new FetchCurrentUserTask.FetchUserTaskHandler() {
                 @Override
                 public void onSuccess(User user) {
@@ -106,27 +159,92 @@ public class VerificationActivity extends FragmentActivity implements SignInList
 
                 @Override
                 public void onError(Exception error) {
-                    setResult(RESULT_CANCELED);
-                    finish();
+                    showFetchUserError(error.getMessage());
+                    hideLoading();
                 }
             });
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
             // change pager view depending on flow
+            showLoading();
             FetchCurrentUserTask task = new FetchCurrentUserTask(new FetchCurrentUserTask.FetchUserTaskHandler() {
                 @Override
-                public void onSuccess(User user) { Lbryio.currentUser = user; }
+                public void onSuccess(User user) {
+                    hideLoading();
+                    findViewById(R.id.verification_close_button).setVisibility(View.VISIBLE);
+
+                    Lbryio.currentUser = user;
+                    ViewPager2 viewPager = findViewById(R.id.verification_pager);
+                    // for rewards, (show phone verification if not done, or manual verification if required)
+                    if (flow == VERIFICATION_FLOW_REWARDS) {
+                        if (!user.isIdentityVerified()) {
+                            // phone number verification required
+                            viewPager.setCurrentItem(VerificationPagerAdapter.PAGE_VERIFICATION_PHONE, false);
+                        } else if (!user.isRewardApproved()) {
+                            // manual verification required
+                            viewPager.setCurrentItem(VerificationPagerAdapter.PAGE_VERIFICATION_MANUAL, false);
+                        } else {
+                            // fully verified
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                    } else if (flow == VERIFICATION_FLOW_WALLET) {
+                        // for wallet sync, if password unlock is required, show password entry page
+                        viewPager.setCurrentItem(VerificationPagerAdapter.PAGE_VERIFICATION_WALLET, false);
+                    }
+                }
                 @Override
-                public void onError(Exception error) { }
+                public void onError(Exception error) {
+                    showFetchUserError(error.getMessage());
+                    hideLoading();
+                }
             });
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-            ViewPager2 viewPager = findViewById(R.id.verification_pager);
-            // for rewards, (show phone verification if not done, or manual verification if required)
-
-            // for wallet sync, if password unlock is required, show password entry page
-            viewPager.setCurrentItem(1);
         }
+    }
+
+    @Override
+    public void onPhoneAdded(String countryCode, String phoneNumber) {
+
+    }
+
+    @Override
+    public void onPhoneVerified() {
+        showLoading();
+        FetchCurrentUserTask task = new FetchCurrentUserTask(new FetchCurrentUserTask.FetchUserTaskHandler() {
+            @Override
+            public void onSuccess(User user) {
+                Lbryio.currentUser = user;
+                if (user.isIdentityVerified() && user.isRewardApproved()) {
+                    // verified for rewards
+                    setResult(RESULT_OK);
+                    finish();
+                    return;
+                }
+
+                // show manual verification page if the user is still not reward approved
+                ViewPager2 viewPager = findViewById(R.id.verification_pager);
+                viewPager.setCurrentItem(VerificationPagerAdapter.PAGE_VERIFICATION_MANUAL, false);
+                hideLoading();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                showFetchUserError(error.getMessage());
+                hideLoading();
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void showFetchUserError(String message) {
+        Snackbar.make(findViewById(R.id.verification_pager), message, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
+    }
+
+    @Override
+    public void onManualVerifyContinue() {
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override

@@ -4,9 +4,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.text.HtmlCompat;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -178,7 +177,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         String amountString = Helper.getValue(inputSendAmount.getText());
         if (!recipientAddress.matches(LbryUri.REGEX_ADDRESS)) {
             Snackbar.make(getView(), R.string.invalid_recipient_address, Snackbar.LENGTH_LONG).
-                    setBackgroundTint(getResources().getColor(R.color.red)).show();
+                    setBackgroundTint(Color.RED).show();
             return false;
         }
 
@@ -206,11 +205,11 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     private void initUi() {
         onWalletBalanceUpdated(Lbry.walletBalance);
 
-        applyHtmlForTextView(textConvertCredits);
-        applyHtmlForTextView(textConvertCreditsBittrex);
-        applyHtmlForTextView(textWhatSyncMeans);
-        applyHtmlForTextView(linkManualBackup);
-        applyHtmlForTextView(linkSyncFAQ);
+        Helper.applyHtmlForTextView(textConvertCredits);
+        Helper.applyHtmlForTextView(textConvertCreditsBittrex);
+        Helper.applyHtmlForTextView(textWhatSyncMeans);
+        Helper.applyHtmlForTextView(linkManualBackup);
+        Helper.applyHtmlForTextView(linkSyncFAQ);
 
         Context context = getContext();
         LinearLayoutManager llm = new LinearLayoutManager(context);
@@ -387,11 +386,6 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         }
     }
 
-    private static void applyHtmlForTextView(TextView textView) {
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-        textView.setText(HtmlCompat.fromHtml(textView.getText().toString(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-    }
-
     private boolean hasSkippedAccount() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         return sp.getBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_SKIP_WALLET_ACCOUNT, false);
@@ -475,24 +469,21 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private static final DecimalFormat LBC_CURRENCY_FORMAT = new DecimalFormat("#,###.##");
-    private static final DecimalFormat USD_CURRENCY_FORMAT = new DecimalFormat("#,##0.00");
-
     public void onWalletBalanceUpdated(WalletBalance walletBalance) {
         double balance = walletBalance.getAvailable().doubleValue();
         double usdBalance = balance * Lbryio.LBCUSDRate;
         double tipsBalance = walletBalance.getTips().doubleValue();
         double tipsUsdBalance = tipsBalance * Lbryio.LBCUSDRate;
 
-        Helper.setViewText(textWalletBalance, LBC_CURRENCY_FORMAT.format(balance));
+        Helper.setViewText(textWalletBalance, Helper.LBC_CURRENCY_FORMAT.format(balance));
         Helper.setViewText(textTipsBalance, Helper.shortCurrencyFormat(tipsBalance));
         Helper.setViewText(textClaimsBalance, Helper.shortCurrencyFormat(walletBalance.getClaims().doubleValue()));
         Helper.setViewText(textSupportsBalance, Helper.shortCurrencyFormat(walletBalance.getSupports().doubleValue()));
         Helper.setViewText(textWalletInlineBalance, Helper.shortCurrencyFormat(balance));
         if (Lbryio.LBCUSDRate > 0) {
             // only update display usd values if the rate is loaded
-            Helper.setViewText(textWalletBalanceUSD, String.format("≈$%s", USD_CURRENCY_FORMAT.format(usdBalance)));
-            Helper.setViewText(textTipsBalanceUSD, String.format("≈$%s", USD_CURRENCY_FORMAT.format(tipsUsdBalance)));
+            Helper.setViewText(textWalletBalanceUSD, String.format("≈$%s", Helper.USD_CURRENCY_FORMAT.format(usdBalance)));
+            Helper.setViewText(textTipsBalanceUSD, String.format("≈$%s", Helper.USD_CURRENCY_FORMAT.format(tipsUsdBalance)));
         }
     }
 }

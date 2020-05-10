@@ -57,7 +57,6 @@ public class ChannelManagerFragment extends BaseFragment implements ActionMode.C
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_channel_manager, container, false);
 
-
         buttonNewChannel = root.findViewById(R.id.channel_manager_create_button);
         fabNewChannel = root.findViewById(R.id.channel_manager_fab_new_channel);
         buttonNewChannel.setOnClickListener(newChannelClickListener);
@@ -149,6 +148,7 @@ public class ChannelManagerFragment extends BaseFragment implements ActionMode.C
                 Context context = getContext();
                 if (adapter == null) {
                     adapter = new ClaimListAdapter(claims, context);
+                    adapter.setCanEnterSelectionMode(true);
                     adapter.setSelectionModeListener(ChannelManagerFragment.this);
                     adapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
                         @Override

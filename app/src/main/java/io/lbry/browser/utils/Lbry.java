@@ -33,6 +33,7 @@ import io.lbry.browser.model.File;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.Transaction;
 import io.lbry.browser.model.WalletBalance;
+import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.User;
 import io.lbry.lbrysdk.Utils;
 import okhttp3.OkHttpClient;

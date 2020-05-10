@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     private static final int VIEW_TYPE_CHANNEL = 2;
     private static final int VIEW_TYPE_FEATURED = 3; // featured search result
 
+    @Setter
+    private boolean canEnterSelectionMode;
     private Context context;
     private List<Claim> items;
     private List<Claim> selectedItems;
@@ -110,6 +114,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         protected TextView titleView;
         protected TextView publisherView;
         protected TextView publishTimeView;
+        protected TextView pendingTextView;
         protected View repostInfoView;
         protected TextView repostChannelView;
         protected View selectedOverlayView;
@@ -125,6 +130,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             titleView = v.findViewById(R.id.claim_title);
             publisherView = v.findViewById(R.id.claim_publisher);
             publishTimeView = v.findViewById(R.id.claim_publish_time);
+            pendingTextView = v.findViewById(R.id.claim_pending_text);
             repostInfoView = v.findViewById(R.id.claim_repost_info);
             repostChannelView = v.findViewById(R.id.claim_repost_channel);
             selectedOverlayView = v.findViewById(R.id.claim_selected_overlay);
@@ -182,12 +188,18 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             bgColor = Helper.generateRandomColorForValue(item.getName());
         }
 
+        boolean isPending = item.getConfirmations() == 0;
         boolean isSelected = isClaimSelected(item);
         vh.itemView.setSelected(isSelected);
         vh.selectedOverlayView.setVisibility(isSelected ? View.VISIBLE : View.GONE);
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isPending) {
+                    Snackbar.make(vh.itemView, R.string.item_pending_blockchain, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
                 if (inSelectionMode) {
                     toggleSelectedClaim(item);
                 } else {
@@ -200,6 +212,15 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                if (!canEnterSelectionMode) {
+                    return false;
+                }
+
+                if (isPending) {
+                    Snackbar.make(vh.itemView, R.string.item_pending_blockchain, Snackbar.LENGTH_LONG).show();
+                    return false;
+                }
+
                 if (!inSelectionMode) {
                     inSelectionMode = true;
                     if (selectionModeListener != null) {
@@ -220,6 +241,8 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             }
         });
 
+        vh.publishTimeView.setVisibility(!isPending ? View.VISIBLE : View.GONE);
+        vh.pendingTextView.setVisibility(isPending ? View.VISIBLE : View.GONE);
         vh.repostInfoView.setVisibility(isRepost ? View.VISIBLE : View.GONE);
         vh.repostChannelView.setText(isRepost ? original.getSigningChannel().getName() : null);
         vh.repostChannelView.setOnClickListener(new View.OnClickListener() {
