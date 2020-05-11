@@ -138,14 +138,13 @@ public class RewardListAdapter extends RecyclerView.Adapter<RewardListAdapter.Vi
         if (!"?".equals(displayAmount)) {
             rewardAmount = Double.valueOf(displayAmount);
         }
-        boolean hasTransaction = !Helper.isNullOrEmpty(reward.getTransactionId());
-
+        boolean hasTransaction = !Helper.isNullOrEmpty(reward.getTransactionId()) && reward.getTransactionId().length() > 7;
         vh.iconClaimed.setVisibility(reward.isClaimed() ? View.VISIBLE : View.INVISIBLE);
         vh.inputCustomCode.setVisibility(reward.isCustom() ? View.VISIBLE : View.GONE);
         vh.buttonClaimCustom.setVisibility(reward.isCustom() ? View.VISIBLE : View.GONE);
         vh.textTitle.setText(reward.getRewardTitle());
         vh.textDescription.setText(reward.getRewardDescription());
-        vh.upTo.setVisibility(reward.shouldDisplayRange() ? View.VISIBLE : View.INVISIBLE);
+        vh.upTo.setVisibility(reward.shouldDisplayRange() ? View.VISIBLE : View.GONE);
         vh.textLbcValue.setText(reward.isCustom() ? "?" : Helper.LBC_CURRENCY_FORMAT.format(Helper.parseDouble(reward.getDisplayAmount(), 0)));
         vh.textLinkTransaction.setVisibility(hasTransaction ? View.VISIBLE : View.GONE);
         vh.textLinkTransaction.setText(hasTransaction ? reward.getTransactionId().substring(0, 7) : null);

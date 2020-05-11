@@ -27,8 +27,8 @@ import io.lbry.browser.R;
 import io.lbry.browser.adapter.RewardListAdapter;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.model.lbryinc.Reward;
-import io.lbry.browser.tasks.ClaimRewardTask;
-import io.lbry.browser.tasks.FetchRewardsTask;
+import io.lbry.browser.tasks.lbryinc.ClaimRewardTask;
+import io.lbry.browser.tasks.lbryinc.FetchRewardsTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
@@ -129,6 +129,11 @@ public class RewardsFragment extends BaseFragment implements RewardListAdapter.R
             public void onSuccess(List<Reward> rewards) {
                 Lbryio.updateRewardsLists(rewards);
                 updateUnclaimedRewardsValue();
+
+                Context context = getContext();
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).showFloatingUnclaimedRewards();
+                }
 
                 if (adapter == null) {
                     adapter = new RewardListAdapter(rewards, getContext());

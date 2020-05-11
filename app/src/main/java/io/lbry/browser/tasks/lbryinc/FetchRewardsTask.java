@@ -1,4 +1,4 @@
-package io.lbry.browser.tasks;
+package io.lbry.browser.tasks.lbryinc;
 
 import android.os.AsyncTask;
 import android.view.View;

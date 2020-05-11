@@ -41,6 +41,7 @@ public class NavMenuItem {
     private boolean group;
     private int icon;
     private String title;
+    private String extraLabel;
     private String name; // same as title, but only as en lang for events
     private List<NavMenuItem> items;
 

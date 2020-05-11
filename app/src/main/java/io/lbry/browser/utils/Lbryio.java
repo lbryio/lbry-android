@@ -250,7 +250,7 @@ public final class Lbryio {
             JSONObject response = (JSONObject) parseResponse(Lbryio.call("lbc", "exchange_rate", null));
             LBCUSDRate = Helper.getJSONDouble("lbc_usd", 0, response);
         } catch (LbryioResponseException | LbryioRequestException | ClassCastException ex) {
-
+            // pass
         }
     }
 

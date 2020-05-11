@@ -247,6 +247,7 @@
     <!-- Channels -->
     <string name="no_channel_created">You have not created a channel.\nStart now by creating a new channel!</string>
     <string name="create_a_channel">Create a channel</string>
+    <string name="create_a_channel_item">Create a channel...</string>
     <string name="edit_channel">Edit channel</string>
     <string name="delete_selection">Delete selection?</string>
     <string name="description">Description</string>
@@ -278,6 +279,7 @@
     <string name="channel_save_successful">The channel was successfully saved.</string>
     <string name="item_pending_blockchain">The claim is pending publish on the blockchain. You will be able to access or edit the claim in a few moments.</string>
     <string name="pending">Pending</string>
+    <string name="create">Create</string>
     <plurals name="min_deposit_required">
         <item quantity="one">A minimum deposit of %1$s credit is required.</item>
         <item quantity="other">A minimum deposit of %1$s credits is required.</item>
@@ -307,6 +309,27 @@
         <item quantity="one">%1$s available credit</item>
         <item quantity="other">%1$s available credits</item>
     </plurals>
+
+    <!-- Invites -->
+    <string name="lbry_invite_program">LBRY Invite Program</string>
+    <string name="earn_extra_credits_invites">You can earn extra credits for each person you invite to use LBRY.</string>
+    <string name="invites_learn_more">&lt;a href="https://lbry.com/faq/invites"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="invite_link">Invite Link</string>
+    <string name="share_this_link">Share this link with friends (or enemies) and get credits when they join lbry.tv.</string>
+    <string name="your_invite_link">Your invite link</string>
+    <string name="customize_invite_link">Customize invite link</string>
+    <string name="invite_by_email">Invite by Email</string>
+    <string name="invite_someone">Invite someone you know by email and earn credits when they join lbry.tv.</string>
+    <string name="invite_email_placeholder">imaginary@friend.com</string>
+    <string name="invite">Invite</string>
+    <string name="invite_history">Invite History</string>
+    <string name="earn_credits_for_inviting">Earn credits for invite a friend, an enemy, a frenemy, or an enefriend. Everyone needs content freedom.</string>
+    <string name="reward">Reward</string>
+    <string name="claimed">Claimed</string>
+    <string name="claimable">Claimable</string>
+    <string name="unclaimable">Unclaimable</string>
+    <string name="invite_link_copied">Invite link copied.</string>
+    <string name="invite_sent_to">Invite sent to %1$s</string>
 
     <!-- Font Awesome -->
     <string name="fa_gift">&#xf06b;</string>

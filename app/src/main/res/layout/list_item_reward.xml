@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
         android:orientation="horizontal"
         android:weightSum="10">
         <RelativeLayout
@@ -109,7 +109,7 @@
                 android:fontFamily="@font/inter"
                 android:textSize="10sp"
                 android:textFontWeight="300"
-                android:visibility="invisible" />
+                android:visibility="gone" />
             <TextView
                 android:id="@+id/reward_item_lbc_value"
                 android:layout_width="wrap_content"
@@ -129,7 +129,7 @@
                 android:id="@+id/reward_item_usd_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="2dp"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/inter"
                 android:textSize="12sp"

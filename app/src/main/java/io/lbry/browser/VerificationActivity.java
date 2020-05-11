@@ -1,6 +1,5 @@
 package io.lbry.browser;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -8,27 +7,17 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.adapter.VerificationPagerAdapter;
 import io.lbry.browser.listener.SignInListener;
 import io.lbry.browser.listener.WalletSyncListener;
-import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.User;
-import io.lbry.browser.tasks.ClaimListResultHandler;
-import io.lbry.browser.tasks.ClaimListTask;
-import io.lbry.browser.tasks.FetchCurrentUserTask;
-import io.lbry.browser.ui.channel.ChannelManagerFragment;
-import io.lbry.browser.utils.Helper;
-import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.tasks.lbryinc.FetchCurrentUserTask;
 import io.lbry.browser.utils.Lbryio;
 
 public class VerificationActivity extends FragmentActivity implements SignInListener, WalletSyncListener {

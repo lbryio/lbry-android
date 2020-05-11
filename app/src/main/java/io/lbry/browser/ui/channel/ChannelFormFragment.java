@@ -3,6 +3,7 @@ package io.lbry.browser.ui.channel;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -342,13 +343,10 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-
-
     private void showError(String message) {
         Context context = getContext();
         if (context != null) {
-            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).setBackgroundTint(
-                    ContextCompat.getColor(context, R.color.red)).show();
+            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
         }
     }
 

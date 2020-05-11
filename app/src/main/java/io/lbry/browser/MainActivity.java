@@ -65,7 +65,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
-import java.nio.channels.Channel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -95,7 +94,7 @@ import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.ClaimListResultHandler;
 import io.lbry.browser.tasks.ClaimListTask;
-import io.lbry.browser.tasks.FetchRewardsTask;
+import io.lbry.browser.tasks.lbryinc.FetchRewardsTask;
 import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.MergeSubscriptionsTask;
 import io.lbry.browser.tasks.ResolveTask;
@@ -115,6 +114,7 @@ import io.lbry.browser.ui.following.FollowingFragment;
 import io.lbry.browser.ui.search.SearchFragment;
 import io.lbry.browser.ui.settings.SettingsFragment;
 import io.lbry.browser.ui.allcontent.AllContentFragment;
+import io.lbry.browser.ui.wallet.InvitesFragment;
 import io.lbry.browser.ui.wallet.RewardsFragment;
 import io.lbry.browser.ui.wallet.WalletFragment;
 import io.lbry.browser.utils.Helper;
@@ -229,6 +229,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private String pendingChannelUrl;
     private boolean pendingFollowingReload;
 
+    // startup stages (to be able to determine how far a user made it if startup fails)
+    // and display a more useful message for troubleshooting
+    private static final int STARTUP_STAGE_INSTALL_ID_LOADED = 1;
+    private static final int STARTUP_STAGE_KNOWN_TAGS_LOADED = 2;
+    private static final int STARTUP_STAGE_EXCHANGE_RATE_LOADED = 3;
+    private static final int STARTUP_STAGE_USER_AUTHENTICATED = 4;
+    private static final int STARTUP_STAGE_NEW_INSTALL_DONE = 5;
+    private static final int STARTUP_STAGE_SUBSCRIPTIONS_LOADED = 6;
+    private static final int STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED = 7;
+
     private final List<Integer> supportedMenuItemIds = Arrays.asList(
             // find content
             NavMenuItem.ID_ITEM_FOLLOWING,
@@ -241,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             // wallet
             NavMenuItem.ID_ITEM_WALLET,
             NavMenuItem.ID_ITEM_REWARDS,
-
+            NavMenuItem.ID_ITEM_INVITES,
 
             NavMenuItem.ID_ITEM_SETTINGS
     );
@@ -431,6 +441,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 break;
             case NavMenuItem.ID_ITEM_REWARDS:
                 openFragment(RewardsFragment.class, true, NavMenuItem.ID_ITEM_REWARDS);
+                break;
+            case NavMenuItem.ID_ITEM_INVITES:
+                openFragment(InvitesFragment.class, true, NavMenuItem.ID_ITEM_INVITES);
                 break;
 
             case NavMenuItem.ID_ITEM_SETTINGS:
@@ -1471,6 +1484,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     if (Lbryio.currentUser == null) {
                         Lbryio.authenticate(context);
                     }
+                    if (Lbryio.currentUser == null) {
+                        throw new Exception("Did not retrieve authenticated user.");
+                    }
+
+
                     Lbryio.newInstall(context);
 
                     // (light) fetch subscriptions
@@ -1546,8 +1564,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 }
 
                 if (Lbryio.totalUnclaimedRewardAmount > 0) {
-                    ((TextView) findViewById(R.id.floating_reward_value)).setText(Helper.shortCurrencyFormat(Lbryio.totalUnclaimedRewardAmount));
-                    findViewById(R.id.floating_reward_container).setVisibility(View.VISIBLE);
+                    showFloatingUnclaimedRewards();
                 }
             }
 
@@ -1556,6 +1573,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void showFloatingUnclaimedRewards() {
+        ((TextView) findViewById(R.id.floating_reward_value)).setText(Helper.shortCurrencyFormat(Lbryio.totalUnclaimedRewardAmount));
+        findViewById(R.id.floating_reward_container).setVisibility(View.VISIBLE);
     }
 
     private void checkUrlIntent(Intent intent) {
