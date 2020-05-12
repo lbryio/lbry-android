@@ -292,7 +292,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                 // Get new Instance ID token
                 firebaseMessagingToken = task.getResult().getToken();
-                android.util.Log.d("#HELP", firebaseMessagingToken);
             }
         });
 
