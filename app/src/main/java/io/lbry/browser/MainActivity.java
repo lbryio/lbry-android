@@ -34,7 +34,11 @@ import android.widget.Toast;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -119,6 +123,7 @@ import io.lbry.browser.ui.wallet.RewardsFragment;
 import io.lbry.browser.ui.wallet.WalletFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
 import io.lbry.lbrysdk.LbrynetService;
@@ -136,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean startingSignInFlowActivity = false;
     public static boolean mainActive = false;
     private boolean enteringPIPMode = false;
+    private String firebaseMessagingToken;
 
     private Map<String, Fragment> openNavFragments;
     private static final Map<Class, Integer> fragmentClassNavIdMap = new HashMap<>();
@@ -181,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_NOTIFICATION_SUBSCRIPTIONS = "io.lbry.browser.preference.notifications.Subscriptions";
     public static final String PREFERENCE_KEY_NOTIFICATION_REWARDS = "io.lbry.browser.preference.notifications.Rewards";
     public static final String PREFERENCE_KEY_NOTIFICATION_CONTENT_INTERESTS = "io.lbry.browser.preference.notifications.ContentInterests";
+    public static final String PREFERENCE_KEY_NOTIFICATION_CREATOR = "io.lbry.browser.preference.notifications.Creator";
     public static final String PREFERENCE_KEY_KEEP_SDK_BACKGROUND = "io.lbry.browser.preference.other.KeepSdkInBackground";
     public static final String PREFERENCE_KEY_PARTICIPATE_DATA_NETWORK = "io.lbry.browser.preference.other.ParticipateInDataNetwork";
 
@@ -190,9 +197,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_INTERNAL_WALLET_RECEIVE_ADDRESS = "io.lbry.browser.preference.internal.WalletReceiveAddress";
     public static final String PREFERENCE_KEY_INTERNAL_REWARDS_NOT_INTERESTED = "io.lbry.browser.preference.internal.RewardsNotInterested";
 
+    public static final String PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED = "io.lbry.browser.preference.internal.FirstRunCompleted";
+    public static final String PREFERENCE_KEY_INTERNAL_FIRST_AUTH_COMPLETED = "io.lbry.browser.preference.internal.FirstAuthCompleted";
+
     private final int CHECK_SDK_READY_INTERVAL = 1000;
 
-    public static final String PREFERENCE_KEY_FIRST_RUN_COMPLETED = "io.lbry.browser.Preference.FirstRunCompleted";
     public static final String PREFERENCE_KEY_AUTH_TOKEN = "io.lbry.browser.Preference.AuthToken";
 
     public static final String SECURE_VALUE_KEY_SAVED_PASSWORD = "io.lbry.browser.PX";
@@ -272,6 +281,20 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (!isDarkMode()) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+
+        LbryAnalytics.init(this);
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(Task<InstanceIdResult> task) {
+                if (!task.isSuccessful()) {
+                    return;
+                }
+
+                // Get new Instance ID token
+                firebaseMessagingToken = task.getResult().getToken();
+                android.util.Log.d("#HELP", firebaseMessagingToken);
+            }
+        });
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -504,7 +527,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static void openFileClaim(Claim claim, Context context) {
         Intent intent = new Intent(context, FileViewActivity.class);
         intent.putExtra("claimId", claim.getClaimId());
-        intent.putExtra("url", claim.getPermanentUrl());
+        intent.putExtra("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
         startingFileViewActivity = true;
         context.startActivity(intent);
     }
@@ -935,7 +958,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     private void checkFirstRun() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean firstRunCompleted = sp.getBoolean(PREFERENCE_KEY_FIRST_RUN_COMPLETED, false);
+        boolean firstRunCompleted = sp.getBoolean(PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED, false);
         if (!firstRunCompleted) {
             startActivity(new Intent(this, FirstRunActivity.class));
         } else if (!appStarted) {
@@ -1003,6 +1026,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
     public void hideFloatingWalletBalance() {
         findViewById(R.id.floating_balance_main_container).setVisibility(View.GONE);
+    }
+    public void hideFloatingRewardsValue() {
+        findViewById(R.id.floating_reward_container).setVisibility(View.INVISIBLE);
     }
 
     private void initFloatingWalletBalance() {
@@ -1455,6 +1481,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 hideActionBar();
                 lockDrawer();
                 findViewById(R.id.splash_view).setVisibility(View.VISIBLE);
+                LbryAnalytics.setCurrentScreen(MainActivity.this, "Splash", "Splash");
             }
             protected Boolean doInBackground(Void... params) {
                 BufferedReader reader = null;
@@ -1547,6 +1574,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 fetchRewards();
 
                 checkUrlIntent(getIntent());
+                LbryAnalytics.logEvent(LbryAnalytics.EVENT_APP_LAUNCH);
                 appStarted = true;
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -1576,6 +1604,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     public void showFloatingUnclaimedRewards() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean notInterestedInRewards = sp.getBoolean(PREFERENCE_KEY_INTERNAL_REWARDS_NOT_INTERESTED, false);
+        if (notInterestedInRewards) {
+            return;
+        }
+
         ((TextView) findViewById(R.id.floating_reward_value)).setText(Helper.shortCurrencyFormat(Lbryio.totalUnclaimedRewardAmount));
         findViewById(R.id.floating_reward_container).setVisibility(View.VISIBLE);
     }

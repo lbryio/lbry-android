@@ -1,0 +1,41 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container_nothing_at_location"
+    android:background="@color/pageBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="36dp">
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="160dp"
+            android:layout_height="300dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/gerbil_happy" />
+        <TextView
+            android:text="@string/nothing_at_this_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/inter"
+            android:textSize="16sp"
+            android:textAlignment="center" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/nothing_at_location_publish_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/inter"
+            android:textSize="14sp"
+            android:text="@string/publish_something_here"
+            android:textFontWeight="300"
+            android:visibility="gone" />
+    </LinearLayout>
+</RelativeLayout>

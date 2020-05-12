@@ -23,6 +23,7 @@ import io.lbry.browser.model.Transaction;
 import io.lbry.browser.tasks.wallet.TransactionListTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 
 public class TransactionHistoryFragment extends BaseFragment implements TransactionListAdapter.TransactionClickListener {
@@ -77,6 +78,12 @@ public class TransactionHistoryFragment extends BaseFragment implements Transact
     @Override
     public void onResume() {
         super.onResume();
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            LbryAnalytics.setCurrentScreen(activity, "Transaction History", "TransactionHistory");
+        }
+
         if (adapter != null && adapter.getItemCount() > 0 && transactionList != null) {
             transactionList.setAdapter(adapter);
         }

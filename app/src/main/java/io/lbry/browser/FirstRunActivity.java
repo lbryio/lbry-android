@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +18,7 @@ import androidx.preference.PreferenceManager;
 
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.Lbryio;
 
 public class FirstRunActivity extends AppCompatActivity {
@@ -60,6 +60,11 @@ public class FirstRunActivity extends AppCompatActivity {
         }
     }
 
+    public void onResume() {
+        super.onResume();
+        LbryAnalytics.setCurrentScreen(this, "First Run", "FirstRun");
+    }
+
     private void registerAuthReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(MainActivity.ACTION_USER_AUTHENTICATION_SUCCESS);
@@ -78,8 +83,13 @@ public class FirstRunActivity extends AppCompatActivity {
     }
 
     private void handleAuthenticationSuccess() {
-
         // first_auth completed event
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean firstAuthCompleted = sp.getBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_FIRST_AUTH_COMPLETED, false);
+        if (!firstAuthCompleted) {
+            LbryAnalytics.logEvent(LbryAnalytics.EVENT_FIRST_USER_AUTH);
+            sp.edit().putBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_FIRST_AUTH_COMPLETED, true).apply();
+        }
 
         findViewById(R.id.welcome_wait_container).setVisibility(View.GONE);
         findViewById(R.id.welcome_display).setVisibility(View.VISIBLE);
@@ -96,10 +106,10 @@ public class FirstRunActivity extends AppCompatActivity {
 
     private void finishFirstRun() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putBoolean(MainActivity.PREFERENCE_KEY_FIRST_RUN_COMPLETED, true).apply();
+        sp.edit().putBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED, true).apply();
 
         // first_run_completed event
-
+        LbryAnalytics.logEvent(LbryAnalytics.EVENT_FIRST_RUN_COMPLETED);
         finish();
     }
 

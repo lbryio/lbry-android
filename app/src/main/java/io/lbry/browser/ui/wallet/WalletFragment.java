@@ -45,6 +45,7 @@ import io.lbry.browser.tasks.wallet.WalletSendTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
 
@@ -393,9 +394,14 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
 
     public void onResume() {
         super.onResume();
-        Helper.setWunderbarValue(null, getContext());
+        Context context = getContext();
+        Helper.setWunderbarValue(null, context);
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            LbryAnalytics.setCurrentScreen(activity, "Wallet", "Wallet");
+        }
+
         if (!Lbry.SDK_READY) {
-            Context context = getContext();
             if (context instanceof MainActivity) {
                 MainActivity activity = (MainActivity) context;
                 activity.addSdkStatusListener(this);

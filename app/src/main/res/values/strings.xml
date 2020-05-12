@@ -59,15 +59,28 @@
     <string name="loading_decentralized_data">Loading decentralized data...</string>
     <string name="related_content">Related Content</string>
     <string name="share_lbry_content">Share LBRY content</string>
-
+    <string name="view">View</string>
+    <string name="play">Play</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s view</item>
+        <item quantity="other">%1$s views</item>
+    </plurals>
     <string name="unsupported_content">Unsupported Content</string>
     <string name="unsupported_content_desc">Sorry, we are unable to display this content in the app. You can find the file named %1$s in your downloads folder.</string>
+    <string name="nothing_at_this_location">There\'s nothing at this location.</string>
+    <string name="publish_something_here">Publish something here</string>
+    <string name="cannot_view_claim">This content cannot be accessed at this time. Please try again later.</string>
+    <string name="zero_duration">00:00</string>
 
     <!-- Channel view -->
     <string name="no_channel_info">There\'s nothing here yet.\nPlease check back later.</string>
     <string name="content">Content</string>
     <string name="website">Website</string>
     <string name="reposted">reposted</string>
+    <plurals name="follower_count">
+        <item quantity="one">%1$s follower</item>
+        <item quantity="other">%1$s followers</item>
+    </plurals>
 
     <!-- Settings -->
     <string name="user_interface">Content &amp; User interface</string>

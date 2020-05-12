@@ -14,6 +14,11 @@
     <color name="channelCoverBackground">#CC000000</color>
     <color name="costBackground">#F4E866</color>
 
+    <color name="playerControlsBackground">#33000000</color>
+    <color name="scrubberColor">@color/nextLbryGreen</color>
+    <color name="playedColor">@color/nextLbryGreen</color>
+    <color name="bufferedColor">@color/nextLbryGreenSemiTransparent</color>
+
     <color name="darkForeground">#222222</color>
     <color name="lightForeground">#AAAAAA</color>
     <color name="foreground">#333333</color>

@@ -1,5 +1,6 @@
 package io.lbry.browser.ui.search;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import io.lbry.browser.tasks.ResolveTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import lombok.Setter;
 
@@ -87,9 +89,15 @@ public class SearchFragment extends BaseFragment implements
 
     public void onResume() {
         super.onResume();
-        Helper.setWunderbarValue(currentQuery, getContext());
-        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        Context context = getContext();
+        Helper.setWunderbarValue(currentQuery, context);
+        PreferenceManager.getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this);
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            LbryAnalytics.setCurrentScreen(activity, "Search", "Search");
+        }
         if (!Helper.isNullOrEmpty(currentQuery)) {
+            logSearch(currentQuery);
             search(currentQuery, currentFrom);
         } else {
             noQueryView.setVisibility(View.VISIBLE);
@@ -170,15 +178,26 @@ public class SearchFragment extends BaseFragment implements
             unresolved.setValue(resolved.getValue());
             unresolved.setSigningChannel(resolved.getSigningChannel());
             unresolved.setUnresolved(false);
+            unresolved.setConfirmations(resolved.getConfirmations());
 
             resultListAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void logSearch(String query) {
+        Bundle bundle = new Bundle();
+        bundle.putString("query", query);
+        LbryAnalytics.logEvent(LbryAnalytics.EVENT_SEARCH, bundle);
     }
 
     public void search(String query, int from) {
         boolean queryChanged = checkQuery(query);
         if (!queryChanged && from > 0) {
             currentFrom = from;
+        }
+
+        if (queryChanged) {
+            logSearch(query);
         }
 
         searchLoading = true;

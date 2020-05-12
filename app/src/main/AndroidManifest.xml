@@ -19,6 +19,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_lbry" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/lbryGreen" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id"/>
+
+        <meta-data android:name="wakelock" android:value="0"/>
+
         <activity
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
             android:name=".MainActivity"
@@ -58,6 +71,14 @@
             android:parentActivityName=".MainActivity"
             android:supportsPictureInPicture="true"
             android:theme="@style/AppTheme.NoActionBarBlack" />
-    </application>
 
+        <service
+            android:name="io.lbry.browser.LbrynetMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+    </application>
 </manifest>

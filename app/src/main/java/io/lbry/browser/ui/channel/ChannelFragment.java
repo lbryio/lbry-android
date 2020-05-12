@@ -25,6 +25,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -38,11 +39,13 @@ import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.lbryinc.ChannelSubscribeTask;
 import io.lbry.browser.tasks.ClaimListResultHandler;
 import io.lbry.browser.tasks.ResolveTask;
+import io.lbry.browser.tasks.lbryinc.FetchStatCountTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.ui.controls.SolidIconView;
 import io.lbry.browser.ui.following.FollowingFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
 import lombok.SneakyThrows;
@@ -68,12 +71,18 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private View buttonShare;
     private View buttonTip;
     private View buttonFollowUnfollow;
+    private int subCount;
     private SolidIconView iconFollowUnfollow;
+
+    private View layoutNothingAtLocation;
+    private View layoutLoadingState;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_channel, container, false);
 
+        layoutLoadingState = root.findViewById(R.id.channel_view_loading_state);
+        layoutNothingAtLocation = root.findViewById(R.id.container_nothing_at_location);
         layoutDisplayArea = root.findViewById(R.id.channel_view_claim_display_area);
         layoutResolving = root.findViewById(R.id.channel_view_loading_container);
 
@@ -244,12 +253,13 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     public void onResume() {
         super.onResume();
         Context context = getContext();
-
         Map<String, Object> params = getParams();
         String url = params != null && params.containsKey("url") ? (String) params.get("url") : null;
         Helper.setWunderbarValue(url, context);
         if (context instanceof MainActivity) {
-            ((MainActivity) context).addFetchChannelsListener(this);
+            MainActivity activity = (MainActivity) context;
+            activity.addFetchChannelsListener(this);
+            LbryAnalytics.setCurrentScreen(activity, "Channel", "Channel");
         }
 
         checkParams();
@@ -284,6 +294,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             }
         }
         if (updateRequired) {
+            resetSubCount();
             if (!Helper.isNullOrEmpty(url)) {
                 resolveUrl();
             } else if (claim == null) {
@@ -302,7 +313,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         ResolveTask task = new ResolveTask(url, Lbry.LBRY_TV_CONNECTION_STRING, layoutResolving, new ClaimListResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
-                if (claims.size() > 0) {
+                if (claims.size() > 0 && !Helper.isNullOrEmpty(claims.get(0).getClaimId())) {
                     claim = claims.get(0);
                     renderClaim();
                     checkOwnChannel();
@@ -320,7 +331,9 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     }
 
     private void renderNothingAtLocation() {
-
+        layoutLoadingState.setVisibility(View.VISIBLE);
+        layoutNothingAtLocation.setVisibility(View.VISIBLE);
+        layoutDisplayArea.setVisibility(View.INVISIBLE);
     }
 
     public void setParams(Map<String, Object> params) {
@@ -336,7 +349,9 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             return;
         }
 
+        loadSubCount();
         checkIsFollowing();
+        layoutLoadingState.setVisibility(View.GONE);
         layoutDisplayArea.setVisibility(View.VISIBLE);
 
         String thumbnailUrl = claim.getThumbnailUrl();
@@ -374,6 +389,36 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                 tab.setText(position == 0 ? R.string.content : R.string.about);
             }
         }).attach();
+    }
+
+    private void resetSubCount() {
+        subCount = -1;
+        Helper.setViewText(textFollowerCount, null);
+        Helper.setViewVisibility(textFollowerCount, View.INVISIBLE);
+    }
+
+    private void loadSubCount() {
+        if (claim != null) {
+            FetchStatCountTask task = new FetchStatCountTask(
+                    FetchStatCountTask.STAT_SUB_COUNT, claim.getClaimId(), null, new FetchStatCountTask.FetchStatCountHandler() {
+                @Override
+                public void onSuccess(int count) {
+                    try {
+                        String displayText = getResources().getQuantityString(R.plurals.follower_count, count, NumberFormat.getInstance().format(count));
+                        Helper.setViewText(textFollowerCount, displayText);
+                        Helper.setViewVisibility(textFollowerCount, View.VISIBLE);
+                    } catch (IllegalStateException ex) {
+                        // pass
+                    }
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    // pass
+                }
+            });
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 
     private static class ChannelPagerAdapter extends FragmentStateAdapter {

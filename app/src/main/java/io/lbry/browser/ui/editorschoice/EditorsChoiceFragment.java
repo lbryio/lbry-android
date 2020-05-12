@@ -34,6 +34,7 @@ import io.lbry.browser.tasks.ClaimSearchTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.Predefined;
 
 public class EditorsChoiceFragment extends BaseFragment {
@@ -86,7 +87,13 @@ public class EditorsChoiceFragment extends BaseFragment {
 
     public void onResume() {
         super.onResume();
-        Helper.setWunderbarValue(null, getContext());
+        Context context = getContext();
+        Helper.setWunderbarValue(null, context);
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            LbryAnalytics.setCurrentScreen(activity, "Editor's Choice", "EditorsChoice");
+        }
+
         if (contentListAdapter == null || contentListAdapter.getItemCount() == 0) {
             fetchClaimSearchContent();
         } else {

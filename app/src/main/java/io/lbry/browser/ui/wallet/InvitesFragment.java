@@ -41,15 +41,16 @@ import io.lbry.browser.model.lbryinc.Invitee;
 import io.lbry.browser.tasks.ClaimListResultHandler;
 import io.lbry.browser.tasks.ClaimListTask;
 import io.lbry.browser.tasks.GenericTaskHandler;
-import io.lbry.browser.tasks.content.ChannelCreateUpdateTask;
-import io.lbry.browser.tasks.content.ClaimResultHandler;
-import io.lbry.browser.tasks.content.LogPublishTask;
+import io.lbry.browser.tasks.ChannelCreateUpdateTask;
+import io.lbry.browser.tasks.ClaimResultHandler;
+import io.lbry.browser.tasks.lbryinc.LogPublishTask;
 import io.lbry.browser.tasks.lbryinc.FetchInviteStatusTask;
 import io.lbry.browser.tasks.lbryinc.FetchReferralCodeTask;
 import io.lbry.browser.tasks.lbryinc.InviteByEmailTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
 
@@ -287,9 +288,14 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
         super.onResume();
         layoutAccountDriver.setVisibility(Lbryio.isSignedIn() ? View.GONE : View.VISIBLE);
 
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            LbryAnalytics.setCurrentScreen(activity, "Invites", "Invites");
+        }
+
         fetchInviteStatus();
         if (!Lbry.SDK_READY) {
-            Context context = getContext();
             if (context instanceof MainActivity) {
                 MainActivity activity = (MainActivity) context;
                 activity.addSdkStatusListener(this);

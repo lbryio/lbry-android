@@ -1,6 +1,7 @@
 package io.lbry.browser.ui.wallet;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +34,7 @@ import io.lbry.browser.tasks.lbryinc.FetchRewardsTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.Lbryio;
 
 public class RewardsFragment extends BaseFragment implements RewardListAdapter.RewardClickListener, SdkStatusListener {
@@ -87,8 +90,13 @@ public class RewardsFragment extends BaseFragment implements RewardListAdapter.R
         checkRewardsStatus();
         fetchRewards();
 
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            LbryAnalytics.setCurrentScreen(activity, "Rewards", "Rewards");
+        }
+
         if (!Lbry.SDK_READY) {
-            Context context = getContext();
             if (context instanceof MainActivity) {
                 MainActivity activity = (MainActivity) context;
                 activity.addSdkStatusListener(this);
@@ -161,9 +169,17 @@ public class RewardsFragment extends BaseFragment implements RewardListAdapter.R
         linkNotInterested.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 Context context = getContext();
+
                 if (context instanceof MainActivity) {
-                    ((MainActivity) context).onBackPressed();
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                    sp.edit().putBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_REWARDS_NOT_INTERESTED, true).apply();
+
+                    MainActivity activity = (MainActivity) context;
+                    activity.hideFloatingRewardsValue();
+                    activity.onBackPressed();
                 }
             }
         });
@@ -210,13 +226,17 @@ public class RewardsFragment extends BaseFragment implements RewardListAdapter.R
     }
 
     public void updateUnclaimedRewardsValue() {
-        String accountDriverTitle = getResources().getQuantityString(
-                R.plurals.available_credits,
-                Lbryio.totalUnclaimedRewardAmount == 1 ? 1 : 2,
-                Helper.shortCurrencyFormat(Lbryio.totalUnclaimedRewardAmount));
-        double unclaimedRewardAmountUsd = Lbryio.totalUnclaimedRewardAmount * Lbryio.LBCUSDRate;
-        Helper.setViewText(textAccountDriverTitle, accountDriverTitle);
-        Helper.setViewText(textFreeCreditsWorth, getString(R.string.free_credits_worth, Helper.USD_CURRENCY_FORMAT.format(unclaimedRewardAmountUsd)));
+        try {
+            String accountDriverTitle = getResources().getQuantityString(
+                    R.plurals.available_credits,
+                    Lbryio.totalUnclaimedRewardAmount == 1 ? 1 : 2,
+                    Helper.shortCurrencyFormat(Lbryio.totalUnclaimedRewardAmount));
+            double unclaimedRewardAmountUsd = Lbryio.totalUnclaimedRewardAmount * Lbryio.LBCUSDRate;
+            Helper.setViewText(textAccountDriverTitle, accountDriverTitle);
+            Helper.setViewText(textFreeCreditsWorth, getString(R.string.free_credits_worth, Helper.USD_CURRENCY_FORMAT.format(unclaimedRewardAmountUsd)));
+        } catch (IllegalStateException ex) {
+            // pass
+        }
     }
 
     @Override

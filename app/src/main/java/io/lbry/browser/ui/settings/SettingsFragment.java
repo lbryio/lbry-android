@@ -11,6 +11,7 @@ import androidx.preference.PreferenceManager;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
+import io.lbry.browser.utils.LbryAnalytics;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     @Override
@@ -38,7 +39,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onResume() {
         super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        Context context = getContext();
+        PreferenceManager.getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this);
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            LbryAnalytics.setCurrentScreen(activity, "Settings", "Settings");
+        }
     }
     @Override
     public void onPause() {

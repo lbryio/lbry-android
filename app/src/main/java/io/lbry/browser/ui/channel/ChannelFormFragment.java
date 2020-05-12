@@ -42,15 +42,15 @@ import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.WalletBalance;
-import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.tasks.UpdateSuggestedTagsTask;
 import io.lbry.browser.tasks.UploadImageTask;
-import io.lbry.browser.tasks.content.ChannelCreateUpdateTask;
-import io.lbry.browser.tasks.content.ClaimResultHandler;
-import io.lbry.browser.tasks.content.LogPublishTask;
+import io.lbry.browser.tasks.ChannelCreateUpdateTask;
+import io.lbry.browser.tasks.ClaimResultHandler;
+import io.lbry.browser.tasks.lbryinc.LogPublishTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import lombok.Getter;
 
@@ -508,6 +508,7 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
         Context context = getContext();
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
+            LbryAnalytics.setCurrentScreen(activity, "Channel Form", "ChannelForm");
             if (editMode) {
                 ActionBar actionBar = activity.getSupportActionBar();
                 if (actionBar != null) {

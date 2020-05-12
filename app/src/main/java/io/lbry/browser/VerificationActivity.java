@@ -18,6 +18,7 @@ import io.lbry.browser.listener.SignInListener;
 import io.lbry.browser.listener.WalletSyncListener;
 import io.lbry.browser.model.lbryinc.User;
 import io.lbry.browser.tasks.lbryinc.FetchCurrentUserTask;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.Lbryio;
 
 public class VerificationActivity extends FragmentActivity implements SignInListener, WalletSyncListener {
@@ -71,6 +72,7 @@ public class VerificationActivity extends FragmentActivity implements SignInList
 
     public void onResume() {
         super.onResume();
+        LbryAnalytics.setCurrentScreen(this, "Verification", "Verification");
         checkFlow();
     }
 
@@ -123,6 +125,10 @@ public class VerificationActivity extends FragmentActivity implements SignInList
     public void onEmailAdded(String email) {
         this.email = email;
         findViewById(R.id.verification_close_button).setVisibility(View.GONE);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        LbryAnalytics.logEvent(LbryAnalytics.EVENT_EMAIL_ADDED, bundle);
     }
     public void onEmailEdit() {
         findViewById(R.id.verification_close_button).setVisibility(View.VISIBLE);
@@ -130,6 +136,10 @@ public class VerificationActivity extends FragmentActivity implements SignInList
     public void onEmailVerified() {
         Snackbar.make(findViewById(R.id.verification_pager), R.string.sign_in_successful, Snackbar.LENGTH_LONG).show();
         sendBroadcast(new Intent(MainActivity.ACTION_USER_SIGN_IN_SUCCESS));
+
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        LbryAnalytics.logEvent(LbryAnalytics.EVENT_EMAIL_VERIFIED, bundle);
 
         if (flow == VERIFICATION_FLOW_SIGN_IN) {
             final Intent resultIntent = new Intent();
@@ -206,6 +216,8 @@ public class VerificationActivity extends FragmentActivity implements SignInList
                 Lbryio.currentUser = user;
                 if (user.isIdentityVerified() && user.isRewardApproved()) {
                     // verified for rewards
+                    LbryAnalytics.logEvent(LbryAnalytics.EVENT_REWARD_ELIGIBILITY_COMPLETED);
+
                     setResult(RESULT_OK);
                     finish();
                     return;

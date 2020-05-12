@@ -251,7 +251,7 @@ public class ChannelContentFragment extends Fragment implements SharedPreference
                         @Override
                         public void onClaimClicked(Claim claim) {
                             String claimId = claim.getClaimId();
-                            String url = claim.getPermanentUrl();
+                            String url = !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl();
                             if (claim.getName().startsWith("@")) {
                                 // channel claim
                                 Context context = getContext();

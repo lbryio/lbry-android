@@ -38,6 +38,7 @@ import io.lbry.browser.tasks.FollowUnfollowTagTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.Predefined;
 import lombok.Getter;
 
@@ -295,6 +296,10 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
                 fetchClaimSearchContent(true);
             }
 
+            Bundle bundle = new Bundle();
+            bundle.putString("tag", tag.getLowercaseName());
+            LbryAnalytics.logEvent(unfollowing ? LbryAnalytics.EVENT_TAG_UNFOLLOW : LbryAnalytics.EVENT_TAG_FOLLOW, bundle);
+
             Context context = getContext();
             if (context instanceof MainActivity) {
                 ((MainActivity) context).saveSharedUserState();
@@ -359,6 +364,18 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
     public void onResume() {
         super.onResume();
         Helper.setWunderbarValue(null, getContext());
+        checkParams(false);
+
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            if (singleTagView) {
+                LbryAnalytics.setCurrentScreen(activity, "Tag", "Tag");
+            } else {
+                LbryAnalytics.setCurrentScreen(activity, "All Content", "AllContent");
+            }
+        }
+
         PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
         updateContentFromLinkText();
         updateContentScopeLinkText();
@@ -424,7 +441,8 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
                         @Override
                         public void onClaimClicked(Claim claim) {
                             String claimId = claim.getClaimId();
-                            String url = claim.getPermanentUrl();
+                            String url = !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl();
+
                             if (claim.getName().startsWith("@")) {
                                 // channel claim
                                 Context context = getContext();

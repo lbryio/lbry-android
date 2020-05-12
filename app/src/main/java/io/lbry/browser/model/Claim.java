@@ -249,6 +249,7 @@ public class Claim {
         try {
             claim.setClaimId(searchResultObject.getString("claimId"));
             claim.setName(searchResultObject.getString("name"));
+            claim.setConfirmations(1);
 
             if (claim.getName().startsWith("@")) {
                 claimUri.setChannelClaimId(claim.getClaimId());

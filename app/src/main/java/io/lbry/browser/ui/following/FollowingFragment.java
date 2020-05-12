@@ -46,6 +46,7 @@ import io.lbry.browser.listener.ChannelItemSelectionListener;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
 import io.lbry.browser.utils.Predefined;
@@ -327,8 +328,13 @@ public class FollowingFragment extends BaseFragment implements
 
     public void onResume() {
         super.onResume();
-        Helper.setWunderbarValue(null, getContext());
-        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        Context context = getContext();
+        Helper.setWunderbarValue(null, context);
+        PreferenceManager.getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this);
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            LbryAnalytics.setCurrentScreen(activity, "Subscriptions", "Subscriptions");
+        }
 
         // check if subscriptions exist
         if (suggestedChannelAdapter != null) {
@@ -562,7 +568,7 @@ public class FollowingFragment extends BaseFragment implements
                         @Override
                         public void onClaimClicked(Claim claim) {
                             String claimId = claim.getClaimId();
-                            String url = claim.getPermanentUrl();
+                            String url = !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl();
 
                             if (claim.getName().startsWith("@")) {
                                 // channel claim

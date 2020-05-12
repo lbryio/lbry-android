@@ -40,6 +40,7 @@ import io.lbry.browser.tasks.ClaimListTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryAnalytics;
 
 public class ChannelManagerFragment extends BaseFragment implements ActionMode.Callback, SelectionModeListener, SdkStatusListener {
 
@@ -109,7 +110,9 @@ public class ChannelManagerFragment extends BaseFragment implements ActionMode.C
         super.onResume();
         Context context = getContext();
         if (context instanceof MainActivity) {
-            ((MainActivity) context).setWunderbarValue(null);
+            MainActivity activity = (MainActivity) context;
+            activity.setWunderbarValue(null);
+            LbryAnalytics.setCurrentScreen(activity, "Channel Manager", "ChannelManager");
         }
 
         if (!Lbry.SDK_READY) {
