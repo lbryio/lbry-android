@@ -944,6 +944,9 @@ public class FileViewActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Bundle bundle = new Bundle();
                             bundle.putString("uri", currentUrl);
+                            bundle.putBoolean("paid", true);
+                            bundle.putDouble("amount", cost);
+                            bundle.putString("currency", fee.getCurrency());
                             LbryAnalytics.logEvent(LbryAnalytics.EVENT_PURCHASE_URI, bundle);
 
                             findViewById(R.id.file_view_main_action_button).setVisibility(View.INVISIBLE);
@@ -989,6 +992,13 @@ public class FileViewActivity extends AppCompatActivity {
             public void onSuccess(LbryFile file, boolean saveFile) {
                 // queue the download
                 if (claim != null) {
+                    if (claim.isFree()) {
+                        // paid is handled differently
+                        Bundle bundle = new Bundle();
+                        bundle.putString("uri", currentUrl);
+                        LbryAnalytics.logEvent(LbryAnalytics.EVENT_PURCHASE_URI, bundle);
+                    }
+
                     if (!claim.isPlayable()) {
                         logFileView(claim.getPermanentUrl(), 0);
                     }
