@@ -14,6 +14,7 @@ import java.util.Map;
 
 import io.lbry.browser.exceptions.ApiCallException;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.tasks.claim.ClaimResultHandler;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
@@ -65,7 +66,7 @@ public class ChannelCreateUpdateTask extends AsyncTask<Void, Void, Claim> {
                 for (int i = 0; i < outputs.length(); i++) {
                     JSONObject output = outputs.getJSONObject(i);
                     if (output.has("claim_id") && output.has("claim_op")) {
-                        claimResult = claimFromResult(output);
+                        claimResult = Claim.claimFromOutput(output);
                         break;
                     }
                 }
@@ -75,17 +76,6 @@ public class ChannelCreateUpdateTask extends AsyncTask<Void, Void, Claim> {
         }
 
         return claimResult;
-    }
-
-    private static Claim claimFromResult(JSONObject item) {
-        // we only need name, permanent_url, txid and nout
-        Claim claim = new Claim();
-        claim.setClaimId(Helper.getJSONString("claim_id", null, item));
-        claim.setName(Helper.getJSONString("name", null, item));
-        claim.setPermanentUrl(Helper.getJSONString("permanent_url", null, item));
-        claim.setTxid(Helper.getJSONString("txid", null, item));
-        claim.setNout(Helper.getJSONInt("nout", -1, item));
-        return claim;
     }
 
     protected void onPostExecute(Claim result) {

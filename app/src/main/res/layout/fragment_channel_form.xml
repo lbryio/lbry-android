@@ -294,7 +294,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:fontFamily="@font/inter"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:text="@string/cancel" />
 
                         <TextView
@@ -307,7 +307,7 @@
                             android:layout_marginRight="24dp"
                             android:layout_toLeftOf="@id/channel_form_save_button"
                             android:fontFamily="@font/inter"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:text="@string/show_optional_fields" />
                         <ProgressBar
                             android:id="@+id/channel_form_save_progress"

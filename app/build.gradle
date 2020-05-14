@@ -78,6 +78,8 @@ dependencies {
 
     implementation 'com.hbb20:ccp:2.3.8'
 
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
@@ -86,8 +88,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    __32bitImplementation files('libs/lbrysdk-0.72.0-release__arm.aar')
-    __64bitImplementation files('libs/lbrysdk-0.72.0-release__arm64.aar')
+    __32bitImplementation files('libs/lbrysdk-0.73.1-release__arm.aar')
+    __64bitImplementation files('libs/lbrysdk-0.73.1-release__arm64.aar')
 }
 
 apply plugin: 'com.google.gms.google-services'

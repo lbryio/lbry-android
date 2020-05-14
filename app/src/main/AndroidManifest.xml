@@ -80,5 +80,14 @@
             </intent-filter>
         </service>
 
+        <provider
+            android:name="io.lbry.browser.LocalFileProvider"
+            android:authorities="io.lbry.browser.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 </manifest>

@@ -25,8 +25,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -96,12 +99,12 @@ import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.WalletSync;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
-import io.lbry.browser.tasks.ClaimListResultHandler;
-import io.lbry.browser.tasks.ClaimListTask;
+import io.lbry.browser.tasks.claim.ClaimListResultHandler;
+import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.tasks.lbryinc.FetchRewardsTask;
 import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.MergeSubscriptionsTask;
-import io.lbry.browser.tasks.ResolveTask;
+import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.tasks.wallet.DefaultSyncTaskHandler;
 import io.lbry.browser.tasks.wallet.LoadSharedUserStateTask;
 import io.lbry.browser.tasks.wallet.SaveSharedUserStateTask;
@@ -115,8 +118,9 @@ import io.lbry.browser.ui.channel.ChannelFragment;
 import io.lbry.browser.ui.channel.ChannelManagerFragment;
 import io.lbry.browser.ui.editorschoice.EditorsChoiceFragment;
 import io.lbry.browser.ui.following.FollowingFragment;
+import io.lbry.browser.ui.other.AboutFragment;
 import io.lbry.browser.ui.search.SearchFragment;
-import io.lbry.browser.ui.settings.SettingsFragment;
+import io.lbry.browser.ui.other.SettingsFragment;
 import io.lbry.browser.ui.allcontent.AllContentFragment;
 import io.lbry.browser.ui.wallet.InvitesFragment;
 import io.lbry.browser.ui.wallet.RewardsFragment;
@@ -133,6 +137,8 @@ import lombok.Getter;
 
 public class MainActivity extends AppCompatActivity implements SdkStatusListener {
 
+    private Map<String, Class> specialRouteFragmentClassMap;
+    private boolean inPictureInPictureMode;
     public static SimpleExoPlayer appPlayer;
     public static Claim nowPlayingClaim;
     public static boolean startingFilePickerActivity = false;
@@ -141,24 +147,29 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean startingSignInFlowActivity = false;
     public static boolean mainActive = false;
     private boolean enteringPIPMode = false;
+
+    @Getter
     private String firebaseMessagingToken;
 
     private Map<String, Fragment> openNavFragments;
     private static final Map<Class, Integer> fragmentClassNavIdMap = new HashMap<>();
     static {
         fragmentClassNavIdMap.put(FollowingFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
-        fragmentClassNavIdMap.put(WalletFragment.class, NavMenuItem.ID_ITEM_WALLET);
-        fragmentClassNavIdMap.put(SettingsFragment.class, NavMenuItem.ID_ITEM_SETTINGS);
+        fragmentClassNavIdMap.put(EditorsChoiceFragment.class, NavMenuItem.ID_ITEM_EDITORS_CHOICE);
         fragmentClassNavIdMap.put(AllContentFragment.class, NavMenuItem.ID_ITEM_ALL_CONTENT);
 
         fragmentClassNavIdMap.put(ChannelManagerFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
 
+        fragmentClassNavIdMap.put(WalletFragment.class, NavMenuItem.ID_ITEM_WALLET);
+        fragmentClassNavIdMap.put(RewardsFragment.class, NavMenuItem.ID_ITEM_REWARDS);
+        fragmentClassNavIdMap.put(InvitesFragment.class, NavMenuItem.ID_ITEM_INVITES);
+
+        fragmentClassNavIdMap.put(SettingsFragment.class, NavMenuItem.ID_ITEM_SETTINGS);
+        fragmentClassNavIdMap.put(AboutFragment.class, NavMenuItem.ID_ITEM_ABOUT);
 
         // Internal (sub-)pages
         fragmentClassNavIdMap.put(ChannelFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
         fragmentClassNavIdMap.put(SearchFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
-
-        //fragmentClassNavIdMap.put(ChannelFormFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
     }
 
 
@@ -179,6 +190,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String ACTION_NOW_PLAYING_CLAIM_CLEARED = "io.lbry.browser.Broadcast.NowPlayingClaimCleared";
     public static final String ACTION_OPEN_ALL_CONTENT_TAG = "io.lbry.browser.Broadcast.OpenAllContentTag";
     public static final String ACTION_WALLET_BALANCE_UPDATED = "io.lbry.browser.Broadcast.WalletBalanceUpdated";
+    public static final String ACTION_OPEN_CHANNEL_URL = "io.lbry.browser.Broadcast.OpenChannelUrl";
+    public static final String ACTION_OPEN_WALLET_PAGE = "io.lbry.browser.Broadcast.OpenWalletPage";
+    public static final String ACTION_OPEN_REWARDS_PAGE = "io.lbry.browser.Broadcast.OpenRewardsPage";
+    public static final String ACTION_SAVE_SHARED_USER_STATE = "io.lbry.browser.Broadcast.SaveSharedUserState";
 
     // preference keys
     public static final String PREFERENCE_KEY_DARK_MODE = "io.lbry.browser.preference.userinterface.DarkMode";
@@ -236,6 +251,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private boolean walletSyncScheduled;
     private String pendingAllContentTag;
     private String pendingChannelUrl;
+    private boolean pendingOpenWalletPage;
+    private boolean pendingOpenRewardsPage;
     private boolean pendingFollowingReload;
 
     // startup stages (to be able to determine how far a user made it if startup fails)
@@ -262,7 +279,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             NavMenuItem.ID_ITEM_REWARDS,
             NavMenuItem.ID_ITEM_INVITES,
 
-            NavMenuItem.ID_ITEM_SETTINGS
+            NavMenuItem.ID_ITEM_SETTINGS,
+            NavMenuItem.ID_ITEM_ABOUT
     );
 
     public boolean isDarkMode() {
@@ -281,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (!isDarkMode()) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+        initSpecialRouteMap();
 
         LbryAnalytics.init(this);
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -346,6 +365,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onClick(View view) {
                 stopExoplayer();
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 nowPlayingClaim = null;
                 findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
             }
@@ -398,6 +418,24 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 walletSyncSignIn();
             }
         });
+    }
+
+    private void initSpecialRouteMap() {
+        specialRouteFragmentClassMap = new HashMap<>();
+        specialRouteFragmentClassMap.put("about", AboutFragment.class);
+        specialRouteFragmentClassMap.put("allContent", AllContentFragment.class);
+        specialRouteFragmentClassMap.put("channels", ChannelManagerFragment.class);
+        specialRouteFragmentClassMap.put("invite", InvitesFragment.class);
+        specialRouteFragmentClassMap.put("invites", InvitesFragment.class);
+        //specialRouteFragmentClassMap.put("library", LibraryFragment.class);
+        //specialRouteFragmentClassMap.put("publish", PublishFragment.class);
+        //specialRouteFragmentClassMap.put("publishes", PublishesFragment.class);
+        specialRouteFragmentClassMap.put("following", FollowingFragment.class);
+        specialRouteFragmentClassMap.put("rewards", RewardsFragment.class);
+        specialRouteFragmentClassMap.put("settings", SettingsFragment.class);
+        specialRouteFragmentClassMap.put("subscriptions", FollowingFragment.class);
+        specialRouteFragmentClassMap.put("wallet", WalletFragment.class);
+        specialRouteFragmentClassMap.put("discover", FollowingFragment.class);
     }
 
     protected void onNewIntent(Intent intent) {
@@ -470,6 +508,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
             case NavMenuItem.ID_ITEM_SETTINGS:
                 openFragment(SettingsFragment.class, true, NavMenuItem.ID_ITEM_SETTINGS);
+                break;
+            case NavMenuItem.ID_ITEM_ABOUT:
+                openFragment(AboutFragment.class, true, NavMenuItem.ID_ITEM_ABOUT);
                 break;
         }
     }
@@ -586,7 +627,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         super.onDestroy();
     }
 
-    private static void stopExoplayer() {
+    public static void stopExoplayer() {
         if (appPlayer != null) {
             appPlayer.stop(true);
             appPlayer.release();
@@ -612,6 +653,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 }
                 Lbry.walletBalance = walletBalance;
                 updateFloatingWalletBalance();
+                updateUsdWalletBalanceInNav();
 
                 sendBroadcast(new Intent(ACTION_WALLET_BALANCE_UPDATED));
             }
@@ -636,18 +678,33 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         serviceRunning = isServiceRunning(this, LbrynetService.class);
         if (!serviceRunning) {
             Lbry.SDK_READY = false;
+            findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
         checkSdkReady();
         showSignedInUser();
+        checkPendingOpens();
 
-        if (!Helper.isNullOrEmpty(pendingAllContentTag)) {
-            openAllContentFragmentWithTag(pendingAllContentTag);
-            pendingAllContentTag = null;
+        if (Lbry.SDK_READY) {
+            findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         }
+    }
+
+    private void checkPendingOpens() {
         if (pendingFollowingReload) {
             loadFollowingContent();
             pendingFollowingReload = false;
+        }
+        if (!Helper.isNullOrEmpty(pendingAllContentTag)) {
+            openAllContentFragmentWithTag(pendingAllContentTag);
+            pendingAllContentTag = null;
+        } else if (!Helper.isNullOrEmpty(pendingChannelUrl)) {
+            openChannelUrl(pendingChannelUrl);
+            pendingChannelUrl = null;
+        } else if (pendingOpenWalletPage) {
+            openFragment(WalletFragment.class, true, NavMenuItem.ID_ITEM_WALLET);
+        } else if (pendingOpenRewardsPage) {
+            openFragment(RewardsFragment.class, true, NavMenuItem.ID_ITEM_REWARDS);
         }
     }
 
@@ -679,7 +736,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 clearWunderbarFocus(view);
             }
         });
-        findViewById(R.id.wunderbar).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+        EditText wunderbar = findViewById(R.id.wunderbar);
+        wunderbar.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
@@ -693,7 +752,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }
         });
 
-        ((EditText) findViewById(R.id.wunderbar)).addTextChangedListener(new TextWatcher() {
+        wunderbar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -709,6 +768,40 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void afterTextChanged(Editable editable) {
 
+            }
+        });
+        wunderbar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_GO) {
+                    String input = Helper.getValue(wunderbar.getText());
+                    boolean handled = false;
+                    if (input.startsWith(LbryUri.PROTO_DEFAULT) && !input.equalsIgnoreCase(LbryUri.PROTO_DEFAULT)) {
+                        try {
+                            LbryUri uri = LbryUri.parse(input);
+                            if (uri.isChannel()) {
+                                openChannelUrl(uri.toString());
+                                clearWunderbarFocus(wunderbar);
+                                handled = true;
+                            } else {
+                                openFileUrl(uri.toString(), MainActivity.this);
+                                clearWunderbarFocus(wunderbar);
+                                handled = true;
+                            }
+                        } catch (LbryUriException ex) {
+                            // pass
+                        }
+                    }
+                    if (!handled) {
+                        // search
+                        launchSearch(input);
+                        clearWunderbarFocus(wunderbar);
+                    }
+
+                    return true;
+                }
+
+                return false;
             }
         });
 
@@ -942,6 +1035,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             playerView.setPlayer(null);
             playerView.setPlayer(appPlayer);
             playerView.setUseController(false);
+
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
 
@@ -1014,6 +1109,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             checkSyncedWallet();
         }
 
+        findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         scheduleWalletBalanceUpdate();
         scheduleWalletSyncTask();
         fetchChannels();
@@ -1043,6 +1139,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 openFragment(RewardsFragment.class, true, NavMenuItem.ID_ITEM_REWARDS);
             }
         });
+    }
+
+    private void updateUsdWalletBalanceInNav() {
+        double usdBalance = Lbry.walletBalance.getAvailable().doubleValue() * Lbryio.LBCUSDRate;
+        if (navMenuAdapter != null) {
+            navMenuAdapter.setExtraLabelForItem(
+                    NavMenuItem.ID_ITEM_WALLET,
+                    Lbryio.LBCUSDRate > 0 ? String.format("$%s", Helper.USD_CURRENCY_FORMAT.format(usdBalance)) : null
+            );
+        }
     }
 
     private void updateFloatingWalletBalance() {
@@ -1222,18 +1328,30 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private void registerRequestsReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_AUTH_TOKEN_GENERATED);
-        intentFilter.addAction(ACTION_OPEN_ALL_CONTENT_TAG);
         intentFilter.addAction(ACTION_USER_SIGN_IN_SUCCESS);
+        intentFilter.addAction(ACTION_OPEN_ALL_CONTENT_TAG);
+        intentFilter.addAction(ACTION_OPEN_CHANNEL_URL);
+        intentFilter.addAction(ACTION_OPEN_WALLET_PAGE);
+        intentFilter.addAction(ACTION_OPEN_REWARDS_PAGE);
+        intentFilter.addAction(ACTION_SAVE_SHARED_USER_STATE);
         requestsReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
                 if (ACTION_AUTH_TOKEN_GENERATED.equalsIgnoreCase(action)) {
                     handleAuthTokenGenerated(intent);
-                } else if (ACTION_OPEN_ALL_CONTENT_TAG.equalsIgnoreCase(action)) {
-                    handleOpenContentTag(intent);
                 } else if (ACTION_USER_SIGN_IN_SUCCESS.equalsIgnoreCase(action)) {
                     handleUserSignInSuccess(intent);
+                } else if (ACTION_OPEN_ALL_CONTENT_TAG.equalsIgnoreCase(action)) {
+                    handleOpenContentTag(intent);
+                } else if (ACTION_OPEN_CHANNEL_URL.equalsIgnoreCase(action)) {
+                    handleOpenChannelUrl(intent);
+                } else if (ACTION_OPEN_WALLET_PAGE.equalsIgnoreCase(action)) {
+                    pendingOpenWalletPage = true;
+                } else if (ACTION_OPEN_REWARDS_PAGE.equalsIgnoreCase(action)) {
+                    pendingOpenRewardsPage = true;
+                } else if (ACTION_SAVE_SHARED_USER_STATE.equalsIgnoreCase(action)) {
+                    saveSharedUserState();
                 }
             }
 
@@ -1253,7 +1371,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             private void handleUserSignInSuccess(Intent intent) {
                 pendingFollowingReload = true;
             }
-            private void handleOpenChannelUrl(String url) {
+            private void handleOpenChannelUrl(Intent intent) {
+                String url = intent.getStringExtra("url");
                 pendingChannelUrl = url;
             }
         };
@@ -1294,6 +1413,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
                 ((TextView) findViewById(R.id.global_now_playing_title)).setText(null);
                 ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(null);
+                if (MainActivity.appPlayer != null) {
+                    MainActivity.appPlayer.setPlayWhenReady(false);
+                }
             }
         };
         registerReceiver(userActionsReceiver, intentFilter);
@@ -1592,6 +1714,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                 if (Lbryio.totalUnclaimedRewardAmount > 0) {
                     showFloatingUnclaimedRewards();
+                    double usdRewardAmount = Lbryio.totalUnclaimedRewardAmount * Lbryio.LBCUSDRate;
+                    if (navMenuAdapter != null) {
+                        navMenuAdapter.setExtraLabelForItem(
+                                NavMenuItem.ID_ITEM_REWARDS,
+                                Lbryio.LBCUSDRate > 0 ? String.format("$%s", Helper.USD_CURRENCY_FORMAT.format(usdRewardAmount)) : null
+                        );
+                    }
                 }
             }
 
@@ -1620,9 +1749,15 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 String url = data.toString();
                 // check special urls
                 if (url.startsWith("lbry://?")) {
-                    String pagePath = url.substring(8);
+                    String specialPath = url.substring(8);
+                    if (specialRouteFragmentClassMap.containsKey(specialPath)) {
+                        Class fragmentClass = specialRouteFragmentClassMap.get(specialPath);
+                        if (fragmentClassNavIdMap.containsKey(fragmentClass)) {
+                            openFragment(specialRouteFragmentClassMap.get(specialPath), true, fragmentClassNavIdMap.get(fragmentClass));
+                        }
+                    }
 
-                    // TODO: Handle special page paths
+                    // unrecognised path will open the following by default
                 } else {
                     try {
                         LbryUri uri = LbryUri.parse(url);
@@ -1770,10 +1905,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         ));
 
         yourContentGroup.setItems(Arrays.asList(
-                new NavMenuItem(NavMenuItem.ID_ITEM_NEW_PUBLISH, R.string.fa_upload, R.string.new_publish, "NewPublish", context),
-                new NavMenuItem(NavMenuItem.ID_ITEM_CHANNELS, R.string.fa_at, R.string.channels, "Channels", context),
-                new NavMenuItem(NavMenuItem.ID_ITEM_LIBRARY, R.string.fa_download, R.string.library, "Library", context),
-                new NavMenuItem(NavMenuItem.ID_ITEM_PUBLISHES, R.string.fa_cloud_upload, R.string.publishes, "Publishes", context)
+                //new NavMenuItem(NavMenuItem.ID_ITEM_NEW_PUBLISH, R.string.fa_upload, R.string.new_publish, "NewPublish", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_CHANNELS, R.string.fa_at, R.string.channels, "Channels", context)
+                //new NavMenuItem(NavMenuItem.ID_ITEM_LIBRARY, R.string.fa_download, R.string.library, "Library", context)
+                //new NavMenuItem(NavMenuItem.ID_ITEM_PUBLISHES, R.string.fa_cloud_upload, R.string.publishes, "Publishes", context)
         ));
 
         walletGroup.setItems(Arrays.asList(
@@ -1837,7 +1972,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                     // TODO: Broadcast startup status changes
                     JSONObject startupStatus = status.getJSONObject("startup_status");
-                    sdkReady = startupStatus.getBoolean("stream_manager") && startupStatus.getBoolean("wallet");
+                    sdkReady = startupStatus.getBoolean("file_manager") && startupStatus.getBoolean("wallet");
                 }
             } catch (ConnectException ex) {
                 // pass
@@ -1921,6 +2056,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
+        inPictureInPictureMode = isInPictureInPictureMode;
         enteringPIPMode = false;
         if (isInPictureInPictureMode) {
             // Hide the full-screen UI (controls, etc.) while in picture-in-picture mode.
@@ -1932,10 +2068,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     protected void onStop() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            if (!MainActivity.startingFileViewActivity && appPlayer != null && isInPictureInPictureMode()) {
-                appPlayer.setPlayWhenReady(false);
-            }
+        if (!MainActivity.startingFileViewActivity && appPlayer != null && inPictureInPictureMode) {
+            appPlayer.setPlayWhenReady(false);
         }
         super.onStop();
     }
@@ -2044,5 +2178,4 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean hasPermission(String permission, Context context) {
         return (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
     }
-
 }

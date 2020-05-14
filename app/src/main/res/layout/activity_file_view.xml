@@ -42,7 +42,7 @@
             android:layout_weight="10"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible">
+            android:visibility="visible">
             <RelativeLayout
                 android:id="@+id/file_view_media_container"
                 android:background="@color/mediaContainerBackground"
@@ -59,11 +59,17 @@
                         android:id="@+id/file_view_thumbnail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
+                    <ProgressBar
+                        android:id="@+id/file_view_main_action_loading"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_centerInParent="true" />
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/file_view_main_action_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
+                        android:visibility="invisible"
                         android:text="@string/play" />
                     <LinearLayout
                         android:id="@+id/file_view_fee_container"
@@ -84,7 +90,8 @@
                             android:layout_height="12dp"
                             android:layout_gravity="center_vertical"
                             android:textSize="8dp"
-                            android:text="@string/fa_coins" />
+                            android:text="@string/fa_coins"
+                            android:textColor="@android:color/black" />
                         <TextView
                             android:id="@+id/file_view_fee"
                             android:layout_width="wrap_content"
@@ -92,6 +99,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="1dp"
                             android:fontFamily="@font/inter"
+                            android:textColor="@android:color/black"
                             android:textSize="14sp"
                             android:textFontWeight="300" />
                     </LinearLayout>
@@ -108,10 +116,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:controller_layout_id="@layout/exo_playback_control_view"/>
+                    <ProgressBar
+                        android:id="@+id/player_buffering_progress"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/file_view_unsupported_container"
+                    android:background="@color/mediaContainerBackground"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="36dp"
@@ -137,6 +152,7 @@
                             android:textSize="18sp"
                             android:text="@string/unsupported_content" />
                         <TextView
+                            android:id="@+id/file_view_unsupported_text"
                             android:fontFamily="@font/inter"
                             android:text="@string/unsupported_content_desc"
                             android:textColor="@color/white"
@@ -234,12 +250,17 @@
                             android:orientation="vertical"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp">
-                            <ImageView
-                                android:tint="@color/foreground"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/ic_share" />
+                            <RelativeLayout
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="center_horizontal">
+                                <ImageView
+                                    android:tint="@color/foreground"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/ic_share" />
+                            </RelativeLayout>
                             <TextView
                                 android:fontFamily="@font/inter"
                                 android:textSize="12sp"
@@ -259,13 +280,18 @@
                             android:orientation="vertical"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp">
-                            <io.lbry.browser.ui.controls.SolidIconView
-                                android:textColor="@color/foreground"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center_horizontal"
-                                android:textSize="20dp"
-                                android:text="@string/fa_gift"/>
+                            <RelativeLayout
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="center_horizontal">
+                                <io.lbry.browser.ui.controls.SolidIconView
+                                    android:textColor="@color/foreground"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_centerInParent="true"
+                                    android:textSize="20dp"
+                                    android:text="@string/fa_gift"/>
+                            </RelativeLayout>
                             <TextView
                                 android:fontFamily="@font/inter"
                                 android:textSize="12sp"
@@ -276,7 +302,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/file_vew_action_repost"
+                            android:id="@+id/file_view_action_repost"
                             android:clickable="true"
                             android:background="?attr/selectableItemBackground"
                             android:layout_weight="1"
@@ -285,13 +311,19 @@
                             android:orientation="vertical"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp">
-                            <io.lbry.browser.ui.controls.SolidIconView
-                                android:textColor="@color/foreground"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center_horizontal"
-                                android:textSize="20dp"
-                                android:text="@string/fa_repost"/>
+                            <RelativeLayout
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="center_horizontal">
+                                <io.lbry.browser.ui.controls.SolidIconView
+                                    android:textColor="@color/foreground"
+                                    android:layout_centerInParent="true"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:textSize="20dp"
+                                    android:text="@string/fa_repost"/>
+                            </RelativeLayout>
                             <TextView
                                 android:fontFamily="@font/inter"
                                 android:textSize="12sp"
@@ -311,18 +343,60 @@
                             android:orientation="vertical"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp"
-                            android:visibility="gone"
-                            >
-                            <ImageView
-                                android:tint="@color/foreground"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/ic_edit" />
+                            android:visibility="gone">
+                            <RelativeLayout
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="center_horizontal">
+                                <ImageView
+                                    android:tint="@color/foreground"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/ic_edit" />
+                            </RelativeLayout>
                             <TextView
                                 android:fontFamily="@font/inter"
                                 android:textSize="12sp"
                                 android:text="@string/edit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/file_view_action_download"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
+                            <RelativeLayout
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="center_horizontal">
+                                <ProgressBar
+                                    android:id="@+id/file_view_download_progress"
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    style="?android:progressBarStyleHorizontal"
+                                    android:progressDrawable="@drawable/determinate_progress_circle"
+                                    android:visibility="gone" />
+                                <ImageView
+                                    android:id="@+id/file_view_action_download_icon"
+                                    android:tint="@color/foreground"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/ic_download" />
+                            </RelativeLayout>
+                            <TextView
+                                android:fontFamily="@font/inter"
+                                android:textSize="12sp"
+                                android:text="@string/download"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal" />
@@ -339,41 +413,21 @@
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp"
                             android:visibility="gone">
-                            <ImageView
-                                android:tint="@color/foreground"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/ic_delete" />
+                            <RelativeLayout
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="center_horizontal">
+                                <ImageView
+                                    android:tint="@color/foreground"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/ic_delete" />
+                            </RelativeLayout>
                             <TextView
                                 android:fontFamily="@font/inter"
                                 android:textSize="12sp"
                                 android:text="@string/delete"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/file_view_action_download"
-                            android:clickable="true"
-                            android:background="?attr/selectableItemBackground"
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp">
-                            <ImageView
-                                android:tint="@color/foreground"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/ic_download" />
-                            <TextView
-                                android:fontFamily="@font/inter"
-                                android:textSize="12sp"
-                                android:text="@string/download"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal" />
@@ -389,12 +443,17 @@
                             android:orientation="vertical"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp">
-                            <ImageView
-                                android:tint="@color/foreground"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/ic_report" />
+                            <RelativeLayout
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="center_horizontal">
+                                <ImageView
+                                    android:tint="@color/foreground"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/ic_report" />
+                            </RelativeLayout>
                             <TextView
                                 android:fontFamily="@font/inter"
                                 android:textSize="12sp"
@@ -410,7 +469,7 @@
                         android:layout_width="match_parent"
                         android:layout_marginTop="12dp"
                         android:layout_marginBottom="12dp"
-                        android:layout_height="1dp" />
+                        android:layout_height="0.5dp" />
 
                     <RelativeLayout
                         android:id="@+id/file_view_publisher_area"
@@ -436,14 +495,16 @@
                                 android:fontFamily="@font/inter"
                                 android:textFontWeight="600" />
                         </LinearLayout>
-                        <ImageButton
-                            android:background="@null"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_following"
-                            android:tint="@color/red" />
+                        <io.lbry.browser.ui.controls.SolidIconView
+                            android:id="@+id/file_view_icon_follow_unfollow"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:text="@string/fa_heart"
+                            android:textColor="@color/red"
+                            android:textSize="20dp" />
                     </RelativeLayout>
 
                     <View
@@ -451,7 +512,7 @@
                         android:layout_width="match_parent"
                         android:layout_marginTop="12dp"
                         android:layout_marginBottom="12dp"
-                        android:layout_height="1dp" />
+                        android:layout_height="0.5dp" />
 
                     <LinearLayout
                         android:id="@+id/file_view_description_area"
@@ -466,6 +527,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter"
                             android:autoLink="all"
+                            android:textColorLink="@color/lbryGreen"
                             android:textFontWeight="300"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp" />
@@ -499,7 +561,7 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="12dp"
                             android:layout_marginBottom="12dp"
-                            android:layout_height="1dp" />
+                            android:layout_height="0.5dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -549,6 +611,18 @@
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/file_view_imageviewer_container"
+            android:background="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <com.github.chrisbanes.photoview.PhotoView
+                android:id="@+id/file_view_imageviewer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
 
         <include layout="@layout/floating_wallet_balance" />
     </androidx.constraintlayout.widget.ConstraintLayout>

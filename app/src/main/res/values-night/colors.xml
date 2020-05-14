@@ -52,7 +52,7 @@
     <color name="statsImage">#FF4A7D</color>
     <color name="statsOther">#26BCF7</color>
 
-    <color name="thumbnailPlaceholder">#D5D5D5</color>
+    <color name="thumbnailPlaceholder">#252525</color>
 
     <color name="caption">#CAEDB9</color>
     <color name="overlay">#CC333333</color>

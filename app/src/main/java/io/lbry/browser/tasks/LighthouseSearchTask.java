@@ -9,6 +9,7 @@ import java.util.List;
 import io.lbry.browser.exceptions.LbryRequestException;
 import io.lbry.browser.exceptions.LbryResponseException;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lighthouse;
 

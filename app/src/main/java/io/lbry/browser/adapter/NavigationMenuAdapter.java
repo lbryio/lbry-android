@@ -16,6 +16,7 @@ import java.util.List;
 import io.lbry.browser.R;
 import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.ui.controls.SolidIconView;
+import io.lbry.browser.utils.Helper;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,6 +39,16 @@ public class NavigationMenuAdapter extends RecyclerView.Adapter<NavigationMenuAd
         for (NavMenuItem item : menuItems) {
             if (item.getId() == id) {
                 this.currentItem = item;
+                break;
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public void setExtraLabelForItem(int id, String extraLabel) {
+        for (NavMenuItem item : menuItems) {
+            if (item.getId() == id) {
+                item.setExtraLabel(extraLabel);
                 break;
             }
         }
@@ -84,7 +95,8 @@ public class NavigationMenuAdapter extends RecyclerView.Adapter<NavigationMenuAd
     public void onBindViewHolder(ViewHolder vh, int position) {
         int type = getItemViewType(position);
         NavMenuItem item = menuItems.get(position);
-        vh.titleView.setText(item.getTitle());
+        String displayTitle = !Helper.isNullOrEmpty(item.getExtraLabel()) ? String.format("%s (%s)", item.getTitle(), item.getExtraLabel()) : item.getTitle();
+        vh.titleView.setText(displayTitle);
         if (type == TYPE_ITEM && vh.iconView != null) {
             vh.iconView.setText(item.getIcon());
         }

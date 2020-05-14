@@ -79,7 +79,57 @@ public class Claim {
     private String repostChannelUrl;
     private boolean isChannelSignatureValid;
     private GenericMetadata value;
-    private File file; // associated file if it exists
+    private LbryFile file; // associated file if it exists
+
+    public static Claim claimFromOutput(JSONObject item) {
+        // we only need name, permanent_url, txid and nout
+        Claim claim = new Claim();
+        claim.setClaimId(Helper.getJSONString("claim_id", null, item));
+        claim.setName(Helper.getJSONString("name", null, item));
+        claim.setPermanentUrl(Helper.getJSONString("permanent_url", null, item));
+        claim.setTxid(Helper.getJSONString("txid", null, item));
+        claim.setNout(Helper.getJSONInt("nout", -1, item));
+        return claim;
+    }
+
+    public boolean isFree() {
+        if (!(value instanceof StreamMetadata)) {
+            return true;
+        }
+
+        Fee fee = ((StreamMetadata) value).getFee();
+        return fee == null || Helper.parseDouble(fee.getAmount(), 0) == 0;
+    }
+
+    public String getMediaType() {
+        if (value instanceof StreamMetadata) {
+            StreamMetadata metadata = (StreamMetadata) value;
+            String mediaType = metadata.getSource() != null ? metadata.getSource().getMediaType() : null;
+            return mediaType;
+        }
+        return null;
+    }
+
+    public boolean isPlayable() {
+        if (value instanceof StreamMetadata) {
+            StreamMetadata metadata = (StreamMetadata) value;
+            String mediaType = metadata.getSource() != null ? metadata.getSource().getMediaType() : null;
+            if (mediaType != null) {
+                return mediaType.startsWith("video") || mediaType.startsWith("audio");
+            }
+        }
+        return false;
+    }
+    public boolean isViewable() {
+        if (value instanceof StreamMetadata) {
+            StreamMetadata metadata = (StreamMetadata) value;
+            String mediaType = metadata.getSource() != null ? metadata.getSource().getMediaType() : null;
+            if (mediaType != null) {
+                return mediaType.startsWith("image") || mediaType.startsWith("text");
+            }
+        }
+        return false;
+    }
 
     public String getThumbnailUrl() {
         if (value != null && value.getThumbnail() != null) {

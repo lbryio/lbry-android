@@ -31,6 +31,36 @@
 
     <include layout="@layout/floating_wallet_balance" />
 
+    <RelativeLayout
+        android:id="@+id/global_sdk_initializing_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lbryGreen"
+        android:elevation="12dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+            <ProgressBar
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/sdk_initializing"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+        </LinearLayout>
+    </RelativeLayout>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/global_now_playing_card"
         android:clickable="true"
@@ -41,7 +71,7 @@
         android:layout_marginBottom="4dp"
         android:visibility="gone"
         app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/global_sdk_initializing_status">
         <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

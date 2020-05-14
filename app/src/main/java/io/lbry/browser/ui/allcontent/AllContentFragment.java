@@ -33,7 +33,7 @@ import io.lbry.browser.dialog.CustomizeTagsDialogFragment;
 import io.lbry.browser.listener.TagListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.Tag;
-import io.lbry.browser.tasks.ClaimSearchTask;
+import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.tasks.FollowUnfollowTagTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;

@@ -43,6 +43,9 @@ import okhttp3.Response;
 @Data
 public final class Lbryio {
 
+    // TODO: Get this from the bundled aar
+    public static String SDK_VERSION = "0.73.1";
+
     public static User currentUser;
     public static boolean userHasSyncedWallet = false;
     public static String lastRemoteHash;
@@ -212,7 +215,7 @@ public final class Lbryio {
         options.put("app_version", appVersion);
         options.put("app_id", Lbry.INSTALLATION_ID);
         options.put("node_id", "");
-        options.put("daemon_version", "0.67.1");
+        options.put("daemon_version", SDK_VERSION);
         options.put("operating_system", "android");
         options.put("platform", String.format("Android %s (API %d)", Utils.getAndroidRelease(), Utils.getAndroidSdk()));
         try {

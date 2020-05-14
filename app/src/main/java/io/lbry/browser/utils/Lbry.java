@@ -1,18 +1,10 @@
 package io.lbry.browser.utils;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,12 +21,10 @@ import io.lbry.browser.exceptions.LbryResponseException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.ClaimSearchCacheValue;
-import io.lbry.browser.model.File;
+import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.Transaction;
 import io.lbry.browser.model.WalletBalance;
-import io.lbry.browser.model.lbryinc.Reward;
-import io.lbry.browser.model.lbryinc.User;
 import io.lbry.lbrysdk.Utils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -68,11 +58,13 @@ public final class Lbry {
     public static final String METHOD_RESOLVE = "resolve";
     public static final String METHOD_CLAIM_SEARCH = "claim_search";
     public static final String METHOD_FILE_LIST = "file_list";
+    public static final String METHOD_FILE_DELETE = "file_delete";
     public static final String METHOD_GET = "get";
 
     public static final String METHOD_WALLET_BALANCE = "wallet_balance";
     public static final String METHOD_WALLET_ENCRYPT = "wallet_encrypt";
     public static final String METHOD_WALLET_DECRYPT = "wallet_decrypt";
+    public static final String METHOD_VERSION = "version";
 
     public static final String METHOD_WALLET_LIST = "wallet_list";
     public static final String METHOD_WALLET_SEND = "wallet_send";
@@ -95,6 +87,7 @@ public final class Lbry {
     public static final String METHOD_CHANNEL_UPDATE = "channel_update";
 
     public static final String METHOD_CLAIM_LIST = "claim_list";
+    public static final String METHOD_STREAM_REPOST = "stream_repost";
 
     public static KeyStore KEYSTORE;
     public static boolean SDK_READY = false;
@@ -205,7 +198,7 @@ public final class Lbry {
             } else {
                 errorMessage = ((JSONObject) jsonError).getString("message");
             }
-            throw new LbryResponseException(json.getString("error"));
+            throw new LbryResponseException(!Helper.isNullOrEmpty(errorMessage) ? errorMessage : json.getString("error"));
         } else {
             throw new LbryResponseException("Protocol error with unknown response signature.");
         }
@@ -284,13 +277,13 @@ public final class Lbry {
         return transactions;
     }
 
-    public static File get(boolean saveFile) throws ApiCallException {
-        File file = null;
+    public static LbryFile get(boolean saveFile) throws ApiCallException {
+        LbryFile file = null;
         Map<String, Object> params = new HashMap<>();
         params.put("save_file", saveFile);
         try {
             JSONObject result = (JSONObject) parseResponse(apiCall(METHOD_GET, params));
-            file = File.fromJSONObject(result);
+            file = LbryFile.fromJSONObject(result);
 
             if (file != null) {
                 String fileClaimId = file.getClaimId();
@@ -309,8 +302,8 @@ public final class Lbry {
         return file;
     }
 
-    public static List<File> fileList(String claimId) throws ApiCallException {
-        List<File> files = new ArrayList<>();
+    public static List<LbryFile> fileList(String claimId) throws ApiCallException {
+        List<LbryFile> files = new ArrayList<>();
         Map<String, Object> params = new HashMap<>();
         if (!Helper.isNullOrEmpty(claimId)) {
             params.put("claim_id", claimId);
@@ -320,7 +313,7 @@ public final class Lbry {
             JSONArray items = result.getJSONArray("items");
             for (int i = 0; i < items.length(); i++) {
                 JSONObject fileObject = items.getJSONObject(i);
-                File file = File.fromJSONObject(fileObject);
+                LbryFile file = LbryFile.fromJSONObject(fileObject);
                 files.add(file);
 
                 String fileClaimId = file.getClaimId();

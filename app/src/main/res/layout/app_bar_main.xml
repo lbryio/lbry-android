@@ -36,6 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/uri_placeholder"
+                    android:imeOptions="actionGo"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
                     android:textFontWeight="300"

@@ -110,7 +110,8 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
                     android:textSize="8dp"
-                    android:text="@string/fa_coins" />
+                    android:text="@string/fa_coins"
+                    android:textColor="@android:color/black"/>
                 <TextView
                     android:id="@+id/claim_fee"
                     android:layout_width="wrap_content"
@@ -118,6 +119,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="1dp"
                     android:fontFamily="@font/inter"
+                    android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:textFontWeight="300" />
             </LinearLayout>

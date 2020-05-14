@@ -1,6 +1,8 @@
 package io.lbry.browser.dialog;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -21,6 +23,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import io.lbry.browser.FileViewActivity;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.listener.WalletBalanceListener;
@@ -52,12 +55,18 @@ public class SendTipDialogFragment extends BottomSheetDialogFragment implements 
     }
 
     private void disableControls() {
-        getDialog().setCanceledOnTouchOutside(false);
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setCanceledOnTouchOutside(false);
+        }
         sendButton.setEnabled(false);
         cancelLink.setEnabled(false);
     }
     private void enableControls() {
-        getDialog().setCanceledOnTouchOutside(true);
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setCanceledOnTouchOutside(true);
+        }
         sendButton.setEnabled(true);
         cancelLink.setEnabled(true);
     }
@@ -155,15 +164,15 @@ public class SendTipDialogFragment extends BottomSheetDialogFragment implements 
     public void onResume() {
         super.onResume();
         Context context = getContext();
-        if (context instanceof MainActivity) {
-            ((MainActivity) context).addWalletBalanceListener(this);
+        if (context instanceof FileViewActivity) {
+            ((FileViewActivity) context).addWalletBalanceListener(this);
         }
     }
 
     public void onPause() {
         Context context = getContext();
-        if (context instanceof MainActivity) {
-            ((MainActivity) context).removeWalletBalanceListener(this);
+        if (context instanceof FileViewActivity) {
+            ((FileViewActivity) context).removeWalletBalanceListener(this);
         }
         super.onPause();
     }
@@ -176,8 +185,10 @@ public class SendTipDialogFragment extends BottomSheetDialogFragment implements 
     }
 
     private void showError(String message) {
-        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).setBackgroundTint(
-                ContextCompat.getColor(getContext(), R.color.red)).show();
+        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).
+                setBackgroundTint(Color.RED).
+                setTextColor(Color.WHITE).
+                show();
     }
 
     public interface SendTipListener {

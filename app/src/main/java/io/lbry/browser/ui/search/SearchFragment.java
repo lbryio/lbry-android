@@ -22,10 +22,10 @@ import io.lbry.browser.R;
 import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
-import io.lbry.browser.tasks.ClaimListResultHandler;
-import io.lbry.browser.tasks.ClaimSearchTask;
+import io.lbry.browser.tasks.claim.ClaimListResultHandler;
+import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.tasks.LighthouseSearchTask;
-import io.lbry.browser.tasks.ResolveTask;
+import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
@@ -129,6 +129,7 @@ public class SearchFragment extends BaseFragment implements
         claim.setName(query);
         claim.setFeatured(true);
         claim.setUnresolved(true);
+        claim.setConfirmations(1);
         return claim;
     }
 
@@ -150,7 +151,7 @@ public class SearchFragment extends BaseFragment implements
         ResolveTask task = new ResolveTask(vanityUrl, Lbry.LBRY_TV_CONNECTION_STRING, null, new ClaimListResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
-                if (claims.size() > 0) {
+                if (claims.size() > 0 && !Helper.isNullOrEmpty(claims.get(0).getClaimId())) {
                     Claim resolved = claims.get(0);
                     Lbry.claimCache.put(key, resolved);
                     updateFeaturedItemFromResolvedClaim(resolved);

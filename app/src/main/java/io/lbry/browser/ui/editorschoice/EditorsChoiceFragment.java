@@ -25,17 +25,14 @@ import java.util.Map;
 import io.lbry.browser.FileViewActivity;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
-import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.adapter.EditorsChoiceItemAdapter;
-import io.lbry.browser.dialog.ContentScopeDialogFragment;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.EditorsChoiceItem;
-import io.lbry.browser.tasks.ClaimSearchTask;
+import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
-import io.lbry.browser.utils.Predefined;
 
 public class EditorsChoiceFragment extends BaseFragment {
 

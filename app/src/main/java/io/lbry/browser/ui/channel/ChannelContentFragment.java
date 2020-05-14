@@ -28,7 +28,7 @@ import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
 import io.lbry.browser.model.Claim;
-import io.lbry.browser.tasks.ClaimSearchTask;
+import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.Predefined;

@@ -8,24 +8,17 @@
 
     <ImageButton
         android:id="@id/exo_play"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:layout_centerInParent="true"
         style="@style/ExoMediaButton.Play" />
 
     <ImageButton
         android:id="@id/exo_pause"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:layout_centerInParent="true"
         style="@style/ExoMediaButton.Pause" />
-
-    <ProgressBar
-        android:id="@+id/player_buffering_progress"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/player_toggle_full_screen"

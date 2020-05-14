@@ -22,7 +22,7 @@
         <View
             android:background="@color/lightDivider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_marginTop="16dp" />
 
         <LinearLayout
@@ -59,7 +59,7 @@
         <View
             android:background="@color/lightDivider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_marginBottom="14dp" />
 
         <LinearLayout
@@ -98,7 +98,7 @@
         <View
             android:background="@color/lightDivider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="12dp" />
 
@@ -115,14 +115,16 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/manual_backup" />
+                android:text="@string/manual_backup"
+                android:textColorLink="@color/lbryGreen" />
             <TextView
                 android:id="@+id/wallet_link_sync_faq"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="@string/sync_faq" />
+                android:text="@string/sync_faq"
+                android:textColorLink="@color/lbryGreen"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

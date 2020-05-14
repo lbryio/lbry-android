@@ -55,22 +55,32 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="download">Download</string>
+    <string name="open">Open</string>
     <string name="report">Report</string>
     <string name="loading_decentralized_data">Loading decentralized data...</string>
     <string name="related_content">Related Content</string>
     <string name="share_lbry_content">Share LBRY content</string>
     <string name="view">View</string>
     <string name="play">Play</string>
-    <plurals name="view_count">
-        <item quantity="one">%1$s view</item>
-        <item quantity="other">%1$s views</item>
-    </plurals>
     <string name="unsupported_content">Unsupported Content</string>
-    <string name="unsupported_content_desc">Sorry, we are unable to display this content in the app. You can find the file named %1$s in your downloads folder.</string>
+    <string name="unsupported_content_desc">Sorry, we are unable to display this content in the app. You can find the file %1$sin your downloads folder.</string>
     <string name="nothing_at_this_location">There\'s nothing at this location.</string>
     <string name="publish_something_here">Publish something here</string>
     <string name="cannot_view_claim">This content cannot be accessed at this time. Please try again later.</string>
     <string name="zero_duration">00:00</string>
+    <string name="claim_file_not_found">The file at "%1$s" does not exist.</string>
+    <string name="confirm_purchase">Confirm Purchase</string>
+    <string name="delete_file">Delete file</string>
+    <string name="confirm_delete_file_message">Are you sure you want to remove this file from your device?</string>
+    <string name="unable_to_view_url">Failed to load %1$s. Please try again later.</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s view</item>
+        <item quantity="other">%1$s views</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">This will purchase "%1$s" for %2$s credit</item>
+        <item quantity="other">This will purchase "%1$s" for %2$s credits</item>
+    </plurals>
 
     <!-- Channel view -->
     <string name="no_channel_info">There\'s nothing here yet.\nPlease check back later.</string>
@@ -215,7 +225,15 @@
     <string name="send_tip_info_content">This will appear as a tip for %1$s, which will boost its ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">This will appear as a tip for %1$s, which will boost the channel\'s ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Cancel</string>
-
+    <string name="repost_title">Repost %1$s</string>
+    <string name="repost_your_favorite">Repost your favorite content to help more people discover them!</string>
+    <string name="channel_to_post_on">Channel to post on</string>
+    <string name="show_advanced">Show advanced</string>
+    <string name="hide_advanced">Hide advanced</string>
+    <string name="name">Name</string>
+    <string name="min_repost_deposit">0.01</string>
+    <string name="content_successfully_reposted">The content was successfully reposted!</string>
+    <string name="repost_name_invalid_characters">The repost name contains invalid characters.</string>
     <plurals name="you_sent_a_tip">
         <item quantity="one">You sent %1$s credit as a tip, Mahalo!</item>
         <item quantity="other">You sent %1$s credits as a tip, Mahalo!</item>
@@ -344,6 +362,36 @@
     <string name="invite_link_copied">Invite link copied.</string>
     <string name="invite_sent_to">Invite sent to %1$s</string>
 
+    <!-- About -->
+    <string name="about_lbry">About LBRY</string>
+    <string name="content_freedom">Content Freedom</string>
+    <string name="about_paragraph">LBRY is a free, open, and community-run digital marketplace. It is a decentralized peer-to-peer content distribution platform for creators to upload and share content, and earn LBRY credits for their effort. Users will be able to find a wide selection of videos, music, ebooks and other digital content they are interested in.</string>
+    <string name="get_social">Get Social</string>
+    <string name="social_paragraph">You can interact with the LBRY team and members of the community on Discord, Facebook, Instagram, Twitter or Reddit.</string>
+    <string name="app_info">App info</string>
+    <string name="loading">Loading...</string>
+    <string name="about_link_what_is_lbry">&lt;a href="https://lbry.com/faq/what-is-lbry"&gt;What is LBRY?&lt;/a&gt;</string>
+    <string name="about_link_android_basics">&lt;a href="https://lbry.com/faq/android-basics"&gt;Android Basics&lt;/a&gt;</string>
+    <string name="about_link_faq">&lt;a href="https://lbry.com/faq"&gt;FAQ&lt;/a&gt;</string>
+    <string name="about_link_discord">&lt;a href="https://discordapp.com/invite/Z3bERWA"&gt;Discord&lt;/a&gt;</string>
+    <string name="about_link_facebook">&lt;a href="https://www.facebook.com/LBRYio"&gt;Facebook&lt;/a&gt;</string>
+    <string name="about_link_instagram">&lt;a href="https://www.instagram.com/LBRYio"&gt;Instagram&lt;/a&gt;</string>
+    <string name="about_link_reddit">&lt;a href="https://reddit.com/r/lbry"&gt;Reddit&lt;/a&gt;</string>
+    <string name="about_link_telegram">&lt;a href="https://t.me/lbryofficial"&gt;Telegram&lt;/a&gt;</string>
+    <string name="about_link_twitter">&lt;a href="https://twitter.com/LBRYio"&gt;Twitter&lt;/a&gt;</string>
+    <string name="update_mailing_preferences">Update mailing preferences</string>
+    <string name="app_version">App version</string>
+    <string name="lbry_sdk">LBRY SDK</string>
+    <string name="platform">Platform</string>
+    <string name="installation_id">Installation ID</string>
+    <string name="firebase_token">Firebase Token</string>
+    <string name="logs">Logs</string>
+    <string name="send_log">Send log</string>
+    <string name="connected_email">Connected email</string>
+    <string name="unknown">Unknown</string>
+    <string name="cannot_find_lbrynet_log">The lbrynet.log file could not be found.</string>
+    <string name="cannot_share_lbrynet_log">The lbrynet.log file cannot be shared due to permission restrictions.</string>
+
     <!-- Font Awesome -->
     <string name="fa_gift">&#xf06b;</string>
     <string name="fa_lock">&#xf023;</string>
@@ -366,4 +414,5 @@
     <string name="fa_cog">&#xf013;</string>
     <string name="fa_mobile_alt">&#xf3cd;</string>
     <string name="fa_repost">&#xf079;</string>
+    <string name="fa_folder_open">&#xf07c;</string>
 </resources>

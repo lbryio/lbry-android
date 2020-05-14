@@ -77,8 +77,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:fontFamily="@font/inter"
-            android:textSize="12sp"
-            android:text="@string/convert_credits" />
+            android:text="@string/convert_credits"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/wallet_hint_convert_credits_bittrex"
@@ -87,12 +88,13 @@
             android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
             android:fontFamily="@font/inter"
-            android:textSize="16sp"
-            android:text="@string/convert_credits_bittrex" />
+            android:text="@string/convert_credits_bittrex"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="16sp" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:background="@color/lightDivider" />

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.PictureInPictureParams;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -15,7 +16,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.service.voice.VoiceInteractionSession;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,21 +25,22 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -47,6 +48,10 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -58,42 +63,57 @@ import java.util.concurrent.TimeUnit;
 
 import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.adapter.TagListAdapter;
+import io.lbry.browser.dialog.RepostClaimDialogFragment;
 import io.lbry.browser.dialog.SendTipDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
+import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.Fee;
-import io.lbry.browser.model.File;
+import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.lbryinc.Reward;
-import io.lbry.browser.tasks.ClaimListResultHandler;
-import io.lbry.browser.tasks.ClaimSearchTask;
-import io.lbry.browser.tasks.FileListTask;
+import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.claim.ClaimListResultHandler;
+import io.lbry.browser.tasks.claim.ClaimSearchTask;
+import io.lbry.browser.tasks.file.DeleteFileTask;
+import io.lbry.browser.tasks.file.FileListTask;
 import io.lbry.browser.tasks.GenericTaskHandler;
+import io.lbry.browser.tasks.file.GetFileTask;
 import io.lbry.browser.tasks.LighthouseSearchTask;
-import io.lbry.browser.tasks.ResolveTask;
+import io.lbry.browser.tasks.claim.ResolveTask;
+import io.lbry.browser.tasks.lbryinc.ChannelSubscribeTask;
 import io.lbry.browser.tasks.lbryinc.ClaimRewardTask;
 import io.lbry.browser.tasks.lbryinc.FetchStatCountTask;
 import io.lbry.browser.tasks.lbryinc.LogFileViewTask;
+import io.lbry.browser.ui.controls.SolidIconView;
+import io.lbry.browser.ui.following.FollowingFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
+import io.lbry.browser.utils.Lbryio;
+import io.lbry.lbrysdk.DownloadManager;
+import io.lbry.lbrysdk.LbrynetService;
 
 public class FileViewActivity extends AppCompatActivity {
 
     public static FileViewActivity instance = null;
     private static final int RELATED_CONTENT_SIZE = 16;
-    private static final int SHARE_REQUEST_CODE = 3001;
     private static boolean startingShareActivity;
 
+    private boolean stopServiceReceived;
+    private boolean downloadInProgress;
+    private boolean downloadRequested;
+    private boolean walletBalanceInitialized;
+    private boolean inPictureInPictureMode;
     private boolean hasLoadedFirstBalance;
     private boolean loadFilePending;
     private boolean resolving;
+    private boolean initialFileLoadDone;
     private Claim claim;
     private String currentUrl;
     private ClaimListAdapter relatedContentAdapter;
-    private File file;
     private BroadcastReceiver sdkReceiver;
     private Player.EventListener fileViewPlayerListener;
 
@@ -103,14 +123,10 @@ public class FileViewActivity extends AppCompatActivity {
     private ScheduledExecutorService elapsedPlaybackScheduler;
     private boolean playbackStarted;
     private long startTimeMillis;
+    private GetFileTask getFileTask;
 
-    private View buttonShareAction;
-    private View buttonTipAction;
-    private View buttonRepostAction;
-    private View buttonDownloadAction;
-    private View buttonEditAction;
-    private View buttonDeleteAction;
-    private View buttonReportAction;
+    private List<WalletBalanceListener> walletBalanceListeners;
+    private BroadcastReceiver downloadEventReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,19 +156,22 @@ public class FileViewActivity extends AppCompatActivity {
         if (Lbry.claimCache.containsKey(key)) {
             claim = Lbry.claimCache.get(key);
             checkAndResetNowPlayingClaim();
-            file = claim.getFile();
-            if (file == null) {
+            if (claim.getFile() == null) {
                 loadFile();
             }
         }
         setContentView(R.layout.activity_file_view);
+        checkIsFileComplete();
 
         currentUrl = url;
         logUrlEvent(url);
         if (claim == null) {
+            MainActivity.clearNowPlayingClaim(this);
             resolveUrl(url);
         }
 
+        walletBalanceListeners = new ArrayList<>();
+        registerDownloadEventReceiver();
         registerSdkReceiver();
 
         fileViewPlayerListener = new Player.EventListener() {
@@ -181,6 +200,16 @@ public class FileViewActivity extends AppCompatActivity {
         initUi();
         onWalletBalanceUpdated();
         renderClaim();
+    }
+
+    public void addWalletBalanceListener(WalletBalanceListener listener) {
+        if (!walletBalanceListeners.contains(listener)) {
+            walletBalanceListeners.add(listener);
+        }
+    }
+
+    public void removeWalletBalanceListener(WalletBalanceListener listener) {
+        walletBalanceListeners.remove(listener);
     }
 
     private void logUrlEvent(String url) {
@@ -212,9 +241,11 @@ public class FileViewActivity extends AppCompatActivity {
                         view.setPlayer(null);
                         view.setPlayer(MainActivity.appPlayer);
                     }
+
                     return;
                 }
 
+                initialFileLoadDone = false;
                 currentUrl = newUrl;
                 logUrlEvent(newUrl);
                 resetViewCount();
@@ -228,13 +259,16 @@ public class FileViewActivity extends AppCompatActivity {
                 if (Lbry.claimCache.containsKey(key)) {
                     claim = Lbry.claimCache.get(key);
                     checkAndResetNowPlayingClaim();
-                    file = claim.getFile();
-                    if (file == null) {
+                    if (claim.getFile() == null) {
                         loadFile();
+                    } else {
+                        initialFileLoadDone = true;
+                        checkInitialFileLoadDone();
                     }
                     renderClaim();
                 } else {
                     findViewById(R.id.file_view_claim_display_area).setVisibility(View.INVISIBLE);
+                    MainActivity.clearNowPlayingClaim(this);
                     resolveUrl(newUrl);
                 }
             }
@@ -243,23 +277,42 @@ public class FileViewActivity extends AppCompatActivity {
 
     private void registerSdkReceiver() {
         IntentFilter filter = new IntentFilter();
+        filter.addAction(LbrynetService.ACTION_STOP_SERVICE);
         filter.addAction(MainActivity.ACTION_SDK_READY);
         filter.addAction(MainActivity.ACTION_WALLET_BALANCE_UPDATED);
         sdkReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
-                if (action.equalsIgnoreCase(MainActivity.ACTION_SDK_READY)) {
-                    // authenticate after we receive the sdk ready event
+                if (LbrynetService.ACTION_STOP_SERVICE.equalsIgnoreCase(action)) {
+                    stopServiceReceived = true;
+                    finish();
+                } else if (MainActivity.ACTION_SDK_READY.equalsIgnoreCase(action)) {
                     if (loadFilePending) {
                         loadFile();
                     }
-                } else if (action.equalsIgnoreCase(MainActivity.ACTION_WALLET_BALANCE_UPDATED)) {
+
+                    initFloatingWalletBalance();
+                } else if (MainActivity.ACTION_WALLET_BALANCE_UPDATED.equalsIgnoreCase(action)) {
                     onWalletBalanceUpdated();
                 }
             }
         };
         registerReceiver(sdkReceiver, filter);
+    }
+
+    private void initFloatingWalletBalance() {
+        if (walletBalanceInitialized) {
+            return;
+        }
+        findViewById(R.id.floating_balance_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendBroadcast(new Intent(MainActivity.ACTION_OPEN_WALLET_PAGE));
+                moveTaskToBack(true);
+            }
+        });
+        walletBalanceInitialized = true;
     }
 
     private void onWalletBalanceUpdated() {
@@ -272,12 +325,28 @@ public class FileViewActivity extends AppCompatActivity {
 
             ((TextView) findViewById(R.id.floating_balance_value)).setText(
                     Helper.shortCurrencyFormat(Lbry.walletBalance.getAvailable().doubleValue()));
+
+            for (WalletBalanceListener listener : walletBalanceListeners) {
+                if (listener != null) {
+                    listener.onWalletBalanceUpdated(Lbry.walletBalance);
+                }
+            }
         }
     }
 
     private String getStreamingUrl() {
-        if (file != null && !Helper.isNullOrEmpty(file.getStreamingUrl())) {
-            return file.getStreamingUrl();
+        LbryFile lbryFile = claim.getFile();
+        if (lbryFile != null) {
+            if (!Helper.isNullOrEmpty(lbryFile.getDownloadPath()) && lbryFile.isCompleted()) {
+                File file = new File(lbryFile.getDownloadPath());
+                if (file.exists()) {
+                    return Uri.fromFile(file).toString();
+                }
+            }
+
+            if (!Helper.isNullOrEmpty(lbryFile.getStreamingUrl())) {
+                return lbryFile.getStreamingUrl();
+            }
         }
 
         return buildLbryTvStreamingUrl();
@@ -295,28 +364,42 @@ public class FileViewActivity extends AppCompatActivity {
         }
 
         loadFilePending = false;
-        // TODO: Check if it's paid content and then wait for the user to explicitly request the file
         String claimId = claim.getClaimId();
         FileListTask task = new FileListTask(claimId, null, new FileListTask.FileListResultHandler() {
             @Override
-            public void onSuccess(List<File> files) {
+            public void onSuccess(List<LbryFile> files) {
                 if (files.size() > 0) {
-                    file = files.get(0);
-                    claim.setFile(file);
+                    claim.setFile(files.get(0));
+                    checkIsFileComplete();
                 }
+                initialFileLoadDone = true;
+                checkInitialFileLoadDone();
             }
 
             @Override
             public void onError(Exception error) {
-
+                initialFileLoadDone = true;
+                checkInitialFileLoadDone();
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    private void checkInitialFileLoadDone() {
+        if (initialFileLoadDone) {
+            restoreMainActionButton();
+        }
+        if (claim != null && claim.isFree()) {
+            onMainActionButtonClicked();
+        }
+    }
+
     protected void onResume() {
         super.onResume();
         MainActivity.startingFileViewActivity = false;
+        if (Lbry.SDK_READY) {
+            initFloatingWalletBalance();
+        }
     }
 
     private void resolveUrl(String url) {
@@ -326,7 +409,7 @@ public class FileViewActivity extends AppCompatActivity {
         ResolveTask task = new ResolveTask(url, Lbry.LBRY_TV_CONNECTION_STRING, loadingView, new ClaimListResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
-                if (claims.size() > 0) {
+                if (claims.size() > 0 && !Helper.isNullOrEmpty(claims.get(0).getClaimId())) {
                     claim = claims.get(0);
                     if (Claim.TYPE_REPOST.equalsIgnoreCase(claim.getValueType())) {
                         claim = claim.getRepostedClaim();
@@ -339,6 +422,8 @@ public class FileViewActivity extends AppCompatActivity {
                     checkAndResetNowPlayingClaim();
                     loadFile();
                     renderClaim();
+                } else {
+                    // render nothing at location
                 }
             }
 
@@ -415,6 +500,93 @@ public class FileViewActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.file_view_action_repost).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Lbry.SDK_READY) {
+                    Snackbar.make(findViewById(R.id.file_view_claim_display_area), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (claim != null) {
+                    RepostClaimDialogFragment dialog = RepostClaimDialogFragment.newInstance();
+                    dialog.setClaim(claim);
+                    dialog.setListener(new RepostClaimDialogFragment.RepostClaimListener() {
+                        @Override
+                        public void onClaimReposted(Claim claim) {
+                            Snackbar.make(findViewById(R.id.file_view_claim_display_area), R.string.content_successfully_reposted, Snackbar.LENGTH_LONG).show();
+                        }
+                    });
+                    dialog.show(getSupportFragmentManager(), RepostClaimDialogFragment.TAG);
+                }
+            }
+        });
+
+        findViewById(R.id.file_view_action_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Lbry.SDK_READY) {
+                    Snackbar.make(findViewById(R.id.file_view_claim_display_area), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(FileViewActivity.this).
+                        setTitle(R.string.delete_file).
+                        setMessage(R.string.confirm_delete_file_message)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deleteClaimFile();
+                            }
+                        }).setNegativeButton(R.string.no, null);
+                builder.show();
+            }
+        });
+
+        findViewById(R.id.file_view_action_download).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Lbry.SDK_READY) {
+                    Snackbar.make(findViewById(R.id.file_view_claim_display_area), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (claim != null) {
+                    if (downloadInProgress) {
+                        onDownloadAborted();
+
+                        // file is already downloading and not completed
+                        Intent intent = new Intent(LbrynetService.ACTION_DELETE_DOWNLOAD);
+                        intent.putExtra("uri", claim.getPermanentUrl());
+                        intent.putExtra("nativeDelete", true);
+                        sendBroadcast(intent);
+                    } else {
+                        downloadInProgress = true;
+                        Helper.setViewVisibility(findViewById(R.id.file_view_download_progress), View.VISIBLE);
+                        ((ImageView) findViewById(R.id.file_view_action_download_icon)).setImageResource(R.drawable.ic_stop);
+
+                        if (!claim.isFree()) {
+                            downloadRequested = true;
+                            onMainActionButtonClicked();
+                        } else {
+                            // download the file
+                            fileGet(true);
+                        }
+                    }
+                }
+            }
+        });
+
+        findViewById(R.id.file_view_action_report).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (claim != null) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://lbry.com/dmca/%s", claim.getClaimId())));
+                    startActivity(intent);
+                }
+            }
+        });
+
         findViewById(R.id.player_toggle_full_screen).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -427,10 +599,87 @@ public class FileViewActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.file_view_publisher_name).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (claim != null && claim.getSigningChannel() != null) {
+                    Claim publisher = claim.getSigningChannel();
+                    Intent intent = new Intent(MainActivity.ACTION_OPEN_CHANNEL_URL);
+                    intent.putExtra("url", !Helper.isNullOrEmpty(publisher.getShortUrl()) ? publisher.getShortUrl() : publisher.getPermanentUrl());
+                    sendBroadcast(intent);
+                    moveTaskToBack(true);
+                }
+            }
+        });
+
+        View buttonFollowUnfollow = findViewById(R.id.file_view_icon_follow_unfollow);
+        buttonFollowUnfollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (claim != null && claim.getSigningChannel() != null) {
+                    Claim publisher = claim.getSigningChannel();
+                    boolean isFollowing = Lbryio.isFollowing(publisher);
+                    Subscription subscription = Subscription.fromClaim(publisher);
+                    buttonFollowUnfollow.setEnabled(false);
+                    new ChannelSubscribeTask(FileViewActivity.this, publisher.getClaimId(), subscription, isFollowing, new ChannelSubscribeTask.ChannelSubscribeHandler() {
+                        @Override
+                        public void onSuccess() {
+                            if (isFollowing) {
+                                Lbryio.removeSubscription(subscription);
+                                Lbryio.removeCachedResolvedSubscription(publisher);
+                            } else {
+                                Lbryio.addSubscription(subscription);
+                                Lbryio.addCachedResolvedSubscription(publisher);
+                            }
+                            buttonFollowUnfollow.setEnabled(true);
+                            checkIsFollowing();
+                            FollowingFragment.resetClaimSearchContent = true;
+
+                            // Save shared user state
+                            sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+                            buttonFollowUnfollow.setEnabled(true);
+                        }
+                    }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+            }
+        });
+
         RecyclerView relatedContentList = findViewById(R.id.file_view_related_content_list);
         relatedContentList.setNestedScrollingEnabled(false);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         relatedContentList.setLayoutManager(llm);
+    }
+
+    private void deleteClaimFile() {
+        if (claim != null) {
+            View actionDelete = findViewById(R.id.file_view_action_delete);
+            DeleteFileTask task = new DeleteFileTask(claim.getClaimId(), new GenericTaskHandler() {
+                @Override
+                public void beforeStart() {
+                    actionDelete.setEnabled(false);
+                }
+
+                @Override
+                public void onSuccess() {
+                    actionDelete.setVisibility(View.GONE);
+                    findViewById(R.id.file_view_action_download).setVisibility(View.VISIBLE);
+                    findViewById(R.id.file_view_unsupported_container).setVisibility(View.GONE);
+                    actionDelete.setEnabled(true);
+                    restoreMainActionButton();
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    actionDelete.setEnabled(true);
+                    showError(error.getMessage());
+                }
+            });
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 
     private void renderClaim() {
@@ -439,6 +688,7 @@ public class FileViewActivity extends AppCompatActivity {
         }
 
         loadViewCount();
+        checkIsFollowing();
 
         ((NestedScrollView) findViewById(R.id.file_view_scroll_view)).scrollTo(0, 0);
         findViewById(R.id.file_view_claim_display_area).setVisibility(View.VISIBLE);
@@ -497,7 +747,6 @@ public class FileViewActivity extends AppCompatActivity {
             }
         });
 
-        boolean isFree = true;
         if (metadata instanceof Claim.StreamMetadata) {
             Claim.StreamMetadata streamMetadata = (Claim.StreamMetadata) metadata;
             long publishTime = streamMetadata.getReleaseTime() > 0 ? streamMetadata.getReleaseTime() * 1000 : claim.getTimestamp() * 1000;
@@ -506,23 +755,23 @@ public class FileViewActivity extends AppCompatActivity {
 
             Fee fee = streamMetadata.getFee();
             if (fee != null && Helper.parseDouble(fee.getAmount(), 0) > 0) {
-                isFree = false;
                 findViewById(R.id.file_view_fee_container).setVisibility(View.VISIBLE);
                 ((TextView) findViewById(R.id.file_view_fee)).setText(Helper.shortCurrencyFormat(Helper.parseDouble(fee.getAmount(), 0)));
             }
 
-            MaterialButton mainActionButton = findViewById(R.id.file_view_main_action_button);
-            String mediaType = streamMetadata.getSource().getMediaType();
-            if (mediaType.startsWith("audio") || mediaType.startsWith("video")) {
-                mainActionButton.setText(R.string.play);
-            } else if (mediaType.startsWith("text") || mediaType.startsWith("image")) {
-                mainActionButton.setText(R.string.view);
-            } else {
-                mainActionButton.setText(R.string.download);
-            }
+
         }
 
-        if (isFree) {
+        MaterialButton mainActionButton = findViewById(R.id.file_view_main_action_button);
+        if (claim.isPlayable()) {
+            mainActionButton.setText(R.string.play);
+        } else if (claim.isViewable()) {
+            mainActionButton.setText(R.string.view);
+        } else {
+            mainActionButton.setText(R.string.download);
+        }
+
+        if (claim.isFree() && (claim.isPlayable() || claim.isViewable())) {
             onMainActionButtonClicked();
         }
 
@@ -531,13 +780,18 @@ public class FileViewActivity extends AppCompatActivity {
 
     private void showUnsupportedView() {
         findViewById(R.id.file_view_exoplayer_container).setVisibility(View.GONE);
-
         findViewById(R.id.file_view_unsupported_container).setVisibility(View.VISIBLE);
+        String fileNameString = "";
+        if (claim.getFile() != null) {
+            LbryFile lbryFile = claim.getFile();
+            File file = new File(lbryFile.getDownloadPath());
+            fileNameString = String.format("\"%s\" ", file.getName());
+        }
+        ((TextView) findViewById(R.id.file_view_unsupported_text)).setText(getString(R.string.unsupported_content_desc, fileNameString));
     }
 
     private void showExoplayerView() {
         findViewById(R.id.file_view_unsupported_container).setVisibility(View.GONE);
-
         findViewById(R.id.file_view_exoplayer_container).setVisibility(View.VISIBLE);
     }
 
@@ -545,15 +799,14 @@ public class FileViewActivity extends AppCompatActivity {
         boolean newPlayerCreated = false;
         if (MainActivity.appPlayer == null) {
             MainActivity.appPlayer = new SimpleExoPlayer.Builder(this).build();
-            MainActivity.appPlayer.setPlayWhenReady(true);
-            MainActivity.appPlayer.addListener(fileViewPlayerListener);
 
             newPlayerCreated = true;
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
+
 
         PlayerView view = findViewById(R.id.file_view_exoplayer_view);
         view.setPlayer(MainActivity.appPlayer);
-
         if (MainActivity.nowPlayingClaim != null &&
                 MainActivity.nowPlayingClaim.getClaimId().equalsIgnoreCase(claim.getClaimId()) &&
                 !newPlayerCreated) {
@@ -563,12 +816,17 @@ public class FileViewActivity extends AppCompatActivity {
 
         resetPlayer();
         showBuffering();
+
+        MainActivity.appPlayer.addListener(fileViewPlayerListener);
         MainActivity.setNowPlayingClaim(claim, FileViewActivity.this);
         String userAgent = Util.getUserAgent(this, getString(R.string.app_name));
+
+        String mediaSourceUrl = getStreamingUrl();
         MediaSource mediaSource = new ProgressiveMediaSource.Factory(
                 new DefaultDataSourceFactory(this, userAgent),
                 new DefaultExtractorsFactory()
-        ).createMediaSource(Uri.parse(getStreamingUrl()));
+        ).createMediaSource(Uri.parse(mediaSourceUrl));
+        MainActivity.appPlayer.setPlayWhenReady(true);
         MainActivity.appPlayer.prepare(mediaSource, true, true);
     }
 
@@ -608,12 +866,12 @@ public class FileViewActivity extends AppCompatActivity {
         Claim.GenericMetadata metadata = claim.getValue();
         if (metadata instanceof Claim.StreamMetadata) {
             Claim.StreamMetadata streamMetadata = (Claim.StreamMetadata) metadata;
-
-            Fee fee = streamMetadata.getFee();
-            if (fee != null && Helper.parseDouble(fee.getAmount(), 0) > 0) {
-                // not free, perform a purchase
-
+            if (claim.getFile() == null && !claim.isFree()) {
+                // not free (and the user does not own the claim yet), perform a purchase
+                confirmPurchaseUrl();
             } else {
+                findViewById(R.id.file_view_main_action_button).setVisibility(View.INVISIBLE);
+                findViewById(R.id.file_view_main_action_loading).setVisibility(View.VISIBLE);
                 handleMainActionForClaim();
             }
         } else {
@@ -621,32 +879,141 @@ public class FileViewActivity extends AppCompatActivity {
         }
     }
 
-    private void handleMainActionForClaim() {
-        startTimeMillis = System.currentTimeMillis();
-        Claim.GenericMetadata metadata = claim.getValue();
-        if (metadata instanceof Claim.StreamMetadata) {
-            Claim.StreamMetadata streamMetadata = (Claim.StreamMetadata) metadata;
-            // Check the metadata type
-            String mediaType = streamMetadata.getSource().getMediaType();
-            // Use Exoplayer view if it's video / audio
-            if (mediaType.startsWith("audio") || mediaType.startsWith("video")) {
-                showExoplayerView();
-                playMedia();
-            } else if (mediaType.startsWith("text")) {
+    private void confirmPurchaseUrl() {
+        if (claim != null) {
+            Fee fee = ((Claim.StreamMetadata) claim.getValue()).getFee();
+            double cost = Helper.parseDouble(fee.getAmount(), 0);
+            String message = getResources().getQuantityString(R.plurals.confirm_purchase_message, cost == 1 ? 1 : 2, claim.getTitle(), cost);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this).
+                    setTitle(R.string.confirm_purchase).
+                    setMessage(message)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("uri", currentUrl);
+                            LbryAnalytics.logEvent(LbryAnalytics.EVENT_PURCHASE_URI, bundle);
 
-            } else if (mediaType.startsWith("image")) {
-
-            } else {
-                // unsupported type
-                showUnsupportedView();
-            }
-        } else {
-            showError(getString(R.string.cannot_view_claim));
+                            findViewById(R.id.file_view_main_action_button).setVisibility(View.INVISIBLE);
+                            findViewById(R.id.file_view_main_action_loading).setVisibility(View.VISIBLE);
+                            handleMainActionForClaim();
+                        }
+                    }).setNegativeButton(R.string.no, null);
+            builder.show();
         }
     }
 
-    private void showError(String message) {
-        Snackbar.make(findViewById(R.id.file_view_claim_display_area), message, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
+    private void handleMainActionForClaim() {
+        if (Lbry.SDK_READY) {
+            // Check if the file already exists for the claim
+            if (claim.getFile() != null) {
+                playOrViewMedia();
+            } else {
+                fileGet(downloadRequested || !claim.isPlayable());
+                downloadRequested = false;
+            }
+        } else {
+            if (claim.isPlayable()) {
+                startTimeMillis = System.currentTimeMillis();
+                showExoplayerView();
+                playMedia();
+            } else {
+                Snackbar.make(findViewById(R.id.file_view_global_layout), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void fileGet(boolean save) {
+        if (getFileTask != null && getFileTask.getStatus() != AsyncTask.Status.FINISHED) {
+            return;
+        }
+        getFileTask = new GetFileTask(claim.getPermanentUrl(), save, null, new GetFileTask.GetFileHandler() {
+            @Override
+            public void beforeStart() {
+
+            }
+
+            @Override
+            public void onSuccess(LbryFile file, boolean saveFile) {
+                // queue the download
+                if (claim != null) {
+                    if (!claim.isPlayable()) {
+                        logFileView(claim.getPermanentUrl(), 0);
+                    }
+
+                    claim.setFile(file);
+                    if (saveFile) {
+                        // download
+                        String outpoint = String.format("%s:%d", claim.getTxid(), claim.getNout());
+                        Intent intent = new Intent(LbrynetService.ACTION_QUEUE_DOWNLOAD);
+                        intent.putExtra("outpoint", outpoint);
+                        sendBroadcast(intent);
+                    } else {
+                        // streaming
+                        playOrViewMedia();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                showError(getString(R.string.unable_to_view_url, currentUrl));
+                restoreMainActionButton();
+            }
+        });
+        getFileTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void playOrViewMedia() {
+        boolean handled = false;
+        String mediaType = claim.getMediaType();
+        if (!Helper.isNullOrEmpty(mediaType)) {
+            if (claim.isPlayable()) {
+                startTimeMillis = System.currentTimeMillis();
+                showExoplayerView();
+                playMedia();
+                handled = true;
+            } else if (claim.isViewable()) {
+                // check type and display
+                if (mediaType.startsWith("image")) {
+                    // display the image
+                    View container = findViewById(R.id.file_view_imageviewer_container);
+                    PhotoView photoView = findViewById(R.id.file_view_imageviewer);
+
+                    boolean fileExists = false;
+                    LbryFile claimFile = claim.getFile();
+                    if (claimFile != null && !Helper.isNullOrEmpty(claimFile.getDownloadPath())) {
+                        File file = new File(claimFile.getDownloadPath());
+                        fileExists = file.exists();
+
+                        if (fileExists) {
+                            Uri fileUri = Uri.fromFile(file);
+                            Glide.with(getApplicationContext()).load(fileUri).centerInside().into(photoView);
+                            hideFloatingWalletBalance();
+                            container.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    if (!fileExists) {
+                        showError(getString(R.string.claim_file_not_found, claimFile != null ? claimFile.getDownloadPath() : ""));
+                    }
+                } else if (mediaType.startsWith("text")) {
+                    // show browser (and parse markdown too)
+                }
+                handled = true;
+            }
+        }
+
+        if (!handled) {
+            showUnsupportedView();
+        }
+    }
+
+    public void showError(String message) {
+        Snackbar.make(findViewById(R.id.file_view_claim_display_area), message, Snackbar.LENGTH_LONG).
+                setTextColor(Color.WHITE).
+                setBackgroundTint(Color.RED).
+                show();
     }
 
     private void loadRelatedContent() {
@@ -674,11 +1041,19 @@ public class FileViewActivity extends AppCompatActivity {
                 relatedContentAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
                     @Override
                     public void onClaimClicked(Claim claim) {
-                        Intent intent = new Intent(FileViewActivity.this, FileViewActivity.class);
-                        intent.putExtra("claimId", claim.getClaimId());
-                        intent.putExtra("url", claim.getPermanentUrl());
-                        MainActivity.startingFileViewActivity = true;
-                        startActivity(intent);
+                        if (claim.getName().startsWith("@")) {
+                            // opening a channel
+                            Intent intent = new Intent(MainActivity.ACTION_OPEN_CHANNEL_URL);
+                            intent.putExtra("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
+                            sendBroadcast(intent);
+                            moveTaskToBack(true);
+                        } else {
+                            Intent intent = new Intent(FileViewActivity.this, FileViewActivity.class);
+                            intent.putExtra("claimId", claim.getClaimId());
+                            intent.putExtra("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
+                            MainActivity.startingFileViewActivity = true;
+                            startActivity(intent);
+                        }
                     }
                 });
 
@@ -703,13 +1078,30 @@ public class FileViewActivity extends AppCompatActivity {
             return;
         }
 
+        if (isImageViewerVisible()) {
+            findViewById(R.id.file_view_imageviewer_container).setVisibility(View.GONE);
+            return;
+        }
+
         MainActivity.mainActive = true;
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
+    private boolean isImageViewerVisible() {
+        return findViewById(R.id.file_view_imageviewer_container).getVisibility() == View.VISIBLE;
+    }
+
+    private boolean isWebViewVisible() {
+        return false;
+    }
+
     protected void onUserLeaveHint() {
+        if (stopServiceReceived) {
+            return;
+        }
+
         if (startingShareActivity) {
             // share activity triggered this, so reset the flag at this point
             new Handler().postDelayed(new Runnable() {
@@ -727,20 +1119,25 @@ public class FileViewActivity extends AppCompatActivity {
     }
 
     protected void onStop() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            if (isInPictureInPictureMode() && MainActivity.appPlayer != null) {
-                MainActivity.appPlayer.setPlayWhenReady(false);
-            }
+        if (inPictureInPictureMode && MainActivity.appPlayer != null) {
+            MainActivity.appPlayer.setPlayWhenReady(false);
         }
         super.onStop();
     }
 
+
     protected void onDestroy() {
+        Helper.unregisterReceiver(downloadEventReceiver, this);
         Helper.unregisterReceiver(sdkReceiver, this);
         if (MainActivity.appPlayer != null && fileViewPlayerListener != null) {
             MainActivity.appPlayer.removeListener(fileViewPlayerListener);
         }
         instance = null;
+
+        if (stopServiceReceived) {
+            MainActivity.stopExoplayer();
+        }
+
         super.onDestroy();
     }
 
@@ -757,6 +1154,7 @@ public class FileViewActivity extends AppCompatActivity {
 
     @Override
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
+        inPictureInPictureMode = isInPictureInPictureMode;
         if (isInPictureInPictureMode) {
             renderPictureInPictureMode();
         } else {
@@ -829,6 +1227,9 @@ public class FileViewActivity extends AppCompatActivity {
     private void resetPlayer() {
         elapsedDuration = 0;
         totalDuration = 0;
+        renderElapsedDuration();
+        renderTotalDuration();
+
         elapsedPlaybackScheduled = false;
         if (elapsedPlaybackScheduler != null) {
             elapsedPlaybackScheduler.shutdownNow();
@@ -837,6 +1238,8 @@ public class FileViewActivity extends AppCompatActivity {
 
         playbackStarted = false;
         startTimeMillis = 0;
+
+        MainActivity.appPlayer.removeListener(fileViewPlayerListener);
     }
 
     private void showBuffering() {
@@ -864,7 +1267,7 @@ public class FileViewActivity extends AppCompatActivity {
         bundle.putLong("time_to_start_seconds", Double.valueOf(timeToStartMillis / 1000.0).longValue());
         LbryAnalytics.logEvent(LbryAnalytics.EVENT_PLAY, bundle);
 
-        logFileView(url, timeToStartMillis);
+        logFileView(claim.getPermanentUrl(), timeToStartMillis);
     }
 
     private void logFileView(String url, long timeToStart) {
@@ -882,6 +1285,17 @@ public class FileViewActivity extends AppCompatActivity {
                 public void onError(Exception error) { }
             });
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private void checkIsFollowing() {
+        if (claim != null && claim.getSigningChannel() != null) {
+            boolean isFollowing = Lbryio.isFollowing(claim.getSigningChannel());
+            SolidIconView iconFollowUnfollow = findViewById(R.id.file_view_icon_follow_unfollow);
+            if (iconFollowUnfollow != null) {
+                iconFollowUnfollow.setText(isFollowing ? R.string.fa_heart_broken : R.string.fa_heart);
+                iconFollowUnfollow.setTextColor(ContextCompat.getColor(this, isFollowing ? R.color.foreground : R.color.red));
+            }
         }
     }
 
@@ -910,4 +1324,101 @@ public class FileViewActivity extends AppCompatActivity {
             // pass
         }
     };
+
+    private void registerDownloadEventReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_EVENT);
+        downloadEventReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String downloadAction = intent.getStringExtra("action");
+                String uri = intent.getStringExtra("uri");
+                String outpoint = intent.getStringExtra("outpoint");
+                String fileInfoJson = intent.getStringExtra("file_info");
+
+                if (uri == null || outpoint == null || (fileInfoJson == null && !"abort".equals(downloadAction))) {
+                    return;
+                }
+
+                if (claim != null && !claim.getPermanentUrl().equalsIgnoreCase(uri)) {
+                    return;
+                }
+
+                if ("abort".equals(downloadAction)) {
+                    // handle download aborted
+                    onDownloadAborted();
+                    return;
+                }
+
+                ImageView downloadIconView = findViewById(R.id.file_view_action_download_icon);
+                ProgressBar downloadProgressView = findViewById(R.id.file_view_download_progress);
+
+                try {
+                    JSONObject fileInfo = new JSONObject(fileInfoJson);
+                    LbryFile claimFile = LbryFile.fromJSONObject(fileInfo);
+                    claim.setFile(claimFile);
+
+                    if (DownloadManager.ACTION_START.equals(downloadAction)) {
+                        downloadInProgress = true;
+                        Helper.setViewVisibility(downloadProgressView, View.VISIBLE);
+                        downloadProgressView.setProgress(0);
+                        downloadIconView.setImageResource(R.drawable.ic_stop);
+                    } else if (DownloadManager.ACTION_UPDATE.equals(downloadAction)) {
+                        // handle download updated
+                        downloadInProgress = true;
+                        double progress = intent.getDoubleExtra("progress", 0);
+                        Helper.setViewVisibility(downloadProgressView, View.VISIBLE);
+                        downloadProgressView.setProgress(Double.valueOf(progress).intValue());
+                        downloadIconView.setImageResource(R.drawable.ic_stop);
+                    }
+                    else if (DownloadManager.ACTION_COMPLETE.equals(downloadAction)) {
+                        downloadInProgress = false;
+                        downloadProgressView.setProgress(100);
+                        Helper.setViewVisibility(downloadProgressView, View.GONE);
+                        playOrViewMedia();
+                    }
+                    checkIsFileComplete();
+                } catch (JSONException ex) {
+                    // invalid file info for download
+                }
+            }
+        };
+        registerReceiver(downloadEventReceiver, intentFilter);
+    }
+
+    private void checkIsFileComplete() {
+        if (claim == null) {
+            return;
+        }
+        if (claim.getFile() != null && claim.getFile().isCompleted()) {
+            Helper.setViewVisibility(findViewById(R.id.file_view_action_delete), View.VISIBLE);
+            Helper.setViewVisibility(findViewById(R.id.file_view_action_download), View.GONE);
+        } else {
+            Helper.setViewVisibility(findViewById(R.id.file_view_action_delete), View.GONE);
+            Helper.setViewVisibility(findViewById(R.id.file_view_action_download), View.VISIBLE);
+        }
+    }
+
+    private void hideFloatingWalletBalance() {
+        findViewById(R.id.floating_balance_main_container).setVisibility(View.GONE);
+    }
+
+    private void onDownloadAborted() {
+        downloadInProgress = false;
+
+        if (claim != null) {
+            claim.setFile(null);
+        }
+        ((ImageView) findViewById(R.id.file_view_action_download_icon)).setImageResource(R.drawable.ic_download);
+        Helper.setViewVisibility(findViewById(R.id.file_view_download_progress), View.GONE);
+        Helper.setViewVisibility(findViewById(R.id.file_view_unsupported_container), View.GONE);
+
+        checkIsFileComplete();
+        restoreMainActionButton();
+    }
+
+    private void restoreMainActionButton() {
+        findViewById(R.id.file_view_main_action_loading).setVisibility(View.INVISIBLE);
+        findViewById(R.id.file_view_main_action_button).setVisibility(View.VISIBLE);
+    }
 }

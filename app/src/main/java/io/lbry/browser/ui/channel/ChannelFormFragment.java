@@ -45,7 +45,7 @@ import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.tasks.UpdateSuggestedTagsTask;
 import io.lbry.browser.tasks.UploadImageTask;
 import io.lbry.browser.tasks.ChannelCreateUpdateTask;
-import io.lbry.browser.tasks.ClaimResultHandler;
+import io.lbry.browser.tasks.claim.ClaimResultHandler;
 import io.lbry.browser.tasks.lbryinc.LogPublishTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
