@@ -38,7 +38,7 @@
             android:label="@string/app_name"
             android:supportsPictureInPicture="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,19 +55,19 @@
 
         <activity
             android:name=".FirstRunActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBarTranslucent" />
         <activity
             android:name=".VerificationActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBarTranslucent"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
             android:name=".FileViewActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:parentActivityName=".MainActivity"
             android:supportsPictureInPicture="true"
             android:theme="@style/AppTheme.NoActionBarBlack" />

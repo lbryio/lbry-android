@@ -451,6 +451,7 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
                                 }
                             } else {
                                 Intent intent = new Intent(getContext(), FileViewActivity.class);
+                                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 intent.putExtra("claimId", claimId);
                                 intent.putExtra("url", url);
                                 MainActivity.startingFileViewActivity = true;

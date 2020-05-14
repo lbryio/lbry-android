@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private BroadcastReceiver requestsReceiver;
     private BroadcastReceiver userActionsReceiver;
 
-    private boolean appStarted;
+    private static boolean appStarted;
     private boolean serviceRunning;
     private CheckSdkReadyTask checkSdkReadyTask;
     private boolean receivedStopService;
@@ -377,6 +377,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onClick(View view) {
                 if (nowPlayingClaim != null) {
                     Intent intent = new Intent(MainActivity.this, FileViewActivity.class);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("claimId", nowPlayingClaim.getClaimId());
                     intent.putExtra("url", nowPlayingClaim.getPermanentUrl());
                     startingFileViewActivity = true;
@@ -561,6 +562,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public static void openFileUrl(String url, Context context) {
         Intent intent = new Intent(context, FileViewActivity.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("url", url);
         startingFileViewActivity = true;
         context.startActivity(intent);
@@ -568,6 +570,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public static void openFileClaim(Claim claim, Context context) {
         Intent intent = new Intent(context, FileViewActivity.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("claimId", claim.getClaimId());
         intent.putExtra("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
         startingFileViewActivity = true;
@@ -1756,7 +1759,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     if (specialRouteFragmentClassMap.containsKey(specialPath)) {
                         Class fragmentClass = specialRouteFragmentClassMap.get(specialPath);
                         if (fragmentClassNavIdMap.containsKey(fragmentClass)) {
-                            openFragment(specialRouteFragmentClassMap.get(specialPath), true, fragmentClassNavIdMap.get(fragmentClass));
+                            Map<String, Object> params = new HashMap<>();
+                            String tag = intent.getStringExtra("tag");
+                            params.put("singleTag", tag);
+
+                            openFragment(
+                                    specialRouteFragmentClassMap.get(specialPath),
+                                    true,
+                                    fragmentClassNavIdMap.get(fragmentClass),
+                                    !Helper.isNullOrEmpty(tag) ? params : null
+                            );
                         }
                     }
 

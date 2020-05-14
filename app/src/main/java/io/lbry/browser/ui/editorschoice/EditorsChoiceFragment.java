@@ -118,6 +118,7 @@ public class EditorsChoiceFragment extends BaseFragment {
                             String url = item.getPermanentUrl();
 
                             Intent intent = new Intent(getContext(), FileViewActivity.class);
+                            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.putExtra("url", url);
                             MainActivity.startingFileViewActivity = true;
                             startActivity(intent);

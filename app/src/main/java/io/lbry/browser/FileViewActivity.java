@@ -1,6 +1,8 @@
 package io.lbry.browser;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.PictureInPictureParams;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,6 +34,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
@@ -65,6 +68,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -111,6 +115,7 @@ public class FileViewActivity extends AppCompatActivity {
     private static final int RELATED_CONTENT_SIZE = 16;
     private static boolean startingShareActivity;
 
+    private boolean backStackLost;
     private boolean loadingNewClaim;
     private boolean stopServiceReceived;
     private boolean downloadInProgress;
@@ -357,7 +362,8 @@ public class FileViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 sendBroadcast(new Intent(MainActivity.ACTION_OPEN_WALLET_PAGE));
-                moveTaskToBack(true);
+                bringMainTaskToFront();
+                finish();
             }
         });
         walletBalanceInitialized = true;
@@ -444,6 +450,7 @@ public class FileViewActivity extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
+        MainActivity.mainActive = false;
         MainActivity.startingFileViewActivity = false;
         if (Lbry.SDK_READY) {
             initFloatingWalletBalance();
@@ -657,7 +664,9 @@ public class FileViewActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.ACTION_OPEN_CHANNEL_URL);
                     intent.putExtra("url", !Helper.isNullOrEmpty(publisher.getShortUrl()) ? publisher.getShortUrl() : publisher.getPermanentUrl());
                     sendBroadcast(intent);
-                    moveTaskToBack(true);
+
+                    bringMainTaskToFront();
+                    finish();
                 }
             }
         });
@@ -765,7 +774,8 @@ public class FileViewActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.ACTION_OPEN_ALL_CONTENT_TAG);
                     intent.putExtra("tag", tag.getName());
                     sendBroadcast(intent);
-                    moveTaskToBack(true);
+                    bringMainTaskToFront();
+                    finish();
                 }
             }
         });
@@ -806,7 +816,8 @@ public class FileViewActivity extends AppCompatActivity {
             Fee fee = streamMetadata.getFee();
             if (fee != null && Helper.parseDouble(fee.getAmount(), 0) > 0) {
                 findViewById(R.id.file_view_fee_container).setVisibility(View.VISIBLE);
-                ((TextView) findViewById(R.id.file_view_fee)).setText(Helper.shortCurrencyFormat(Helper.parseDouble(fee.getAmount(), 0)));
+                ((TextView) findViewById(R.id.file_view_fee)).setText(
+                        Helper.shortCurrencyFormat(claim.getActualCost(Lbryio.LBCUSDRate).divide(new BigDecimal(100000000)).doubleValue()));
             }
         }
 
@@ -934,7 +945,7 @@ public class FileViewActivity extends AppCompatActivity {
     private void confirmPurchaseUrl() {
         if (claim != null) {
             Fee fee = ((Claim.StreamMetadata) claim.getValue()).getFee();
-            double cost = Helper.parseDouble(fee.getAmount(), 0);
+            double cost = claim.getActualCost(Lbryio.LBCUSDRate).doubleValue();
             String message = getResources().getQuantityString(R.plurals.confirm_purchase_message, cost == 1 ? 1 : 2, claim.getTitle(), cost);
             AlertDialog.Builder builder = new AlertDialog.Builder(this).
                     setTitle(R.string.confirm_purchase).
@@ -945,7 +956,8 @@ public class FileViewActivity extends AppCompatActivity {
                             Bundle bundle = new Bundle();
                             bundle.putString("uri", currentUrl);
                             bundle.putBoolean("paid", true);
-                            bundle.putDouble("amount", cost);
+                            bundle.putDouble("amount", Helper.parseDouble(fee.getAmount(), 0));
+                            bundle.putDouble("lbc_amount", cost);
                             bundle.putString("currency", fee.getCurrency());
                             LbryAnalytics.logEvent(LbryAnalytics.EVENT_PURCHASE_URI, bundle);
 
@@ -1169,9 +1181,11 @@ public class FileViewActivity extends AppCompatActivity {
                             Intent intent = new Intent(MainActivity.ACTION_OPEN_CHANNEL_URL);
                             intent.putExtra("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
                             sendBroadcast(intent);
-                            moveTaskToBack(true);
+                            bringMainTaskToFront();
+                            finish();
                         } else {
                             Intent intent = new Intent(FileViewActivity.this, FileViewActivity.class);
+                            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.putExtra("claimId", claim.getClaimId());
                             intent.putExtra("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
                             MainActivity.startingFileViewActivity = true;
@@ -1214,6 +1228,10 @@ public class FileViewActivity extends AppCompatActivity {
             return;
         }
 
+        bringMainTaskToFront();
+    }
+
+    private void startMainActivity() {
         MainActivity.mainActive = true;
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -1229,12 +1247,9 @@ public class FileViewActivity extends AppCompatActivity {
     }
 
     protected void onUserLeaveHint() {
-        if (stopServiceReceived ||
-                claim == null ||
-                !claim.isPlayable()) {
+        if (stopServiceReceived || claim == null || !claim.isPlayable() || !playbackStarted) {
             return;
         }
-
 
         if (startingShareActivity) {
             // share activity triggered this, so reset the flag at this point
@@ -1293,6 +1308,7 @@ public class FileViewActivity extends AppCompatActivity {
         if (isInPictureInPictureMode) {
             renderPictureInPictureMode();
         } else {
+            backStackLost = true;
             renderFullMode();
         }
     }
@@ -1571,5 +1587,22 @@ public class FileViewActivity extends AppCompatActivity {
             }
             return true;
         }
+    }
+
+    private void bringMainTaskToFront() {
+        if (backStackLost) {
+            ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            final List<ActivityManager.AppTask> appTasks = activityManager.getAppTasks();
+            for (ActivityManager.AppTask task : appTasks) {
+                final Intent baseIntent = task.getTaskInfo().baseIntent;
+                final Set<String> categories = baseIntent.getCategories();
+                if (categories != null && categories.contains(Intent.CATEGORY_LAUNCHER)) {
+                    task.moveToFront();
+                    return;
+                }
+            }
+        }
+
+        startMainActivity();
     }
 }

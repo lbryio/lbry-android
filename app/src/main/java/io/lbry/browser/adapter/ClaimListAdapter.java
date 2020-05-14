@@ -24,6 +24,7 @@ import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
+import io.lbry.browser.utils.Lbryio;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -280,9 +281,9 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                             into(vh.thumbnailView);
                 }
 
-                BigDecimal cost = streamMetadata != null && streamMetadata.getFee() != null ? new BigDecimal(streamMetadata.getFee().getAmount()) : new BigDecimal(0);
+                BigDecimal cost = item.getActualCost(Lbryio.LBCUSDRate);
                 vh.feeContainer.setVisibility(cost.doubleValue() > 0 ? View.VISIBLE : View.GONE);
-                vh.feeView.setText(cost.doubleValue() > 0 ? Helper.shortCurrencyFormat(cost.divide(new BigDecimal(100000000)).doubleValue()) : null);
+                vh.feeView.setText(cost.doubleValue() > 0 ? Helper.shortCurrencyFormat(cost.doubleValue()) : "Paid");
                 vh.alphaView.setText(item.getName().substring(0, Math.min(5, item.getName().length() - 1)));
                 vh.publisherView.setText(signingChannel != null ? signingChannel.getName() : context.getString(R.string.anonymous));
                 vh.publishTimeView.setText(DateUtils.getRelativeTimeSpanString(

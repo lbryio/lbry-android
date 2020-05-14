@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,6 +100,24 @@ public class Claim {
 
         Fee fee = ((StreamMetadata) value).getFee();
         return fee == null || Helper.parseDouble(fee.getAmount(), 0) == 0;
+    }
+
+    public BigDecimal getActualCost(double usdRate) {
+        if (!(value instanceof StreamMetadata)) {
+            return new BigDecimal(0);
+        }
+
+        Fee fee = ((StreamMetadata) value).getFee();
+        if (fee != null) {
+            double amount = Helper.parseDouble(fee.getAmount(), 0);
+            if ("usd".equalsIgnoreCase(fee.getCurrency())) {
+                return new BigDecimal(String.valueOf(amount / usdRate)).multiply(new BigDecimal(100000000)); // deweys
+            }
+
+            return new BigDecimal(String.valueOf(amount));
+        }
+
+        return new BigDecimal(0);
     }
 
     public String getMediaType() {
