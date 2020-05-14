@@ -624,6 +624,17 @@
                 android:layout_height="match_parent" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/file_view_webview_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <WebView
+                android:id="@+id/file_view_webview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
         <include layout="@layout/floating_wallet_balance" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -79,6 +79,7 @@ dependencies {
     implementation 'com.hbb20:ccp:2.3.8'
 
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation 'com.atlassian.commonmark:commonmark:0.14.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'

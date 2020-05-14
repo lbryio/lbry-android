@@ -20,6 +20,10 @@ import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -48,6 +52,9 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,6 +63,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -74,6 +82,7 @@ import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.ReadTextFileTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.tasks.file.DeleteFileTask;
@@ -161,6 +170,7 @@ public class FileViewActivity extends AppCompatActivity {
                 loadFile();
             }
         }
+
         setContentView(R.layout.activity_file_view);
         checkIsFileComplete();
 
@@ -216,6 +226,14 @@ public class FileViewActivity extends AppCompatActivity {
 
     public void removeWalletBalanceListener(WalletBalanceListener listener) {
         walletBalanceListeners.remove(listener);
+    }
+
+    private void initWebView() {
+        WebView webView = findViewById(R.id.file_view_webview);
+        webView.setWebViewClient(new LbryWebViewClient(this));
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setAllowFileAccess(true);
+        webSettings.setJavaScriptEnabled(true);
     }
 
     private void logUrlEvent(String url) {
@@ -466,6 +484,8 @@ public class FileViewActivity extends AppCompatActivity {
     }
 
     private void initUi() {
+        initWebView();
+
         findViewById(R.id.file_view_title_area).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -788,9 +808,9 @@ public class FileViewActivity extends AppCompatActivity {
                 findViewById(R.id.file_view_fee_container).setVisibility(View.VISIBLE);
                 ((TextView) findViewById(R.id.file_view_fee)).setText(Helper.shortCurrencyFormat(Helper.parseDouble(fee.getAmount(), 0)));
             }
-
-
         }
+
+        findViewById(R.id.file_view_icon_follow_unfollow).setVisibility(claim.getSigningChannel() != null ? View.VISIBLE : View.GONE);
 
         MaterialButton mainActionButton = findViewById(R.id.file_view_main_action_button);
         if (claim.isPlayable()) {
@@ -801,8 +821,10 @@ public class FileViewActivity extends AppCompatActivity {
             mainActionButton.setText(R.string.download);
         }
 
-        if (claim.isFree() && (claim.isPlayable() || claim.isViewable())) {
-            onMainActionButtonClicked();
+        if (claim.isFree()) {
+            if (claim.isPlayable() || (claim.isViewable() && Lbry.SDK_READY)) {
+                onMainActionButtonClicked();
+            }
         }
 
         loadRelatedContent();
@@ -1008,38 +1030,96 @@ public class FileViewActivity extends AppCompatActivity {
                 handled = true;
             } else if (claim.isViewable()) {
                 // check type and display
-                if (mediaType.startsWith("image")) {
-                    // display the image
-                    View container = findViewById(R.id.file_view_imageviewer_container);
-                    PhotoView photoView = findViewById(R.id.file_view_imageviewer);
-
-                    boolean fileExists = false;
-                    LbryFile claimFile = claim.getFile();
-                    if (claimFile != null && !Helper.isNullOrEmpty(claimFile.getDownloadPath())) {
-                        File file = new File(claimFile.getDownloadPath());
-                        fileExists = file.exists();
-
-                        if (fileExists) {
-                            Uri fileUri = Uri.fromFile(file);
-                            Glide.with(getApplicationContext()).load(fileUri).centerInside().into(photoView);
-                            hideFloatingWalletBalance();
-                            container.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    if (!fileExists) {
-                        showError(getString(R.string.claim_file_not_found, claimFile != null ? claimFile.getDownloadPath() : ""));
-                    }
-                } else if (mediaType.startsWith("text")) {
-                    // show browser (and parse markdown too)
+                boolean fileExists = false;
+                LbryFile claimFile = claim.getFile();
+                Uri fileUri  = null;
+                if (claimFile != null && !Helper.isNullOrEmpty(claimFile.getDownloadPath())) {
+                    File file = new File(claimFile.getDownloadPath());
+                    fileUri = Uri.fromFile(file);
+                    fileExists = file.exists();
                 }
-                handled = true;
+                if (!fileExists) {
+                    showError(getString(R.string.claim_file_not_found, claimFile != null ? claimFile.getDownloadPath() : ""));
+                } else if (fileUri != null) {
+                    if (mediaType.startsWith("image")) {
+                        // display the image
+                        View container = findViewById(R.id.file_view_imageviewer_container);
+                        PhotoView photoView = findViewById(R.id.file_view_imageviewer);
+
+                        Glide.with(getApplicationContext()).load(fileUri).centerInside().into(photoView);
+                        hideFloatingWalletBalance();
+                        container.setVisibility(View.VISIBLE);
+                    } else if (mediaType.startsWith("text")) {
+                        // show web view (and parse markdown too)
+                        View container = findViewById(R.id.file_view_webview_container);
+                        WebView webView = findViewById(R.id.file_view_webview);
+                        if (Arrays.asList("text/markdown", "text/md").contains(mediaType.toLowerCase())) {
+                            loadMarkdownFromFile(claimFile.getDownloadPath());
+                        } else {
+                            webView.loadUrl(fileUri.toString());
+                        }
+                        hideFloatingWalletBalance();
+                        container.setVisibility(View.VISIBLE);
+                    }
+                    handled = true;
+                }
             }
         }
 
         if (!handled) {
             showUnsupportedView();
         }
+    }
+
+    private void loadMarkdownFromFile(String filePath) {
+        ReadTextFileTask task = new ReadTextFileTask(filePath, new ReadTextFileTask.ReadTextFileHandler() {
+            @Override
+            public void onSuccess(String text) {
+                String html = buildMarkdownHtml(text);
+                WebView webView = findViewById(R.id.file_view_webview);
+                webView.loadData(html, "text/html", "utf-8");
+            }
+
+            @Override
+            public void onError(Exception error) {
+                showError(error.getMessage());
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private String buildMarkdownHtml(String markdown) {
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(markdown);
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        String markdownHtml = renderer.render(document);
+
+        return "<!doctype html>\n" +
+                "        <html>\n" +
+                "          <head>\n" +
+                "            <meta charset=\"utf-8\"/>\n" +
+                "            <meta name=\"viewport\" content=\"width=device-width, user-scalable=no\"/>\n" +
+                "            <style type=\"text/css\">\n" +
+                "              @font-face {\n" +
+                "                  font-family: 'Inter';\n" +
+                "                  src: url('file:///android_res/font/inter_regular.otf');\n" +
+                "                  font-weight: normal;\n" +
+                "              }\n" +
+                "             @font-face {\n" +
+                "                 font-family: 'Inter';\n" +
+                "                 src: url('file:///android_res/font/inter_bold.otf');\n" +
+                "                 font-weight: bold;\n" +
+                "              }\n" +
+                "              body { font-family: 'Inter', sans-serif; margin: 16px }\n" +
+                "              img { width: 100%; }\n" +
+                "            </style>\n" +
+                "          </head>\n" +
+                "          <body>\n" +
+                "            <div id=\"content\">\n" +
+                markdownHtml +
+                "            </div>\n" +
+                "          </body>\n" +
+                "        </html>";
     }
 
     public void showError(String message) {
@@ -1113,6 +1193,14 @@ public class FileViewActivity extends AppCompatActivity {
 
         if (isImageViewerVisible()) {
             findViewById(R.id.file_view_imageviewer_container).setVisibility(View.GONE);
+            restoreMainActionButton();
+            showFloatingWalletBalance();
+            return;
+        }
+        if (isWebViewVisible()) {
+            findViewById(R.id.file_view_webview_container).setVisibility(View.GONE);
+            restoreMainActionButton();
+            showFloatingWalletBalance();
             return;
         }
 
@@ -1127,13 +1215,16 @@ public class FileViewActivity extends AppCompatActivity {
     }
 
     private boolean isWebViewVisible() {
-        return false;
+        return findViewById(R.id.file_view_webview_container).getVisibility() == View.VISIBLE;
     }
 
     protected void onUserLeaveHint() {
-        if (stopServiceReceived) {
+        if (stopServiceReceived ||
+                claim == null ||
+                !claim.isPlayable()) {
             return;
         }
+
 
         if (startingShareActivity) {
             // share activity triggered this, so reset the flag at this point
@@ -1145,6 +1236,7 @@ public class FileViewActivity extends AppCompatActivity {
             }, 1000);
             return;
         }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !MainActivity.mainActive) {
             PictureInPictureParams params = new PictureInPictureParams.Builder().build();
             enterPictureInPictureMode(params);
@@ -1432,6 +1524,9 @@ public class FileViewActivity extends AppCompatActivity {
     private void hideFloatingWalletBalance() {
         findViewById(R.id.floating_balance_main_container).setVisibility(View.GONE);
     }
+    private void showFloatingWalletBalance() {
+        findViewById(R.id.floating_balance_main_container).setVisibility(View.VISIBLE);
+    }
 
     private void onDownloadAborted() {
         downloadInProgress = false;
@@ -1450,5 +1545,21 @@ public class FileViewActivity extends AppCompatActivity {
     private void restoreMainActionButton() {
         findViewById(R.id.file_view_main_action_loading).setVisibility(View.INVISIBLE);
         findViewById(R.id.file_view_main_action_button).setVisibility(View.VISIBLE);
+    }
+
+    private static class LbryWebViewClient extends WebViewClient {
+        private Context context;
+        public LbryWebViewClient(Context context) {
+            this.context = context;
+        }
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            Uri url = request.getUrl();
+            if (context != null) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, url);
+                context.startActivity(intent);
+            }
+            return true;
+        }
     }
 }

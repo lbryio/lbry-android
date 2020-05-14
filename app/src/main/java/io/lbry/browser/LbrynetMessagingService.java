@@ -20,6 +20,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.lbrysdk.LbrynetService;
 
 import java.io.UnsupportedEncodingException;
@@ -61,7 +62,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                 if (firebaseAnalytics != null) {
                     Bundle bundle = new Bundle();
                     bundle.putString("name", name);
-                    firebaseAnalytics.logEvent("lbry_notification_receive", bundle);
+                    firebaseAnalytics.logEvent(LbryAnalytics.EVENT_LBRY_NOTIFICATION_RECEIVE, bundle);
                 }
 
                 sendNotification(title, body, type, url, name, contentTitle, channelUrl, publishTime);

@@ -315,6 +315,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         });
 
         super.onCreate(savedInstanceState);
+        checkNotificationOpenIntent(getIntent());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -441,6 +442,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         checkUrlIntent(intent);
+        checkNotificationOpenIntent(intent);
     }
 
     public void addSdkStatusListener(SdkStatusListener listener) {
@@ -1836,6 +1838,22 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         return false;
     }
+
+    private void checkNotificationOpenIntent(Intent intent) {
+        if (intent != null) {
+            String notificationName = intent.getStringExtra("notification_name");
+            if (notificationName != null) {
+                logNotificationOpen(notificationName);
+            }
+        }
+    }
+
+    private void logNotificationOpen(String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString("name", name);
+        LbryAnalytics.logEvent(LbryAnalytics.EVENT_LBRY_NOTIFICATION_OPEN, bundle);
+    }
+
 
     private void registerServiceActionsReceiver() {
         IntentFilter intentFilter = new IntentFilter();
