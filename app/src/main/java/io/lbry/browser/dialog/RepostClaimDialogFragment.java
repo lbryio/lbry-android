@@ -194,12 +194,14 @@ public class RepostClaimDialogFragment extends BottomSheetDialogFragment impleme
         if (channelSpinnerAdapter == null) {
             Context context = getContext();
             channelSpinnerAdapter = new InlineChannelSpinnerAdapter(context, R.layout.spinner_item_channel, channels);
-            channelSpinner.setAdapter(channelSpinnerAdapter);
             channelSpinnerAdapter.notifyDataSetChanged();
         } else {
             channelSpinnerAdapter.clear();
             channelSpinnerAdapter.addAll(channels);
             channelSpinnerAdapter.notifyDataSetChanged();
+        }
+        if (channelSpinner != null) {
+            channelSpinner.setAdapter(channelSpinnerAdapter);
         }
     }
 

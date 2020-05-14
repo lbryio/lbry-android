@@ -198,10 +198,6 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
             }
         });
 
-        if (Lbry.ownChannels != null) {
-            updateChannelList(Lbry.ownChannels);
-        }
-
         channelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -268,15 +264,18 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
     private void updateChannelList(List<Claim> channels) {
         if (channelSpinnerAdapter == null) {
             Context context = getContext();
-            channelSpinnerAdapter = new InlineChannelSpinnerAdapter(context, R.layout.spinner_item_channel, channels);
+            channelSpinnerAdapter = new InlineChannelSpinnerAdapter(context, R.layout.spinner_item_channel, new ArrayList<>(channels));
             channelSpinnerAdapter.addPlaceholder(false);
-            channelSpinner.setAdapter(channelSpinnerAdapter);
             channelSpinnerAdapter.notifyDataSetChanged();
         } else {
             channelSpinnerAdapter.clear();
             channelSpinnerAdapter.addAll(channels);
             channelSpinnerAdapter.addPlaceholder(false);
             channelSpinnerAdapter.notifyDataSetChanged();
+        }
+
+        if (channelSpinner != null) {
+            channelSpinner.setAdapter(channelSpinnerAdapter);
         }
 
         if (channelSpinnerAdapter.getCount() > 1) {
@@ -382,6 +381,11 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
     }
 
     private void fetchChannels() {
+        if (Lbry.ownChannels != null && Lbry.ownChannels.size() > 0) {
+            updateChannelList(Lbry.ownChannels);
+            return;
+        }
+
         fetchingChannels = true;
         disableChannelSpinner();
         ClaimListTask task = new ClaimListTask(Claim.TYPE_CHANNEL, progressLoadingChannels, new ClaimListResultHandler() {
@@ -413,9 +417,11 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
                 if (inviteHistoryAdapter == null) {
                     inviteHistoryAdapter = new InviteeListAdapter(invitees, getContext());
                     inviteHistoryAdapter.addHeader();
-                    inviteHistoryList.setAdapter(inviteHistoryAdapter);
                 } else {
                     inviteHistoryAdapter.addInvitees(invitees);
+                }
+                if (inviteHistoryList != null) {
+                    inviteHistoryList.setAdapter(inviteHistoryAdapter);
                 }
                 Helper.setViewVisibility(inviteHistoryList,
                         inviteHistoryAdapter == null || inviteHistoryAdapter.getItemCount() < 2 ? View.GONE : View.VISIBLE

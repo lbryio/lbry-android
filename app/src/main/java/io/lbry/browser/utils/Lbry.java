@@ -92,6 +92,13 @@ public final class Lbry {
     public static KeyStore KEYSTORE;
     public static boolean SDK_READY = false;
 
+    public static void startupInit() {
+        ownChannels = new ArrayList<>();
+        ownClaims = new ArrayList<>();
+        knownTags = new ArrayList<>();
+        followedTags = new ArrayList<>();
+    }
+
     public static void parseStatus(String response) {
         try {
             JSONObject json = parseSdkResponse(response);

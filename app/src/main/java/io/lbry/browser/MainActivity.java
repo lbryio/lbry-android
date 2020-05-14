@@ -1598,6 +1598,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     private void startup() {
         final Context context = this;
+        Lbry.startupInit();
+
         // perform some tasks before launching
         (new AsyncTask<Void, Void, Boolean>() {
             protected void onPreExecute() {
@@ -1637,7 +1639,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     if (Lbryio.currentUser == null) {
                         throw new Exception("Did not retrieve authenticated user.");
                     }
-
 
                     Lbryio.newInstall(context);
 
