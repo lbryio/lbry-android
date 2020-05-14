@@ -102,6 +102,7 @@ public class FileViewActivity extends AppCompatActivity {
     private static final int RELATED_CONTENT_SIZE = 16;
     private static boolean startingShareActivity;
 
+    private boolean loadingNewClaim;
     private boolean stopServiceReceived;
     private boolean downloadInProgress;
     private boolean downloadRequested;
@@ -189,6 +190,11 @@ public class FileViewActivity extends AppCompatActivity {
                     renderTotalDuration();
                     scheduleElapsedPlayback();
                     hideBuffering();
+
+                    if (loadingNewClaim) {
+                        MainActivity.appPlayer.setPlayWhenReady(true);
+                        loadingNewClaim = false;
+                    }
                 } else if (playbackState == Player.STATE_BUFFERING) {
                     showBuffering();
                 } else {
@@ -245,10 +251,7 @@ public class FileViewActivity extends AppCompatActivity {
                     return;
                 }
 
-                initialFileLoadDone = false;
-                currentUrl = newUrl;
-                logUrlEvent(newUrl);
-                resetViewCount();
+                onNewClaim(newUrl);
                 ClaimCacheKey key = new ClaimCacheKey();
                 key.setClaimId(newClaimId);
                 if (!Helper.isNullOrEmpty(newUrl) && newUrl.contains("#")) {
@@ -256,22 +259,49 @@ public class FileViewActivity extends AppCompatActivity {
                     key.setCanonicalUrl(newUrl);
                     key.setShortUrl(newUrl);
                 }
-                if (Lbry.claimCache.containsKey(key)) {
-                    claim = Lbry.claimCache.get(key);
-                    checkAndResetNowPlayingClaim();
-                    if (claim.getFile() == null) {
-                        loadFile();
-                    } else {
-                        initialFileLoadDone = true;
-                        checkInitialFileLoadDone();
-                    }
-                    renderClaim();
-                } else {
-                    findViewById(R.id.file_view_claim_display_area).setVisibility(View.INVISIBLE);
-                    MainActivity.clearNowPlayingClaim(this);
-                    resolveUrl(newUrl);
+                loadClaimForCacheKey(key, newUrl);
+            } else if (!Helper.isNullOrEmpty(newUrl)) {
+                if (currentUrl != null && currentUrl.equalsIgnoreCase(newUrl)) {
+                    return;
                 }
+
+                onNewClaim(newUrl);
+                ClaimCacheKey key = new ClaimCacheKey();
+                key.setPermanentUrl(newUrl);
+                key.setCanonicalUrl(newUrl);
+                key.setShortUrl(newUrl);
+                loadClaimForCacheKey(key, newUrl);
             }
+        }
+    }
+
+    private void onNewClaim(String url) {
+        loadingNewClaim = true;
+        initialFileLoadDone = false;
+        currentUrl = url;
+        logUrlEvent(url);
+        resetViewCount();
+
+        if (MainActivity.appPlayer != null) {
+            MainActivity.appPlayer.setPlayWhenReady(false);
+        }
+    }
+
+    private void loadClaimForCacheKey(ClaimCacheKey key, String url) {
+        if (Lbry.claimCache.containsKey(key)) {
+            claim = Lbry.claimCache.get(key);
+            checkAndResetNowPlayingClaim();
+            if (claim.getFile() == null) {
+                loadFile();
+            } else {
+                initialFileLoadDone = true;
+                checkInitialFileLoadDone();
+            }
+            renderClaim();
+        } else {
+            findViewById(R.id.file_view_claim_display_area).setVisibility(View.INVISIBLE);
+            MainActivity.clearNowPlayingClaim(this);
+            resolveUrl(url);
         }
     }
 
@@ -956,8 +986,11 @@ public class FileViewActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(Exception error) {
+            public void onError(Exception error, boolean saveFile) {
                 showError(getString(R.string.unable_to_view_url, currentUrl));
+                if (saveFile) {
+                    onDownloadAborted();
+                }
                 restoreMainActionButton();
             }
         });
@@ -1335,15 +1368,12 @@ public class FileViewActivity extends AppCompatActivity {
                 String uri = intent.getStringExtra("uri");
                 String outpoint = intent.getStringExtra("outpoint");
                 String fileInfoJson = intent.getStringExtra("file_info");
-
-                if (uri == null || outpoint == null || (fileInfoJson == null && !"abort".equals(downloadAction))) {
+                if (claim == null || uri == null || outpoint == null || (fileInfoJson == null && !"abort".equals(downloadAction))) {
                     return;
                 }
-
                 if (claim != null && !claim.getPermanentUrl().equalsIgnoreCase(uri)) {
                     return;
                 }
-
                 if ("abort".equals(downloadAction)) {
                     // handle download aborted
                     onDownloadAborted();

@@ -59,7 +59,7 @@ public class GetFileTask extends AsyncTask<Void, Void, LbryFile> {
             if (file != null) {
                 handler.onSuccess(file, saveFile);
             } else {
-                handler.onError(error);
+                handler.onError(error, saveFile);
             }
         }
     }
@@ -67,6 +67,6 @@ public class GetFileTask extends AsyncTask<Void, Void, LbryFile> {
     public interface GetFileHandler {
         void beforeStart();
         void onSuccess(LbryFile file, boolean saveFile);
-        void onError(Exception error);
+        void onError(Exception error, boolean saveFile);
     }
 }
