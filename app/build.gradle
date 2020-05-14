@@ -143,8 +143,8 @@ android {
         applicationId "io.lbry.browser"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1402
-        versionName "0.14.2"
+        versionCode 1403
+        versionName "0.14.3"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
     }
@@ -210,8 +210,8 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:1.10.0'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
 
-    __32bitImplementation files('libs/lbrysdk-0.67.1-release__arm.aar')
-    __64bitImplementation files('libs/lbrysdk-0.67.1-release__arm64.aar')
+    __32bitImplementation files('libs/lbrysdk-0.73.1-release__arm.aar')
+    __64bitImplementation files('libs/lbrysdk-0.73.1-release__arm64.aar')
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
