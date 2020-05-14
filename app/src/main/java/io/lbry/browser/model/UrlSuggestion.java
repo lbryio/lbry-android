@@ -15,6 +15,7 @@ public class UrlSuggestion {
     private LbryUri uri;
     private Claim claim; // associated claim if resolved
     private boolean titleTextOnly;
+    private boolean titleUrlOnly;
     private boolean useTextAsDescription;
 
     public UrlSuggestion() {
@@ -34,6 +35,10 @@ public class UrlSuggestion {
     }
 
     public String getTitle() {
+        if (titleUrlOnly && (type == TYPE_CHANNEL || type == TYPE_FILE)) {
+            return uri.toString();
+        }
+
         if (!titleTextOnly) {
             switch (type) {
                 case TYPE_CHANNEL:

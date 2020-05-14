@@ -31,10 +31,13 @@ import java.util.Map;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
+import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.SendTipDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.FetchChannelsListener;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.ClaimCacheKey;
+import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.lbryinc.ChannelSubscribeTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
@@ -296,11 +299,22 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         if (updateRequired) {
             resetSubCount();
             if (!Helper.isNullOrEmpty(url)) {
-                resolveUrl();
+                // check if the claim is already cached
+                ClaimCacheKey key = new ClaimCacheKey();
+                key.setUrl(url);
+                if (Lbry.claimCache.containsKey(key)) {
+                    claim = Lbry.claimCache.get(key);
+                } else {
+                    resolveUrl();
+                }
             } else if (claim == null) {
                 // nothing at this location
                 renderNothingAtLocation();
             }
+        }
+
+        if (!Helper.isNullOrEmpty(url)) {
+            Helper.saveUrlHistory(url, claim != null ? claim.getTitle() : null, UrlSuggestion.TYPE_CHANNEL);
         }
 
         if (claim != null) {
@@ -315,6 +329,10 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             public void onSuccess(List<Claim> claims) {
                 if (claims.size() > 0 && !Helper.isNullOrEmpty(claims.get(0).getClaimId())) {
                     claim = claims.get(0);
+                    if (!Helper.isNullOrEmpty(url)) {
+                        Helper.saveUrlHistory(url, claim.getTitle(), UrlSuggestion.TYPE_CHANNEL);
+                    }
+
                     renderClaim();
                     checkOwnChannel();
                 } else {

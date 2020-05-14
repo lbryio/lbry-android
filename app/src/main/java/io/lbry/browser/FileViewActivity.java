@@ -1,7 +1,6 @@
 package io.lbry.browser;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.PictureInPictureParams;
 import android.content.BroadcastReceiver;
@@ -34,7 +33,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
@@ -43,11 +41,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.cast.CastPlayer;
+import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -84,6 +86,7 @@ import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.Fee;
 import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.Tag;
+import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.ReadTextFileTask;
@@ -115,6 +118,8 @@ public class FileViewActivity extends AppCompatActivity {
     private static final int RELATED_CONTENT_SIZE = 16;
     private static boolean startingShareActivity;
 
+    private PlayerControlView castControlView;
+    private Player currentPlayer;
     private boolean backStackLost;
     private boolean loadingNewClaim;
     private boolean stopServiceReceived;
@@ -163,11 +168,8 @@ public class FileViewActivity extends AppCompatActivity {
         instance = this;
         ClaimCacheKey key = new ClaimCacheKey();
         key.setClaimId(claimId);
-        if (url.contains("#")) {
-            key.setPermanentUrl(url); // use the same url for the key so that we can match the key for any value that's the same
-            key.setCanonicalUrl(url);
-            key.setShortUrl(url);
-        }
+        key.setUrl(url); // use the same url for the key so that we can match the key for any value that's the same
+
         if (Lbry.claimCache.containsKey(key)) {
             claim = Lbry.claimCache.get(key);
             checkAndResetNowPlayingClaim();
@@ -181,6 +183,7 @@ public class FileViewActivity extends AppCompatActivity {
 
         currentUrl = url;
         logUrlEvent(url);
+        Helper.saveUrlHistory(url, claim != null ? claim.getTitle() : null, UrlSuggestion.TYPE_FILE);
         if (claim == null) {
             MainActivity.clearNowPlayingClaim(this);
             resolveUrl(url);
@@ -218,6 +221,7 @@ public class FileViewActivity extends AppCompatActivity {
             }
         };
 
+        castControlView = findViewById(R.id.file_view_cast_control_view);
         initUi();
         onWalletBalanceUpdated();
         renderClaim();
@@ -278,9 +282,7 @@ public class FileViewActivity extends AppCompatActivity {
                 ClaimCacheKey key = new ClaimCacheKey();
                 key.setClaimId(newClaimId);
                 if (!Helper.isNullOrEmpty(newUrl) && newUrl.contains("#")) {
-                    key.setPermanentUrl(newUrl);
-                    key.setCanonicalUrl(newUrl);
-                    key.setShortUrl(newUrl);
+                    key.setUrl(newUrl);
                 }
                 loadClaimForCacheKey(key, newUrl);
             } else if (!Helper.isNullOrEmpty(newUrl)) {
@@ -290,9 +292,7 @@ public class FileViewActivity extends AppCompatActivity {
 
                 onNewClaim(newUrl);
                 ClaimCacheKey key = new ClaimCacheKey();
-                key.setPermanentUrl(newUrl);
-                key.setCanonicalUrl(newUrl);
-                key.setShortUrl(newUrl);
+                key.setUrl(newUrl);
                 loadClaimForCacheKey(key, newUrl);
             }
         }
@@ -313,6 +313,7 @@ public class FileViewActivity extends AppCompatActivity {
     private void loadClaimForCacheKey(ClaimCacheKey key, String url) {
         if (Lbry.claimCache.containsKey(key)) {
             claim = Lbry.claimCache.get(key);
+            Helper.saveUrlHistory(url, claim.getTitle(), UrlSuggestion.TYPE_FILE);
             checkAndResetNowPlayingClaim();
             if (claim.getFile() == null) {
                 loadFile();
@@ -322,6 +323,7 @@ public class FileViewActivity extends AppCompatActivity {
             }
             renderClaim();
         } else {
+            Helper.saveUrlHistory(url, null, UrlSuggestion.TYPE_FILE);
             findViewById(R.id.file_view_claim_display_area).setVisibility(View.INVISIBLE);
             MainActivity.clearNowPlayingClaim(this);
             resolveUrl(url);
@@ -452,6 +454,8 @@ public class FileViewActivity extends AppCompatActivity {
         super.onResume();
         MainActivity.mainActive = false;
         MainActivity.startingFileViewActivity = false;
+
+        loadAndScheduleDurations();
         if (Lbry.SDK_READY) {
             initFloatingWalletBalance();
         }
@@ -468,12 +472,25 @@ public class FileViewActivity extends AppCompatActivity {
                     claim = claims.get(0);
                     if (Claim.TYPE_REPOST.equalsIgnoreCase(claim.getValueType())) {
                         claim = claim.getRepostedClaim();
-
                         // cache the reposted claim too for subsequent loads
-                        ClaimCacheKey key = ClaimCacheKey.fromClaim(claim);
-                        Lbry.claimCache.put(key, claim);
+                        Lbry.addClaimToCache(claim);
+                        if (claim.getName().startsWith("@")) {
+                            // this is a reposted channel, so finish this activity and launch the channel url
+                            Intent intent = new Intent(MainActivity.ACTION_OPEN_CHANNEL_URL);
+                            intent.putExtra("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
+                            sendBroadcast(intent);
+
+                            bringMainTaskToFront();
+                            finish();
+                            return;
+                        }
+                    } else {
+                        Lbry.addClaimToCache(claim);
                     }
 
+                    Helper.saveUrlHistory(url, claim.getTitle(), UrlSuggestion.TYPE_FILE);
+
+                    // also save view history
                     checkAndResetNowPlayingClaim();
                     loadFile();
                     renderClaim();
@@ -644,7 +661,14 @@ public class FileViewActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.player_toggle_full_screen).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.player_toggle_cast).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleCast();
+            }
+        });
+
+        findViewById(R.id.player_toggle_fullscreen).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // check full screen mode
@@ -664,7 +688,6 @@ public class FileViewActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.ACTION_OPEN_CHANNEL_URL);
                     intent.putExtra("url", !Helper.isNullOrEmpty(publisher.getShortUrl()) ? publisher.getShortUrl() : publisher.getPermanentUrl());
                     sendBroadcast(intent);
-
                     bringMainTaskToFront();
                     finish();
                 }
@@ -862,12 +885,12 @@ public class FileViewActivity extends AppCompatActivity {
         boolean newPlayerCreated = false;
         if (MainActivity.appPlayer == null) {
             MainActivity.appPlayer = new SimpleExoPlayer.Builder(this).build();
+            MainActivity.castPlayer = new CastPlayer(MainActivity.castContext);
 
             newPlayerCreated = true;
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         PlayerView view = findViewById(R.id.file_view_exoplayer_view);
         view.setPlayer(MainActivity.appPlayer);
         if (MainActivity.nowPlayingClaim != null &&
@@ -881,6 +904,20 @@ public class FileViewActivity extends AppCompatActivity {
         showBuffering();
 
         MainActivity.appPlayer.addListener(fileViewPlayerListener);
+        MainActivity.castPlayer.addListener(fileViewPlayerListener);
+        MainActivity.castPlayer.setSessionAvailabilityListener(new SessionAvailabilityListener() {
+            @Override
+            public void onCastSessionAvailable() {
+                setCurrentPlayer(MainActivity.castPlayer);
+            }
+
+            @Override
+            public void onCastSessionUnavailable() {
+                setCurrentPlayer(MainActivity.appPlayer);
+            }
+        });
+
+        castControlView.setPlayer(MainActivity.castPlayer);
         MainActivity.setNowPlayingClaim(claim, FileViewActivity.this);
         String userAgent = Util.getUserAgent(this, getString(R.string.app_name));
 
@@ -891,6 +928,47 @@ public class FileViewActivity extends AppCompatActivity {
         ).createMediaSource(Uri.parse(mediaSourceUrl));
         MainActivity.appPlayer.setPlayWhenReady(true);
         MainActivity.appPlayer.prepare(mediaSource, true, true);
+    }
+
+    private void setCurrentPlayer(Player currentPlayer) {
+        if (this.currentPlayer == currentPlayer) {
+            return;
+        }
+
+        // View management.
+        if (currentPlayer == MainActivity.appPlayer) {
+            //localPlayerView.setVisibility(View.VISIBLE);
+            castControlView.hide();
+            ((ImageView) findViewById(R.id.player_image_cast_toggle)).setImageResource(R.drawable.ic_cast);
+        } else /* currentPlayer == castPlayer */ {
+            castControlView.show();
+            ((ImageView) findViewById(R.id.player_image_cast_toggle)).setImageResource(R.drawable.ic_cast_connected);
+        }
+
+        // Player state management.
+        long playbackPositionMs = C.TIME_UNSET;
+        int windowIndex = C.INDEX_UNSET;
+        boolean playWhenReady = false;
+
+        Player previousPlayer = this.currentPlayer;
+        if (previousPlayer != null) {
+            // Save state from the previous player.
+            int playbackState = previousPlayer.getPlaybackState();
+            if (playbackState != Player.STATE_ENDED) {
+                playbackPositionMs = previousPlayer.getCurrentPosition();
+                playWhenReady = previousPlayer.getPlayWhenReady();
+            }
+            previousPlayer.stop(true);
+        }
+
+        this.currentPlayer = currentPlayer;
+
+        // Media queue management.
+        /*if (currentPlayer == exoPlayer) {
+            exoPlayer.prepare(concatenatingMediaSource);
+        }*/
+        currentPlayer.seekTo(playbackPositionMs);
+        currentPlayer.setPlayWhenReady(true);
     }
 
     private void resetViewCount() {
@@ -1179,7 +1257,7 @@ public class FileViewActivity extends AppCompatActivity {
                         if (claim.getName().startsWith("@")) {
                             // opening a channel
                             Intent intent = new Intent(MainActivity.ACTION_OPEN_CHANNEL_URL);
-                            intent.putExtra("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
+                            intent.putExtra("url", claim.getPermanentUrl());
                             sendBroadcast(intent);
                             bringMainTaskToFront();
                             finish();
@@ -1409,6 +1487,18 @@ public class FileViewActivity extends AppCompatActivity {
         Helper.setViewText(findViewById(R.id.player_duration_total), Helper.formatDuration(Double.valueOf(totalDuration / 1000.0).longValue()));
     }
 
+    private void loadAndScheduleDurations() {
+        if (MainActivity.appPlayer != null) {
+            if (totalDuration == 0) {
+                elapsedDuration = MainActivity.appPlayer.getCurrentPosition();
+                totalDuration = MainActivity.appPlayer.getDuration();
+            }
+            renderElapsedDuration();
+            renderTotalDuration();
+            scheduleElapsedPlayback();
+        }
+    }
+
     private void logPlay(String url, long startTimeMillis) {
         long timeToStartMillis = startTimeMillis > 0 ? System.currentTimeMillis() - startTimeMillis : 0;
 
@@ -1554,6 +1644,19 @@ public class FileViewActivity extends AppCompatActivity {
         findViewById(R.id.floating_balance_main_container).setVisibility(View.VISIBLE);
     }
 
+    private void toggleCast() {
+        if (!MainActivity.castPlayer.isCastSessionAvailable()) {
+            showError(getString(R.string.no_cast_session_available));
+            return;
+        }
+
+        if (currentPlayer == MainActivity.appPlayer) {
+            setCurrentPlayer(MainActivity.castPlayer);
+        } else {
+            setCurrentPlayer(MainActivity.appPlayer);
+        }
+    }
+
     private void onDownloadAborted() {
         downloadInProgress = false;
 
@@ -1598,6 +1701,7 @@ public class FileViewActivity extends AppCompatActivity {
                 final Set<String> categories = baseIntent.getCategories();
                 if (categories != null && categories.contains(Intent.CATEGORY_LAUNCHER)) {
                     task.moveToFront();
+                    finish();
                     return;
                 }
             }

@@ -73,6 +73,7 @@
     <string name="delete_file">Delete file</string>
     <string name="confirm_delete_file_message">Are you sure you want to remove this file from your device?</string>
     <string name="unable_to_view_url">Failed to load %1$s. Please try again later.</string>
+    <string name="no_cast_session_available">There is no cast session available at this time.</string>
     <plurals name="view_count">
         <item quantity="one">%1$s view</item>
         <item quantity="other">%1$s views</item>

@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -40,10 +41,13 @@ import java.util.Map;
 import java.util.Random;
 
 import io.lbry.browser.MainActivity;
+import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.Tag;
+import io.lbry.browser.model.UrlSuggestion;
+import io.lbry.browser.tasks.localdata.SaveUrlHistoryTask;
 import okhttp3.MediaType;
 
 public final class Helper {
@@ -554,5 +558,27 @@ public final class Helper {
     public static void applyHtmlForTextView(TextView textView) {
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         textView.setText(HtmlCompat.fromHtml(textView.getText().toString(), HtmlCompat.FROM_HTML_MODE_LEGACY));
+    }
+
+    public static List<Claim> filterInvalidReposts(List<Claim> claims) {
+        List<Claim> filtered = new ArrayList<>();
+        for (Claim claim : claims) {
+            if (Claim.TYPE_REPOST.equalsIgnoreCase(claim.getValueType()) && claim.getRepostedClaim() == null) {
+                continue;
+            }
+            filtered.add(claim);
+        }
+        return filtered;
+    }
+
+    public static void saveUrlHistory(String url, String title, int type) {
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance();
+        if (dbHelper != null) {
+            UrlSuggestion suggestion = new UrlSuggestion();
+            suggestion.setUri(LbryUri.tryParse(url));
+            suggestion.setType(type);
+            suggestion.setText(Helper.isNull(title) ? "" : title);
+            new SaveUrlHistoryTask(suggestion, dbHelper, null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 }

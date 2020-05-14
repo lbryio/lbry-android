@@ -372,9 +372,10 @@ public class Claim {
                 Claim signingChannel = new Claim();
                 signingChannel.setClaimId(searchResultObject.getString("channel_claim_id"));
                 signingChannel.setName(searchResultObject.getString("channel"));
-
-                claimUri.setChannelClaimId(signingChannel.getClaimId());
-                claimUri.setChannelName(signingChannel.getName());
+                LbryUri channelUri = new LbryUri();
+                channelUri.setChannelClaimId(signingChannel.getClaimId());
+                channelUri.setChannelName(signingChannel.getName());
+                signingChannel.setPermanentUrl(channelUri.toString());
 
                 claim.setSigningChannel(signingChannel);
             }

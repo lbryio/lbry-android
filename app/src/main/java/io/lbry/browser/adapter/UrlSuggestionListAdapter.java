@@ -16,6 +16,7 @@ import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.ui.controls.SolidIconView;
+import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 import lombok.Setter;
 
@@ -96,7 +97,7 @@ public class UrlSuggestionListAdapter extends RecyclerView.Adapter<UrlSuggestion
                 iconStringId = R.string.fa_at;
                 fullTitle = item.getTitle();
                 desc = item.getClaim() != null ? item.getClaim().getTitle() :
-                        (item.isUseTextAsDescription() ? item.getText() : String.format(context.getString(R.string.view_channel_url_desc), item.getText()));
+                        ((item.isUseTextAsDescription() && !Helper.isNullOrEmpty(item.getText())) ? item.getText() : String.format(context.getString(R.string.view_channel_url_desc), item.getText()));
                 break;
             case UrlSuggestion.TYPE_TAG:
                 iconStringId = R.string.fa_hashtag;
@@ -113,7 +114,7 @@ public class UrlSuggestionListAdapter extends RecyclerView.Adapter<UrlSuggestion
                 iconStringId = R.string.fa_file;
                 fullTitle = item.getTitle();
                 desc = item.getClaim() != null ? item.getClaim().getTitle() :
-                        (item.isUseTextAsDescription() ? item.getText() : String.format(context.getString(R.string.view_file_url_desc), item.getText()));
+                        ((item.isUseTextAsDescription() && !Helper.isNullOrEmpty(item.getText())) ? item.getText() : String.format(context.getString(R.string.view_file_url_desc), item.getText()));
                 break;
         }
 

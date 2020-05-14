@@ -21,6 +21,7 @@ import io.lbry.browser.utils.LbryUri;
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "LbryApp.db";
+    private static DatabaseHelper instance;
 
     private static final String[] SQL_CREATE_TABLES = {
             // local subscription store
@@ -58,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_SUBSCRIPTION = "DELETE FROM subscriptions WHERE url = ?";
     private static final String SQL_GET_SUBSCRIPTIONS = "SELECT channel_name, url FROM subscriptions";
 
-    private static final String SQL_INSERT_URL_HISTORY = "REPLACE INTO url_history (value, url, type, timestamp) VALUES (?, ?, ?)";
+    private static final String SQL_INSERT_URL_HISTORY = "REPLACE INTO url_history (value, url, type, timestamp) VALUES (?, ?, ?, ?)";
     private static final String SQL_CLEAR_URL_HISTORY = "DELETE FROM url_history";
     private static final String SQL_CLEAR_URL_HISTORY_BEFORE_TIME = "DELETE FROM url_history WHERE timestamp < ?";
     private static final String SQL_GET_RECENT_URL_HISTORY = "SELECT value, url, type FROM url_history ORDER BY timestamp DESC LIMIT 10";
@@ -77,6 +78,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, String.format("%s/%s", context.getFilesDir().getAbsolutePath(), DATABASE_NAME), null, DATABASE_VERSION);
+        instance = this;
+    }
+    public static DatabaseHelper getInstance() {
+        return instance;
     }
     public void onCreate(SQLiteDatabase db) {
         for (String sql : SQL_CREATE_TABLES) {
@@ -113,13 +118,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 UrlSuggestion suggestion = new UrlSuggestion();
                 suggestion.setText(cursor.getString(0));
+                suggestion.setUri(cursor.isNull(1) ? null : LbryUri.tryParse(cursor.getString(1)));
                 suggestion.setType(cursor.getInt(2));
-
-                try {
-                    suggestion.setUri(cursor.isNull(1) ? null : LbryUri.parse(cursor.getString(1)));
-                } catch (LbryUriException ex) {
-                    // don't fail if the LbryUri is invalid
-                }
+                suggestion.setTitleUrlOnly(true);
                 suggestions.add(suggestion);
             }
         } finally {

@@ -250,9 +250,7 @@ public final class Lbry {
                     Claim claim = Claim.fromJSONObject(result.getJSONObject(keys.next()));
                     claims.add(claim);
 
-                    // TODO: Add/remove/prune entries claim cache management
-                    ClaimCacheKey key = ClaimCacheKey.fromClaim(claim);
-                    claimCache.put(key, claim);
+                    addClaimToCache(claim);
                 }
             }
         } catch (LbryRequestException | LbryResponseException | JSONException ex) {
@@ -396,8 +394,7 @@ public final class Lbry {
                     Claim claim = Claim.fromJSONObject(items.getJSONObject(i));
                     claims.add(claim);
 
-                    ClaimCacheKey key = ClaimCacheKey.fromClaim(claim);
-                    claimCache.put(key, claim);
+                    addClaimToCache(claim);
                 }
             }
 
@@ -450,6 +447,17 @@ public final class Lbry {
             if (!knownTags.contains(tag)) {
                 knownTags.add(tag);
             }
+        }
+    }
+
+    public static void addClaimToCache(Claim claim) {
+        ClaimCacheKey fullKey = ClaimCacheKey.fromClaim(claim);
+        ClaimCacheKey shortUrlKey = ClaimCacheKey.fromClaimShortUrl(claim);
+        ClaimCacheKey permanentUrlKey = ClaimCacheKey.fromClaimPermanentUrl(claim);
+        claimCache.put(fullKey, claim);
+        claimCache.put(permanentUrlKey, claim);
+        if (!Helper.isNullOrEmpty(shortUrlKey.getUrl())) {
+            claimCache.put(shortUrlKey, claim);
         }
     }
 }

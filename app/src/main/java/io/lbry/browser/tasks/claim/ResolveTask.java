@@ -34,7 +34,7 @@ public class ResolveTask extends AsyncTask<Void, Void, List<Claim>> {
     }
     protected List<Claim> doInBackground(Void... params) {
         try {
-            return Lbry.resolve(urls, connectionString);
+            return Helper.filterInvalidReposts(Lbry.resolve(urls, connectionString));
         } catch (ApiCallException ex) {
             error = ex;
             return null;

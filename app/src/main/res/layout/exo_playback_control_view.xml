@@ -21,7 +21,25 @@
         style="@style/ExoMediaButton.Pause" />
 
     <RelativeLayout
-        android:id="@+id/player_toggle_full_screen"
+        android:id="@+id/player_toggle_cast"
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/player_image_cast_toggle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_cast"
+            android:tint="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/player_toggle_fullscreen"
         android:clickable="true"
         android:background="?attr/selectableItemBackground"
         android:layout_width="48dp"
@@ -41,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/player_toggle_full_screen"
+        android:layout_toLeftOf="@id/player_toggle_fullscreen"
         android:paddingLeft="16dp"
         android:paddingRight="4dp">
         <TextView

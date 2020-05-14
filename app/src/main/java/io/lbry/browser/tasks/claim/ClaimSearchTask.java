@@ -30,7 +30,7 @@ public class ClaimSearchTask extends AsyncTask<Void, Void, List<Claim>> {
     }
     protected List<Claim> doInBackground(Void... params) {
         try {
-            return Lbry.claimSearch(options, connectionString);
+            return Helper.filterInvalidReposts(Lbry.claimSearch(options, connectionString));
         } catch (ApiCallException ex) {
             error = ex;
             return null;

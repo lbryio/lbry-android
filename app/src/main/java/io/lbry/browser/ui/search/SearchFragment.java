@@ -141,7 +141,7 @@ public class SearchFragment extends BaseFragment implements
 
     private void resolveFeaturedItem(String vanityUrl) {
         final ClaimCacheKey key = new ClaimCacheKey();
-        key.setVanityUrl(vanityUrl);
+        key.setUrl(vanityUrl);
         if (Lbry.claimCache.containsKey(key)) {
             Claim cachedClaim = Lbry.claimCache.get(key);
             updateFeaturedItemFromResolvedClaim(cachedClaim);

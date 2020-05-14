@@ -36,7 +36,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.cast.CastPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -105,6 +107,7 @@ import io.lbry.browser.tasks.lbryinc.FetchRewardsTask;
 import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.MergeSubscriptionsTask;
 import io.lbry.browser.tasks.claim.ResolveTask;
+import io.lbry.browser.tasks.localdata.FetchRecentUrlHistoryTask;
 import io.lbry.browser.tasks.wallet.DefaultSyncTaskHandler;
 import io.lbry.browser.tasks.wallet.LoadSharedUserStateTask;
 import io.lbry.browser.tasks.wallet.SaveSharedUserStateTask;
@@ -140,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private Map<String, Class> specialRouteFragmentClassMap;
     private boolean inPictureInPictureMode;
     public static SimpleExoPlayer appPlayer;
+    public static CastContext castContext;
+    public static CastPlayer castPlayer;
     public static Claim nowPlayingClaim;
     public static boolean startingFilePickerActivity = false;
     public static boolean startingShareActivity = false;
@@ -225,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     private NavigationMenuAdapter navMenuAdapter;
     private UrlSuggestionListAdapter urlSuggestionListAdapter;
-    private List<UrlSuggestion> recentHistory;
+    private List<UrlSuggestion> recentUrlHistory;
     private boolean hasLoadedFirstBalance;
 
     // broadcast receivers
@@ -295,7 +300,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         initKeyStore();
         loadAuthToken();
 
-        dbHelper = new DatabaseHelper(this);
         if (!isDarkMode()) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
@@ -315,6 +319,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         });
 
         super.onCreate(savedInstanceState);
+        castContext = CastContext.getSharedInstance(this);
+        dbHelper = new DatabaseHelper(this);
         checkNotificationOpenIntent(getIntent());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -542,9 +548,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     private Claim getCachedClaimForUrl(String url) {
         ClaimCacheKey key = new ClaimCacheKey();
-        key.setCanonicalUrl(url);
-        key.setPermanentUrl(url);
-        key.setShortUrl(url);
+        key.setUrl(url);
         return Lbry.claimCache.containsKey(key) ? Lbry.claimCache.get(key) : null;
     }
 
@@ -881,19 +885,25 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     for (int i = 0; i < claims.size(); i++) {
                         // build a simple url from the claim for matching
                         Claim claim = claims.get(i);
+                        Claim actualClaim = claim;
+                        boolean isRepost = false;
+                        if (Claim.TYPE_REPOST.equalsIgnoreCase(claim.getValueType())) {
+                            actualClaim = claim.getRepostedClaim();
+                            isRepost = true;
+                        }
                         if (Helper.isNullOrEmpty(claim.getName())) {
                             continue;
                         }
 
                         LbryUri simpleUrl = new LbryUri();
-                        if (claim.getName().startsWith("@")) {
+                        if (actualClaim.getName().startsWith("@") && !isRepost) {
                             // channel
-                            simpleUrl.setChannelName(claim.getName());
+                            simpleUrl.setChannelName(actualClaim.getName());
                         } else {
                             simpleUrl.setStreamName(claim.getName());
                         }
 
-                        urlSuggestionListAdapter.setClaimForUrl(simpleUrl, claim);
+                        urlSuggestionListAdapter.setClaimForUrl(simpleUrl, actualClaim);
                     }
                     urlSuggestionListAdapter.notifyDataSetChanged();
                 }
@@ -909,10 +919,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     private void displayUrlSuggestionsForNoInput() {
         urlSuggestionListAdapter.clear();
-        List<UrlSuggestion> blankSuggestions = buildDefaultSuggestionsForBlankUrl();
-        urlSuggestionListAdapter.addUrlSuggestions(blankSuggestions);
-        List<String> urls = urlSuggestionListAdapter.getItemUrls();
-        resolveUrlSuggestions(urls);
+        loadDefaultSuggestionsForBlankUrl();
     }
 
     private void handleUriInputChanged(String text) {
@@ -948,25 +955,48 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private List<UrlSuggestion> buildDefaultSuggestionsForBlankUrl() {
-        List<UrlSuggestion> suggestions = new ArrayList<>();
-        if (recentHistory != null && recentHistory.size() > 0) {
-            // show recent history if avaiable
-            suggestions = new ArrayList<>(recentHistory);
-        } else {
-            try {
-                suggestions.add(new UrlSuggestion(
-                        UrlSuggestion.TYPE_FILE, "What is LBRY?", LbryUri.parse("lbry://what#19b9c243bea0c45175e6a6027911abbad53e983e")));
-                suggestions.add(new UrlSuggestion(
-                        UrlSuggestion.TYPE_CHANNEL, "LBRYCast", LbryUri.parse("lbry://@lbrycast#4c29f8b013adea4d5cca1861fb2161d5089613ea")));
-                suggestions.add(new UrlSuggestion(
-                        UrlSuggestion.TYPE_CHANNEL, "The LBRY Channel", LbryUri.parse("lbry://@lbry#3fda836a92faaceedfe398225fb9b2ee2ed1f01a")));
+    private void loadDefaultSuggestionsForBlankUrl() {
+        if (recentUrlHistory != null && recentUrlHistory.size() > 0) {
+            urlSuggestionListAdapter.addUrlSuggestions(recentUrlHistory);
+        }
+
+        FetchRecentUrlHistoryTask task = new FetchRecentUrlHistoryTask(DatabaseHelper.getInstance(), new FetchRecentUrlHistoryTask.FetchRecentUrlHistoryHandler() {
+            @Override
+            public void onSuccess(List<UrlSuggestion> recentHistory) {
+                List<UrlSuggestion> suggestions = new ArrayList<>(recentHistory);
+                List<UrlSuggestion> lbrySuggestions = buildLbryUrlSuggestions();
+                if (suggestions.size() < 10) {
+                    for (int i = suggestions.size(), j = 0; i < 10 && j < lbrySuggestions.size(); i++, j++) {
+                        suggestions.add(lbrySuggestions.get(j));
+                    }
+                } else if (suggestions.size() == 0) {
+                    suggestions.addAll(lbrySuggestions);
+                }
+
                 for (UrlSuggestion suggestion : suggestions) {
                     suggestion.setUseTextAsDescription(true);
                 }
-            } catch (LbryUriException ex) {
-                // pass
+
+                recentUrlHistory = new ArrayList<>(suggestions);
+                urlSuggestionListAdapter.clear();
+                urlSuggestionListAdapter.addUrlSuggestions(recentUrlHistory);
+                List<String> urls = urlSuggestionListAdapter.getItemUrls();
+                resolveUrlSuggestions(urls);
             }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private List<UrlSuggestion> buildLbryUrlSuggestions() {
+        List<UrlSuggestion> suggestions = new ArrayList<>();
+        suggestions.add(new UrlSuggestion(
+                UrlSuggestion.TYPE_FILE, "What is LBRY?", LbryUri.tryParse("lbry://what#19b9c243bea0c45175e6a6027911abbad53e983e")));
+        suggestions.add(new UrlSuggestion(
+                UrlSuggestion.TYPE_CHANNEL, "LBRYCast", LbryUri.tryParse("lbry://@lbrycast#4c29f8b013adea4d5cca1861fb2161d5089613ea")));
+        suggestions.add(new UrlSuggestion(
+                UrlSuggestion.TYPE_CHANNEL, "The LBRY Channel", LbryUri.tryParse("lbry://@lbry#3fda836a92faaceedfe398225fb9b2ee2ed1f01a")));
+        for (UrlSuggestion suggestion : suggestions) {
+            suggestion.setUseTextAsDescription(true);
         }
         return suggestions;
     }
@@ -975,7 +1005,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         List<UrlSuggestion> suggestions = new ArrayList<UrlSuggestion>();
 
         if (LbryUri.PROTO_DEFAULT.equalsIgnoreCase(text)) {
-            return buildDefaultSuggestionsForBlankUrl();
+            loadDefaultSuggestionsForBlankUrl();
+            return recentUrlHistory != null ? recentUrlHistory : new ArrayList<>();
         }
 
         // First item is always search

@@ -9,21 +9,21 @@ import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.tasks.GenericTaskHandler;
 
-public class CreateUrlHistoryTask extends AsyncTask<Void, Void, Boolean> {
-    private Context context;
+public class SaveUrlHistoryTask extends AsyncTask<Void, Void, Boolean> {
+    private DatabaseHelper dbHelper;
     private UrlSuggestion suggestion;
-    private GenericTaskHandler handler;
+    private SaveUrlHistoryHandler handler;
     private Exception error;
 
-    public CreateUrlHistoryTask(UrlSuggestion suggestion, Context context, GenericTaskHandler handler) {
+    public SaveUrlHistoryTask(UrlSuggestion suggestion, DatabaseHelper dbHelper, SaveUrlHistoryHandler handler) {
         this.suggestion = suggestion;
-        this.context = context;
+        this.dbHelper = dbHelper;
         this.handler = handler;
 
     }
     protected Boolean doInBackground(Void... params) {
         try {
-            SQLiteDatabase db = ((MainActivity) context).getDbHelper().getWritableDatabase();
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
             DatabaseHelper.createOrUpdateUrlHistoryItem(suggestion.getText(), suggestion.getUri().toString(), suggestion.getType(), db);
         } catch (Exception ex) {
             error = ex;
@@ -35,10 +35,15 @@ public class CreateUrlHistoryTask extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(Boolean result) {
         if (handler != null) {
             if (result) {
-                handler.onSuccess();
+                handler.onSuccess(suggestion);
             } else {
                 handler.onError(error);
             }
         }
+    }
+
+    public interface SaveUrlHistoryHandler {
+        void onSuccess(UrlSuggestion item);
+        void onError(Exception error);
     }
 }
