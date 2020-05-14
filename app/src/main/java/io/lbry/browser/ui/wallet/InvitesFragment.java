@@ -418,14 +418,14 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
                     inviteHistoryAdapter.addInvitees(invitees);
                 }
                 Helper.setViewVisibility(inviteHistoryList,
-                        inviteHistoryAdapter == null || inviteHistoryAdapter.getItemCount() == 0 ? View.GONE : View.VISIBLE
+                        inviteHistoryAdapter == null || inviteHistoryAdapter.getItemCount() < 2 ? View.GONE : View.VISIBLE
                 );
             }
 
             @Override
             public void onError(Exception error) {
                 Helper.setViewVisibility(inviteHistoryList,
-                        inviteHistoryAdapter == null || inviteHistoryAdapter.getItemCount() == 0 ? View.GONE : View.VISIBLE
+                        inviteHistoryAdapter == null || inviteHistoryAdapter.getItemCount() < 2 ? View.GONE : View.VISIBLE
                 );
             }
         });

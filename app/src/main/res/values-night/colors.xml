@@ -21,7 +21,7 @@
 
     <!-- At some point, these colours have to be renamed -->
     <color name="darkForeground">#EEEEEE</color>
-    <color name="lightForeground">#555555</color>
+    <color name="lightForeground">#757575</color>
     <color name="foreground">#999999</color>
     <color name="mediaContainerBackground">#333333</color>
     <color name="borderTextArea">#5F5F5F</color>
