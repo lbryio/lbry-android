@@ -16,6 +16,9 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,14 +30,16 @@ import io.lbry.browser.R;
 import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
+import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.Predefined;
 import lombok.Setter;
 
-public class ChannelContentFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class ChannelContentFragment extends Fragment implements DownloadActionListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Setter
     private String channelId;
@@ -189,12 +194,20 @@ public class ChannelContentFragment extends Fragment implements SharedPreference
 
     public void onResume() {
         super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        Context context = getContext();
+        if (context != null) {
+            ((MainActivity) context).addDownloadActionListener(this);
+        }
+        PreferenceManager.getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this);
         fetchClaimSearchContent();
     }
 
     public void onPause() {
-        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        Context context = getContext();
+        if (context != null) {
+            ((MainActivity) context).removeDownloadActionListener(this);
+        }
+        PreferenceManager.getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
 
@@ -298,6 +311,26 @@ public class ChannelContentFragment extends Fragment implements SharedPreference
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
         if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT)) {
             fetchClaimSearchContent(true);
+        }
+    }
+
+    public void onDownloadAction(String downloadAction, String uri, String outpoint, String fileInfoJson, double progress) {
+        if ("abort".equals(downloadAction)) {
+            if (contentListAdapter != null) {
+                contentListAdapter.clearFileForClaimOrUrl(outpoint, uri);
+            }
+            return;
+        }
+
+        try {
+            JSONObject fileInfo = new JSONObject(fileInfoJson);
+            LbryFile claimFile = LbryFile.fromJSONObject(fileInfo);
+            String claimId = claimFile.getClaimId();
+            if (contentListAdapter != null) {
+                contentListAdapter.updateFileForClaimByIdOrUrl(claimFile, claimId, uri);
+            }
+        } catch (JSONException ex) {
+            // invalid file info for download
         }
     }
 }

@@ -12,12 +12,18 @@ import io.lbry.browser.utils.Lbry;
 
 public class FileListTask extends AsyncTask<Void, Void, List<LbryFile>> {
     private String claimId;
+    private boolean downloads;
+    private int page;
+    private int pageSize;
     private FileListResultHandler handler;
     private View progressView;
     private ApiCallException error;
 
-    public FileListTask(View progressView, FileListResultHandler handler) {
+    public FileListTask(int page, int pageSize, boolean downloads, View progressView, FileListResultHandler handler) {
         this(null, progressView, handler);
+        this.page = page;
+        this.pageSize = pageSize;
+        this.downloads = downloads;
     }
 
     public FileListTask(String claimId, View progressView, FileListResultHandler handler) {
@@ -30,7 +36,7 @@ public class FileListTask extends AsyncTask<Void, Void, List<LbryFile>> {
     }
     protected List<LbryFile> doInBackground(Void... params) {
         try {
-            return Lbry.fileList(claimId);
+            return Lbry.fileList(claimId, downloads, page, pageSize);
         } catch (ApiCallException ex) {
             error = ex;
             return null;
@@ -40,7 +46,7 @@ public class FileListTask extends AsyncTask<Void, Void, List<LbryFile>> {
         Helper.setViewVisibility(progressView, View.GONE);
         if (handler != null) {
             if (files != null) {
-                handler.onSuccess(files);
+                handler.onSuccess(files, files.size() < pageSize);
             } else {
                 handler.onError(error);
             }
@@ -48,7 +54,7 @@ public class FileListTask extends AsyncTask<Void, Void, List<LbryFile>> {
     }
 
     public interface FileListResultHandler {
-        void onSuccess(List<LbryFile> files);
+        void onSuccess(List<LbryFile> files, boolean hasReachedEnd);
         void onError(Exception error);
     }
 }

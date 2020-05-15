@@ -19,6 +19,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -45,9 +46,12 @@ import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.UrlSuggestion;
+import io.lbry.browser.model.ViewHistory;
 import io.lbry.browser.tasks.localdata.SaveUrlHistoryTask;
+import io.lbry.browser.tasks.localdata.SaveViewHistoryTask;
 import okhttp3.MediaType;
 
 public final class Helper {
@@ -61,6 +65,7 @@ public final class Helper {
     public static final int CONTENT_PAGE_SIZE = 25;
     public static final double MIN_DEPOSIT = 0.05;
     public static final String LBC_CURRENCY_FORMAT_PATTERN = "#,###.##";
+    public static final String FILE_SIZE_FORMAT_PATTERN = "#,###.#";
     public static final DecimalFormat LBC_CURRENCY_FORMAT = new DecimalFormat(LBC_CURRENCY_FORMAT_PATTERN);
     public static final DecimalFormat USD_CURRENCY_FORMAT = new DecimalFormat("#,##0.00");
     public static final String EXPLORER_TX_PREFIX = "https://explorer.lbry.com/tx";
@@ -118,6 +123,12 @@ public final class Helper {
     public static void setViewVisibility(View view, int visibility) {
         if (view != null) {
             view.setVisibility(visibility);
+        }
+    }
+
+    public static void setViewProgress(ProgressBar progressBar, int progress) {
+        if (progressBar != null) {
+            progressBar.setProgress(progress);
         }
     }
 
@@ -182,6 +193,43 @@ public final class Helper {
             return String.format("%d:%02d:%02d", hours, minutes, seconds);
         }
         return String.format("%d:%02d", minutes, seconds);
+    }
+    public static String[] formatBytesParts(long bytes, boolean showTB) {
+        DecimalFormat formatter = new DecimalFormat(FILE_SIZE_FORMAT_PATTERN);
+        if (bytes < 1048576) {
+            // less than 1MB
+            return new String[] { formatter.format(bytes / 1024.0), "KB" };
+        }
+        if (bytes < 1073741824) {
+            // less than 1GB
+            return new String[] { formatter.format(bytes / (1024.0 * 1024.0)), "MB" };
+        }
+        if (showTB) {
+            if (bytes < (1073741824L * 1024L))  {
+                return new String[] { formatter.format(bytes / (1024.0 * 1024.0 * 1024.0)), "GB" };
+            }
+            return new String[] { formatter.format(bytes / (1024.0 * 1024.0 * 1024.0 * 1024.0)), "TB" };
+        }
+        return new String[] { formatter.format(bytes / (1024.0 * 1024.0 * 1024.0)), "GB" };
+    }
+
+    public static String formatBytes(long bytes, boolean showTB) {
+        DecimalFormat formatter = new DecimalFormat(FILE_SIZE_FORMAT_PATTERN);
+        if (bytes < 1048576) {
+            // less than 1MB
+            return String.format("%sKB", formatter.format(bytes / 1024.0));
+        }
+        if (bytes < 1073741824) {
+            // less than 1GB
+            return String.format("%sMB", formatter.format(bytes / (1024.0 * 1024.0)));
+        }
+        if (showTB) {
+            if (bytes < (1073741824L * 1024L))  {
+                return String.format("%sGB", formatter.format(bytes / (1024.0 * 1024.0 * 1024.0)));
+            }
+            return String.format("%sTB", formatter.format(bytes / (1024.0 * 1024.0 * 1024.0 * 1024.0)));
+        }
+        return String.format("%sGB", formatter.format(bytes / (1024.0 * 1024.0 * 1024.0)));
     }
 
     public static JSONObject getJSONObject(String name, JSONObject object) {
@@ -571,6 +619,33 @@ public final class Helper {
         return filtered;
     }
 
+    public static List<LbryFile> filterDownloads(List<LbryFile> files) {
+        List<LbryFile> filtered = new ArrayList<>();
+        for (int i = 0; i < files.size(); i++) {
+            LbryFile file = files.get(i);
+            if (!Helper.isNullOrEmpty(file.getDownloadPath())) {
+                filtered.add(file);
+            }
+        }
+        return filtered;
+    }
+
+    public static List<Claim> claimsFromFiles(List<LbryFile> files) {
+        List<Claim> claims = new ArrayList<>();
+        for (LbryFile file : files) {
+            claims.add(file.getClaim());
+        }
+        return claims;
+    }
+
+    public static List<Claim> claimsFromViewHistory(List<ViewHistory> history) {
+        List<Claim> claims = new ArrayList<>();
+        for (ViewHistory item : history) {
+            claims.add(Claim.fromViewHistory(item));
+        }
+        return claims;
+    }
+
     public static void saveUrlHistory(String url, String title, int type) {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance();
         if (dbHelper != null) {
@@ -579,6 +654,14 @@ public final class Helper {
             suggestion.setType(type);
             suggestion.setText(Helper.isNull(title) ? "" : title);
             new SaveUrlHistoryTask(suggestion, dbHelper, null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    public static void saveViewHistory(String url, Claim claim) {
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance();
+        if (dbHelper != null) {
+            ViewHistory viewHistory = ViewHistory.fromClaimWithUrlAndDeviceName(claim, url, getDeviceName());
+            new SaveViewHistoryTask(viewHistory, dbHelper, null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 }

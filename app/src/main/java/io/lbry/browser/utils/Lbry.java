@@ -307,11 +307,21 @@ public final class Lbry {
         return file;
     }
 
-    public static List<LbryFile> fileList(String claimId) throws ApiCallException {
+    public static List<LbryFile> fileList(String claimId, boolean downloads, int page, int pageSize) throws ApiCallException {
         List<LbryFile> files = new ArrayList<>();
         Map<String, Object> params = new HashMap<>();
         if (!Helper.isNullOrEmpty(claimId)) {
             params.put("claim_id", claimId);
+        }
+        /*if (downloads) {
+            params.put("file_name", null);
+            params.put("comparison", "ne");
+        }*/
+        if (page > 0) {
+            params.put("page", page);
+        }
+        if (pageSize > 0) {
+            params.put("page_size", pageSize);
         }
         try {
             JSONObject result = (JSONObject) parseResponse(apiCall(METHOD_FILE_LIST, params));

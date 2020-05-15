@@ -20,6 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +38,9 @@ import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
 import io.lbry.browser.dialog.DiscoverDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
+import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.lbryinc.ChannelSubscribeTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
@@ -53,7 +58,9 @@ import io.lbry.browser.utils.Predefined;
 
 public class FollowingFragment extends BaseFragment implements
         FetchSubscriptionsTask.FetchSubscriptionsHandler,
-        ChannelItemSelectionListener, SharedPreferences.OnSharedPreferenceChangeListener {
+        ChannelItemSelectionListener,
+        DownloadActionListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static boolean resetClaimSearchContent;
     private static final int SUGGESTED_PAGE_SIZE = 45;
@@ -334,6 +341,7 @@ public class FollowingFragment extends BaseFragment implements
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             LbryAnalytics.setCurrentScreen(activity, "Subscriptions", "Subscriptions");
+            activity.addDownloadActionListener(this);
         }
 
         // check if subscriptions exist
@@ -351,7 +359,11 @@ public class FollowingFragment extends BaseFragment implements
         }
     }
     public void onPause() {
-        PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).removeDownloadActionListener(this);
+        }
+        PreferenceManager.getDefaultSharedPreferences(context).unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
     public void fetchLoadedSubscriptions() {
@@ -765,6 +777,26 @@ public class FollowingFragment extends BaseFragment implements
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
         if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT)) {
             fetchClaimSearchContent(true);
+        }
+    }
+
+    public void onDownloadAction(String downloadAction, String uri, String outpoint, String fileInfoJson, double progress) {
+        if ("abort".equals(downloadAction)) {
+            if (contentListAdapter != null) {
+                contentListAdapter.clearFileForClaimOrUrl(outpoint, uri);
+            }
+            return;
+        }
+
+        try {
+            JSONObject fileInfo = new JSONObject(fileInfoJson);
+            LbryFile claimFile = LbryFile.fromJSONObject(fileInfo);
+            String claimId = claimFile.getClaimId();
+            if (contentListAdapter != null) {
+                contentListAdapter.updateFileForClaimByIdOrUrl(claimFile, claimId, uri);
+            }
+        } catch (JSONException ex) {
+            // invalid file info for download
         }
     }
 }

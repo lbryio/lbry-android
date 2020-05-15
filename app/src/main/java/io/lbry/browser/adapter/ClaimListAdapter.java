@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,11 +18,14 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.lbry.browser.R;
 import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
@@ -32,6 +36,11 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     private static final int VIEW_TYPE_STREAM = 1;
     private static final int VIEW_TYPE_CHANNEL = 2;
     private static final int VIEW_TYPE_FEATURED = 3; // featured search result
+
+    private Map<String, Claim> quickClaimIdMap;
+    private Map<String, Claim> quickClaimUrlMap;
+    private Map<String, Boolean> notFoundClaimIdMap;
+    private Map<String, Boolean> notFoundClaimUrlMap;
 
     @Setter
     private boolean canEnterSelectionMode;
@@ -50,6 +59,10 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         this.context = context;
         this.items = new ArrayList<>(items);
         this.selectedItems = new ArrayList<>();
+        quickClaimIdMap = new HashMap<>();
+        quickClaimUrlMap = new HashMap<>();
+        notFoundClaimIdMap = new HashMap<>();
+        notFoundClaimUrlMap = new HashMap<>();
     }
 
     public List<Claim> getSelectedItems() {
@@ -77,6 +90,10 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     public void clearItems() {
         clearSelectedItems();
         this.items.clear();
+        quickClaimIdMap.clear();
+        quickClaimUrlMap.clear();
+        notFoundClaimIdMap.clear();
+        notFoundClaimUrlMap.clear();
         notifyDataSetChanged();
     }
 
@@ -91,6 +108,9 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                 items.add(claim);
             }
         }
+
+        notFoundClaimUrlMap.clear();
+        notFoundClaimIdMap.clear();
         notifyDataSetChanged();
     }
     public void setItems(List<Claim> claims) {
@@ -119,6 +139,9 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         protected View repostInfoView;
         protected TextView repostChannelView;
         protected View selectedOverlayView;
+        protected TextView fileSizeView;
+        protected ProgressBar downloadProgressView;
+        protected TextView deviceView;
         public ViewHolder(View v) {
             super(v);
             feeContainer = v.findViewById(R.id.claim_fee_container);
@@ -135,6 +158,9 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             repostInfoView = v.findViewById(R.id.claim_repost_info);
             repostChannelView = v.findViewById(R.id.claim_repost_channel);
             selectedOverlayView = v.findViewById(R.id.claim_selected_overlay);
+            fileSizeView = v.findViewById(R.id.claim_file_size);
+            downloadProgressView = v.findViewById(R.id.claim_download_progress);
+            deviceView = v.findViewById(R.id.claim_view_device);
         }
     }
 
@@ -154,6 +180,68 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         Claim actualClaim = Claim.TYPE_REPOST.equalsIgnoreCase(valueType) ? claim.getRepostedClaim() : claim;
 
         return Claim.TYPE_CHANNEL.equalsIgnoreCase(actualClaim.getValueType()) ? VIEW_TYPE_CHANNEL : VIEW_TYPE_STREAM;
+    }
+
+    public void updateFileForClaimByIdOrUrl(LbryFile file, String claimId, String url) {
+        updateFileForClaimByIdOrUrl(file, claimId, url,  false);
+    }
+    public void updateFileForClaimByIdOrUrl(LbryFile file, String claimId, String url, boolean skipNotFound) {
+        if (!skipNotFound) {
+            if (notFoundClaimIdMap.containsKey(claimId) && notFoundClaimUrlMap.containsKey(url)) {
+                return;
+            }
+        }
+        if (quickClaimIdMap.containsKey(claimId)) {
+            quickClaimIdMap.get(claimId).setFile(file);
+            notifyDataSetChanged();
+            return;
+        }
+        if (quickClaimUrlMap.containsKey(claimId)) {
+            quickClaimUrlMap.get(claimId).setFile(file);
+            notifyDataSetChanged();
+            return;
+        }
+
+        boolean claimFound = false;
+        for (int i = 0; i < items.size(); i++) {
+            Claim claim = items.get(i);
+            if (claimId.equalsIgnoreCase(claim.getClaimId()) || url.equalsIgnoreCase(claim.getPermanentUrl())) {
+                quickClaimIdMap.put(claimId, claim);
+                quickClaimUrlMap.put(url, claim);
+                claim.setFile(file);
+                notifyDataSetChanged();
+                claimFound = true;
+                break;
+            }
+        }
+
+        if (!claimFound) {
+            notFoundClaimIdMap.put(claimId, true);
+            notFoundClaimUrlMap.put(url, true);
+        }
+    }
+    public void clearFileForClaimOrUrl(String outpoint, String url) {
+        clearFileForClaimOrUrl(outpoint, url, false);
+        notifyDataSetChanged();
+    }
+
+
+    public void clearFileForClaimOrUrl(String outpoint, String url, boolean remove) {
+        int claimIndex = -1;
+        for (int i = 0; i < items.size(); i++) {
+            Claim claim = items.get(i);
+            if (outpoint.equalsIgnoreCase(claim.getOutpoint()) || url.equalsIgnoreCase(claim.getPermanentUrl())) {
+                claimIndex = i;
+                claim.setFile(null);
+                break;
+            }
+        }
+        if (remove && claimIndex > -1) {
+            Claim removed = items.remove(claimIndex);
+            selectedItems.remove(removed);
+        }
+
+        notifyDataSetChanged();
     }
 
     @Override
@@ -290,6 +378,24 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                         publishTime, System.currentTimeMillis(), 0, DateUtils.FORMAT_ABBREV_RELATIVE));
                 vh.durationView.setVisibility(duration > 0 ? View.VISIBLE : View.GONE);
                 vh.durationView.setText(Helper.formatDuration(duration));
+
+                LbryFile claimFile = item.getFile();
+                boolean isDownloading = false;
+                int progress = 0;
+                String fileSizeString = claimFile == null ? null : Helper.formatBytes(claimFile.getTotalBytes(), false);
+                if (claimFile != null && !claimFile.isCompleted() && claimFile.getWrittenBytes() < claimFile.getTotalBytes()) {
+                    isDownloading = true;
+                    progress = claimFile.getTotalBytes() > 0 ?
+                            Double.valueOf(((double) claimFile.getWrittenBytes() / (double) claimFile.getTotalBytes()) * 100.0).intValue() : 0;
+                    fileSizeString = String.format("%s / %s",
+                            Helper.formatBytes(claimFile.getWrittenBytes(), false),
+                            Helper.formatBytes(claimFile.getTotalBytes(), false));
+                }
+
+                Helper.setViewText(vh.fileSizeView, fileSizeString);
+                Helper.setViewVisibility(vh.downloadProgressView, isDownloading ? View.VISIBLE : View.INVISIBLE);
+                Helper.setViewProgress(vh.downloadProgressView, progress);
+                Helper.setViewText(vh.deviceView, item.getDevice());
             } else if (Claim.TYPE_CHANNEL.equalsIgnoreCase(item.getValueType())) {
                 if (!Helper.isNullOrEmpty(thumbnailUrl)) {
                     Glide.with(context.getApplicationContext()).

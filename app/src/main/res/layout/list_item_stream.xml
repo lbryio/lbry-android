@@ -168,24 +168,56 @@
                 android:textColor="@color/lbryGreen"
                 android:fontFamily="@font/inter"
                 android:textSize="12sp" />
-            <TextView
-                android:id="@+id/claim_publish_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:textSize="11sp"
-                android:textFontWeight="300" />
-            <TextView
-                android:id="@+id/claim_pending_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:text="@string/pending"
-                android:textSize="11sp"
-                android:textStyle="italic"
-                android:textFontWeight="300"
-                android:visibility="gone" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/claim_publish_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:textSize="11sp"
+                    android:textFontWeight="300" />
+                <TextView
+                    android:id="@+id/claim_pending_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/pending"
+                    android:textSize="11sp"
+                    android:textStyle="italic"
+                    android:textFontWeight="300"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/claim_file_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:fontFamily="@font/inter"
+                    android:textSize="11sp"
+                    android:textFontWeight="300" />
+            </RelativeLayout>
             <!-- download progress bar -->
+            <ProgressBar
+                android:id="@+id/claim_download_progress"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="4dp"
+                android:visibility="invisible"
+                style="?android:progressBarStyleHorizontal" />
+            <TextView
+                android:id="@+id/claim_view_device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_gravity="end"
+                android:ellipsize="end"
+                android:fontFamily="@font/inter"
+                android:singleLine="true"
+                android:textColor="@color/lightGrey"
+                android:textSize="10sp"
+                android:textFontWeight="300" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

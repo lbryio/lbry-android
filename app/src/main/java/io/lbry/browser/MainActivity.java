@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,11 +33,13 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
+import com.google.android.exoplayer2.offline.Download;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -78,6 +81,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -89,6 +93,7 @@ import io.lbry.browser.adapter.UrlSuggestionListAdapter;
 import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.ContentScopeDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
+import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchChannelsListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.WalletBalanceListener;
@@ -121,6 +126,7 @@ import io.lbry.browser.ui.channel.ChannelFragment;
 import io.lbry.browser.ui.channel.ChannelManagerFragment;
 import io.lbry.browser.ui.editorschoice.EditorsChoiceFragment;
 import io.lbry.browser.ui.following.FollowingFragment;
+import io.lbry.browser.ui.library.LibraryFragment;
 import io.lbry.browser.ui.other.AboutFragment;
 import io.lbry.browser.ui.search.SearchFragment;
 import io.lbry.browser.ui.other.SettingsFragment;
@@ -133,6 +139,7 @@ import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
+import io.lbry.lbrysdk.DownloadManager;
 import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.ServiceHelper;
 import io.lbry.lbrysdk.Utils;
@@ -246,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     @Getter
     private DatabaseHelper dbHelper;
     private int selectedMenuItemId = -1;
+    private List<DownloadActionListener> downloadActionListeners;
     private List<SdkStatusListener> sdkStatusListeners;
     private List<WalletBalanceListener> walletBalanceListeners;
     private List<FetchChannelsListener> fetchChannelsListeners;
@@ -278,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
             // your content
             NavMenuItem.ID_ITEM_CHANNELS,
+            NavMenuItem.ID_ITEM_LIBRARY,
 
             // wallet
             NavMenuItem.ID_ITEM_WALLET,
@@ -336,6 +345,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         // other
         openNavFragments = new HashMap<>();
+        downloadActionListeners = new ArrayList<>();
         sdkStatusListeners = new ArrayList<>();
         walletBalanceListeners = new ArrayList<>();
         fetchChannelsListeners = new ArrayList<>();
@@ -354,6 +364,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     openSelectedMenuItem();
                     shouldOpenUserSelectedMenuItem = false;
                 }
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (slideOffset != 0) {
+                    clearWunderbarFocus(findViewById(R.id.wunderbar));
+                }
+                super.onDrawerSlide(drawerView, slideOffset);
             }
         };
         drawer.addDrawerListener(toggle);
@@ -435,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         specialRouteFragmentClassMap.put("channels", ChannelManagerFragment.class);
         specialRouteFragmentClassMap.put("invite", InvitesFragment.class);
         specialRouteFragmentClassMap.put("invites", InvitesFragment.class);
-        //specialRouteFragmentClassMap.put("library", LibraryFragment.class);
+        specialRouteFragmentClassMap.put("library", LibraryFragment.class);
         //specialRouteFragmentClassMap.put("publish", PublishFragment.class);
         //specialRouteFragmentClassMap.put("publishes", PublishesFragment.class);
         specialRouteFragmentClassMap.put("following", FollowingFragment.class);
@@ -450,6 +468,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         super.onNewIntent(intent);
         checkUrlIntent(intent);
         checkNotificationOpenIntent(intent);
+    }
+
+    public void addDownloadActionListener(DownloadActionListener listener) {
+        if (!downloadActionListeners.contains(listener)) {
+            downloadActionListeners.add(listener);
+        }
+    }
+
+    public void removeDownloadActionListener(DownloadActionListener listener) {
+        downloadActionListeners.remove(listener);
     }
 
     public void addSdkStatusListener(SdkStatusListener listener) {
@@ -503,6 +531,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
             case NavMenuItem.ID_ITEM_CHANNELS:
                 openFragment(ChannelManagerFragment.class, true, NavMenuItem.ID_ITEM_CHANNELS);
+                break;
+            case NavMenuItem.ID_ITEM_LIBRARY:
+                openFragment(LibraryFragment.class, true, NavMenuItem.ID_ITEM_LIBRARY);
                 break;
 
             case NavMenuItem.ID_ITEM_WALLET:
@@ -1094,6 +1125,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         } else if (!appStarted) {
             // first run completed, startup
             startup();
+        } else if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            openFragment(FollowingFragment.class, false, NavMenuItem.ID_ITEM_FOLLOWING);
         }
     }
 
@@ -1146,9 +1179,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
 
         findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
+
+        syncWalletAndLoadPreferences();
         scheduleWalletBalanceUpdate();
         scheduleWalletSyncTask();
         fetchChannels();
+
         initFloatingWalletBalance();
     }
 
@@ -1317,7 +1353,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         return walletSyncEnabled && Lbryio.isSignedIn();
     }
 
-    private void syncWalletAndLoadPreferences() {
+    public void syncWalletAndLoadPreferences() {
         if (!userSyncEnabled()) {
             return;
         }
@@ -1629,6 +1665,26 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             actionBar.show();
         }
     }
+    private void renderStartupFailed(Map<Integer, Boolean> startupStages) {
+        Map<Integer, Integer> startupStageIconIds = new HashMap<>();
+        startupStageIconIds.put(STARTUP_STAGE_INSTALL_ID_LOADED, R.id.startup_stage_icon_install_id);
+        startupStageIconIds.put(STARTUP_STAGE_KNOWN_TAGS_LOADED, R.id.startup_stage_icon_known_tags);
+        startupStageIconIds.put(STARTUP_STAGE_EXCHANGE_RATE_LOADED, R.id.startup_stage_icon_exchange_rate);
+        startupStageIconIds.put(STARTUP_STAGE_USER_AUTHENTICATED, R.id.startup_stage_icon_user_authenticated);
+        startupStageIconIds.put(STARTUP_STAGE_NEW_INSTALL_DONE, R.id.startup_stage_icon_install_new);
+        startupStageIconIds.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, R.id.startup_stage_icon_subscriptions_loaded);
+        startupStageIconIds.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, R.id.startup_stage_icon_subscriptions_resolved);
+
+        for (Integer key : startupStages.keySet()) {
+            boolean stageDone = startupStages.get(key);
+            ImageView icon = findViewById(startupStageIconIds.get(key));
+            icon.setImageResource(stageDone ? R.drawable.ic_check : R.drawable.ic_close);
+            icon.setColorFilter(stageDone ? Color.WHITE : Color.RED);
+        }
+
+        findViewById(R.id.splash_view_loading_container).setVisibility(View.GONE);
+        findViewById(R.id.splash_view_error_container).setVisibility(View.VISIBLE);
+    }
 
     private void startup() {
         final Context context = this;
@@ -1636,11 +1692,23 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         // perform some tasks before launching
         (new AsyncTask<Void, Void, Boolean>() {
+            private Map<Integer, Boolean> startupStages = new HashMap<>();
+
+            private void initStartupStages() {
+                startupStages.put(STARTUP_STAGE_INSTALL_ID_LOADED, false);
+                startupStages.put(STARTUP_STAGE_KNOWN_TAGS_LOADED, false);
+                startupStages.put(STARTUP_STAGE_EXCHANGE_RATE_LOADED, false);
+                startupStages.put(STARTUP_STAGE_USER_AUTHENTICATED, false);
+                startupStages.put(STARTUP_STAGE_NEW_INSTALL_DONE, false);
+                startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, false);
+                startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, false);
+            }
             protected void onPreExecute() {
                 hideActionBar();
                 lockDrawer();
                 findViewById(R.id.splash_view).setVisibility(View.VISIBLE);
                 LbryAnalytics.setCurrentScreen(MainActivity.this, "Splash", "Splash");
+                initStartupStages();
             }
             protected Boolean doInBackground(Void... params) {
                 BufferedReader reader = null;
@@ -1652,29 +1720,35 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     String installId = reader.readLine();
                     if (Helper.isNullOrEmpty(installId)) {
                         // no install_id found (first run didn't start the sdk successfully?)
+                        startupStages.put(STARTUP_STAGE_INSTALL_ID_LOADED, false);
                         return false;
                     }
+
+                    Lbry.INSTALLATION_ID = installId;
+                    startupStages.put(STARTUP_STAGE_INSTALL_ID_LOADED, true);
 
                     SQLiteDatabase db = dbHelper.getReadableDatabase();
                     List<Tag> fetchedTags = DatabaseHelper.getTags(db);
                     Lbry.knownTags = Helper.mergeKnownTags(fetchedTags);
                     Collections.sort(Lbry.knownTags, new Tag());
                     Lbry.followedTags = Helper.filterFollowedTags(Lbry.knownTags);
+                    startupStages.put(STARTUP_STAGE_KNOWN_TAGS_LOADED, true);
 
                     // load the exchange rate
+                    Lbryio.loadExchangeRate();
                     if (Lbryio.LBCUSDRate == 0) {
-                        Lbryio.loadExchangeRate();
+                        return false;
                     }
+                    startupStages.put(STARTUP_STAGE_EXCHANGE_RATE_LOADED, true);
 
-                    Lbry.INSTALLATION_ID = installId;
-                    if (Lbryio.currentUser == null) {
-                        Lbryio.authenticate(context);
-                    }
+                    Lbryio.authenticate(context);
                     if (Lbryio.currentUser == null) {
                         throw new Exception("Did not retrieve authenticated user.");
                     }
+                    startupStages.put(STARTUP_STAGE_USER_AUTHENTICATED, true);
 
                     Lbryio.newInstall(context);
+                    startupStages.put(STARTUP_STAGE_NEW_INSTALL_DONE, true);
 
                     // (light) fetch subscriptions
                     if (Lbryio.subscriptions.size() == 0) {
@@ -1701,6 +1775,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                                 Lbryio.cacheResolvedSubscriptions = resolvedSubs;
                             }
                         }
+
+                        // if no exceptions occurred here, subscriptions have been loaded and resolved
+                        startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true);
+                        startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true);
+                    } else {
+                        startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true);
+                        startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true);
                     }
                 } catch (Exception ex) {
                     // nope
@@ -1714,8 +1795,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }
             protected void onPostExecute(Boolean startupSuccessful) {
                 if (!startupSuccessful) {
-                    Toast.makeText(context, R.string.startup_failed, Toast.LENGTH_LONG).show();
-                    finish();
+                    // show which startup stage failed
+                    renderStartupFailed(startupStages);
                     return;
                 }
 
@@ -1901,6 +1982,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     private void registerServiceActionsReceiver() {
         IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_EVENT);
         intentFilter.addAction(LbrynetService.LBRY_SDK_SERVICE_STARTED);
         intentFilter.addAction(LbrynetService.ACTION_STOP_SERVICE);
         serviceActionsReceiver = new BroadcastReceiver() {
@@ -1920,6 +2002,19 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                             notificationManager.notify(1, svcNotification);
                         }
                     }, 1000);
+                } else if (DownloadManager.ACTION_DOWNLOAD_EVENT.equalsIgnoreCase(action)) {
+                    String downloadAction = intent.getStringExtra("action");
+                    String uri = intent.getStringExtra("uri");
+                    String outpoint = intent.getStringExtra("outpoint");
+                    String fileInfoJson = intent.getStringExtra("file_info");
+                    double progress = intent.getDoubleExtra("progress", 0);
+                    if (uri == null || outpoint == null || (fileInfoJson == null && !"abort".equals(downloadAction))) {
+                        return;
+                    }
+
+                    for (DownloadActionListener listener : downloadActionListeners) {
+                        listener.onDownloadAction(downloadAction, uri, outpoint, fileInfoJson, progress);
+                    }
                 }
             }
         };
@@ -1968,8 +2063,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         yourContentGroup.setItems(Arrays.asList(
                 //new NavMenuItem(NavMenuItem.ID_ITEM_NEW_PUBLISH, R.string.fa_upload, R.string.new_publish, "NewPublish", context),
-                new NavMenuItem(NavMenuItem.ID_ITEM_CHANNELS, R.string.fa_at, R.string.channels, "Channels", context)
-                //new NavMenuItem(NavMenuItem.ID_ITEM_LIBRARY, R.string.fa_download, R.string.library, "Library", context)
+                new NavMenuItem(NavMenuItem.ID_ITEM_CHANNELS, R.string.fa_at, R.string.channels, "Channels", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_LIBRARY, R.string.fa_download, R.string.library, "Library", context)
                 //new NavMenuItem(NavMenuItem.ID_ITEM_PUBLISHES, R.string.fa_cloud_upload, R.string.publishes, "Publishes", context)
         ));
 

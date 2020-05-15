@@ -48,6 +48,7 @@
     <color name="uriDescBlue">#3971DB</color>
     <color name="rewardDriverBlue">#2196f3</color>
 
+    <color name="statsVideo">@color/nextLbryGreen</color>
     <color name="statsAudio">#F6A637</color>
     <color name="statsImage">#FF4A7D</color>
     <color name="statsOther">#26BCF7</color>

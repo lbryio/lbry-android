@@ -169,9 +169,9 @@ public class FileViewActivity extends AppCompatActivity {
         ClaimCacheKey key = new ClaimCacheKey();
         key.setClaimId(claimId);
         key.setUrl(url); // use the same url for the key so that we can match the key for any value that's the same
-
         if (Lbry.claimCache.containsKey(key)) {
             claim = Lbry.claimCache.get(key);
+            Helper.saveViewHistory(url, claim);
             checkAndResetNowPlayingClaim();
             if (claim.getFile() == null) {
                 loadFile();
@@ -314,6 +314,7 @@ public class FileViewActivity extends AppCompatActivity {
         if (Lbry.claimCache.containsKey(key)) {
             claim = Lbry.claimCache.get(key);
             Helper.saveUrlHistory(url, claim.getTitle(), UrlSuggestion.TYPE_FILE);
+            Helper.saveViewHistory(url, claim);
             checkAndResetNowPlayingClaim();
             if (claim.getFile() == null) {
                 loadFile();
@@ -423,7 +424,7 @@ public class FileViewActivity extends AppCompatActivity {
         String claimId = claim.getClaimId();
         FileListTask task = new FileListTask(claimId, null, new FileListTask.FileListResultHandler() {
             @Override
-            public void onSuccess(List<LbryFile> files) {
+            public void onSuccess(List<LbryFile> files, boolean hasReachedEnd) {
                 if (files.size() > 0) {
                     claim.setFile(files.get(0));
                     checkIsFileComplete();
@@ -445,7 +446,7 @@ public class FileViewActivity extends AppCompatActivity {
         if (initialFileLoadDone) {
             restoreMainActionButton();
         }
-        if (claim != null && claim.isFree()) {
+        if (claim != null && claim.isFree() && (claim.isPlayable() || claim.isViewable())) {
             onMainActionButtonClicked();
         }
     }
@@ -491,6 +492,8 @@ public class FileViewActivity extends AppCompatActivity {
                     Helper.saveUrlHistory(url, claim.getTitle(), UrlSuggestion.TYPE_FILE);
 
                     // also save view history
+                    Helper.saveViewHistory(url, claim);
+
                     checkAndResetNowPlayingClaim();
                     loadFile();
                     renderClaim();
@@ -1576,9 +1579,11 @@ public class FileViewActivity extends AppCompatActivity {
                 String uri = intent.getStringExtra("uri");
                 String outpoint = intent.getStringExtra("outpoint");
                 String fileInfoJson = intent.getStringExtra("file_info");
+                double progress = intent.getDoubleExtra("progress", 0);
                 if (claim == null || uri == null || outpoint == null || (fileInfoJson == null && !"abort".equals(downloadAction))) {
                     return;
                 }
+                onRelatedDownloadAction(downloadAction, uri, outpoint, fileInfoJson, progress);
                 if (claim != null && !claim.getPermanentUrl().equalsIgnoreCase(uri)) {
                     return;
                 }
@@ -1604,7 +1609,6 @@ public class FileViewActivity extends AppCompatActivity {
                     } else if (DownloadManager.ACTION_UPDATE.equals(downloadAction)) {
                         // handle download updated
                         downloadInProgress = true;
-                        double progress = intent.getDoubleExtra("progress", 0);
                         Helper.setViewVisibility(downloadProgressView, View.VISIBLE);
                         downloadProgressView.setProgress(Double.valueOf(progress).intValue());
                         downloadIconView.setImageResource(R.drawable.ic_stop);
@@ -1689,6 +1693,26 @@ public class FileViewActivity extends AppCompatActivity {
                 context.startActivity(intent);
             }
             return true;
+        }
+    }
+
+    private void onRelatedDownloadAction(String downloadAction, String uri, String outpoint, String fileInfoJson, double progress) {
+        if ("abort".equals(downloadAction)) {
+            if (relatedContentAdapter != null) {
+                relatedContentAdapter.clearFileForClaimOrUrl(outpoint, uri);
+            }
+            return;
+        }
+
+        try {
+            JSONObject fileInfo = new JSONObject(fileInfoJson);
+            LbryFile claimFile = LbryFile.fromJSONObject(fileInfo);
+            String claimId = claimFile.getClaimId();
+            if (relatedContentAdapter != null) {
+                relatedContentAdapter.updateFileForClaimByIdOrUrl(claimFile, claimId, uri);
+            }
+        } catch (JSONException ex) {
+            // invalid file info for download
         }
     }
 

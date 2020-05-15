@@ -5,6 +5,7 @@ import java.util.Date;
 
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.utils.LbryUri;
+import io.lbry.browser.utils.Lbryio;
 import lombok.Data;
 
 @Data
@@ -39,8 +40,11 @@ public class ViewHistory {
             Claim.StreamMetadata value = (Claim.StreamMetadata) metadata;
             history.setReleaseTime(value.getReleaseTime());
             if (value.getFee() != null) {
-                history.setCost(new BigDecimal(value.getFee().getAmount()));
+                history.setCost(claim.getActualCost(Lbryio.LBCUSDRate));
             }
+        }
+        if (history.getReleaseTime() == 0) {
+            history.setReleaseTime(claim.getTimestamp());
         }
 
         Claim signingChannel = claim.getSigningChannel();

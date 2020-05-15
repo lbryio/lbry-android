@@ -82,6 +82,9 @@ public class Claim {
     private GenericMetadata value;
     private LbryFile file; // associated file if it exists
 
+    // device it was viewed on (for view history)
+    private String device;
+
     public static Claim claimFromOutput(JSONObject item) {
         // we only need name, permanent_url, txid and nout
         Claim claim = new Claim();
@@ -91,6 +94,10 @@ public class Claim {
         claim.setTxid(Helper.getJSONString("txid", null, item));
         claim.setNout(Helper.getJSONInt("nout", -1, item));
         return claim;
+    }
+
+    public String getOutpoint() {
+        return String.format("%s:%d", txid, nout);
     }
 
     public boolean isFree() {
@@ -246,6 +253,8 @@ public class Claim {
         claim.setName(viewHistory.getClaimName());
         claim.setValueType(TYPE_STREAM);
         claim.setPermanentUrl(viewHistory.getUri().toString());
+        claim.setDevice(viewHistory.getDevice());
+        claim.setConfirmations(1);
 
         StreamMetadata value = new StreamMetadata();
         value.setTitle(viewHistory.getTitle());

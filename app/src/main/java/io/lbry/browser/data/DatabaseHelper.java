@@ -4,7 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.opengl.Visibility;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,6 +69,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String SQL_INSERT_VIEW_HISTORY =
             "REPLACE INTO view_history (url, claim_id, claim_name, cost, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_GET_VIEW_HISTORY =
+            "SELECT url, claim_id, claim_name, cost, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp " +
+            "FROM view_history WHERE '' = ? OR timestamp < ? ORDER BY timestamp DESC LIMIT %d";
     private static final String SQL_CLEAR_VIEW_HISTORY = "DELETE FROM view_history";
     private static final String SQL_CLEAR_VIEW_HISTORY_BY_DEVICE = "DELETE FROM view_history WHERE device = ?";
     private static final String SQL_CLEAR_VIEW_HISTORY_BEFORE_TIME = "DELETE FROM view_history WHERE timestamp < ?";
@@ -145,6 +151,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 viewHistory.getReleaseTime(),
                 new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).format(new Date())
         });
+    }
+
+    public static List<ViewHistory> getViewHistory(String lastTimestamp, int pageLimit, SQLiteDatabase db) {
+        List<ViewHistory> history = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            String arg = lastTimestamp == null ? "" : lastTimestamp;
+            cursor = db.rawQuery(String.format(SQL_GET_VIEW_HISTORY, pageLimit), new String[] { arg, arg });
+            while (cursor.moveToNext()) {
+                ViewHistory item = new ViewHistory();
+                int cursorIndex = 0;
+                item.setUri(LbryUri.tryParse(cursor.getString(cursorIndex++)));
+                item.setClaimId(cursor.getString(cursorIndex++));
+                item.setClaimName(cursor.getString(cursorIndex++));
+                item.setCost(new BigDecimal(cursor.getDouble(cursorIndex++)));
+                item.setTitle(cursor.getString(cursorIndex++));
+                item.setPublisherClaimId(cursor.getString(cursorIndex++));
+                item.setPublisherName(cursor.getString(cursorIndex++));
+                item.setPublisherTitle(cursor.getString(cursorIndex++));
+                item.setThumbnailUrl(cursor.getString(cursorIndex++));
+                item.setDevice(cursor.getString(cursorIndex++));
+                item.setReleaseTime(cursor.getLong(cursorIndex++));
+                try {
+                    item.setTimestamp(new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).parse(cursor.getString(cursorIndex)));
+                } catch (ParseException ex) {
+                    // invalid timestamp (which shouldn't happen). Skip this item
+                    continue;
+                }
+
+                history.add(item);
+            }
+        } finally {
+            Helper.closeCursor(cursor);
+        }
+        return history;
     }
 
     public static void createOrUpdateTag(Tag tag, SQLiteDatabase db) {

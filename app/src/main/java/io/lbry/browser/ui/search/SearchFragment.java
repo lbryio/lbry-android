@@ -15,13 +15,20 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.exoplayer2.offline.Download;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.ClaimListAdapter;
+import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
+import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.tasks.LighthouseSearchTask;
@@ -34,10 +41,10 @@ import io.lbry.browser.utils.LbryUri;
 import lombok.Setter;
 
 public class SearchFragment extends BaseFragment implements
-        ClaimListAdapter.ClaimListItemListener, SharedPreferences.OnSharedPreferenceChangeListener {
-    private ClaimListAdapter resultListAdapter;
+        ClaimListAdapter.ClaimListItemListener, DownloadActionListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final int PAGE_SIZE = 25;
 
+    private ClaimListAdapter resultListAdapter;
     private ProgressBar loadingView;
     private RecyclerView resultList;
     private TextView noQueryView;
@@ -95,6 +102,7 @@ public class SearchFragment extends BaseFragment implements
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             LbryAnalytics.setCurrentScreen(activity, "Search", "Search");
+            activity.addDownloadActionListener(this);
         }
         if (!Helper.isNullOrEmpty(currentQuery)) {
             logSearch(currentQuery);
@@ -106,7 +114,11 @@ public class SearchFragment extends BaseFragment implements
     }
 
     public void onPause() {
-        PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
+        Context context = getContext();
+        if (context != null) {
+            ((MainActivity) context).removeDownloadActionListener(this);
+        }
+        PreferenceManager.getDefaultSharedPreferences(context).unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
 
@@ -260,6 +272,26 @@ public class SearchFragment extends BaseFragment implements
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
         if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT)) {
             search(currentQuery, currentFrom);
+        }
+    }
+
+    public void onDownloadAction(String downloadAction, String uri, String outpoint, String fileInfoJson, double progress) {
+        if ("abort".equals(downloadAction)) {
+            if (resultListAdapter != null) {
+                resultListAdapter.clearFileForClaimOrUrl(outpoint, uri);
+            }
+            return;
+        }
+
+        try {
+            JSONObject fileInfo = new JSONObject(fileInfoJson);
+            LbryFile claimFile = LbryFile.fromJSONObject(fileInfo);
+            String claimId = claimFile.getClaimId();
+            if (resultListAdapter != null) {
+                resultListAdapter.updateFileForClaimByIdOrUrl(claimFile, claimId, uri);
+            }
+        } catch (JSONException ex) {
+            // invalid file info for download
         }
     }
 }

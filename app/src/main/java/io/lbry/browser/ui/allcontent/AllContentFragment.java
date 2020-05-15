@@ -15,7 +15,11 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.exoplayer2.offline.Download;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,8 +34,10 @@ import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentScopeDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
 import io.lbry.browser.dialog.CustomizeTagsDialogFragment;
+import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.TagListener;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.tasks.FollowUnfollowTagTask;
@@ -43,7 +49,7 @@ import io.lbry.browser.utils.Predefined;
 import lombok.Getter;
 
 // TODO: Similar code to FollowingFragment and Channel page fragment. Probably make common operations (sorting/filtering) into a control
-public class AllContentFragment extends BaseFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class AllContentFragment extends BaseFragment implements DownloadActionListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Getter
     private boolean singleTagView;
@@ -374,6 +380,7 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
             } else {
                 LbryAnalytics.setCurrentScreen(activity, "All Content", "AllContent");
             }
+            activity.addDownloadActionListener(this);
         }
 
         PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
@@ -384,7 +391,11 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
     }
 
     public void onPause() {
-        PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
+        Context context = getContext();
+        if (context != null) {
+            ((MainActivity) context).removeDownloadActionListener(this);
+        }
+        PreferenceManager.getDefaultSharedPreferences(context).unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
 
@@ -489,6 +500,26 @@ public class AllContentFragment extends BaseFragment implements SharedPreference
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
         if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT)) {
             fetchClaimSearchContent(true);
+        }
+    }
+
+    public void onDownloadAction(String downloadAction, String uri, String outpoint, String fileInfoJson, double progress) {
+        if ("abort".equals(downloadAction)) {
+            if (contentListAdapter != null) {
+                contentListAdapter.clearFileForClaimOrUrl(outpoint, uri);
+            }
+            return;
+        }
+
+        try {
+            JSONObject fileInfo = new JSONObject(fileInfoJson);
+            LbryFile claimFile = LbryFile.fromJSONObject(fileInfo);
+            String claimId = claimFile.getClaimId();
+            if (contentListAdapter != null) {
+                contentListAdapter.updateFileForClaimByIdOrUrl(claimFile, claimId, uri);
+            }
+        } catch (JSONException ex) {
+            // invalid file info for download
         }
     }
 }

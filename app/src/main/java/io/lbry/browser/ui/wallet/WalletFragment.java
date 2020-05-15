@@ -401,11 +401,11 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             LbryAnalytics.setCurrentScreen(activity, "Wallet", "Wallet");
         }
 
+        Helper.setViewVisibility(layoutAccountRecommended, hasSkippedAccount() || Lbryio.isSignedIn() ? View.GONE : View.VISIBLE);
         if (!Lbry.SDK_READY) {
             if (context instanceof MainActivity) {
                 MainActivity activity = (MainActivity) context;
                 activity.addSdkStatusListener(this);
-                activity.addWalletBalanceListener(this);
             }
 
             checkReceiveAddress();
@@ -441,7 +441,9 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     public void onSdkReady() {
         Context context = getContext();
         if (context instanceof MainActivity) {
-            ((MainActivity) context).removeSdkStatusListener(this);
+            MainActivity activity = (MainActivity) context;
+            activity.syncWalletAndLoadPreferences();
+            activity.addWalletBalanceListener(this);
         }
 
         // update view

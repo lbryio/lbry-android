@@ -93,6 +93,16 @@
         <item quantity="other">%1$s followers</item>
     </plurals>
 
+    <!-- Splash -->
+    <string name="oops_something_went_wrong">Oops! Something went wrong.</string>
+    <string name="installation_id_loaded">Loaded Installation ID.</string>
+    <string name="known_tags_loaded">Loaded local known and followed tags.</string>
+    <string name="exchange_rate_loaded">Loaded LBC/USD exchange rate.</string>
+    <string name="user_authenticated">User authenticated.</string>
+    <string name="installation_registered">Installation registered.</string>
+    <string name="subscriptions_loaded">Loaded subscriptions.</string>
+    <string name="subscriptions_resolved">Resolved subscriptions.</string>
+
     <!-- Settings -->
     <string name="user_interface">Content &amp; User interface</string>
     <string name="other">Other</string>
@@ -362,6 +372,21 @@
     <string name="unclaimable">Unclaimable</string>
     <string name="invite_link_copied">Invite link copied.</string>
     <string name="invite_sent_to">Invite sent to %1$s</string>
+
+    <!-- Library -->
+    <string name="downloads">Downloads</string>
+    <string name="history">History</string>
+    <string name="library_no_downloads">You have not downloaded any content to this device.</string>
+    <string name="library_no_history">You have not viewed any content on this device.</string>
+    <string name="hide">Hide</string>
+    <string name="stats">Stats</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="images">Images</string>
+    <string name="mb">MB</string>
+    <string name="kb">KB</string>
+    <string name="gb">GB</string>
+    <string name="zero_mb">0MB</string>
 
     <!-- About -->
     <string name="about_lbry">About LBRY</string>
