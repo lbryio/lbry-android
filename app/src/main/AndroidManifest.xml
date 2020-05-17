@@ -67,13 +67,6 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBarTranslucent"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
-            android:name=".FileViewActivity"
-            android:launchMode="singleTask"
-            android:parentActivityName=".MainActivity"
-            android:supportsPictureInPicture="true"
-            android:theme="@style/AppTheme.NoActionBarBlack" />
 
         <service
             android:name="io.lbry.browser.LbrynetMessagingService"

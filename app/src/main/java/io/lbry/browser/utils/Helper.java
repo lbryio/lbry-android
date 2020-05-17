@@ -285,21 +285,22 @@ public final class Helper {
     }
 
     public static String shortCurrencyFormat(double value) {
+        DecimalFormat format = new DecimalFormat("#,###.#");
         if (value > 1000000000.00) {
-            return String.format("%.1fB", value / 1000000000.0);
+            return String.format("%sB", format.format(value / 1000000000.0));
         }
         if (value > 1000000.0) {
-            return String.format("%.1fM", value / 1000000.0);
+            return String.format("%sM",format.format( value / 1000000.0));
         }
         if (value > 1000.0) {
-            return String.format("%.1fK", value / 1000.0);
+            return String.format("%sK", format.format(value / 1000.0));
         }
 
         if (value == 0) {
             return "0";
         }
 
-        return new DecimalFormat("###.##").format(value);
+        return format.format(value);
     }
 
     public static String getValue(CharSequence cs) {

@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import io.lbry.browser.FileViewActivity;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.ChannelFilterListAdapter;
@@ -90,6 +89,7 @@ public class FollowingFragment extends BaseFragment implements
     private boolean contentClaimSearchLoading = false;
     private boolean suggestedClaimSearchLoading = false;
     private View noContentView;
+    private boolean subscriptionsShown;
 
     private List<Integer> queuedContentPages = new ArrayList<>();
     private List<Integer> queuedSuggestedPages = new ArrayList<>();
@@ -249,8 +249,8 @@ public class FollowingFragment extends BaseFragment implements
             @Override
             public void onClick(View view) {
                 buildChannelIdsAndUrls();
+                currentSuggestedPage = 1;
                 discoverDialog = DiscoverDialogFragment.newInstance();
-                excludeChannelIdsForDiscover = channelIds != null ? new ArrayList<>(channelIds) : null;
                 discoverDialog.setAdapter(suggestedChannelAdapter);
                 discoverDialog.setDialogActionsListener(new DiscoverDialogFragment.DiscoverDialogListener() {
                     @Override
@@ -265,6 +265,9 @@ public class FollowingFragment extends BaseFragment implements
                     public void onCancel() {
                         discoverDialog = null;
                         excludeChannelIdsForDiscover = null;
+                        if (suggestedChannelAdapter != null) {
+                            suggestedChannelAdapter.clearItems();
+                        }
                     }
                     @Override
                     public void onResume() {
@@ -353,7 +356,7 @@ public class FollowingFragment extends BaseFragment implements
         }
 
         if (Lbryio.subscriptions != null && Lbryio.subscriptions.size() > 0) {
-            fetchLoadedSubscriptions();
+            fetchLoadedSubscriptions(true);
         } else {
             fetchSubscriptions();
         }
@@ -366,7 +369,7 @@ public class FollowingFragment extends BaseFragment implements
         PreferenceManager.getDefaultSharedPreferences(context).unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
-    public void fetchLoadedSubscriptions() {
+    public void fetchLoadedSubscriptions(boolean showSubscribed) {
         subscriptionsList = new ArrayList<>(Lbryio.subscriptions);
         buildChannelIdsAndUrls();
         if (Lbryio.cacheResolvedSubscriptions.size() > 0) {
@@ -377,7 +380,9 @@ public class FollowingFragment extends BaseFragment implements
 
         fetchClaimSearchContent(resetClaimSearchContent);
         resetClaimSearchContent = false;
-        showSubscribedContent();
+        if (showSubscribed && subscriptionsList.size() > 0) {
+            showSubscribedContent();
+        }
     }
 
     public void loadFollowing() {
@@ -458,6 +463,7 @@ public class FollowingFragment extends BaseFragment implements
     }
 
     private void showSubscribedContent() {
+        subscriptionsShown = true;
         Helper.setViewText(titleView, R.string.channels_you_follow);
 
         Helper.setViewVisibility(horizontalChannelList, View.VISIBLE);
@@ -484,6 +490,8 @@ public class FollowingFragment extends BaseFragment implements
                 }
             }
         }
+
+        excludeChannelIdsForDiscover = channelIds != null ? new ArrayList<>(channelIds) : null;
     }
 
     private void fetchAndResolveChannelList() {
@@ -579,22 +587,15 @@ public class FollowingFragment extends BaseFragment implements
                     contentListAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
                         @Override
                         public void onClaimClicked(Claim claim) {
-                            String claimId = claim.getClaimId();
-                            String url = !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl();
-
-                            if (claim.getName().startsWith("@")) {
-                                // channel claim
-                                Context context = getContext();
-                                if (context instanceof MainActivity) {
-                                    ((MainActivity) context).openChannelClaim(claim);
+                            Context context = getContext();
+                            if (context instanceof MainActivity) {
+                                MainActivity activity = (MainActivity) context;
+                                if (claim.getName().startsWith("@")) {
+                                    // channel claim
+                                    activity.openChannelClaim(claim);
+                                } else {
+                                    activity.openFileClaim(claim);
                                 }
-                            } else {
-                                Intent intent = new Intent(getContext(), FileViewActivity.class);
-                                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                intent.putExtra("claimId", claimId);
-                                intent.putExtra("url", url);
-                                MainActivity.startingFileViewActivity = true;
-                                startActivity(intent);
                             }
                         }
                     });
@@ -718,12 +719,11 @@ public class FollowingFragment extends BaseFragment implements
         ChannelSubscribeTask task = new ChannelSubscribeTask(getContext(), channelClaimId, subscription, false, new ChannelSubscribeTask.ChannelSubscribeHandler() {
             @Override
             public void onSuccess() {
-                if (discoverDialog != null) {
-                    Lbryio.addSubscription(subscription);
-                    Lbryio.addCachedResolvedSubscription(claim);
-                    resetClaimSearchContent = true;
-                    fetchLoadedSubscriptions();
-                }
+                Lbryio.addSubscription(subscription);
+                Lbryio.addCachedResolvedSubscription(claim);
+                resetClaimSearchContent = true;
+                fetchLoadedSubscriptions(subscriptionsShown);
+
                 saveSharedUserState();
             }
 
@@ -740,12 +740,11 @@ public class FollowingFragment extends BaseFragment implements
         ChannelSubscribeTask task = new ChannelSubscribeTask(getContext(), channelClaimId, subscription, true, new ChannelSubscribeTask.ChannelSubscribeHandler() {
             @Override
             public void onSuccess() {
-                if (discoverDialog != null) {
-                    Lbryio.removeSubscription(subscription);
-                    Lbryio.removeCachedResolvedSubscription(claim);
-                    resetClaimSearchContent = true;
-                    fetchLoadedSubscriptions();
-                }
+                Lbryio.removeSubscription(subscription);
+                Lbryio.removeCachedResolvedSubscription(claim);
+                resetClaimSearchContent = true;
+                fetchLoadedSubscriptions(subscriptionsShown);
+
                 saveSharedUserState();
             }
 

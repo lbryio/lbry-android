@@ -37,6 +37,7 @@ import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.TagListAdapter;
+import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.NavMenuItem;
@@ -54,7 +55,8 @@ import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import lombok.Getter;
 
-public class ChannelFormFragment extends BaseFragment implements WalletBalanceListener, TagListAdapter.TagClickListener {
+public class ChannelFormFragment extends BaseFragment implements
+        StoragePermissionListener, TagListAdapter.TagClickListener, WalletBalanceListener {
 
     private static final int SUGGESTED_LIMIT = 8;
 
@@ -490,6 +492,7 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
         Context context = getContext();
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) getContext();
+            activity.removeStoragePermissionListener(this);
             activity.removeWalletBalanceListener(this);
             activity.restoreToggle();
             activity.showFloatingWalletBalance();
@@ -509,6 +512,7 @@ public class ChannelFormFragment extends BaseFragment implements WalletBalanceLi
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             LbryAnalytics.setCurrentScreen(activity, "Channel Form", "ChannelForm");
+            activity.addStoragePermissionListener(this);
             if (editMode) {
                 ActionBar actionBar = activity.getSupportActionBar();
                 if (actionBar != null) {

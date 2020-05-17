@@ -161,7 +161,7 @@ public class TransactionHistoryFragment extends BaseFragment implements Transact
             if (uri.isChannel()) {
                 activity.openChannelUrl(uri.toString());
             } else {
-                MainActivity.openFileUrl(uri.toString(), context);
+                activity.openFileUrl(uri.toString());
             }
         }
     }

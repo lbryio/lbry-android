@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import io.lbry.browser.FileViewActivity;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.ClaimListAdapter;
@@ -213,6 +212,7 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
             singleTagView = true;
             tags = Arrays.asList(tagName);
             titleView.setText(Helper.capitalize(tagName));
+            Helper.setViewVisibility(customizeLink, View.GONE);
         } else {
             singleTagView = false;
             // default to followed Tags scope if any tags are followed
@@ -224,8 +224,8 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
             titleView.setText(getString(R.string.all_content));
         }
 
-        forPrefix.setVisibility(singleTagView ? View.GONE : View.VISIBLE);
-        scopeLink.setVisibility(singleTagView ? View.GONE : View.VISIBLE);
+        Helper.setViewVisibility(forPrefix, singleTagView ? View.GONE : View.VISIBLE);
+        Helper.setViewVisibility(scopeLink, singleTagView ? View.GONE : View.VISIBLE);
 
         if (reload) {
             fetchClaimSearchContent(true);
@@ -451,22 +451,15 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
                     contentListAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
                         @Override
                         public void onClaimClicked(Claim claim) {
-                            String claimId = claim.getClaimId();
-                            String url = !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl();
-
-                            if (claim.getName().startsWith("@")) {
-                                // channel claim
-                                Context context = getContext();
-                                if (context instanceof MainActivity) {
-                                    ((MainActivity) context).openChannelClaim(claim);
+                            Context context = getContext();
+                            if (context instanceof MainActivity) {
+                                MainActivity activity = (MainActivity) context;
+                                if (claim.getName().startsWith("@")) {
+                                    // channel claim
+                                    activity.openChannelClaim(claim);
+                                } else {
+                                    activity.openFileClaim(claim);
                                 }
-                            } else {
-                                Intent intent = new Intent(getContext(), FileViewActivity.class);
-                                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                intent.putExtra("claimId", claimId);
-                                intent.putExtra("url", url);
-                                MainActivity.startingFileViewActivity = true;
-                                startActivity(intent);
                             }
                         }
                     });

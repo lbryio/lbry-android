@@ -97,6 +97,10 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         notifyDataSetChanged();
     }
 
+    public Claim getLastItem() {
+        return items.size() > 0 ? items.get(items.size() - 1) : null;
+    }
+
     public void addFeaturedItem(Claim claim) {
         items.add(0, claim);
         notifyDataSetChanged();

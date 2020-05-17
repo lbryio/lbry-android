@@ -265,7 +265,7 @@ public class SearchFragment extends BaseFragment implements
             ((MainActivity) getContext()).openChannelUrl(claim.getPermanentUrl());
         } else {
             // not a channel
-            MainActivity.openFileClaim(claim, getContext());
+            ((MainActivity) getContext()).openFileClaim(claim);
         }
     }
 

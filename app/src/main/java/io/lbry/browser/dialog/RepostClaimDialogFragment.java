@@ -24,7 +24,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.lbry.browser.FileViewActivity;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.InlineChannelSpinnerAdapter;
@@ -147,16 +146,16 @@ public class RepostClaimDialogFragment extends BottomSheetDialogFragment impleme
     public void onResume() {
         super.onResume();
         Context context = getContext();
-        if (context instanceof FileViewActivity) {
-            ((FileViewActivity) context).addWalletBalanceListener(this);
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).addWalletBalanceListener(this);
         }
         fetchChannels();
     }
 
     public void onPause() {
         Context context = getContext();
-        if (context instanceof FileViewActivity) {
-            ((FileViewActivity) context).removeWalletBalanceListener(this);
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).removeWalletBalanceListener(this);
         }
         inputDeposit.clearFocus();
         super.onPause();
@@ -178,8 +177,8 @@ public class RepostClaimDialogFragment extends BottomSheetDialogFragment impleme
                 public void onError(Exception error) {
                     // could not fetch channels
                     Context context = getContext();
-                    if (context instanceof FileViewActivity) {
-                        ((FileViewActivity) context).showError(error.getMessage());
+                    if (context instanceof MainActivity) {
+                        ((MainActivity) context).showError(error.getMessage());
                     }
                     dismiss();
                 }

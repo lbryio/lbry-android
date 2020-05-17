@@ -22,7 +22,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.lbry.browser.FileViewActivity;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.EditorsChoiceItemAdapter;
@@ -116,12 +115,10 @@ public class EditorsChoiceFragment extends BaseFragment {
                         @Override
                         public void onEditorsChoiceItemClicked(EditorsChoiceItem item) {
                             String url = item.getPermanentUrl();
-
-                            Intent intent = new Intent(getContext(), FileViewActivity.class);
-                            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            intent.putExtra("url", url);
-                            MainActivity.startingFileViewActivity = true;
-                            startActivity(intent);
+                            Context context = getContext();
+                            if (context instanceof MainActivity) {
+                                ((MainActivity) context).openFileUrl(url);
+                            }
                         }
                     });
                 } else {

@@ -56,6 +56,11 @@ public class SuggestedChannelGridAdapter extends RecyclerView.Adapter<SuggestedC
 
     public int getSelectedCount() { return selectedItems.size(); }
 
+    public void clearItems() {
+        items.clear();
+        notifyDataSetChanged();
+    }
+
     public List<Claim> getSelectedItems() {
         return this.selectedItems;
     }

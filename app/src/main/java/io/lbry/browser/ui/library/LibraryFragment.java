@@ -58,6 +58,7 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
     private int currentPage;
     private Date lastDate;
     private boolean listReachedEnd;
+    private boolean contentListLoading;
 
     private CardView cardStats;
     private TextView linkStats;
@@ -112,6 +113,32 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
             @Override
             public void onClick(View view) {
                 showHistory();
+            }
+        });
+        contentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (contentListLoading) {
+                    return;
+                }
+
+                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (lm != null) {
+                    int visibleItemCount = lm.getChildCount();
+                    int totalItemCount = lm.getItemCount();
+                    int pastVisibleItems = lm.findFirstVisibleItemPosition();
+                    if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+                        if (!listReachedEnd) {
+                            // load more
+                            if (currentFilter == FILTER_DOWNLOADS) {
+                                currentPage++;
+                                fetchDownloads();
+                            } else if (currentFilter == FILTER_HISTORY) {
+                                fetchHistory();
+                            }
+                        }
+                    }
+                }
             }
         });
         
@@ -203,6 +230,7 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
             contentListAdapter.clearItems();
             contentListAdapter.setCanEnterSelectionMode(true);
         }
+        listReachedEnd = false;
 
         checkStatsLink();
         layoutSdkInitializing.setVisibility(Lbry.SDK_READY ? View.GONE : View.VISIBLE);
@@ -220,6 +248,7 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
             contentListAdapter.clearItems();
             contentListAdapter.setCanEnterSelectionMode(false);
         }
+        listReachedEnd = false;
 
         cardStats.setVisibility(View.GONE);
         checkStatsLink();
@@ -241,7 +270,7 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
                     if (claim.getName().startsWith("@")) {
                         activity.openChannelUrl(claim.getPermanentUrl());
                     } else {
-                        MainActivity.openFileUrl(claim.getPermanentUrl(), context);
+                        activity.openFileUrl(claim.getPermanentUrl());
                     }
                 }
             }
@@ -249,6 +278,7 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
     }
 
     private void fetchDownloads() {
+        contentListLoading  = true;
         Helper.setViewVisibility(linkStats, View.GONE);
         Helper.setViewVisibility(layoutListEmpty, View.GONE);
         FileListTask task = new FileListTask(currentPage, PAGE_SIZE, true, listLoading, new FileListTask.FileListResultHandler() {
@@ -269,6 +299,7 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
                 }
                 contentList.setAdapter(contentListAdapter);
                 checkListEmpty();
+                contentListLoading = false;
             }
 
             @Override
@@ -276,12 +307,14 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
                 // pass
                 checkStatsLink();
                 checkListEmpty();
+                contentListLoading = false;
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void fetchHistory() {
+        contentListLoading = true;
         Helper.setViewVisibility(layoutListEmpty, View.GONE);
         DatabaseHelper dbHelper = DatabaseHelper.getInstance();
         if (dbHelper != null) {
@@ -289,6 +322,10 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
                 @Override
                 public void onSuccess(List<ViewHistory> history, boolean hasReachedEnd) {
                     listReachedEnd = hasReachedEnd;
+                    if (history.size() > 0) {
+                        lastDate = history.get(history.size() - 1).getTimestamp();
+                    }
+
                     List<Claim> claims = Helper.claimsFromViewHistory(history);
                     if (contentListAdapter == null) {
                         initContentListAdapter(claims);
@@ -297,11 +334,13 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
                     }
                     contentList.setAdapter(contentListAdapter);
                     checkListEmpty();
+                    contentListLoading = false;
                 }
             });
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
             checkListEmpty();
+            contentListLoading = false;
         }
     }
 

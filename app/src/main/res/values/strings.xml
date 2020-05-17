@@ -67,7 +67,7 @@
     <string name="nothing_at_this_location">There\'s nothing at this location.</string>
     <string name="publish_something_here">Publish something here</string>
     <string name="cannot_view_claim">This content cannot be accessed at this time. Please try again later.</string>
-    <string name="zero_duration">00:00</string>
+    <string name="zero_duration">0:00</string>
     <string name="claim_file_not_found">The file at "%1$s" does not exist.</string>
     <string name="confirm_purchase">Confirm Purchase</string>
     <string name="delete_file">Delete file</string>
@@ -305,6 +305,7 @@
     <string name="at">\@</string>
     <string name="deposit">Deposit</string>
     <string name="deposit_remains_yours">This LBC remains yours. It is a deposit to reserve the name and can be undone at any time.</string>
+    <string name="storage_permission_rationale_download">LBRY requires access to download content to your device.</string>
     <string name="storage_permission_rationale_images">LBRY requires access to load images from your device storage.</string>
     <string name="select_thumbnail">Select thumbnail</string>
     <string name="select_cover">Select cover image</string>

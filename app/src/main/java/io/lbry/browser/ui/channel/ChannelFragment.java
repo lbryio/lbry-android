@@ -288,14 +288,15 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                 updateRequired = true;
             }
         }
-        if (!updateRequired && params.containsKey("url")) {
+        if (params.containsKey("url")) {
             String newUrl = params.get("url").toString();
-            if (!newUrl.equalsIgnoreCase(url) || claim == null) {
+            if (claim == null || !newUrl.equalsIgnoreCase(url)) {
                 this.claim = null;
                 this.url = newUrl;
                 updateRequired = true;
             }
         }
+
         if (updateRequired) {
             resetSubCount();
             if (!Helper.isNullOrEmpty(url)) {

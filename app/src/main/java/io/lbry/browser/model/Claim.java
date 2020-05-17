@@ -118,10 +118,10 @@ public class Claim {
         if (fee != null) {
             double amount = Helper.parseDouble(fee.getAmount(), 0);
             if ("usd".equalsIgnoreCase(fee.getCurrency())) {
-                return new BigDecimal(String.valueOf(amount / usdRate)).multiply(new BigDecimal(100000000)); // deweys
+                return new BigDecimal(String.valueOf(amount / usdRate));
             }
 
-            return new BigDecimal(String.valueOf(amount));
+            return new BigDecimal(String.valueOf(amount)).divide(new BigDecimal(100000000)); // deweys
         }
 
         return new BigDecimal(0);

@@ -45,7 +45,7 @@ public class SyncSetTask extends AsyncTask<Void, Void, String> {
         if (handler != null) {
             if (!Helper.isNullOrEmpty(hash)) {
                 handler.onSyncSetSuccess(hash);
-            } else if (error != null) {
+            } else {
                 handler.onSyncSetError(error);
             }
         }

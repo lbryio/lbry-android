@@ -84,10 +84,16 @@ public class DiscoverDialogFragment extends BottomSheetDialogFragment {
             dialogActionsListener.onResume();
         }
     }
-
     @Override
     public void onCancel(DialogInterface dialog) {
-        super.onCancel(dialog);
+        super.onDismiss(dialog);
+        if (dialogActionsListener != null) {
+            dialogActionsListener.onCancel();
+        }
+    }
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
         if (dialogActionsListener != null) {
             dialogActionsListener.onCancel();
         }

@@ -23,7 +23,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
-import io.lbry.browser.FileViewActivity;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.listener.WalletBalanceListener;
@@ -164,15 +163,15 @@ public class SendTipDialogFragment extends BottomSheetDialogFragment implements 
     public void onResume() {
         super.onResume();
         Context context = getContext();
-        if (context instanceof FileViewActivity) {
-            ((FileViewActivity) context).addWalletBalanceListener(this);
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).addWalletBalanceListener(this);
         }
     }
 
     public void onPause() {
         Context context = getContext();
-        if (context instanceof FileViewActivity) {
-            ((FileViewActivity) context).removeWalletBalanceListener(this);
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).removeWalletBalanceListener(this);
         }
         super.onPause();
     }

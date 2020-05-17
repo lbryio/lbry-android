@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -26,6 +27,9 @@ import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.Transaction;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.lbrysdk.Utils;
+import kotlin.Pair;
+import okhttp3.CacheControl;
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -161,7 +165,7 @@ public final class Lbry {
                     if (value instanceof Double) {
                         jsonParams.put(param.getKey(), (double) value);
                     } else {
-                        jsonParams.put(param.getKey(), value);
+                        jsonParams.put(param.getKey(), value == null ? JSONObject.NULL : value);
                     }
                 }
             } catch (JSONException ex) {
@@ -313,10 +317,10 @@ public final class Lbry {
         if (!Helper.isNullOrEmpty(claimId)) {
             params.put("claim_id", claimId);
         }
-        /*if (downloads) {
-            params.put("file_name", null);
+        if (downloads) {
+            params.put("download_path", null);
             params.put("comparison", "ne");
-        }*/
+        }
         if (page > 0) {
             params.put("page", page);
         }

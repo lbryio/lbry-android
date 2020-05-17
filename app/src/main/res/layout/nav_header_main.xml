@@ -2,32 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="86dp"
+    android:layout_height="wrap_content"
     android:gravity="bottom"
     android:orientation="vertical"
     android:background="@color/pageBackground"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <RelativeLayout
-        android:id="@+id/sign_in_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
+        android:id="@+id/sign_in_button_container"
+        android:background="@color/lbryGreen"
         android:clickable="true"
-        android:paddingTop="38dp"
         android:foreground="?attr/selectableItemBackground"
-        android:background="@color/lbryGreen">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:gravity="center"
-            android:text="@string/sign_in"
-            android:fontFamily="@font/inter"
-            android:textSize="14sp"
-            android:textFontWeight="600"
-            android:textAllCaps="true" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/lbryGreen"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/sign_in"
+                android:fontFamily="@font/inter"
+                android:textSize="14sp"
+                android:textFontWeight="600"
+                android:textAllCaps="true" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -35,22 +41,26 @@
         android:background="@color/drawerBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="38dp"
         android:visibility="gone">
-        <TextView
-            android:id="@+id/signed_in_email"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:ellipsize="middle"
-            android:fontFamily="@font/inter"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textSize="14sp"
-            android:textAllCaps="true"
-            android:textColor="@color/menuItemForeground"
-            android:textFontWeight="300" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+            <TextView
+                android:id="@+id/signed_in_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:ellipsize="middle"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:textColor="@color/menuItemForeground"
+                android:textFontWeight="300" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <View

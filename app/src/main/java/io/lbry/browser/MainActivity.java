@@ -16,6 +16,7 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -29,6 +30,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -39,8 +41,8 @@ import android.widget.Toast;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
-import com.google.android.exoplayer2.offline.Download;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -81,7 +83,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -96,6 +97,7 @@ import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchChannelsListener;
 import io.lbry.browser.listener.SdkStatusListener;
+import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
@@ -125,6 +127,7 @@ import io.lbry.browser.ui.channel.ChannelFormFragment;
 import io.lbry.browser.ui.channel.ChannelFragment;
 import io.lbry.browser.ui.channel.ChannelManagerFragment;
 import io.lbry.browser.ui.editorschoice.EditorsChoiceFragment;
+import io.lbry.browser.ui.following.FileViewFragment;
 import io.lbry.browser.ui.following.FollowingFragment;
 import io.lbry.browser.ui.library.LibraryFragment;
 import io.lbry.browser.ui.other.AboutFragment;
@@ -144,21 +147,28 @@ import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.ServiceHelper;
 import io.lbry.lbrysdk.Utils;
 import lombok.Getter;
+import lombok.Setter;
 
 public class MainActivity extends AppCompatActivity implements SdkStatusListener {
 
     private Map<String, Class> specialRouteFragmentClassMap;
     private boolean inPictureInPictureMode;
     public static SimpleExoPlayer appPlayer;
+    public static Cache playerCache;
+    public static boolean playerReassigned;
     public static CastContext castContext;
     public static CastPlayer castPlayer;
     public static Claim nowPlayingClaim;
     public static boolean startingFilePickerActivity = false;
     public static boolean startingShareActivity = false;
-    public static boolean startingFileViewActivity = false;
+    public static boolean startingStoragePermissionRequest = false;
     public static boolean startingSignInFlowActivity = false;
-    public static boolean mainActive = false;
     private boolean enteringPIPMode = false;
+    private boolean fullSyncInProgress = false;
+    private int queuedSyncCount = 0;
+
+    @Setter
+    private BackPressInterceptor backPressInterceptor;
 
     @Getter
     private String firebaseMessagingToken;
@@ -243,18 +253,20 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     // broadcast receivers
     private BroadcastReceiver serviceActionsReceiver;
     private BroadcastReceiver requestsReceiver;
-    private BroadcastReceiver userActionsReceiver;
 
     private static boolean appStarted;
     private boolean serviceRunning;
     private CheckSdkReadyTask checkSdkReadyTask;
     private boolean receivedStopService;
     private ActionBarDrawerToggle toggle;
+    private SyncSetTask syncSetTask = null;
+    private List<WalletSync> pendingSyncSetQueue;
     @Getter
     private DatabaseHelper dbHelper;
     private int selectedMenuItemId = -1;
     private List<DownloadActionListener> downloadActionListeners;
     private List<SdkStatusListener> sdkStatusListeners;
+    private List<StoragePermissionListener> storagePermissionListeners;
     private List<WalletBalanceListener> walletBalanceListeners;
     private List<FetchChannelsListener> fetchChannelsListeners;
     @Getter
@@ -338,15 +350,44 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         // register receivers
         registerRequestsReceiver();
         registerServiceActionsReceiver();
-        registerUserActionsReceiver();
+
+        View decorView = getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    // not fullscreen
+                    View appBarMainContainer = findViewById(R.id.app_bar_main_container);
+                    appBarMainContainer.setPadding(
+                            appBarMainContainer.getPaddingLeft(), appBarMainContainer.getPaddingTop(), appBarMainContainer.getPaddingRight(), 0);
+                    appBarMainContainer.setFitsSystemWindows(true);
+                }
+            }
+        });
 
         // setup uri bar
         setupUriBar();
 
+        /*View decorView = getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    findViewById(R.id.app_bar_main_container).setFitsSystemWindows(false);
+                    findViewById(R.id.drawer_layout).setFitsSystemWindows(false);
+                } else {
+                    findViewById(R.id.app_bar_main_container).setFitsSystemWindows(true);
+                    findViewById(R.id.drawer_layout).setFitsSystemWindows(true);
+                }
+            }
+        });*/
+
         // other
+        pendingSyncSetQueue = new ArrayList<>();
         openNavFragments = new HashMap<>();
         downloadActionListeners = new ArrayList<>();
         sdkStatusListeners = new ArrayList<>();
+        storagePermissionListeners = new ArrayList<>();
         walletBalanceListeners = new ArrayList<>();
         fetchChannelsListeners = new ArrayList<>();
 
@@ -400,12 +441,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onClick(View view) {
                 if (nowPlayingClaim != null) {
-                    Intent intent = new Intent(MainActivity.this, FileViewActivity.class);
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.putExtra("claimId", nowPlayingClaim.getClaimId());
-                    intent.putExtra("url", nowPlayingClaim.getPermanentUrl());
-                    startingFileViewActivity = true;
-                    startActivity(intent);
+                    openFileUrl(!Helper.isNullOrEmpty(nowPlayingClaim.getShortUrl()) ? nowPlayingClaim.getShortUrl() : nowPlayingClaim.getPermanentUrl());
                 }
             }
         });
@@ -438,7 +474,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         });
         navItemsView.setAdapter(navMenuAdapter);
 
-        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.sign_in_button_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 walletSyncSignIn();
@@ -490,6 +526,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         sdkStatusListeners.remove(listener);
     }
 
+    public void addStoragePermissionListener(StoragePermissionListener listener) {
+        if (!storagePermissionListeners.contains(listener)) {
+            storagePermissionListeners.add(listener);
+        }
+    }
+
+    public void removeStoragePermissionListener(StoragePermissionListener listener) {
+        storagePermissionListeners.remove(listener);
+    }
+
     public void addWalletBalanceListener(WalletBalanceListener listener) {
         if (!walletBalanceListeners.contains(listener)) {
             walletBalanceListeners.add(listener);
@@ -501,7 +547,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     public void removeNavFragment(Class fragmentClass, int navItemId) {
-        String key = buildNavFragmentKey(fragmentClass, navItemId);
+        String key = buildNavFragmentKey(fragmentClass, navItemId, null);
         if (openNavFragments.containsKey(key)) {
             openNavFragments.remove(key);
         }
@@ -589,27 +635,23 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         wunderbar.setSelection(0);
     }
 
-    private void openAllContentFragmentWithTag(String tag) {
+    public void openAllContentFragmentWithTag(String tag) {
         Map<String, Object> params = new HashMap<>();
         params.put("singleTag", tag);
         openFragment(AllContentFragment.class, true, NavMenuItem.ID_ITEM_ALL_CONTENT, params);
     }
 
-    public static void openFileUrl(String url, Context context) {
-        Intent intent = new Intent(context, FileViewActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("url", url);
-        startingFileViewActivity = true;
-        context.startActivity(intent);
+    public void openFileUrl(String url) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("url", url);
+        openFragment(FileViewFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
     }
 
-    public static void openFileClaim(Claim claim, Context context) {
-        Intent intent = new Intent(context, FileViewActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("claimId", claim.getClaimId());
-        intent.putExtra("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
-        startingFileViewActivity = true;
-        context.startActivity(intent);
+    public void openFileClaim(Claim claim) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("claimId", claim.getClaimId());
+        params.put("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
+        openFragment(FileViewFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
     }
 
     private FragmentManager.OnBackStackChangedListener backStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
@@ -636,21 +678,31 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.content_main).setVisibility(View.GONE);
         findViewById(R.id.floating_balance_main_container).setVisibility(View.GONE);
         findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
+        findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         getSupportActionBar().hide();
 
         PlayerView pipPlayer = findViewById(R.id.pip_player);
         pipPlayer.setVisibility(View.VISIBLE);
         pipPlayer.setPlayer(appPlayer);
+        pipPlayer.setUseController(false);
+        playerReassigned = true;
     }
     private void renderFullMode() {
         getSupportActionBar().show();
         findViewById(R.id.content_main).setVisibility(View.VISIBLE);
         findViewById(R.id.floating_balance_main_container).setVisibility(View.VISIBLE);
-        findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
+        Fragment fragment = getCurrentFragment();
+        if (!(fragment instanceof FileViewFragment)) {
+            findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
+        }
+        if (!Lbry.SDK_READY) {
+            findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
+        }
 
         PlayerView pipPlayer = findViewById(R.id.pip_player);
         pipPlayer.setVisibility(View.INVISIBLE);
         pipPlayer.setPlayer(null);
+        playerReassigned = true;
     }
 
     @Override
@@ -672,6 +724,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             appPlayer.stop(true);
             appPlayer.release();
             appPlayer = null;
+        }
+        if (playerCache != null) {
+            playerCache.release();
+            playerCache = null;
         }
     }
 
@@ -709,8 +765,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     @Override
     protected void onResume() {
         super.onResume();
-        mainActive = true;
 
+        applyNavbarSigninPadding();
         checkFirstRun();
         checkNowPlaying();
 
@@ -750,7 +806,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onPause() {
-        mainActive = false;
+        if (!enteringPIPMode && appPlayer != null) {
+            appPlayer.setPlayWhenReady(false);
+        }
         super.onPause();
     }
 
@@ -824,7 +882,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                                 clearWunderbarFocus(wunderbar);
                                 handled = true;
                             } else {
-                                openFileUrl(uri.toString(), MainActivity.this);
+                                openFileUrl(uri.toString());
                                 clearWunderbarFocus(wunderbar);
                                 handled = true;
                             }
@@ -849,7 +907,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         urlSuggestionListAdapter.setListener(new UrlSuggestionListAdapter.UrlSuggestionClickListener() {
             @Override
             public void onUrlSuggestionClicked(UrlSuggestion urlSuggestion) {
-                Context context = MainActivity.this;
                 switch (urlSuggestion.getType()) {
                     case UrlSuggestion.TYPE_CHANNEL:
                         // open channel page
@@ -861,9 +918,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         break;
                     case UrlSuggestion.TYPE_FILE:
                         if (urlSuggestion.getClaim() != null) {
-                            openFileClaim(urlSuggestion.getClaim(), context);
+                            openFileClaim(urlSuggestion.getClaim());
                         } else {
-                            openFileUrl(urlSuggestion.getUri().toString(), context);
+                            openFileUrl(urlSuggestion.getUri().toString());
                         }
                         break;
                     case UrlSuggestion.TYPE_SEARCH:
@@ -1091,7 +1148,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         return suggestions;
     }
 
-    private void checkNowPlaying() {
+    public void checkNowPlaying() {
+        Fragment fragment = getCurrentFragment();
+        if (fragment instanceof FileViewFragment) {
+            return;
+        }
+
         if (nowPlayingClaim != null) {
             findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.global_now_playing_title)).setText(nowPlayingClaim.getTitle());
@@ -1102,8 +1164,61 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             playerView.setPlayer(null);
             playerView.setPlayer(appPlayer);
             playerView.setUseController(false);
+            playerReassigned = true;
 
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+    }
+
+    public void hideGlobalNowPlaying() {
+        findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
+    }
+
+    public void unsetFitsSystemWindows(View view) {
+        view.setFitsSystemWindows(false);
+    }
+
+    public void enterFullScreenMode() {
+        hideFloatingWalletBalance();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
+        findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
+        findViewById(R.id.app_bar_main_container).setFitsSystemWindows(false);
+
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+    }
+
+    public int getStatusBarHeight() {
+        int height = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            height = getResources().getDimensionPixelSize(resourceId);
+        }
+        return height;
+    }
+
+    public void exitFullScreenMode() {
+        View decorView = getWindow().getDecorView();
+        int flags = isDarkMode() ? (View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_VISIBLE) :
+                (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_VISIBLE);
+        decorView.setSystemUiVisibility(flags);
+
+        if (!Lbry.SDK_READY) {
+            findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
+        }
+        showFloatingWalletBalance();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.show();
         }
     }
 
@@ -1296,7 +1411,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                             for (Fragment fragment : openNavFragments.values()) {
                                 if (fragment instanceof FollowingFragment) {
                                     // reload local subscriptions
-                                    ((FollowingFragment) fragment).fetchLoadedSubscriptions();
+                                    ((FollowingFragment) fragment).fetchLoadedSubscriptions(true);
                                 }
                             }
                         }
@@ -1353,11 +1468,81 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         return walletSyncEnabled && Lbryio.isSignedIn();
     }
 
+    public void syncSet(String hash, String data) {
+        if (syncSetTask == null || syncSetTask.getStatus() == AsyncTask.Status.FINISHED) {
+            syncSetTask = new SyncSetTask(Lbryio.lastRemoteHash, hash, data, new DefaultSyncTaskHandler() {
+                @Override
+                public void onSyncSetSuccess(String hash) {
+                    Lbryio.lastRemoteHash = hash;
+                    WalletSync walletSync = new WalletSync(hash, data);
+                    Lbryio.lastWalletSync = walletSync;
+
+                    if (pendingSyncSetQueue.size() > 0) {
+                        fullSyncInProgress = true;
+                        WalletSync nextSync = pendingSyncSetQueue.remove(0);
+                        syncSet(nextSync.getHash(), nextSync.getData());
+                    } else if (queuedSyncCount > 0) {
+                        queuedSyncCount--;
+                        syncApplyAndSet();
+                    }
+
+                    fullSyncInProgress = false;
+                }
+                @Override
+                public void onSyncSetError(Exception error) {
+                    // log app exceptions
+                    if (pendingSyncSetQueue.size() > 0) {
+                        WalletSync nextSync = pendingSyncSetQueue.remove(0);
+                        syncSet(nextSync.getHash(), nextSync.getData());
+                    } else if (queuedSyncCount > 0) {
+                        queuedSyncCount--;
+                        syncApplyAndSet();
+                    }
+
+                    fullSyncInProgress = false;
+                }
+            });
+            syncSetTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            WalletSync pending = new WalletSync(hash, data);
+            pendingSyncSetQueue.add(pending);
+        }
+    }
+
+    public void syncApplyAndSet() {
+        fullSyncInProgress = true;
+        String password = Utils.getSecureValue(SECURE_VALUE_KEY_SAVED_PASSWORD, this, Lbry.KEYSTORE);
+        SyncApplyTask fetchTask = new SyncApplyTask(true, password, new DefaultSyncTaskHandler() {
+            @Override
+            public void onSyncApplySuccess(String hash, String data) {
+                if (!hash.equalsIgnoreCase(Lbryio.lastRemoteHash)) {
+                    syncSet(hash, data);
+                } else {
+                    fullSyncInProgress = false;
+                    queuedSyncCount = 0;
+                }
+            }
+            @Override
+            public void onSyncApplyError(Exception error) {
+                fullSyncInProgress = false;
+                if (queuedSyncCount > 0) {
+                    queuedSyncCount--;
+                    syncApplyAndSet();
+                }
+            }
+        });
+        fetchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
     public void syncWalletAndLoadPreferences() {
         if (!userSyncEnabled()) {
             return;
         }
+        if (fullSyncInProgress) {
+            queuedSyncCount++;
+        }
 
+        fullSyncInProgress = true;
         String password = Utils.getSecureValue(SECURE_VALUE_KEY_SAVED_PASSWORD, this, Lbry.KEYSTORE);
         SyncGetTask task = new SyncGetTask(password, true, null, new DefaultSyncTaskHandler() {
             @Override
@@ -1376,13 +1561,21 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onSyncGetError(Exception error) {
                 // pass
                 Log.e(TAG, String.format("sync get failed: %s", error != null ? error.getMessage() : "no error message"), error);
+
+                fullSyncInProgress = false;
+                if (queuedSyncCount > 0) {
+                    queuedSyncCount--;
+                    syncApplyAndSet();
+                }
             }
 
             @Override
             public void onSyncApplySuccess(String hash, String data) {
                 if (!hash.equalsIgnoreCase(Lbryio.lastRemoteHash)) {
-                    SyncSetTask setTask = new SyncSetTask(Lbryio.lastRemoteHash, hash, data, null);
-                    setTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    syncSet(hash, data);
+                } else {
+                    fullSyncInProgress = false;
+                    queuedSyncCount = 0;
                 }
 
                 loadSharedUserState();
@@ -1392,6 +1585,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onSyncApplyError(Exception error) {
                 // pass
                 Log.e(TAG, String.format("sync apply failed: %s", error != null ? error.getMessage() : "no error message"), error);
+                fullSyncInProgress = false;
+                if (queuedSyncCount > 0) {
+                    queuedSyncCount--;
+                    syncApplyAndSet();
+                }
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -1458,70 +1656,43 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }
         }
     }
-
-    private void registerUserActionsReceiver() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ACTION_NOW_PLAYING_CLAIM_UPDATED);
-        intentFilter.addAction(ACTION_NOW_PLAYING_CLAIM_CLEARED);
-        userActionsReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (ACTION_NOW_PLAYING_CLAIM_UPDATED.equals(action)) {
-                    handleNowPlayingClaimUpdated();
-                } else if (ACTION_NOW_PLAYING_CLAIM_CLEARED.equals(action)) {
-                    handleNowPlayingClaimCleared();
-                }
-            }
-
-            private void handleNowPlayingClaimUpdated() {
-                if (nowPlayingClaim != null) {
-                    ((TextView) findViewById(R.id.global_now_playing_title)).setText(nowPlayingClaim.getTitle());
-                    ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(nowPlayingClaim.getPublisherTitle());
-                }
-            }
-
-            private void handleNowPlayingClaimCleared() {
-                findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
-                ((TextView) findViewById(R.id.global_now_playing_title)).setText(null);
-                ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(null);
-                if (MainActivity.appPlayer != null) {
-                    MainActivity.appPlayer.setPlayWhenReady(false);
-                }
-            }
-        };
-        registerReceiver(userActionsReceiver, intentFilter);
-    }
-
     public void showMessage(int stringResourceId) {
         Snackbar.make(findViewById(R.id.content_main), stringResourceId, Snackbar.LENGTH_LONG).show();
     }
     public void showMessage(String message) {
         Snackbar.make(findViewById(R.id.content_main), message, Snackbar.LENGTH_LONG).show();
     }
+    public void showError(String message) {
+        Snackbar.make(findViewById(R.id.content_main), message, Snackbar.LENGTH_LONG).
+                setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+    }
 
     @Override
     public void onBackPressed() {
+
+        if (findViewById(R.id.url_suggestions_container).getVisibility() == View.VISIBLE) {
+            clearWunderbarFocus(findViewById(R.id.wunderbar));
+            return;
+        }
+        if (backPressInterceptor != null && backPressInterceptor.onBackPressed()) {
+            return;
+        }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             boolean handled = false;
-            if (findViewById(R.id.url_suggestions_container).getVisibility() == View.VISIBLE) {
-                clearWunderbarFocus(findViewById(R.id.wunderbar));
+            ChannelFormFragment channelFormFragment = null;
+            for (Fragment fragment : openNavFragments.values()) {
+                if (fragment instanceof ChannelFormFragment) {
+                    channelFormFragment = ((ChannelFormFragment) fragment);
+                    break;
+                }
+            }
+            if (channelFormFragment != null && channelFormFragment.isSaveInProgress()) {
                 handled = true;
-            } else {
-                ChannelFormFragment channelFormFragment = null;
-                for (Fragment fragment : openNavFragments.values()) {
-                    if (fragment instanceof ChannelFormFragment) {
-                        channelFormFragment = ((ChannelFormFragment) fragment);
-                        break;
-                    }
-                }
-                if (channelFormFragment != null && channelFormFragment.isSaveInProgress()) {
-                    handled = true;
-                    return;
-                }
+                return;
             }
 
             if (!handled) {
@@ -1563,24 +1734,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case REQUEST_STORAGE_PERMISSION:
-                ChannelFormFragment channelFormFragment = null;
-                //PublishFormFragment publishFormFragment = null;
-                for (Fragment fragment : openNavFragments.values()) {
-                    if (fragment instanceof ChannelFormFragment) {
-                        channelFormFragment = ((ChannelFormFragment) fragment);
-                        break;
-                    }
-                }
-
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (channelFormFragment != null) {
-                        channelFormFragment.onStoragePermissionGranted();
+                    for (StoragePermissionListener listener : storagePermissionListeners) {
+                        listener.onStoragePermissionGranted();
                     }
                 } else {
-                    if (channelFormFragment != null) {
-                        channelFormFragment.onStoragePermissionRefused();
+                    for (StoragePermissionListener listener : storagePermissionListeners) {
+                        listener.onStoragePermissionRefused();
                     }
                 }
+                startingStoragePermissionRequest = false;
                 break;
 
         }
@@ -1631,9 +1794,18 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
     }
 
+    private void applyNavbarSigninPadding() {
+        int statusBarHeight = getStatusBarHeight();
+
+        View signInButton = findViewById(R.id.sign_in_button_container);
+        View signedInEmailContainer = findViewById(R.id.signed_in_email_container);
+        signInButton.setPadding(0, statusBarHeight, 0, 0);
+        signedInEmailContainer.setPadding(0, statusBarHeight, 0, 0);
+    }
+
     private void showSignedInUser() {
         if (Lbryio.isSignedIn()) {
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            findViewById(R.id.sign_in_button_container).setVisibility(View.GONE);
             findViewById(R.id.signed_in_email_container).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.signed_in_email)).setText(Lbryio.getSignedInEmail());
             findViewById(R.id.sign_in_header_divider).setBackgroundColor(getResources().getColor(R.color.lightDivider));
@@ -1891,7 +2063,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         if (uri.isChannel()) {
                             openChannelUrl(uri.toString());
                         } else {
-                            openFileUrl(uri.toString(), this);
+                            openFileUrl(uri.toString());
                         }
                     } catch (LbryUriException ex) {
                         // pass
@@ -1936,6 +2108,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }, 1000);
             return;
         }
+        if (startingStoragePermissionRequest) {
+            return;
+        }
         enterPIPMode();
     }
 
@@ -1946,8 +2121,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 appPlayer != null &&
-                FileViewActivity.instance == null &&
-                !startingFileViewActivity &&
                 !startingFilePickerActivity &&
                 !startingSignInFlowActivity) {
             enteringPIPMode = true;
@@ -2024,7 +2197,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private void unregisterReceivers() {
         Helper.unregisterReceiver(requestsReceiver, this);
         Helper.unregisterReceiver(serviceActionsReceiver, this);
-        Helper.unregisterReceiver(userActionsReceiver, this);
     }
 
     private Notification buildServiceNotification() {
@@ -2097,14 +2269,22 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         return flatMenu;
     }
 
-    public static void setNowPlayingClaim(Claim claim, Context context) {
+    public void setNowPlayingClaim(Claim claim) {
         nowPlayingClaim = claim;
-        context.sendBroadcast(new Intent(ACTION_NOW_PLAYING_CLAIM_UPDATED));
+        if (claim != null) {
+            ((TextView) findViewById(R.id.global_now_playing_title)).setText(nowPlayingClaim.getTitle());
+            ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(nowPlayingClaim.getPublisherTitle());
+        }
     }
 
-    public static void clearNowPlayingClaim(Context context) {
+    public void clearNowPlayingClaim() {
         nowPlayingClaim = null;
-        context.sendBroadcast(new Intent(ACTION_NOW_PLAYING_CLAIM_CLEARED));
+        findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
+        ((TextView) findViewById(R.id.global_now_playing_title)).setText(null);
+        ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(null);
+        if (appPlayer != null) {
+            appPlayer.setPlayWhenReady(false);
+        }
     }
 
     private static class CheckSdkReadyTask extends AsyncTask<Void, Void, Boolean> {
@@ -2225,7 +2405,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     protected void onStop() {
-        if (!MainActivity.startingFileViewActivity && appPlayer != null && inPictureInPictureMode) {
+        if (appPlayer != null && inPictureInPictureMode) {
             appPlayer.setPlayWhenReady(false);
         }
         super.onStop();
@@ -2253,13 +2433,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         openFragment(fragmentClass, allowNavigateBack, navItemId, null);
     }
 
-    private static String buildNavFragmentKey(Class fragmentClass, int navItemId) {
+    private static String buildNavFragmentKey(Class fragmentClass, int navItemId, Map<String, Object> params) {
+        if (params != null && params.containsKey("url")) {
+            return String.format("%s-%d-%s", fragmentClass.getName(), navItemId, params.get("url").toString());
+        }
+
         return String.format("%s-%d", fragmentClass.getName(), navItemId);
     }
 
     public void openFragment(Class fragmentClass, boolean allowNavigateBack, int navItemId, Map<String, Object> params) {
         try {
-            String key = buildNavFragmentKey(fragmentClass, navItemId);
+            String key = buildNavFragmentKey(fragmentClass, navItemId, params);
             Fragment fragment = openNavFragments.containsKey(key) ? openNavFragments.get(key) : (Fragment) fragmentClass.newInstance();
             if (fragment instanceof BaseFragment) {
                 ((BaseFragment) fragment).setParams(params);
@@ -2327,6 +2511,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             if (!forceRequest && ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
                 Toast.makeText(context, rationale, Toast.LENGTH_LONG).show();
             } else {
+                startingStoragePermissionRequest = true;
                 ActivityCompat.requestPermissions((Activity) context, new String[] { permission }, requestCode);
             }
         }
@@ -2334,5 +2519,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public static boolean hasPermission(String permission, Context context) {
         return (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    public interface BackPressInterceptor {
+        boolean onBackPressed();
     }
 }

@@ -64,7 +64,7 @@
         android:paddingRight="4dp">
         <TextView
             android:id="@+id/player_duration_elapsed"
-            android:layout_width="wrap_content"
+            android:layout_width="64dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter"
@@ -77,18 +77,19 @@
             android:layout_toRightOf="@id/player_duration_elapsed"
             android:layout_width="match_parent"
             android:layout_height="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:layout_centerVertical="true"
             app:scrubber_color="@color/scrubberColor"
             app:played_color="@color/playedColor"
             app:buffered_color="@color/bufferedColor" />
         <TextView
             android:id="@+id/player_duration_total"
-            android:layout_width="wrap_content"
+            android:layout_width="64dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:gravity="end"
             android:fontFamily="@font/inter"
             android:text="@string/zero_duration"
             android:textColor="@color/white"
