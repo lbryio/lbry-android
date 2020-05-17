@@ -248,7 +248,10 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
     }
 
     private void updateInviteLink(Claim claim) {
-        String link = String.format(INVITE_LINK_FORMAT, claim.getName(), claim.getClaimId());
+        LbryUri canonical = LbryUri.tryParse(claim.getCanonicalUrl());
+        String link = String.format(INVITE_LINK_FORMAT,
+                canonical != null ? String.format("@%s", canonical.getChannelName()) : claim.getName(),
+                canonical != null ? canonical.getChannelClaimId() : claim.getClaimId());
         textInviteLink.setText(link);
     }
     private void copyInviteLink() {

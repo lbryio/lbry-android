@@ -438,6 +438,12 @@ public class ChannelFormFragment extends BaseFragment implements
                     Snackbar.make(getView(), R.string.image_upload_failed, Snackbar.LENGTH_LONG).setBackgroundTint(
                             ContextCompat.getColor(context, R.color.red)
                     ).show();
+                    if (coverFilePickerActive) {
+                        // cover selected
+                        imageCover.setImageResource(R.drawable.default_channel_cover);
+                    } else if (thumbnailFilePickerActive) {
+                        imageThumbnail.setImageDrawable(null);
+                    }
                     coverFilePickerActive = false;
                     thumbnailFilePickerActive = false;
                     uploading = false;

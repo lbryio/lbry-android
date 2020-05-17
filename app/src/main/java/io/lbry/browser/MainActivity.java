@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fragmentClassNavIdMap.put(AllContentFragment.class, NavMenuItem.ID_ITEM_ALL_CONTENT);
 
         fragmentClassNavIdMap.put(ChannelManagerFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
+        fragmentClassNavIdMap.put(LibraryFragment.class, NavMenuItem.ID_ITEM_LIBRARY);
 
         fragmentClassNavIdMap.put(WalletFragment.class, NavMenuItem.ID_ITEM_WALLET);
         fragmentClassNavIdMap.put(RewardsFragment.class, NavMenuItem.ID_ITEM_REWARDS);
@@ -190,10 +191,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fragmentClassNavIdMap.put(AboutFragment.class, NavMenuItem.ID_ITEM_ABOUT);
 
         // Internal (sub-)pages
+        fragmentClassNavIdMap.put(FileViewFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
         fragmentClassNavIdMap.put(ChannelFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
         fragmentClassNavIdMap.put(SearchFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
     }
-
 
     public static final int REQUEST_STORAGE_PERMISSION = 1001;
     public static final int REQUEST_SIMPLE_SIGN_IN = 2001;

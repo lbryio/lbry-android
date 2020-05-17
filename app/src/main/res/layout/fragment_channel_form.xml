@@ -25,15 +25,22 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/default_channel_cover"
                 android:scaleType="centerCrop" />
-            <ImageView
-                android:id="@+id/channel_form_cover_edit_icon"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+            <RelativeLayout
+                android:background="@drawable/bg_small_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginBottom="16dp"
-                android:layout_alignParentBottom="true"
-                android:src="@drawable/ic_edit"
-                android:tint="@color/white" />
+                android:layout_alignParentBottom="true">
+                <ImageView
+                    android:id="@+id/channel_form_cover_edit_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_edit"
+                    android:tint="@color/white" />
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:id="@+id/channel_form_upload_progress"
@@ -92,14 +99,21 @@
                     android:id="@+id/channel_form_thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                <RelativeLayout
+                    android:background="@drawable/bg_small_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginBottom="16dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_edit"
-                    android:tint="@color/white" />
+                    android:layout_centerHorizontal="true">
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_edit"
+                        android:tint="@color/white" />
+                </RelativeLayout>
             </RelativeLayout>
 
         </RelativeLayout>

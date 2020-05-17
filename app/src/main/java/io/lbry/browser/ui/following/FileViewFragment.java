@@ -257,6 +257,8 @@ public class FileViewFragment extends BaseFragment implements
                 // nothing at this location
                 renderNothingAtLocation();
             }
+        } else {
+            checkAndResetNowPlayingClaim();
         }
 
         if (!Helper.isNullOrEmpty(currentUrl)) {
@@ -266,6 +268,11 @@ public class FileViewFragment extends BaseFragment implements
         if (claim != null) {
             Helper.saveViewHistory(currentUrl, claim);
             renderClaim();
+            if (claim.getFile() == null) {
+                loadFile();
+            } else {
+                initialFileLoadDone = true;
+            }
         }
 
         checkIsFileComplete();
@@ -305,7 +312,6 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -337,11 +343,16 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void checkAndResetNowPlayingClaim() {
-        if (MainActivity.nowPlayingClaim != null && claim != null &&
+        if (MainActivity.nowPlayingClaim != null
+                && claim != null &&
                 !MainActivity.nowPlayingClaim.getClaimId().equalsIgnoreCase(claim.getClaimId())) {
             Context context = getContext();
             if (context instanceof MainActivity) {
-                ((MainActivity) context).clearNowPlayingClaim();
+                MainActivity activity = (MainActivity) context;
+                activity.clearNowPlayingClaim();
+                if (claim != null && !claim.isPlayable()) {
+                    activity.stopExoplayer();
+                }
             }
         }
     }
@@ -361,30 +372,6 @@ public class FileViewFragment extends BaseFragment implements
             MainActivity.appPlayer.setPlayWhenReady(false);
         }
         resetPlayer();
-    }
-
-    private void loadClaimForCacheKey(ClaimCacheKey key, String url) {
-        if (Lbry.claimCache.containsKey(key)) {
-            claim = Lbry.claimCache.get(key);
-            Helper.saveUrlHistory(url, claim.getTitle(), UrlSuggestion.TYPE_FILE);
-            Helper.saveViewHistory(url, claim);
-            checkAndResetNowPlayingClaim();
-            if (claim.getFile() == null) {
-                loadFile();
-            } else {
-                initialFileLoadDone = true;
-                checkInitialFileLoadDone();
-            }
-            renderClaim();
-        } else {
-            Helper.saveUrlHistory(url, null, UrlSuggestion.TYPE_FILE);
-            getView().findViewById(R.id.file_view_claim_display_area).setVisibility(View.INVISIBLE);
-            Context context = getContext();
-            if (context instanceof MainActivity) {
-                ((MainActivity) context).clearNowPlayingClaim();
-            }
-            resolveUrl(url);
-        }
     }
 
     public void onSdkReady() {
@@ -432,25 +419,14 @@ public class FileViewFragment extends BaseFragment implements
                     checkIsFileComplete();
                 }
                 initialFileLoadDone = true;
-                checkInitialFileLoadDone();
             }
 
             @Override
             public void onError(Exception error) {
                 initialFileLoadDone = true;
-                checkInitialFileLoadDone();
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    private void checkInitialFileLoadDone() {
-        if (initialFileLoadDone) {
-            restoreMainActionButton();
-        }
-        if (claim != null && claim.isFree() && (claim.isPlayable() || claim.isViewable())) {
-            onMainActionButtonClicked();
-        }
     }
 
     public void openClaimUrl(String url) {
@@ -832,7 +808,7 @@ public class FileViewFragment extends BaseFragment implements
 
     private void checkStoragePermissionAndFileGet() {
         Context context = getContext();
-        if (MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
+        if (!MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
             fileGetPending = true;
             MainActivity.requestPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -840,6 +816,8 @@ public class FileViewFragment extends BaseFragment implements
                     getString(R.string.storage_permission_rationale_download),
                     context,
                     true);
+        } else {
+            fileGet(true);
         }
     }
 
@@ -1040,7 +1018,11 @@ public class FileViewFragment extends BaseFragment implements
                 }
             } else if (claim.isViewable() && Lbry.SDK_READY) {
                 onMainActionButtonClicked();
+            } else if (!Lbry.SDK_READY) {
+                restoreMainActionButton();
             }
+        } else {
+            restoreMainActionButton();
         }
 
         RecyclerView relatedContentList = getView().findViewById(R.id.file_view_related_content_list);
@@ -1192,6 +1174,11 @@ public class FileViewFragment extends BaseFragment implements
                 // not free (and the user does not own the claim yet), perform a purchase
                 confirmPurchaseUrl();
             } else {
+                if (!claim.isPlayable() && !Lbry.SDK_READY) {
+                    Snackbar.make(getView().findViewById(R.id.file_view_global_layout), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
                 getView().findViewById(R.id.file_view_main_action_button).setVisibility(View.INVISIBLE);
                 getView().findViewById(R.id.file_view_main_action_loading).setVisibility(View.VISIBLE);
                 handleMainActionForClaim();
@@ -1237,18 +1224,15 @@ public class FileViewFragment extends BaseFragment implements
                 public void onSuccess(List<LbryFile> files, boolean hasReachedEnd) {
                     if (files.size() > 0) {
                         claim.setFile(files.get(0));
+                        handleMainActionForClaim();
                         checkIsFileComplete();
                     } else {
                         checkStoragePermissionAndFileGet();
                     }
-                    initialFileLoadDone = true;
-                    checkInitialFileLoadDone();
                 }
 
                 @Override
                 public void onError(Exception error) {
-                    initialFileLoadDone = true;
-                    checkInitialFileLoadDone();
                     checkStoragePermissionAndFileGet();
                 }
             });
@@ -1470,7 +1454,7 @@ public class FileViewFragment extends BaseFragment implements
                             if (claim.getName().startsWith("@")) {
                                 activity.openChannelUrl(claim.getPermanentUrl());
                             } else {
-                                openClaimUrl(claim.getPermanentUrl());
+                                activity.openFileUrl(claim.getPermanentUrl()); //openClaimUrl(claim.getPermanentUrl());
                             }
                         }
                     }
