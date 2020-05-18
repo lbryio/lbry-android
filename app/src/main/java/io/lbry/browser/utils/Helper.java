@@ -674,4 +674,10 @@ public final class Helper {
             new SaveViewHistoryTask(viewHistory, dbHelper, null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
+    public static String normalizeChannelName(String channelName) {
+        if (!channelName.startsWith("@")) {
+            return String.format("@%s", channelName);
+        }
+        return channelName;
+    }
 }

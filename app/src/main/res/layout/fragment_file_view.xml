@@ -46,7 +46,7 @@
             android:background="@color/mediaContainerBackground"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3.25">
+            android:layout_weight="3.55">
             <RelativeLayout
                 android:id="@+id/file_view_media_meta_container"
                 android:clickable="true"
@@ -173,7 +173,7 @@
             android:id="@+id/file_view_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6.75"
+            android:layout_weight="6.45"
             android:clipToPadding="false">
             <LinearLayout
                 android:orientation="vertical"

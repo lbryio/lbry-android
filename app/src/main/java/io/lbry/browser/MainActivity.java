@@ -88,6 +88,8 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import io.lbry.browser.adapter.NavigationMenuAdapter;
 import io.lbry.browser.adapter.UrlSuggestionListAdapter;
@@ -148,6 +150,7 @@ import io.lbry.lbrysdk.ServiceHelper;
 import io.lbry.lbrysdk.Utils;
 import lombok.Getter;
 import lombok.Setter;
+import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements SdkStatusListener {
 
@@ -176,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private Map<String, Fragment> openNavFragments;
     private static final Map<Class, Integer> fragmentClassNavIdMap = new HashMap<>();
     static {
+        Logger.getLogger(OkHttpClient.class.getName()).setLevel(Level.FINE);
+
         fragmentClassNavIdMap.put(FollowingFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
         fragmentClassNavIdMap.put(EditorsChoiceFragment.class, NavMenuItem.ID_ITEM_EDITORS_CHOICE);
         fragmentClassNavIdMap.put(AllContentFragment.class, NavMenuItem.ID_ITEM_ALL_CONTENT);
@@ -944,6 +949,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void clearWunderbarFocus(View view) {
         findViewById(R.id.wunderbar).clearFocus();
+        findViewById(R.id.wunderbar_container).requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }

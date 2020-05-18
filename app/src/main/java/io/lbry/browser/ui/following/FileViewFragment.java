@@ -1056,8 +1056,11 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void showExoplayerView() {
-        getView().findViewById(R.id.file_view_unsupported_container).setVisibility(View.GONE);
-        getView().findViewById(R.id.file_view_exoplayer_container).setVisibility(View.VISIBLE);
+        View root = getView();
+        if (root != null) {
+            root.findViewById(R.id.file_view_unsupported_container).setVisibility(View.GONE);
+            root.findViewById(R.id.file_view_exoplayer_container).setVisibility(View.VISIBLE);
+        }
     }
 
     private void playMedia() {
@@ -1537,12 +1540,14 @@ public class FileViewFragment extends BaseFragment implements
     private void enableFullScreenMode() {
         Context context = getContext();
         if (context instanceof MainActivity) {
-            ConstraintLayout globalLayout = getView().findViewById(R.id.file_view_global_layout);
-            View exoplayerContainer = getView().findViewById(R.id.file_view_exoplayer_container);
+            View root = getView();
+            ConstraintLayout globalLayout = root.findViewById(R.id.file_view_global_layout);
+            View exoplayerContainer = root.findViewById(R.id.file_view_exoplayer_container);
             ((ViewGroup) exoplayerContainer.getParent()).removeView(exoplayerContainer);
             globalLayout.addView(exoplayerContainer);
 
-            ((ImageView) getView().findViewById(R.id.player_image_full_screen_toggle)).setImageResource(R.drawable.ic_fullscreen_exit);
+            root.findViewById(R.id.player_image_full_screen_toggle).setVisibility(View.GONE);
+            root.findViewById(R.id.player_image_full_screen_exit_toggle).setVisibility(View.VISIBLE);
 
             MainActivity activity = (MainActivity) context;
             activity.enterFullScreenMode();
@@ -1558,13 +1563,15 @@ public class FileViewFragment extends BaseFragment implements
         Context context = getContext();
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
+            View root = getView();
 
-            RelativeLayout mediaContainer = getView().findViewById(R.id.file_view_media_container);
-            View exoplayerContainer = getView().findViewById(R.id.file_view_exoplayer_container);
+            RelativeLayout mediaContainer = root.findViewById(R.id.file_view_media_container);
+            View exoplayerContainer = root.findViewById(R.id.file_view_exoplayer_container);
             ((ViewGroup) exoplayerContainer.getParent()).removeView(exoplayerContainer);
             mediaContainer.addView(exoplayerContainer);
 
-            ((ImageView) getView().findViewById(R.id.player_image_full_screen_toggle)).setImageResource(R.drawable.ic_fullscreen);
+            root.findViewById(R.id.player_image_full_screen_toggle).setVisibility(View.VISIBLE);
+            root.findViewById(R.id.player_image_full_screen_exit_toggle).setVisibility(View.GONE);
             exoplayerContainer.setPadding(0, 0, 0, 0);
 
             activity.exitFullScreenMode();

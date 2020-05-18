@@ -267,7 +267,8 @@ public class Claim {
         if (viewHistory.getCost() != null && viewHistory.getCost().doubleValue() > 0) {
             Fee fee = new Fee();
             fee.setAmount(String.valueOf(viewHistory.getCost().doubleValue()));
-            fee.setCurrency("LBC"); // always LBC
+            fee.setCurrency(viewHistory.getCurrency());
+            value.setFee(fee);
         }
 
         claim.setValue(value);

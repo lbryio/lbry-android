@@ -156,7 +156,7 @@ public class TransactionHistoryFragment extends BaseFragment implements Transact
     }
     public void onClaimUrlClicked(LbryUri uri) {
         Context context = getContext();
-        if (context instanceof MainActivity) {
+        if (uri != null && context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             if (uri.isChannel()) {
                 activity.openChannelUrl(uri.toString());

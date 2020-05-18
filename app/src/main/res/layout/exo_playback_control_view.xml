@@ -53,6 +53,14 @@
             android:layout_centerInParent="true"
             android:src="@drawable/ic_fullscreen"
             android:tint="@color/white" />
+        <ImageView
+            android:id="@+id/player_image_full_screen_exit_toggle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_fullscreen_exit"
+            android:tint="@color/white"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout

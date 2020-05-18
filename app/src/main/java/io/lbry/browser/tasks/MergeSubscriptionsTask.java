@@ -24,6 +24,7 @@ import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
+import okhttp3.Response;
 
 // background task to create a diff of local and remote subscriptions and try to merge
 public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscription>> {
@@ -84,8 +85,8 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                         LbryUri uri = LbryUri.parse(local.getUrl());
                         Map<String, String> options = new HashMap<>();
                         options.put("claim_id", uri.getChannelClaimId());
-                        options.put("channel_name", local.getChannelName());
-                        Lbryio.call("subscription", "new", options, context);
+                        options.put("channel_name", Helper.normalizeChannelName(local.getChannelName()));
+                        Lbryio.parseResponse(Lbryio.call("subscription", "new", options, context));
                     } catch (LbryUriException | LbryioRequestException | LbryioResponseException ex) {
                         // pass
                         Log.e(TAG, String.format("subscription/new failed: %s", ex.getMessage()), ex);

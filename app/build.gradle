@@ -81,6 +81,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.atlassian.commonmark:commonmark:0.14.0'
 
+    implementation 'com.arthenica:mobile-ffmpeg-full:4.3.1.LTS'
+
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'

@@ -24,6 +24,8 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
             <RelativeLayout
                 android:id="@+id/wunderbar_container"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="24dp">

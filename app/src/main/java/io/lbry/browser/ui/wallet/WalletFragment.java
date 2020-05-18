@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -154,6 +155,25 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             public void onSuccess(List<Transaction> transactions, boolean hasReachedEnd) {
                 hasFetchedRecentTransactions = true;
                 recentTransactionsAdapter = new TransactionListAdapter(transactions, getContext());
+                recentTransactionsAdapter.setListener(new TransactionListAdapter.TransactionClickListener() {
+                    @Override
+                    public void onTransactionClicked(Transaction transaction) {
+
+                    }
+
+                    @Override
+                    public void onClaimUrlClicked(LbryUri uri) {
+                        Context context = getContext();
+                        if (uri != null && context instanceof MainActivity) {
+                            MainActivity activity = (MainActivity) context;
+                            if (uri.isChannel()) {
+                                activity.openChannelUrl(uri.toString());
+                            } else {
+                                activity.openFileUrl(uri.toString());
+                            }
+                        }
+                    }
+                });
                 recentTransactionsList.setAdapter(recentTransactionsAdapter);
                 displayNoRecentTransactions();
             }
@@ -215,7 +235,9 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         Context context = getContext();
         LinearLayoutManager llm = new LinearLayoutManager(context);
         recentTransactionsList.setLayoutManager(llm);
-        recentTransactionsList.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        itemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.thin_divider));
+        recentTransactionsList.addItemDecoration(itemDecoration);
 
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override

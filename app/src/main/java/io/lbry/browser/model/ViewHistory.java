@@ -14,6 +14,7 @@ public class ViewHistory {
     private String claimId;
     private String claimName;
     private BigDecimal cost;
+    private String currency;
     private String title;
     private String publisherClaimId;
     private String publisherName;
@@ -40,7 +41,9 @@ public class ViewHistory {
             Claim.StreamMetadata value = (Claim.StreamMetadata) metadata;
             history.setReleaseTime(value.getReleaseTime());
             if (value.getFee() != null) {
-                history.setCost(claim.getActualCost(Lbryio.LBCUSDRate));
+                Fee fee = value.getFee();
+                history.setCost(new BigDecimal(fee.getAmount()));
+                history.setCurrency(fee.getCurrency());
             }
         }
         if (history.getReleaseTime() == 0) {

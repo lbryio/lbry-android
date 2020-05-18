@@ -394,6 +394,9 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                             centerCrop().
                             placeholder(R.drawable.bg_thumbnail_placeholder).
                             into(vh.thumbnailView);
+                    vh.thumbnailView.setVisibility(View.VISIBLE);
+                } else {
+                    vh.thumbnailView.setVisibility(View.GONE);
                 }
 
                 BigDecimal cost = item.getActualCost(Lbryio.LBCUSDRate);
