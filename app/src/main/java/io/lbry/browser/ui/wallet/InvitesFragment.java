@@ -526,6 +526,12 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
                             logPublishTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         }
 
+                        // channel created
+                        Bundle bundle = new Bundle();
+                        bundle.putString("claim_id", claimResult.getClaimId());
+                        bundle.putString("claim_name", claimResult.getName());
+                        LbryAnalytics.logEvent(LbryAnalytics.EVENT_CHANNEL_CREATE, bundle);
+
                         // add the claim to the channel list and set it as the selected item
                         channelSpinnerAdapter.add(claimResult);
                         channelSpinner.setSelection(channelSpinnerAdapter.getCount() - 1);

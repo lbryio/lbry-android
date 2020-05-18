@@ -193,7 +193,7 @@ public class AboutFragment extends BaseFragment implements SdkStatusListener {
         Context context = getContext();
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
-            LbryAnalytics.setCurrentScreen(activity, "Settings", "Settings");
+            LbryAnalytics.setCurrentScreen(activity, "About", "About");
 
             if (!Lbry.SDK_READY) {
                 activity.addSdkStatusListener(this);

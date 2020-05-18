@@ -328,6 +328,14 @@ public class ChannelFormFragment extends BaseFragment implements
                     logPublish.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
 
+                if (!editMode) {
+                    // channel created
+                    Bundle bundle = new Bundle();
+                    bundle.putString("claim_id", claimResult.getClaimId());
+                    bundle.putString("claim_name", claimResult.getName());
+                    LbryAnalytics.logEvent(LbryAnalytics.EVENT_CHANNEL_CREATE, bundle);
+                }
+
                 Context context = getContext();
                 if (context instanceof MainActivity) {
                     MainActivity activity = (MainActivity) context;

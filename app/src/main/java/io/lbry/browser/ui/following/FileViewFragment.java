@@ -479,6 +479,10 @@ public class FileViewFragment extends BaseFragment implements
 
         Context context = getContext();
         Helper.setWunderbarValue(currentUrl, context);
+        if (context instanceof MainActivity) {
+            LbryAnalytics.setCurrentScreen((MainActivity) context, "File", "File");
+        }
+
         if (MainActivity.appPlayer != null) {
             if (MainActivity.playerReassigned) {
                 setPlayerForPlayerView();
