@@ -26,6 +26,7 @@ public class DeleteFileTask extends AsyncTask<Void, Void, Boolean> {
             options.put("delete_from_download_dir", true);
             return (boolean) Lbry.genericApiCall(Lbry.METHOD_FILE_DELETE, options);
         } catch (ApiCallException ex) {
+            error = ex;
             return false;
         }
     }

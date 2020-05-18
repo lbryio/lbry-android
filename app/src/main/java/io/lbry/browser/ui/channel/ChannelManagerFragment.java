@@ -2,6 +2,7 @@ package io.lbry.browser.ui.channel;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +34,8 @@ import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.NavMenuItem;
+import io.lbry.browser.tasks.claim.AbandonChannelTask;
+import io.lbry.browser.tasks.claim.AbandonHandler;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.ui.BaseFragment;
@@ -144,7 +148,7 @@ public class ChannelManagerFragment extends BaseFragment implements ActionMode.C
         ClaimListTask task = new ClaimListTask(Claim.TYPE_CHANNEL, getLoading(), new ClaimListResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
-                Lbry.ownChannels = new ArrayList<>(claims);
+                Lbry.ownChannels = Helper.filterDeletedClaims(new ArrayList<>(claims));
                 Context context = getContext();
                 if (adapter == null) {
                     adapter = new ClaimListAdapter(claims, context);
@@ -260,7 +264,7 @@ public class ChannelManagerFragment extends BaseFragment implements ActionMode.C
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                //handleDeleteSelectedClaims(selectedClaims);
+                                handleDeleteSelectedClaims(selectedClaims);
                             }
                         }).setNegativeButton(R.string.no, null);
                 builder.show();
@@ -269,5 +273,49 @@ public class ChannelManagerFragment extends BaseFragment implements ActionMode.C
         }
 
         return false;
+    }
+
+    private void handleDeleteSelectedClaims(List<Claim> selectedClaims) {
+        List<String> claimIds = new ArrayList<>();
+
+        for (Claim claim : selectedClaims) {
+            claimIds.add(claim.getClaimId());
+        }
+
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+
+        Helper.setViewVisibility(channelList, View.INVISIBLE);
+        Helper.setViewVisibility(fabNewChannel, View.INVISIBLE);
+        AbandonChannelTask task = new AbandonChannelTask(claimIds, bigLoading, new AbandonHandler() {
+            @Override
+            public void onComplete(List<String> successfulClaimIds, List<String> failedClaimIds, List<Exception> errors) {
+                View root = getView();
+                if (root != null) {
+                    if (failedClaimIds.size() > 0) {
+                        Snackbar.make(root, R.string.one_or_more_channels_failed_abandon, Snackbar.LENGTH_LONG).
+                                setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                    } else if (successfulClaimIds.size() == claimIds.size()) {
+                        try {
+                            String message = getResources().getQuantityString(R.plurals.channels_deleted, successfulClaimIds.size());
+                            Snackbar.make(root, message, Snackbar.LENGTH_LONG).show();
+                        } catch (IllegalStateException ex) {
+                            // pass
+                        }
+                    }
+                }
+
+                Lbry.abandonedClaimIds.addAll(successfulClaimIds);
+                if (adapter != null) {
+                    adapter.setItems(Helper.filterDeletedClaims(adapter.getItems()));
+                }
+
+                Helper.setViewVisibility(channelList, View.VISIBLE);
+                Helper.setViewVisibility(fabNewChannel, View.VISIBLE);
+                checkNoChannels();
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

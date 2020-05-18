@@ -823,7 +823,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         closeIcon.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
-    private int getScaledValue(int value) {
+    public int getScaledValue(int value) {
         float scale = getResources().getDisplayMetrics().density;
         return (int) (value * scale + 0.5f);
     }

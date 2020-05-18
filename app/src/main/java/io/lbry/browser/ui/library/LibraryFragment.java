@@ -1,10 +1,13 @@
 package io.lbry.browser.ui.library;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -12,16 +15,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ActionMode;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.channels.AsynchronousChannel;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
@@ -29,22 +39,31 @@ import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.SdkStatusListener;
+import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.LbryFile;
+import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.ViewHistory;
+import io.lbry.browser.tasks.claim.AbandonChannelTask;
+import io.lbry.browser.tasks.claim.AbandonHandler;
+import io.lbry.browser.tasks.file.BulkDeleteFilesTask;
+import io.lbry.browser.tasks.file.DeleteFileTask;
 import io.lbry.browser.tasks.file.FileListTask;
 import io.lbry.browser.tasks.localdata.FetchViewHistoryTask;
 import io.lbry.browser.ui.BaseFragment;
+import io.lbry.browser.ui.channel.ChannelFormFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 
-public class LibraryFragment extends BaseFragment implements DownloadActionListener, SdkStatusListener  {
+public class LibraryFragment extends BaseFragment implements
+        ActionMode.Callback, DownloadActionListener, SelectionModeListener, SdkStatusListener  {
 
     private static final int FILTER_DOWNLOADS = 1;
     private static final int FILTER_HISTORY = 2;
     private static final int PAGE_SIZE = 50;
 
+    private ActionMode actionMode;
     private int currentFilter;
     private List<LbryFile> currentFiles;
     private View layoutSdkInitializing;
@@ -244,6 +263,9 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
         currentFilter = FILTER_HISTORY;
         linkFilterDownloads.setTypeface(null, Typeface.NORMAL);
         linkFilterHistory.setTypeface(null, Typeface.BOLD);
+        if (actionMode != null) {
+            actionMode.finish();
+        }
         if (contentListAdapter != null) {
             contentListAdapter.clearItems();
             contentListAdapter.setCanEnterSelectionMode(false);
@@ -261,6 +283,7 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
     private void initContentListAdapter(List<Claim> claims) {
         contentListAdapter = new ClaimListAdapter(claims, getContext());
         contentListAdapter.setCanEnterSelectionMode(true);
+        contentListAdapter.setSelectionModeListener(this);
         contentListAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
             @Override
             public void onClaimClicked(Claim claim) {
@@ -458,5 +481,105 @@ public class LibraryFragment extends BaseFragment implements DownloadActionListe
                         listLoading.getVisibility() == View.VISIBLE ||
                         currentFilter == FILTER_HISTORY ?
                 View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+        this.actionMode = actionMode;
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            if (!activity.isDarkMode()) {
+                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            }
+        }
+
+        actionMode.getMenuInflater().inflate(R.menu.menu_claim_list, menu);
+        return true;
+    }
+    @Override
+    public void onDestroyActionMode(ActionMode actionMode) {
+        if (contentListAdapter != null) {
+            contentListAdapter.clearSelectedItems();
+            contentListAdapter.setInSelectionMode(false);
+            contentListAdapter.notifyDataSetChanged();
+        }
+        Context context = getContext();
+        if (context != null) {
+            MainActivity activity = (MainActivity) context;
+            if (!activity.isDarkMode()) {
+                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
+        }
+        this.actionMode = null;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(androidx.appcompat.view.ActionMode actionMode, Menu menu) {
+        menu.findItem(R.id.action_edit).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onActionItemClicked(androidx.appcompat.view.ActionMode actionMode, MenuItem menuItem) {
+        if (R.id.action_delete == menuItem.getItemId()) {
+            if (contentListAdapter != null && contentListAdapter.getSelectedCount() > 0) {
+                final List<Claim> selectedClaims = new ArrayList<>(contentListAdapter.getSelectedItems());
+                String message = getResources().getQuantityString(R.plurals.confirm_delete_files, selectedClaims.size());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
+                        setTitle(R.string.delete_selection).
+                        setMessage(message)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                handleDeleteSelectedClaims(selectedClaims);
+                            }
+                        }).setNegativeButton(R.string.no, null);
+                builder.show();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void handleDeleteSelectedClaims(List<Claim> selectedClaims) {
+        List<String> claimIds = new ArrayList<>();
+        for (Claim claim : selectedClaims) {
+            claimIds.add(claim.getClaimId());
+        }
+
+        new BulkDeleteFilesTask(claimIds).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        Lbry.unsetFilesForCachedClaims(claimIds);
+        if (currentFilter == FILTER_DOWNLOADS) {
+            contentListAdapter.removeItems(selectedClaims);
+        }
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+        View root = getView();
+        if (root != null) {
+            String message = getResources().getQuantityString(R.plurals.files_deleted, claimIds.size());
+            Snackbar.make(root, message, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    public void onEnterSelectionMode() {
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            activity.startSupportActionMode(this);
+        }
+    }
+    public void onItemSelectionToggled() {
+        if (actionMode != null) {
+            actionMode.setTitle(String.valueOf(contentListAdapter.getSelectedCount()));
+            actionMode.invalidate();
+        }
+    }
+    public void onExitSelectionMode() {
+        if (actionMode != null) {
+            actionMode.finish();
+        }
     }
 }

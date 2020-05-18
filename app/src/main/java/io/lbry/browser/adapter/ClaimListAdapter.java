@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
@@ -54,6 +55,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     private boolean inSelectionMode;
     @Setter
     private SelectionModeListener selectionModeListener;
+    private float scale;
 
     public ClaimListAdapter(List<Claim> items, Context context) {
         this.context = context;
@@ -63,6 +65,9 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         quickClaimUrlMap = new HashMap<>();
         notFoundClaimIdMap = new HashMap<>();
         notFoundClaimUrlMap = new HashMap<>();
+        if (context != null) {
+            scale = context.getResources().getDisplayMetrics().density;
+        }
     }
 
     public List<Claim> getSelectedItems() {
@@ -85,6 +90,10 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             }
         }
         return null;
+    }
+
+    public List<Claim> getItems() {
+        return new ArrayList<>(this.items);
     }
 
     public void clearItems() {
@@ -119,6 +128,11 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     }
     public void setItems(List<Claim> claims) {
         items = new ArrayList<>(claims);
+        notifyDataSetChanged();
+    }
+
+    public void removeItems(List<Claim> claims) {
+        items.removeAll(claims);
         notifyDataSetChanged();
     }
 
@@ -261,9 +275,18 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         return new ClaimListAdapter.ViewHolder(v);
     }
 
+    public int getScaledValue(int value) {
+        return (int) (value * scale + 0.5f);
+    }
+
     @Override
     public void onBindViewHolder(ClaimListAdapter.ViewHolder vh, int position) {
         int type = getItemViewType(position);
+        int paddingTop = position == 0 ? 16 : 8;
+        int paddingBottom = position == getItemCount() - 1 ? 16 : 8;
+        int paddingTopScaled = getScaledValue(paddingTop);
+        int paddingBottomScaled = getScaledValue(paddingBottom);
+        vh.itemView.setPadding(vh.itemView.getPaddingLeft(), paddingTopScaled, vh.itemView.getPaddingRight(), paddingBottomScaled);
 
         Claim original = items.get(position);
         boolean isRepost = Claim.TYPE_REPOST.equalsIgnoreCase(original.getValueType());

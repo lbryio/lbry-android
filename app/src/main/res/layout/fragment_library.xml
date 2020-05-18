@@ -300,9 +300,7 @@
         android:clipToPadding="false"
         android:layout_below="@id/library_storage_stats_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="12dp"
-        android:paddingBottom="16dp" />
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:id="@+id/library_empty_container"

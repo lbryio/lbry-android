@@ -54,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
                 android:layout_above="@+id/channel_view_tabs"
                 android:layout_toRightOf="@id/channel_view_icon_container"
                 android:orientation="vertical">
@@ -66,7 +67,9 @@
                     android:paddingRight="4dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/inter"
+                    android:maxLines="2"
                     android:textSize="20sp"
                     android:textColor="@color/white" />
                 <TextView

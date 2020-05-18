@@ -237,6 +237,7 @@ public class FileViewFragment extends BaseFragment implements
             }
 
             resetViewCount();
+            resetFee();
             checkNewClaimAndUrl(newClaim, newUrl);
 
             if (newClaim != null) {
@@ -364,6 +365,7 @@ public class FileViewFragment extends BaseFragment implements
         currentUrl = url;
         logUrlEvent(url);
         resetViewCount();
+        resetFee();
         View root = getView();
         if (root != null) {
             ((RecyclerView) root.findViewById(R.id.file_view_related_content_list)).setAdapter(null);
@@ -431,6 +433,7 @@ public class FileViewFragment extends BaseFragment implements
 
     public void openClaimUrl(String url) {
         resetViewCount();
+        resetFee();
         currentUrl = url;
 
         ClaimCacheKey key = new ClaimCacheKey();
@@ -508,6 +511,7 @@ public class FileViewFragment extends BaseFragment implements
         View root = getView();
         if (root != null) {
             PlayerView view = root.findViewById(R.id.file_view_exoplayer_view);
+            view.setPlayer(null);
             view.setPlayer(MainActivity.appPlayer);
         }
     }
@@ -896,6 +900,10 @@ public class FileViewFragment extends BaseFragment implements
                     getView().findViewById(R.id.file_view_action_download).setVisibility(View.VISIBLE);
                     getView().findViewById(R.id.file_view_unsupported_container).setVisibility(View.GONE);
                     actionDelete.setEnabled(true);
+
+                    claim.setFile(null);
+                    Lbry.unsetFilesForCachedClaims(Arrays.asList(claim.getClaimId()));
+
                     restoreMainActionButton();
                 }
 
@@ -1135,9 +1143,20 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void resetViewCount() {
-        TextView textViewCount = getView().findViewById(R.id.file_view_view_count);
-        Helper.setViewText(textViewCount, null);
-        Helper.setViewVisibility(textViewCount, View.GONE);
+        View root = getView();
+        if (root != null) {
+            TextView textViewCount = root.findViewById(R.id.file_view_view_count);
+            Helper.setViewText(textViewCount, null);
+            Helper.setViewVisibility(textViewCount, View.GONE);
+        }
+    }
+    private void resetFee() {
+        View root = getView();
+        if (root != null) {
+            TextView feeView = root.findViewById(R.id.file_view_fee);
+            feeView.setText(null);
+            Helper.setViewVisibility(root.findViewById(R.id.file_view_fee_container), View.GONE);
+        }
     }
 
     private void loadViewCount() {

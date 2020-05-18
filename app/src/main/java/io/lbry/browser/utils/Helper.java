@@ -402,6 +402,15 @@ public final class Helper {
         }
         return followedTags;
     }
+    public static List<Claim> filterDeletedClaims(List<Claim> claims) {
+        List<Claim> filtered = new ArrayList<>();
+        for (Claim claim : claims) {
+            if (!Lbry.abandonedClaimIds.contains(claim.getClaimId())) {
+                filtered.add(claim);
+            }
+        }
+        return filtered;
+    }
 
     public static void setWunderbarValue(String value, Context context) {
         if (context instanceof MainActivity) {

@@ -24,6 +24,19 @@ public class User {
     private String primaryEmail;
     private String rewardStatusChangeTrigger;
     private String updatedAt;
-    private List<String> youtubeChannels;
+    private List<YoutubeChannel> youtubeChannels;
     private List<String> deviceTypes;
+
+    @Data
+    public static class YoutubeChannel {
+        String ytChannelName;
+        String lbryChannelName;
+        String channelClaimId;
+        String syncStatus;
+        String statusToken;
+        boolean transferable;
+        String transferState;
+        List<String> publishToAddress;
+        String publicKey;
+    }
 }

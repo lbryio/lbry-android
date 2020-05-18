@@ -323,6 +323,7 @@
     <string name="item_pending_blockchain">The claim is pending publish on the blockchain. You will be able to access or edit the claim in a few moments.</string>
     <string name="pending">Pending</string>
     <string name="create">Create</string>
+    <string name="one_or_more_channels_failed_abandon">One or moe channels could not be deleted at this time. Please try again later.</string>
     <plurals name="min_deposit_required">
         <item quantity="one">A minimum deposit of %1$s credit is required.</item>
         <item quantity="other">A minimum deposit of %1$s credits is required.</item>
@@ -330,6 +331,10 @@
     <plurals name="confirm_delete_channels">
         <item quantity="one">Are you sure you want to delete the selected channel?</item>
         <item quantity="other">Are you sure you want to delete the selected channels?</item>
+    </plurals>
+    <plurals name="channels_deleted">
+        <item quantity="one">The channel was successfully deleted.</item>
+        <item quantity="other">The channels were successfully deleted.</item>
     </plurals>
 
     <!-- Rewards -->
@@ -388,6 +393,14 @@
     <string name="kb">KB</string>
     <string name="gb">GB</string>
     <string name="zero_mb">0MB</string>
+    <plurals name="confirm_delete_files">
+        <item quantity="one">Are you sure you want to remove the selected file from your device?</item>
+        <item quantity="other">Are you sure you want to remove the selected files from your device?</item>
+    </plurals>
+    <plurals name="files_deleted">
+        <item quantity="one">The file was successfully deleted.</item>
+        <item quantity="other">The files were successfully deleted.</item>
+    </plurals>
 
     <!-- About -->
     <string name="about_lbry">About LBRY</string>

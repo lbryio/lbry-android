@@ -192,8 +192,9 @@ public final class Lbryio {
             Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
             User user = gson.fromJson(object.toString(), type);
             return user;
-        } catch (LbryioRequestException | LbryioResponseException | ClassCastException ex) {
-            android.util.Log.e(TAG, "Cannot retrieve the current user", ex);
+        } catch (LbryioRequestException | LbryioResponseException | ClassCastException | IllegalStateException ex) {
+            LbryAnalytics.logException(String.format("/user/me failed: %s", ex.getMessage()), ex.getClass().getName());
+            android.util.Log.e(TAG, "Could not retrieve the current user", ex);
             return null;
         }
     }

@@ -44,6 +44,7 @@ public final class Lbry {
     public static List<Tag> followedTags = new ArrayList<>();
     public static List<Claim> ownClaims = new ArrayList<>();
     public static List<Claim> ownChannels = new ArrayList<>(); // Make this a subset of ownClaims?
+    public static List<String> abandonedClaimIds = new ArrayList<>();
 
     public static final int TTL_CLAIM_SEARCH_VALUE = 120000; // 2-minute TTL for cache
     public static final String SDK_CONNECTION_STRING = "http://127.0.0.1:5279";
@@ -97,6 +98,7 @@ public final class Lbry {
     public static boolean SDK_READY = false;
 
     public static void startupInit() {
+        abandonedClaimIds = new ArrayList<>();
         ownChannels = new ArrayList<>();
         ownClaims = new ArrayList<>();
         knownTags = new ArrayList<>();
@@ -472,6 +474,16 @@ public final class Lbry {
         claimCache.put(permanentUrlKey, claim);
         if (!Helper.isNullOrEmpty(shortUrlKey.getUrl())) {
             claimCache.put(shortUrlKey, claim);
+        }
+    }
+
+    public static void unsetFilesForCachedClaims(List<String> claimIds) {
+        for (String claimId : claimIds) {
+            ClaimCacheKey key = new ClaimCacheKey();
+            key.setClaimId(claimId);
+            if (claimCache.containsKey(key)) {
+                claimCache.get(key).setFile(null);
+            }
         }
     }
 }
