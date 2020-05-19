@@ -121,7 +121,7 @@ public class Claim {
                 return new BigDecimal(String.valueOf(amount / usdRate));
             }
 
-            return new BigDecimal(String.valueOf(amount)).divide(new BigDecimal(100000000)); // deweys
+            return new BigDecimal(String.valueOf(amount)); // deweys
         }
 
         return new BigDecimal(0);
@@ -363,7 +363,8 @@ public class Claim {
                 Fee fee = null;
                 if (feeAmount > 0) {
                     fee = new Fee();
-                    fee.setAmount(String.valueOf(feeAmount));
+                    fee.setAmount(String.valueOf(new BigDecimal(String.valueOf(feeAmount)).divide(new BigDecimal(100000000))));
+                    fee.setCurrency("LBC");
                 }
 
                 ((StreamMetadata) metadata).setFee(fee);

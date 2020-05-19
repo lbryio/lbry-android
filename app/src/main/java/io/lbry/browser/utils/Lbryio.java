@@ -212,7 +212,12 @@ public final class Lbryio {
         }
 
         Map<String, String> options = new HashMap<>();
-        //options.put("firebase_token", null);
+        if (context instanceof MainActivity) {
+            String firebaseToken = ((MainActivity) context).getFirebaseMessagingToken();
+            if (!Helper.isNullOrEmpty(firebaseToken)) {
+                options.put("firebase_token", firebaseToken);
+            }
+        }
         options.put("app_version", appVersion);
         options.put("app_id", Lbry.INSTALLATION_ID);
         options.put("node_id", "");
