@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/publishBackground">
+    <RelativeLayout
+        android:id="@+id/publish_main_actions"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+        <androidx.camera.view.PreviewView
+            android:id="@+id/publish_camera_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <RelativeLayout
+                android:id="@+id/publish_record_button"
+                android:background="@android:color/black"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="-1.5dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_horizontal"
+                        android:tint="@color/white"
+                        android:src="@drawable/ic_record" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/record"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <View
+                    android:id="@+id/publish_vertical_divider"
+                    android:background="@color/publishBackground"
+                    android:layout_width="3dp"
+                    android:layout_height="match_parent" />
+                <RelativeLayout
+                    android:id="@+id/publish_photo_button"
+                    android:clickable="true"
+                    android:background="@android:color/black"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_toRightOf="@id/publish_vertical_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="148.5dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center_horizontal"
+                            android:tint="@color/white"
+                            android:src="@drawable/ic_photo" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/take_photo"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/publish_photo_upload_divider"
+                    android:background="@color/publishBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_below="@id/publish_photo_button" />
+
+                <RelativeLayout
+                    android:id="@+id/publish_upload_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="148.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@id/publish_vertical_divider"
+                    android:clickable="true"
+                    android:background="@android:color/black"
+                    android:foreground="?attr/selectableItemBackground"
+                    >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center_horizontal"
+                            android:tint="@color/white"
+                            android:src="@drawable/ic_upload" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/upload_file"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/publish_video_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/publish_main_actions"
+        android:layout_marginTop="3dp" />
+    <TextView
+        android:id="@+id/publish_grid_no_videos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/publish_main_actions"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/inter"
+        android:text="@string/no_videos_found"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone" />
+    <RelativeLayout
+        android:id="@+id/publish_grid_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/publish_main_actions"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+            <ProgressBar
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/loading_videos"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

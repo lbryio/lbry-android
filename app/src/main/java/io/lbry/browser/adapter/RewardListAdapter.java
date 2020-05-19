@@ -159,7 +159,7 @@ public class RewardListAdapter extends RecyclerView.Adapter<RewardListAdapter.Vi
         });
 
         vh.textUsdValue.setText(reward.isCustom() || Lbryio.LBCUSDRate == 0 ? null :
-                String.format("≈$%s", Helper.USD_CURRENCY_FORMAT.format(rewardAmount * Lbryio.LBCUSDRate)));
+                String.format("≈$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(rewardAmount * Lbryio.LBCUSDRate)));
 
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

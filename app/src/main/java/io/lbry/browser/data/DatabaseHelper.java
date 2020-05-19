@@ -22,7 +22,7 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "LbryApp.db";
     private static DatabaseHelper instance;
 
@@ -40,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", claim_id TEXT" +
                     ", claim_name TEXT" +
                     ", cost REAL " +
+                    ", currency TEXT " +
                     ", title TEXT " +
                     ", publisher_claim_id TEXT" +
                     ", publisher_name TEXT" +
@@ -58,6 +59,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE INDEX idx_view_history_device ON view_history (device)"
     };
 
+    private static final String[] SQL_V1_V2_UPGRADE = {
+            "ALTER TABLE view_history ADD COLUMN currency TEXT"
+    };
+
     private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
     private static final String SQL_DELETE_SUBSCRIPTION = "DELETE FROM subscriptions WHERE url = ?";
     private static final String SQL_GET_SUBSCRIPTIONS = "SELECT channel_name, url FROM subscriptions";
@@ -68,9 +73,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_GET_RECENT_URL_HISTORY = "SELECT value, url, type FROM url_history ORDER BY timestamp DESC LIMIT 10";
 
     private static final String SQL_INSERT_VIEW_HISTORY =
-            "REPLACE INTO view_history (url, claim_id, claim_name, cost, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "REPLACE INTO view_history (url, claim_id, claim_name, cost, currency, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_GET_VIEW_HISTORY =
-            "SELECT url, claim_id, claim_name, cost, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp " +
+            "SELECT url, claim_id, claim_name, cost, currency, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp " +
             "FROM view_history WHERE '' = ? OR timestamp < ? ORDER BY timestamp DESC LIMIT %d";
     private static final String SQL_CLEAR_VIEW_HISTORY = "DELETE FROM view_history";
     private static final String SQL_CLEAR_VIEW_HISTORY_BY_DEVICE = "DELETE FROM view_history WHERE device = ?";
@@ -81,6 +86,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_GET_KNOWN_TAGS = "SELECT name, is_followed FROM tags";
     private static final String SQL_UNFOLLOW_TAGS = "UPDATE tags SET is_followed = 0";
     private static final String SQL_GET_FOLLOWED_TAGS = "SELECT name FROM tags WHERE is_followed = 1";
+
+
 
     public DatabaseHelper(Context context) {
         super(context, String.format("%s/%s", context.getFilesDir().getAbsolutePath(), DATABASE_NAME), null, DATABASE_VERSION);
@@ -98,7 +105,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if (oldVersion < 2) {
+            for (String sql : SQL_V1_V2_UPGRADE) {
+                db.execSQL(sql);
+            }
+        }
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
@@ -142,6 +153,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 viewHistory.getClaimId(),
                 viewHistory.getClaimName(),
                 viewHistory.getCost() != null ? viewHistory.getCost().doubleValue() : 0,
+                viewHistory.getCurrency(),
                 viewHistory.getTitle(),
                 viewHistory.getPublisherClaimId(),
                 viewHistory.getPublisherName(),
@@ -166,6 +178,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 item.setClaimId(cursor.getString(cursorIndex++));
                 item.setClaimName(cursor.getString(cursorIndex++));
                 item.setCost(new BigDecimal(cursor.getDouble(cursorIndex++)));
+                item.setCurrency(cursor.getString(cursorIndex++));
                 item.setTitle(cursor.getString(cursorIndex++));
                 item.setPublisherClaimId(cursor.getString(cursorIndex++));
                 item.setPublisherName(cursor.getString(cursorIndex++));

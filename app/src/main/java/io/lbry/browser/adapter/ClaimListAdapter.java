@@ -96,6 +96,14 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         return new ArrayList<>(this.items);
     }
 
+    public void updateSigningChannelForClaim(Claim resolvedClaim) {
+        for (Claim claim : items) {
+            if (claim.getClaimId().equalsIgnoreCase(resolvedClaim.getClaimId())) {
+                claim.setSigningChannel(resolvedClaim.getSigningChannel());
+            }
+        }
+    }
+
     public void clearItems() {
         clearSelectedItems();
         this.items.clear();
@@ -413,7 +421,10 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                 boolean isDownloading = false;
                 int progress = 0;
                 String fileSizeString = claimFile == null ? null : Helper.formatBytes(claimFile.getTotalBytes(), false);
-                if (claimFile != null && !claimFile.isCompleted() && claimFile.getWrittenBytes() < claimFile.getTotalBytes()) {
+                if (claimFile != null &&
+                        !Helper.isNullOrEmpty(claimFile.getDownloadPath()) &&
+                        !claimFile.isCompleted() &&
+                        claimFile.getWrittenBytes() < claimFile.getTotalBytes()) {
                     isDownloading = true;
                     progress = claimFile.getTotalBytes() > 0 ?
                             Double.valueOf(((double) claimFile.getWrittenBytes() / (double) claimFile.getTotalBytes()) * 100.0).intValue() : 0;

@@ -46,6 +46,8 @@ import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.ViewHistory;
 import io.lbry.browser.tasks.claim.AbandonChannelTask;
 import io.lbry.browser.tasks.claim.AbandonHandler;
+import io.lbry.browser.tasks.claim.ClaimListResultHandler;
+import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.tasks.file.BulkDeleteFilesTask;
 import io.lbry.browser.tasks.file.DeleteFileTask;
 import io.lbry.browser.tasks.file.FileListTask;
@@ -55,6 +57,7 @@ import io.lbry.browser.ui.channel.ChannelFormFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
+import io.lbry.browser.utils.LbryUri;
 
 public class LibraryFragment extends BaseFragment implements
         ActionMode.Callback, DownloadActionListener, SelectionModeListener, SdkStatusListener  {
@@ -320,7 +323,10 @@ public class LibraryFragment extends BaseFragment implements
                 } else {
                     contentListAdapter.addItems(claims);
                 }
-                contentList.setAdapter(contentListAdapter);
+                if (contentList.getAdapter() == null) {
+                    contentList.setAdapter(contentListAdapter);
+                }
+                resolveMissingChannelNames(buildUrlsToResolve(claims));
                 checkListEmpty();
                 contentListLoading = false;
             }
@@ -355,7 +361,9 @@ public class LibraryFragment extends BaseFragment implements
                     } else {
                         contentListAdapter.addItems(claims);
                     }
-                    contentList.setAdapter(contentListAdapter);
+                    if (contentList.getAdapter() == null) {
+                        contentList.setAdapter(contentListAdapter);
+                    }
                     checkListEmpty();
                     contentListLoading = false;
                 }
@@ -561,6 +569,50 @@ public class LibraryFragment extends BaseFragment implements
         if (root != null) {
             String message = getResources().getQuantityString(R.plurals.files_deleted, claimIds.size());
             Snackbar.make(root, message, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private List<String> buildUrlsToResolve(List<Claim> claims) {
+        List<String> urls = new ArrayList<>();
+        for (Claim claim : claims) {
+            Claim channel = claim.getSigningChannel();
+            if (channel != null && Helper.isNullOrEmpty(channel.getName()) && !Helper.isNullOrEmpty(channel.getClaimId())) {
+                LbryUri uri = LbryUri.tryParse(String.format("%s#%s", claim.getName(), claim.getClaimId()));
+                if (uri != null) {
+                    urls.add(uri.toString());
+                }
+            }
+        }
+        return urls;
+    }
+
+    private void resolveMissingChannelNames(List<String> urls) {
+        if (urls.size() > 0) {
+            ResolveTask task = new ResolveTask(urls, Lbry.SDK_CONNECTION_STRING, null, new ClaimListResultHandler() {
+                @Override
+                public void onSuccess(List<Claim> claims) {
+                    boolean updated = false;
+                    for (Claim claim : claims) {
+                        if (claim.getClaimId() == null) {
+                            continue;
+                        }
+
+                        if (contentListAdapter != null) {
+                            contentListAdapter.updateSigningChannelForClaim(claim);
+                            updated = true;
+                        }
+                    }
+                    if (updated) {
+                        contentListAdapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onError(Exception error) {
+
+                }
+            });
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 

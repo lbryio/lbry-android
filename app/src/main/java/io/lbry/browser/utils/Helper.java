@@ -67,7 +67,8 @@ public final class Helper {
     public static final String LBC_CURRENCY_FORMAT_PATTERN = "#,###.##";
     public static final String FILE_SIZE_FORMAT_PATTERN = "#,###.#";
     public static final DecimalFormat LBC_CURRENCY_FORMAT = new DecimalFormat(LBC_CURRENCY_FORMAT_PATTERN);
-    public static final DecimalFormat USD_CURRENCY_FORMAT = new DecimalFormat("#,##0.00");
+    public static final DecimalFormat FULL_LBC_CURRENCY_FORMAT = new DecimalFormat("#,###.########");
+    public static final DecimalFormat SIMPLE_CURRENCY_FORMAT = new DecimalFormat("#,##0.00");
     public static final String EXPLORER_TX_PREFIX = "https://explorer.lbry.com/tx";
 
     public static boolean isNull(String value) {
@@ -300,7 +301,7 @@ public final class Helper {
             return "0";
         }
 
-        return format.format(value);
+        return format.format(value).equals("0") ? FULL_LBC_CURRENCY_FORMAT.format(value) : format.format(value);
     }
 
     public static String getValue(CharSequence cs) {
@@ -679,5 +680,9 @@ public final class Helper {
             return String.format("@%s", channelName);
         }
         return channelName;
+    }
+
+    public static int getScaledValue(int value, float scale) {
+        return (int) (value * scale + 0.5f);
     }
 }

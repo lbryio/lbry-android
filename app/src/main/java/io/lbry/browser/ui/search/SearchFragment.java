@@ -214,8 +214,13 @@ public class SearchFragment extends BaseFragment implements
         }
 
         searchLoading = true;
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+        Context context = getContext();
+        boolean canShowMatureContent = false;
+        if (context != null) {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+            canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+        }
+
         LighthouseSearchTask task = new LighthouseSearchTask(
                 currentQuery, PAGE_SIZE, currentFrom, canShowMatureContent, null, loadingView, new ClaimSearchTask.ClaimSearchResultHandler() {
             @Override

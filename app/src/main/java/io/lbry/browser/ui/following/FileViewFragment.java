@@ -935,111 +935,114 @@ public class FileViewFragment extends BaseFragment implements
 
         loadViewCount();
         checkIsFollowing();
+        
+        View root = getView();
+        if (root != null) {
+            root.findViewById(R.id.file_view_scroll_view).scrollTo(0, 0);
+            Helper.setViewVisibility(layoutDisplayArea, View.VISIBLE);
 
-        getView().findViewById(R.id.file_view_scroll_view).scrollTo(0, 0);
-        Helper.setViewVisibility(layoutDisplayArea, View.VISIBLE);
+            ImageView descIndicator = root.findViewById(R.id.file_view_desc_toggle_arrow);
+            descIndicator.setImageResource(R.drawable.ic_arrow_dropdown);
 
-        ImageView descIndicator = getView().findViewById(R.id.file_view_desc_toggle_arrow);
-        descIndicator.setImageResource(R.drawable.ic_arrow_dropdown);
+            root.findViewById(R.id.file_view_description_area).setVisibility(View.GONE);
+            ((TextView) root.findViewById(R.id.file_view_title)).setText(claim.getTitle());
+            ((TextView) root.findViewById(R.id.file_view_description)).setText(claim.getDescription());
+            ((TextView) root.findViewById(R.id.file_view_publisher_name)).setText(
+                    Helper.isNullOrEmpty(claim.getPublisherName()) ? getString(R.string.anonymous) : claim.getPublisherName());
 
-        getView().findViewById(R.id.file_view_description_area).setVisibility(View.GONE);
-        ((TextView) getView().findViewById(R.id.file_view_title)).setText(claim.getTitle());
-        ((TextView) getView().findViewById(R.id.file_view_description)).setText(claim.getDescription());
-        ((TextView) getView().findViewById(R.id.file_view_publisher_name)).setText(
-                Helper.isNullOrEmpty(claim.getPublisherName()) ? getString(R.string.anonymous) : claim.getPublisherName());
+            Context context = getContext();
+            RecyclerView descTagsList = root.findViewById(R.id.file_view_tag_list);
+            FlexboxLayoutManager flm = new FlexboxLayoutManager(context);
+            descTagsList.setLayoutManager(flm);
 
-        Context context = getContext();
-        RecyclerView descTagsList = getView().findViewById(R.id.file_view_tag_list);
-        FlexboxLayoutManager flm = new FlexboxLayoutManager(context);
-        descTagsList.setLayoutManager(flm);
-
-        List<Tag> tags = claim.getTagObjects();
-        TagListAdapter tagListAdapter = new TagListAdapter(tags, context);
-        tagListAdapter.setClickListener(new TagListAdapter.TagClickListener() {
-            @Override
-            public void onTagClicked(Tag tag, int customizeMode) {
-                if (customizeMode == TagListAdapter.CUSTOMIZE_MODE_NONE) {
-                    Context ctx = getContext();
-                    if (ctx instanceof MainActivity) {
-                        ((MainActivity) ctx).openAllContentFragmentWithTag(tag.getName());
+            List<Tag> tags = claim.getTagObjects();
+            TagListAdapter tagListAdapter = new TagListAdapter(tags, context);
+            tagListAdapter.setClickListener(new TagListAdapter.TagClickListener() {
+                @Override
+                public void onTagClicked(Tag tag, int customizeMode) {
+                    if (customizeMode == TagListAdapter.CUSTOMIZE_MODE_NONE) {
+                        Context ctx = getContext();
+                        if (ctx instanceof MainActivity) {
+                            ((MainActivity) ctx).openAllContentFragmentWithTag(tag.getName());
+                        }
                     }
                 }
+            });
+            descTagsList.setAdapter(tagListAdapter);
+            root.findViewById(R.id.file_view_tag_area).setVisibility(tags.size() > 0 ? View.VISIBLE : View.GONE);
+
+            root.findViewById(R.id.file_view_exoplayer_container).setVisibility(View.GONE);
+            root.findViewById(R.id.file_view_unsupported_container).setVisibility(View.GONE);
+            root.findViewById(R.id.file_view_media_meta_container).setVisibility(View.VISIBLE);
+
+            Claim.GenericMetadata metadata = claim.getValue();
+            if (!Helper.isNullOrEmpty(claim.getThumbnailUrl())) {
+                ImageView thumbnailView = root.findViewById(R.id.file_view_thumbnail);
+                Glide.with(getContext().getApplicationContext()).load(claim.getThumbnailUrl()).centerCrop().into(thumbnailView);
+            } else {
+                // display first x letters of claim name, with random background
             }
-        });
-        descTagsList.setAdapter(tagListAdapter);
-        getView().findViewById(R.id.file_view_tag_area).setVisibility(tags.size() > 0 ? View.VISIBLE : View.GONE);
 
-        getView().findViewById(R.id.file_view_exoplayer_container).setVisibility(View.GONE);
-        getView().findViewById(R.id.file_view_unsupported_container).setVisibility(View.GONE);
-        getView().findViewById(R.id.file_view_media_meta_container).setVisibility(View.VISIBLE);
-
-        Claim.GenericMetadata metadata = claim.getValue();
-        if (!Helper.isNullOrEmpty(claim.getThumbnailUrl())) {
-            ImageView thumbnailView = getView().findViewById(R.id.file_view_thumbnail);
-            Glide.with(getContext().getApplicationContext()).load(claim.getThumbnailUrl()).centerCrop().into(thumbnailView);
-        } else {
-            // display first x letters of claim name, with random background
-        }
-
-        getView().findViewById(R.id.file_view_main_action_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onMainActionButtonClicked();
-            }
-        });
-        getView().findViewById(R.id.file_view_media_meta_container).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onMainActionButtonClicked();
-            }
-        });
-
-        if (metadata instanceof Claim.StreamMetadata) {
-            Claim.StreamMetadata streamMetadata = (Claim.StreamMetadata) metadata;
-            long publishTime = streamMetadata.getReleaseTime() > 0 ? streamMetadata.getReleaseTime() * 1000 : claim.getTimestamp() * 1000;
-            ((TextView) getView().findViewById(R.id.file_view_publish_time)).setText(DateUtils.getRelativeTimeSpanString(
-                    publishTime, System.currentTimeMillis(), 0, DateUtils.FORMAT_ABBREV_RELATIVE));
-
-            Fee fee = streamMetadata.getFee();
-            if (fee != null && Helper.parseDouble(fee.getAmount(), 0) > 0) {
-                getView().findViewById(R.id.file_view_fee_container).setVisibility(View.VISIBLE);
-                ((TextView) getView().findViewById(R.id.file_view_fee)).setText(
-                        Helper.shortCurrencyFormat(claim.getActualCost(Lbryio.LBCUSDRate).doubleValue()));
-            }
-        }
-
-        getView().findViewById(R.id.file_view_icon_follow_unfollow).setVisibility(claim.getSigningChannel() != null ? View.VISIBLE : View.GONE);
-
-        MaterialButton mainActionButton = getView().findViewById(R.id.file_view_main_action_button);
-        if (claim.isPlayable()) {
-            mainActionButton.setText(R.string.play);
-        } else if (claim.isViewable()) {
-            mainActionButton.setText(R.string.view);
-        } else {
-            mainActionButton.setText(R.string.download);
-        }
-
-        if (claim.isFree()) {
-            if (claim.isPlayable()) {
-                if (MainActivity.nowPlayingClaim != null && MainActivity.nowPlayingClaim.getClaimId().equalsIgnoreCase(claim.getClaimId())) {
-                    // claim already playing
-                    showExoplayerView();
-                    playMedia();
-                } else {
+            root.findViewById(R.id.file_view_main_action_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     onMainActionButtonClicked();
                 }
-            } else if (claim.isViewable() && Lbry.SDK_READY) {
-                onMainActionButtonClicked();
-            } else if (!Lbry.SDK_READY) {
+            });
+            root.findViewById(R.id.file_view_media_meta_container).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onMainActionButtonClicked();
+                }
+            });
+
+            if (metadata instanceof Claim.StreamMetadata) {
+                Claim.StreamMetadata streamMetadata = (Claim.StreamMetadata) metadata;
+                long publishTime = streamMetadata.getReleaseTime() > 0 ? streamMetadata.getReleaseTime() * 1000 : claim.getTimestamp() * 1000;
+                ((TextView) root.findViewById(R.id.file_view_publish_time)).setText(DateUtils.getRelativeTimeSpanString(
+                        publishTime, System.currentTimeMillis(), 0, DateUtils.FORMAT_ABBREV_RELATIVE));
+
+                Fee fee = streamMetadata.getFee();
+                if (fee != null && Helper.parseDouble(fee.getAmount(), 0) > 0) {
+                    root.findViewById(R.id.file_view_fee_container).setVisibility(View.VISIBLE);
+                    ((TextView) root.findViewById(R.id.file_view_fee)).setText(
+                            Helper.shortCurrencyFormat(claim.getActualCost(Lbryio.LBCUSDRate).doubleValue()));
+                }
+            }
+
+            root.findViewById(R.id.file_view_icon_follow_unfollow).setVisibility(claim.getSigningChannel() != null ? View.VISIBLE : View.GONE);
+
+            MaterialButton mainActionButton = root.findViewById(R.id.file_view_main_action_button);
+            if (claim.isPlayable()) {
+                mainActionButton.setText(R.string.play);
+            } else if (claim.isViewable()) {
+                mainActionButton.setText(R.string.view);
+            } else {
+                mainActionButton.setText(R.string.download);
+            }
+
+            if (claim.isFree()) {
+                if (claim.isPlayable()) {
+                    if (MainActivity.nowPlayingClaim != null && MainActivity.nowPlayingClaim.getClaimId().equalsIgnoreCase(claim.getClaimId())) {
+                        // claim already playing
+                        showExoplayerView();
+                        playMedia();
+                    } else {
+                        onMainActionButtonClicked();
+                    }
+                } else if (claim.isViewable() && Lbry.SDK_READY) {
+                    onMainActionButtonClicked();
+                } else if (!Lbry.SDK_READY) {
+                    restoreMainActionButton();
+                }
+            } else {
                 restoreMainActionButton();
             }
-        } else {
-            restoreMainActionButton();
-        }
 
-        RecyclerView relatedContentList = getView().findViewById(R.id.file_view_related_content_list);
-        if (relatedContentList == null || relatedContentList.getAdapter() == null || relatedContentList.getAdapter().getItemCount() == 0) {
-            loadRelatedContent();
+            RecyclerView relatedContentList = root.findViewById(R.id.file_view_related_content_list);
+            if (relatedContentList == null || relatedContentList.getAdapter() == null || relatedContentList.getAdapter().getItemCount() == 0) {
+                loadRelatedContent();
+            }
         }
     }
 
@@ -1067,7 +1070,7 @@ public class FileViewFragment extends BaseFragment implements
         boolean newPlayerCreated = false;
 
         Context context = getContext();
-        if (MainActivity.appPlayer == null) {
+        if (MainActivity.appPlayer == null && context != null) {
             MainActivity.appPlayer = new SimpleExoPlayer.Builder(context).build();
             MainActivity.playerCache = new SimpleCache(context.getCacheDir(), new LeastRecentlyUsedCacheEvictor(1024 * 1024 * 256), new ExoDatabaseProvider(context));
             newPlayerCreated = true;
@@ -1081,7 +1084,6 @@ public class FileViewFragment extends BaseFragment implements
             ((MainActivity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-
         if (MainActivity.nowPlayingClaim != null &&
                 MainActivity.nowPlayingClaim.getClaimId().equalsIgnoreCase(claim.getClaimId()) &&
                 !newPlayerCreated) {
@@ -1089,23 +1091,25 @@ public class FileViewFragment extends BaseFragment implements
             return;
         }
 
-        showBuffering();
-        if (fileViewPlayerListener != null) {
-            MainActivity.appPlayer.addListener(fileViewPlayerListener);
-        }
-        if (context instanceof MainActivity) {
-            ((MainActivity) context).setNowPlayingClaim(claim);
-        }
+        if (MainActivity.appPlayer != null) {
+            showBuffering();
+            if (fileViewPlayerListener != null) {
+                MainActivity.appPlayer.addListener(fileViewPlayerListener);
+            }
+            if (context instanceof MainActivity) {
+                ((MainActivity) context).setNowPlayingClaim(claim);
+            }
 
-        MainActivity.appPlayer.setPlayWhenReady(true);
-        String userAgent = Util.getUserAgent(context, getString(R.string.app_name));
-        String mediaSourceUrl = getStreamingUrl();
-        MediaSource mediaSource = new ProgressiveMediaSource.Factory(
-                new CacheDataSourceFactory(MainActivity.playerCache, new DefaultDataSourceFactory(context, userAgent)),
-                new DefaultExtractorsFactory()
-        ).createMediaSource(Uri.parse(mediaSourceUrl));
+            MainActivity.appPlayer.setPlayWhenReady(true);
+            String userAgent = Util.getUserAgent(context, getString(R.string.app_name));
+            String mediaSourceUrl = getStreamingUrl();
+            MediaSource mediaSource = new ProgressiveMediaSource.Factory(
+                    new CacheDataSourceFactory(MainActivity.playerCache, new DefaultDataSourceFactory(context, userAgent)),
+                    new DefaultExtractorsFactory()
+            ).createMediaSource(Uri.parse(mediaSourceUrl));
 
-        MainActivity.appPlayer.prepare(mediaSource, true, true);
+            MainActivity.appPlayer.prepare(mediaSource, true, true);
+        }
     }
 
     private void setCurrentPlayer(Player currentPlayer) {
@@ -1174,9 +1178,12 @@ public class FileViewFragment extends BaseFragment implements
                 public void onSuccess(int count) {
                     try {
                         String displayText = getResources().getQuantityString(R.plurals.view_count, count, NumberFormat.getInstance().format(count));
-                        TextView textViewCount = getView().findViewById(R.id.file_view_view_count);
-                        Helper.setViewText(textViewCount, displayText);
-                        Helper.setViewVisibility(textViewCount, View.VISIBLE);
+                        View root = getView();
+                        if (root != null) {
+                            TextView textViewCount = root.findViewById(R.id.file_view_view_count);
+                            Helper.setViewText(textViewCount, displayText);
+                            Helper.setViewVisibility(textViewCount, View.VISIBLE);
+                        }
                     } catch (IllegalStateException ex) {
                         // pass
                     }
@@ -1218,7 +1225,12 @@ public class FileViewFragment extends BaseFragment implements
         if (claim != null) {
             Fee fee = ((Claim.StreamMetadata) claim.getValue()).getFee();
             double cost = claim.getActualCost(Lbryio.LBCUSDRate).doubleValue();
-            String message = getResources().getQuantityString(R.plurals.confirm_purchase_message, cost == 1 ? 1 : 2, claim.getTitle(), cost);
+            String formattedCost = Helper.LBC_CURRENCY_FORMAT.format(cost);
+            String message = getResources().getQuantityString(
+                    R.plurals.confirm_purchase_message,
+                    cost == 1 ? 1 : 2,
+                    claim.getTitle(),
+                    formattedCost.equals("0") ? Helper.FULL_LBC_CURRENCY_FORMAT.format(cost) : formattedCost);
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
                     setTitle(R.string.confirm_purchase).
                     setMessage(message)
@@ -1445,10 +1457,10 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     public void showError(String message) {
-        Snackbar.make(getView().findViewById(R.id.file_view_claim_display_area), message, Snackbar.LENGTH_LONG).
-                setTextColor(Color.WHITE).
-                setBackgroundTint(Color.RED).
-                show();
+        View root = getView();
+        if (root != null) {
+            Snackbar.make(root, message, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+        }
     }
 
     private void loadRelatedContent() {
@@ -1883,5 +1895,10 @@ public class FileViewFragment extends BaseFragment implements
         } catch (JSONException ex) {
             // invalid file info for download
         }
+    }
+
+    @Override
+    public boolean shouldHideGlobalPlayer() {
+        return true;
     }
 }

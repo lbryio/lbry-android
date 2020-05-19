@@ -15,6 +15,7 @@
     <color name="smallIconBackground">#55000000</color>
     <color name="costBackground">#F4E866</color>
 
+    <color name="publishBackground">#333333</color>
     <color name="playerControlsBackground">#33000000</color>
     <color name="scrubberColor">@color/nextLbryGreen</color>
     <color name="playedColor">@color/nextLbryGreen</color>

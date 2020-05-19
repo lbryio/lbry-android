@@ -233,7 +233,7 @@ public class RewardsFragment extends BaseFragment implements RewardListAdapter.R
                     Helper.shortCurrencyFormat(Lbryio.totalUnclaimedRewardAmount));
             double unclaimedRewardAmountUsd = Lbryio.totalUnclaimedRewardAmount * Lbryio.LBCUSDRate;
             Helper.setViewText(textAccountDriverTitle, accountDriverTitle);
-            Helper.setViewText(textFreeCreditsWorth, getString(R.string.free_credits_worth, Helper.USD_CURRENCY_FORMAT.format(unclaimedRewardAmountUsd)));
+            Helper.setViewText(textFreeCreditsWorth, getString(R.string.free_credits_worth, Helper.SIMPLE_CURRENCY_FORMAT.format(unclaimedRewardAmountUsd)));
         } catch (IllegalStateException ex) {
             // pass
         }

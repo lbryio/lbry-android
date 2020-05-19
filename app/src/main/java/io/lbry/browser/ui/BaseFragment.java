@@ -16,6 +16,34 @@ public class BaseFragment extends Fragment {
     @Setter
     private Map<String, Object> params;
 
+    public boolean shouldHideGlobalPlayer() {
+        return false;
+    }
+
+    public boolean shouldSuspendGlobalPlayer() {
+        return false;
+    }
+
+    public void onStart() {
+        super.onStart();
+        if (shouldSuspendGlobalPlayer()) {
+            Context context = getContext();
+            if (context instanceof MainActivity) {
+                MainActivity.suspendGlobalPlayer(context);
+            }
+        }
+    }
+
+    public void onStop() {
+        if (shouldSuspendGlobalPlayer()) {
+            Context context = getContext();
+            if (context instanceof MainActivity) {
+                MainActivity.resumeGlobalPlayer(context);
+            }
+        }
+        super.onStop();
+    }
+
     public void onResume() {
         super.onResume();
         Context context = getContext();
@@ -23,12 +51,11 @@ public class BaseFragment extends Fragment {
             MainActivity activity = (MainActivity) context;
             activity.setSelectedMenuItemForFragment(this);
 
-            if (this instanceof FileViewFragment) {
+            if (shouldHideGlobalPlayer()) {
                 activity.hideGlobalNowPlaying();
             } else {
                 activity.checkNowPlaying();
             }
         }
     }
-
 }

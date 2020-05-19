@@ -214,7 +214,7 @@ public class ChannelContentFragment extends Fragment implements DownloadActionLi
         Context context = getContext();
         boolean canShowMatureContent = false;
         if (context != null) {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
         }
 

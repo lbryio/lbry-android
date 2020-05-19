@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +19,16 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class ClaimListTask extends AsyncTask<Void, Void, List<Claim>> {
-    private String type;
+    private List<String> types;
     private View progressView;
     private ClaimListResultHandler handler;
     private Exception error;
 
     public ClaimListTask(String type, View progressView, ClaimListResultHandler handler) {
-        this.type = type;
+        this(Arrays.asList(type), progressView, handler);
+    }
+    public ClaimListTask(List<String> types, View progressView, ClaimListResultHandler handler) {
+        this.types = types;
         this.progressView = progressView;
         this.handler = handler;
     }
@@ -36,8 +40,8 @@ public class ClaimListTask extends AsyncTask<Void, Void, List<Claim>> {
 
         try {
             Map<String, Object> options = new HashMap<>();
-            if (!Helper.isNullOrEmpty(type)) {
-                options.put("claim_type", type);
+            if (types != null && types.size() > 0) {
+                options.put("claim_type", types);
             }
             options.put("page", 1);
             options.put("page_size", 999);

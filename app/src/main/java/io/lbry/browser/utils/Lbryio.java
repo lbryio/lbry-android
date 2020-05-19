@@ -44,7 +44,7 @@ import okhttp3.Response;
 public final class Lbryio {
 
     // TODO: Get this from the bundled aar
-    public static String SDK_VERSION = "0.73.1";
+    public static String SDK_VERSION = "0.74.0";
 
     public static User currentUser;
     public static boolean userHasSyncedWallet = false;
@@ -121,7 +121,7 @@ public final class Lbryio {
 
             if (options != null) {
                 for (Map.Entry<String, String> option : options.entrySet()) {
-                    qs.append(delim).append(option.getKey()).append("=").append(URLEncoder.encode(option.getValue(), "UTF8"));
+                    qs.append(delim).append(option.getKey()).append("=").append(URLEncoder.encode(Helper.isNull(option.getValue()) ? "" : option.getValue(), "UTF8"));
                     delim = "&";
                 }
             }

@@ -93,6 +93,27 @@
         <item quantity="other">%1$s followers</item>
     </plurals>
 
+    <!-- Publish -->
+    <string name="record">Record</string>
+    <string name="take_photo">Take a Photo</string>
+    <string name="upload_file">Upload a file</string>
+    <string name="no_videos_found">We could not find any videos on your device. Take a photo or record a video to get started.</string>
+    <string name="loading_videos">Please wait while we load your videos...</string>
+    <string name="storage_permission_rationale_videos">LBRY requires access to be able to display and publish your videos, images and other files from your device.</string>
+    <string name="camera_permission_rationale_record">LBRY requires access to your camera to record videos.</string>
+    <string name="camera_permission_rationale_photo">LBRY requires access to your camera to take photos.</string>
+
+    <!-- Publishes -->
+    <string name="one_or_more_publishes_failed_abandon">One or more content items could not be deleted at this time. Please try again later.</string>
+    <plurals name="confirm_delete_publishes">
+        <item quantity="one">Are you sure you want to delete the selected content item?</item>
+        <item quantity="other">Are you sure you want to delete the selected content items?</item>
+    </plurals>
+    <plurals name="publishes_deleted">
+        <item quantity="one">The content item was successfully deleted.</item>
+        <item quantity="other">The content items were successfully deleted.</item>
+    </plurals>
+
     <!-- Splash -->
     <string name="oops_something_went_wrong">Oops! Something went wrong.</string>
     <string name="installation_id_loaded">Loaded Installation ID.</string>
@@ -323,7 +344,7 @@
     <string name="item_pending_blockchain">The claim is pending publish on the blockchain. You will be able to access or edit the claim in a few moments.</string>
     <string name="pending">Pending</string>
     <string name="create">Create</string>
-    <string name="one_or_more_channels_failed_abandon">One or moe channels could not be deleted at this time. Please try again later.</string>
+    <string name="one_or_more_channels_failed_abandon">One or more channels could not be deleted at this time. Please try again later.</string>
     <plurals name="min_deposit_required">
         <item quantity="one">A minimum deposit of %1$s credit is required.</item>
         <item quantity="other">A minimum deposit of %1$s credits is required.</item>

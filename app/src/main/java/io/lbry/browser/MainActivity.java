@@ -16,7 +16,6 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -30,7 +29,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -96,6 +94,7 @@ import io.lbry.browser.adapter.UrlSuggestionListAdapter;
 import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.ContentScopeDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
+import io.lbry.browser.listener.CameraPermissionListener;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchChannelsListener;
 import io.lbry.browser.listener.SdkStatusListener;
@@ -133,6 +132,8 @@ import io.lbry.browser.ui.following.FileViewFragment;
 import io.lbry.browser.ui.following.FollowingFragment;
 import io.lbry.browser.ui.library.LibraryFragment;
 import io.lbry.browser.ui.other.AboutFragment;
+import io.lbry.browser.ui.publish.PublishFragment;
+import io.lbry.browser.ui.publish.PublishesFragment;
 import io.lbry.browser.ui.search.SearchFragment;
 import io.lbry.browser.ui.other.SettingsFragment;
 import io.lbry.browser.ui.allcontent.AllContentFragment;
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static Claim nowPlayingClaim;
     public static boolean startingFilePickerActivity = false;
     public static boolean startingShareActivity = false;
-    public static boolean startingStoragePermissionRequest = false;
+    public static boolean startingPermissionRequest = false;
     public static boolean startingSignInFlowActivity = false;
     private boolean enteringPIPMode = false;
     private boolean fullSyncInProgress = false;
@@ -185,8 +186,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fragmentClassNavIdMap.put(EditorsChoiceFragment.class, NavMenuItem.ID_ITEM_EDITORS_CHOICE);
         fragmentClassNavIdMap.put(AllContentFragment.class, NavMenuItem.ID_ITEM_ALL_CONTENT);
 
+        fragmentClassNavIdMap.put(PublishFragment.class, NavMenuItem.ID_ITEM_NEW_PUBLISH);
         fragmentClassNavIdMap.put(ChannelManagerFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
         fragmentClassNavIdMap.put(LibraryFragment.class, NavMenuItem.ID_ITEM_LIBRARY);
+        fragmentClassNavIdMap.put(PublishesFragment.class, NavMenuItem.ID_ITEM_PUBLISHES);
 
         fragmentClassNavIdMap.put(WalletFragment.class, NavMenuItem.ID_ITEM_WALLET);
         fragmentClassNavIdMap.put(RewardsFragment.class, NavMenuItem.ID_ITEM_REWARDS);
@@ -202,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     public static final int REQUEST_STORAGE_PERMISSION = 1001;
+    public static final int REQUEST_CAMERA_PERMISSION = 1002;
     public static final int REQUEST_SIMPLE_SIGN_IN = 2001;
     public static final int REQUEST_WALLET_SYNC_SIGN_IN = 2002;
     public static final int REQUEST_REWARDS_VERIFY_SIGN_IN = 2003;
@@ -270,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     @Getter
     private DatabaseHelper dbHelper;
     private int selectedMenuItemId = -1;
+    private List<CameraPermissionListener> cameraPermissionListeners;
     private List<DownloadActionListener> downloadActionListeners;
     private List<SdkStatusListener> sdkStatusListeners;
     private List<StoragePermissionListener> storagePermissionListeners;
@@ -295,25 +300,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final int STARTUP_STAGE_NEW_INSTALL_DONE = 5;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_LOADED = 6;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED = 7;
-
-    private final List<Integer> supportedMenuItemIds = Arrays.asList(
-            // find content
-            NavMenuItem.ID_ITEM_FOLLOWING,
-            NavMenuItem.ID_ITEM_EDITORS_CHOICE,
-            NavMenuItem.ID_ITEM_ALL_CONTENT,
-
-            // your content
-            NavMenuItem.ID_ITEM_CHANNELS,
-            NavMenuItem.ID_ITEM_LIBRARY,
-
-            // wallet
-            NavMenuItem.ID_ITEM_WALLET,
-            NavMenuItem.ID_ITEM_REWARDS,
-            NavMenuItem.ID_ITEM_INVITES,
-
-            NavMenuItem.ID_ITEM_SETTINGS,
-            NavMenuItem.ID_ITEM_ABOUT
-    );
 
     public boolean isDarkMode() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -391,6 +377,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         // other
         pendingSyncSetQueue = new ArrayList<>();
         openNavFragments = new HashMap<>();
+        cameraPermissionListeners = new ArrayList<>();
         downloadActionListeners = new ArrayList<>();
         sdkStatusListeners = new ArrayList<>();
         storagePermissionListeners = new ArrayList<>();
@@ -468,13 +455,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     return;
                 }
 
-                if (!supportedMenuItemIds.contains(menuItem.getId())) {
-                    Snackbar.make(navItemsView, R.string.not_yet_implemented, Snackbar.LENGTH_LONG).show();
-                } else {
-                    navMenuAdapter.setCurrentItem(menuItem);
-                    shouldOpenUserSelectedMenuItem = true;
-                    selectedMenuItemId = menuItem.getId();
-                }
+                navMenuAdapter.setCurrentItem(menuItem);
+                shouldOpenUserSelectedMenuItem = true;
+                selectedMenuItemId = menuItem.getId();
                 closeDrawer();
             }
         });
@@ -496,8 +479,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         specialRouteFragmentClassMap.put("invite", InvitesFragment.class);
         specialRouteFragmentClassMap.put("invites", InvitesFragment.class);
         specialRouteFragmentClassMap.put("library", LibraryFragment.class);
-        //specialRouteFragmentClassMap.put("publish", PublishFragment.class);
-        //specialRouteFragmentClassMap.put("publishes", PublishesFragment.class);
+        specialRouteFragmentClassMap.put("publish", PublishFragment.class);
+        specialRouteFragmentClassMap.put("publishes", PublishesFragment.class);
         specialRouteFragmentClassMap.put("following", FollowingFragment.class);
         specialRouteFragmentClassMap.put("rewards", RewardsFragment.class);
         specialRouteFragmentClassMap.put("settings", SettingsFragment.class);
@@ -510,6 +493,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         super.onNewIntent(intent);
         checkUrlIntent(intent);
         checkNotificationOpenIntent(intent);
+    }
+
+    public void addCameraPermissionListener(CameraPermissionListener listener) {
+        if (!cameraPermissionListeners.contains(listener)) {
+            cameraPermissionListeners.add(listener);
+        }
+    }
+
+    public void removeCameraPermissionListener(CameraPermissionListener listener) {
+        cameraPermissionListeners.remove(listener);
     }
 
     public void addDownloadActionListener(DownloadActionListener listener) {
@@ -581,11 +574,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 openFragment(AllContentFragment.class, true, NavMenuItem.ID_ITEM_ALL_CONTENT);
                 break;
 
+            case NavMenuItem.ID_ITEM_NEW_PUBLISH:
+                openFragment(PublishFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH);
+                break;
             case NavMenuItem.ID_ITEM_CHANNELS:
                 openFragment(ChannelManagerFragment.class, true, NavMenuItem.ID_ITEM_CHANNELS);
                 break;
             case NavMenuItem.ID_ITEM_LIBRARY:
                 openFragment(LibraryFragment.class, true, NavMenuItem.ID_ITEM_LIBRARY);
+                break;
+            case NavMenuItem.ID_ITEM_PUBLISHES:
+                openFragment(PublishesFragment.class,  true, NavMenuItem.ID_ITEM_PUBLISHES);
                 break;
 
             case NavMenuItem.ID_ITEM_WALLET:
@@ -818,6 +817,20 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         super.onPause();
     }
 
+    public static void suspendGlobalPlayer(Context context) {
+        if (MainActivity.appPlayer != null) {
+            MainActivity.appPlayer.setPlayWhenReady(false);
+        }
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).hideGlobalNowPlaying();
+        }
+    }
+    public static void resumeGlobalPlayer(Context context) {
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).checkNowPlaying();
+        }
+    }
+
     private void toggleUrlSuggestions(boolean visible) {
         View container = findViewById(R.id.url_suggestions_container);
         View closeIcon = findViewById(R.id.wunderbar_close);
@@ -830,7 +843,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public int getScaledValue(int value) {
         float scale = getResources().getDisplayMetrics().density;
-        return (int) (value * scale + 0.5f);
+        return Helper.getScaledValue(value, scale);
     }
 
     private void setupUriBar() {
@@ -1249,6 +1262,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             startup();
         } else if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             openFragment(FollowingFragment.class, false, NavMenuItem.ID_ITEM_FOLLOWING);
+            fetchRewards();
         }
     }
 
@@ -1340,7 +1354,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (navMenuAdapter != null) {
             navMenuAdapter.setExtraLabelForItem(
                     NavMenuItem.ID_ITEM_WALLET,
-                    Lbryio.LBCUSDRate > 0 ? String.format("$%s", Helper.USD_CURRENCY_FORMAT.format(usdBalance)) : null
+                    Lbryio.LBCUSDRate > 0 ? String.format("$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(usdBalance)) : null
             );
         }
     }
@@ -1750,9 +1764,21 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         listener.onStoragePermissionRefused();
                     }
                 }
-                startingStoragePermissionRequest = false;
+                startingPermissionRequest = false;
                 break;
 
+            case REQUEST_CAMERA_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    for (CameraPermissionListener listener : cameraPermissionListeners) {
+                        listener.onCameraPermissionGranted();
+                    }
+                } else {
+                    for (CameraPermissionListener listener : cameraPermissionListeners) {
+                        listener.onCameraPermissionRefused();
+                    }
+                }
+                startingPermissionRequest = false;
+                break;
         }
     }
 
@@ -2015,7 +2041,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     if (navMenuAdapter != null) {
                         navMenuAdapter.setExtraLabelForItem(
                                 NavMenuItem.ID_ITEM_REWARDS,
-                                Lbryio.LBCUSDRate > 0 ? String.format("$%s", Helper.USD_CURRENCY_FORMAT.format(usdRewardAmount)) : null
+                                Lbryio.LBCUSDRate > 0 ? String.format("$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(usdRewardAmount)) : null
                         );
                     }
                 }
@@ -2115,7 +2141,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }, 1000);
             return;
         }
-        if (startingStoragePermissionRequest) {
+        if (startingPermissionRequest) {
             return;
         }
         enterPIPMode();
@@ -2241,10 +2267,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         ));
 
         yourContentGroup.setItems(Arrays.asList(
-                //new NavMenuItem(NavMenuItem.ID_ITEM_NEW_PUBLISH, R.string.fa_upload, R.string.new_publish, "NewPublish", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_NEW_PUBLISH, R.string.fa_upload, R.string.new_publish, "NewPublish", context),
                 new NavMenuItem(NavMenuItem.ID_ITEM_CHANNELS, R.string.fa_at, R.string.channels, "Channels", context),
-                new NavMenuItem(NavMenuItem.ID_ITEM_LIBRARY, R.string.fa_download, R.string.library, "Library", context)
-                //new NavMenuItem(NavMenuItem.ID_ITEM_PUBLISHES, R.string.fa_cloud_upload, R.string.publishes, "Publishes", context)
+                new NavMenuItem(NavMenuItem.ID_ITEM_LIBRARY, R.string.fa_download, R.string.library, "Library", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_PUBLISHES, R.string.fa_cloud_upload, R.string.publishes, "Publishes", context)
         ));
 
         walletGroup.setItems(Arrays.asList(
@@ -2518,7 +2544,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             if (!forceRequest && ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
                 Toast.makeText(context, rationale, Toast.LENGTH_LONG).show();
             } else {
-                startingStoragePermissionRequest = true;
+                startingPermissionRequest = true;
                 ActivityCompat.requestPermissions((Activity) context, new String[] { permission }, requestCode);
             }
         }
