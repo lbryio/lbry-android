@@ -92,6 +92,19 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         return null;
     }
 
+    public void removeFeaturedItem() {
+        int featuredIndex = -1;
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).isFeatured()) {
+                featuredIndex = i;
+                break;
+            }
+        }
+        if (featuredIndex > -1) {
+            items.remove(featuredIndex);
+        }
+    }
+
     public List<Claim> getItems() {
         return new ArrayList<>(this.items);
     }
@@ -325,7 +338,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                 }
 
                 if (inSelectionMode) {
-                    toggleSelectedClaim(item);
+                    toggleSelectedClaim(original);
                 } else {
                     if (listener != null) {
                         listener.onClaimClicked(item);
@@ -351,7 +364,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                         selectionModeListener.onEnterSelectionMode();
                     }
                 }
-                toggleSelectedClaim(item);
+                toggleSelectedClaim(original);
                 return true;
             }
         });

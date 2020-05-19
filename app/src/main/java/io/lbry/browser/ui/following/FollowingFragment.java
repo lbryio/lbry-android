@@ -37,6 +37,7 @@ import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
 import io.lbry.browser.dialog.DiscoverDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
+import io.lbry.browser.listener.DarkThemeChangeListener;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.LbryFile;
@@ -58,6 +59,7 @@ import io.lbry.browser.utils.Predefined;
 public class FollowingFragment extends BaseFragment implements
         FetchSubscriptionsTask.FetchSubscriptionsHandler,
         ChannelItemSelectionListener,
+        DarkThemeChangeListener,
         DownloadActionListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -800,6 +802,15 @@ public class FollowingFragment extends BaseFragment implements
             }
         } catch (JSONException ex) {
             // invalid file info for download
+        }
+    }
+
+    public void onDarkThemeToggled() {
+        Helper.refreshRecyclerView(contentList);
+        Helper.refreshRecyclerView(horizontalChannelList);
+        Helper.refreshRecyclerView(suggestedChannelGrid);
+        if (discoverDialog != null) {
+            //discoverDialog.onDarkThemeToggled();
         }
     }
 }

@@ -29,6 +29,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:id="@+id/form_mature_tags_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/mature_tags"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/form_mature_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/form_no_tag_results"
         android:layout_width="wrap_content"

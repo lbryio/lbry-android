@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
+import io.lbry.browser.utils.Predefined;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -152,6 +153,17 @@ public class Claim {
             String mediaType = metadata.getSource() != null ? metadata.getSource().getMediaType() : null;
             if (mediaType != null) {
                 return mediaType.startsWith("image") || mediaType.startsWith("text");
+            }
+        }
+        return false;
+    }
+    public boolean isMature() {
+        List<String> tags = getTags();
+        if (tags != null && tags.size() > 0) {
+            for (String tag : tags) {
+                if (Predefined.MATURE_TAGS.contains(tag.toLowerCase())) {
+                    return true;
+                }
             }
         }
         return false;

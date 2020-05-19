@@ -95,6 +95,7 @@ import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.ContentScopeDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.CameraPermissionListener;
+import io.lbry.browser.listener.DarkThemeChangeListener;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchChannelsListener;
 import io.lbry.browser.listener.SdkStatusListener;
@@ -774,6 +775,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         applyNavbarSigninPadding();
         checkFirstRun();
         checkNowPlaying();
+        if (Lbryio.totalUnclaimedRewardAmount > 0) {
+            showFloatingUnclaimedRewards();
+        }
 
         // check (and start) the LBRY SDK service
         serviceRunning = isServiceRunning(this, LbrynetService.class);
@@ -962,9 +966,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void clearWunderbarFocus(View view) {
         findViewById(R.id.wunderbar).clearFocus();
-        findViewById(R.id.wunderbar_container).requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        findViewById(R.id.app_bar_main_container).requestFocus();
     }
     public View getWunderbar() {
         return findViewById(R.id.wunderbar);
@@ -2486,7 +2488,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 return;
             }
 
-            fragment.setRetainInstance(true);
+            //fragment.setRetainInstance(true);
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction().replace(R.id.content_main, fragment);
             if (allowNavigateBack) {
@@ -2552,6 +2554,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public static boolean hasPermission(String permission, Context context) {
         return (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    public void onThemeChanged() {
+        FragmentManager manager = getSupportFragmentManager();
+        for (int i  = 0; i < manager.getFragments().size(); i++) {
+            Fragment f = manager.getFragments().get(i);
+            if (f instanceof DarkThemeChangeListener) {
+                ((DarkThemeChangeListener) f).onDarkThemeToggled();
+            }
+        }
     }
 
     public interface BackPressInterceptor {

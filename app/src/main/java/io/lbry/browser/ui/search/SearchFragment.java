@@ -182,16 +182,26 @@ public class SearchFragment extends BaseFragment implements
         if (resultListAdapter != null) {
             Claim unresolved = resultListAdapter.getFeaturedItem();
 
-            // only set the values we need
-            unresolved.setClaimId(resolved.getClaimId());
-            unresolved.setName(resolved.getName());
-            unresolved.setTimestamp(resolved.getTimestamp());
-            unresolved.setValueType(resolved.getValueType());
-            unresolved.setPermanentUrl(resolved.getPermanentUrl());
-            unresolved.setValue(resolved.getValue());
-            unresolved.setSigningChannel(resolved.getSigningChannel());
-            unresolved.setUnresolved(false);
-            unresolved.setConfirmations(resolved.getConfirmations());
+            Context context = getContext();
+            boolean canShowMatureContent = false;
+            if (context != null) {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+                canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+            }
+            if (resolved.isMature() && !canShowMatureContent) {
+                resultListAdapter.removeFeaturedItem();
+            } else {
+                // only set the values we need
+                unresolved.setClaimId(resolved.getClaimId());
+                unresolved.setName(resolved.getName());
+                unresolved.setTimestamp(resolved.getTimestamp());
+                unresolved.setValueType(resolved.getValueType());
+                unresolved.setPermanentUrl(resolved.getPermanentUrl());
+                unresolved.setValue(resolved.getValue());
+                unresolved.setSigningChannel(resolved.getSigningChannel());
+                unresolved.setUnresolved(false);
+                unresolved.setConfirmations(resolved.getConfirmations());
+            }
 
             resultListAdapter.notifyDataSetChanged();
         }

@@ -16,6 +16,8 @@ public class PublishFormFragment extends BaseFragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_publishes, container, false);
 
+
+
         return root;
     }
 

@@ -83,7 +83,7 @@ public class LoadSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
                                 if (db != null) {
                                     DatabaseHelper.createOrUpdateSubscription(subscription, db);
                                 }
-                            } catch (LbryUriException | SQLiteException ex) {
+                            } catch (LbryUriException | SQLiteException | IllegalStateException ex) {
                                 // pass
                             }
                         }

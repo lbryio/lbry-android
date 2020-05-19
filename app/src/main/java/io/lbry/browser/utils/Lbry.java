@@ -91,7 +91,9 @@ public final class Lbry {
     public static final String METHOD_CHANNEL_CREATE = "channel_create";
     public static final String METHOD_CHANNEL_UPDATE = "channel_update";
 
+
     public static final String METHOD_CLAIM_LIST = "claim_list";
+    public static final String METHOD_STREAM_ABANDON = "stream_abandon";
     public static final String METHOD_STREAM_REPOST = "stream_repost";
 
     public static KeyStore KEYSTORE;

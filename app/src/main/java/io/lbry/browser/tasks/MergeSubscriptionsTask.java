@@ -109,7 +109,7 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                     }
                 }
             }
-        } catch (ClassCastException | LbryioRequestException | LbryioResponseException | JSONException | SQLiteException ex) {
+        } catch (ClassCastException | LbryioRequestException | LbryioResponseException | JSONException | IllegalStateException | SQLiteException ex) {
             error = ex;
             return null;
         } finally {

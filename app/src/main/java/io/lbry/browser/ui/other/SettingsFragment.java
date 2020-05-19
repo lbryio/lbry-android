@@ -40,15 +40,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onResume() {
         super.onResume();
         Context context = getContext();
-        PreferenceManager.getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this);
         if (context instanceof MainActivity) {
+            PreferenceManager.getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this);
             MainActivity activity = (MainActivity) context;
             LbryAnalytics.setCurrentScreen(activity, "Settings", "Settings");
         }
     }
     @Override
     public void onPause() {
-        PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
+        Context context = getContext();
+        if (context != null) {
+            PreferenceManager.getDefaultSharedPreferences(context).unregisterOnSharedPreferenceChangeListener(this);
+        }
         super.onPause();
     }
     @Override
@@ -69,9 +72,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
             Context context = getContext();
             if (context instanceof MainActivity) {
-                MainActivity activity = (MainActivity) context;
-                activity.getDelegate().applyDayNight();
-                activity.recreate();
+                ((MainActivity) context).onThemeChanged();
             }
         }
     }

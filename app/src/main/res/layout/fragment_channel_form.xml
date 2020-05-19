@@ -293,7 +293,7 @@
                             android:text="@string/tags"
                             android:textFontWeight="600"
                             android:textSize="14sp" />
-                        <include layout="@layout/form_tag_search" />
+                        <include layout="@layout/container_inline_tag_form" />
                     </LinearLayout>
 
                     <RelativeLayout

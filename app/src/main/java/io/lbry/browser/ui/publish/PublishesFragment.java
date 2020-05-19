@@ -36,6 +36,7 @@ import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.tasks.claim.AbandonChannelTask;
 import io.lbry.browser.tasks.claim.AbandonHandler;
+import io.lbry.browser.tasks.claim.AbandonStreamTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.ui.BaseFragment;
@@ -288,7 +289,7 @@ public class PublishesFragment extends BaseFragment implements ActionMode.Callba
 
         Helper.setViewVisibility(contentList, View.INVISIBLE);
         Helper.setViewVisibility(fabNewPublish, View.INVISIBLE);
-        AbandonChannelTask task = new AbandonChannelTask(claimIds, bigLoading, new AbandonHandler() {
+        AbandonStreamTask task = new AbandonStreamTask(claimIds, bigLoading, new AbandonHandler() {
             @Override
             public void onComplete(List<String> successfulClaimIds, List<String> failedClaimIds, List<Exception> errors) {
                 View root = getView();

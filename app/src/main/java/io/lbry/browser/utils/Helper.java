@@ -19,11 +19,15 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -684,5 +688,27 @@ public final class Helper {
 
     public static int getScaledValue(int value, float scale) {
         return (int) (value * scale + 0.5f);
+    }
+
+    public static void refreshRecyclerView(RecyclerView rv) {
+        if (rv == null) {
+            android.util.Log.d("#HELP", "rv is null?");
+            return;
+        }
+
+        android.util.Log.d("#HELP", "Refereshing recycler view...");
+        RecyclerView.Adapter adapter = rv.getAdapter();
+        int prevScrollPosition = 0;
+
+        RecyclerView.LayoutManager lm = rv.getLayoutManager();
+        if (lm instanceof LinearLayoutManager) {
+            prevScrollPosition = ((LinearLayoutManager) lm).findLastCompletelyVisibleItemPosition();
+        } else if (lm instanceof GridLayoutManager) {
+            prevScrollPosition = ((GridLayoutManager) lm).findLastCompletelyVisibleItemPosition();
+        }
+
+        rv.setAdapter(null);
+        rv.setAdapter(adapter);
+        rv.scrollToPosition(prevScrollPosition > 0 ? prevScrollPosition : 0);
     }
 }
