@@ -11,8 +11,10 @@
     <FrameLayout
         android:id="@+id/content_main"
         android:background="@color/pageBackground"
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,6 +23,7 @@
         android:id="@+id/url_suggestions_container"
         android:background="@color/pageBackground"
         android:elevation="6dp"
+        android:fitsSystemWindows="true"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

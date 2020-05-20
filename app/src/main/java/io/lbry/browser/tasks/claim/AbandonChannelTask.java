@@ -42,7 +42,7 @@ public class AbandonChannelTask extends AsyncTask<Void, Void, Boolean> {
             try {
                 Map<String, Object> options = new HashMap<>();
                 options.put("claim_id", claimId);
-                options.put("blocking", false);
+                options.put("blocking", true);
                 JSONObject result = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_CHANNEL_ABANDON, options);
                 successfulClaimIds.add(claimId);
             } catch (ApiCallException ex) {

@@ -62,9 +62,8 @@ public class LoadGalleryItemsTask extends AsyncTask<Void, GalleryItem, List<Gall
                     int pathColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
                     int durationColumn = cursor.getColumnIndex(MediaStore.Video.Media.DURATION);
 
-                    String id = cursor.getString(idColumn);
                     GalleryItem item = new GalleryItem();
-                    item.setId(id);
+                    item.setId(cursor.getString(idColumn));
                     item.setName(cursor.getString(nameColumn));
                     item.setType(cursor.getString(typeColumn));
                     item.setFilePath(cursor.getString(pathColumn));

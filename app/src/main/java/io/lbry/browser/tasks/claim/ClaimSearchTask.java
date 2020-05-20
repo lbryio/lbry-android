@@ -2,7 +2,6 @@ package io.lbry.browser.tasks.claim;
 
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import java.util.List;
 import java.util.Map;
@@ -47,8 +46,4 @@ public class ClaimSearchTask extends AsyncTask<Void, Void, List<Claim>> {
         }
     }
 
-    public interface ClaimSearchResultHandler {
-        void onSuccess(List<Claim> claims, boolean hasReachedEnd);
-        void onError(Exception error);
-    }
 }

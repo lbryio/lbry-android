@@ -42,12 +42,10 @@ public class AbandonStreamTask extends AsyncTask<Void, Void, Boolean> {
             try {
                 Map<String, Object> options = new HashMap<>();
                 options.put("claim_id", claimId);
-                options.put("blocking", false);
+                options.put("blocking", true);
                 JSONObject result = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_STREAM_ABANDON, options);
-                android.util.Log.d("#HELP", result.toString());
                 successfulClaimIds.add(claimId);
             } catch (ApiCallException ex) {
-                android.util.Log.e("#HELP", ex.getMessage(), ex);
                 failedClaimIds.add(claimId);
                 failedExceptions.add(ex);
             }

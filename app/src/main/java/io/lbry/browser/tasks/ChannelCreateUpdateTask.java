@@ -48,13 +48,27 @@ public class ChannelCreateUpdateTask extends AsyncTask<Void, Void, Claim> {
             options.put("claim_id", claim.getClaimId());
         }
         options.put("bid", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT).format(deposit.doubleValue()));
-        options.put("title", claim.getTitle());
-        options.put("cover_url", claim.getCoverUrl());
-        options.put("thumbnail_url", claim.getThumbnailUrl());
-        options.put("description", claim.getDescription());
-        options.put("website_url", claim.getWebsiteUrl());
-        options.put("email", claim.getEmail());
-        options.put("tags", claim.getTags());
+        if (!Helper.isNullOrEmpty(claim.getTitle())) {
+            options.put("title", claim.getTitle());
+        }
+        if (!Helper.isNullOrEmpty(claim.getCoverUrl())) {
+            options.put("cover_url", claim.getCoverUrl());
+        }
+        if (!Helper.isNullOrEmpty(claim.getThumbnailUrl())) {
+            options.put("thumbnail_url", claim.getThumbnailUrl());
+        }
+        if (!Helper.isNullOrEmpty(claim.getDescription())) {
+            options.put("description", claim.getDescription());
+        }
+        if (!Helper.isNullOrEmpty(claim.getWebsiteUrl())) {
+            options.put("website_url", claim.getWebsiteUrl());
+        }
+        if (!Helper.isNullOrEmpty(claim.getEmail())) {
+            options.put("email", claim.getEmail());
+        }
+        if (claim.getTags() != null && claim.getTags().size() > 0) {
+            options.put("tags", claim.getTags());
+        }
         options.put("blocking", true);
 
         Claim claimResult = null;

@@ -47,6 +47,8 @@ import io.lbry.browser.model.ViewHistory;
 import io.lbry.browser.tasks.claim.AbandonChannelTask;
 import io.lbry.browser.tasks.claim.AbandonHandler;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
+import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
+import io.lbry.browser.tasks.claim.PurchaseListTask;
 import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.tasks.file.BulkDeleteFilesTask;
 import io.lbry.browser.tasks.file.DeleteFileTask;
@@ -63,7 +65,8 @@ public class LibraryFragment extends BaseFragment implements
         ActionMode.Callback, DownloadActionListener, SelectionModeListener, SdkStatusListener  {
 
     private static final int FILTER_DOWNLOADS = 1;
-    private static final int FILTER_HISTORY = 2;
+    private static final int FILTER_PURCHASES = 2;
+    private static final int FILTER_HISTORY = 3;
     private static final int PAGE_SIZE = 50;
 
     private ActionMode actionMode;
@@ -74,6 +77,7 @@ public class LibraryFragment extends BaseFragment implements
     private ClaimListAdapter contentListAdapter;
     private ProgressBar listLoading;
     private TextView linkFilterDownloads;
+    private TextView linkFilterPurchases;
     private TextView linkFilterHistory;
     private View layoutListEmpty;
     private TextView textListEmpty;
@@ -119,6 +123,7 @@ public class LibraryFragment extends BaseFragment implements
 
         listLoading = root.findViewById(R.id.library_list_loading);
         linkFilterDownloads = root.findViewById(R.id.library_filter_link_downloads);
+        linkFilterPurchases = root.findViewById(R.id.library_filter_link_purchases);
         linkFilterHistory = root.findViewById(R.id.library_filter_link_history);
 
         layoutListEmpty = root.findViewById(R.id.library_empty_container);
@@ -129,6 +134,12 @@ public class LibraryFragment extends BaseFragment implements
             @Override
             public void onClick(View view) {
                 showDownloads();
+            }
+        });
+        linkFilterPurchases.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPurchases();
             }
         });
         linkFilterHistory.setOnClickListener(new View.OnClickListener() {
@@ -247,8 +258,10 @@ public class LibraryFragment extends BaseFragment implements
     private void showDownloads() {
         currentFilter = FILTER_DOWNLOADS;
         linkFilterDownloads.setTypeface(null, Typeface.BOLD);
+        linkFilterPurchases.setTypeface(null, Typeface.NORMAL);
         linkFilterHistory.setTypeface(null, Typeface.NORMAL);
         if (contentListAdapter != null) {
+            contentListAdapter.setHideFee(false);
             contentListAdapter.clearItems();
             contentListAdapter.setCanEnterSelectionMode(true);
         }
@@ -262,14 +275,38 @@ public class LibraryFragment extends BaseFragment implements
         }
     }
 
+    private void showPurchases() {
+        currentFilter = FILTER_PURCHASES;
+        linkFilterDownloads.setTypeface(null, Typeface.NORMAL);
+        linkFilterPurchases.setTypeface(null, Typeface.BOLD);
+        linkFilterHistory.setTypeface(null, Typeface.NORMAL);
+        if (contentListAdapter != null) {
+            contentListAdapter.setHideFee(true);
+            contentListAdapter.clearItems();
+            contentListAdapter.setCanEnterSelectionMode(true);
+        }
+        listReachedEnd = false;
+
+        cardStats.setVisibility(View.GONE);
+        checkStatsLink();
+
+        layoutSdkInitializing.setVisibility(Lbry.SDK_READY ? View.GONE : View.VISIBLE);
+        currentPage = 1;
+        if (Lbry.SDK_READY) {
+            fetchPurchases();
+        }
+    }
+
     private void showHistory() {
         currentFilter = FILTER_HISTORY;
         linkFilterDownloads.setTypeface(null, Typeface.NORMAL);
+        linkFilterPurchases.setTypeface(null, Typeface.NORMAL);
         linkFilterHistory.setTypeface(null, Typeface.BOLD);
         if (actionMode != null) {
             actionMode.finish();
         }
         if (contentListAdapter != null) {
+            contentListAdapter.setHideFee(false);
             contentListAdapter.clearItems();
             contentListAdapter.setCanEnterSelectionMode(false);
         }
@@ -287,6 +324,7 @@ public class LibraryFragment extends BaseFragment implements
         contentListAdapter = new ClaimListAdapter(claims, getContext());
         contentListAdapter.setCanEnterSelectionMode(true);
         contentListAdapter.setSelectionModeListener(this);
+        contentListAdapter.setHideFee(currentFilter != FILTER_PURCHASES);
         contentListAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
             @Override
             public void onClaimClicked(Claim claim) {
@@ -334,6 +372,36 @@ public class LibraryFragment extends BaseFragment implements
             @Override
             public void onError(Exception error) {
                 // pass
+                checkStatsLink();
+                checkListEmpty();
+                contentListLoading = false;
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void fetchPurchases() {
+        contentListLoading  = true;
+        Helper.setViewVisibility(linkStats, View.GONE);
+        Helper.setViewVisibility(layoutListEmpty, View.GONE);
+        PurchaseListTask task = new PurchaseListTask(currentPage, PAGE_SIZE, listLoading, new ClaimSearchResultHandler() {
+            @Override
+            public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
+                listReachedEnd = hasReachedEnd;
+                if (contentListAdapter == null) {
+                    initContentListAdapter(claims);
+                } else {
+                    contentListAdapter.addItems(claims);
+                }
+                if (contentList.getAdapter() == null) {
+                    contentList.setAdapter(contentListAdapter);
+                }
+                checkListEmpty();
+                contentListLoading = false;
+            }
+
+            @Override
+            public void onError(Exception error) {
                 checkStatsLink();
                 checkListEmpty();
                 contentListLoading = false;
@@ -397,7 +465,13 @@ public class LibraryFragment extends BaseFragment implements
 
     private void checkListEmpty() {
         layoutListEmpty.setVisibility(contentListAdapter == null || contentListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
-        textListEmpty.setText(currentFilter == FILTER_DOWNLOADS ? R.string.library_no_downloads : R.string.library_no_history);
+        int stringResourceId;
+        switch (currentFilter) {
+            case FILTER_DOWNLOADS: default: stringResourceId = R.string.library_no_downloads; break;
+            case FILTER_HISTORY: stringResourceId = R.string.library_no_history; break;
+            case FILTER_PURCHASES: stringResourceId = R.string.library_no_purchases; break;
+        }
+        textListEmpty.setText(stringResourceId);
     }
 
     private void addFiles(List<LbryFile> files) {
@@ -487,7 +561,8 @@ public class LibraryFragment extends BaseFragment implements
     private void checkStatsLink() {
         linkStats.setVisibility(cardStats.getVisibility() == View.VISIBLE ||
                         listLoading.getVisibility() == View.VISIBLE ||
-                        currentFilter == FILTER_HISTORY ?
+                        currentFilter != FILTER_DOWNLOADS ||
+                        !Lbry.SDK_READY ?
                 View.GONE : View.VISIBLE);
     }
 

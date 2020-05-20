@@ -44,6 +44,8 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     private Map<String, Boolean> notFoundClaimUrlMap;
 
     @Setter
+    private boolean hideFee;
+    @Setter
     private boolean canEnterSelectionMode;
     private Context context;
     private List<Claim> items;
@@ -421,7 +423,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                 }
 
                 BigDecimal cost = item.getActualCost(Lbryio.LBCUSDRate);
-                vh.feeContainer.setVisibility(cost.doubleValue() > 0 ? View.VISIBLE : View.GONE);
+                vh.feeContainer.setVisibility(cost.doubleValue() > 0 && !hideFee ? View.VISIBLE : View.GONE);
                 vh.feeView.setText(cost.doubleValue() > 0 ? Helper.shortCurrencyFormat(cost.doubleValue()) : "Paid");
                 vh.alphaView.setText(item.getName().substring(0, Math.min(5, item.getName().length() - 1)));
                 vh.publisherView.setText(signingChannel != null ? signingChannel.getName() : context.getString(R.string.anonymous));

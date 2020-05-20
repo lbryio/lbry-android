@@ -29,7 +29,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import io.lbry.browser.MainActivity;
@@ -38,9 +40,11 @@ import io.lbry.browser.adapter.GalleryGridAdapter;
 import io.lbry.browser.listener.CameraPermissionListener;
 import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.model.GalleryItem;
+import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.tasks.localdata.LoadGalleryItemsTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
+import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 
 public class PublishFragment extends BaseFragment implements CameraPermissionListener, StoragePermissionListener {
@@ -123,8 +127,6 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
 
                             Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) context, cameraSelector, preview);
                             preview.setSurfaceProvider(cameraPreview.createSurfaceProvider(camera.getCameraInfo()));
-                        } else {
-                            android.util.Log.d("#HELP", "camera provider future is null?");
                         }
                     } catch (ExecutionException | InterruptedException ex) {
                         // pass
@@ -220,6 +222,22 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
                 if (context != null) {
                     if (adapter == null) {
                         adapter = new GalleryGridAdapter(Arrays.asList(item), context);
+                        adapter.setListener(new GalleryGridAdapter.GalleryItemClickListener() {
+                            @Override
+                            public void onGalleryItemClicked(GalleryItem item) {
+                                if (!Lbry.SDK_READY) {
+                                    Snackbar.make(getView(), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                                    return;
+                                }
+
+                                Context context = getContext();
+                                if (context instanceof MainActivity) {
+                                    Map<String, Object> params = new HashMap<>();
+                                    params.put("galleryItem", item);
+                                    ((MainActivity) context).openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
+                                }
+                            }
+                        });
                     } else {
                         adapter.addItem(item);
                     }

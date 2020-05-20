@@ -15,8 +15,6 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.exoplayer2.offline.Download;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +28,7 @@ import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
-import io.lbry.browser.tasks.claim.ClaimSearchTask;
+import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
 import io.lbry.browser.tasks.LighthouseSearchTask;
 import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.ui.BaseFragment;
@@ -232,7 +230,7 @@ public class SearchFragment extends BaseFragment implements
         }
 
         LighthouseSearchTask task = new LighthouseSearchTask(
-                currentQuery, PAGE_SIZE, currentFrom, canShowMatureContent, null, loadingView, new ClaimSearchTask.ClaimSearchResultHandler() {
+                currentQuery, PAGE_SIZE, currentFrom, canShowMatureContent, null, loadingView, new ClaimSearchResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
                 contentHasReachedEnd = hasReachedEnd;

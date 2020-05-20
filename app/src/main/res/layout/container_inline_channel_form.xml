@@ -32,10 +32,11 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inline_channel_form_input_deposit"
                 android:fontFamily="@font/inter"
-                android:singleLine="true"
-                android:textSize="14sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:text="@string/min_deposit"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 

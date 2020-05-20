@@ -26,14 +26,25 @@
                 android:text="@string/downloads"
                 android:textStyle="bold" />
             <TextView
+                android:id="@+id/library_filter_link_purchases"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="24dp"
+                android:layout_toRightOf="@id/library_filter_link_downloads"
+                android:fontFamily="@font/inter"
+                android:text="@string/purchases" />
+            <TextView
                 android:id="@+id/library_filter_link_history"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@id/library_filter_link_downloads"
+                android:layout_marginLeft="24dp"
+                android:layout_toRightOf="@id/library_filter_link_purchases"
                 android:fontFamily="@font/inter"
                 android:text="@string/history"
                 android:textSize="14sp" />

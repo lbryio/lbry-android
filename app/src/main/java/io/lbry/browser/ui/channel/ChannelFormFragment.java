@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -53,6 +54,7 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
+import io.lbry.browser.utils.Predefined;
 import lombok.Getter;
 
 public class ChannelFormFragment extends BaseFragment implements
@@ -70,6 +72,7 @@ public class ChannelFormFragment extends BaseFragment implements
     private TextView linkShowOptional;
     private MaterialButton buttonSave;
 
+    private NestedScrollView scrollView;
     private View inlineBalanceContainer;
     private TextView inlineBalanceValue;
     private View uploadProgress;
@@ -111,6 +114,7 @@ public class ChannelFormFragment extends BaseFragment implements
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_channel_form, container, false);
 
+        scrollView = root.findViewById(R.id.channel_form_scroll_view);
         linkCancel = root.findViewById(R.id.channel_form_cancel_link);
         linkShowOptional = root.findViewById(R.id.channel_form_toggle_optional);
         buttonSave = root.findViewById(R.id.channel_form_save_button);
@@ -136,6 +140,7 @@ public class ChannelFormFragment extends BaseFragment implements
         Context context = getContext();
         FlexboxLayoutManager flm1 = new FlexboxLayoutManager(context);
         FlexboxLayoutManager flm2 = new FlexboxLayoutManager(context);
+        FlexboxLayoutManager flm3 = new FlexboxLayoutManager(context);
         addedTagsList = root.findViewById(R.id.form_added_tags);
         addedTagsList.setLayoutManager(flm1);
         suggestedTagsList = root.findViewById(R.id.form_suggested_tags);
@@ -145,6 +150,7 @@ public class ChannelFormFragment extends BaseFragment implements
         addedTagsAdapter.setCustomizeMode(TagListAdapter.CUSTOMIZE_MODE_REMOVE);
         addedTagsAdapter.setClickListener(this);
         addedTagsList.setAdapter(addedTagsAdapter);
+
         suggestedTagsAdapter = new TagListAdapter(new ArrayList<>(), getContext());
         suggestedTagsAdapter.setCustomizeMode(TagListAdapter.CUSTOMIZE_MODE_ADD);
         suggestedTagsAdapter.setClickListener(this);
@@ -167,6 +173,12 @@ public class ChannelFormFragment extends BaseFragment implements
                 if (containerOptionalFields.getVisibility() != View.VISIBLE) {
                     containerOptionalFields.setVisibility(View.VISIBLE);
                     linkShowOptional.setText(R.string.hide_optional_fields);
+                    scrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.fullScroll(NestedScrollView.FOCUS_DOWN);
+                        }
+                    });
                 } else {
                     containerOptionalFields.setVisibility(View.GONE);
                     linkShowOptional.setText(R.string.show_optional_fields);
@@ -549,8 +561,11 @@ public class ChannelFormFragment extends BaseFragment implements
             Snackbar.make(getView(), getString(R.string.tag_already_added, tag.getName()), Snackbar.LENGTH_LONG).show();
             return;
         }
+        if (addedTagsAdapter.getItemCount() == 5) {
+            Snackbar.make(getView(), R.string.tag_limit_reached, Snackbar.LENGTH_LONG).show();
+            return;
+        }
 
-        tag.setFollowed(true);
         addedTagsAdapter.addTag(tag);
         if (suggestedTagsAdapter != null) {
             suggestedTagsAdapter.removeTag(tag);
@@ -561,7 +576,6 @@ public class ChannelFormFragment extends BaseFragment implements
         checkNoTagResults();
     }
     public void removeTag(Tag tag) {
-        tag.setFollowed(false);
         addedTagsAdapter.removeTag(tag);
         updateSuggestedTags(currentFilter, SUGGESTED_LIMIT, false);
         checkNoAddedTags();
@@ -581,7 +595,14 @@ public class ChannelFormFragment extends BaseFragment implements
     }
 
     private void updateSuggestedTags(String filter, int limit, boolean clearPrevious) {
-        UpdateSuggestedTagsTask task = new UpdateSuggestedTagsTask(filter, limit, addedTagsAdapter, suggestedTagsAdapter, clearPrevious, new UpdateSuggestedTagsTask.KnownTagsHandler() {
+        UpdateSuggestedTagsTask task = new UpdateSuggestedTagsTask(
+                filter,
+                limit,
+                addedTagsAdapter,
+                suggestedTagsAdapter,
+                clearPrevious,
+                false,
+                new UpdateSuggestedTagsTask.KnownTagsHandler() {
             @Override
             public void onSuccess(List<Tag> tags) {
                 if (suggestedTagsAdapter == null) {

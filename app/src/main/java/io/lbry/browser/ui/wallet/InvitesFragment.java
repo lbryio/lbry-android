@@ -470,15 +470,12 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
             @Override
             public void onClick(View view) {
                 // validate deposit and channel name
-                String channelNameString = Helper.getValue(inputChannelName.getText());
-                if (!channelNameString.startsWith("@")) {
-                    channelNameString = String.format("@%s", channelNameString);
-                }
+                String channelNameString = Helper.normalizeChannelName(Helper.getValue(inputChannelName.getText()));
                 Claim claimToSave = new Claim();
                 claimToSave.setName(channelNameString);
                 String channelName = claimToSave.getName().startsWith("@") ? claimToSave.getName().substring(1) : claimToSave.getName();
                 String depositString = Helper.getValue(inputDeposit.getText());
-                if (Helper.isNullOrEmpty(channelName)) {
+                if ("@".equals(channelName) || Helper.isNullOrEmpty(channelName)) {
                     showError(getString(R.string.please_enter_channel_name));
                     return;
                 }

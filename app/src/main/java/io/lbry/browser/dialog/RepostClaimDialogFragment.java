@@ -86,7 +86,7 @@ public class RepostClaimDialogFragment extends BottomSheetDialogFragment impleme
 
         textTitle.setText(getString(R.string.repost_title, claim.getTitle()));
         inputName.setText(claim.getName());
-        inputDeposit.setText(R.string.min_repost_deposit);
+        inputDeposit.setText(R.string.min_deposit);
         channelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {

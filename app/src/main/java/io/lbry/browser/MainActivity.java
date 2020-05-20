@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -59,6 +60,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -95,7 +99,6 @@ import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.ContentScopeDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.CameraPermissionListener;
-import io.lbry.browser.listener.DarkThemeChangeListener;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchChannelsListener;
 import io.lbry.browser.listener.SdkStatusListener;
@@ -133,6 +136,7 @@ import io.lbry.browser.ui.following.FileViewFragment;
 import io.lbry.browser.ui.following.FollowingFragment;
 import io.lbry.browser.ui.library.LibraryFragment;
 import io.lbry.browser.ui.other.AboutFragment;
+import io.lbry.browser.ui.publish.PublishFormFragment;
 import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.ui.publish.PublishesFragment;
 import io.lbry.browser.ui.search.SearchFragment;
@@ -164,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static CastContext castContext;
     public static CastPlayer castPlayer;
     public static Claim nowPlayingClaim;
+    public static String nowPlayingClaimUrl;
     public static boolean startingFilePickerActivity = false;
     public static boolean startingShareActivity = false;
     public static boolean startingPermissionRequest = false;
@@ -340,6 +345,24 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.content_main), new OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+                ViewCompat.onApplyWindowInsets(findViewById(R.id.url_suggestions_container),
+                        insets.replaceSystemWindowInsets(0, 0, 0, insets.getSystemWindowInsetBottom()));
+                return ViewCompat.onApplyWindowInsets(v,
+                        insets.replaceSystemWindowInsets(insets.getSystemWindowInsetLeft(), 0,
+                                0, insets.getSystemWindowInsetBottom()));
+            }
+        });
+        /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.url_suggestions_container), new OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+                return ViewCompat.onApplyWindowInsets(v,
+                        insets.replaceSystemWindowInsets(0, 0,0, insets.getSystemWindowInsetBottom()));
+            }
+        });*/
+
         // register receivers
         registerRequestsReceiver();
         registerServiceActionsReceiver();
@@ -350,10 +373,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onSystemUiVisibilityChange(int visibility) {
                 if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
                     // not fullscreen
-                    View appBarMainContainer = findViewById(R.id.app_bar_main_container);
-                    appBarMainContainer.setPadding(
-                            appBarMainContainer.getPaddingLeft(), appBarMainContainer.getPaddingTop(), appBarMainContainer.getPaddingRight(), 0);
-                    appBarMainContainer.setFitsSystemWindows(true);
                 }
             }
         });
@@ -434,8 +453,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.global_now_playing_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (nowPlayingClaim != null) {
-                    openFileUrl(!Helper.isNullOrEmpty(nowPlayingClaim.getShortUrl()) ? nowPlayingClaim.getShortUrl() : nowPlayingClaim.getPermanentUrl());
+                if (nowPlayingClaim != null && !Helper.isNullOrEmpty(nowPlayingClaimUrl)) {
+                    openFileUrl(nowPlayingClaimUrl);
                 }
             }
         });
@@ -622,6 +641,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         openFragment(ChannelFormFragment.class, true, NavMenuItem.ID_ITEM_CHANNELS, params);
     }
 
+    public void openPublishForm(Claim claim) {
+        Map<String, Object> params = new HashMap<>();
+        if (claim != null) {
+            params.put("claim", claim);
+        }
+        openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
+    }
+
     public void openChannelUrl(String url) {
         Map<String, Object> params = new HashMap<>();
         params.put("url", url);
@@ -722,6 +749,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             dbHelper.close();
         }
         stopExoplayer();
+        nowPlayingClaim = null;
+        nowPlayingClaimUrl = null;
         super.onDestroy();
     }
 
@@ -1229,9 +1258,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     public void exitFullScreenMode() {
+        View appBarMainContainer = findViewById(R.id.app_bar_main_container);
         View decorView = getWindow().getDecorView();
         int flags = isDarkMode() ? (View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_VISIBLE) :
                 (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_VISIBLE);
+        appBarMainContainer.setFitsSystemWindows(true);
         decorView.setSystemUiVisibility(flags);
 
         if (!Lbry.SDK_READY) {
@@ -1262,7 +1293,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         } else if (!appStarted) {
             // first run completed, startup
             startup();
-        } else if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return;
+        }
+
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             openFragment(FollowingFragment.class, false, NavMenuItem.ID_ITEM_FOLLOWING);
             fetchRewards();
         }
@@ -1707,9 +1741,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         } else {
             boolean handled = false;
             ChannelFormFragment channelFormFragment = null;
+            PublishFormFragment publishFormFragment = null;
             for (Fragment fragment : openNavFragments.values()) {
                 if (fragment instanceof ChannelFormFragment) {
                     channelFormFragment = ((ChannelFormFragment) fragment);
+                    break;
+                }
+                if (fragment instanceof PublishFormFragment) {
+                    publishFormFragment = ((PublishFormFragment) fragment);
                     break;
                 }
             }
@@ -1717,6 +1756,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 handled = true;
                 return;
             }
+            //if (publishFormFragment != null && )
 
             if (!handled) {
                 // check fragment and nav history
@@ -1975,17 +2015,20 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                                 subUrls.add(url.toString());
                             }
                             Lbryio.subscriptions = subscriptions;
+                            startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true);
 
                             // resolve subscriptions
                             if (subUrls.size() > 0 && Lbryio.cacheResolvedSubscriptions.size() != Lbryio.subscriptions.size()) {
                                 List<Claim> resolvedSubs = Lbry.resolve(subUrls, Lbry.LBRY_TV_CONNECTION_STRING);
                                 Lbryio.cacheResolvedSubscriptions = resolvedSubs;
                             }
+                            // if no exceptions occurred here, subscriptions have been loaded and resolved
+                            startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true);
+                        } else {
+                            // user has not subscribed to anything
+                            startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true);
+                            startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true);
                         }
-
-                        // if no exceptions occurred here, subscriptions have been loaded and resolved
-                        startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true);
-                        startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true);
                     } else {
                         startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true);
                         startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true);
@@ -2004,6 +2047,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 if (!startupSuccessful) {
                     // show which startup stage failed
                     renderStartupFailed(startupStages);
+                    appStarted = false;
                     return;
                 }
 
@@ -2304,8 +2348,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         return flatMenu;
     }
 
-    public void setNowPlayingClaim(Claim claim) {
+    public void setNowPlayingClaim(Claim claim, String url) {
         nowPlayingClaim = claim;
+        nowPlayingClaimUrl = url;
         if (claim != null) {
             ((TextView) findViewById(R.id.global_now_playing_title)).setText(nowPlayingClaim.getTitle());
             ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(nowPlayingClaim.getPublisherTitle());
@@ -2314,6 +2359,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void clearNowPlayingClaim() {
         nowPlayingClaim = null;
+        nowPlayingClaimUrl = null;
         findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
         ((TextView) findViewById(R.id.global_now_playing_title)).setText(null);
         ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(null);
@@ -2554,16 +2600,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public static boolean hasPermission(String permission, Context context) {
         return (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
-    }
-
-    public void onThemeChanged() {
-        FragmentManager manager = getSupportFragmentManager();
-        for (int i  = 0; i < manager.getFragments().size(); i++) {
-            Fragment f = manager.getFragments().get(i);
-            if (f instanceof DarkThemeChangeListener) {
-                ((DarkThemeChangeListener) f).onDarkThemeToggled();
-            }
-        }
     }
 
     public interface BackPressInterceptor {

@@ -1,7 +1,6 @@
 package io.lbry.browser.ui.allcontent;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.exoplayer2.offline.Download;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
@@ -38,6 +36,7 @@ import io.lbry.browser.listener.TagListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.Tag;
+import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
 import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.tasks.FollowUnfollowTagTask;
 import io.lbry.browser.ui.BaseFragment;
@@ -443,7 +442,7 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
         contentClaimSearchLoading = true;
         Helper.setViewVisibility(noContentView, View.GONE);
         Map<String, Object> claimSearchOptions = buildContentOptions();
-        contentClaimSearchTask = new ClaimSearchTask(claimSearchOptions, Lbry.LBRY_TV_CONNECTION_STRING, getLoadingView(), new ClaimSearchTask.ClaimSearchResultHandler() {
+        contentClaimSearchTask = new ClaimSearchTask(claimSearchOptions, Lbry.LBRY_TV_CONNECTION_STRING, getLoadingView(), new ClaimSearchResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
                 if (contentListAdapter == null) {

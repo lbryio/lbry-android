@@ -14,18 +14,27 @@ import io.lbry.browser.utils.Lbry;
 public class UpdateSuggestedTagsTask extends AsyncTask<Void, Void, List<Tag>> {
 
     private boolean clearPrevious;
+    private boolean excludeMature;
     private int limit;
     private String filter;
     private TagListAdapter addedTagsAdapter;
     private TagListAdapter suggestedTagsAdapter;
     private KnownTagsHandler handler;
 
-    public UpdateSuggestedTagsTask(String filter, int limit, TagListAdapter addedTagsAdapter, TagListAdapter suggestedTagsAdapter, boolean clearPrevious, KnownTagsHandler handler) {
+    public UpdateSuggestedTagsTask(
+            String filter,
+            int limit,
+            TagListAdapter addedTagsAdapter,
+            TagListAdapter suggestedTagsAdapter,
+            boolean clearPrevious,
+            boolean excludeMature,
+            KnownTagsHandler handler) {
         this.filter = filter;
         this.limit = limit;
         this.addedTagsAdapter = addedTagsAdapter;
         this.suggestedTagsAdapter = suggestedTagsAdapter;
         this.clearPrevious = clearPrevious;
+        this.excludeMature = excludeMature;
         this.handler = handler;
     }
 
@@ -38,6 +47,9 @@ public class UpdateSuggestedTagsTask extends AsyncTask<Void, Void, List<Tag>> {
             }
             while (tags.size() < limit) {
                 Tag randomTag = Lbry.knownTags.get(random.nextInt(Lbry.knownTags.size()));
+                if (excludeMature && randomTag.isMature()) {
+                    continue;
+                }
                 if (!Lbry.followedTags.contains(randomTag) && (addedTagsAdapter == null || !addedTagsAdapter.getTags().contains(randomTag))) {
                     tags.add(randomTag);
                 }
@@ -49,6 +61,9 @@ public class UpdateSuggestedTagsTask extends AsyncTask<Void, Void, List<Tag>> {
             }
             for (int i = 0; i < Lbry.knownTags.size() && tags.size() < limit - 1; i++) {
                 Tag knownTag = Lbry.knownTags.get(i);
+                if (excludeMature && knownTag.isMature()) {
+                    continue;
+                }
                 if ((knownTag.getLowercaseName().startsWith(filter) || knownTag.getLowercaseName().matches(filter)) &&
                         (!tags.contains(knownTag) &&
                                 !Lbry.followedTags.contains(knownTag) && (addedTagsAdapter == null || !addedTagsAdapter.getTags().contains(knownTag)))) {

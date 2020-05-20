@@ -159,7 +159,13 @@ public class CustomizeTagsDialogFragment extends BottomSheetDialogFragment {
     }
 
     private void updateKnownTags(String filter, int limit, boolean clearPrevious) {
-        UpdateSuggestedTagsTask task = new UpdateSuggestedTagsTask(filter, SUGGESTED_LIMIT, followedTagsAdapter, suggestedTagsAdapter, clearPrevious, new UpdateSuggestedTagsTask.KnownTagsHandler() {
+        UpdateSuggestedTagsTask task = new UpdateSuggestedTagsTask(
+                filter,
+                SUGGESTED_LIMIT,
+                followedTagsAdapter,
+                suggestedTagsAdapter,
+                clearPrevious,
+                false, new UpdateSuggestedTagsTask.KnownTagsHandler() {
             @Override
             public void onSuccess(List<Tag> tags) {
                 if (suggestedTagsAdapter == null) {

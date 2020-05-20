@@ -69,11 +69,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_DARK_MODE)) {
             boolean darkMode = sp.getBoolean(MainActivity.PREFERENCE_KEY_DARK_MODE, false);
             AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-
-            Context context = getContext();
-            if (context instanceof MainActivity) {
-                ((MainActivity) context).onThemeChanged();
-            }
         }
     }
 }

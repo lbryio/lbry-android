@@ -34,7 +34,6 @@ import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
-import io.lbry.browser.tasks.claim.AbandonChannelTask;
 import io.lbry.browser.tasks.claim.AbandonHandler;
 import io.lbry.browser.tasks.claim.AbandonStreamTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;

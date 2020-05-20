@@ -1,7 +1,6 @@
 package io.lbry.browser.ui.editorschoice;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,6 +26,7 @@ import io.lbry.browser.R;
 import io.lbry.browser.adapter.EditorsChoiceItemAdapter;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.EditorsChoiceItem;
+import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
 import io.lbry.browser.tasks.claim.ClaimSearchTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
@@ -105,7 +105,7 @@ public class EditorsChoiceFragment extends BaseFragment {
         }
 
         contentLoading = true;
-        ClaimSearchTask task = new ClaimSearchTask(buildContentOptions(), Lbry.LBRY_TV_CONNECTION_STRING, loading, new ClaimSearchTask.ClaimSearchResultHandler() {
+        ClaimSearchTask task = new ClaimSearchTask(buildContentOptions(), Lbry.LBRY_TV_CONNECTION_STRING, loading, new ClaimSearchResultHandler() {
             @Override
             public void onSuccess(List<Claim> items, boolean hasReachedEnd) {
                 List<EditorsChoiceItem> data = buildDataFromClaims(items);

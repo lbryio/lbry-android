@@ -4,76 +4,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/pageBackground">
-    <LinearLayout
-        android:id="@+id/publish_form_display_area"
-        android:elevation="4dp"
-        android:orientation="vertical"
-        android:weightSum="10"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/publish_form_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RelativeLayout
-            android:id="@+id/publish_form_media_container"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3.55"
-            android:background="@android:color/black">
-
-            <ImageView
-                android:id="@+id/publish_form_thumbnail_preview"
+            android:layout_height="match_parent"
+            android:paddingBottom="16dp"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/publish_form_media_container"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="240dp"
+                android:background="@android:color/black">
 
-            <LinearLayout
-                android:id="@+id/publish_form_thumbnail_upload_progress"
-                android:background="@color/channelCoverBackground"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:visibility="gone">
-                <ProgressBar
-                    android:layout_width="16dp"
-                    android:layout_height="16dp" />
-                <TextView
+                <ImageView
+                    android:id="@+id/publish_form_thumbnail_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:id="@+id/publish_form_thumbnail_upload_progress"
+                    android:background="@color/channelCoverBackground"
+                    android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/uploading"
-                    android:textColor="@color/white"
-                    android:textFontWeight="300"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:visibility="gone">
+                    <ProgressBar
+                        android:layout_width="16dp"
+                        android:layout_height="16dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/uploading"
+                        android:textColor="@color/white"
+                        android:textFontWeight="300"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
-            <RelativeLayout
-                android:background="@drawable/bg_small_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true">
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_edit"
-                    android:tint="@color/white" />
+                <RelativeLayout
+                    android:background="@drawable/bg_small_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true">
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_edit"
+                        android:tint="@color/white" />
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6.45">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,23 +146,319 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="16dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:fontFamily="@font/inter"
-                            android:textSize="20sp"
-                            android:text="@string/channel" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="8dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:fontFamily="@font/inter"
+                                android:textSize="20sp"
+                                android:text="@string/channel" />
+                            <ProgressBar
+                                android:id="@+id/publish_form_loading_channels"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:visibility="gone" />
+                        </RelativeLayout>
                         <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/invites_channel_spinner"
+                            android:id="@+id/publish_form_channel_spinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp" />
                         <include layout="@layout/container_inline_channel_form" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
 
-    </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:layout_centerVertical="true"
+                                android:fontFamily="@font/inter"
+                                android:textSize="20sp"
+                                android:text="@string/price" />
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/publish_form_price_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/publish_form_no_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/free_publish"
+                            android:textFontWeight="300"
+                            android:textSize="14sp" />
+
+                        <RelativeLayout
+                            android:id="@+id/publish_form_price_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/publish_form_price_layout"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/price">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/publish_form_input_price"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter"
+                                    android:textFontWeight="300"
+                                    android:textSize="14sp"
+                                    android:inputType="numberDecimal" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/publish_form_currency_spinner"
+                                android:entries="@array/publish_currencies"
+                                android:layout_width="110dp"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@+id/publish_form_price_layout"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginTop="24dp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/inter"
+                            android:textSize="20sp"
+                            android:text="@string/content_address" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/content_address_desc"
+                            android:textFontWeight="300"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:hint="@string/address">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/publish_form_input_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:inputType="textNoSuggestions"
+                                android:textFontWeight="300"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <RelativeLayout
+                            android:layout_marginTop="16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/publish_form_input_layout_deposit"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/deposit">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/publish_form_input_deposit"
+                                    android:fontFamily="@font/inter"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:singleLine="true"
+                                    android:text="@string/min_deposit"
+                                    android:textSize="14sp"
+                                    android:inputType="numberDecimal" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:id="@+id/publish_form_input_currency"
+                                android:layout_toRightOf="@id/publish_form_input_layout_deposit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginTop="30dp"
+                                android:fontFamily="@font/inter"
+                                android:text="@string/lbc"
+                                android:textAllCaps="true"
+                                android:textSize="10sp"
+                                android:textFontWeight="300" />
+
+                            <LinearLayout
+                                android:id="@+id/publish_form_inline_balance_container"
+                                android:layout_toRightOf="@id/publish_form_input_currency"
+                                android:layout_marginLeft="24dp"
+                                android:layout_marginTop="28dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:visibility="invisible">
+                                <io.lbry.browser.ui.controls.SolidIconView
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:text="@string/fa_coins" />
+                                <TextView
+                                    android:id="@+id/publish_form_inline_balance_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter"
+                                    android:textFontWeight="300"
+                                    android:layout_marginLeft="2dp" />
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/deposit_remains_yours"
+                            android:textFontWeight="300"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:id="@+id/publish_form_extra_options_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:fontFamily="@font/inter"
+                                android:textSize="20sp"
+                                android:text="@string/additional_options" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:text="@string/language"
+                                android:textFontWeight="300"
+                                android:textSize="14sp" />
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/publish_form_language_spinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/inter"
+                                android:text="@string/license"
+                                android:textFontWeight="300"
+                                android:textSize="14sp" />
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/publish_form_license_spinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/publish_form_license_desc_input_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:hint="@string/license_desc"
+                                android:visibility="gone">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/publish_form_license_desc_input"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter"
+                                    android:inputType="textNoSuggestions"
+                                    android:textFontWeight="300"
+                                    android:textSize="14sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/publish_form_toggle_extra"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/show_extra_fields"
+                android:textFontWeight="300" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_marginTop="24dp">
+                <TextView
+                    android:id="@+id/publish_form_cancel"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/cancel"
+                    android:textFontWeight="300" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/publish_form_publish_button"
+                    android:enabled="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/publish"
+                    android:fontFamily="@font/inter" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

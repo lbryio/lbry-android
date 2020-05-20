@@ -30,7 +30,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -83,7 +82,6 @@ import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.StoragePermissionListener;
-import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.Fee;
@@ -97,7 +95,7 @@ import io.lbry.browser.tasks.LighthouseSearchTask;
 import io.lbry.browser.tasks.ReadTextFileTask;
 import io.lbry.browser.tasks.SetSdkSettingTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
-import io.lbry.browser.tasks.claim.ClaimSearchTask;
+import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
 import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.tasks.file.DeleteFileTask;
 import io.lbry.browser.tasks.file.FileListTask;
@@ -944,6 +942,15 @@ public class FileViewFragment extends BaseFragment implements
             ImageView descIndicator = root.findViewById(R.id.file_view_desc_toggle_arrow);
             descIndicator.setImageResource(R.drawable.ic_arrow_dropdown);
 
+            boolean hasDescription = !Helper.isNullOrEmpty(claim.getDescription());
+            boolean hasTags = claim.getTags() != null && claim.getTags().size() > 0;
+
+            root.findViewById(R.id.file_view_description).setVisibility(hasDescription ? View.VISIBLE : View.GONE);
+            root.findViewById(R.id.file_view_tag_area).setVisibility(hasTags ? View.VISIBLE : View.GONE);
+            if (hasTags && !hasDescription) {
+                root.findViewById(R.id.file_view_tag_area).setPadding(0, 0, 0, 0);
+            }
+
             root.findViewById(R.id.file_view_description_area).setVisibility(View.GONE);
             ((TextView) root.findViewById(R.id.file_view_title)).setText(claim.getTitle());
             ((TextView) root.findViewById(R.id.file_view_description)).setText(claim.getDescription());
@@ -1076,39 +1083,42 @@ public class FileViewFragment extends BaseFragment implements
             newPlayerCreated = true;
         }
 
-        PlayerView view = getView().findViewById(R.id.file_view_exoplayer_view);
-        view.setShutterBackgroundColor(Color.TRANSPARENT);
-        view.setPlayer(MainActivity.appPlayer);
-        view.setUseController(true);
-        if (context instanceof MainActivity) {
-            ((MainActivity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
-
-        if (MainActivity.nowPlayingClaim != null &&
-                MainActivity.nowPlayingClaim.getClaimId().equalsIgnoreCase(claim.getClaimId()) &&
-                !newPlayerCreated) {
-            // if the claim is already playing, we don't need to reload the media source
-            return;
-        }
-
-        if (MainActivity.appPlayer != null) {
-            showBuffering();
-            if (fileViewPlayerListener != null) {
-                MainActivity.appPlayer.addListener(fileViewPlayerListener);
-            }
+        View root = getView();
+        if (root != null) {
+            PlayerView view = root.findViewById(R.id.file_view_exoplayer_view);
+            view.setShutterBackgroundColor(Color.TRANSPARENT);
+            view.setPlayer(MainActivity.appPlayer);
+            view.setUseController(true);
             if (context instanceof MainActivity) {
-                ((MainActivity) context).setNowPlayingClaim(claim);
+                ((MainActivity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             }
 
-            MainActivity.appPlayer.setPlayWhenReady(true);
-            String userAgent = Util.getUserAgent(context, getString(R.string.app_name));
-            String mediaSourceUrl = getStreamingUrl();
-            MediaSource mediaSource = new ProgressiveMediaSource.Factory(
-                    new CacheDataSourceFactory(MainActivity.playerCache, new DefaultDataSourceFactory(context, userAgent)),
-                    new DefaultExtractorsFactory()
-            ).createMediaSource(Uri.parse(mediaSourceUrl));
+            if (MainActivity.nowPlayingClaim != null &&
+                    MainActivity.nowPlayingClaim.getClaimId().equalsIgnoreCase(claim.getClaimId()) &&
+                    !newPlayerCreated) {
+                // if the claim is already playing, we don't need to reload the media source
+                return;
+            }
 
-            MainActivity.appPlayer.prepare(mediaSource, true, true);
+            if (MainActivity.appPlayer != null) {
+                showBuffering();
+                if (fileViewPlayerListener != null) {
+                    MainActivity.appPlayer.addListener(fileViewPlayerListener);
+                }
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).setNowPlayingClaim(claim, currentUrl);
+                }
+
+                MainActivity.appPlayer.setPlayWhenReady(true);
+                String userAgent = Util.getUserAgent(context, getString(R.string.app_name));
+                String mediaSourceUrl = getStreamingUrl();
+                MediaSource mediaSource = new ProgressiveMediaSource.Factory(
+                        new CacheDataSourceFactory(MainActivity.playerCache, new DefaultDataSourceFactory(context, userAgent)),
+                        new DefaultExtractorsFactory()
+                ).createMediaSource(Uri.parse(mediaSourceUrl));
+
+                MainActivity.appPlayer.prepare(mediaSource, true, true);
+            }
         }
     }
 
@@ -1473,7 +1483,7 @@ public class FileViewFragment extends BaseFragment implements
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
         LighthouseSearchTask relatedTask = new LighthouseSearchTask(
-                title, RELATED_CONTENT_SIZE, 0, canShowMatureContent, claimId, relatedLoading, new ClaimSearchTask.ClaimSearchResultHandler() {
+                title, RELATED_CONTENT_SIZE, 0, canShowMatureContent, claimId, relatedLoading, new ClaimSearchResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
                 List<Claim> filteredClaims = new ArrayList<>();
@@ -1746,7 +1756,13 @@ public class FileViewFragment extends BaseFragment implements
                         amountClaimed == 1 ? 1 : 2,
                         new DecimalFormat(Helper.LBC_CURRENCY_FORMAT_PATTERN).format(amountClaimed));
             }
-            Snackbar.make(getView().findViewById(R.id.file_view_global_layout), message, Snackbar.LENGTH_LONG).show();
+            View root = getView();
+            Context context = getContext();
+            if (root != null) {
+                Snackbar.make(root.findViewById(R.id.file_view_global_layout), message, Snackbar.LENGTH_LONG).show();
+            } else if (context instanceof MainActivity) {
+                ((MainActivity) context).showMessage(message);
+            }
         }
 
         @Override
@@ -1759,12 +1775,16 @@ public class FileViewFragment extends BaseFragment implements
         if (claim == null) {
             return;
         }
-        if (claim.getFile() != null && claim.getFile().isCompleted()) {
-            Helper.setViewVisibility(getView().findViewById(R.id.file_view_action_delete), View.VISIBLE);
-            Helper.setViewVisibility(getView().findViewById(R.id.file_view_action_download), View.GONE);
-        } else {
-            Helper.setViewVisibility(getView().findViewById(R.id.file_view_action_delete), View.GONE);
-            Helper.setViewVisibility(getView().findViewById(R.id.file_view_action_download), View.VISIBLE);
+        View root = getView();
+        if (root != null) {
+            if (claim.getFile() != null && claim.getFile().isCompleted()) {
+                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_delete), View.VISIBLE);
+                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_download), View.GONE);
+            } else {
+                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_delete), View.GONE);
+                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_download), View.VISIBLE);
+            }
+
         }
     }
 

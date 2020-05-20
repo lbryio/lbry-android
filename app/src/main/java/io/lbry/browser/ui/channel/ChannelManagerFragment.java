@@ -257,7 +257,6 @@ public class ChannelManagerFragment extends BaseFragment implements ActionMode.C
         if (R.id.action_delete == menuItem.getItemId()) {
             if (adapter != null && adapter.getSelectedCount() > 0) {
                 final List<Claim> selectedClaims = new ArrayList<>(adapter.getSelectedItems());
-                android.util.Log.d("#HELP", selectedClaims.toString());
                 String message = getResources().getQuantityString(R.plurals.confirm_delete_channels, selectedClaims.size());
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
                         setTitle(R.string.delete_selection).

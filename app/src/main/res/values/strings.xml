@@ -102,7 +102,62 @@
     <string name="storage_permission_rationale_videos">LBRY requires access to be able to display and publish your videos, images and other files from your device.</string>
     <string name="camera_permission_rationale_record">LBRY requires access to your camera to record videos.</string>
     <string name="camera_permission_rationale_photo">LBRY requires access to your camera to take photos.</string>
+    <string name="edit_content">Edit content</string>
     <string name="mature_tags">Mature tags</string>
+    <string name="price">Price</string>
+    <string name="free_publish">Your content will be free. Press the toggle to set a price.</string>
+    <string name="content_address">Content address</string>
+    <string name="address">Address</string>
+    <string name="content_address_desc">The address where people can find your content (ex. lbry://myvideo)</string>
+    <string name="license">License</string>
+    <string name="license_desc">License description</string>
+    <string name="additional_options">Additional Options</string>
+    <string name="show_extra_fields">Show extra fields</string>
+    <string name="hide_extra_fields">Hide extra fields</string>
+    <string name="no_file_found">No file found to publish.</string>
+    <string name="sdk_initializing_publish">You cannot publish content right now beceause the background service is still initializing.</string>
+
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="chinese">Chinese</string>
+    <string name="french">French</string>
+    <string name="german">German</string>
+    <string name="japanese">Japanese</string>
+    <string name="russian">Russian</string>
+    <string name="spanish">Spanish</string>
+    <string name="indonesian">Indonesian</string>
+    <string name="italian">Italian</string>
+    <string name="dutch">Dutch</string>
+    <string name="turkish">Turkish</string>
+    <string name="polish">Polish</string>
+    <string name="malay">Malay</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="thai">Thai</string>
+    <string name="arabic">Arabic</string>
+    <string name="czech">Czech</string>
+    <string name="croatian">Croatian</string>
+    <string name="cambodian">Cambodian</string>
+    <string name="korean">Korean</string>
+    <string name="norwegian">Norwegian</string>
+    <string name="romanian">Romanian</string>
+    <string name="hindi">Hindi</string>
+    <string name="greek">Greek</string>
+
+    <string name="none">None</string>
+    <string name="public_domain">Public Domain</string>
+    <string name="copyright">Copyright</string>
+    <string name="cca_4_0_international">Creative Commons Attribution 4.0 International</string>
+    <string name="cca_sa_4_0_international">Creative Commons Attribution-ShareAlike 4.0 International</string>
+    <string name="cca_nd_4_0_international">Creative Commons Attribution-NoDerivatives 4.0 International</string>
+    <string name="cca_nc_4_0_international">Creative Commons Attribution-NonCommercial 4.0 International</string>
+    <string name="cca_nc_sa_4_0_international">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</string>
+    <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
+
+    <string-array name="publish_currencies">
+        <item>LBC</item>
+        <item>USD</item>
+    </string-array>
 
     <!-- Publishes -->
     <string name="one_or_more_publishes_failed_abandon">One or more content items could not be deleted at this time. Please try again later.</string>
@@ -174,7 +229,7 @@
     <string name="receive_credits">Receive Credits</string>
     <string name="use_this_address_hint">Use this wallet address to receive credits sent by another user (or yourself).</string>
     <string name="get_new_address">Get new address</string>
-    <string name="generate_address_hint">You can generate a new address at any time, and any previous addresses will conintue to work. Using multiple addresses can be helpful for keeping track of incoming payments from multiple sources.</string>
+    <string name="generate_address_hint">You can generate a new address at any time, and any previous addresses will continue to work. Using multiple addresses can be helpful for keeping track of incoming payments from multiple sources.</string>
 
     <string name="send_credits">Send Credits</string>
     <string name="recipient_address">Recipient address</string>
@@ -253,6 +308,7 @@
     <string name="no_followed_tags">You have not followed any tags yet. Get started by adding tags that you are interested in!</string>
     <string name="no_tag_results">We could not find new tags that you\'re not following.</string>
     <string name="tag_already_added">The \'%1$s\' tag has already been added.</string>
+    <string name="tag_limit_reached">You cannot add more than 5 tags.</string>
     <string name="send_a_tip">Send a tip</string>
     <string name="send_a_tip_to">Send a tip to %1$s</string>
     <string name="send_tip_info_content">This will appear as a tip for %1$s, which will boost its ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
@@ -264,7 +320,7 @@
     <string name="show_advanced">Show advanced</string>
     <string name="hide_advanced">Hide advanced</string>
     <string name="name">Name</string>
-    <string name="min_repost_deposit">0.01</string>
+    <string name="min_deposit">0.01</string>
     <string name="content_successfully_reposted">The content was successfully reposted!</string>
     <string name="repost_name_invalid_characters">The repost name contains invalid characters.</string>
     <plurals name="you_sent_a_tip">
@@ -317,8 +373,6 @@
     <string name="description">Description</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="show_extra">Show extra</string>
-    <string name="hide_extra">Hide extra</string>
     <string name="show_optional_fields">Show optional fields</string>
     <string name="hide_optional_fields">Hide optional fields</string>
     <string name="save">Save</string>
@@ -403,9 +457,11 @@
 
     <!-- Library -->
     <string name="downloads">Downloads</string>
+    <string name="purchases">Purchases</string>
     <string name="history">History</string>
     <string name="library_no_downloads">You have not downloaded any content to this device.</string>
     <string name="library_no_history">You have not viewed any content on this device.</string>
+    <string name="library_no_purchases">You have not purchased any content on your account.</string>
     <string name="hide">Hide</string>
     <string name="stats">Stats</string>
     <string name="video">Video</string>

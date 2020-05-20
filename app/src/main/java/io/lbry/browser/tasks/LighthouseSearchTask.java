@@ -9,7 +9,7 @@ import java.util.List;
 import io.lbry.browser.exceptions.LbryRequestException;
 import io.lbry.browser.exceptions.LbryResponseException;
 import io.lbry.browser.model.Claim;
-import io.lbry.browser.tasks.claim.ClaimSearchTask;
+import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lighthouse;
 
@@ -19,11 +19,11 @@ public class LighthouseSearchTask extends AsyncTask<Void, Void, List<Claim>> {
     private int from;
     private boolean nsfw;
     private String relatedTo;
-    private ClaimSearchTask.ClaimSearchResultHandler handler;
+    private ClaimSearchResultHandler handler;
     private ProgressBar progressBar;
     private Exception error;
 
-    public LighthouseSearchTask(String rawQuery, int size, int from, boolean nsfw, String relatedTo, ProgressBar progressBar, ClaimSearchTask.ClaimSearchResultHandler handler) {
+    public LighthouseSearchTask(String rawQuery, int size, int from, boolean nsfw, String relatedTo, ProgressBar progressBar, ClaimSearchResultHandler handler) {
         this.rawQuery = rawQuery;
         this.size = size;
         this.from = from;

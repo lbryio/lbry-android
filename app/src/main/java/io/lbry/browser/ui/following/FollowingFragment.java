@@ -1,7 +1,6 @@
 package io.lbry.browser.ui.following;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,11 +36,11 @@ import io.lbry.browser.dialog.ContentFromDialogFragment;
 import io.lbry.browser.dialog.ContentSortDialogFragment;
 import io.lbry.browser.dialog.DiscoverDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
-import io.lbry.browser.listener.DarkThemeChangeListener;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
 import io.lbry.browser.tasks.lbryinc.ChannelSubscribeTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimSearchTask;
@@ -59,7 +58,6 @@ import io.lbry.browser.utils.Predefined;
 public class FollowingFragment extends BaseFragment implements
         FetchSubscriptionsTask.FetchSubscriptionsHandler,
         ChannelItemSelectionListener,
-        DarkThemeChangeListener,
         DownloadActionListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -585,7 +583,7 @@ public class FollowingFragment extends BaseFragment implements
         contentClaimSearchLoading = true;
         Helper.setViewVisibility(noContentView, View.GONE);
         Map<String, Object> claimSearchOptions = buildContentOptions();
-        contentClaimSearchTask = new ClaimSearchTask(claimSearchOptions, Lbry.LBRY_TV_CONNECTION_STRING, getLoadingView(), new ClaimSearchTask.ClaimSearchResultHandler() {
+        contentClaimSearchTask = new ClaimSearchTask(claimSearchOptions, Lbry.LBRY_TV_CONNECTION_STRING, getLoadingView(), new ClaimSearchResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
                 if (contentListAdapter == null) {
@@ -651,7 +649,7 @@ public class FollowingFragment extends BaseFragment implements
                 buildSuggestedOptions(),
                 Lbry.LBRY_TV_CONNECTION_STRING,
                 suggestedChannelAdapter == null || suggestedChannelAdapter.getItemCount() == 0 ? bigContentLoading : contentLoading,
-                new ClaimSearchTask.ClaimSearchResultHandler() {
+                new ClaimSearchResultHandler() {
                     @Override
                     public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
                         suggestedHasReachedEnd = hasReachedEnd;
@@ -802,15 +800,6 @@ public class FollowingFragment extends BaseFragment implements
             }
         } catch (JSONException ex) {
             // invalid file info for download
-        }
-    }
-
-    public void onDarkThemeToggled() {
-        Helper.refreshRecyclerView(contentList);
-        Helper.refreshRecyclerView(horizontalChannelList);
-        Helper.refreshRecyclerView(suggestedChannelGrid);
-        if (discoverDialog != null) {
-            //discoverDialog.onDarkThemeToggled();
         }
     }
 }
