@@ -174,7 +174,7 @@
     <string name="receive_credits">Receive Credits</string>
     <string name="use_this_address_hint">Use this wallet address to receive credits sent by another user (or yourself).</string>
     <string name="get_new_address">Get new address</string>
-    <string name="generate_address_hint">You can generate a new address at any time, and any previous addresses will conintue to work. Using multiple addresses can be helpful for keeping track of incoming payments from multiple sources.</string>
+    <string name="generate_address_hint">You can generate a new address at any time, and any previous addresses will continue to work. Using multiple addresses can be helpful for keeping track of incoming payments from multiple sources.</string>
 
     <string name="send_credits">Send Credits</string>
     <string name="recipient_address">Recipient address</string>
