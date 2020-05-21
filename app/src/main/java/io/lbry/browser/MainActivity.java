@@ -1022,6 +1022,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public void clearWunderbarFocus(View view) {
         findViewById(R.id.wunderbar).clearFocus();
         findViewById(R.id.app_bar_main_container).requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
     public View getWunderbar() {
         return findViewById(R.id.wunderbar);

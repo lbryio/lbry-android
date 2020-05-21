@@ -64,8 +64,6 @@ public class ChannelSubscribeTask extends AsyncTask<Void, Void, Boolean> {
         } catch (LbryioRequestException | LbryioResponseException | SQLiteException ex) {
             error = ex;
             return false;
-        } finally {
-            Helper.closeDatabase(db);
         }
 
         return true;

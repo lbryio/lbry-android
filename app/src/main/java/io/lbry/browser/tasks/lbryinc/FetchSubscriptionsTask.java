@@ -64,8 +64,6 @@ public class FetchSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
         } catch (ClassCastException | LbryioRequestException | LbryioResponseException | JSONException | IllegalStateException ex) {
             error = ex;
             return null;
-        } finally {
-            Helper.closeDatabase(db);
         }
 
         return subscriptions;
