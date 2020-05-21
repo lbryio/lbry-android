@@ -573,6 +573,32 @@ public class PublishFormFragment extends BaseFragment implements
             inputAddress.setText(currentClaim.getName());
             inputDeposit.setText(currentClaim.getAmount());
 
+            if (metadata.getLanguages() != null && metadata.getLanguages().size() > 0) {
+                // get the first language
+                String langCode = metadata.getLanguages().get(0);
+                int langCodePosition = ((LanguageSpinnerAdapter) languageSpinner.getAdapter()).getItemPosition(langCode);
+                if (langCodePosition > -1) {
+                    languageSpinner.setSelection(langCodePosition);
+                }
+            }
+
+            if (!Helper.isNullOrEmpty(metadata.getLicense())) {
+                LicenseSpinnerAdapter adapter = (LicenseSpinnerAdapter) licenseSpinner.getAdapter();
+                int licPosition = adapter.getItemPosition(metadata.getLicense());
+                if (licPosition == -1) {
+                    licPosition = adapter.getItemPosition(Predefined.LICENSE_OTHER);
+                }
+                if (licPosition > -1) {
+                    licenseSpinner.setSelection(licPosition);
+                }
+
+                License selectedLicense = (License) licenseSpinner.getSelectedItem();
+                boolean otherLicense = Arrays.asList(
+                        Predefined.LICENSE_COPYRIGHTED.toLowerCase(),
+                        Predefined.LICENSE_OTHER.toLowerCase()).contains(selectedLicense.getName().toLowerCase());
+                inputOtherLicenseDescription.setText(otherLicense ? metadata.getLicense() : null);
+            }
+
             inputAddress.setEnabled(false);
             editMode = true;
             editFieldsLoaded = true;
@@ -1057,6 +1083,19 @@ public class PublishFormFragment extends BaseFragment implements
         saveInProgress = true;
 
         // disable input views
+        Helper.setViewEnabled(channelSpinner, false);
+        Helper.setViewEnabled(inputTitle, false);
+        Helper.setViewEnabled(inputDescription, false);
+        Helper.setViewEnabled(inputTagFilter, false);
+        Helper.setViewEnabled(inputAddress, false);
+        Helper.setViewEnabled(inputDeposit, false);
+        Helper.setViewEnabled(inputPrice, false);
+        Helper.setViewEnabled(inputOtherLicenseDescription, false);
+        Helper.setViewEnabled(switchPrice, false);
+        Helper.setViewEnabled(languageSpinner, false);
+        Helper.setViewEnabled(licenseSpinner, false);
+        Helper.setViewEnabled(priceCurrencySpinner, false);
+        Helper.setViewEnabled(linkGenerateAddress, false);
 
         Helper.setViewEnabled(linkShowExtraFields, false);
         Helper.setViewEnabled(linkPublishCancel, false);
@@ -1064,6 +1103,20 @@ public class PublishFormFragment extends BaseFragment implements
     }
 
     private void postSave() {
+        Helper.setViewEnabled(channelSpinner, true);
+        Helper.setViewEnabled(inputTitle, true);
+        Helper.setViewEnabled(inputDescription, true);
+        Helper.setViewEnabled(inputTagFilter, false);
+        Helper.setViewEnabled(inputAddress, editMode ? false : true);
+        Helper.setViewEnabled(inputDeposit, true);
+        Helper.setViewEnabled(inputPrice, true);
+        Helper.setViewEnabled(inputOtherLicenseDescription, true);
+        Helper.setViewEnabled(switchPrice, true);
+        Helper.setViewEnabled(languageSpinner, true);
+        Helper.setViewEnabled(licenseSpinner, true);
+        Helper.setViewEnabled(priceCurrencySpinner, true);
+        Helper.setViewEnabled(linkGenerateAddress, true);
+
         Helper.setViewEnabled(linkShowExtraFields, true);
         Helper.setViewEnabled(linkPublishCancel, true);
         Helper.setViewEnabled(buttonPublish,  true);
@@ -1102,6 +1155,10 @@ public class PublishFormFragment extends BaseFragment implements
         Helper.setViewVisibility(noTagResultsView, suggestedTagsAdapter == null || suggestedTagsAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
     public void addTag(Tag tag) {
+        if (saveInProgress) {
+            return;
+        }
+
         if (addedTagsAdapter.getTags().contains(tag)) {
             Snackbar.make(getView(), getString(R.string.tag_already_added, tag.getName()), Snackbar.LENGTH_LONG).show();
             return;
@@ -1121,6 +1178,9 @@ public class PublishFormFragment extends BaseFragment implements
         checkNoTagResults();
     }
     public void removeTag(Tag tag) {
+        if (saveInProgress) {
+            return;
+        }
         addedTagsAdapter.removeTag(tag);
         updateSuggestedTags(currentFilter, SUGGESTED_LIMIT, false);
         checkNoAddedTags();

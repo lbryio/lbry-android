@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import io.lbry.browser.R;
+import io.lbry.browser.model.Language;
 import io.lbry.browser.model.License;
 import io.lbry.browser.utils.Predefined;
 
@@ -21,6 +22,15 @@ public class LicenseSpinnerAdapter extends ArrayAdapter<License> {
         super(context, resource, 0, Predefined.LICENSES);
         inflater = LayoutInflater.from(context);
         layoutResourceId = resource;
+    }
+    public int getItemPosition(String name) {
+        for (int i = 0; i < Predefined.LICENSES.size(); i++) {
+            License lic = Predefined.LICENSES.get(i);
+            if (lic.getName().equalsIgnoreCase(name)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override

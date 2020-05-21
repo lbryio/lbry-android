@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import io.lbry.browser.R;
+import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.Language;
 import io.lbry.browser.utils.Predefined;
 
@@ -21,6 +22,16 @@ public class LanguageSpinnerAdapter extends ArrayAdapter<Language> {
         super(context, resource, 0, Predefined.PUBLISH_LANGUAGES);
         inflater = LayoutInflater.from(context);
         layoutResourceId = resource;
+    }
+
+    public int getItemPosition(String languageCode) {
+        for (int i = 0; i < Predefined.PUBLISH_LANGUAGES.size(); i++) {
+            Language lang = Predefined.PUBLISH_LANGUAGES.get(i);
+            if (lang.getCode().equalsIgnoreCase(languageCode)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
