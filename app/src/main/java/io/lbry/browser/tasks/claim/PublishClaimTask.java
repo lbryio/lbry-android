@@ -21,14 +21,12 @@ import io.lbry.browser.utils.Lbry;
 public class PublishClaimTask extends AsyncTask<Void, Void, Claim> {
     private Claim claim;
     private String filePath;
-    private boolean update;
     private View progressView;
     private ClaimResultHandler handler;
     private Exception error;
-    public PublishClaimTask(Claim claim, String filePath, boolean update, View progressView, ClaimResultHandler handler) {
+    public PublishClaimTask(Claim claim, String filePath, View progressView, ClaimResultHandler handler) {
         this.claim = claim;
         this.filePath = filePath;
-        this.update = update;
         this.progressView = progressView;
         this.handler = handler;
     }
@@ -63,8 +61,15 @@ public class PublishClaimTask extends AsyncTask<Void, Void, Claim> {
         if (claim.getSigningChannel() != null) {
             options.put("channel_id", claim.getSigningChannel().getClaimId());
         }
-
-        // TODO: license, license_url, languages
+        if (metadata.getLanguages() != null && metadata.getLanguages().size() > 0) {
+            options.put("languages", metadata.getLanguages());
+        }
+        if (!Helper.isNullOrEmpty(metadata.getLicense())) {
+            options.put("license", metadata.getLicense());
+        }
+        if (!Helper.isNullOrEmpty(metadata.getLicenseUrl())) {
+            options.put("license_url", metadata.getLicenseUrl());
+        }
 
         Claim claimResult = null;
         try {

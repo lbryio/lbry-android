@@ -121,7 +121,8 @@
                     android:id="@+id/publish_form_video_opt_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -492,14 +493,14 @@
                                 android:layout_marginTop="4dp" />
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/publish_form_license_desc_input_layout"
+                                android:id="@+id/publish_form_license_other_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="16dp"
                                 android:hint="@string/license_desc"
                                 android:visibility="gone">
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/publish_form_license_desc_input"
+                                    android:id="@+id/publish_form_input_license_other"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/inter"

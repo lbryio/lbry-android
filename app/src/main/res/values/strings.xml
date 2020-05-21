@@ -166,7 +166,7 @@
 
     <string name="none">None</string>
     <string name="public_domain">Public Domain</string>
-    <string name="copyright">Copyright</string>
+    <string name="copyrighted">Copyrighted</string>
     <string name="cca_4_0_international">Creative Commons Attribution 4.0 International</string>
     <string name="cca_sa_4_0_international">Creative Commons Attribution-ShareAlike 4.0 International</string>
     <string name="cca_nd_4_0_international">Creative Commons Attribution-NoDerivatives 4.0 International</string>

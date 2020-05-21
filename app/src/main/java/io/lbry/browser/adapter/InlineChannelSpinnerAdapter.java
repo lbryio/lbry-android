@@ -41,6 +41,16 @@ public class InlineChannelSpinnerAdapter extends ArrayAdapter<Claim> {
         }
     }
 
+    public int getItemPosition(Claim item) {
+        for (int i = 0; i < channels.size(); i++) {
+            Claim channel = channels.get(i);
+            if (item.getClaimId().equalsIgnoreCase(channel.getClaimId())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @Override
     public View getDropDownView(int position, View view, ViewGroup parent) {
         return createView(position, view, parent);

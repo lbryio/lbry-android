@@ -377,11 +377,12 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         String coverUrl = claim.getCoverUrl();
         textTitle.setText(Helper.isNullOrEmpty(claim.getTitle()) ? claim.getName() : claim.getTitle());
 
-        if (!Helper.isNullOrEmpty(coverUrl)) {
-            Glide.with(getContext().getApplicationContext()).load(coverUrl).centerCrop().into(imageCover);
+        Context context = getContext();
+        if (context != null && !Helper.isNullOrEmpty(coverUrl)) {
+            Glide.with(context.getApplicationContext()).load(coverUrl).centerCrop().into(imageCover);
         }
-        if (!Helper.isNullOrEmpty(thumbnailUrl)) {
-            Glide.with(getContext().getApplicationContext()).load(thumbnailUrl).apply(RequestOptions.circleCropTransform()).into(imageThumbnail);
+        if (context != null && !Helper.isNullOrEmpty(thumbnailUrl)) {
+            Glide.with(context.getApplicationContext()).load(thumbnailUrl).apply(RequestOptions.circleCropTransform()).into(imageThumbnail);
             noThumbnailView.setVisibility(View.GONE);
         } else {
             imageThumbnail.setVisibility(View.GONE);

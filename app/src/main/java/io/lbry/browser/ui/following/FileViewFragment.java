@@ -574,8 +574,14 @@ public class FileViewFragment extends BaseFragment implements
             public void onClick(View view) {
                 ImageView descIndicator = root.findViewById(R.id.file_view_desc_toggle_arrow);
                 View descriptionArea = root.findViewById(R.id.file_view_description_area);
+
+                boolean hasDescription = claim != null && !Helper.isNullOrEmpty(claim.getDescription());
+                boolean hasTags = claim != null && claim.getTags() != null && claim.getTags().size() > 0;
+
                 if (descriptionArea.getVisibility() != View.VISIBLE) {
-                    descriptionArea.setVisibility(View.VISIBLE);
+                    if (hasDescription || hasTags) {
+                        descriptionArea.setVisibility(View.VISIBLE);
+                    }
                     descIndicator.setImageResource(R.drawable.ic_arrow_dropup);
                 } else {
                     descriptionArea.setVisibility(View.GONE);

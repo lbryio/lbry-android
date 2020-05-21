@@ -44,6 +44,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +54,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +62,8 @@ import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.InlineChannelSpinnerAdapter;
+import io.lbry.browser.adapter.LanguageSpinnerAdapter;
+import io.lbry.browser.adapter.LicenseSpinnerAdapter;
 import io.lbry.browser.adapter.TagListAdapter;
 import io.lbry.browser.listener.FilePickerListener;
 import io.lbry.browser.listener.SdkStatusListener;
@@ -68,6 +72,8 @@ import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.Fee;
 import io.lbry.browser.model.GalleryItem;
+import io.lbry.browser.model.Language;
+import io.lbry.browser.model.License;
 import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.WalletBalance;
@@ -142,6 +148,8 @@ public class PublishFormFragment extends BaseFragment implements
     private TextInputEditText inputPrice;
     private TextInputEditText inputAddress;
     private TextInputEditText inputDeposit;
+    private TextInputEditText inputOtherLicenseDescription;
+    private TextInputLayout layoutOtherLicenseDescription;
     private View inlineDepositBalanceContainer;
     private TextView inlineDepositBalanceValue;
 
@@ -161,11 +169,11 @@ public class PublishFormFragment extends BaseFragment implements
     private String lastSelectedThumbnailFile;
     private String uploadedThumbnailUrl;
     private boolean editFieldsLoaded;
+    private boolean editChannelSpinnerLoaded;
     private Claim currentClaim;
     private GalleryItem currentGalleryItem;
     private String currentFilePath;
     private String transcodedFilePath;
-    private boolean fileLoaded;
 
     private View mediaContainer;
     private View uploadProgress;
@@ -175,7 +183,6 @@ public class PublishFormFragment extends BaseFragment implements
     private TextView textOptimizationProgress;
     private TextView textOptimizationStatus;
     private TextView textOptimizationElapsed;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -215,7 +222,11 @@ public class PublishFormFragment extends BaseFragment implements
         inputPrice = root.findViewById(R.id.publish_form_input_price);
         inputAddress = root.findViewById(R.id.publish_form_input_address);
         inputDeposit = root.findViewById(R.id.publish_form_input_deposit);
+        inputOtherLicenseDescription = root.findViewById(R.id.publish_form_input_license_other);
+        layoutOtherLicenseDescription = root.findViewById(R.id.publish_form_license_other_layout);
         priceCurrencySpinner = root.findViewById(R.id.publish_form_currency_spinner);
+        languageSpinner = root.findViewById(R.id.publish_form_language_spinner);
+        licenseSpinner = root.findViewById(R.id.publish_form_license_spinner);
 
         linkPublishCancel = root.findViewById(R.id.publish_form_cancel);
         buttonPublish = root.findViewById(R.id.publish_form_publish_button);
@@ -263,11 +274,35 @@ public class PublishFormFragment extends BaseFragment implements
     }
 
     private void initUi() {
+        Context context = getContext();
+        languageSpinner.setAdapter(new LanguageSpinnerAdapter(context, R.layout.spinner_item_generic));
+        licenseSpinner.setAdapter(new LicenseSpinnerAdapter(context, R.layout.spinner_item_generic));
+
+        licenseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                License license = (License) adapterView.getAdapter().getItem(position);
+                boolean otherLicense = Arrays.asList(
+                        Predefined.LICENSE_COPYRIGHTED.toLowerCase(),
+                        Predefined.LICENSE_OTHER.toLowerCase()).contains(license.getName().toLowerCase());
+                Helper.setViewVisibility(layoutOtherLicenseDescription, otherLicense ? View.VISIBLE : View.GONE);
+                if (!otherLicense) {
+                    inputOtherLicenseDescription.setText(null);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         linkGenerateAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputAddress.setText(Helper.generateUrl());
+                if (!editMode) {
+                    inputAddress.setText(Helper.generateUrl());
+                }
             }
         });
 
@@ -474,9 +509,7 @@ public class PublishFormFragment extends BaseFragment implements
                     this.currentClaim = claim;
                     editFieldsLoaded = false;
                 }
-            }
-
-            if (params.containsKey("galleryItem")) {
+            } else if (params.containsKey("galleryItem")) {
                 currentGalleryItem = (GalleryItem) params.get("galleryItem");
             } else if (params.containsKey("directFilePath")) {
                 currentFilePath = (String) params.get("directFilePath");
@@ -516,8 +549,33 @@ public class PublishFormFragment extends BaseFragment implements
 
     private void updateFieldsFromCurrentClaim() {
         if (currentClaim != null && !editFieldsLoaded) {
+            Context context = getContext();
+            Claim.StreamMetadata metadata = (Claim.StreamMetadata) currentClaim.getValue();
+            uploadedThumbnailUrl = currentClaim.getThumbnailUrl();
+            if (context != null && !Helper.isNullOrEmpty(uploadedThumbnailUrl)) {
+                Glide.with(context.getApplicationContext()).load(uploadedThumbnailUrl).centerCrop().into(imageThumbnail);
+            }
 
+            inputTitle.setText(currentClaim.getTitle());
+            inputDescription.setText(currentClaim.getDescription());
+            if (addedTagsAdapter != null && currentClaim.getTagObjects() != null) {
+                addedTagsAdapter.addTags(currentClaim.getTagObjects());
+                updateSuggestedTags(currentFilter, SUGGESTED_LIMIT, true);
+            }
 
+            if (metadata.getFee() != null) {
+                Fee fee = metadata.getFee();
+                switchPrice.setChecked(true);
+                inputPrice.setText(fee.getAmount());
+                priceCurrencySpinner.setSelection("lbc".equalsIgnoreCase(fee.getCurrency()) ? 0 : 1);
+            }
+
+            inputAddress.setText(currentClaim.getName());
+            inputDeposit.setText(currentClaim.getAmount());
+
+            inputAddress.setEnabled(false);
+            editMode = true;
+            editFieldsLoaded = true;
         }
     }
 
@@ -858,12 +916,20 @@ public class PublishFormFragment extends BaseFragment implements
         }
 
         if (channelSpinnerAdapter != null && channelSpinner != null) {
-            if (channelSpinnerAdapter.getCount() > 2) {
-                // if anonymous displayed, select first channel if available
-                channelSpinner.setSelection(2);
-            } else if (channelSpinnerAdapter.getCount() > 1) {
-                // select anonymous
-                channelSpinner.setSelection(1);
+            if (editMode && currentClaim.getSigningChannel() != null && !editChannelSpinnerLoaded) {
+                int position = channelSpinnerAdapter.getItemPosition(currentClaim.getSigningChannel());
+                if (position > -1) {
+                    channelSpinner.setSelection(position);
+                }
+                editChannelSpinnerLoaded = true;
+            } else {
+                if (channelSpinnerAdapter.getCount() > 2) {
+                    // if anonymous displayed, select first channel if available
+                    channelSpinner.setSelection(2);
+                } else if (channelSpinnerAdapter.getCount() > 1) {
+                    // select anonymous
+                    channelSpinner.setSelection(1);
+                }
             }
         }
     }
@@ -889,14 +955,26 @@ public class PublishFormFragment extends BaseFragment implements
             fee.setAmount(Helper.getValue(inputPrice.getText()));
             metadata.setFee(fee);
         }
-
         if (!Helper.isNullOrEmpty(uploadedThumbnailUrl)) {
             Claim.Resource thumbnail = new Claim.Resource();
             thumbnail.setUrl(uploadedThumbnailUrl);
             metadata.setThumbnail(thumbnail);
         }
 
-        // TODO: License, LicenseDescription, LicenseUrl, Language
+        Language selectedLanguage = (Language) languageSpinner.getSelectedItem();
+        if (selectedLanguage != null) {
+            metadata.setLanguages(Arrays.asList(selectedLanguage.getCode()));
+        }
+
+        License selectedLicense = (License) licenseSpinner.getSelectedItem();
+        if (selectedLicense != null) {
+            boolean otherLicense = Arrays.asList(
+                    Predefined.LICENSE_COPYRIGHTED.toLowerCase(),
+                    Predefined.LICENSE_OTHER.toLowerCase()).contains(selectedLicense.getName().toLowerCase());
+            metadata.setLicense(otherLicense ? Helper.getValue(inputOtherLicenseDescription.getText()) : selectedLicense.getName());
+            metadata.setLicenseUrl(selectedLicense.getUrl());
+        }
+
         claim.setValueType(Claim.TYPE_STREAM);
         claim.setValue(metadata);
 
@@ -916,13 +994,13 @@ public class PublishFormFragment extends BaseFragment implements
             showError(getString(R.string.address_invalid_characters));
             return false;
         }
-        if (Helper.claimNameExists(claim.getName())) {
+        if (!editMode && Helper.claimNameExists(claim.getName())) {
             showError(getString(R.string.address_already_used));
             return false;
         }
 
         String publishFilePath = currentGalleryItem != null ? currentGalleryItem.getFilePath() : currentFilePath;
-        if (Helper.isNullOrEmpty(publishFilePath) && Helper.isNullOrEmpty(transcodedFilePath)) {
+        if (!editMode && Helper.isNullOrEmpty(publishFilePath) && Helper.isNullOrEmpty(transcodedFilePath)) {
             showError(getString(R.string.no_file_selected));
             return false;
         }
@@ -936,7 +1014,7 @@ public class PublishFormFragment extends BaseFragment implements
             finalFilePath = currentGalleryItem != null ? currentGalleryItem.getFilePath() : currentFilePath;
         }
         saveInProgress = true;
-        PublishClaimTask task = new PublishClaimTask(claim, finalFilePath, editMode, progressPublish, new ClaimResultHandler() {
+        PublishClaimTask task = new PublishClaimTask(claim, finalFilePath, progressPublish, new ClaimResultHandler() {
             @Override
             public void beforeStart() {
                 preSave();
@@ -945,8 +1023,6 @@ public class PublishFormFragment extends BaseFragment implements
             @Override
             public void onSuccess(Claim claimResult) {
                 postSave();
-
-                android.util.Log.d("#HELP", claimResult.toString());
 
                 // Run the logPublish task
                 if (!BuildConfig.DEBUG) {

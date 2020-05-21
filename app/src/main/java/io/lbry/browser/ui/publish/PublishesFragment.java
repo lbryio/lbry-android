@@ -34,6 +34,7 @@ import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.tasks.claim.AbandonHandler;
 import io.lbry.browser.tasks.claim.AbandonStreamTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
@@ -82,7 +83,7 @@ public class PublishesFragment extends BaseFragment implements ActionMode.Callba
         public void onClick(View view) {
             Context context = getContext();
             if (context instanceof MainActivity) {
-                //((MainActivity) context).openPublishForm(null);
+                ((MainActivity) context).openFragment(PublishFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH);
             }
         }
     };
@@ -245,9 +246,7 @@ public class PublishesFragment extends BaseFragment implements ActionMode.Callba
                 // start channel editor with the claim
                 Context context = getContext();
                 if (context instanceof MainActivity) {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("claim", claim);
-                    /*((MainActivity) context).openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);*/
+                    ((MainActivity) context).openPublishForm(claim);
                 }
 
                 actionMode.finish();

@@ -2,6 +2,11 @@ package io.lbry.browser.utils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import io.lbry.browser.R;
+import io.lbry.browser.model.Language;
+import io.lbry.browser.model.License;
 
 public final class Predefined {
     public static final List<String> DEFAULT_KNOWN_TAGS = Arrays.asList(
@@ -1846,5 +1851,48 @@ public final class Predefined {
             "Wren",
             "Yak",
             "Zebra"
+    );
+
+    public static final List<Language> PUBLISH_LANGUAGES = Arrays.asList(
+            new Language("en", "English", R.string.english),
+            new Language("zh", "Chinese", R.string.chinese),
+            new Language("fr", "French", R.string.french),
+            new Language("de", "German", R.string.german),
+            new Language("jp", "Japanese", R.string.japanese),
+            new Language("ru", "Russian", R.string.russian),
+            new Language("es", "Spanish", R.string.spanish),
+            new Language("id", "Indonesian", R.string.indonesian),
+            new Language("it", "Italian", R.string.italian),
+            new Language("nl", "Dutch", R.string.dutch),
+            new Language("tr", "Turkish", R.string.turkish),
+            new Language("pl", "Polish", R.string.polish),
+            new Language("ms", "Malay", R.string.malay),
+            new Language("pt", "Portuguese", R.string.portuguese),
+            new Language("vi", "Vietnamese", R.string.vietnamese),
+            new Language("th", "Thai", R.string.thai),
+            new Language("ar", "Arabic", R.string.arabic),
+            new Language("cs", "Czech", R.string.czech),
+            new Language("hr", "Croatian", R.string.croatian),
+            new Language("km", "Cambodian", R.string.cambodian),
+            new Language("ko", "Korean", R.string.korean),
+            new Language("no", "Norwegian", R.string.norwegian),
+            new Language("ro", "Romanian", R.string.romanian),
+            new Language("hi", "Hindi", R.string.hindi),
+            new Language("el", "Greek", R.string.greek)
+    );
+
+    public static final String LICENSE_COPYRIGHTED = "Copyrighted";
+    public static final String LICENSE_OTHER = "Other";
+    public static final List<License> LICENSES = Arrays.asList(
+            new License("None", R.string.none),
+            new License("Public Domain", R.string.public_domain),
+            new License("Creative Commons Attribution 4.0 International", "https://creativecommons.org/licenses/by/4.0/legalcode", R.string.cca_4_0_international),
+            new License("Creative Commons Attribution-ShareAlike 4.0 International", "https://creativecommons.org/licenses/by-sa/4.0/legalcode", R.string.cca_sa_4_0_international),
+            new License("Creative Commons Attribution-NoDerivatives 4.0 International", "https://creativecommons.org/licenses/by-nd/4.0/legalcode", R.string.cca_nd_4_0_international),
+            new License("Creative Commons Attribution-NonCommercial 4.0 International", "https://creativecommons.org/licenses/by-nc/4.0/legalcode", R.string.cca_nc_4_0_international),
+            new License("Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International", "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode", R.string.cca_nc_sa_4_0_international),
+            new License("Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International", "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode", R.string.cca_nc_nd_4_0_international),
+            new License(LICENSE_COPYRIGHTED, R.string.copyrighted),
+            new License(LICENSE_OTHER, R.string.other)
     );
 }
