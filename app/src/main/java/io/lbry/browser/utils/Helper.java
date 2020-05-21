@@ -37,6 +37,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -67,12 +68,13 @@ public final class Helper {
     public static final MediaType FORM_MEDIA_TYPE = MediaType.parse("application/x-www-form-urlencoded");
     public static final MediaType JSON_MEDIA_TYPE = MediaType.get("application/json; charset=utf-8");
     public static final int CONTENT_PAGE_SIZE = 25;
-    public static final double MIN_DEPOSIT = 0.05;
+    public static final double MIN_DEPOSIT = 0.01;
     public static final String LBC_CURRENCY_FORMAT_PATTERN = "#,###.##";
     public static final String FILE_SIZE_FORMAT_PATTERN = "#,###.#";
     public static final DecimalFormat LBC_CURRENCY_FORMAT = new DecimalFormat(LBC_CURRENCY_FORMAT_PATTERN);
     public static final DecimalFormat FULL_LBC_CURRENCY_FORMAT = new DecimalFormat("#,###.########");
     public static final DecimalFormat SIMPLE_CURRENCY_FORMAT = new DecimalFormat("#,##0.00");
+    public static final SimpleDateFormat FILESTAMP_FORMAT =  new SimpleDateFormat("yyyyMMdd_HHmmss");
     public static final String EXPLORER_TX_PREFIX = "https://explorer.lbry.com/tx";
 
     public static boolean isNull(String value) {
@@ -438,6 +440,14 @@ public final class Helper {
         }
         return false;
     }
+    public static boolean claimNameExists(String claimName) {
+        for (Claim claim : Lbry.ownClaims) {
+            if (claimName.equalsIgnoreCase(claim.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static String getRealPathFromURI_API19(final Context context, final Uri uri) {
         return getRealPathFromURI_API19(context, uri, false);
@@ -717,5 +727,15 @@ public final class Helper {
         rv.setAdapter(null);
         rv.setAdapter(adapter);
         rv.scrollToPosition(prevScrollPosition > 0 ? prevScrollPosition : 0);
+    }
+
+    public static String makeid(int length) {
+        Random random = new Random();
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder id = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            id.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return id.toString();
     }
 }

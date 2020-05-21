@@ -118,6 +118,82 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/publish_form_video_opt_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp">
+                            <TextView
+                                android:layout_centerVertical="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:textSize="20sp"
+                                android:text="@string/video_optimization" />
+                            <TextView
+                                android:id="@+id/publish_form_video_opt_elapsed"
+                                android:layout_centerVertical="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:fontFamily="@font/inter"
+                                android:textFontWeight="300"
+                                android:textSize="16sp" />
+                        </RelativeLayout>
+                        <TextView
+                            android:id="@+id/publish_form_video_opt_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/video_being_optimized"
+                            android:textFontWeight="300"
+                            android:textSize="12sp" />
+
+                        <ProgressBar
+                            android:id="@+id/publish_form_video_opt_real_progress"
+                            android:layout_marginTop="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp"
+                            android:layout_centerVertical="true"
+                            android:visibility="gone"
+                            style="?android:progressBarStyleHorizontal"
+                            />
+
+                        <RelativeLayout
+                            android:id="@+id/publish_form_video_opt_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp">
+                            <ProgressBar
+                                android:id="@+id/publish_form_video_opt_progress"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="16dp"
+                                android:visibility="gone" />
+
+                            <TextView
+                                android:id="@+id/publish_form_video_opt_progress_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toRightOf="@id/publish_form_video_opt_progress"
+                                android:fontFamily="@font/inter"
+                                android:textFontWeight="300"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp">
@@ -252,13 +328,31 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="16dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:fontFamily="@font/inter"
-                            android:textSize="20sp"
-                            android:text="@string/content_address" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_centerVertical="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:fontFamily="@font/inter"
+                                android:textSize="20sp"
+                                android:text="@string/content_address" />
+                            <TextView
+                                android:id="@+id/publish_form_generate_address"
+                                android:background="?attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:fontFamily="@font/inter"
+                                android:textSize="14sp"
+                                android:text="@string/randomize"
+                                android:textFontWeight="300" />
+                        </RelativeLayout>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -449,9 +543,17 @@
                     android:text="@string/cancel"
                     android:textFontWeight="300" />
 
+
+                <ProgressBar
+                    android:id="@+id/publish_form_publishing"
+                    android:layout_centerVertical="true"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_toLeftOf="@id/publish_form_publish_button"
+                    android:visibility="gone" />
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/publish_form_publish_button"
-                    android:enabled="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

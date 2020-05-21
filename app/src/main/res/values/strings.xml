@@ -107,6 +107,7 @@
     <string name="price">Price</string>
     <string name="free_publish">Your content will be free. Press the toggle to set a price.</string>
     <string name="content_address">Content address</string>
+    <string name="randomize">Randomize</string>
     <string name="address">Address</string>
     <string name="content_address_desc">The address where people can find your content (ex. lbry://myvideo)</string>
     <string name="license">License</string>
@@ -115,7 +116,26 @@
     <string name="show_extra_fields">Show extra fields</string>
     <string name="hide_extra_fields">Hide extra fields</string>
     <string name="no_file_found">No file found to publish.</string>
-    <string name="sdk_initializing_publish">You cannot publish content right now beceause the background service is still initializing.</string>
+    <string name="video_optimization">Video optimization</string>
+    <string name="thumbnail_creation_failed">A thumbnail could not be automatically created from your content file.</string>
+    <string name="video_being_optimized">Your video is being optimized for better support on a wide range of devices. You can fill out the remaining fields below while this is in progress.</string>
+    <string name="video_optimized">Your video was successfully optimized for better playback across as many devices as possible. Please proceed to publish your content.</string>
+    <string name="video_optimize_failed">Your video could not be optimized. The file will be uploaded with no changes.</string>
+    <string name="completed_video_duration">Completed Video Duration: %1$s</string>
+    <string name="sdk_initializing_publish">You cannot publish content right now because the background service is still initializing.</string>
+    <string name="publish_successful">Your content was successfully published. It may take a few moments to appear on the blockchain.</string>
+    <string name="transcode_in_progress">Video optimization is in progress. If you wish to cancel, press Cancel at the bottom of the page.</string>
+    <string name="cannot_capture_video">There is no camera app available to record videos on this device.</string>
+    <string name="cannot_take_photo">There is no camera app available to take photos on this device.</string>
+
+    <string name="please_provide_title">Please provide a title.</string>
+    <string name="please_specify_address">Please specify an address where people can find your content.</string>
+    <string name="address_invalid_characters">Your content address contains invalid characters.</string>
+    <string name="address_already_used">You have already published to the specified content address. Please enter a new address.</string>
+    <string name="no_file_selected">No file selected. Please choose a video or take a photo, or select a file before publishing.</string>
+    <string name="price_amount_not_set">Please enter a price or turn off the toggle to make your content free.</string>
+    <string name="publish_no_thumbnail">Please select a thumbnail to upload before publishing.</string>
+    <string name="publish_thumbnail_in_progress">Please wait for the thumbnail to finish uploading before publishing.</string>
 
     <string name="language">Language</string>
     <string name="english">English</string>

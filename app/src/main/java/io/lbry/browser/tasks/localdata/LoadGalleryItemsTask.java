@@ -105,7 +105,7 @@ public class LoadGalleryItemsTask extends AsyncTask<Void, GalleryItem, List<Gall
                 }
 
                 if (file.exists() && file.length() > 0) {
-                    item.setThumbnailUrl(Uri.fromFile(file).toString());
+                    item.setThumbnailPath(file.getAbsolutePath());
                     itemsWithThumbnails.add(item);
                     publishProgress(item);
                 }

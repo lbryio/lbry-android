@@ -8,6 +8,6 @@ public class GalleryItem {
     private String name;
     private String filePath;
     private String type;
-    private String thumbnailUrl;
+    private String thumbnailPath;
     private long duration;
 }

@@ -38,6 +38,7 @@ import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.TagListAdapter;
+import io.lbry.browser.listener.FilePickerListener;
 import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
@@ -46,7 +47,7 @@ import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.tasks.UpdateSuggestedTagsTask;
 import io.lbry.browser.tasks.UploadImageTask;
-import io.lbry.browser.tasks.ChannelCreateUpdateTask;
+import io.lbry.browser.tasks.claim.ChannelCreateUpdateTask;
 import io.lbry.browser.tasks.claim.ClaimResultHandler;
 import io.lbry.browser.tasks.lbryinc.LogPublishTask;
 import io.lbry.browser.ui.BaseFragment;
@@ -54,11 +55,10 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
-import io.lbry.browser.utils.Predefined;
 import lombok.Getter;
 
 public class ChannelFormFragment extends BaseFragment implements
-        StoragePermissionListener, TagListAdapter.TagClickListener, WalletBalanceListener {
+        FilePickerListener, StoragePermissionListener, TagListAdapter.TagClickListener, WalletBalanceListener {
 
     private static final int SUGGESTED_LIMIT = 8;
 
@@ -289,16 +289,16 @@ public class ChannelFormFragment extends BaseFragment implements
     }
 
     private void validateAndSaveClaim(Claim claim) {
+        String channelName = claim.getName().startsWith("@") ? claim.getName().substring(1) : claim.getName();
+        if (Helper.isNullOrEmpty(channelName)) {
+            showError(getString(R.string.please_enter_channel_name));
+            return;
+        }
+        if (!LbryUri.isNameValid(channelName)) {
+            showError(getString(R.string.channel_name_invalid_characters));
+            return;
+        }
         if (!editMode) {
-            String channelName = claim.getName().startsWith("@") ? claim.getName().substring(1) : claim.getName();
-            if (Helper.isNullOrEmpty(channelName)) {
-                showError(getString(R.string.please_enter_channel_name));
-                return;
-            }
-            if (!LbryUri.isNameValid(channelName)) {
-                showError(getString(R.string.channel_name_invalid_characters));
-                return;
-            }
             if (Helper.channelExists(channelName)) {
                 showError(getString(R.string.channel_name_already_created));
                 return;
@@ -368,7 +368,7 @@ public class ChannelFormFragment extends BaseFragment implements
     private void showError(String message) {
         Context context = getContext();
         if (context != null) {
-            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
+            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
         }
     }
 
@@ -455,9 +455,9 @@ public class ChannelFormFragment extends BaseFragment implements
 
                 @Override
                 public void onError(Exception error) {
-                    Snackbar.make(getView(), R.string.image_upload_failed, Snackbar.LENGTH_LONG).setBackgroundTint(
-                            ContextCompat.getColor(context, R.color.red)
-                    ).show();
+                    if (getContext() != null) {
+                        showError(getString(R.string.image_upload_failed));
+                    }
                     if (coverFilePickerActive) {
                         // cover selected
                         imageCover.setImageResource(R.drawable.default_channel_cover);
@@ -498,6 +498,8 @@ public class ChannelFormFragment extends BaseFragment implements
             activity.showNavigationBackIcon();
             activity.lockDrawer();
             activity.hideFloatingWalletBalance();
+
+            activity.addFilePickerListener(this);
             activity.addWalletBalanceListener(this);
 
             ActionBar actionBar = activity.getSupportActionBar();
@@ -523,6 +525,7 @@ public class ChannelFormFragment extends BaseFragment implements
             activity.restoreToggle();
             activity.showFloatingWalletBalance();
             if (!MainActivity.startingFilePickerActivity) {
+                activity.removeFilePickerListener(this);
                 activity.removeNavFragment(ChannelFormFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
             }
         }

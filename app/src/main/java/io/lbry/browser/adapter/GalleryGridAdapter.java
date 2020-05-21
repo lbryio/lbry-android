@@ -11,14 +11,11 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.lbry.browser.R;
-import io.lbry.browser.listener.ChannelItemSelectionListener;
-import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.GalleryItem;
 import io.lbry.browser.utils.Helper;
 import lombok.Setter;
@@ -78,7 +75,7 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
     @Override
     public void onBindViewHolder(GalleryGridAdapter.ViewHolder vh, int position) {
         GalleryItem item = items.get(position);
-        String thumbnailUrl = item.getThumbnailUrl();
+        String thumbnailUrl = item.getThumbnailPath();
         Glide.with(context.getApplicationContext()).load(thumbnailUrl).centerCrop().into(vh.thumbnailView);
         vh.durationView.setVisibility(item.getDuration() > 0 ? View.VISIBLE : View.INVISIBLE);
         vh.durationView.setText(item.getDuration() > 0 ? Helper.formatDuration(Double.valueOf(item.getDuration() / 1000.0).longValue()) : null);

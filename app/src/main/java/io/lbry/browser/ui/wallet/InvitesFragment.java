@@ -41,7 +41,7 @@ import io.lbry.browser.model.lbryinc.Invitee;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.tasks.GenericTaskHandler;
-import io.lbry.browser.tasks.ChannelCreateUpdateTask;
+import io.lbry.browser.tasks.claim.ChannelCreateUpdateTask;
 import io.lbry.browser.tasks.claim.ClaimResultHandler;
 import io.lbry.browser.tasks.lbryinc.LogPublishTask;
 import io.lbry.browser.tasks.lbryinc.FetchInviteStatusTask;

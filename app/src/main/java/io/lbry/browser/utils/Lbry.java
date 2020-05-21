@@ -65,6 +65,7 @@ public final class Lbry {
     public static final String METHOD_FILE_LIST = "file_list";
     public static final String METHOD_FILE_DELETE = "file_delete";
     public static final String METHOD_GET = "get";
+    public static final String METHOD_PUBLISH = "publish";
 
     public static final String METHOD_WALLET_BALANCE = "wallet_balance";
     public static final String METHOD_WALLET_ENCRYPT = "wallet_encrypt";

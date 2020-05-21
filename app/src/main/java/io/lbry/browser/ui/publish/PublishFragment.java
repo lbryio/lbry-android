@@ -3,6 +3,7 @@ package io.lbry.browser.ui.publish;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -38,6 +39,7 @@ import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.GalleryGridAdapter;
 import io.lbry.browser.listener.CameraPermissionListener;
+import io.lbry.browser.listener.FilePickerListener;
 import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.model.GalleryItem;
 import io.lbry.browser.model.NavMenuItem;
@@ -47,9 +49,9 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 
-public class PublishFragment extends BaseFragment implements CameraPermissionListener, StoragePermissionListener {
+public class PublishFragment extends BaseFragment implements
+        CameraPermissionListener, FilePickerListener, StoragePermissionListener {
 
-    private boolean loadGalleryItemsPending;
     private PreviewView cameraPreview;
     private RecyclerView galleryGrid;
     private GalleryGridAdapter adapter;
@@ -60,6 +62,8 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
     private View buttonTakePhoto;
     private View buttonUpload;
 
+    private boolean loadGalleryItemsPending;
+    private boolean launchFilePickerPending;
     private boolean recordPending;
     private boolean takePhotoPending;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
@@ -93,6 +97,12 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
             @Override
             public void onClick(View view) {
                 checkCameraPermissionAndTakePhoto();
+            }
+        });
+        buttonUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkStoragePermissionAndLaunchFilePicker();
             }
         });
 
@@ -137,6 +147,11 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
     }
 
     private void checkCameraPermissionAndRecord() {
+        if (!Lbry.SDK_READY) {
+            Snackbar.make(getView(), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
         Context context = getContext();
         if (!MainActivity.hasPermission(Manifest.permission.CAMERA, context)) {
             recordPending = true;
@@ -147,11 +162,16 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
                     context,
                     true);
         } else  {
-            // start video record intent
+            record();
         }
     }
 
     private void checkCameraPermissionAndTakePhoto() {
+        if (!Lbry.SDK_READY) {
+            Snackbar.make(getView(), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
         Context context = getContext();
         if (!MainActivity.hasPermission(Manifest.permission.CAMERA, context)) {
             takePhotoPending = true;
@@ -161,8 +181,56 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
                     getString(R.string.camera_permission_rationale_photo),
                     context,
                     true);
-        } else  {
-            // start video record intent
+        } else {
+            takePhoto();
+        }
+    }
+
+    private void takePhoto() {
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            takePhotoPending = false;
+            ((MainActivity) context).requestTakePhoto();
+        }
+    }
+
+    private void record() {
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            recordPending = false;
+            ((MainActivity) context).requestVideoCapture();
+        }
+    }
+
+    private void checkStoragePermissionAndLaunchFilePicker() {
+        if (!Lbry.SDK_READY) {
+            Snackbar.make(getView(), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        Context context = getContext();
+        if (MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
+            launchFilePickerPending = false;
+            launchFilePicker();
+        } else {
+            launchFilePickerPending = true;
+            MainActivity.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    MainActivity.REQUEST_STORAGE_PERMISSION,
+                    getString(R.string.storage_permission_rationale_images),
+                    context,
+                    true);
+        }
+    }
+
+    private void launchFilePicker() {
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity.startingFilePickerActivity = true;
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("*/*");
+            ((MainActivity) context).startActivityForResult(
+                    Intent.createChooser(intent, getString(R.string.upload_file)),
+                    MainActivity.REQUEST_FILE_PICKER);
         }
     }
 
@@ -173,6 +241,7 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
             MainActivity activity = (MainActivity) context;
             LbryAnalytics.setCurrentScreen(activity, "Publish", "Publish");
             activity.addCameraPermissionListener(this);
+            activity.addFilePickerListener(this);
             activity.addStoragePermissionListener(this);
             activity.hideFloatingWalletBalance();
 
@@ -193,6 +262,9 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
             activity.removeCameraPermissionListener(this);
             activity.removeStoragePermissionListener(this);
             activity.showFloatingWalletBalance();
+            if (!MainActivity.startingFilePickerActivity) {
+                activity.removeFilePickerListener(this);
+            }
         }
         CameraX.unbindAll();
         super.onStop();
@@ -276,10 +348,10 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
     public void onCameraPermissionGranted() {
         if (recordPending) {
             // record video
-            recordPending = false;
+            record();
         } else if (takePhotoPending) {
             // take a photo
-            takePhotoPending = false;
+            takePhoto();
         }
     }
 
@@ -313,6 +385,10 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
             loadGalleryItemsPending = false;
             loadGalleryItems();
         }
+        if (launchFilePickerPending) {
+            launchFilePickerPending = false;
+            launchFilePicker();
+        }
     }
 
     @Override
@@ -330,5 +406,20 @@ public class PublishFragment extends BaseFragment implements CameraPermissionLis
     @Override
     public boolean shouldSuspendGlobalPlayer() {
         return true;
+    }
+
+    @Override
+    public void onFilePicked(String filePath) {
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("directFilePath", filePath);
+            ((MainActivity) context).openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
+        }
+    }
+
+    @Override
+    public void onFilePickerCancelled() {
+
     }
 }

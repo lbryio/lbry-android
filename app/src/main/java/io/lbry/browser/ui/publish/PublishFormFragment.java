@@ -1,11 +1,17 @@
 package io.lbry.browser.ui.publish;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -14,22 +20,37 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.arthenica.mobileffmpeg.Config;
+import com.arthenica.mobileffmpeg.FFmpeg;
+import com.arthenica.mobileffmpeg.FFprobe;
+
+import com.arthenica.mobileffmpeg.Statistics;
+import com.arthenica.mobileffmpeg.StatisticsCallback;
+import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,19 +61,23 @@ import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.InlineChannelSpinnerAdapter;
 import io.lbry.browser.adapter.TagListAdapter;
+import io.lbry.browser.listener.FilePickerListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
+import io.lbry.browser.model.Fee;
 import io.lbry.browser.model.GalleryItem;
 import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.WalletBalance;
-import io.lbry.browser.tasks.ChannelCreateUpdateTask;
+import io.lbry.browser.tasks.claim.ChannelCreateUpdateTask;
 import io.lbry.browser.tasks.UpdateSuggestedTagsTask;
+import io.lbry.browser.tasks.UploadImageTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.tasks.claim.ClaimResultHandler;
+import io.lbry.browser.tasks.claim.PublishClaimTask;
 import io.lbry.browser.tasks.lbryinc.LogPublishTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
@@ -60,15 +85,30 @@ import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Predefined;
+import io.lbry.lbrysdk.Utils;
+import lombok.Data;
+import lombok.Getter;
 
 public class PublishFormFragment extends BaseFragment implements
-        SdkStatusListener, StoragePermissionListener, TagListAdapter.TagClickListener, WalletBalanceListener {
+        FilePickerListener, SdkStatusListener, StoragePermissionListener, TagListAdapter.TagClickListener, WalletBalanceListener {
+
+    private static final String H264_CODEC = "h264";
+    private static final int MAX_VIDEO_DIMENSION = 1920;
+    private static final int MAX_BITRATE = 5000000; // 5mbps
 
     private static final int SUGGESTED_LIMIT = 8;
 
     private boolean editMode;
-    private boolean fetchingChannels;
+    @Getter
+    private boolean saveInProgress;
     private String currentFilter;
+    private boolean publishFileChecked;
+    private boolean fetchingChannels;
+    private boolean launchPickerPending;
+    @Getter
+    private boolean transcodeInProgress;
+    private long transcodeStartTime;
+    private VideoTranscodeTask videoTranscodeTask;
 
     private TextInputEditText inputTagFilter;
     private RecyclerView addedTagsList;
@@ -77,6 +117,7 @@ public class PublishFormFragment extends BaseFragment implements
     private TagListAdapter addedTagsAdapter;
     private TagListAdapter suggestedTagsAdapter;
     private TagListAdapter matureTagsAdapter;
+    private ProgressBar progressPublish;
     private ProgressBar progressLoadingChannels;
     private View noTagsView;
     private View noTagResultsView;
@@ -93,6 +134,8 @@ public class PublishFormFragment extends BaseFragment implements
     private View textNoPrice;
     private View layoutPrice;
     private SwitchMaterial switchPrice;
+    private ImageView imageThumbnail;
+    private TextView linkGenerateAddress;
 
     private TextInputEditText inputTitle;
     private TextInputEditText inputDescription;
@@ -102,7 +145,7 @@ public class PublishFormFragment extends BaseFragment implements
     private View inlineDepositBalanceContainer;
     private TextView inlineDepositBalanceValue;
 
-    private View linkCancel;
+    private View linkPublishCancel;
     private MaterialButton buttonPublish;
 
     private View inlineChannelCreator;
@@ -114,12 +157,25 @@ public class PublishFormFragment extends BaseFragment implements
     private View inlineChannelCreatorProgress;
     private MaterialButton inlineChannelCreatorCreateButton;
 
+    private boolean uploading;
+    private String lastSelectedThumbnailFile;
     private String uploadedThumbnailUrl;
     private boolean editFieldsLoaded;
     private Claim currentClaim;
     private GalleryItem currentGalleryItem;
     private String currentFilePath;
+    private String transcodedFilePath;
     private boolean fileLoaded;
+
+    private View mediaContainer;
+    private View uploadProgress;
+    private CardView cardVideoOptimization;
+    private ProgressBar optimizationRealProgress;
+    private ProgressBar optimizationProgress;
+    private TextView textOptimizationProgress;
+    private TextView textOptimizationStatus;
+    private TextView textOptimizationElapsed;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -127,25 +183,41 @@ public class PublishFormFragment extends BaseFragment implements
 
         scrollView = root.findViewById(R.id.publish_form_scroll_view);
         progressLoadingChannels = root.findViewById(R.id.publish_form_loading_channels);
+        progressPublish = root.findViewById(R.id.publish_form_publishing);
         channelSpinner = root.findViewById(R.id.publish_form_channel_spinner);
+        mediaContainer = root.findViewById(R.id.publish_form_media_container);
 
         inputTagFilter = root.findViewById(R.id.form_tag_filter_input);
         noTagsView = root.findViewById(R.id.form_no_added_tags);
         noTagResultsView = root.findViewById(R.id.form_no_tag_results);
+
+        inlineDepositBalanceContainer = root.findViewById(R.id.publish_form_inline_balance_container);
+        inlineDepositBalanceValue = root.findViewById(R.id.publish_form_inline_balance_value);
+
+        cardVideoOptimization = root.findViewById(R.id.publish_form_video_opt_card);
+        optimizationProgress = root.findViewById(R.id.publish_form_video_opt_progress);
+        optimizationRealProgress = root.findViewById(R.id.publish_form_video_opt_real_progress);
+        textOptimizationProgress = root.findViewById(R.id.publish_form_video_opt_progress_text);
+        textOptimizationStatus = root.findViewById(R.id.publish_form_video_opt_status);
+        textOptimizationElapsed = root.findViewById(R.id.publish_form_video_opt_elapsed);
 
         layoutExtraFields = root.findViewById(R.id.publish_form_extra_options_container);
         linkShowExtraFields = root.findViewById(R.id.publish_form_toggle_extra);
         layoutPrice = root.findViewById(R.id.publish_form_price_container);
         textNoPrice = root.findViewById(R.id.publish_form_no_price);
         switchPrice = root.findViewById(R.id.publish_form_price_switch);
+        uploadProgress = root.findViewById(R.id.publish_form_thumbnail_upload_progress);
+        imageThumbnail = root.findViewById(R.id.publish_form_thumbnail_preview);
+        linkGenerateAddress = root.findViewById(R.id.publish_form_generate_address);
 
         inputTitle = root.findViewById(R.id.publish_form_input_title);
-        inputDeposit = root.findViewById(R.id.publish_form_input_description);
+        inputDescription = root.findViewById(R.id.publish_form_input_description);
         inputPrice = root.findViewById(R.id.publish_form_input_price);
         inputAddress = root.findViewById(R.id.publish_form_input_address);
         inputDeposit = root.findViewById(R.id.publish_form_input_deposit);
+        priceCurrencySpinner = root.findViewById(R.id.publish_form_currency_spinner);
 
-        linkCancel = root.findViewById(R.id.publish_form_cancel);
+        linkPublishCancel = root.findViewById(R.id.publish_form_cancel);
         buttonPublish = root.findViewById(R.id.publish_form_publish_button);
 
         Context context = getContext();
@@ -192,7 +264,12 @@ public class PublishFormFragment extends BaseFragment implements
 
     private void initUi() {
 
-        inputAddress.setText(Helper.generateUrl());
+        linkGenerateAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                inputAddress.setText(Helper.generateUrl());
+            }
+        });
 
         switchPrice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -228,13 +305,10 @@ public class PublishFormFragment extends BaseFragment implements
             }
         });
 
-        linkCancel.setOnClickListener(new View.OnClickListener() {
+        mediaContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Context context = getContext();
-                if (context instanceof MainActivity) {
-                    ((MainActivity) context).onBackPressed();
-                }
+                checkStoragePermissionAndLaunchFilePicker();
             }
         });
 
@@ -278,10 +352,64 @@ public class PublishFormFragment extends BaseFragment implements
             }
         });
 
+        linkPublishCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (transcodeInProgress) {
+                    // show alert confirming the user is sure, and then cancel
+                    FFmpeg.cancel();
+                    transcodeInProgress = false;
+                }
+
+                Context context = getContext();
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).onBackPressed();
+                }
+            }
+        });
+
         buttonPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (uploading) {
+                    Snackbar.make(view, R.string.publish_no_thumbnail, Snackbar.LENGTH_LONG).show();
+                    return;
+                } else if (Helper.isNullOrEmpty(uploadedThumbnailUrl)) {
+                    showError(getString(R.string.publish_thumbnail_in_progress));
+                    return;
+                }
 
+                // check minimum deposit
+                String depositString = Helper.getValue(inputDeposit.getText());
+                double depositAmount = 0;
+                try {
+                    depositAmount = Double.valueOf(depositString);
+                } catch (NumberFormatException ex) {
+                    // pass
+                    showError(getString(R.string.please_enter_valid_deposit));
+                    return;
+                }
+                if (depositAmount < Helper.MIN_DEPOSIT) {
+                    String error = getResources().getQuantityString(R.plurals.min_deposit_required, depositAmount == 1 ? 1 : 2, String.valueOf(Helper.MIN_DEPOSIT));
+                    showError(error);
+                    return;
+                }
+                if (Lbry.walletBalance == null || Lbry.walletBalance.getAvailable().doubleValue() < depositAmount) {
+                    showError(getString(R.string.deposit_more_than_balance));
+                    return;
+                }
+
+                String priceString = Helper.getValue(inputPrice.getText());
+                double priceAmount = Helper.parseDouble(priceString, 0);
+                if (switchPrice.isChecked() && priceAmount == 0) {
+                    showError(getString(R.string.price_amount_not_set));
+                    return;
+                }
+
+                Claim claim = buildPublishClaim();
+                if (validatePublishClaim(claim)) {
+                    publishClaim(claim);
+                }
             }
         });
 
@@ -306,6 +434,8 @@ public class PublishFormFragment extends BaseFragment implements
             activity.showNavigationBackIcon();
             activity.lockDrawer();
             activity.hideFloatingWalletBalance();
+
+            activity.addFilePickerListener(this);
             activity.addWalletBalanceListener(this);
 
             ActionBar actionBar = activity.getSupportActionBar();
@@ -320,13 +450,18 @@ public class PublishFormFragment extends BaseFragment implements
         Context context = getContext();
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) getContext();
-            activity.removeWalletBalanceListener(this);
             activity.restoreToggle();
             activity.showFloatingWalletBalance();
             if (!MainActivity.startingFilePickerActivity) {
+                activity.removeWalletBalanceListener(this);
+                activity.removeFilePickerListener(this);
                 activity.removeNavFragment(PublishFormFragment.class, NavMenuItem.ID_ITEM_NEW_PUBLISH);
+                if (transcodeInProgress) {
+                    FFmpeg.cancel();
+                }
             }
         }
+
         super.onStop();
     }
 
@@ -352,6 +487,33 @@ public class PublishFormFragment extends BaseFragment implements
         }
     }
 
+    private void checkStoragePermissionAndLaunchFilePicker() {
+        Context context = getContext();
+        if (MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
+            launchPickerPending = false;
+            launchFilePicker();
+        } else {
+            launchPickerPending = true;
+            MainActivity.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    MainActivity.REQUEST_STORAGE_PERMISSION,
+                    getString(R.string.storage_permission_rationale_images),
+                    context,
+                    true);
+        }
+    }
+
+    private void launchFilePicker() {
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity.startingFilePickerActivity = true;
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("image/*");
+            ((MainActivity) context).startActivityForResult(
+                    Intent.createChooser(intent, getString(R.string.select_thumbnail)),
+                    MainActivity.REQUEST_FILE_PICKER);
+        }
+    }
+
     private void updateFieldsFromCurrentClaim() {
         if (currentClaim != null && !editFieldsLoaded) {
 
@@ -360,15 +522,20 @@ public class PublishFormFragment extends BaseFragment implements
     }
 
     private void checkPublishFile() {
+        if (publishFileChecked) {
+            return;
+        }
+
         String filePath = "";
+        String thumbnailPath = null;
         if (currentGalleryItem != null) {
             // check gallery item type
             filePath = currentGalleryItem.getFilePath();
+            thumbnailPath = currentGalleryItem.getThumbnailPath();
         } else if (currentFilePath != null) {
             filePath = currentFilePath;
         }
 
-        android.util.Log.d("#HELP", "filePath=" + filePath);
         File file = new File(filePath);
         if (!file.exists()) {
             // file doesn't exist. although this shouldn't happen
@@ -376,19 +543,190 @@ public class PublishFormFragment extends BaseFragment implements
             return;
         }
 
-
-
         // check content type
         String type = null;
         String extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(file).toString());
         if (extension != null) {
             type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         }
-        android.util.Log.d("#HELP", "fileType=" + type);
 
+        boolean isVideo = false;
+        boolean isImage = !Helper.isNullOrEmpty(type) && type.startsWith("image");
         if (!Helper.isNullOrEmpty(type) && type.startsWith("video")) {
             // ffmpeg video handling
+            isVideo = true;
+            if (!transcodeInProgress) {
+                probeVideo(filePath);
+            }
         }
+
+        if (isVideo || isImage) {
+            checkAndUploadThumbnail(filePath, thumbnailPath, isVideo ? "video" : "image");
+        }
+
+        Helper.setViewVisibility(cardVideoOptimization, isVideo ? View.VISIBLE : View.GONE);
+
+        publishFileChecked = true;
+    }
+
+    private void checkAndUploadThumbnail(String filePath, String thumbnailPath, String type) {
+        if (Helper.isNullOrEmpty(thumbnailPath)) {
+            createAndUploadThumbnail(filePath, type);
+        } else {
+            uploadThumbnail(thumbnailPath);
+        }
+    }
+
+    private void createAndUploadThumbnail(String filePath, String type) {
+        Context context = getContext();
+        CreateThumbnailTask task = new CreateThumbnailTask(filePath, type, context, new CreateThumbnailTask.CreateThumbnailHandler() {
+            @Override
+            public void onSuccess(String thumbnailPath) {
+                uploadThumbnail(thumbnailPath);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (context != null) {
+                    showError(getString(R.string.thumbnail_creation_failed));
+                }
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void uploadThumbnail(String thumbnailPath) {
+        if (uploading) {
+            Snackbar.make(getView(), R.string.wait_for_upload, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        Context context = getContext();
+        if (context != null) {
+            Glide.with(context.getApplicationContext()).load(thumbnailPath).centerCrop().into(imageThumbnail);
+        }
+
+        uploading = true;
+        uploadedThumbnailUrl = null;
+        UploadImageTask task = new UploadImageTask(thumbnailPath, uploadProgress, new UploadImageTask.UploadThumbnailHandler() {
+            @Override
+            public void onSuccess(String url) {
+                lastSelectedThumbnailFile = thumbnailPath;
+                uploadedThumbnailUrl = url;
+                uploading = false;
+            }
+
+            @Override
+            public void onError(Exception error) {
+                View view = getView();
+                if (context != null && view != null) {
+                    showError(getString(R.string.image_upload_failed));
+                }
+                lastSelectedThumbnailFile = null;
+                imageThumbnail.setImageDrawable(null);
+                uploading = false;
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void probeVideo(String filePath) {
+        VideoProbeTask task = new VideoProbeTask(filePath, new VideoProbeTask.VideoProbeHandler() {
+            @Override
+            public void onVideoProbed(VideoInformation result) {
+                checkAndTranscodeVideo(filePath, result);
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+    }
+
+    private void checkAndTranscodeVideo(String filePath, VideoInformation videoInformation) {
+        boolean transcodeRequired = (videoInformation == null ||
+                !H264_CODEC.equalsIgnoreCase(videoInformation.getCodecName()) ||
+                MAX_VIDEO_DIMENSION < videoInformation.getWidth() || MAX_VIDEO_DIMENSION < videoInformation.getHeight() ||
+                MAX_BITRATE < videoInformation.getBitrate());
+
+        String scalePart = "";
+        if (videoInformation != null) {
+            // check the max dimension that we need to scale
+            int videoWidth = videoInformation.getWidth();
+            int videoHeight = videoInformation.getHeight();
+            // get the highest dimension
+            int maxDimension = Math.max(videoWidth, videoHeight);
+            if (maxDimension > MAX_VIDEO_DIMENSION) {
+                scalePart = maxDimension == videoWidth ? String.format("-vf scale=%d:-2", MAX_VIDEO_DIMENSION) : String.format("-vf scale=-2:%d", MAX_VIDEO_DIMENSION);
+            }
+        }
+
+        Context context = getContext();
+        String outputPath = String.format("%s/videos", Utils.getAppInternalStorageDir(context));
+        File dir = new File(outputPath);
+        if (!dir.isDirectory()) {
+            dir.mkdirs();
+        }
+
+        boolean hasFullDuration = videoInformation != null && videoInformation.getDurationSeconds() > 0;
+        Helper.setViewVisibility(optimizationRealProgress, hasFullDuration ? View.VISIBLE : View.GONE);
+        Helper.setViewVisibility(optimizationProgress, hasFullDuration ? View.GONE : View.VISIBLE);
+
+        File sourceFile = new File(filePath);
+        String filename = sourceFile.getName();
+        if (!filename.endsWith(".mp4")) {
+            int lastDotIndex = filename.lastIndexOf('.');
+            filename = String.format("%s.mp4", lastDotIndex > -1 ? filename.substring(0, lastDotIndex) : filename);
+        }
+
+        String videoFilePath = String.format("%s/%s", outputPath, filename);
+        File targetFile = new File(videoFilePath);
+        if (targetFile.exists()) {
+            targetFile.delete();
+        }
+
+        transcodeInProgress = true;
+        videoTranscodeTask = new VideoTranscodeTask(filePath, videoFilePath, scalePart, transcodeRequired, new VideoTranscodeTask.VideoTranscodeHandler() {
+            @Override
+            public void onProgress(int time) {
+                if (context != null) {
+                    int currentDuration = Double.valueOf(time / 1000.0).intValue();
+                    int fullDuration = videoInformation != null ? videoInformation.getDurationSeconds() : 0;
+                    long elapsed = System.currentTimeMillis() - transcodeStartTime;
+                    String completedDurationText = Helper.formatDuration(currentDuration);
+                    if (fullDuration > 0) {
+                        completedDurationText = String.format("%s / %s", completedDurationText, Helper.formatDuration(fullDuration));
+                        int percentComplete = Double.valueOf(Math.ceil((double) currentDuration / (double) fullDuration * 100.0)).intValue();
+                        optimizationRealProgress.setProgress(percentComplete);
+                    }
+
+
+                    String text = context.getString(R.string.completed_video_duration, completedDurationText);
+                    Helper.setViewText(textOptimizationProgress, text);
+                    Helper.setViewText(textOptimizationElapsed, Helper.formatDuration(Double.valueOf(elapsed / 1000.0).longValue()));
+                }
+            }
+
+            @Override
+            public void onSuccess(String outputFilePath) {
+                transcodedFilePath = outputFilePath;
+                transcodeInProgress = false;
+                Helper.setViewText(textOptimizationStatus, R.string.video_optimized);
+                Helper.setViewVisibility(optimizationRealProgress, View.GONE);
+                Helper.setViewVisibility(optimizationProgress, View.GONE);
+                Helper.setViewVisibility(textOptimizationProgress, View.GONE);
+            }
+
+            @Override
+            public void onErrorOrCancelled() {
+                transcodeInProgress = false;
+                Helper.setViewText(textOptimizationStatus, R.string.video_optimize_failed);
+                Helper.setViewVisibility(optimizationRealProgress, View.GONE);
+                Helper.setViewVisibility(optimizationProgress, View.GONE);
+                Helper.setViewVisibility(textOptimizationProgress, View.GONE);
+            }
+        });
+
+        transcodeStartTime = System.currentTimeMillis();
+        videoTranscodeTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void cancelOnFatalCondition(String message) {
@@ -415,7 +753,7 @@ public class PublishFormFragment extends BaseFragment implements
         checkParams();
         updateFieldsFromCurrentClaim();
 
-        if (currentClaim == null && (currentGalleryItem != null || (Helper.isNullOrEmpty(currentFilePath)))) {
+        if (currentClaim == null && (currentGalleryItem != null || !Helper.isNullOrEmpty(currentFilePath))) {
             // load file information
             checkPublishFile();
         }
@@ -533,11 +871,128 @@ public class PublishFormFragment extends BaseFragment implements
     private Claim buildPublishClaim() {
         Claim claim = new Claim();
 
+        claim.setName(Helper.getValue(inputAddress.getText()));
+        claim.setAmount(Helper.getValue(inputDeposit.getText()));
+
+        Claim.StreamMetadata metadata = new Claim.StreamMetadata();
+        metadata.setTitle(Helper.getValue(inputTitle.getText()));
+        metadata.setDescription(Helper.getValue(inputDescription.getText()));
+        metadata.setTags(Helper.getTagsForTagObjects(addedTagsAdapter.getTags()));
+
+        Claim selectedChannel = (Claim) channelSpinner.getSelectedItem();
+        if (selectedChannel != null && !selectedChannel.isPlaceholder() && !selectedChannel.isPlaceholderAnonymous()) {
+            claim.setSigningChannel(selectedChannel);
+        }
+        if (switchPrice.isChecked()) {
+            Fee fee = new Fee();
+            fee.setCurrency((String) priceCurrencySpinner.getSelectedItem());
+            fee.setAmount(Helper.getValue(inputPrice.getText()));
+            metadata.setFee(fee);
+        }
+
+        if (!Helper.isNullOrEmpty(uploadedThumbnailUrl)) {
+            Claim.Resource thumbnail = new Claim.Resource();
+            thumbnail.setUrl(uploadedThumbnailUrl);
+            metadata.setThumbnail(thumbnail);
+        }
+
+        // TODO: License, LicenseDescription, LicenseUrl, Language
+        claim.setValueType(Claim.TYPE_STREAM);
+        claim.setValue(metadata);
+
         return claim;
     }
 
-    private boolean validatePublishClaim() {
-        return false;
+    private boolean validatePublishClaim(Claim claim) {
+        if (Helper.isNullOrEmpty(claim.getTitle())) {
+            showError(getString(R.string.please_provide_title));
+            return false;
+        }
+        if (Helper.isNullOrEmpty(claim.getName())) {
+            showError(getString(R.string.please_specify_address));
+            return false;
+        }
+        if (!LbryUri.isNameValid(claim.getName())) {
+            showError(getString(R.string.address_invalid_characters));
+            return false;
+        }
+        if (Helper.claimNameExists(claim.getName())) {
+            showError(getString(R.string.address_already_used));
+            return false;
+        }
+
+        String publishFilePath = currentGalleryItem != null ? currentGalleryItem.getFilePath() : currentFilePath;
+        if (Helper.isNullOrEmpty(publishFilePath) && Helper.isNullOrEmpty(transcodedFilePath)) {
+            showError(getString(R.string.no_file_selected));
+            return false;
+        }
+
+        return true;
+    }
+
+    private void publishClaim(Claim claim) {
+        String finalFilePath = transcodedFilePath;
+        if (Helper.isNullOrEmpty(finalFilePath)) {
+            finalFilePath = currentGalleryItem != null ? currentGalleryItem.getFilePath() : currentFilePath;
+        }
+        saveInProgress = true;
+        PublishClaimTask task = new PublishClaimTask(claim, finalFilePath, editMode, progressPublish, new ClaimResultHandler() {
+            @Override
+            public void beforeStart() {
+                preSave();
+            }
+
+            @Override
+            public void onSuccess(Claim claimResult) {
+                postSave();
+
+                android.util.Log.d("#HELP", claimResult.toString());
+
+                // Run the logPublish task
+                if (!BuildConfig.DEBUG) {
+                    LogPublishTask logPublish = new LogPublishTask(claimResult);
+                    logPublish.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+
+                // publish done
+                Bundle bundle = new Bundle();
+                bundle.putString("claim_id", claimResult.getClaimId());
+                bundle.putString("claim_name", claimResult.getName());
+                LbryAnalytics.logEvent(LbryAnalytics.EVENT_PUBLISH, bundle);
+
+                Context context = getContext();
+                if (context instanceof MainActivity) {
+                    MainActivity activity = (MainActivity) context;
+                    activity.showMessage(R.string.publish_successful);
+                    activity.openPublishesOnSuccessfulPublish();
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                showError(error.getMessage());
+                postSave();
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void preSave() {
+        saveInProgress = true;
+
+        // disable input views
+
+        Helper.setViewEnabled(linkShowExtraFields, false);
+        Helper.setViewEnabled(linkPublishCancel, false);
+        Helper.setViewEnabled(buttonPublish,  false);
+    }
+
+    private void postSave() {
+        Helper.setViewEnabled(linkShowExtraFields, true);
+        Helper.setViewEnabled(linkPublishCancel, true);
+        Helper.setViewEnabled(buttonPublish,  true);
+
+        saveInProgress = false;
     }
 
 
@@ -747,17 +1202,270 @@ public class PublishFormFragment extends BaseFragment implements
     private void showError(String message) {
         Context context = getContext();
         if (context != null) {
-            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
+            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).
+                    setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
         }
+    }
+
+    private void checkUploadButton() {
+
     }
 
     @Override
     public void onStoragePermissionGranted() {
-
+        if (launchPickerPending) {
+            launchPickerPending = false;
+            launchFilePicker();
+        }
     }
 
     @Override
     public void onStoragePermissionRefused() {
+        showError(getString(R.string.storage_permission_rationale_images));
+        launchPickerPending = false;
+    }
 
+    @Override
+    public void onFilePicked(String filePath) {
+        if (Helper.isNullOrEmpty(filePath)) {
+            Snackbar.make(getView(), R.string.undetermined_image_filepath, Snackbar.LENGTH_LONG).setBackgroundTint(
+                    ContextCompat.getColor(getContext(), R.color.red)).show();
+            return;
+        }
+
+        android.util.Log.d("#HELP", "FilePicked: " + filePath);
+        Context context = getContext();
+        if (context != null) {
+            if (filePath.equalsIgnoreCase(lastSelectedThumbnailFile)) {
+                // previous selected cover was uploaded successfully
+                android.util.Log.d("#HELP", "lastSelectedThumbnailFile the same");
+                return;
+            }
+            android.util.Log.d("#HELP", "PickedFilePath=" + filePath);
+
+            Uri fileUri = Uri.fromFile(new File(filePath));
+            Glide.with(context.getApplicationContext()).load(fileUri).centerCrop().into(imageThumbnail);
+            uploadThumbnail(filePath);
+        }
+    }
+
+    @Override
+    public void onFilePickerCancelled() {
+        // nothing to do here
+        // At some point in the future, allow file picking for publish file?
+    }
+
+    private static class VideoProbeTask extends AsyncTask<Void, Void, VideoInformation> {
+        private String filePath;
+        private VideoProbeHandler handler;
+        public VideoProbeTask(String filePath, VideoProbeHandler handler) {
+            this.filePath = filePath;
+            this.handler = handler;
+        }
+        protected VideoInformation doInBackground(Void... params) {
+            try {
+                int code = FFprobe.execute(String.format("-v quiet -show_streams -select_streams v -print_format json -i \"%s\"", filePath));
+                if (code == Config.RETURN_CODE_SUCCESS) {
+                    String json = Config.getLastCommandOutput();
+                    JSONObject result = new JSONObject(json);
+                    if (result.has("streams")) {
+                        JSONArray streams = result.getJSONArray("streams");
+                        if (streams.length() > 0) {
+                            JSONObject stream = streams.getJSONObject(0);
+                            VideoInformation videoInformation = VideoInformation.fromJSONObject(stream);
+                            return videoInformation;
+                        }
+                    }
+                }
+            } catch (JSONException ex) {
+                // pass
+            }
+            return null;
+        }
+        protected void onPostExecute(VideoInformation result) {
+            if (handler != null) {
+                handler.onVideoProbed(result);
+            }
+        }
+
+        public interface VideoProbeHandler {
+            void onVideoProbed(VideoInformation result);
+        }
+    }
+
+    private static class VideoTranscodeTask extends AsyncTask<Void, Integer, Boolean> {
+
+        private String filePath;
+        private String scaleFlag;
+        private String outputFilePath;
+        private boolean transcodeRequired;
+        private VideoTranscodeHandler handler;
+
+        public VideoTranscodeTask(String filePath, String outputFilePath, String scaleFlag, boolean transcodeRequired, VideoTranscodeHandler handler) {
+            this.handler = handler;
+            this.filePath = filePath;
+            this.outputFilePath = outputFilePath;
+            this.scaleFlag = scaleFlag;
+            this.transcodeRequired = transcodeRequired;
+        }
+
+        protected Boolean doInBackground(Void... params) {
+            String movFlagsCommand = String.format("-i \"%s\" -movflags +faststart \"%s\"", filePath, outputFilePath);
+            String command = transcodeRequired ? String.format(
+                    "-i \"%s\" " +
+                    "-c:v libx264 " +
+                    "-c:a aac -b:a 128k " +
+                    "%s " +
+                    "-crf 27 -preset ultrafast " +
+                    "-pix_fmt yuv420p " +
+                    "-maxrate 5000K -bufsize 5000K " +
+                    "-movflags +faststart \"%s\"", filePath, scaleFlag, outputFilePath) : movFlagsCommand;
+            android.util.Log.d("#HELP", command);
+
+            Config.enableStatisticsCallback(new StatisticsCallback() {
+                @Override
+                public void apply(Statistics statistics) {
+                    publishProgress(statistics.getTime());
+                }
+            });
+            int code = FFmpeg.execute(command);
+            return code == Config.RETURN_CODE_SUCCESS;
+        }
+
+        protected void onProgressUpdate(Integer... times) {
+            if (handler != null) {
+                for (Integer time : times) {
+                    handler.onProgress(time);
+                }
+            }
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (handler != null) {
+                if (result) {
+                    handler.onSuccess(outputFilePath);
+                } else {
+                    handler.onErrorOrCancelled();
+                }
+            }
+        }
+
+        public interface VideoTranscodeHandler {
+            void onProgress(int time);
+            void onSuccess(String outputFilePath);
+            void onErrorOrCancelled();
+        }
+    }
+
+    @Data
+    private static class VideoInformation {
+        private String codecName;
+        private int width;
+        private int height;
+        private int durationSeconds;
+        private long bitrate;
+
+        private static int tryParseDuration(JSONObject streamObject) {
+            String durationString = Helper.getJSONString("duration", "0", streamObject);
+            double parsedDuration = Helper.parseDouble(durationString, 0);
+            if (parsedDuration > 0) {
+                return Double.valueOf(parsedDuration).intValue();
+            }
+
+            try {
+                if (streamObject.has("tags") && !streamObject.isNull("tags")) {
+                    JSONObject tags = streamObject.getJSONObject("tags");
+                    String tagDurationString = Helper.getJSONString("DURATION", null, tags);
+                    if (Helper.isNull(tagDurationString)) {
+                        tagDurationString = Helper.getJSONString("duration", null, tags);
+                    }
+                    if (!Helper.isNullOrEmpty(tagDurationString) && tagDurationString.indexOf(':') > -1) {
+                        String[] parts = tagDurationString.split(":");
+                        if (parts.length == 3) {
+                            int hours = Helper.parseInt(parts[0], 0);
+                            int minutes = Helper.parseInt(parts[1], 0);
+                            int seconds = Helper.parseDouble(parts[2], 0).intValue();
+                            return (hours * 60 * 60) + (minutes * 60) + seconds;
+                        }
+                    }
+
+                }
+            } catch (JSONException ex) {
+                return 0;
+            }
+
+            return 0;
+        }
+
+        public static VideoInformation fromJSONObject(JSONObject streamObject) {
+            VideoInformation info = new VideoInformation();
+            info.setCodecName(Helper.getJSONString("codec_name", null, streamObject));
+            info.setWidth(Helper.getJSONInt("width", 0, streamObject));
+            info.setHeight(Helper.getJSONInt("height", 0, streamObject));
+            info.setBitrate(Helper.getJSONLong("bit_rate", 0, streamObject));
+            info.setDurationSeconds(tryParseDuration(streamObject));
+
+            return info;
+        }
+    }
+
+    private static class CreateThumbnailTask extends AsyncTask<Void, Void, String> {
+        private Context context;
+        private String filePath;
+        private String type;
+        private CreateThumbnailHandler handler;
+        private Exception error;
+        public CreateThumbnailTask(String filePath, String type, Context context, CreateThumbnailHandler handler) {
+            this.context = context;
+            this.type = type;
+            this.filePath = filePath;
+            this.handler = handler;
+        }
+        protected String doInBackground(Void... params) {
+            String thumbnailPath = null;
+            FileOutputStream os = null;
+            Bitmap thumbnail = null;
+            try {
+                File cacheDir = context.getExternalCacheDir();
+                File thumbnailsDir = new File(String.format("%s/thumbnails", cacheDir.getAbsolutePath()));
+                if (!thumbnailsDir.isDirectory()) {
+                    thumbnailsDir.mkdirs();
+                }
+
+                // save the thumbnail to the path
+                thumbnailPath = String.format("%s/%s.png", thumbnailsDir.getAbsolutePath(), Helper.makeid(8));
+                if ("video".equals(type)) {
+                    thumbnail = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Video.Thumbnails.MINI_KIND);
+                } else {
+                    Bitmap source = BitmapFactory.decodeFile(filePath);
+                    // MINI_KIND dimensions
+                    thumbnail = Bitmap.createScaledBitmap(source, 512, 384, false);
+                }
+
+                os = new FileOutputStream(thumbnailPath);
+                thumbnail.compress(Bitmap.CompressFormat.PNG, 80, os);
+            } catch (Exception ex) {
+                error = ex;
+                return null;
+            } finally {
+                Helper.closeCloseable(os);
+            }
+
+            return thumbnailPath;
+        }
+        protected void onPostExecute(String thumbnailPath) {
+            if (handler != null) {
+                if (!Helper.isNullOrEmpty(thumbnailPath)) {
+                    handler.onSuccess(thumbnailPath);
+                } else {
+                    handler.onError(error);
+                }
+            }
+        }
+
+        public interface CreateThumbnailHandler {
+            void onSuccess(String thumbnailPath);
+            void onError(Exception error);
+        }
     }
 }

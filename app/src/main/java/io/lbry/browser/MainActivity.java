@@ -22,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -29,7 +30,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -57,6 +57,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
@@ -78,12 +79,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,6 +104,7 @@ import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.CameraPermissionListener;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchChannelsListener;
+import io.lbry.browser.listener.FilePickerListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.listener.WalletBalanceListener;
@@ -173,9 +177,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean startingShareActivity = false;
     public static boolean startingPermissionRequest = false;
     public static boolean startingSignInFlowActivity = false;
+    public static boolean startingCameraRequest = false;
     private boolean enteringPIPMode = false;
     private boolean fullSyncInProgress = false;
     private int queuedSyncCount = 0;
+    private String cameraOutputFilename;
 
     @Setter
     private BackPressInterceptor backPressInterceptor;
@@ -217,6 +223,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final int REQUEST_REWARDS_VERIFY_SIGN_IN = 2003;
 
     public static final int REQUEST_FILE_PICKER = 5001;
+    public static final int REQUEST_VIDEO_CAPTURE = 5002;
+    public static final int REQUEST_TAKE_PHOTO = 5003;
 
     // broadcast action names
     public static final String ACTION_SDK_READY = "io.lbry.browser.Broadcast.SdkReady";
@@ -282,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private int selectedMenuItemId = -1;
     private List<CameraPermissionListener> cameraPermissionListeners;
     private List<DownloadActionListener> downloadActionListeners;
+    private List<FilePickerListener> filePickerListeners;
     private List<SdkStatusListener> sdkStatusListeners;
     private List<StoragePermissionListener> storagePermissionListeners;
     private List<WalletBalanceListener> walletBalanceListeners;
@@ -399,6 +408,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         openNavFragments = new HashMap<>();
         cameraPermissionListeners = new ArrayList<>();
         downloadActionListeners = new ArrayList<>();
+        filePickerListeners = new ArrayList<>();
         sdkStatusListeners = new ArrayList<>();
         storagePermissionListeners = new ArrayList<>();
         walletBalanceListeners = new ArrayList<>();
@@ -535,6 +545,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         downloadActionListeners.remove(listener);
     }
 
+    public void addFilePickerListener(FilePickerListener listener) {
+        if (!filePickerListeners.contains(listener)) {
+            filePickerListeners.add(listener);
+        }
+    }
+
+    public void removeFilePickerListener(FilePickerListener listener) {
+        filePickerListeners.remove(listener);
+    }
+
     public void addSdkStatusListener(SdkStatusListener listener) {
         if (!sdkStatusListeners.contains(listener)) {
             sdkStatusListeners.add(listener);
@@ -639,6 +659,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             params.put("claim", claim);
         }
         openFragment(ChannelFormFragment.class, true, NavMenuItem.ID_ITEM_CHANNELS, params);
+    }
+
+    public void openPublishesOnSuccessfulPublish() {
+        // close publish form
+        getSupportFragmentManager().popBackStack();
+        openFragment(PublishesFragment.class, true, NavMenuItem.ID_ITEM_PUBLISHES);
     }
 
     public void openPublishForm(Claim claim) {
@@ -1355,7 +1381,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         syncWalletAndLoadPreferences();
         scheduleWalletBalanceUpdate();
         scheduleWalletSyncTask();
-        fetchChannels();
+        fetchOwnChannels();
+        fetchOwnClaims();
 
         initFloatingWalletBalance();
     }
@@ -1740,6 +1767,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             drawer.closeDrawer(GravityCompat.START);
         } else {
             boolean handled = false;
+            // TODO: Refactor both forms as back press interceptors?
             ChannelFormFragment channelFormFragment = null;
             PublishFormFragment publishFormFragment = null;
             for (Fragment fragment : openNavFragments.values()) {
@@ -1756,7 +1784,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 handled = true;
                 return;
             }
-            //if (publishFormFragment != null && )
+            if (publishFormFragment != null && (publishFormFragment.isSaveInProgress() || publishFormFragment.isTranscodeInProgress())) {
+                if (publishFormFragment.isTranscodeInProgress()) {
+                    showMessage(R.string.transcode_in_progress);
+                }
+                handled = true;
+                return;
+            }
 
             if (!handled) {
                 // check fragment and nav history
@@ -1829,24 +1863,15 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_FILE_PICKER) {
             startingFilePickerActivity = false;
-            ChannelFormFragment channelFormFragment = null;
-            //PublishFormFragment publishFormFragment = null;
-            for (Fragment fragment : openNavFragments.values()) {
-                if (fragment instanceof ChannelFormFragment) {
-                    channelFormFragment = ((ChannelFormFragment) fragment);
-                    break;
-                }
-            }
-
             if (resultCode == RESULT_OK) {
                 Uri fileUri = data.getData();
                 String filePath = Helper.getRealPathFromURI_API19(this, fileUri);
-                if (channelFormFragment != null) {
-                    channelFormFragment.onFilePicked(filePath);
+                for (FilePickerListener listener : filePickerListeners) {
+                    listener.onFilePicked(filePath);
                 }
             } else {
-                if (channelFormFragment != null) {
-                    channelFormFragment.onFilePickerCancelled();
+                for (FilePickerListener listener : filePickerListeners) {
+                    listener.onFilePickerCancelled();
                 }
             }
         } else if (requestCode == REQUEST_SIMPLE_SIGN_IN || requestCode == REQUEST_WALLET_SYNC_SIGN_IN) {
@@ -1866,8 +1891,55 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     scheduleWalletSyncTask();
                 }
             }
+        } else if (requestCode == REQUEST_VIDEO_CAPTURE || requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                Map<String, Object> params = new HashMap<>();
+                params.put("directFilePath", cameraOutputFilename);
+                openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
+            }
+            cameraOutputFilename = null;
         }
     }
+
+    public void requestVideoCapture() {
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            String outputPath = String.format("%s/record", Utils.getAppInternalStorageDir(this));
+            File dir = new File(outputPath);
+            if (!dir.isDirectory()) {
+                dir.mkdirs();
+            }
+
+            cameraOutputFilename = String.format("%s/VID_%s.mp4", outputPath, Helper.FILESTAMP_FORMAT.format(new Date()));
+            Uri outputUri = FileProvider.getUriForFile(this, String.format("%s.fileprovider", getPackageName()), new File(cameraOutputFilename));
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            startActivityForResult(intent, REQUEST_VIDEO_CAPTURE);
+            return;
+        }
+
+        showError(getString(R.string.cannot_capture_video));
+    }
+
+    public void requestTakePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            String outputPath = String.format("%s/photos", Utils.getAppInternalStorageDir(this));
+            File dir = new File(outputPath);
+            if (!dir.isDirectory()) {
+                dir.mkdirs();
+            }
+
+            cameraOutputFilename = String.format("%s/IMG_%s.jpg", outputPath, Helper.FILESTAMP_FORMAT.format(new Date()));
+            Uri outputUri = FileProvider.getUriForFile(this, String.format("%s.fileprovider", getPackageName()), new File(cameraOutputFilename));
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+            return;
+        }
+
+        showError(getString(R.string.cannot_take_photo));
+    }
+
+
 
     private void applyNavbarSigninPadding() {
         int statusBarHeight = getStatusBarHeight();
@@ -2550,11 +2622,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
     }
 
-    public void fetchChannels() {
+    public void fetchOwnChannels() {
         ClaimListTask task = new ClaimListTask(Claim.TYPE_CHANNEL, null, new ClaimListResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
-                Lbry.ownChannels = new ArrayList<>(claims);
+                Lbry.ownChannels = Helper.filterDeletedClaims(new ArrayList<>(claims));
                 for (FetchChannelsListener listener : fetchChannelsListeners) {
                     listener.onChannelsFetched(claims);
                 }
@@ -2564,6 +2636,19 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onError(Exception error) {
                 // pass
             }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void fetchOwnClaims() {
+        ClaimListTask task = new ClaimListTask(Arrays.asList(Claim.TYPE_STREAM, Claim.TYPE_REPOST), null, new ClaimListResultHandler() {
+            @Override
+            public void onSuccess(List<Claim> claims) {
+                Lbry.ownClaims = Helper.filterDeletedClaims(new ArrayList<>(claims));
+            }
+
+            @Override
+            public void onError(Exception error) { }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

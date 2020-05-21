@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Random;
 
 import java.io.File;
 
@@ -47,14 +46,14 @@ public class UploadImageTask extends AsyncTask<Void, Void, String> {
             }
             String fileType = String.format("image/%s", extension);
             RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM).
-                    addFormDataPart("name", makeid()).
+                    addFormDataPart("name", Helper.makeid(24)).
                     addFormDataPart("file", fileName, RequestBody.create(file, MediaType.parse(fileType))).
                     build();
             Request request = new Request.Builder().url("https://spee.ch/api/claim/publish").post(body).build();
             OkHttpClient client = new OkHttpClient();
             Response response = client.newCall(request).execute();
             JSONObject json = new JSONObject(response.body().string());
-            if (json.has("success")) {
+            if (json.has("success") && Helper.getJSONBoolean("success", false, json)) {
                 JSONObject data = json.getJSONObject("data");
                 String url = Helper.getJSONString("url", null, data);
                 if (Helper.isNullOrEmpty(url)) {
@@ -62,9 +61,15 @@ public class UploadImageTask extends AsyncTask<Void, Void, String> {
                 }
 
                 thumbnailUrl = String.format("%s.%s", url, extension);
-            } else if (json.has("error")) {
-                JSONObject error = json.getJSONObject("error");
-                String message = Helper.getJSONString("message", null, error);
+            } else if (json.has("error") || json.has("message")) {
+                JSONObject error = Helper.getJSONObject("error", json);
+                String message = null;
+                if (error != null) {
+                    message = Helper.getJSONString("message", null, error);
+                }
+                if (Helper.isNullOrEmpty(message)) {
+                    message  = Helper.getJSONString("message", null, json);
+                }
                 throw new LbryResponseException(Helper.isNullOrEmpty(message) ? "The image failed to upload." : message);
             }
         } catch (IOException | JSONException | LbryResponseException ex) {
@@ -82,16 +87,6 @@ public class UploadImageTask extends AsyncTask<Void, Void, String> {
                 handler.onError(error);
             }
         }
-    }
-
-    private static String makeid() {
-        Random random = new Random();
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder id = new StringBuilder();
-        for (int i = 0; i < 24; i++) {
-            id.append(chars.charAt(random.nextInt(chars.length())));
-        }
-        return id.toString();
     }
 
     public interface UploadThumbnailHandler {

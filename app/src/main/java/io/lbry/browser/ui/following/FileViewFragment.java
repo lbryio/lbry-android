@@ -1249,7 +1249,7 @@ public class FileViewFragment extends BaseFragment implements
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Bundle bundle = new Bundle();
                             bundle.putString("uri", currentUrl);
-                            bundle.putBoolean("paid", true);
+                            bundle.putString("paid", "true");
                             bundle.putDouble("amount", Helper.parseDouble(fee.getAmount(), 0));
                             bundle.putDouble("lbc_amount", cost);
                             bundle.putString("currency", fee.getCurrency());
@@ -1333,6 +1333,7 @@ public class FileViewFragment extends BaseFragment implements
                         // paid is handled differently
                         Bundle bundle = new Bundle();
                         bundle.putString("uri", currentUrl);
+                        bundle.putString("paid", "false");
                         LbryAnalytics.logEvent(LbryAnalytics.EVENT_PURCHASE_URI, bundle);
                     }
 
