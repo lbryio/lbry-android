@@ -18,27 +18,45 @@
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/ic_replay_10"
             android:tint="@color/white" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/player_play_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:layout_centerInParent="true">
-        <ImageButton
+        <RelativeLayout
             android:id="@id/exo_play"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            style="@style/ExoMediaButton.Play" />
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_play" />
+        </RelativeLayout>
 
-        <ImageButton
+        <RelativeLayout
             android:id="@id/exo_pause"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            style="@style/ExoMediaButton.Pause" />
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_pause" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -52,7 +70,9 @@
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/ic_forward_10"
             android:tint="@color/white" />
     </RelativeLayout>
