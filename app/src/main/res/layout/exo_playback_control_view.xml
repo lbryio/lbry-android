@@ -6,19 +6,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@id/exo_play"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_centerInParent="true"
-        style="@style/ExoMediaButton.Play" />
 
-    <ImageButton
-        android:id="@id/exo_pause"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_centerInParent="true"
-        style="@style/ExoMediaButton.Pause" />
+    <RelativeLayout
+        android:id="@+id/player_skip_back_10"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_centerVertical="true"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_toLeftOf="@id/player_play_pause">
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_replay_10"
+            android:tint="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/player_play_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+        <ImageButton
+            android:id="@id/exo_play"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            style="@style/ExoMediaButton.Play" />
+
+        <ImageButton
+            android:id="@id/exo_pause"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            style="@style/ExoMediaButton.Pause" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/player_skip_forward_10"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_centerVertical="true"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_toRightOf="@id/player_play_pause">
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_forward_10"
+            android:tint="@color/white" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/player_toggle_cast"
@@ -39,8 +76,29 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/player_playback_speed"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="64dp"
+        android:layout_height="48dp"
+        android:layout_toLeftOf="@id/player_toggle_fullscreen">
+        <TextView
+            android:id="@+id/player_playback_speed_label"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/player_toggle_fullscreen"
         android:clickable="true"
+        android:focusable="true"
         android:background="?attr/selectableItemBackground"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -53,21 +111,13 @@
             android:layout_centerInParent="true"
             android:src="@drawable/ic_fullscreen"
             android:tint="@color/white" />
-        <ImageView
-            android:id="@+id/player_image_full_screen_exit_toggle"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_fullscreen_exit"
-            android:tint="@color/white"
-            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/player_toggle_fullscreen"
+        android:layout_toLeftOf="@id/player_playback_speed"
         android:paddingLeft="16dp"
         android:paddingRight="4dp">
         <TextView
@@ -76,6 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter"
+            android:singleLine="true"
             android:text="@string/zero_duration"
             android:textColor="@color/white"
             android:textSize="14sp" />
@@ -99,6 +150,7 @@
             android:layout_alignParentRight="true"
             android:gravity="end"
             android:fontFamily="@font/inter"
+            android:singleLine="true"
             android:text="@string/zero_duration"
             android:textColor="@color/white"
             android:textSize="14sp" />

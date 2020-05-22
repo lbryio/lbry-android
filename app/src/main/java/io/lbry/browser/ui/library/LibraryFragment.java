@@ -26,12 +26,10 @@ import com.google.android.material.snackbar.Snackbar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.channels.AsynchronousChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
@@ -42,20 +40,16 @@ import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.LbryFile;
-import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.ViewHistory;
-import io.lbry.browser.tasks.claim.AbandonChannelTask;
-import io.lbry.browser.tasks.claim.AbandonHandler;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
+import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
 import io.lbry.browser.tasks.claim.PurchaseListTask;
 import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.tasks.file.BulkDeleteFilesTask;
-import io.lbry.browser.tasks.file.DeleteFileTask;
 import io.lbry.browser.tasks.file.FileListTask;
 import io.lbry.browser.tasks.localdata.FetchViewHistoryTask;
 import io.lbry.browser.ui.BaseFragment;
-import io.lbry.browser.ui.channel.ChannelFormFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
@@ -85,6 +79,7 @@ public class LibraryFragment extends BaseFragment implements
     private Date lastDate;
     private boolean listReachedEnd;
     private boolean contentListLoading;
+    private boolean initialOwnClaimsFetched;
 
     private CardView cardStats;
     private TextView linkStats;
@@ -252,6 +247,8 @@ public class LibraryFragment extends BaseFragment implements
             showDownloads();
         } else if (currentFilter == FILTER_HISTORY) {
             showHistory();
+        } else if (currentFilter == FILTER_PURCHASES) {
+            showPurchases();
         }
     }
 
@@ -271,8 +268,40 @@ public class LibraryFragment extends BaseFragment implements
         layoutSdkInitializing.setVisibility(Lbry.SDK_READY ? View.GONE : View.VISIBLE);
         currentPage = 1;
         if (Lbry.SDK_READY) {
-            fetchDownloads();
+            if (!initialOwnClaimsFetched) {
+                fetchOwnClaimsAndShowDownloads();
+            } else {
+                fetchDownloads();
+            }
         }
+    }
+
+    private void fetchOwnClaimsAndShowDownloads() {
+        if (Lbry.ownClaims != null && Lbry.ownClaims.size() > 0) {
+            initialOwnClaimsFetched = true;
+            fetchDownloads();
+            return;
+        }
+
+        linkStats.setVisibility(View.INVISIBLE);
+        ClaimListTask task = new ClaimListTask(Arrays.asList(Claim.TYPE_STREAM, Claim.TYPE_REPOST), listLoading, new ClaimListResultHandler() {
+            @Override
+            public void onSuccess(List<Claim> claims) {
+                Lbry.ownClaims = Helper.filterDeletedClaims(new ArrayList<>(claims));
+                initialOwnClaimsFetched = true;
+                if (currentFilter == FILTER_DOWNLOADS) {
+                    fetchDownloads();
+                }
+                checkStatsLink();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                initialOwnClaimsFetched = true;
+                checkStatsLink();
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void showPurchases() {

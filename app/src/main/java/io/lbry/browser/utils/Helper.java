@@ -18,6 +18,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.method.LinkMovementMethod;
+import android.view.ContextMenu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -77,11 +78,21 @@ public final class Helper {
     public static final SimpleDateFormat FILESTAMP_FORMAT =  new SimpleDateFormat("yyyyMMdd_HHmmss");
     public static final String EXPLORER_TX_PREFIX = "https://explorer.lbry.com/tx";
 
+    public static final List<Double> PLAYBACK_SPEEDS = Arrays.asList(0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0);
+
     public static boolean isNull(String value) {
         return value == null;
     }
     public static boolean isNullOrEmpty(String value) {
         return value == null || value.trim().length() == 0;
+    }
+
+    public static void buildPlaybackSpeedMenu(ContextMenu menu) {
+        int order = 0;
+        DecimalFormat formatter = new DecimalFormat("0.##");
+        for (Double speed : PLAYBACK_SPEEDS) {
+            menu.add(0, Double.valueOf(speed * 100).intValue(), ++order, String.format("%sx", formatter.format(speed)));
+        }
     }
 
     public static String capitalize(String value) {

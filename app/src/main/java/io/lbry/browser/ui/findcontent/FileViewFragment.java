@@ -13,7 +13,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -37,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.database.ExoDatabaseProvider;
@@ -125,6 +128,8 @@ import io.lbry.lbrysdk.Utils;
 public class FileViewFragment extends BaseFragment implements
         MainActivity.BackPressInterceptor, DownloadActionListener, FetchClaimsListener, SdkStatusListener, StoragePermissionListener {
     private static final int RELATED_CONTENT_SIZE = 16;
+    private static final String DEFAULT_PLAYBACK_SPEED = "1x";
+
     private PlayerControlView castControlView;
     private Player currentPlayer;
     private boolean loadingNewClaim;
@@ -791,7 +796,28 @@ public class FileViewFragment extends BaseFragment implements
             }
         });
 
-        root.findViewById(R.id.player_toggle_fullscreen).setOnClickListener(new View.OnClickListener() {
+        PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
+        View playbackSpeedContainer = playerView.findViewById(R.id.player_playback_speed);
+        TextView textPlaybackSpeed = playerView.findViewById(R.id.player_playback_speed_label);
+        textPlaybackSpeed.setText(DEFAULT_PLAYBACK_SPEED);
+
+        playbackSpeedContainer.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+                Helper.buildPlaybackSpeedMenu(contextMenu);
+            }
+        });
+        playbackSpeedContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = getContext();
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).openContextMenu(playbackSpeedContainer);
+                }
+            }
+        });
+
+        playerView.findViewById(R.id.player_toggle_fullscreen).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // check full screen mode
@@ -799,6 +825,22 @@ public class FileViewFragment extends BaseFragment implements
                     disableFullScreenMode();
                 } else {
                     enableFullScreenMode();
+                }
+            }
+        });
+        playerView.findViewById(R.id.player_skip_back_10).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (MainActivity.appPlayer != null) {
+                    MainActivity.appPlayer.seekTo(Math.max(0, MainActivity.appPlayer.getCurrentPosition() - 10000));
+                }
+            }
+        });
+        playerView.findViewById(R.id.player_skip_forward_10).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (MainActivity.appPlayer != null) {
+                    MainActivity.appPlayer.seekTo(MainActivity.appPlayer.getCurrentPosition() + 10000);
                 }
             }
         });
@@ -1667,8 +1709,10 @@ public class FileViewFragment extends BaseFragment implements
             ((ViewGroup) exoplayerContainer.getParent()).removeView(exoplayerContainer);
             globalLayout.addView(exoplayerContainer);
 
+            View playerView = root.findViewById(R.id.file_view_exoplayer_view);
+            ((ImageView) playerView.findViewById(R.id.player_image_full_screen_toggle)).setImageResource(R.drawable.ic_fullscreen_exit);
+
             root.findViewById(R.id.player_image_full_screen_toggle).setVisibility(View.GONE);
-            root.findViewById(R.id.player_image_full_screen_exit_toggle).setVisibility(View.VISIBLE);
 
             MainActivity activity = (MainActivity) context;
             activity.enterFullScreenMode();
@@ -1691,8 +1735,8 @@ public class FileViewFragment extends BaseFragment implements
             ((ViewGroup) exoplayerContainer.getParent()).removeView(exoplayerContainer);
             mediaContainer.addView(exoplayerContainer);
 
-            root.findViewById(R.id.player_image_full_screen_toggle).setVisibility(View.VISIBLE);
-            root.findViewById(R.id.player_image_full_screen_exit_toggle).setVisibility(View.GONE);
+            View playerView = root.findViewById(R.id.file_view_exoplayer_view);
+            ((ImageView) playerView.findViewById(R.id.player_image_full_screen_toggle)).setImageResource(R.drawable.ic_fullscreen);
             exoplayerContainer.setPadding(0, 0, 0, 0);
 
             activity.exitFullScreenMode();
@@ -1750,6 +1794,8 @@ public class FileViewFragment extends BaseFragment implements
 
         if (MainActivity.appPlayer != null) {
             MainActivity.appPlayer.removeListener(fileViewPlayerListener);
+            PlaybackParameters params = new PlaybackParameters(1.0f);
+            MainActivity.appPlayer.setPlaybackParameters(params);
         }
     }
 
@@ -2019,6 +2065,23 @@ public class FileViewFragment extends BaseFragment implements
         } catch (JSONException ex) {
             // invalid file info for download
         }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        View root = getView();
+        if (root != null) {
+            float speed = item.getItemId() / 100.0f;
+            String speedString = String.format("%sx", new DecimalFormat("0.##").format(speed));
+            PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
+            ((TextView) playerView.findViewById(R.id.player_playback_speed_label)).setText(speedString);
+
+            if (MainActivity.appPlayer != null) {
+                PlaybackParameters params = new PlaybackParameters(speed);
+                MainActivity.appPlayer.setPlaybackParameters(params);
+            }
+        }
+        return true;
     }
 
     @Override
