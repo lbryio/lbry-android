@@ -9,7 +9,9 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import io.lbry.browser.exceptions.ApiCallException;
@@ -47,7 +49,7 @@ public class ChannelCreateUpdateTask extends AsyncTask<Void, Void, Claim> {
         } else {
             options.put("claim_id", claim.getClaimId());
         }
-        options.put("bid", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT).format(deposit.doubleValue()));
+        options.put("bid", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).format(deposit.doubleValue()));
         if (!Helper.isNullOrEmpty(claim.getTitle())) {
             options.put("title", claim.getTitle());
         }

@@ -5,7 +5,9 @@ import android.view.View;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import io.lbry.browser.exceptions.ApiCallException;
@@ -39,7 +41,7 @@ public class SupportCreateTask extends AsyncTask<Void, Void, Boolean> {
         try {
             Map<String, Object> options = new HashMap<>();
             options.put("claim_id", claimId);
-            options.put("amount", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT).format(amount.doubleValue()));
+            options.put("amount", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).format(amount.doubleValue()));
             options.put("tip", tip);
             Lbry.genericApiCall(Lbry.METHOD_SUPPORT_CREATE, options);
         } catch (ApiCallException ex) {

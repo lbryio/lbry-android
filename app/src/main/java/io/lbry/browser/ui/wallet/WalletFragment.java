@@ -30,7 +30,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
@@ -381,7 +383,8 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         // wallet_send task
         String recipientAddress = Helper.getValue(inputSendAddress.getText());
         String amountString = Helper.getValue(inputSendAmount.getText());
-        String amount = new DecimalFormat(Helper.SDK_AMOUNT_FORMAT).format(new BigDecimal(amountString).doubleValue());
+        String amount = new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).
+                format(new BigDecimal(amountString).doubleValue());
 
         disableSendControls();
         WalletSendTask task = new WalletSendTask(recipientAddress, amount, walletSendProgress, new WalletSendTask.WalletSendHandler() {

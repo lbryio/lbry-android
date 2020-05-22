@@ -9,7 +9,9 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import io.lbry.browser.exceptions.ApiCallException;
@@ -40,7 +42,7 @@ public class StreamRepostTask extends AsyncTask<Void, Void, Claim> {
         try {
             Map<String, Object> options = new HashMap<>();
             options.put("name", name);
-            options.put("bid", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT).format(bid.doubleValue()));
+            options.put("bid", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).format(bid.doubleValue()));
             options.put("claim_id", claimId);
             options.put("channel_id", channelId);
 

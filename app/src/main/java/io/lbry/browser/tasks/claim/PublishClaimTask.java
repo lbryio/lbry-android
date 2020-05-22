@@ -9,8 +9,10 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import io.lbry.browser.exceptions.ApiCallException;
@@ -38,7 +40,7 @@ public class PublishClaimTask extends AsyncTask<Void, Void, Claim> {
     }
     protected Claim doInBackground(Void... params) {
         Claim.StreamMetadata metadata = (Claim.StreamMetadata) claim.getValue();
-        DecimalFormat amountFormat = new DecimalFormat(Helper.SDK_AMOUNT_FORMAT);
+        DecimalFormat amountFormat = new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US));
 
         Map<String, Object> options = new HashMap<>();
         options.put("blocking", true);
