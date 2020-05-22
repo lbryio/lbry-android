@@ -87,6 +87,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -124,6 +125,7 @@ import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimListTask;
+import io.lbry.browser.tasks.lbryinc.ClaimRewardTask;
 import io.lbry.browser.tasks.lbryinc.FetchRewardsTask;
 import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.MergeSubscriptionsTask;
@@ -262,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_INTERNAL_WALLET_SYNC_ENABLED = "io.lbry.browser.preference.internal.WalletSyncEnabled";
     public static final String PREFERENCE_KEY_INTERNAL_WALLET_RECEIVE_ADDRESS = "io.lbry.browser.preference.internal.WalletReceiveAddress";
     public static final String PREFERENCE_KEY_INTERNAL_REWARDS_NOT_INTERESTED = "io.lbry.browser.preference.internal.RewardsNotInterested";
+    public static final String PREFERENCE_KEY_INTERNAL_NEW_ANDROID_REWARD_CLAIMED = "io.lbry.browser.preference.internal.NewAndroidRewardClaimed";
 
     public static final String PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED = "io.lbry.browser.preference.internal.FirstRunCompleted";
     public static final String PREFERENCE_KEY_INTERNAL_FIRST_AUTH_COMPLETED = "io.lbry.browser.preference.internal.FirstAuthCompleted";
@@ -1419,6 +1422,44 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fetchOwnClaims();
 
         initFloatingWalletBalance();
+
+        checkAndClaimNewAndroidReward();
+    }
+
+    public void checkAndClaimNewAndroidReward() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean rewardClaimed = sp.getBoolean(PREFERENCE_KEY_INTERNAL_NEW_ANDROID_REWARD_CLAIMED, false);
+        if (!rewardClaimed) {
+            ClaimRewardTask task = new ClaimRewardTask(
+                    Reward.TYPE_NEW_ANDROID,
+                    null,
+                    null,
+                    this,
+                    new ClaimRewardTask.ClaimRewardHandler() {
+                @Override
+                public void onSuccess(double amountClaimed, String message) {
+                    if (Helper.isNullOrEmpty(message)) {
+                        message = getResources().getQuantityString(
+                                R.plurals.claim_reward_message,
+                                amountClaimed == 1 ? 1 : 2,
+                                new DecimalFormat(Helper.LBC_CURRENCY_FORMAT_PATTERN).format(amountClaimed));
+                    }
+                    Snackbar.make(findViewById(R.id.content_main), message, Snackbar.LENGTH_LONG).show();
+                    if (sp != null) {
+                        sp.edit().putBoolean(PREFERENCE_KEY_INTERNAL_NEW_ANDROID_REWARD_CLAIMED, true).apply();
+                    }
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    // pass. fail silently
+                    if (sp != null) {
+                        sp.edit().putBoolean(PREFERENCE_KEY_INTERNAL_NEW_ANDROID_REWARD_CLAIMED, true).apply();
+                    }
+                }
+            });
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 
     public void initMediaSession() {

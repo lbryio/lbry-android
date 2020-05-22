@@ -273,7 +273,10 @@ public class RewardsFragment extends BaseFragment implements RewardListAdapter.R
                             amountClaimed == 1 ? 1 : 2,
                             new DecimalFormat(Helper.LBC_CURRENCY_FORMAT_PATTERN).format(amountClaimed));
                 }
-                Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+                View view = getView();
+                if (view != null) {
+                    Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+                }
                 Helper.setViewEnabled(buttonClaim, true);
                 Helper.setViewEnabled(inputClaimCode, true);
                 rewardClaimInProgress = false;
