@@ -448,7 +448,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                             Helper.formatBytes(claimFile.getTotalBytes(), false));
                 }
 
-                Helper.setViewText(vh.fileSizeView, fileSizeString);
+                Helper.setViewText(vh.fileSizeView, claimFile != null && !Helper.isNullOrEmpty(claimFile.getDownloadPath()) ? fileSizeString : null);
                 Helper.setViewVisibility(vh.downloadProgressView, isDownloading ? View.VISIBLE : View.INVISIBLE);
                 Helper.setViewProgress(vh.downloadProgressView, progress);
                 Helper.setViewText(vh.deviceView, item.getDevice());

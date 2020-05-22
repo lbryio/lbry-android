@@ -64,6 +64,12 @@
             android:textColor="@color/white"
             android:text="@string/fa_coins" />
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter"
+            android:textSize="14sp" />
+        <TextView
             android:id="@+id/floating_balance_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

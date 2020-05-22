@@ -101,18 +101,21 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_alignParentBottom="true"
-        android:layout_width="64dp"
+        android:layout_width="56dp"
         android:layout_height="48dp"
         android:layout_toLeftOf="@id/player_toggle_fullscreen">
         <TextView
             android:id="@+id/player_playback_speed_label"
-            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
             android:fontFamily="@font/inter"
+            android:letterSpacing="0.05"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="11sp" />
     </RelativeLayout>
 
     <RelativeLayout
