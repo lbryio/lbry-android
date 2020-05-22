@@ -1628,10 +1628,10 @@ public class FileViewFragment extends BaseFragment implements
 
     private void loadRelatedContent() {
         // reset the list view
-        String title = claim.getTitle();
-        String claimId = claim.getClaimId();
         View root = getView();
-        if (root != null) {
+        if (claim != null && root != null) {
+            String title = claim.getTitle();
+            String claimId = claim.getClaimId();
             ProgressBar relatedLoading = root.findViewById(R.id.file_view_related_content_progress);
             Context context = getContext();
             boolean canShowMatureContent = false;
@@ -1665,13 +1665,15 @@ public class FileViewFragment extends BaseFragment implements
                         }
                     });
 
-                    View view = getView();
-                    if (view != null) {
-                        RecyclerView relatedContentList = view.findViewById(R.id.file_view_related_content_list);
+                    View v = getView();
+                    if (v != null) {
+                        RecyclerView relatedContentList = root.findViewById(R.id.file_view_related_content_list);
                         relatedContentList.setAdapter(relatedContentAdapter);
                         relatedContentAdapter.notifyDataSetChanged();
 
-                        Helper.setViewVisibility(view.findViewById(R.id.file_view_no_related_content), relatedContentAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                        Helper.setViewVisibility(
+                                v.findViewById(R.id.file_view_no_related_content),
+                                relatedContentAdapter == null || relatedContentAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
                     }
                 }
 
