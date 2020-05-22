@@ -289,11 +289,12 @@ public class ChannelFormFragment extends BaseFragment implements
     }
 
     private void validateAndSaveClaim(Claim claim) {
-        String channelName = claim.getName().startsWith("@") ? claim.getName().substring(1) : claim.getName();
-        if (Helper.isNullOrEmpty(channelName)) {
+        if (Helper.isNullOrEmpty(claim.getName())) {
             showError(getString(R.string.please_enter_channel_name));
             return;
         }
+
+        String channelName = claim.getName().startsWith("@") ? claim.getName().substring(1) : claim.getName();
         if (!LbryUri.isNameValid(channelName)) {
             showError(getString(R.string.channel_name_invalid_characters));
             return;

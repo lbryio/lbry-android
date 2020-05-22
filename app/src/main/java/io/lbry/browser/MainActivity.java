@@ -349,12 +349,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         });
 
         super.onCreate(savedInstanceState);
-        castContext = CastContext.getSharedInstance(this);
         dbHelper = new DatabaseHelper(this);
         checkNotificationOpenIntent(getIntent());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // TODO: Check Google Play Services availability
+        // castContext = CastContext.getSharedInstance(this);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.content_main), new OnApplyWindowInsetsListener() {
             @Override
