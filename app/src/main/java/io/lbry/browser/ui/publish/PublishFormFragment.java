@@ -661,7 +661,14 @@ public class PublishFormFragment extends BaseFragment implements
     }
 
     private void checkAndUploadThumbnail(String filePath, String thumbnailPath, String type) {
-        if (Helper.isNullOrEmpty(thumbnailPath)) {
+        boolean thumbnailValid = false;
+        if (!Helper.isNullOrEmpty(thumbnailPath)) {
+            File file = new File(thumbnailPath);
+            // make sure the file exists and it's not an empty file
+            thumbnailValid = file.exists() && file.length() > 0;
+        }
+
+        if (!thumbnailValid) {
             createAndUploadThumbnail(filePath, type);
         } else {
             uploadThumbnail(thumbnailPath);
