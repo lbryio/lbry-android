@@ -66,6 +66,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -87,6 +88,7 @@ import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.Fee;
 import io.lbry.browser.model.LbryFile;
+import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.lbryinc.Reward;
@@ -109,6 +111,8 @@ import io.lbry.browser.tasks.lbryinc.FetchStatCountTask;
 import io.lbry.browser.tasks.lbryinc.LogFileViewTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.ui.controls.SolidIconView;
+import io.lbry.browser.ui.publish.PublishFormFragment;
+import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
@@ -145,6 +149,7 @@ public class FileViewFragment extends BaseFragment implements
     private long startTimeMillis;
     private GetFileTask getFileTask;
 
+    private View buttonPublishSomething;
     private View layoutLoadingState;
     private View layoutNothingAtLocation;
     private View layoutDisplayArea;
@@ -158,6 +163,7 @@ public class FileViewFragment extends BaseFragment implements
         layoutNothingAtLocation = root.findViewById(R.id.container_nothing_at_location);
         layoutResolving = root.findViewById(R.id.file_view_loading_container);
         layoutDisplayArea = root.findViewById(R.id.file_view_claim_display_area);
+        buttonPublishSomething = root.findViewById(R.id.nothing_at_location_publish_button);
 
         initUi(root);
 
@@ -282,10 +288,11 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void renderNothingAtLocation() {
-        layoutLoadingState.setVisibility(View.VISIBLE);
-        layoutNothingAtLocation.setVisibility(View.VISIBLE);
-        layoutResolving.setVisibility(View.GONE);
-        layoutDisplayArea.setVisibility(View.INVISIBLE);
+        Helper.setViewVisibility(layoutLoadingState, View.VISIBLE);
+        Helper.setViewVisibility(layoutNothingAtLocation, View.VISIBLE);
+        Helper.setViewVisibility(buttonPublishSomething, View.VISIBLE);
+        Helper.setViewVisibility(layoutResolving, View.GONE);
+        Helper.setViewVisibility(layoutDisplayArea, View.INVISIBLE);
     }
 
     private void checkNewClaimAndUrl(Claim newClaim, String newUrl) {
@@ -574,6 +581,21 @@ public class FileViewFragment extends BaseFragment implements
 
     private void initUi(View root) {
         initWebView(root);
+
+        buttonPublishSomething.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = getContext();
+                if (!Helper.isNullOrEmpty(currentUrl) && context instanceof MainActivity) {
+                    LbryUri uri = LbryUri.tryParse(currentUrl);
+                    if (uri != null) {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("suggestedUrl", uri.getStreamName());
+                        ((MainActivity) context).openFragment(PublishFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
+                    }
+                }
+            }
+        });
 
         root.findViewById(R.id.file_view_title_area).setOnClickListener(new View.OnClickListener() {
             @Override

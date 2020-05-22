@@ -44,6 +44,7 @@ import io.lbry.browser.tasks.wallet.TransactionListTask;
 import io.lbry.browser.tasks.wallet.WalletAddressUnusedTask;
 import io.lbry.browser.tasks.wallet.WalletSendTask;
 import io.lbry.browser.ui.BaseFragment;
+import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
@@ -238,6 +239,15 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         DividerItemDecoration itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         itemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.thin_divider));
         recentTransactionsList.addItemDecoration(itemDecoration);
+
+        textEarnMoreTips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).openFragment(PublishFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH);
+                }
+            }
+        });
 
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override

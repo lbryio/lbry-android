@@ -82,7 +82,6 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private View buttonFollowUnfollow;
     private int subCount;
     private SolidIconView iconFollowUnfollow;
-
     private View layoutNothingAtLocation;
     private View layoutLoadingState;
 

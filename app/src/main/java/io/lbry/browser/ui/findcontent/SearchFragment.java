@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
@@ -27,11 +29,13 @@ import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.LbryFile;
+import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
 import io.lbry.browser.tasks.LighthouseSearchTask;
 import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.ui.BaseFragment;
+import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
@@ -272,13 +276,20 @@ public class SearchFragment extends BaseFragment implements
             return;
         }
 
-        if (claim.isUnresolved()) {
-            // open the publish page
-        } else if (claim.getName().startsWith("@")) {
-            ((MainActivity) getContext()).openChannelUrl(claim.getPermanentUrl());
-        } else {
-            // not a channel
-            ((MainActivity) getContext()).openFileClaim(claim);
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            if (claim.isUnresolved()) {
+                // open the publish page
+                Map<String, Object> params = new HashMap<>();
+                params.put("suggestedUrl", claim.getName());
+                activity.openFragment(PublishFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
+            } else if (claim.getName().startsWith("@")) {
+                activity.openChannelUrl(claim.getPermanentUrl());
+            } else {
+                // not a channel
+                activity.openFileClaim(claim);
+            }
         }
     }
 

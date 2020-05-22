@@ -1904,8 +1904,19 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }
         } else if (requestCode == REQUEST_VIDEO_CAPTURE || requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
+                PublishFragment publishFragment = null;
+                for (Fragment fragment : openNavFragments.values()) {
+                    if (fragment instanceof PublishFragment) {
+                        publishFragment = (PublishFragment) fragment;
+                        break;
+                    }
+                }
+
                 Map<String, Object> params = new HashMap<>();
                 params.put("directFilePath", cameraOutputFilename);
+                if (publishFragment != null) {
+                    params.put("suggestedUrl", publishFragment.getSuggestedPublishUrl());
+                }
                 openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
             }
             cameraOutputFilename = null;

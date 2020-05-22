@@ -237,6 +237,7 @@ public class PublishFragment extends BaseFragment implements
     public void onResume() {
         super.onResume();
         Context context = getContext();
+        Helper.setWunderbarValue(null, context);
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             LbryAnalytics.setCurrentScreen(activity, "Publish", "Publish");
@@ -306,6 +307,7 @@ public class PublishFragment extends BaseFragment implements
                                 if (context instanceof MainActivity) {
                                     Map<String, Object> params = new HashMap<>();
                                     params.put("galleryItem", item);
+                                    params.put("suggestedUrl", getSuggestedPublishUrl());
                                     ((MainActivity) context).openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
                                 }
                             }
@@ -398,6 +400,14 @@ public class PublishFragment extends BaseFragment implements
         ).show();
     }
 
+    public String getSuggestedPublishUrl() {
+        Map<String, Object> params = getParams();
+        if (params != null && params.containsKey("suggestedUrl")) {
+            return (String) params.get("suggestedUrl");
+        }
+        return null;
+    }
+
     @Override
     public boolean shouldHideGlobalPlayer() {
         return true;
@@ -414,6 +424,7 @@ public class PublishFragment extends BaseFragment implements
         if (context instanceof MainActivity) {
             Map<String, Object> params = new HashMap<>();
             params.put("directFilePath", filePath);
+            params.put("suggestedUrl", getSuggestedPublishUrl());
             ((MainActivity) context).openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
         }
     }

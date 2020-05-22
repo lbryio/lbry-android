@@ -514,6 +514,10 @@ public class PublishFormFragment extends BaseFragment implements
             } else if (params.containsKey("directFilePath")) {
                 currentFilePath = (String) params.get("directFilePath");
             }
+
+            if (this.currentClaim == null && params.containsKey("suggestedUrl")) {
+                Helper.setViewText(inputAddress, (String) params.get("suggestedUrl"));
+            }
         } else {
             // shouldn't actually happen
             cancelOnFatalCondition(getString(R.string.no_file_found));
@@ -843,6 +847,7 @@ public class PublishFormFragment extends BaseFragment implements
         }
 
         Context context = getContext();
+        Helper.setWunderbarValue(null, context);
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             LbryAnalytics.setCurrentScreen(activity, "Channel Form", "ChannelForm");
