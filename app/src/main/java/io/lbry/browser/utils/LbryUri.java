@@ -260,21 +260,14 @@ public class LbryUri {
         String secondaryClaimId = !Helper.isNullOrEmpty(secondaryClaimName) ? streamClaimId : null;
 
         if (!Helper.isNullOrEmpty(primaryClaimId)) {
-            sb.append('#').append(primaryClaimId);
-        }
-        if (primaryClaimSequence > 0) {
-            sb.append(':').append(primaryClaimSequence);
+            sb.append(':').append(primaryClaimId);
         }
         if (!Helper.isNullOrEmpty(secondaryClaimName)) {
             sb.append('/').append(secondaryClaimName);
         }
         if (!Helper.isNullOrEmpty(secondaryClaimId)) {
-            sb.append('#').append(secondaryClaimId);
+            sb.append(':').append(secondaryClaimId);
         }
-        if (secondaryClaimSequence > 0) {
-            sb.append(':').append(secondaryClaimSequence);
-        }
-
         return sb.toString();
     }
 

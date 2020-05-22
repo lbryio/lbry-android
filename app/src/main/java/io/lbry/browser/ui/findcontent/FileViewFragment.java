@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.text.format.DateUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -42,6 +41,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ParserException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -54,6 +54,8 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
+import com.google.android.exoplayer2.upstream.Loader;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
@@ -69,6 +71,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -1268,7 +1272,7 @@ public class FileViewFragment extends BaseFragment implements
                 MediaSource mediaSource = new ProgressiveMediaSource.Factory(
                         new CacheDataSourceFactory(MainActivity.playerCache, new DefaultDataSourceFactory(context, userAgent)),
                         new DefaultExtractorsFactory()
-                ).createMediaSource(Uri.parse(mediaSourceUrl));
+                ).setLoadErrorHandlingPolicy(new StreamLoadErrorPolicy()).createMediaSource(Uri.parse(mediaSourceUrl));
 
                 MainActivity.appPlayer.prepare(mediaSource, true, true);
             }
@@ -2119,6 +2123,22 @@ public class FileViewFragment extends BaseFragment implements
                 Helper.setViewVisibility(root.findViewById(R.id.file_view_action_edit), isOwnClaim ? View.VISIBLE : View.GONE);
                 Helper.setViewVisibility(root.findViewById(R.id.file_view_action_delete), isOwnClaim ? View.VISIBLE : View.GONE);
             }
+        }
+    }
+
+    private static class StreamLoadErrorPolicy extends DefaultLoadErrorHandlingPolicy {
+        @Override
+        public long getRetryDelayMsFor(int dataType, long loadDurationMs, IOException exception, int errorCount) {
+            return exception instanceof ParserException
+                    || exception instanceof FileNotFoundException
+                    || exception instanceof Loader.UnexpectedLoaderException
+                    ? C.TIME_UNSET
+                    : Math.min((errorCount - 1) * 1000, 5000);
+        }
+
+        @Override
+        public int getMinimumLoadableRetryCount(int dataType) {
+            return Integer.MAX_VALUE;
         }
     }
 }
