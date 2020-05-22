@@ -648,6 +648,10 @@ public final class Helper {
         List<LbryFile> filtered = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             LbryFile file = files.get(i);
+            // remove own claims as well
+            if (file.getClaim() != null && Lbry.ownClaims.contains(file.getClaim())) {
+                continue;
+            }
             if (!Helper.isNullOrEmpty(file.getDownloadPath())) {
                 filtered.add(file);
             }

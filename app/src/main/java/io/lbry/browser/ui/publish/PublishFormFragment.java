@@ -516,7 +516,10 @@ public class PublishFormFragment extends BaseFragment implements
             }
 
             if (this.currentClaim == null && params.containsKey("suggestedUrl")) {
-                Helper.setViewText(inputAddress, (String) params.get("suggestedUrl"));
+                String suggestedUrl = (String) params.get("suggestedUrl");
+                if (!Helper.isNullOrEmpty(suggestedUrl) && Helper.isNullOrEmpty(Helper.getValue(inputAddress.getText()))) {
+                    Helper.setViewText(inputAddress, (String) params.get("suggestedUrl"));
+                }
             }
         } else {
             // shouldn't actually happen
