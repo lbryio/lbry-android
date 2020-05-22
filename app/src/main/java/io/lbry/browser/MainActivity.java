@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.PictureInPictureParams;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -23,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -40,6 +42,7 @@ import android.widget.Toast;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.gms.cast.framework.CastContext;
@@ -67,6 +70,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.media.session.MediaButtonReceiver;
 import androidx.preference.PreferenceManager;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -282,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static boolean appStarted;
     private boolean serviceRunning;
     private CheckSdkReadyTask checkSdkReadyTask;
+    private MediaSessionCompat mediaSession;
     private boolean receivedStopService;
     private ActionBarDrawerToggle toggle;
     private SyncSetTask syncSetTask = null;
@@ -780,6 +785,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
         if (dbHelper != null) {
             dbHelper.close();
+        }
+        if (mediaSession != null) {
+            mediaSession.release();
         }
         stopExoplayer();
         nowPlayingClaim = null;
@@ -1411,6 +1419,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fetchOwnClaims();
 
         initFloatingWalletBalance();
+    }
+
+    public void initMediaSession() {
+        ComponentName mediaButtonReceiver = new ComponentName(getApplicationContext(), MediaButtonReceiver.class);
+        mediaSession = new MediaSessionCompat(getApplicationContext(), "LBRYMediaSession", mediaButtonReceiver, null);
+        MediaSessionConnector connector = new MediaSessionConnector(mediaSession);
+        connector.setPlayer(MainActivity.appPlayer);
+        mediaSession.setActive(true);
     }
 
     public void showFloatingWalletBalance() {

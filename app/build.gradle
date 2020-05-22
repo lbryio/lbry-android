@@ -77,6 +77,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.11.4'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.11.4'
     implementation 'com.google.android.exoplayer:extension-cast:2.11.4'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.11.4'
 
     implementation 'com.google.android:flexbox:2.0.1'
 
