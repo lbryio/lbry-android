@@ -141,6 +141,7 @@ No puede publicar contenido en este momento porque el servicio en segundo plano 
     <string name="publish_successful"> 
 Su contenido fue publicado con éxito. Puede tardar unos minutos en aparecer en la cadena de bloques.</string>
     <string name="transcode_in_progress">La optimización de video está en progreso. Si desea cancelar, presione Cancelar en la parte inferior de la página.</string>
+    <string name="optimization_in_progress">La optimización de video está en progreso.</string>
     <string name="cannot_capture_video">No hay una aplicación de cámara disponible para grabar videos en este dispositivo.</string>
     <string name="cannot_take_photo">No hay una aplicación de cámara disponible para tomar fotos en este dispositivo.</string>
 

@@ -129,6 +129,7 @@
     <string name="sdk_initializing_publish">You cannot publish content right now because the background service is still initializing.</string>
     <string name="publish_successful">Your content was successfully published. It may take a few moments to appear on the blockchain.</string>
     <string name="transcode_in_progress">Video optimization is in progress. If you wish to cancel, press Cancel at the bottom of the page.</string>
+    <string name="optimization_in_progress">Video optimization is in progress.</string>
     <string name="cannot_capture_video">There is no camera app available to record videos on this device.</string>
     <string name="cannot_take_photo">There is no camera app available to take photos on this device.</string>
 

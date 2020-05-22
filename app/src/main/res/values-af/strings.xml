@@ -129,6 +129,7 @@
     <string name="sdk_initializing_publish">U kan nie op die oomblik inhoud publiseer nie, omdat die agtergronddiens steeds initialiseer.</string>
     <string name="publish_successful">U inhoud is suksesvol gepubliseer. Dit kan \'n paar oomblikke neem om op die blockchain te verskyn.</string>
     <string name="transcode_in_progress">Videooptimalisering is aan die gang. Druk Annuleer onderaan die bladsy as u wil kanselleer.</string>
+    <string name="optimization_in_progress">Videooptimalisering is aan die gang.</string>
     <string name="cannot_capture_video">Daar is geen kamera-app beskikbaar om video\'s op hierdie toestel op te neem nie.</string>
     <string name="cannot_take_photo">Daar is geen kamera-app beskikbaar om foto\'s op hierdie toestel te neem nie.</string>
 

@@ -435,6 +435,11 @@ public class PublishFormFragment extends BaseFragment implements
                     return;
                 }
 
+                if (transcodeInProgress) {
+                    Snackbar.make(view, R.string.optimization_in_progress, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
                 // check minimum deposit
                 String depositString = Helper.getValue(inputDeposit.getText());
                 double depositAmount = 0;
