@@ -289,7 +289,7 @@ public class ChannelFormFragment extends BaseFragment implements
     }
 
     private void validateAndSaveClaim(Claim claim) {
-        if (Helper.isNullOrEmpty(claim.getName())) {
+        if (!editMode && Helper.isNullOrEmpty(claim.getName())) {
             showError(getString(R.string.please_enter_channel_name));
             return;
         }
@@ -629,13 +629,13 @@ public class ChannelFormFragment extends BaseFragment implements
 
     private Claim buildChannelClaimToSave() {
         Claim claim = new Claim();
-        if (!editMode) {
-            String name = Helper.getValue(inputChannelName.getText());
-            if (!name.startsWith("@")) {
-                name = String.format("@%s", name);
-            }
-            claim.setName(name);
-        } else if (currentClaim != null) {
+        String name = Helper.getValue(inputChannelName.getText());
+        if (!name.startsWith("@")) {
+            name = String.format("@%s", name);
+        }
+        claim.setName(name);
+
+        if (currentClaim != null) {
             claim.setClaimId(currentClaim.getClaimId());
         }
 

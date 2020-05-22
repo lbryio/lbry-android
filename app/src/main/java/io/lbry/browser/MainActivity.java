@@ -1665,6 +1665,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onSyncGetWalletNotFound() {
                 // pass. This actually shouldn't happen at this point.
+                // But if it does, send what we have
+                if (Lbryio.isSignedIn() && userSyncEnabled()) {
+                    syncApplyAndSet();
+                }
             }
 
             @Override

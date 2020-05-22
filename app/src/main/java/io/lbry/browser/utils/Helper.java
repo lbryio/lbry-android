@@ -68,7 +68,7 @@ public final class Helper {
     public static final MediaType FORM_MEDIA_TYPE = MediaType.parse("application/x-www-form-urlencoded");
     public static final MediaType JSON_MEDIA_TYPE = MediaType.get("application/json; charset=utf-8");
     public static final int CONTENT_PAGE_SIZE = 25;
-    public static final double MIN_DEPOSIT = 0.01;
+    public static final double MIN_DEPOSIT = 0.001;
     public static final String LBC_CURRENCY_FORMAT_PATTERN = "#,###.##";
     public static final String FILE_SIZE_FORMAT_PATTERN = "#,###.#";
     public static final DecimalFormat LBC_CURRENCY_FORMAT = new DecimalFormat(LBC_CURRENCY_FORMAT_PATTERN);

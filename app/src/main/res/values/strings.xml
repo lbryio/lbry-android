@@ -344,7 +344,7 @@
     <string name="show_advanced">Show advanced</string>
     <string name="hide_advanced">Hide advanced</string>
     <string name="name">Name</string>
-    <string name="min_deposit">0.01</string>
+    <string name="min_deposit">0.001</string>
     <string name="content_successfully_reposted">The content was successfully reposted!</string>
     <string name="repost_name_invalid_characters">The repost name contains invalid characters.</string>
     <plurals name="you_sent_a_tip">

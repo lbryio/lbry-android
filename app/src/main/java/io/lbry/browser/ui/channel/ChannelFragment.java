@@ -437,8 +437,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         }
 
         try {
-            if (tabPager.getAdapter() == null) {
-                tabPager.setAdapter(new ChannelPagerAdapter(claim, (MainActivity) getContext()));
+            if (tabPager.getAdapter() == null && context instanceof MainActivity) {
+                tabPager.setAdapter(new ChannelPagerAdapter(claim, (MainActivity) context));
             }
         } catch (IllegalStateException ex) {
             // TODO: Fix why this is happening
