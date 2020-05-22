@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     // preference keys
     public static final String PREFERENCE_KEY_DARK_MODE = "io.lbry.browser.preference.userinterface.DarkMode";
     public static final String PREFERENCE_KEY_SHOW_MATURE_CONTENT = "io.lbry.browser.preference.userinterface.ShowMatureContent";
-    public static final String PREFERENCE_KEY_NOTIFICATION_URL_SUGGESTIONS = "io.lbry.browser.preference.userinterface.UrlSuggestions";
+    public static final String PREFERENCE_KEY_SHOW_URL_SUGGESTIONS = "io.lbry.browser.preference.userinterface.UrlSuggestions";
     public static final String PREFERENCE_KEY_NOTIFICATION_SUBSCRIPTIONS = "io.lbry.browser.preference.notifications.Subscriptions";
     public static final String PREFERENCE_KEY_NOTIFICATION_REWARDS = "io.lbry.browser.preference.notifications.Rewards";
     public static final String PREFERENCE_KEY_NOTIFICATION_CONTENT_INTERESTS = "io.lbry.browser.preference.notifications.ContentInterests";
@@ -366,13 +366,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                                 0, insets.getSystemWindowInsetBottom()));
             }
         });
-        /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.url_suggestions_container), new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-                return ViewCompat.onApplyWindowInsets(v,
-                        insets.replaceSystemWindowInsets(0, 0,0, insets.getSystemWindowInsetBottom()));
-            }
-        });*/
 
         // register receivers
         registerRequestsReceiver();
@@ -789,6 +782,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         stopExoplayer();
         nowPlayingClaim = null;
         nowPlayingClaimUrl = null;
+        appStarted = false;
+
+        if (!keepSdkBackground()) {
+            sendBroadcast(new Intent(LbrynetService.ACTION_STOP_SERVICE));
+        }
+
         super.onDestroy();
     }
 
@@ -915,6 +914,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         return Helper.getScaledValue(value, scale);
     }
 
+
+    public boolean canShowUrlSuggestions() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        return sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_URL_SUGGESTIONS, false);
+    }
+
+    public boolean keepSdkBackground() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        return sp.getBoolean(MainActivity.PREFERENCE_KEY_KEEP_SDK_BACKGROUND, true);
+    }
+
     private void setupUriBar() {
         findViewById(R.id.wunderbar_close).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -931,9 +941,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(view, 0);
                 }
-                toggleUrlSuggestions(hasFocus);
-                if (hasFocus && Helper.isNullOrEmpty(Helper.getValue(((EditText) view).getText()))) {
-                    displayUrlSuggestionsForNoInput();
+
+                if (canShowUrlSuggestions()) {
+                    toggleUrlSuggestions(hasFocus);
+                    if (hasFocus && Helper.isNullOrEmpty(Helper.getValue(((EditText) view).getText()))) {
+                        displayUrlSuggestionsForNoInput();
+                    }
                 }
             }
         });
@@ -946,7 +959,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence != null) {
+                if (charSequence != null && canShowUrlSuggestions()) {
                     handleUriInputChanged(charSequence.toString().trim());
                 }
             }

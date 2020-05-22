@@ -2,6 +2,7 @@ package io.lbry.browser.ui.other;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -9,9 +10,14 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
+import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryAnalytics;
+import io.lbry.lbrysdk.Utils;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     @Override
@@ -69,6 +75,29 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_DARK_MODE)) {
             boolean darkMode = sp.getBoolean(MainActivity.PREFERENCE_KEY_DARK_MODE, false);
             AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        } else if (key.equalsIgnoreCase(MainActivity.PREFERENCE_KEY_PARTICIPATE_DATA_NETWORK)) {
+            boolean dhtEnabled = sp.getBoolean(MainActivity.PREFERENCE_KEY_PARTICIPATE_DATA_NETWORK, false);
+            updateDHTFileSetting(dhtEnabled);
         }
+    }
+
+    private void updateDHTFileSetting(final boolean enabled) {
+        Context context = getContext();
+        (new AsyncTask<Void, Void, Void>() {
+            protected Void doInBackground(Void... params) {
+                PrintStream out = null;
+                try {
+                    String fileContent = enabled ? "on" : "off";
+                    String path = String.format("%s/%s", Utils.getAppInternalStorageDir(context), "dht");
+                    out = new PrintStream(new FileOutputStream(path));
+                    out.print(fileContent);
+                } catch (Exception ex) {
+                    // pass
+                } finally {
+                    Helper.closeCloseable(out);
+                }
+                return null;
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
