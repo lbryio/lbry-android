@@ -104,6 +104,7 @@ import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.CameraPermissionListener;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchChannelsListener;
+import io.lbry.browser.listener.FetchClaimsListener;
 import io.lbry.browser.listener.FilePickerListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.StoragePermissionListener;
@@ -135,17 +136,17 @@ import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.ui.channel.ChannelFormFragment;
 import io.lbry.browser.ui.channel.ChannelFragment;
 import io.lbry.browser.ui.channel.ChannelManagerFragment;
-import io.lbry.browser.ui.editorschoice.EditorsChoiceFragment;
-import io.lbry.browser.ui.following.FileViewFragment;
-import io.lbry.browser.ui.following.FollowingFragment;
+import io.lbry.browser.ui.findcontent.EditorsChoiceFragment;
+import io.lbry.browser.ui.findcontent.FileViewFragment;
+import io.lbry.browser.ui.findcontent.FollowingFragment;
 import io.lbry.browser.ui.library.LibraryFragment;
 import io.lbry.browser.ui.other.AboutFragment;
 import io.lbry.browser.ui.publish.PublishFormFragment;
 import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.ui.publish.PublishesFragment;
-import io.lbry.browser.ui.search.SearchFragment;
+import io.lbry.browser.ui.findcontent.SearchFragment;
 import io.lbry.browser.ui.other.SettingsFragment;
-import io.lbry.browser.ui.allcontent.AllContentFragment;
+import io.lbry.browser.ui.findcontent.AllContentFragment;
 import io.lbry.browser.ui.wallet.InvitesFragment;
 import io.lbry.browser.ui.wallet.RewardsFragment;
 import io.lbry.browser.ui.wallet.WalletFragment;
@@ -294,6 +295,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private List<SdkStatusListener> sdkStatusListeners;
     private List<StoragePermissionListener> storagePermissionListeners;
     private List<WalletBalanceListener> walletBalanceListeners;
+    private List<FetchClaimsListener> fetchClaimsListeners;
     private List<FetchChannelsListener> fetchChannelsListeners;
     @Getter
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -412,6 +414,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         sdkStatusListeners = new ArrayList<>();
         storagePermissionListeners = new ArrayList<>();
         walletBalanceListeners = new ArrayList<>();
+        fetchClaimsListeners = new ArrayList<>();
         fetchChannelsListeners = new ArrayList<>();
 
         sdkStatusListeners.add(this);
@@ -599,6 +602,15 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
     public void removeFetchChannelsListener(FetchChannelsListener listener) {
         fetchChannelsListeners.remove(listener);
+    }
+
+    public void addFetchClaimsListener(FetchClaimsListener listener) {
+        if (!fetchClaimsListeners.contains(listener)) {
+            fetchClaimsListeners.add(listener);
+        }
+    }
+    public void removeFetchClaimsListener(FetchClaimsListener listener) {
+        fetchClaimsListeners.remove(listener);
     }
 
     private void openSelectedMenuItem() {
@@ -830,9 +842,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         applyNavbarSigninPadding();
         checkFirstRun();
         checkNowPlaying();
-        if (Lbryio.totalUnclaimedRewardAmount > 0) {
-            showFloatingUnclaimedRewards();
-        }
+        fetchRewards();
 
         // check (and start) the LBRY SDK service
         serviceRunning = isServiceRunning(this, LbrynetService.class);
@@ -1326,7 +1336,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             openFragment(FollowingFragment.class, false, NavMenuItem.ID_ITEM_FOLLOWING);
-            fetchRewards();
         }
     }
 
@@ -2157,13 +2166,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                 if (Lbryio.totalUnclaimedRewardAmount > 0) {
                     showFloatingUnclaimedRewards();
-                    double usdRewardAmount = Lbryio.totalUnclaimedRewardAmount * Lbryio.LBCUSDRate;
-                    if (navMenuAdapter != null) {
-                        navMenuAdapter.setExtraLabelForItem(
-                                NavMenuItem.ID_ITEM_REWARDS,
-                                Lbryio.LBCUSDRate > 0 ? String.format("$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(usdRewardAmount)) : null
-                        );
-                    }
+                    updateRewardsUsdVale();
                 }
             }
 
@@ -2172,6 +2175,18 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void updateRewardsUsdVale() {
+        if (Lbryio.totalUnclaimedRewardAmount > 0) {
+            double usdRewardAmount = Lbryio.totalUnclaimedRewardAmount * Lbryio.LBCUSDRate;
+            if (navMenuAdapter != null) {
+                navMenuAdapter.setExtraLabelForItem(
+                        NavMenuItem.ID_ITEM_REWARDS,
+                        Lbryio.LBCUSDRate > 0 ? String.format("$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(usdRewardAmount)) : null
+                );
+            }
+        }
     }
 
     public void showFloatingUnclaimedRewards() {
@@ -2647,6 +2662,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onSuccess(List<Claim> claims) {
                 Lbry.ownClaims = Helper.filterDeletedClaims(new ArrayList<>(claims));
+                for (FetchClaimsListener listener : fetchClaimsListeners) {
+                    listener.onClaimsFetched(claims);
+                }
             }
 
             @Override

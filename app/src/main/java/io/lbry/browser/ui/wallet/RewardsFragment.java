@@ -237,6 +237,11 @@ public class RewardsFragment extends BaseFragment implements RewardListAdapter.R
         } catch (IllegalStateException ex) {
             // pass
         }
+
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).updateRewardsUsdVale();
+        }
     }
 
     @Override
@@ -278,7 +283,8 @@ public class RewardsFragment extends BaseFragment implements RewardListAdapter.R
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
+                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).
+                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                 Helper.setViewEnabled(buttonClaim, true);
                 Helper.setViewEnabled(inputClaimCode, true);
                 rewardClaimInProgress = false;

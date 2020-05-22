@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import java.util.Map;
 
 import io.lbry.browser.MainActivity;
-import io.lbry.browser.ui.following.FileViewFragment;
 import lombok.Getter;
 import lombok.Setter;
 

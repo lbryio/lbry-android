@@ -239,7 +239,8 @@ public class VerificationActivity extends FragmentActivity implements SignInList
     }
 
     private void showFetchUserError(String message) {
-        Snackbar.make(findViewById(R.id.verification_pager), message, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
+        Snackbar.make(findViewById(R.id.verification_pager), message, Snackbar.LENGTH_LONG).
+                setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
     }
 
     @Override

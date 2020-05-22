@@ -197,7 +197,8 @@ public class RewardListAdapter extends RecyclerView.Adapter<RewardListAdapter.Vi
             public void onClick(View view) {
                 String claimCode = Helper.getValue(vh.inputCustomCode.getText());
                 if (Helper.isNullOrEmpty(claimCode)) {
-                    Snackbar.make(view, R.string.please_enter_claim_code, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
+                    Snackbar.make(view, R.string.please_enter_claim_code, Snackbar.LENGTH_LONG).
+                            setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                     return;
                 }
 

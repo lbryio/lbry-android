@@ -1,4 +1,4 @@
-package io.lbry.browser.ui.following;
+package io.lbry.browser.ui.findcontent;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -80,6 +80,7 @@ import io.lbry.browser.dialog.RepostClaimDialogFragment;
 import io.lbry.browser.dialog.SendTipDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.DownloadActionListener;
+import io.lbry.browser.listener.FetchClaimsListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.model.Claim;
@@ -94,6 +95,8 @@ import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.tasks.LighthouseSearchTask;
 import io.lbry.browser.tasks.ReadTextFileTask;
 import io.lbry.browser.tasks.SetSdkSettingTask;
+import io.lbry.browser.tasks.claim.AbandonHandler;
+import io.lbry.browser.tasks.claim.AbandonStreamTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
 import io.lbry.browser.tasks.claim.ResolveTask;
@@ -116,7 +119,7 @@ import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.Utils;
 
 public class FileViewFragment extends BaseFragment implements
-        MainActivity.BackPressInterceptor, DownloadActionListener, SdkStatusListener, StoragePermissionListener {
+        MainActivity.BackPressInterceptor, DownloadActionListener, FetchClaimsListener, SdkStatusListener, StoragePermissionListener {
     private static final int RELATED_CONTENT_SIZE = 16;
     private PlayerControlView castControlView;
     private Player currentPlayer;
@@ -195,6 +198,7 @@ public class FileViewFragment extends BaseFragment implements
             MainActivity activity = (MainActivity) context;
             activity.setBackPressInterceptor(this);
             activity.addDownloadActionListener(this);
+            activity.addFetchClaimsListener(this);
             if (!MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
                 activity.addStoragePermissionListener(this);
             }
@@ -378,6 +382,7 @@ public class FileViewFragment extends BaseFragment implements
         if (loadFilePending) {
             loadFile();
         }
+        checkOwnClaim();
     }
 
     private String getStreamingUrl() {
@@ -504,6 +509,7 @@ public class FileViewFragment extends BaseFragment implements
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             activity.removeDownloadActionListener(this);
+            activity.removeFetchClaimsListener(this);
             activity.removeSdkStatusListener(this);
             activity.removeStoragePermissionListener(this);
         }
@@ -667,6 +673,21 @@ public class FileViewFragment extends BaseFragment implements
             }
         });
 
+        root.findViewById(R.id.file_view_action_edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Lbry.SDK_READY) {
+                    Snackbar.make(root.findViewById(R.id.file_view_claim_display_area), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                Context context = getContext();
+                if (claim != null && context instanceof MainActivity) {
+                    ((MainActivity) context).openPublishForm(claim);
+                }
+            }
+        });
+
         root.findViewById(R.id.file_view_action_delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -675,16 +696,32 @@ public class FileViewFragment extends BaseFragment implements
                     return;
                 }
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
-                        setTitle(R.string.delete_file).
-                        setMessage(R.string.confirm_delete_file_message)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                deleteClaimFile();
-                            }
-                        }).setNegativeButton(R.string.no, null);
-                builder.show();
+                if (claim != null) {
+                    boolean isOwnClaim = Lbry.ownClaims.contains(claim);
+                    if (isOwnClaim) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
+                                setTitle(R.string.delete_content).
+                                setMessage(R.string.confirm_delete_content_message)
+                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        deleteCurrentClaim();
+                                    }
+                                }).setNegativeButton(R.string.no, null);
+                        builder.show();
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
+                                setTitle(R.string.delete_file).
+                                setMessage(R.string.confirm_delete_file_message)
+                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        deleteClaimFile();
+                                    }
+                                }).setNegativeButton(R.string.no, null);
+                        builder.show();
+                    }
+                }
             }
         });
 
@@ -803,6 +840,30 @@ public class FileViewFragment extends BaseFragment implements
         relatedContentList.setLayoutManager(llm);
     }
 
+    private void deleteCurrentClaim() {
+        if (claim != null) {
+            Helper.setViewVisibility(layoutDisplayArea, View.INVISIBLE);
+            Helper.setViewVisibility(layoutLoadingState, View.VISIBLE);
+            Helper.setViewVisibility(layoutNothingAtLocation, View.GONE);
+            AbandonStreamTask task = new AbandonStreamTask(Arrays.asList(claim.getClaimId()), layoutResolving, new AbandonHandler() {
+                @Override
+                public void onComplete(List<String> successfulClaimIds, List<String> failedClaimIds, List<Exception> errors) {
+                    Context context = getContext();
+                    if (context instanceof MainActivity) {
+                        if (failedClaimIds.size() == 0) {
+                            MainActivity activity = (MainActivity) context;
+                            activity.showMessage(R.string.content_deleted);
+                            activity.onBackPressed();
+                        } else {
+                            showError(getString(R.string.content_failed_delete));
+                        }
+                    }
+                }
+            });
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
     private void checkStoragePermissionAndStartDownload() {
         Context context = getContext();
         if (MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
@@ -904,10 +965,13 @@ public class FileViewFragment extends BaseFragment implements
 
                 @Override
                 public void onSuccess() {
-                    actionDelete.setVisibility(View.GONE);
-                    getView().findViewById(R.id.file_view_action_download).setVisibility(View.VISIBLE);
-                    getView().findViewById(R.id.file_view_unsupported_container).setVisibility(View.GONE);
-                    actionDelete.setEnabled(true);
+                    Helper.setViewVisibility(actionDelete, View.GONE);
+                    View root = getView();
+                    if (root != null) {
+                        root.findViewById(R.id.file_view_action_download).setVisibility(View.VISIBLE);
+                        root.findViewById(R.id.file_view_unsupported_container).setVisibility(View.GONE);
+                    }
+                    Helper.setViewEnabled(actionDelete, true);
 
                     claim.setFile(null);
                     Lbry.unsetFilesForCachedClaims(Arrays.asList(claim.getClaimId()));
@@ -1057,6 +1121,7 @@ public class FileViewFragment extends BaseFragment implements
                 loadRelatedContent();
             }
         }
+        checkOwnClaim();
     }
 
     private void showUnsupportedView() {
@@ -1484,53 +1549,58 @@ public class FileViewFragment extends BaseFragment implements
         // reset the list view
         String title = claim.getTitle();
         String claimId = claim.getClaimId();
-        ProgressBar relatedLoading = getView().findViewById(R.id.file_view_related_content_progress);
-
-        Context context = getContext();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
-        LighthouseSearchTask relatedTask = new LighthouseSearchTask(
-                title, RELATED_CONTENT_SIZE, 0, canShowMatureContent, claimId, relatedLoading, new ClaimSearchResultHandler() {
-            @Override
-            public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
-                List<Claim> filteredClaims = new ArrayList<>();
-                for (Claim c : claims) {
-                    if (!c.getClaimId().equalsIgnoreCase(claim.getClaimId())) {
-                        filteredClaims.add(c);
-                    }
-                }
-
-                relatedContentAdapter = new ClaimListAdapter(filteredClaims, context);
-                relatedContentAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
-                    @Override
-                    public void onClaimClicked(Claim claim) {
-                        if (context instanceof MainActivity) {
-                            MainActivity activity = (MainActivity) context;
-                            if (claim.getName().startsWith("@")) {
-                                activity.openChannelUrl(claim.getPermanentUrl());
-                            } else {
-                                activity.openFileUrl(claim.getPermanentUrl()); //openClaimUrl(claim.getPermanentUrl());
-                            }
+        View root = getView();
+        if (root != null) {
+            ProgressBar relatedLoading = root.findViewById(R.id.file_view_related_content_progress);
+            Context context = getContext();
+            boolean canShowMatureContent = false;
+            if (context != null) {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
+            }
+            LighthouseSearchTask relatedTask = new LighthouseSearchTask(
+                    title, RELATED_CONTENT_SIZE, 0, canShowMatureContent, claimId, relatedLoading, new ClaimSearchResultHandler() {
+                @Override
+                public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
+                    List<Claim> filteredClaims = new ArrayList<>();
+                    for (Claim c : claims) {
+                        if (!c.getClaimId().equalsIgnoreCase(claim.getClaimId())) {
+                            filteredClaims.add(c);
                         }
                     }
-                });
 
-                View view = getView();
-                if (view != null) {
-                    RecyclerView relatedContentList = view.findViewById(R.id.file_view_related_content_list);
-                    relatedContentList.setAdapter(relatedContentAdapter);
-                    relatedContentAdapter.notifyDataSetChanged();
+                    relatedContentAdapter = new ClaimListAdapter(filteredClaims, context);
+                    relatedContentAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
+                        @Override
+                        public void onClaimClicked(Claim claim) {
+                            if (context instanceof MainActivity) {
+                                MainActivity activity = (MainActivity) context;
+                                if (claim.getName().startsWith("@")) {
+                                    activity.openChannelUrl(claim.getPermanentUrl());
+                                } else {
+                                    activity.openFileUrl(claim.getPermanentUrl()); //openClaimUrl(claim.getPermanentUrl());
+                                }
+                            }
+                        }
+                    });
 
-                    Helper.setViewVisibility(view.findViewById(R.id.file_view_no_related_content), relatedContentAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                    View view = getView();
+                    if (view != null) {
+                        RecyclerView relatedContentList = view.findViewById(R.id.file_view_related_content_list);
+                        relatedContentList.setAdapter(relatedContentAdapter);
+                        relatedContentAdapter.notifyDataSetChanged();
+
+                        Helper.setViewVisibility(view.findViewById(R.id.file_view_no_related_content), relatedContentAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                    }
                 }
-            }
 
-            @Override
-            public void onError(Exception error) {
+                @Override
+                public void onError(Exception error) {
 
-            }
-        });
-        relatedTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+            });
+            relatedTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 
     public boolean onBackPressed() {
@@ -1888,6 +1958,11 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
+    @Override
+    public void onClaimsFetched(List<Claim> claims) {
+        checkOwnClaim();
+    }
+
     private static class LbryWebViewClient extends WebViewClient {
         private Context context;
         public LbryWebViewClient(Context context) {
@@ -1927,5 +2002,18 @@ public class FileViewFragment extends BaseFragment implements
     @Override
     public boolean shouldHideGlobalPlayer() {
         return true;
+    }
+
+    private void checkOwnClaim() {
+        if (claim != null) {
+            boolean isOwnClaim = Lbry.ownClaims.contains(claim);
+            View root = getView();
+            if (root != null) {
+                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_download), isOwnClaim ? View.GONE : View.VISIBLE);
+                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_report), isOwnClaim ? View.GONE : View.VISIBLE);
+                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_edit), isOwnClaim ? View.VISIBLE : View.GONE);
+                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_delete), isOwnClaim ? View.VISIBLE : View.GONE);
+            }
+        }
     }
 }

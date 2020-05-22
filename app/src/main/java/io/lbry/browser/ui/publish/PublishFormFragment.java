@@ -1369,15 +1369,12 @@ public class PublishFormFragment extends BaseFragment implements
             return;
         }
 
-        android.util.Log.d("#HELP", "FilePicked: " + filePath);
         Context context = getContext();
         if (context != null) {
             if (filePath.equalsIgnoreCase(lastSelectedThumbnailFile)) {
                 // previous selected cover was uploaded successfully
-                android.util.Log.d("#HELP", "lastSelectedThumbnailFile the same");
                 return;
             }
-            android.util.Log.d("#HELP", "PickedFilePath=" + filePath);
 
             Uri fileUri = Uri.fromFile(new File(filePath));
             Glide.with(context.getApplicationContext()).load(fileUri).centerCrop().into(imageThumbnail);
@@ -1456,7 +1453,6 @@ public class PublishFormFragment extends BaseFragment implements
                     "-pix_fmt yuv420p " +
                     "-maxrate 5000K -bufsize 5000K " +
                     "-movflags +faststart \"%s\"", filePath, scaleFlag, outputFilePath) : movFlagsCommand;
-            android.util.Log.d("#HELP", command);
 
             Config.enableStatisticsCallback(new StatisticsCallback() {
                 @Override

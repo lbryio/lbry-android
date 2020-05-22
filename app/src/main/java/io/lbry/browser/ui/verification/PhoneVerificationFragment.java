@@ -74,7 +74,8 @@ public class PhoneVerificationFragment extends Fragment {
                 currentPhoneNumber = Helper.getValue(inputPhoneNumber.getText());
 
                 if (Helper.isNullOrEmpty(currentPhoneNumber) || !countryCodePicker.isValidFullNumber()) {
-                    Snackbar.make(getView(), R.string.please_enter_valid_phone, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
+                    Snackbar.make(getView(), R.string.please_enter_valid_phone, Snackbar.LENGTH_LONG).
+                            setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                     return;
                 }
 
@@ -87,7 +88,8 @@ public class PhoneVerificationFragment extends Fragment {
             public void onClick(View view) {
                 String code = Helper.getValue(inputVerificationCode.getText());
                 if (Helper.isNullOrEmpty(code)) {
-                    Snackbar.make(getView(), R.string.please_enter_verification_code, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
+                    Snackbar.make(getView(), R.string.please_enter_verification_code, Snackbar.LENGTH_LONG).
+                            setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                     return;
                 }
                 verifyPhoneNumber(code);
@@ -109,8 +111,8 @@ public class PhoneVerificationFragment extends Fragment {
         PhoneNewVerifyTask task = new PhoneNewVerifyTask(currentCountryCode, currentPhoneNumber, null, newLoading, new GenericTaskHandler() {
             @Override
             public void beforeStart() {
-                continueButton.setEnabled(false);
-                continueButton.setVisibility(View.GONE);
+                Helper.setViewEnabled(continueButton, false);
+                Helper.setViewVisibility(continueButton, View.GONE);
             }
 
             @Override
@@ -119,18 +121,21 @@ public class PhoneVerificationFragment extends Fragment {
                     listener.onPhoneAdded(currentCountryCode, currentPhoneNumber);
                 }
 
-                textVerifyParagraph.setText(getString(R.string.enter_phone_verify_code, countryCodePicker.getFullNumberWithPlus()));
-                layoutCollect.setVisibility(View.GONE);
-                layoutVerify.setVisibility(View.VISIBLE);
-                continueButton.setEnabled(true);
-                continueButton.setVisibility(View.VISIBLE);
+                Helper.setViewText(textVerifyParagraph, getString(R.string.enter_phone_verify_code, countryCodePicker.getFullNumberWithPlus()));
+                Helper.setViewVisibility(layoutCollect, View.GONE);
+                Helper.setViewVisibility(layoutVerify, View.VISIBLE);
+                Helper.setViewEnabled(continueButton, true);
+                Helper.setViewVisibility(continueButton, View.VISIBLE);
             }
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
-                continueButton.setEnabled(true);
-                continueButton.setVisibility(View.VISIBLE);
+                if (error != null && getView() != null) {
+                    Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).
+                            setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                }
+                Helper.setViewEnabled(continueButton, true);
+                Helper.setViewVisibility(continueButton, View.VISIBLE);
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -140,8 +145,8 @@ public class PhoneVerificationFragment extends Fragment {
         PhoneNewVerifyTask task = new PhoneNewVerifyTask(currentCountryCode, currentPhoneNumber, verificationCode, verifyLoading, new GenericTaskHandler() {
             @Override
             public void beforeStart() {
-                verifyButton.setEnabled(false);
-                editButton.setEnabled(false);
+                Helper.setViewEnabled(verifyButton, false);
+                Helper.setViewEnabled(editButton, false);
             }
 
             @Override
@@ -149,15 +154,18 @@ public class PhoneVerificationFragment extends Fragment {
                 if (listener != null) {
                     listener.onPhoneVerified();
                 }
-                verifyButton.setEnabled(true);
-                editButton.setEnabled(true);
+                Helper.setViewEnabled(verifyButton, true);
+                Helper.setViewEnabled(editButton, true);
             }
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
-                verifyButton.setEnabled(true);
-                editButton.setEnabled(true);
+                if (getView() != null && error != null) {
+                    Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).
+                            setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                }
+                Helper.setViewEnabled(verifyButton, true);
+                Helper.setViewEnabled(editButton, true);
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

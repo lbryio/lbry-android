@@ -1,5 +1,6 @@
 package io.lbry.browser.ui.verification;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -95,7 +96,8 @@ public class EmailVerificationFragment extends Fragment {
     private void addEmail() {
         currentEmail = Helper.getValue(inputEmail.getText());
         if (Helper.isNullOrEmpty(currentEmail) || currentEmail.indexOf("@") == -1) {
-            Snackbar.make(getView(), R.string.provide_valid_email, Snackbar.LENGTH_LONG).setBackgroundTint(getResources().getColor(R.color.red)).show();
+            Snackbar.make(getView(), R.string.provide_valid_email, Snackbar.LENGTH_LONG).
+                    setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
             return;
         }
 
@@ -125,7 +127,8 @@ public class EmailVerificationFragment extends Fragment {
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).setBackgroundTint(getResources().getColor(R.color.red)).show();
+                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).
+                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                 Helper.setViewVisibility(buttonContinue, View.VISIBLE);
             }
         });
@@ -188,7 +191,8 @@ public class EmailVerificationFragment extends Fragment {
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).setBackgroundTint(getResources().getColor(R.color.red)).show();
+                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).
+                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                 Helper.setViewEnabled(buttonResend, true);
             }
         });

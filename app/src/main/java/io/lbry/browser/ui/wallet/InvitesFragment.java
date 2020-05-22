@@ -565,7 +565,8 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
     private void showError(String message) {
         Context context = getContext();
         if (context != null) {
-            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
+            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).
+                    setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
         }
     }
 }

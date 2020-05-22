@@ -198,7 +198,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         String amountString = Helper.getValue(inputSendAmount.getText());
         if (!recipientAddress.matches(LbryUri.REGEX_ADDRESS)) {
             Snackbar.make(getView(), R.string.invalid_recipient_address, Snackbar.LENGTH_LONG).
-                    setBackgroundTint(Color.RED).show();
+                    setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
             return false;
         }
 
@@ -208,13 +208,13 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
                 double availableAmount = Lbry.walletBalance.getAvailable().doubleValue();
                 if (availableAmount < amountValue) {
                     Snackbar.make(getView(), R.string.insufficient_balance, Snackbar.LENGTH_LONG).
-                            setBackgroundTint(getResources().getColor(R.color.red)).show();
+                            setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                     return false;
                 }
             } catch (NumberFormatException ex) {
                 // pass
                 Snackbar.make(getView(), R.string.invalid_amount, Snackbar.LENGTH_LONG).
-                        setBackgroundTint(getResources().getColor(R.color.red)).show();
+                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                 return false;
             }
         }
@@ -390,7 +390,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             @Override
             public void onError(Exception error) {
                 Snackbar.make(getView(), R.string.send_credit_error, Snackbar.LENGTH_LONG).
-                        setBackgroundTint(getResources().getColor(R.color.red)).show();
+                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                 enableSendControls();
             }
         });

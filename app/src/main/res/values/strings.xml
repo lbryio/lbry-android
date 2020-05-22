@@ -74,6 +74,10 @@
     <string name="confirm_delete_file_message">Are you sure you want to remove this file from your device?</string>
     <string name="unable_to_view_url">Failed to load %1$s. Please try again later.</string>
     <string name="no_cast_session_available">There is no cast session available at this time.</string>
+    <string name="delete_content">Delete content?</string>
+    <string name="confirm_delete_content_message">Are you sure you want to unpublish this content? No files will be removed from your device.</string>
+    <string name="content_deleted">The content was successfully deleted from the blockchain.</string>
+    <string name="content_failed_delete">The content could not be deleted at this time. Please try again later.</string>
     <plurals name="view_count">
         <item quantity="one">%1$s view</item>
         <item quantity="other">%1$s views</item>
@@ -390,6 +394,10 @@
     <string name="create_a_channel_item">Create a channel...</string>
     <string name="edit_channel">Edit channel</string>
     <string name="delete_selection">Delete selection?</string>
+    <string name="delete_channel">Delete channel?</string>
+    <string name="confirm_delete_channel">Are you sure you want to delete this channel?</string>
+    <string name="channel_deleted">The channel was successfully deleted.</string>
+    <string name="channel_failed_delete">The channel could not be deleted at this time. Please try again later.</string>
     <string name="description">Description</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

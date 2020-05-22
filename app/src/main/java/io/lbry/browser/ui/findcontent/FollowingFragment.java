@@ -1,4 +1,4 @@
-package io.lbry.browser.ui.following;
+package io.lbry.browser.ui.findcontent;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,7 +1,9 @@
 package io.lbry.browser.ui.channel;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -26,12 +30,12 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
-import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.SendTipDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.FetchChannelsListener;
@@ -39,13 +43,15 @@ import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.claim.AbandonChannelTask;
+import io.lbry.browser.tasks.claim.AbandonHandler;
 import io.lbry.browser.tasks.lbryinc.ChannelSubscribeTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.tasks.lbryinc.FetchStatCountTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.ui.controls.SolidIconView;
-import io.lbry.browser.ui.following.FollowingFragment;
+import io.lbry.browser.ui.findcontent.FollowingFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
@@ -122,8 +128,16 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             @Override
             public void onClick(View view) {
                 if (claim != null) {
-                    // show confirmation?
-                    // delete claim task and redirect
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
+                            setTitle(R.string.delete_channel).
+                            setMessage(R.string.confirm_delete_channel)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    deleteCurrentClaim();
+                                }
+                            }).setNegativeButton(R.string.no, null);
+                    builder.show();
                 }
             }
         });
@@ -228,6 +242,33 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         return root;
     }
 
+    private void deleteCurrentClaim() {
+        if (claim != null) {
+            Helper.setViewVisibility(layoutDisplayArea, View.GONE);
+            Helper.setViewVisibility(layoutLoadingState, View.VISIBLE);
+            AbandonChannelTask task = new AbandonChannelTask(Arrays.asList(claim.getClaimId()), layoutResolving, new AbandonHandler() {
+                @Override
+                public void onComplete(List<String> successfulClaimIds, List<String> failedClaimIds, List<Exception> errors) {
+                    Context context = getContext();
+                    if (context instanceof MainActivity) {
+                        if (failedClaimIds.size() == 0) {
+                            MainActivity activity = (MainActivity) context;
+                            activity.showMessage(R.string.channel_deleted);
+                            activity.onBackPressed();
+                        } else {
+                            View root = getView();
+                            if (root != null) {
+                                Snackbar.make(root, R.string.channel_failed_delete, Toast.LENGTH_LONG).
+                                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                            }
+                        }
+                    }
+                }
+            });
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
     private void checkIsFollowing() {
         if (claim != null) {
             boolean isFollowing = Lbryio.isFollowing(claim);
@@ -324,7 +365,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     }
 
     private void resolveUrl() {
-        layoutDisplayArea.setVisibility(View.INVISIBLE);
+        Helper.setViewVisibility(layoutDisplayArea, View.INVISIBLE);
+        Helper.setViewVisibility(layoutLoadingState, View.VISIBLE);
         ResolveTask task = new ResolveTask(url, Lbry.LBRY_TV_CONNECTION_STRING, layoutResolving, new ClaimListResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
