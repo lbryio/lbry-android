@@ -377,6 +377,18 @@
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <TextView
+                            android:id="@+id/publish_form_inline_address_invalid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/address_invalid_characters"
+                            android:textColor="@color/red"
+                            android:textFontWeight="300"
+                            android:textSize="12sp"
+                            android:visibility="invisible" />
+
                         <RelativeLayout
                             android:layout_marginTop="16dp"
                             android:layout_width="match_parent"

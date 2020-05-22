@@ -152,6 +152,7 @@ public class PublishFormFragment extends BaseFragment implements
     private TextInputLayout layoutOtherLicenseDescription;
     private View inlineDepositBalanceContainer;
     private TextView inlineDepositBalanceValue;
+    private TextView textInlineAddressInvalid;
 
     private View linkPublishCancel;
     private MaterialButton buttonPublish;
@@ -198,6 +199,7 @@ public class PublishFormFragment extends BaseFragment implements
         noTagsView = root.findViewById(R.id.form_no_added_tags);
         noTagResultsView = root.findViewById(R.id.form_no_tag_results);
 
+        textInlineAddressInvalid = root.findViewById(R.id.publish_form_inline_address_invalid);
         inlineDepositBalanceContainer = root.findViewById(R.id.publish_form_inline_balance_container);
         inlineDepositBalanceValue = root.findViewById(R.id.publish_form_inline_balance_value);
 
@@ -311,6 +313,25 @@ public class PublishFormFragment extends BaseFragment implements
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 Helper.setViewVisibility(textNoPrice, checked ? View.GONE : View.VISIBLE);
                 Helper.setViewVisibility(layoutPrice, checked ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        inputAddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String value = Helper.getValue(charSequence);
+                boolean invalid = !Helper.isNullOrEmpty(value) && !LbryUri.isNameValid(value);
+                Helper.setViewVisibility(textInlineAddressInvalid, invalid ? View.VISIBLE : View.INVISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 

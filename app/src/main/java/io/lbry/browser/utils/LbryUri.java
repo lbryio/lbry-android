@@ -44,7 +44,7 @@ public class LbryUri {
     }
 
     public static boolean isNameValid(String name) {
-        return !name.matches(REGEX_INVALID_URI);
+        return !Pattern.compile(REGEX_INVALID_URI).matcher(name).find();
     }
 
     public static LbryUri tryParse(String url) {

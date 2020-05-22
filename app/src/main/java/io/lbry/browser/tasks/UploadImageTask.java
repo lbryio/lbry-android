@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import io.lbry.browser.exceptions.LbryResponseException;
 import io.lbry.browser.utils.Helper;
@@ -50,7 +51,10 @@ public class UploadImageTask extends AsyncTask<Void, Void, String> {
                     addFormDataPart("file", fileName, RequestBody.create(file, MediaType.parse(fileType))).
                     build();
             Request request = new Request.Builder().url("https://spee.ch/api/claim/publish").post(body).build();
-            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client = new OkHttpClient.Builder().
+                    writeTimeout(300, TimeUnit.SECONDS).
+                    readTimeout(300, TimeUnit.SECONDS).
+                    build();
             Response response = client.newCall(request).execute();
             JSONObject json = new JSONObject(response.body().string());
             if (json.has("success") && Helper.getJSONBoolean("success", false, json)) {
