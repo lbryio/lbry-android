@@ -94,6 +94,7 @@ import io.lbry.browser.dialog.SendTipDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchClaimsListener;
+import io.lbry.browser.listener.ScreenOrientationListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.model.Claim;
@@ -135,7 +136,11 @@ import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.Utils;
 
 public class FileViewFragment extends BaseFragment implements
-        MainActivity.BackPressInterceptor, DownloadActionListener, FetchClaimsListener, SdkStatusListener, StoragePermissionListener {
+        MainActivity.BackPressInterceptor, DownloadActionListener,
+        FetchClaimsListener,
+        ScreenOrientationListener,
+        SdkStatusListener,
+        StoragePermissionListener {
     private static final int RELATED_CONTENT_SIZE = 16;
     private static final String DEFAULT_PLAYBACK_SPEED = "1x";
 
@@ -218,6 +223,7 @@ public class FileViewFragment extends BaseFragment implements
             MainActivity activity = (MainActivity) context;
             activity.setBackPressInterceptor(this);
             activity.addDownloadActionListener(this);
+            activity.addScreenOrientationListener(this);
             activity.addFetchClaimsListener(this);
             if (!MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
                 activity.addStoragePermissionListener(this);
@@ -290,6 +296,7 @@ public class FileViewFragment extends BaseFragment implements
 
         if (claim != null) {
             Helper.saveViewHistory(currentUrl, claim);
+            checkAndLoadRelatedContent();
             renderClaim();
             if (claim.getFile() == null) {
                 loadFile();
@@ -352,8 +359,8 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
-    private void initWebView(View view) {
-        WebView webView = view.findViewById(R.id.file_view_webview);
+    private void initWebView(View root) {
+        WebView webView = root.findViewById(R.id.file_view_webview);
         webView.setWebViewClient(new LbryWebViewClient(getContext()));
         WebSettings webSettings = webView.getSettings();
         webSettings.setAllowFileAccess(true);
@@ -389,6 +396,7 @@ public class FileViewFragment extends BaseFragment implements
         logUrlEvent(url);
         resetViewCount();
         resetFee();
+
         View root = getView();
         if (root != null) {
             ((RecyclerView) root.findViewById(R.id.file_view_related_content_list)).setAdapter(null);
@@ -480,6 +488,7 @@ public class FileViewFragment extends BaseFragment implements
 
         if (claim != null) {
             Helper.saveViewHistory(url, claim);
+            checkAndLoadRelatedContent();
             renderClaim();
         }
     }
@@ -531,8 +540,10 @@ public class FileViewFragment extends BaseFragment implements
             MainActivity activity = (MainActivity) context;
             activity.removeDownloadActionListener(this);
             activity.removeFetchClaimsListener(this);
+            activity.removeScreenOrientationListener(this);
             activity.removeSdkStatusListener(this);
             activity.removeStoragePermissionListener(this);
+            //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
     }
 
@@ -578,6 +589,8 @@ public class FileViewFragment extends BaseFragment implements
 
                     checkAndResetNowPlayingClaim();
                     loadFile();
+
+                    checkAndLoadRelatedContent();
                     renderClaim();
                 } else {
                     // render nothing at location
@@ -594,8 +607,6 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void initUi(View root) {
-        initWebView(root);
-
         buttonPublishSomething.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1189,13 +1200,18 @@ public class FileViewFragment extends BaseFragment implements
             } else {
                 restoreMainActionButton();
             }
+        }
+        checkOwnClaim();
+    }
 
+    private void checkAndLoadRelatedContent() {
+        View root = getView();
+        if (root != null) {
             RecyclerView relatedContentList = root.findViewById(R.id.file_view_related_content_list);
             if (relatedContentList == null || relatedContentList.getAdapter() == null || relatedContentList.getAdapter().getItemCount() == 0) {
                 loadRelatedContent();
             }
         }
-        checkOwnClaim();
     }
 
     private void showUnsupportedView() {
@@ -1553,25 +1569,31 @@ public class FileViewFragment extends BaseFragment implements
                 if (!fileExists) {
                     showError(getString(R.string.claim_file_not_found, claimFile != null ? claimFile.getDownloadPath() : ""));
                 } else if (fileUri != null) {
-                    if (mediaType.startsWith("image")) {
-                        // display the image
-                        View container = getView().findViewById(R.id.file_view_imageviewer_container);
-                        PhotoView photoView = getView().findViewById(R.id.file_view_imageviewer);
+                    View root = getView();
+                    Context context = getContext();
+                    if (root != null) {
+                        if (mediaType.startsWith("image")) {
+                            // display the image
+                            View container = root.findViewById(R.id.file_view_imageviewer_container);
+                            PhotoView photoView = root.findViewById(R.id.file_view_imageviewer);
 
-                        Glide.with(getContext().getApplicationContext()).load(fileUri).centerInside().into(photoView);
-                        hideFloatingWalletBalance();
-                        container.setVisibility(View.VISIBLE);
-                    } else if (mediaType.startsWith("text")) {
-                        // show web view (and parse markdown too)
-                        View container = getView().findViewById(R.id.file_view_webview_container);
-                        WebView webView = getView().findViewById(R.id.file_view_webview);
-                        if (Arrays.asList("text/markdown", "text/md").contains(mediaType.toLowerCase())) {
-                            loadMarkdownFromFile(claimFile.getDownloadPath());
-                        } else {
-                            webView.loadUrl(fileUri.toString());
+                            if (context != null) {
+                                Glide.with(context.getApplicationContext()).load(fileUri).centerInside().into(photoView);
+                            }
+                            hideFloatingWalletBalance();
+                            container.setVisibility(View.VISIBLE);
+                        } else if (mediaType.startsWith("text")) {
+                            // show web view (and parse markdown too)
+                            View container = root.findViewById(R.id.file_view_webview_container);
+                            WebView webView = root.findViewById(R.id.file_view_webview);
+                            if (Arrays.asList("text/markdown", "text/md").contains(mediaType.toLowerCase())) {
+                                loadMarkdownFromFile(claimFile.getDownloadPath());
+                            } else {
+                                webView.loadUrl(fileUri.toString());
+                            }
+                            hideFloatingWalletBalance();
+                            container.setVisibility(View.VISIBLE);
                         }
-                        hideFloatingWalletBalance();
-                        container.setVisibility(View.VISIBLE);
                     }
                     handled = true;
                 }
@@ -1644,6 +1666,7 @@ public class FileViewFragment extends BaseFragment implements
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
                 canShowMatureContent = sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_MATURE_CONTENT, false);
             }
+
             LighthouseSearchTask relatedTask = new LighthouseSearchTask(
                     title, RELATED_CONTENT_SIZE, 0, canShowMatureContent, claimId, relatedLoading, new ClaimSearchResultHandler() {
                 @Override
@@ -1655,30 +1678,33 @@ public class FileViewFragment extends BaseFragment implements
                         }
                     }
 
-                    relatedContentAdapter = new ClaimListAdapter(filteredClaims, context);
-                    relatedContentAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
-                        @Override
-                        public void onClaimClicked(Claim claim) {
-                            if (context instanceof MainActivity) {
-                                MainActivity activity = (MainActivity) context;
-                                if (claim.getName().startsWith("@")) {
-                                    activity.openChannelUrl(claim.getPermanentUrl());
-                                } else {
-                                    activity.openFileUrl(claim.getPermanentUrl()); //openClaimUrl(claim.getPermanentUrl());
+                    Context ctx = getContext();
+                    if (ctx != null) {
+                        relatedContentAdapter = new ClaimListAdapter(filteredClaims, ctx);
+                        relatedContentAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
+                            @Override
+                            public void onClaimClicked(Claim claim) {
+                                if (context instanceof MainActivity) {
+                                    MainActivity activity = (MainActivity) context;
+                                    if (claim.getName().startsWith("@")) {
+                                        activity.openChannelUrl(claim.getPermanentUrl());
+                                    } else {
+                                        activity.openFileUrl(claim.getPermanentUrl()); //openClaimUrl(claim.getPermanentUrl());
+                                    }
                                 }
                             }
+                        });
+
+                        View v = getView();
+                        if (v != null) {
+                            RecyclerView relatedContentList = root.findViewById(R.id.file_view_related_content_list);
+                            relatedContentList.setAdapter(relatedContentAdapter);
+                            relatedContentAdapter.notifyDataSetChanged();
+
+                            Helper.setViewVisibility(
+                                    v.findViewById(R.id.file_view_no_related_content),
+                                    relatedContentAdapter == null || relatedContentAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
                         }
-                    });
-
-                    View v = getView();
-                    if (v != null) {
-                        RecyclerView relatedContentList = root.findViewById(R.id.file_view_related_content_list);
-                        relatedContentList.setAdapter(relatedContentAdapter);
-                        relatedContentAdapter.notifyDataSetChanged();
-
-                        Helper.setViewVisibility(
-                                v.findViewById(R.id.file_view_no_related_content),
-                                relatedContentAdapter == null || relatedContentAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
                     }
                 }
 
@@ -1748,12 +1774,12 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     private void disableFullScreenMode() {
         Context context = getContext();
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             View root = getView();
-
             RelativeLayout mediaContainer = root.findViewById(R.id.file_view_media_container);
             View exoplayerContainer = root.findViewById(R.id.file_view_exoplayer_container);
             ((ViewGroup) exoplayerContainer.getParent()).removeView(exoplayerContainer);
@@ -2053,6 +2079,22 @@ public class FileViewFragment extends BaseFragment implements
     @Override
     public void onClaimsFetched(List<Claim> claims) {
         checkOwnClaim();
+    }
+
+    @Override
+    public void onPortraitOrientationEntered() {
+        Context context = getContext();
+        if (context instanceof MainActivity && ((MainActivity) context).isInFullscreenMode()) {
+            disableFullScreenMode();
+        }
+    }
+
+    @Override
+    public void onLandscapeOrientationEntered() {
+        Context context = getContext();
+        if (claim != null && claim.isPlayable() && context instanceof MainActivity && !((MainActivity) context).isInFullscreenMode()) {
+            enableFullScreenMode();
+        }
     }
 
     private static class LbryWebViewClient extends WebViewClient {

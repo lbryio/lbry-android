@@ -111,6 +111,7 @@ import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchChannelsListener;
 import io.lbry.browser.listener.FetchClaimsListener;
 import io.lbry.browser.listener.FilePickerListener;
+import io.lbry.browser.listener.ScreenOrientationListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.listener.WalletBalanceListener;
@@ -173,6 +174,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     private Map<String, Class> specialRouteFragmentClassMap;
     private boolean inPictureInPictureMode;
+    @Getter
+    private boolean inFullscreenMode;
     public static SimpleExoPlayer appPlayer;
     public static Cache playerCache;
     public static boolean playerReassigned;
@@ -300,6 +303,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private List<CameraPermissionListener> cameraPermissionListeners;
     private List<DownloadActionListener> downloadActionListeners;
     private List<FilePickerListener> filePickerListeners;
+    private List<ScreenOrientationListener> screenOrientationListeners;
     private List<SdkStatusListener> sdkStatusListeners;
     private List<StoragePermissionListener> storagePermissionListeners;
     private List<WalletBalanceListener> walletBalanceListeners;
@@ -394,31 +398,19 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         // setup uri bar
         setupUriBar();
 
-        /*View decorView = getWindow().getDecorView();
-        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                    findViewById(R.id.app_bar_main_container).setFitsSystemWindows(false);
-                    findViewById(R.id.drawer_layout).setFitsSystemWindows(false);
-                } else {
-                    findViewById(R.id.app_bar_main_container).setFitsSystemWindows(true);
-                    findViewById(R.id.drawer_layout).setFitsSystemWindows(true);
-                }
-            }
-        });*/
-
         // other
         pendingSyncSetQueue = new ArrayList<>();
         openNavFragments = new HashMap<>();
+
         cameraPermissionListeners = new ArrayList<>();
         downloadActionListeners = new ArrayList<>();
+        fetchChannelsListeners = new ArrayList<>();
+        fetchClaimsListeners = new ArrayList<>();
         filePickerListeners = new ArrayList<>();
+        screenOrientationListeners = new ArrayList<>();
         sdkStatusListeners = new ArrayList<>();
         storagePermissionListeners = new ArrayList<>();
         walletBalanceListeners = new ArrayList<>();
-        fetchClaimsListeners = new ArrayList<>();
-        fetchChannelsListeners = new ArrayList<>();
 
         sdkStatusListeners.add(this);
 
@@ -531,14 +523,30 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         checkNotificationOpenIntent(intent);
     }
 
-    public void addCameraPermissionListener(CameraPermissionListener listener) {
-        if (!cameraPermissionListeners.contains(listener)) {
-            cameraPermissionListeners.add(listener);
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        switch (newConfig.orientation) {
+            case Configuration.ORIENTATION_PORTRAIT:
+                for (ScreenOrientationListener listener : screenOrientationListeners) {
+                    listener.onPortraitOrientationEntered();
+                }
+                break;
+            case  Configuration.ORIENTATION_LANDSCAPE:
+                for (ScreenOrientationListener listener : screenOrientationListeners) {
+                    listener.onLandscapeOrientationEntered();
+                }
+                break;
         }
     }
 
-    public void removeCameraPermissionListener(CameraPermissionListener listener) {
-        cameraPermissionListeners.remove(listener);
+    public void addScreenOrientationListener(ScreenOrientationListener listener) {
+        if (!screenOrientationListeners.contains(listener)) {
+            screenOrientationListeners.add(listener);
+        }
+    }
+
+    public void removeScreenOrientationListener(ScreenOrientationListener listener) {
+        screenOrientationListeners.remove(listener);
     }
 
     public void addDownloadActionListener(DownloadActionListener listener) {
@@ -560,6 +568,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public void removeFilePickerListener(FilePickerListener listener) {
         filePickerListeners.remove(listener);
     }
+
+    public void addCameraPermissionListener(CameraPermissionListener listener) {
+        if (!cameraPermissionListeners.contains(listener)) {
+            cameraPermissionListeners.add(listener);
+        }
+    }
+
+    public void removeCameraPermissionListener(CameraPermissionListener listener) {
+        cameraPermissionListeners.remove(listener);
+    }
+
 
     public void addSdkStatusListener(SdkStatusListener listener) {
         if (!sdkStatusListeners.contains(listener)) {
@@ -764,7 +783,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private void renderFullMode() {
         getSupportActionBar().show();
         findViewById(R.id.content_main).setVisibility(View.VISIBLE);
-        findViewById(R.id.floating_balance_main_container).setVisibility(View.VISIBLE);
+        findViewById(R.id.floating_balance_main_container).setVisibility(inFullscreenMode ? View.INVISIBLE : View.VISIBLE);
         Fragment fragment = getCurrentFragment();
         if (!(fragment instanceof FileViewFragment)) {
             findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
@@ -1294,6 +1313,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     public void enterFullScreenMode() {
+        inFullscreenMode = true;
         hideFloatingWalletBalance();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -1337,6 +1357,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (actionBar != null) {
             actionBar.show();
         }
+        inFullscreenMode = false;
     }
 
     private void initKeyStore() {
