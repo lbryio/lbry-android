@@ -23,16 +23,7 @@ public class WalletBalanceTask extends AsyncTask<Void, Void, WalletBalance> {
        WalletBalance balance = new WalletBalance();
         try {
             JSONObject json = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_WALLET_BALANCE);
-            JSONObject reservedSubtotals = Helper.getJSONObject("reserved_subtotals", json);
-
-            balance.setAvailable(new BigDecimal(Helper.getJSONString("available", "0", json)));
-            balance.setReserved(new BigDecimal(Helper.getJSONString("reserved", "0", json)));
-            balance.setTotal(new BigDecimal(Helper.getJSONString("total", "0", json)));
-            if (reservedSubtotals != null) {
-                balance.setClaims(new BigDecimal(Helper.getJSONString("claims", "0", reservedSubtotals)));
-                balance.setSupports(new BigDecimal(Helper.getJSONString("supports", "0", reservedSubtotals)));
-                balance.setTips(new BigDecimal(Helper.getJSONString("tips", "0", reservedSubtotals)));
-            }
+            balance = WalletBalance.fromJSONObject(json);
         } catch (ApiCallException | ClassCastException ex) {
             error = ex;
             return null;

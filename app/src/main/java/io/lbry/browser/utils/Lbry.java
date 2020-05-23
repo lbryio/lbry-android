@@ -88,6 +88,9 @@ public final class Lbry {
     public static final String METHOD_PREFERENCE_GET = "preference_get";
     public static final String METHOD_PREFERENCE_SET = "preference_set";
 
+    public static final String METHOD_TXO_LIST = "txo_list";
+    public static final String METHOD_TXO_SPEND = "txo_spend";
+
     public static final String METHOD_CHANNEL_ABANDON = "channel_abandon";
     public static final String METHOD_CHANNEL_CREATE = "channel_create";
     public static final String METHOD_CHANNEL_UPDATE = "channel_update";
