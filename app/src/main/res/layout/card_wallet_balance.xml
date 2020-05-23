@@ -160,12 +160,41 @@
                         android:textFontWeight="300"
                         android:textSize="14sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:text="@string/in_tips"
-                        android:textSize="14sp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp">
+                        <TextView
+                            android:id="@+id/wallet_in_tips_label"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter"
+                            android:text="@string/in_tips"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/wallet_unlock_tips_link"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/wallet_in_tips_label"
+                            android:fontFamily="@font/inter"
+                            android:layout_marginLeft="24dp"
+                            android:text="@string/unlock"
+                            android:textColor="@color/lbryGreen"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                        <ProgressBar
+                            android:id="@+id/wallet_unlock_tips_progress"
+                            android:layout_centerVertical="true"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginLeft="24dp"
+                            android:layout_toRightOf="@id/wallet_in_tips_label"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/wallet_hint_earn_more_tips"

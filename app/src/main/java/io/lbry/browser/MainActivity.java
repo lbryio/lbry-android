@@ -66,7 +66,6 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.TypefaceCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
@@ -129,6 +128,7 @@ import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.WalletSync;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.tasks.lbryinc.ClaimRewardTask;
@@ -143,6 +143,7 @@ import io.lbry.browser.tasks.wallet.SaveSharedUserStateTask;
 import io.lbry.browser.tasks.wallet.SyncApplyTask;
 import io.lbry.browser.tasks.wallet.SyncGetTask;
 import io.lbry.browser.tasks.wallet.SyncSetTask;
+import io.lbry.browser.tasks.wallet.UnlockTipsTask;
 import io.lbry.browser.tasks.wallet.WalletBalanceTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.ui.channel.ChannelFormFragment;
@@ -182,6 +183,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private boolean inPictureInPictureMode;
     @Getter
     private boolean inFullscreenMode;
+    // make tip unlock a global operation
+    @Getter
+    private boolean unlockingTips;
+
     public static SimpleExoPlayer appPlayer;
     public static Cache playerCache;
     public static boolean playerReassigned;
@@ -2808,6 +2813,41 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
             @Override
             public void onError(Exception error) { }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void unlockTips() {
+        if (unlockingTips) {
+            return;
+        }
+        UnlockTipsTask task = new UnlockTipsTask(new GenericTaskHandler() {
+            @Override
+            public void beforeStart() {
+                unlockingTips = true;
+            }
+
+            @Override
+            public void onSuccess() {
+                unlockingTips = false;
+                for (Fragment fragment : openNavFragments.values()) {
+                    if (fragment instanceof WalletFragment) {
+                        ((WalletFragment) fragment).checkTips(true);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                unlockingTips = false;
+                for (Fragment fragment : openNavFragments.values()) {
+                    if (fragment instanceof WalletFragment) {
+                        ((WalletFragment) fragment).checkTips();
+                    }
+                }
+                // fail silently?
+                //showError(error.getMessage());
+            }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

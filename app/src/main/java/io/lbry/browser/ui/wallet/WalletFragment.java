@@ -3,6 +3,7 @@ package io.lbry.browser.ui.wallet;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -17,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -66,6 +68,9 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     private TextView textSupportsBalance;
     private ProgressBar walletSendProgress;
 
+    private TextView linkUnlockTips;
+    private ProgressBar progressUnlockTips;
+
     private View loadingRecentContainer;
     private View inlineBalanceContainer;
     private TextView textWalletInlineBalance;
@@ -113,6 +118,9 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         textClaimsBalance = root.findViewById(R.id.wallet_balance_staked_publishes);
         textSupportsBalance = root.findViewById(R.id.wallet_balance_staked_supports);
         textWalletHintSyncStatus = root.findViewById(R.id.wallet_hint_sync_status);
+
+        linkUnlockTips = root.findViewById(R.id.wallet_unlock_tips_link);
+        progressUnlockTips = root.findViewById(R.id.wallet_unlock_tips_progress);
 
         recentTransactionsList = root.findViewById(R.id.wallet_recent_transactions_list);
         linkViewAll = root.findViewById(R.id.wallet_link_view_all);
@@ -241,6 +249,24 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         DividerItemDecoration itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         itemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.thin_divider));
         recentTransactionsList.addItemDecoration(itemDecoration);
+
+        linkUnlockTips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (context != null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context).
+                            setTitle(R.string.unlock_tips).
+                            setMessage(R.string.confirm_unlock_tips)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    unlockTips();
+                                }
+                            }).setNegativeButton(R.string.no, null);
+                    builder.show();
+                }
+            }
+        });
 
         textEarnMoreTips.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -492,6 +518,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
 
         checkReceiveAddress();
         checkRewardsDriver();
+        checkTips();
         fetchRecentTransactions();
     }
 
@@ -535,7 +562,35 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             Helper.setViewText(textTipsBalanceUSD, String.format("≈$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(tipsUsdBalance)));
         }
 
+        checkTips();
         checkRewardsDriver();
+    }
+
+    private void unlockTips() {
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            linkUnlockTips.setVisibility(View.GONE);
+            progressUnlockTips.setVisibility(View.VISIBLE);
+            ((MainActivity) context).unlockTips();
+        }
+    }
+
+    public void checkTips() {
+        checkTips(false);
+    }
+
+    public void checkTips(boolean forceHideLink) {
+        WalletBalance walletBalance = Lbry.walletBalance;
+        double tipBalance = walletBalance == null ? 0 : walletBalance.getTips().doubleValue();
+        boolean unlocking = false;
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            unlocking = activity.isUnlockingTips();
+        }
+
+        Helper.setViewVisibility(linkUnlockTips, !forceHideLink && tipBalance > 0 && !unlocking ? View.VISIBLE : View.GONE);
+        Helper.setViewVisibility(progressUnlockTips, unlocking ? View.VISIBLE : View.GONE);
     }
 
     private void checkRewardsDriver() {
