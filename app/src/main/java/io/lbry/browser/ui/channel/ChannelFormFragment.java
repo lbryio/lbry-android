@@ -503,10 +503,8 @@ public class ChannelFormFragment extends BaseFragment implements
             activity.addFilePickerListener(this);
             activity.addWalletBalanceListener(this);
 
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(editMode ? R.string.edit_channel : R.string.create_a_channel);
-            }
+            activity.setActionBarTitle(editMode ? R.string.edit_channel : R.string.create_a_channel);
+
         }
     }
 
@@ -544,10 +542,7 @@ public class ChannelFormFragment extends BaseFragment implements
             LbryAnalytics.setCurrentScreen(activity, "Channel Form", "ChannelForm");
             activity.addStoragePermissionListener(this);
             if (editMode) {
-                ActionBar actionBar = activity.getSupportActionBar();
-                if (actionBar != null) {
-                    actionBar.setTitle(R.string.edit_channel);
-                }
+                activity.setActionBarTitle(R.string.edit_channel);
             }
         }
         String filterText = Helper.getValue(inputTagFilter.getText());

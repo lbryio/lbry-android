@@ -17,6 +17,7 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,7 +27,10 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.TypefaceSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -62,6 +66,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.TypefaceCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
@@ -536,6 +541,15 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     listener.onLandscapeOrientationEntered();
                 }
                 break;
+        }
+    }
+
+    public void setActionBarTitle(int stringResourceId) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            SpannableString spannable = new SpannableString(getString(stringResourceId));
+            spannable.setSpan(new TypefaceSpan("inter"), 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            actionBar.setTitle(spannable);
         }
     }
 

@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +49,9 @@ public class TransactionHistoryFragment extends BaseFragment implements Transact
         Context context = getContext();
         LinearLayoutManager llm = new LinearLayoutManager(context);
         transactionList.setLayoutManager(llm);
-        transactionList.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        itemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.thin_divider));
+        transactionList.addItemDecoration(itemDecoration);
 
         transactionList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -133,10 +136,7 @@ public class TransactionHistoryFragment extends BaseFragment implements Transact
             activity.showNavigationBackIcon();
             activity.lockDrawer();
 
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(R.string.transaction_history);
-            }
+            activity.setActionBarTitle(R.string.transaction_history);
         }
     }
 
