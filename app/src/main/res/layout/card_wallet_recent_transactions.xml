@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:elevation="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textStyle="bold"
+                android:text="@string/recent_transactions"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/wallet_link_view_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:fontFamily="@font/inter"
+                android:text="@string/view_all"
+                android:textColor="@color/lbryGreen"
+                android:textSize="14sp"
+                android:textFontWeight="300"/>
+        </RelativeLayout>
+
+        <View
+            android:background="@color/lightDivider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="16dp" />
+        
+        <RelativeLayout
+            android:id="@+id/wallet_loading_recent_container"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ProgressBar
+                    android:id="@+id/wallet_loading_recent_progress"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/loading_transactions"
+                    android:fontFamily="@font/inter"
+                    android:textSize="14sp"
+                    android:textFontWeight="300" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/wallet_no_recent_transactions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/no_recent_transactions"
+            android:fontFamily="@font/inter"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:textFontWeight="300" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wallet_recent_transactions_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

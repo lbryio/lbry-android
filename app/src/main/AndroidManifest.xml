@@ -1,29 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="io.lbry.browser"
     android:installLocation="auto">
 
-    <supports-screens
-        android:smallScreens="true"
-        android:normalScreens="true"
-        android:largeScreens="true"
-        android:anyDensity="true"
-        android:xlargeScreens="true"
-        />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application android:label="@string/app_name"
-        android:icon="@drawable/icon"
+    <application
         android:allowBackup="true"
-        android:theme="@style/LbryAppTheme"
-        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <meta-data android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -37,16 +37,18 @@
 
         <meta-data android:name="wakelock" android:value="0"/>
 
-        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-
-        <activity android:name="io.lbry.browser.MainActivity"
-            android:exported="true"
+        <activity
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/LbryAppTheme"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:launchMode="singleInstance"
-            >
+            android:supportsPictureInPicture="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -54,14 +56,19 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="lbry" />
             </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
-        <receiver android:name="io.lbry.browser.receivers.NotificationDeletedReceiver" />
+        <activity
+            android:name=".FirstRunActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBarTranslucent" />
+        <activity
+            android:name=".VerificationActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBarTranslucent"
+            android:windowSoftInputMode="adjustResize" />
 
         <service
             android:name="io.lbry.browser.LbrynetMessagingService"
@@ -81,5 +88,4 @@
                 android:resource="@xml/filepaths" />
         </provider>
     </application>
-
 </manifest>

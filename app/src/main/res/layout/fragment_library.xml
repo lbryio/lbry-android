@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pageBackground">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/library_filter_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+            <TextView
+                android:id="@+id/library_filter_link_downloads"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter"
+                android:text="@string/downloads"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/library_filter_link_purchases"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="24dp"
+                android:layout_toRightOf="@id/library_filter_link_downloads"
+                android:fontFamily="@font/inter"
+                android:text="@string/purchases" />
+            <TextView
+                android:id="@+id/library_filter_link_history"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="24dp"
+                android:layout_toRightOf="@id/library_filter_link_purchases"
+                android:fontFamily="@font/inter"
+                android:text="@string/history"
+                android:textSize="14sp" />
+            <ProgressBar
+                android:id="@+id/library_list_loading"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
+            <TextView
+                android:id="@+id/library_show_stats"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/inter"
+                android:text="@string/stats"
+                android:textColor="@color/lbryGreen"
+                android:textFontWeight="300"
+                android:textSize="12sp"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/library_storage_stats_card"
+        android:layout_below="@id/library_filter_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/library_storage_stat_used"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/zero"
+                        android:textColor="@color/lbryGreen"
+                        android:textFontWeight="300"
+                        android:textSize="30sp" />
+                    <TextView
+                        android:id="@+id/library_storage_stat_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/mb"
+                        android:textColor="@color/lbryGreen"
+                        android:textFontWeight="300"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/library_hide_stats"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/hide"
+                    android:textFontWeight="300"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/library_storage_stat_distribution"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:visibility="gone">
+                <View
+                    android:id="@+id/library_storage_stat_video_bar"
+                    android:background="@color/statsVideo"
+                    android:layout_weight="0"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <View
+                    android:id="@+id/library_storage_stat_audio_bar"
+                    android:background="@color/statsAudio"
+                    android:layout_weight="0"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <View
+                    android:id="@+id/library_storage_stat_image_bar"
+                    android:background="@color/statsImage"
+                    android:layout_weight="0"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <View
+                    android:id="@+id/library_storage_stat_other_bar"
+                    android:background="@color/statsOther"
+                    android:layout_weight="0"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/library_storage_legend_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:visibility="gone">
+                <View
+                    android:id="@+id/library_storage_legend_video_icon"
+                    android:background="@color/statsVideo"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_centerVertical="true" />
+                <TextView
+                    android:layout_toRightOf="@id/library_storage_legend_video_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/video"
+                    android:layout_marginLeft="4dp"
+                    android:textFontWeight="300"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/library_storage_stat_video_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/zero_mb"
+                    android:textFontWeight="300"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/library_storage_legend_audio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:visibility="gone">
+                <View
+                    android:id="@+id/library_storage_legend_audio_icon"
+                    android:background="@color/statsAudio"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_centerVertical="true" />
+                <TextView
+                    android:layout_toRightOf="@id/library_storage_legend_audio_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/audio"
+                    android:layout_marginLeft="4dp"
+                    android:textFontWeight="300"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/library_storage_stat_audio_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/zero_mb"
+                    android:textFontWeight="300"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/library_storage_legend_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:visibility="gone">
+                <View
+                    android:id="@+id/library_storage_legend_image_icon"
+                    android:background="@color/statsImage"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_centerVertical="true" />
+                <TextView
+                    android:layout_toRightOf="@id/library_storage_legend_image_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/images"
+                    android:layout_marginLeft="4dp"
+                    android:textFontWeight="300"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/library_storage_stat_image_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/zero_mb"
+                    android:textFontWeight="300"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/library_storage_legend_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:visibility="gone">
+                <View
+                    android:id="@+id/library_storage_legend_other_icon"
+                    android:background="@color/statsOther"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_centerVertical="true" />
+                <TextView
+                    android:layout_toRightOf="@id/library_storage_legend_other_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/other"
+                    android:layout_marginLeft="4dp"
+                    android:textFontWeight="300"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/library_storage_stat_other_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/zero_mb"
+                    android:textFontWeight="300"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/library_list"
+        android:clipToPadding="false"
+        android:layout_below="@id/library_storage_stats_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/library_empty_container"
+        android:background="@color/pageBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="36dp">
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="160dp"
+                android:layout_height="300dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/gerbil_happy" />
+            <TextView
+                android:id="@+id/library_list_empty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/library_no_downloads"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textFontWeight="300" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_library_sdk_initializing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/library_filter_card"
+        android:visibility="gone">
+        <include layout="@layout/container_sdk_initializing" android:visibility="visible" />
+    </RelativeLayout>
+</RelativeLayout>

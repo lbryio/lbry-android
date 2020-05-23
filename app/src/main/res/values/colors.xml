@@ -1,12 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#40B89A</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorPrimary">#40B887</color>
+    <color name="colorPrimaryDark">#2F9176</color>
+    <color name="colorAccent">#38D9A9</color>
 
-    <color name="red">#FF0000</color>
-    <color name="green">#00C000</color>
-    <color name="white">#FFFFFF</color>
+    <color name="pageBackground">#EFEFEF</color>
+    <color name="actionBarBackground">#FFFFFF</color>
+    <color name="statusBarColor">#FFFFFF</color>
+    <color name="actionBarForeground">#333333</color>
+    <color name="drawerBackground">#FFFFFF</color>
+    <color name="menuItemForeground">#444444</color>
+    <color name="selectedNavItem">#F1F1F1</color>
+    <color name="channelCoverBackground">#CC000000</color>
+    <color name="smallIconBackground">#55000000</color>
+    <color name="costBackground">#F4E866</color>
+
+    <color name="publishBackground">#333333</color>
+    <color name="playerControlsBackground">#33000000</color>
+    <color name="scrubberColor">@color/nextLbryGreen</color>
+    <color name="playedColor">@color/nextLbryGreen</color>
+    <color name="bufferedColor">@color/nextLbryGreenSemiTransparent</color>
+
+    <color name="darkForeground">#222222</color>
+    <color name="lightForeground">#AAAAAA</color>
+    <color name="foreground">#333333</color>
+    <color name="mediaContainerBackground">#333333</color>
+    <color name="borderTextArea">#777777</color>
+    <color name="backgroundTextArea">#F1F1F1</color>
+
+    <color name="brighterLbryGreen">#40B887</color>
     <color name="lbryGreen">#2F9176</color>
     <color name="nextLbryGreen">#38D9A9</color>
+    <color name="nextLbryGreenSemiTransparent">#3338D9A9</color>
+    <color name="tagGreen">#E3F6F1</color>
+    <color name="tagGrape">#77F255DA</color>
+
+    <color name="divider">#DFDFDF</color>
+    <color name="lightDivider">#F1F1F1</color>
+
+    <color name="lightGrey">#CCCCCC</color>
+    <color name="actionGrey">#AAAAAA</color>
+    <color name="lighterGrey">#E5E5E5</color>
+    <color name="veryLightGrey">#F1F1F1</color>
+    <color name="orange">#FFBB00</color>
+    <color name="red">#FF0000</color>
+    <color name="brightRed">#E35454</color>
+    <color name="white">#FFFFFF</color>
+    <color name="uriDescBlue">#3971DB</color>
+    <color name="rewardDriverBlue">#2196f3</color>
+
+    <color name="statsVideo">@color/nextLbryGreen</color>
+    <color name="statsAudio">#F6A637</color>
+    <color name="statsImage">#FF4A7D</color>
+    <color name="statsOther">#26BCF7</color>
+
+    <color name="thumbnailPlaceholder">#D5D5D5</color>
+
+    <color name="caption">#CAEDB9</color>
+    <color name="overlay">#CC333333</color>
 </resources>

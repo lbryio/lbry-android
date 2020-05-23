@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pageBackground">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Balance view -->
+            <include layout="@layout/card_wallet_balance" />
+
+            <!-- Receive credits card -->
+            <include layout="@layout/card_wallet_receive_credits" />
+
+            <!-- Send credits card -->
+            <include layout="@layout/card_wallet_send_credits" />
+
+            <!-- Recent transactions card -->
+            <include layout="@layout/card_wallet_recent_transactions" />
+
+            <!-- Wallet sync card -->
+            <include layout="@layout/card_wallet_sync" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <include layout="@layout/container_sdk_initializing" />
+
+    <RelativeLayout
+        android:id="@+id/wallet_account_recommended_container"
+        android:background="@color/lbryGreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/wallet_account_recommended_actions"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="24sp"
+                android:text="@string/account_recommended"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:text="@string/wallet_account_desc"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:text="@string/wallet_without_account"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/wallet_account_recommended_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <TextView
+                android:id="@+id/wallet_skip_account_link"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter"
+                android:text="@string/skip_account"
+                android:textColor="@color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/wallet_sign_up_button"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter"
+                android:text="@string/sign_up" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter"
+                android:textStyle="bold"
+                android:text="@string/invite_link"
+                android:textSize="20sp"/>
+            <ProgressBar
+                android:id="@+id/invites_loading_channels_progress"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/share_this_link"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/your_invite_link"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:background="@drawable/bg_copyable_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/invites_copy_invite_link"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp">
+                <TextView
+                    android:id="@+id/invites_invite_link"
+                    android:clickable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:textSize="14sp"
+                    android:letterSpacing="0.05"
+                    android:singleLine="true"
+                    android:ellipsize="middle" />
+            </LinearLayout>
+            <ImageButton
+                android:id="@+id/invites_copy_invite_link"
+                android:layout_marginLeft="8dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:src="@drawable/ic_copy"
+                android:tint="@color/lbryGreen"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/customize_invite_link"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/invites_channel_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp" />
+
+        <include layout="@layout/container_inline_channel_form" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

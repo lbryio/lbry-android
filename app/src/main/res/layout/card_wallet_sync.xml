@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:elevation="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter"
+            android:textStyle="bold"
+            android:text="@string/wallet_sync"
+            android:textSize="20sp"/>
+
+        <View
+            android:background="@color/lightDivider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="16dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:weightSum="10">
+            <TextView
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:fontFamily="@font/inter"
+                android:layout_gravity="center_vertical"
+                android:text="@string/sync_status"
+                android:textFontWeight="600"
+                android:textSize="16sp" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/wallet_switch_sync_status"
+                android:fontFamily="@font/inter"
+                android:layout_weight="6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/off"
+                android:textFontWeight="300"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:background="@color/lightDivider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="14dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:weightSum="10">
+            <TextView
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:fontFamily="@font/inter"
+                android:layout_gravity="center_vertical"
+                android:text="@string/email"
+                android:textFontWeight="600"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/wallet_connected_email"
+                android:layout_weight="6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:fontFamily="@font/inter"
+                android:layout_gravity="center_vertical"
+                android:text="@string/no_connected_email"
+                android:textFontWeight="300"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:background="@color/lightDivider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="12dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="12dp"
+            android:weightSum="2">
+            <TextView
+                android:id="@+id/wallet_link_manual_backup"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/manual_backup"
+                android:textColorLink="@color/lbryGreen" />
+            <TextView
+                android:id="@+id/wallet_link_sync_faq"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="@string/sync_faq"
+                android:textColorLink="@color/lbryGreen"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

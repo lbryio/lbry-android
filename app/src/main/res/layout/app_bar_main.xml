@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_bar_main_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:background="@color/actionBarBackground"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:theme="@style/AppTheme.ToolBar"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <RelativeLayout
+                android:id="@+id/wunderbar_container"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp">
+                <EditText
+                    android:id="@+id/wunderbar"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/ic_search"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/actionBarForeground"
+                    android:fontFamily="@font/inter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/uri_placeholder"
+                    android:imeOptions="actionGo"
+                    android:inputType="textNoSuggestions"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:textFontWeight="300"
+                    android:textSize="14sp" />
+                <LinearLayout
+                    android:id="@+id/wunderbar_close"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_close"
+                        android:tint="@color/actionBarForeground" />
+                </LinearLayout>
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_main" />
+
+    <RelativeLayout
+        android:id="@+id/splash_view"
+        android:visibility="gone"
+        android:background="@color/lbryGreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+        <LinearLayout
+            android:id="@+id/splash_view_loading_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:fontFamily="@font/inter"
+                android:textSize="56sp"
+                android:textStyle="bold" />
+            <ProgressBar
+                android:layout_gravity="center_horizontal"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="48dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/splash_view_error_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:padding="24dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="@string/oops_something_went_wrong"
+                android:textSize="20sp"
+                android:textColor="@color/white" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:layout_marginTop="8dp"
+                android:text="@string/startup_failed"
+                android:textColor="@color/white"
+                android:textFontWeight="300"
+                android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/startup_stage_icon_install_id"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/white"
+                    android:src="@drawable/ic_check" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/installation_id_loaded"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/startup_stage_icon_known_tags"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/white"
+                    android:src="@drawable/ic_check" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/known_tags_loaded"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/startup_stage_icon_exchange_rate"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/white"
+                    android:src="@drawable/ic_check" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/exchange_rate_loaded"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/startup_stage_icon_user_authenticated"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/white"
+                    android:src="@drawable/ic_check" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/user_authenticated"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/startup_stage_icon_install_new"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/white"
+                    android:src="@drawable/ic_check" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/installation_registered"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/startup_stage_icon_subscriptions_loaded"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/white"
+                    android:src="@drawable/ic_check" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/subscriptions_loaded"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/startup_stage_icon_subscriptions_resolved"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/white"
+                    android:src="@drawable/ic_check" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/subscriptions_resolved"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

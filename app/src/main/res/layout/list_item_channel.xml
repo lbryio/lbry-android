@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:foreground="?attr/selectableItemBackground"
+    android:background="@drawable/bg_selected_list_item">
+    <LinearLayout
+        android:id="@+id/claim_repost_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        <io.lbry.browser.ui.controls.SolidIconView
+            android:layout_width="16dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/lightForeground"
+            android:textSize="12dp"
+            android:text="@string/fa_repost" />
+        <TextView
+            android:id="@+id/claim_repost_channel"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="4dp"
+            android:fontFamily="@font/inter"
+            android:textColor="@color/lightForeground"
+            android:textFontWeight="300"
+            android:textSize="12sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="4dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/reposted"
+            android:textColor="@color/lightForeground"
+            android:textFontWeight="300"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/claim_media_container"
+            android:layout_width="160dp"
+            android:layout_height="90dp">
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:id="@+id/claim_thumbnail"
+                android:layout_width="90dp"
+                android:layout_height="90dp" />
+            <RelativeLayout
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_channel_icon"
+                android:id="@+id/claim_no_thumbnail"
+                android:layout_width="90dp"
+                android:layout_height="90dp">
+                <TextView
+                    android:id="@+id/claim_thumbnail_alpha"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:textAllCaps="true"
+                    android:textSize="48sp"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300" />
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/claim_fee_container"
+                android:background="@color/nextLbryGreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="4dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:visibility="gone">
+                <io.lbry.browser.ui.controls.SolidIconView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="12dp"
+                    android:text="@string/fa_coins" />
+                <TextView
+                    android:id="@+id/claim_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="2dp"
+                    android:fontFamily="@font/inter"
+                    android:textSize="14sp"
+                    android:textFontWeight="300" />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_channel_overlay_icon"
+                android:id="@+id/claim_selected_overlay"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_check"
+                    android:tint="@color/nextLbryGreen" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/claim_media_container">
+            <TextView
+                android:id="@+id/claim_vanity_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/claim_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:fontFamily="@font/inter"
+                android:textSize="14sp"
+                android:textFontWeight="600" />
+            <TextView
+                android:id="@+id/claim_publisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lbryGreen"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/claim_publish_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="11sp"
+                android:textFontWeight="300" />
+            <TextView
+                android:id="@+id/claim_pending_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="@string/pending"
+                android:textSize="11sp"
+                android:textStyle="italic"
+                android:textFontWeight="300"
+                android:visibility="gone" />
+            <!-- download progress bar -->
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:background="@drawable/bg_selected_item"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+    <RelativeLayout
+        android:id="@+id/suggested_media_container"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal">
+        <RelativeLayout
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_channel_icon"
+            android:id="@+id/suggested_channel_no_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+            <TextView
+                android:id="@+id/suggested_channel_alpha_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/inter"
+                android:textAllCaps="true"
+                android:textSize="48sp"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/suggested_channel_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/suggested_channel_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:minLines="2"
+        android:maxLines="2"
+        android:fontFamily="@font/inter"
+        android:textAlignment="center"
+        android:textSize="13sp" />
+    <TextView
+        android:id="@+id/suggested_channel_tag"
+        android:singleLine="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/inter"
+        android:textAlignment="center"
+        android:textFontWeight="300"
+        android:textSize="12sp"
+        android:paddingTop="2dp"
+        android:paddingBottom="3dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+</LinearLayout>

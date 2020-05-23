@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="@string/user_interface"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.userinterface.DarkMode"
+            app:title="@string/enable_dark_mode"
+            app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.userinterface.ShowMatureContent"
+            app:title="@string/show_mature_content"
+            app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.userinterface.UrlSuggestions"
+            app:title="@string/show_url_suggestions"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/notifications"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.notifications.Subscriptions"
+            app:title="@string/subscriptions"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.notifications.Rewards"
+            app:title="@string/rewards"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.notifications.ContentInterests"
+            app:title="@string/content_interests"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/other"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.other.KeepSdkInBackground"
+            app:title="@string/keep_sdk_in_background"
+            android:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+        <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.other.ParticipateInDataNetwork"
+            app:title="@string/participate_in_data_network"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

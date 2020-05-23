@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="@string/filter_for"
+        android:textSize="12sp"
+        android:textAllCaps="true"
+        android:textStyle="bold" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divider"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+    <RelativeLayout
+        android:id="@+id/content_scope_everyone_item"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+        <io.lbry.browser.ui.controls.SolidIconView
+            android:id="@+id/content_scope_everyone_item_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:textSize="16dp"
+            android:layout_centerVertical="true"
+            android:text="@string/fa_globe_americas" />
+        <TextView
+            android:layout_toRightOf="@+id/content_scope_everyone_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/inter"
+            android:text="@string/everyone"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <ImageView
+            android:id="@+id/content_scope_everyone_item_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_check"
+            android:tint="@color/lbryGreen"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/content_scope_tags_item"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+        <io.lbry.browser.ui.controls.SolidIconView
+            android:id="@+id/content_scope_tags_item_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:textSize="16dp"
+            android:layout_centerVertical="true"
+            android:text="@string/fa_hashtag" />
+        <TextView
+            android:layout_toRightOf="@+id/content_scope_tags_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/inter"
+            android:text="@string/tags_you_follow"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <ImageView
+            android:id="@+id/content_scope_tags_item_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_check"
+            android:tint="@color/lbryGreen"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>

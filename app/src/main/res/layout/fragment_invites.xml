@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pageBackground">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <include layout="@layout/card_invites_by_link" />
+
+            <include layout="@layout/card_invites_by_email" />
+
+            <include layout="@layout/card_invites_history" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <include layout="@layout/container_sdk_initializing" />
+
+    <RelativeLayout
+        android:id="@+id/invites_account_driver_container"
+        android:background="@color/lbryGreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/invites_account_driver_actions"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/invites_account_driver_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/inter"
+                android:text="@string/lbry_invite_program"
+                android:textSize="24sp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:text="@string/earn_extra_credits_invites"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+
+            <TextView
+                android:id="@+id/invites_account_driver_learn_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:text="@string/invites_learn_more"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/invites_account_driver_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/invites_get_started_button"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter"
+                android:text="@string/get_started" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <paths>
     <external-files-path path="lbrynet/" name="lbrynet" />
+    <external-files-path path="record/" name="record" />
+    <external-files-path path="photos/" name="photos" />
 </paths>

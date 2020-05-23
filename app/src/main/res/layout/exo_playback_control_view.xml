@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/playerControlsBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/player_skip_back_10"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_centerVertical="true"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_toLeftOf="@id/player_play_pause">
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_replay_10"
+            android:tint="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/player_play_pause"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_centerInParent="true">
+        <RelativeLayout
+            android:id="@id/exo_play"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_play" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@id/exo_pause"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_pause" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/player_skip_forward_10"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_centerVertical="true"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_toRightOf="@id/player_play_pause">
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_forward_10"
+            android:tint="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/player_toggle_cast"
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/player_image_cast_toggle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_cast"
+            android:tint="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/player_playback_speed"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="56dp"
+        android:layout_height="48dp"
+        android:layout_toLeftOf="@id/player_toggle_fullscreen">
+        <TextView
+            android:id="@+id/player_playback_speed_label"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:fontFamily="@font/inter"
+            android:letterSpacing="0.05"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/player_toggle_fullscreen"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true">
+        <ImageView
+            android:id="@+id/player_image_full_screen_toggle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_fullscreen"
+            android:tint="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/player_playback_speed"
+        android:paddingLeft="16dp"
+        android:paddingRight="4dp">
+        <TextView
+            android:id="@+id/player_duration_elapsed"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/inter"
+            android:singleLine="true"
+            android:text="@string/zero_duration"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+        <com.google.android.exoplayer2.ui.DefaultTimeBar
+            android:id="@id/exo_progress"
+            android:layout_toLeftOf="@id/player_duration_total"
+            android:layout_toRightOf="@id/player_duration_elapsed"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_centerVertical="true"
+            app:scrubber_color="@color/scrubberColor"
+            app:played_color="@color/playedColor"
+            app:buffered_color="@color/bufferedColor" />
+        <TextView
+            android:id="@+id/player_duration_total"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:gravity="end"
+            android:fontFamily="@font/inter"
+            android:singleLine="true"
+            android:text="@string/zero_duration"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </RelativeLayout>
+</RelativeLayout>

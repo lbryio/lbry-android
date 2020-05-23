@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:clickable="true"
+    android:focusable="true">
+    <io.lbry.browser.ui.controls.SolidIconView
+        android:id="@+id/url_suggestion_icon"
+        android:textColor="@color/foreground"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:textSize="18dp"
+        android:layout_centerVertical="true" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/url_suggestion_icon"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/url_suggestion_title"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/url_suggestion_description"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textSize="12sp"
+            android:textColor="@color/uriDescBlue"
+            android:textFontWeight="300" />
+    </LinearLayout>
+</RelativeLayout>

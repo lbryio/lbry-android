@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/floating_balance_main_container"
+    android:background="@android:color/transparent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginRight="8dp"
+    android:elevation="4dp"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
+    <LinearLayout
+        android:id="@+id/floating_reward_container"
+        android:clickable="true"
+        android:background="@drawable/bg_floating_reward"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="44dp"
+        android:visibility="invisible">
+        <io.lbry.browser.ui.controls.SolidIconView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:textSize="10dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/white"
+            android:text="@string/fa_award" />
+        <TextView
+            android:id="@+id/floating_reward_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter"
+            android:textColor="@color/white"
+            android:text="@string/zero"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textFontWeight="300"  />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/floating_balance_container"
+        android:clickable="true"
+        android:background="@drawable/bg_floating_balance"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/floating_reward_container"
+        android:layout_marginLeft="-36dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="16dp">
+        <io.lbry.browser.ui.controls.SolidIconView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:textSize="10dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/white"
+            android:text="@string/fa_coins" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/floating_balance_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter"
+            android:textColor="@color/white"
+            android:text="@string/zero"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textFontWeight="300"
+            android:visibility="gone" />
+        <ProgressBar
+            android:id="@+id/floating_balance_loading"
+            android:layout_gravity="center_vertical"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="2dp"  />
+    </LinearLayout>
+
+
+</RelativeLayout>

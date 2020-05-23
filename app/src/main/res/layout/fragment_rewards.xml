@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pageBackground">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/rewards_filter_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+                <TextView
+                    android:id="@+id/rewards_filter_link_unclaimed"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/unclaimed"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/rewards_filter_link_all"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/rewards_filter_link_unclaimed"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/all"
+                    android:textSize="14sp" />
+                <ProgressBar
+                    android:id="@+id/rewards_list_loading"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rewards_list"
+            android:clipToPadding="false"
+            android:layout_below="@id/rewards_filter_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="16dp" />
+    </RelativeLayout>
+
+    <include layout="@layout/container_sdk_initializing" />
+
+    <RelativeLayout
+        android:id="@+id/rewards_account_driver_container"
+        android:background="@color/lbryGreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/rewards_account_driver_actions"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <io.lbry.browser.ui.controls.SolidIconView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:textSize="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/fa_award"
+                    android:textColor="@color/white" />
+                <TextView
+                    android:id="@+id/rewards_account_driver_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="@font/inter"
+                    android:textSize="24sp"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:text="@string/lbry_credits_allow"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+
+            <TextView
+                android:id="@+id/rewards_account_driver_credits_worth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:text="@string/free_credits_worth"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+
+            <TextView
+                android:id="@+id/rewards_account_driver_learn_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:text="@string/rewards_learn_more"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rewards_account_driver_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <TextView
+                android:id="@+id/rewards_not_interested_link"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter"
+                android:text="@string/not_interested"
+                android:textColor="@color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/rewards_get_started_button"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter"
+                android:text="@string/get_started" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

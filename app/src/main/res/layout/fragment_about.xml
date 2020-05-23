@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pageBackground">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/content_freedom"
+            android:textColor="@color/lbryGreen"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/about_paragraph"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+
+        <TextView
+            android:id="@+id/about_link_what_is_lbry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/about_link_what_is_lbry"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <TextView
+            android:id="@+id/about_link_android_basics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/about_link_android_basics"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <TextView
+            android:id="@+id/about_link_faq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/about_link_faq"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/get_social"
+            android:textColor="@color/lbryGreen"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/social_paragraph"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <TextView
+            android:id="@+id/about_link_discord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/about_link_discord"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <TextView
+            android:id="@+id/about_link_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/about_link_facebook"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <TextView
+            android:id="@+id/about_link_instagram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/about_link_instagram"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <TextView
+            android:id="@+id/about_link_reddit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/about_link_reddit"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <TextView
+            android:id="@+id/about_link_telegram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/about_link_telegram"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <TextView
+            android:id="@+id/about_link_twitter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/about_link_twitter"
+            android:textColorLink="@color/lbryGreen"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/app_info"
+            android:textColor="@color/lbryGreen"
+            android:textSize="18sp" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="10"
+                    android:padding="12dp">
+                    <TextView
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:text="@string/connected_email"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_weight="6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/about_connected_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter"
+                            android:singleLine="true"
+                            android:text="@string/no_connected_email"
+                            android:textFontWeight="300"
+                            android:textIsSelectable="true"
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+                        <TextView
+                            android:id="@+id/about_update_mailing_preferences"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="@font/inter"
+                            android:singleLine="true"
+                            android:text="@string/update_mailing_preferences"
+                            android:textColor="@color/lbryGreen"
+                            android:textFontWeight="300"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:background="@color/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="10"
+                    android:padding="12dp">
+                    <TextView
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:text="@string/app_version"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/about_app_version"
+                        android:layout_weight="6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:textFontWeight="300"
+                        android:textIsSelectable="true"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:background="@color/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="10"
+                    android:padding="12dp">
+                    <TextView
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:text="@string/lbry_sdk"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/about_lbry_sdk"
+                        android:layout_weight="6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:text="@string/loading"
+                        android:textFontWeight="300"
+                        android:textIsSelectable="true"
+                        android:textSize="14sp"  />
+                </LinearLayout>
+
+                <View
+                    android:background="@color/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="10"
+                    android:padding="12dp">
+                    <TextView
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:text="@string/platform"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/about_platform"
+                        android:layout_weight="6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:text="@string/loading"
+                        android:textFontWeight="300"
+                        android:textIsSelectable="true"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:background="@color/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="10"
+                    android:padding="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:text="@string/installation_id"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/about_installation_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/loading"
+                        android:textFontWeight="300"
+                        android:textIsSelectable="true"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:background="@color/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="10"
+                    android:padding="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:text="@string/firebase_token"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/about_firebase_token"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:textFontWeight="300"
+                        android:textIsSelectable="true"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:background="@color/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="10"
+                    android:padding="12dp">
+                    <TextView
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:text="@string/logs"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/about_send_log"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:layout_weight="6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter"
+                        android:singleLine="true"
+                        android:text="@string/send_log"
+                        android:textColor="@color/lbryGreen"
+                        android:textFontWeight="300"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

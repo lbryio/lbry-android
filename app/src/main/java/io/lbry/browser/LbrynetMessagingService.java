@@ -12,14 +12,16 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
+
 import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.lbrysdk.LbrynetService;
-import io.lbry.browser.reactmodules.UtilityModule;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -30,22 +32,15 @@ import java.util.Map;
 public class LbrynetMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "LbrynetMessagingService";
-
     private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.LBRY_ENGAGEMENT_CHANNEL";
-
     private static final String TYPE_SUBSCRIPTION = "subscription";
-
     private static final String TYPE_REWARD = "reward";
-
     private static final String TYPE_INTERESTS = "interests";
-
     private static final String TYPE_CREATOR = "creator";
-
     private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
         if (firebaseAnalytics == null) {
             firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         }
@@ -67,7 +62,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                 if (firebaseAnalytics != null) {
                     Bundle bundle = new Bundle();
                     bundle.putString("name", name);
-                    firebaseAnalytics.logEvent("lbry_notification_receive", bundle);
+                    firebaseAnalytics.logEvent(LbryAnalytics.EVENT_LBRY_NOTIFICATION_RECEIVE, bundle);
                 }
 
                 sendNotification(title, body, type, url, name, contentTitle, channelUrl, publishTime);
@@ -97,7 +92,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
         // TODO: Implement this method to send token to your app server.
     }
 
-     /**
+    /**
      * Create and show a simple notification containing the received FCM message.
      *
      * @param messageBody FCM message body received.
@@ -112,29 +107,6 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             } else {
                 // default to home page
                 url = "lbry://?discover";
-            }
-        } else {
-            if (!MainActivity.isServiceRunning(this, LbrynetService.class) &&
-                    contentTitle != null &&
-                    channelUrl != null &&
-                    !url.startsWith("lbry://?") /* not a special url */
-            ) {
-                // only enter lite mode when contentTitle and channelUrl are set (and the service isn't running yet)
-                // cold start
-                url = url + ((url.indexOf("?") > -1) ? "&liteMode=1" : "?liteMode=1");
-                try {
-                    if (contentTitle != null) {
-                        url = url + "&contentTitle=" + URLEncoder.encode(contentTitle, "UTF-8");
-                    }
-                    if (channelUrl != null) {
-                        url = url + "&channelUrl=" + URLEncoder.encode(channelUrl, "UTF-8");
-                    }
-                    if (publishTime != null) {
-                        url = url + "&publishTime=" + URLEncoder.encode(publishTime, "UTF-8");
-                    }
-                } catch (UnsupportedEncodingException ex) {
-                    // shouldn't happen
-                }
             }
         }
 
@@ -160,27 +132,27 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
-                NOTIFICATION_CHANNEL_ID, "LBRY Engagement", NotificationManager.IMPORTANCE_DEFAULT);
+                    NOTIFICATION_CHANNEL_ID, "LBRY Engagement", NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(9898, notificationBuilder.build());
+        notificationManager.notify(3, notificationBuilder.build());
     }
 
     public List<String> getEnabledTypes() {
-        SharedPreferences sp = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         List<String> enabledTypes = new ArrayList<String>();
 
-        if (sp.getBoolean(UtilityModule.RECEIVE_SUBSCRIPTION_NOTIFICATIONS, true)) {
+        if (sp.getBoolean(MainActivity.PREFERENCE_KEY_NOTIFICATION_SUBSCRIPTIONS, true)) {
             enabledTypes.add(TYPE_SUBSCRIPTION);
         }
-        if (sp.getBoolean(UtilityModule.RECEIVE_REWARD_NOTIFICATIONS, true)) {
+        if (sp.getBoolean(MainActivity.PREFERENCE_KEY_NOTIFICATION_REWARDS, true)) {
             enabledTypes.add(TYPE_REWARD);
         }
-        if (sp.getBoolean(UtilityModule.RECEIVE_INTERESTS_NOTIFICATIONS, true)) {
+        if (sp.getBoolean(MainActivity.PREFERENCE_KEY_NOTIFICATION_CONTENT_INTERESTS, true)) {
             enabledTypes.add(TYPE_INTERESTS);
         }
-        if (sp.getBoolean(UtilityModule.RECEIVE_CREATOR_NOTIFICATIONS, true)) {
+        if (sp.getBoolean(MainActivity.PREFERENCE_KEY_NOTIFICATION_CREATOR, true)) {
             enabledTypes.add(TYPE_CREATOR);
         }
 

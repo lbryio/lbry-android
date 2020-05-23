@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:focusedByDefault="true">
+    <ProgressBar
+        android:id="@+id/channel_manager_list_big_loading"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+    <ProgressBar
+        android:id="@+id/channel_manager_list_loading"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:visibility="gone" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/channel_manager_list"
+        android:clipToPadding="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <RelativeLayout
+        android:id="@+id/channel_manager_empty_container"
+        android:background="@color/pageBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="36dp">
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="160dp"
+                android:layout_height="300dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/gerbil_happy" />
+            <TextView
+                android:text="@string/no_channel_created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/inter"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textFontWeight="300"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/channel_manager_create_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/create_a_channel"  />
+        </LinearLayout>
+    </RelativeLayout>
+    <include layout="@layout/container_sdk_initializing" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/channel_manager_fab_new_channel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_add"
+        android:visibility="gone" />
+</RelativeLayout>

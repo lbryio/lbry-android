@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/verification_email_collect_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:visibility="visible"
+        android:layout_margin="36dp">
+
+        <TextView
+            android:textSize="28sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/email"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/white"
+            android:textFontWeight="300" />
+        <TextView
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/provide_email_address"
+            android:textColor="@color/white"
+            android:textFontWeight="300" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/verification_email_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@null">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/verification_email_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:hint="@string/email_placeholder"
+                android:singleLine="true"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:textFontWeight="300" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verification_email_continue_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/continue_text" />
+            <ProgressBar
+                android:id="@+id/verification_email_add_progress"
+                android:visibility="gone"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/verification_email_verify_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="36dp"
+        android:visibility="gone">
+
+        <TextView
+            android:textSize="28sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/sign_in"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/white"
+            android:textFontWeight="300" />
+        <TextView
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/email_sent_to"
+            android:textColor="@color/white"
+            android:textFontWeight="300" />
+
+        <TextView
+            android:id="@+id/verification_email_added_address"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ellipsize="middle"
+            android:fontFamily="@font/inter"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textFontWeight="300" />
+
+        <TextView
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/please_click_link"
+            android:textColor="@color/white"
+            android:textFontWeight="300" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:weightSum="9">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verification_email_resend_button"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/resend" />
+
+            <View
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="0dp" />
+
+            <TextView
+                android:id="@+id/verification_email_edit_button"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="right"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="@string/edit"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/pageBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/channel_content_main_progress"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="16dp">
+        <RelativeLayout
+            android:id="@+id/channel_content_filter_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:visibility="visible">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/channel_content_sort_link"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:clickable="true">
+                    <TextView
+                        android:id="@+id/channel_content_sort_link_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/inter"
+                        android:textFontWeight="300"
+                        android:textSize="12sp"
+                        android:text="@string/new_text" />
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_arrow_dropdown"
+                        android:tint="@color/foreground" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/channel_content_time_link"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_centerVertical="true"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_toRightOf="@id/channel_content_sort_link"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/channel_content_time_link_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/inter"
+                        android:textFontWeight="300"
+                        android:textSize="12sp"
+                        android:text="@string/past_week" />
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_arrow_dropdown"
+                        android:tint="@color/foreground" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/channel_content_load_progress"
+                android:visibility="gone"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/channel_content_no_claim_search_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/no_claim_search_content"
+            android:textSize="14sp"
+            android:textFontWeight="300"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/channel_content_list"
+            android:clipToPadding="false"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"  />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/app_bar_main">
+
+    <FrameLayout
+        android:id="@+id/content_main"
+        android:background="@color/pageBackground"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/url_suggestions_container"
+        android:background="@color/pageBackground"
+        android:elevation="6dp"
+        android:fitsSystemWindows="true"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/url_suggestions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <include layout="@layout/floating_wallet_balance" />
+
+    <RelativeLayout
+        android:id="@+id/global_sdk_initializing_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lbryGreen"
+        android:elevation="12dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+            <ProgressBar
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/sdk_initializing"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/global_now_playing_card"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:visibility="gone"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toTopOf="@id/global_sdk_initializing_status">
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="90dp">
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/global_now_playing_player_view"
+                android:layout_width="160dp"
+                android:layout_height="90dp" />
+            <LinearLayout
+                android:layout_toRightOf="@id/global_now_playing_player_view"
+                android:layout_toLeftOf="@id/global_now_playing_close"
+                android:layout_marginLeft="8dp"
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/global_now_playing_title"
+                    android:fontFamily="@font/inter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textSize="12sp"  />
+                <TextView
+                    android:id="@+id/global_now_playing_channel_title"
+                    android:fontFamily="@font/inter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textSize="10sp" />
+            </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/global_now_playing_close"
+                android:background="?attr/selectableItemBackground"
+                android:layout_height="match_parent"
+                android:layout_width="36dp"
+                android:layout_alignParentEnd="true"
+                android:clickable="true"
+                android:layout_marginLeft="8dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:tint="@color/foreground"
+                    android:src="@drawable/ic_close"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/pip_player"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible" />
+</androidx.constraintlayout.widget.ConstraintLayout>
