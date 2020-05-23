@@ -17,7 +17,6 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -179,6 +178,7 @@ import okhttp3.OkHttpClient;
 public class MainActivity extends AppCompatActivity implements SdkStatusListener {
 
     private Map<String, Class> specialRouteFragmentClassMap;
+    @Getter
     private boolean inPictureInPictureMode;
     @Getter
     private boolean inFullscreenMode;
@@ -193,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean startingShareActivity = false;
     public static boolean startingPermissionRequest = false;
     public static boolean startingSignInFlowActivity = false;
-    public static boolean startingCameraRequest = false;
     private boolean enteringPIPMode = false;
     private boolean fullSyncInProgress = false;
     private int queuedSyncCount = 0;
@@ -383,6 +382,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
                 ViewCompat.onApplyWindowInsets(findViewById(R.id.url_suggestions_container),
                         insets.replaceSystemWindowInsets(0, 0, 0, insets.getSystemWindowInsetBottom()));
+
                 return ViewCompat.onApplyWindowInsets(v,
                         insets.replaceSystemWindowInsets(
                                 insets.getSystemWindowInsetLeft(),
@@ -796,7 +796,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.floating_balance_main_container).setVisibility(View.GONE);
         findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
         findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
-        getSupportActionBar().hide();
+        findViewById(R.id.app_bar_main_container).setFitsSystemWindows(true);
+        hideActionBar();
 
         PlayerView pipPlayer = findViewById(R.id.pip_player);
         pipPlayer.setVisibility(View.VISIBLE);
@@ -805,14 +806,20 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         playerReassigned = true;
     }
     private void renderFullMode() {
-        getSupportActionBar().show();
+        if (!inFullscreenMode) {
+            showActionBar();
+        } else {
+            findViewById(R.id.app_bar_main_container).setFitsSystemWindows(false);
+        }
+
         findViewById(R.id.content_main).setVisibility(View.VISIBLE);
         findViewById(R.id.floating_balance_main_container).setVisibility(inFullscreenMode ? View.INVISIBLE : View.VISIBLE);
+
         Fragment fragment = getCurrentFragment();
-        if (!(fragment instanceof FileViewFragment)) {
+        if (!(fragment instanceof FileViewFragment) && !inFullscreenMode) {
             findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
         }
-        if (!Lbry.SDK_READY) {
+        if (!Lbry.SDK_READY && !inFullscreenMode) {
             findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
         }
 

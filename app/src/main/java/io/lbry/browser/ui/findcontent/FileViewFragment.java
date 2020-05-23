@@ -538,7 +538,11 @@ public class FileViewFragment extends BaseFragment implements
         Context context = getContext();
         Helper.setWunderbarValue(currentUrl, context);
         if (context instanceof MainActivity) {
-            LbryAnalytics.setCurrentScreen((MainActivity) context, "File", "File");
+            MainActivity activity = (MainActivity) context;
+            LbryAnalytics.setCurrentScreen(activity, "File", "File");
+            if (claim != null && claim.isPlayable() && activity.isInFullscreenMode()) {
+                enableFullScreenMode();
+            }
         }
 
         if (MainActivity.appPlayer != null) {
@@ -1800,8 +1804,6 @@ public class FileViewFragment extends BaseFragment implements
             View playerView = root.findViewById(R.id.file_view_exoplayer_view);
             ((ImageView) playerView.findViewById(R.id.player_image_full_screen_toggle)).setImageResource(R.drawable.ic_fullscreen_exit);
 
-            root.findViewById(R.id.player_image_full_screen_toggle).setVisibility(View.GONE);
-
             MainActivity activity = (MainActivity) context;
             activity.enterFullScreenMode();
 
@@ -2121,17 +2123,24 @@ public class FileViewFragment extends BaseFragment implements
 
     @Override
     public void onPortraitOrientationEntered() {
-        Context context = getContext();
+        // Skip this for now. User restores default view mode by pressing fullscreen toggle
+        /*Context context = getContext();
         if (context instanceof MainActivity && ((MainActivity) context).isInFullscreenMode()) {
             disableFullScreenMode();
-        }
+        }*/
     }
 
     @Override
     public void onLandscapeOrientationEntered() {
         Context context = getContext();
-        if (claim != null && claim.isPlayable() && context instanceof MainActivity && !((MainActivity) context).isInFullscreenMode()) {
-            enableFullScreenMode();
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            if (activity.isInPictureInPictureMode()) {
+                return;
+            }
+            if (claim != null && claim.isPlayable() && !activity.isInFullscreenMode()) {
+                enableFullScreenMode();
+            }
         }
     }
 
