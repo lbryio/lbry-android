@@ -194,6 +194,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_alignParentBottom="true"
+                android:fontFamily="@font/inter"
                 android:visibility="gone" />
         </RelativeLayout>
 

@@ -576,8 +576,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="@string/publish"
-                    android:fontFamily="@font/inter" />
+                    android:fontFamily="@font/inter"
+                    android:text="@string/publish" />
             </RelativeLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

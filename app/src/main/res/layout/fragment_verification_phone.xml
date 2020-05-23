@@ -67,6 +67,7 @@
                 android:id="@+id/verification_phone_continue_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
                 android:text="@string/continue_text" />
             <ProgressBar
                 android:id="@+id/verification_phone_new_progress"
@@ -129,6 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:fontFamily="@font/inter"
                 android:text="@string/verify" />
             <ProgressBar
                 android:id="@+id/verification_phone_verify_progress"

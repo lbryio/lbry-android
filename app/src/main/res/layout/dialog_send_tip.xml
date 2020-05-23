@@ -117,6 +117,7 @@
                 android:id="@+id/tip_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
                 android:text="@string/send"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true" />

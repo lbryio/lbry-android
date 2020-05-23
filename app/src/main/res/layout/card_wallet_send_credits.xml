@@ -95,11 +95,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/wallet_send"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/send"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:fontFamily="@font/inter"
+                android:text="@string/send" />
         </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
