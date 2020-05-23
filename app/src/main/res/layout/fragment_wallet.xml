@@ -13,6 +13,12 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <include layout="@layout/card_reward_driver"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
             <!-- Balance view -->
             <include layout="@layout/card_wallet_balance" />
 

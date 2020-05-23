@@ -1,0 +1,585 @@
+<resources>
+    <string name="app_name">LBRY</string>
+    <string name="navigation_drawer_open">Gezinme menüsünü aç</string>
+    <string name="navigation_drawer_close">Gezinme menüsünü kapat</string>
+
+    <!-- Nav menu -->
+    <string name="find_content">İçerik Keşfet</string>
+    <string name="your_content">İçerikleriniz</string>
+    <string name="wallet">Cüzdan</string>
+    <string name="following">Takip Edilen</string>
+    <string name="editors_choice">Editörün Seçimi</string>
+    <string name="your_tags">Etiketleriniz</string>
+    <string name="all_content">Tüm İçerikler</string>
+    <string name="channels">Kanallar</string>
+    <string name="library">Kütüphane</string>
+    <string name="publishes">Yayınlananlar</string>
+    <string name="new_publish">Yeni Yayın</string>
+    <string name="rewards">Ödüller</string>
+    <string name="invites">Davetler</string>
+    <string name="settings">Ayarlar</string>
+    <string name="about">Hakkında</string>
+    <string name="sign_in">Giriş Yap</string>
+    <string name="startup_failed">Uygulamayı başlatma başarısız oldu. Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin. Eğer problem devam ediyorsa, lütfen hello@lbry.com\'a eposta atın. </string>
+    <string name="no_claim_search_content">Şu an gösterilecek içerik bulunamadı. Lütfen seçeneklerinizi gözden geçirin veya sonra tekrar deneyin.</string>
+
+    <!-- Welcome Page -->
+    <string name="welcome_to_lbry">LBRY\'ye hoşgeldiniz.</string>
+    <string name="welcome_paragraph">LBRY topluluk tarafından kontrol edilen, video, müzik, kitap ve fazlasını arayıp yayınlayabileceğiniz bir içerik platformudur.</string>
+    <string name="welcome_tos">Devam ederek, &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; kabul ediyor ve 13 yaşından büyük olduğumu onaylıyorum.</string>
+    <string name="welcome_please_wait">Bir birkaç şeyi hazırlarken lütfen bekleyin...</string>
+    <string name="use_lbry">LBRY Kullan »</string>
+
+    <!-- URI bar -->
+    <string name="uri_placeholder">Video, müzik ve daha fazlasını ara</string>
+
+    <!-- Following page -->
+    <string name="find_channels_to_follow">Takip edecek kanallar bulun</string>
+    <string name="channels_you_follow">Takip ettiğiniz kanallar</string>
+    <string name="discover">Keşfet</string>
+    <string name="lbry_works_better">LBRY, sevdiğiniz en az 5 içerik üreticisini takip ettiğinizde daha iyi çalışır. Eğer bir üyeliğiniz varsa takip ettiğiniz içerik üreticilerine onları takip ettiğinizi göstermek için giriş yapın.</string>
+    <string name="select_five_subscriptions">Lütfen devam etmek için 5 içerik üreticisi seçin.</string>
+    <string name="n_remaining">%1$d kaldı...</string>
+    <string name="done">Bitti</string>
+    <string name="all">Tümü</string>
+    <string name="discover_channels">Yeni kanallar keşfet</string>
+
+    <!-- Claim lists -->
+    <string name="anonymous">Anonim</string>
+
+    <!-- File view -->
+    <string name="tags">Etiketler</string>
+    <string name="share">Paylaş</string>
+    <string name="repost">Tekrar Paylaş</string>
+    <string name="tip">Bahşiş Ver</string>
+    <string name="edit">Düzenle</string>
+    <string name="delete">Kaldır</string>
+    <string name="download">İndir</string>
+    <string name="open">Aç</string>
+    <string name="report">Bildir</string>
+    <string name="loading_decentralized_data">Dağıtılmış bilgi yükleniyor...</string>
+    <string name="related_content">Alakalı İçerik</string>
+    <string name="share_lbry_content">LBRY içeriği paylaş</string>
+    <string name="view">Görüntülenme</string>
+    <string name="play">Oynatma</string>
+    <string name="unsupported_content">Desteklenmeyen İçerik</string>
+    <string name="unsupported_content_desc">Özür dileriz, bu içeriği uygulama içinde gösteremiyoruz. %1$s dosyasını indirilenler klasöründe bulabilirsiniz.</string>
+    <string name="nothing_at_this_location">Bu lokasyonda hiçbir şey yok.</string>
+    <string name="publish_something_here">Burada bir şey paylaş</string>
+    <string name="cannot_view_claim">Bu içerik şu an erişilemiyor. Lütfen sonra tekrar deneyiniz.</string>
+    <string name="zero_duration">0:00</string>
+    <string name="claim_file_not_found">%1$s yerindeki dosya mevcut değil. </string>
+    <string name="confirm_purchase">Satın Almayı Onayla</string>
+    <string name="delete_file">Bu dosyayı sil</string>
+    <string name="confirm_delete_file_message">Bu dosyayı cihazınızdan kaldırmak istediğinizden emin misiniz?</string>
+    <string name="unable_to_view_url">%1$s yüklenirken başarısız oldu. Lütfen sonra tekrar deneyin.</string>
+    <string name="no_cast_session_available">Şu anda mevcut bir çevirim oturumu bulunamadı.</string>
+    <string name="delete_content">İçeriği sil?</string>
+    <string name="confirm_delete_content_message">Bu içeriği yayından kaldırmak istediğinizden emin misiniz? Cihazınızdan hiçbir dosya kaldırılmayacak.</string>
+    <string name="content_deleted">İçerik blok zincirinden başarıyla silindi.</string>
+    <string name="content_failed_delete">Bu içerik şu anda silinemiyor. Lütfen daha sonra tekrar deneyiniz.</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s izlenme</item>
+        <item quantity="other">%1$s izlenme</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Bunu yapmak %2$s kredi karşılığında, \"%1$s\" satın alacak</item>
+        <item quantity="other">Bunu yapmak %2$s kredi karşılığında, \"%1$s\" satın alacak</item>
+    </plurals>
+
+    <!-- Channel view -->
+    <string name="no_channel_info">Burada bir şey yok.\nLütfen sonra tekrar deneyin.</string>
+    <string name="content">İçerik</string>
+    <string name="website">Website</string>
+    <string name="reposted">tekrar paylaşıldı</string>
+    <plurals name="follower_count">
+        <item quantity="one">%1$s takipçi</item>
+        <item quantity="other">%1$s takipçi</item>
+    </plurals>
+
+    <!-- Publish -->
+    <string name="record">Kaydet</string>
+    <string name="take_photo">Bir fotoğraf çek</string>
+    <string name="upload_file">Bir dosya yükle</string>
+    <string name="no_videos_found">Cihazınızda video bulamadık. Başlamak için fotoğraf çekin veya video kaydedin. </string>
+    <string name="loading_videos">Videolarınızı yüklenirken lütfen bekleyin ...</string>
+    <string name="storage_permission_rationale_videos">LBRY, videolarınızı, resimlerinizi ve diğer dosyalarınızı cihazınızdan görüntüleyebilmek ve yayınlayabilmek için erişim gerektirir.</string>
+    <string name="camera_permission_rationale_record">LBRY video kaydetmek için kameranıza erişim gerektirir.</string>
+    <string name="camera_permission_rationale_photo">LBRY, fotoğraf çekmek için kameranıza erişmenizi gerektirir.</string>
+    <string name="edit_content">İçeriği düzenle</string>
+    <string name="mature_tags">Olgun etiketler</string>
+    <string name="price">Ücret</string>
+    <string name="free_publish">İçeriğiniz ücretsiz olacak. Bir fiyat belirlemek için seçim düğmesine basın.</string>
+    <string name="content_address">İçerik adresi</string>
+    <string name="randomize">Rastgele</string>
+    <string name="address">Adres</string>
+    <string name="content_address_desc">Kullanıcıların içeriğinizi bulabileceği adres (ör. lbry://myvideo)</string>
+    <string name="license">Lisans</string>
+    <string name="license_desc">Lisans açıklaması</string>
+    <string name="additional_options">Ek Ayarlar</string>
+    <string name="show_extra_fields">Ekstra alanları göster</string>
+    <string name="hide_extra_fields">Ekstra alanları gizle</string>
+    <string name="no_file_found">Yayınlanacak dosya bulunamadı.</string>
+    <string name="video_optimization">Video optimizasyonu</string>
+    <string name="thumbnail_creation_failed">İçerik dosyanızdan otomatik olarak bir küçük resim oluşturulamadı.</string>
+    <string name="video_being_optimized">Videonuz, çeşitli cihazlarda daha iyi bir deneyim için optimize edilmektedir. Bu işlem devam ederken aşağıdaki alanları doldurabilirsiniz.</string>
+    <string name="video_optimized">Videonuz mümkün olduğunca çok cihazda daha iyi oynatılmak için başarıyla optimize edildi. Lütfen içeriğinizi yayınlamaya devam edin.</string>
+    <string name="video_optimize_failed">Videonuz optimize edilemedi. Dosya hiçbir değişiklik yapılmadan yüklenecek.</string>
+    <string name="completed_video_duration">Tamamlanan Video Süresi: %1$s</string>
+    <string name="sdk_initializing_publish">Arka plan hizmeti henüz başlatılmadığından şu anda içerik yayınlayamazsınız.</string>
+    <string name="publish_successful">İçeriğiniz başarıyla yayınlandı. Blok zincirde görünmesi birkaç dakika sürebilir.</string>
+    <string name="transcode_in_progress">Video optimizasyonu devam ediyor. İptal etmek isterseniz, sayfanın altındaki İptal düğmesine basın.</string>
+    <string name="optimization_in_progress">Video optimizasyonu devam ediyor.</string>
+    <string name="cannot_capture_video">Bu cihaza video kaydetmek için kullanılabilecek kamera uygulaması yok.</string>
+    <string name="cannot_take_photo">Bu cihazda fotoğraf çekmek için kullanılabilecek kamera uygulaması yok.</string>
+
+    <string name="please_provide_title">Lütfen bir başlık girin.</string>
+    <string name="please_specify_address">Lütfen kullanıcıların içeriğinizi bulabileceği bir adres belirtin.</string>
+    <string name="address_invalid_characters">İçerik adresiniz geçersiz karakterler içeriyor.</string>
+    <string name="address_already_used">Belirtilen içerik adresinde zaten yayınladınız. Lütfen yeni bir adres girin.</string>
+    <string name="no_file_selected">Dosya seçilmedi. Lütfen yayınlamadan önce bir video seçin veya fotoğraf çekin veya bir dosya seçin.</string>
+    <string name="price_amount_not_set">İçeriğinize bir fiyat girin veya ücretsiz olarak yayınlamak için ücretsiz\'i seçin.</string>
+    <string name="publish_no_thumbnail">Lütfen yayınlamadan önce yüklemek için bir küçük resim seçin.</string>
+    <string name="publish_thumbnail_in_progress">Lütfen yayınlamadan önce küçük resmin yüklenmesini bekleyin.</string>
+
+    <string name="language">Dil</string>
+    <string name="english">İngilizce</string>
+    <string name="chinese">Çince</string>
+    <string name="french">Fransızca</string>
+    <string name="german">Almanca</string>
+    <string name="japanese">Japonca</string>
+    <string name="russian">Rusça</string>
+    <string name="spanish">İspanyolca</string>
+    <string name="indonesian">Endonezce</string>
+    <string name="italian">İtalyanca</string>
+    <string name="dutch">Flemenkçe</string>
+    <string name="turkish">Türkçe</string>
+    <string name="polish">Lehçe</string>
+    <string name="malay">Malayca</string>
+    <string name="portuguese">Portekizce</string>
+    <string name="vietnamese">Vietnamca</string>
+    <string name="thai">Tayca</string>
+    <string name="arabic">Arapça</string>
+    <string name="czech">Çekçe</string>
+    <string name="croatian">Hırvatça</string>
+    <string name="cambodian">Kmerce</string>
+    <string name="korean">Korece</string>
+    <string name="norwegian">Norveççe</string>
+    <string name="romanian">Rumence</string>
+    <string name="hindi">Hintçe</string>
+    <string name="greek">Yunanca</string>
+
+    <string name="none">Hiçbiri</string>
+    <string name="public_domain">Kamusal Alan</string>
+    <string name="copyrighted">Telif hakkı olan</string>
+    <string name="cca_4_0_international">Creative Commons Atıf 4.0 Uluslararası</string>
+    <string name="cca_sa_4_0_international">Creative Commons Attribution-ShareAlike 4.0 International</string>
+    <string name="cca_nd_4_0_international">Creative Commons Attribution-NoDerivatives 4.0 Internationa</string>
+    <string name="cca_nc_4_0_international">Creative Commons Attribution-NonCommercial 4.0 International</string>
+    <string name="cca_nc_sa_4_0_international">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</string>
+    <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
+
+    <string-array name="publish_currencies">
+        <item>LBC</item>
+        <item>USD</item>
+    </string-array>
+
+    <!-- Publishes -->
+    <string name="one_or_more_publishes_failed_abandon">Bir veya daha fazla içerik öğesi şu anda silinemedi. Lütfen daha sonra tekrar deneyiniz.</string>
+    <plurals name="confirm_delete_publishes">
+        <item quantity="one">Seçilen içerik öğesini silmek istediğinizden emin misiniz?</item>
+        <item quantity="other">Seçilen içerik öğelerini silmek istediğinizden emin misiniz?</item>
+    </plurals>
+    <plurals name="publishes_deleted">
+        <item quantity="one">İçerik öğesi başarıyla silindi.</item>
+        <item quantity="other">İçerik öğeleri başarıyla silindi.</item>
+    </plurals>
+
+    <!-- Splash -->
+    <string name="oops_something_went_wrong">Eyvah! Bir şeyler yanlış gitti.</string>
+    <string name="installation_id_loaded">Kurulum kimliği yüklendi.</string>
+    <string name="known_tags_loaded">Yerel olarak bilinen ve takip edilen etiketler yüklendi.</string>
+    <string name="exchange_rate_loaded">LBC/USD döviz oranı yükledi.</string>
+    <string name="user_authenticated">Kullanıcı onaylandı.</string>
+    <string name="installation_registered">Kurulum kaydedildi.</string>
+    <string name="subscriptions_loaded">Abonelikler yüklendi.</string>
+    <string name="subscriptions_resolved">Abonelikler çözüldü.</string>
+
+    <!-- Settings -->
+    <string name="user_interface">İçerik &amp; Kullanıcı Arayüzü</string>
+    <string name="other">Diğer</string>
+    <string name="enable_dark_mode">Karanlık temayı etkinleştir</string>
+    <string name="show_mature_content">Yetişkin içerikleri göster</string>
+    <string name="show_url_suggestions">URL önerilerini göster</string>
+    <string name="notifications">Bildirimler</string>
+    <string name="subscriptions">Abonelikler</string>
+    <string name="content_interests">İçerik Alanları</string>
+
+    <string name="keep_sdk_in_background">Gelişmiş cüzdan ve ağ performansı için LBRY servisini arkada açık bırakın</string>
+    <string name="participate_in_data_network">Veri ağına katılın (uygulama ve arka plan hizmetinin yeniden başlatılmasını gerektirir)</string>
+
+    <!-- URL suggestions -->
+    <string name="search_url_title">%1$s - Ara</string>
+    <string name="tag_url_title">%1$s - Etiket</string>
+    <string name="search_url_desc">\'%1$s\' için arama yap</string>
+    <string name="explore_tag_url_desc">\'%1$s\' etiketini keşfet</string>
+    <string name="view_file_url_desc">%1$s\'daki içeriğe göz at</string>
+    <string name="view_channel_url_desc">%1$s kanalını görüntüle</string>
+
+    <!-- Search -->
+    <string name="search_no_results">%1$s için bir sonuç çıkmadı. Lütfen başka bir terim arayın.</string>
+    <string name="search_no_query">Film, müzik, e-kitap, yazılım ve daha fazlasını arayabilirsiniz.</string>
+    <string name="no_related_content">Şu anda alakalı bir içerik bulunamadı.</string>
+
+    <!-- Wallet -->
+    <string name="balance">Bakiye</string>
+    <string name="you_currently_have">Şuna sahipsiniz</string>
+    <string name="convert_credits">Kredilerinizi USD\'ye çevirebilir ve döviz hizmeti ile paranızı çekebilirsiniz. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
+    <string name="you_also_have">Şunlara da sahipsiniz</string>
+    <string name="you_staked">Ayırdığınız miktar</string>
+    <string name="in_tips">bahşiş olarak</string>
+    <string name="in_your_publishes">yayınlarınızda mevcut olan</string>
+    <string name="in_your_supports">desteklerinizde mevcut olan</string>
+    <string name="earn_more_tips">Daha havalı videolar yükleyerek daha çok bahşiş kazan</string>
+    <string name="sdk_initializing">Arkaplan servisi başlatılıyor...</string>
+    <string name="sdk_still_initializing">Arkaplan servisi hala başlatılıyor. Bu arada siz içerikleri keşfedebilir ve izleyebilirsiniz.</string>
+    <string name="sdk_initializing_functionality">Bunu şu an yapamazsınız çünkü arkaplan servisi hala başlatılıyor.</string>
+
+    <string name="backup_synced">Cüzdanınızın yedeği lbry.tv ile eşlendi.</string>
+    <string name="backup_notsynced">Cüzdanınız şu an lbry.tv ile eşlenmemiş. Cüzdanınızı yedeklemeniz sizin sorumluluğunuzdadır.</string>
+    <string name="synced_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/account-sync\"&gt;What does this mean?&lt;/a&gt;</string>
+    <string name="backup_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;What does this mean?&lt;/a&gt;</string>
+
+    <string name="receive_credits">Kredi Al</string>
+    <string name="use_this_address_hint">Başka bir kullanıcı (veya kendiniz) tarafından gönderilen kredileri almak için bu cüzdan adresini kullanın.</string>
+    <string name="get_new_address">Yeni bir adres edin</string>
+    <string name="generate_address_hint">İstediğiniz zaman yeni bir adres oluşturabilirsiniz, daha önceki adresler çalışmaya devam edecektir. Birden fazla adres kullanmak, birden fazla kaynaktan gelen gelen ödemeleri takip etmek için yardımcı olabilir.</string>
+
+    <string name="send_credits">Kredi Gönder</string>
+    <string name="recipient_address">Alıcı Adresi</string>
+    <string name="recipient_address_placeholder">bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs</string>
+    <string name="amount">Miktar</string>
+    <string name="send">Gönder</string>
+
+    <string name="recent_transactions">Son İşlemler</string>
+    <string name="view_all">Tümünü Göster</string>
+    <string name="receive">Teslim Alınan</string>
+    <string name="spend">Harcanan</string>
+    <string name="publish">Yayınla</string>
+    <string name="support">Destek</string>
+    <string name="abandon">Terket</string>
+    <string name="channel">Kanal</string>
+    <string name="channel_update">Kanal Güncellemesi</string>
+    <string name="publish_update">Güncellemeyi Yayınla</string>
+
+    <string name="wallet_sync">Cüzdan Senkronizasyonu</string>
+    <string name="sync_status">Senkronizasyon Durumu</string>
+    <string name="on">Aktif</string>
+    <string name="off">Kapalı</string>
+    <string name="email">Eposta</string>
+    <string name="no_connected_email">Bağlı eposta mevcut değil</string>
+    <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
+    <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
+    <string name="zero">0</string>
+    <string name="lbc">LBC</string>
+
+    <string name="account_recommended">Hesap Önerildi</string>
+    <string name="wallet_account_desc">Bir lbry.tv hesabı ödüller kazanmanıza, cüzdanınızı yedeklemenize ve her şeyi senkronize halde tutmanıza olanak tanır.</string>
+    <string name="wallet_without_account">Bir hesap olmadan, cüzdan ve LBRY verilerinizi güvence altına almakla ilgili tüm sorumluluğu üstlenirsiniz.</string>
+    <string name="skip_account">Üye Olmadan Devam Et</string>
+    <string name="sign_up">Kayıt ol</string>
+    <string name="address_copied">Adres kopyalandı</string>
+
+    <string name="invalid_recipient_address">Lütfen kredi yollamak için geçerli bir adres giriniz</string>
+    <string name="insufficient_balance">Yetersiz bakiye</string>
+    <string name="invalid_amount">Lütfen geçerli bir değer giriniz</string>
+    <string name="send_credit_error">Kredileriniz şu anda yollanamıyor. Lütfen sonra tekrar deneyiniz.</string>
+    <string name="loading_transactions">İşlemler yükleniyor...</string>
+    <string name="no_recent_transactions">Gösterilecek yakın zamanlı bir işlem mevcut değil.</string>
+    <string name="no_transactions">Şu anda gösterilecek bir işlem mevcut değil.</string>
+    <string name="tx_list_fee">%1$s işlem ücreti</string>
+    <string name="transaction_history">İşlem Geçmişi</string>
+
+    <string name="unlock">Kilidi Aç</string>
+    <string name="unlock_tips">Bahşişlerin kilidi açılsın mı ?</string>
+    <string name="confirm_unlock_tips">Tüm bahşişlerin kilidini açmak istediğinizden emin misiniz?</string>
+
+    <plurals name="you_sent_credits">
+        <item quantity="one"> 1%1$s kredi yolladınız</item>
+        <item quantity="other">%1$s kredi yolladınız</item>
+    </plurals>
+
+    <!-- Dialogs -->
+    <string name="customize_your_tags">Etiketlerinizi kişiselleştirin</string>
+    <string name="sort_content_by">İçerik Sıralaması</string>
+    <string name="content_from">Şuradan içerikler</string>
+    <string name="trending_content">Trend içerikler</string>
+    <string name="new_content">Yeni içerikler</string>
+    <string name="top_content">En iyi içerikler</string>
+    <string name="trending">Trendler</string>
+    <string name="top">En iyiler</string>
+    <string name="new_text">Yeniler</string>
+    <string name="past_24_hours">Son 24 saat</string>
+    <string name="past_week">Geçen hafta</string>
+    <string name="past_month">Geçen ay</string>
+    <string name="past_year">Geçen sene</string>
+    <string name="all_time">Tüm zamanlar</string>
+    <string name="from">şuradan</string>
+    <string name="for_text">için</string>
+    <string name="filter_for">Şunun için filtrele</string>
+    <string name="everyone">Herkes</string>
+    <string name="tags_you_follow">Takip ettiğiniz etiketler</string>
+    <string name="customize">Kişiselleştir</string>
+    <string name="not_yet_implemented">Seçilen görüntülenme şu an için mevcut değil.</string>
+    <string name="customize_tags_hint">Herhangi bir etiket takip etmediğinizi görüyoruz.</string>
+    <string name="search_for_more_tags">Daha fazla etiket için arama yap</string>
+    <string name="no_followed_tags">Daha herhangi bir etiket takip etmediniz. İlgilendiğiniz etiketleri ekleyerek başlayın!</string>
+    <string name="no_tag_results">Takip ettiğiniz yeni bir etiket bulamadık.</string>
+    <string name="tag_already_added">\'%1$s\' etiketi zaten mevcut.</string>
+    <string name="tag_limit_reached">5\'ten fazla etiket ekleyemezsiniz.</string>
+    <string name="send_a_tip">Bir bahşiş gönder</string>
+    <string name="send_a_tip_to">%1$s\'ya bir bahşiş gönder</string>
+    <string name="send_tip_info_content">Bu, aktifken keşfedilme şansını artıracak ve %1$s için bir bahşiş olarak görünecektir. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="send_tip_info_channel">Bu, aktifken kanalın keşfedilme şansını artıracak ve %1$s için bir bahşiş olarak görünecektir. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="cancel">İptal Et</string>
+    <string name="repost_title">%1$s yeniden paylaş</string>
+    <string name="repost_your_favorite">Diğer insanların keşfetmesine yardımcı olmak için sevdiğin içerikleri yeniden paylaş!</string>
+    <string name="channel_to_post_on">Paylaşılacak kanal</string>
+    <string name="show_advanced">Detaylı göster</string>
+    <string name="hide_advanced">Detayı gizle</string>
+    <string name="name">İsim</string>
+    <string name="min_deposit">0.001</string>
+    <string name="content_successfully_reposted">Bu içerik başarılı şekilde yeniden paylaşıldı!</string>
+    <string name="repost_name_invalid_characters">Bu yeniden paylaşmanın ismi geçersiz karakterler içeriyor.</string>
+    <plurals name="you_sent_a_tip">
+        <item quantity="one">%1$s krediyi bahşiş olarak gönderdin, eyvallah!</item>
+        <item quantity="other"> %1$s krediyi bahşiş olarak gönderdin, eyvallah!</item>
+    </plurals>
+
+    <!-- Verification -->
+    <string name="provide_email_address">Lütfen bir e-posta adresi girin.</string>
+    <string name="email_placeholder">siz@ornek.com</string>
+    <string name="email_sent_to">Şu adrese bir mail yollandı</string>
+    <string name="please_click_link">Oturum açmayı tamamlamak için lütfen mesajdaki bağlantıyı tıklayın.</string>
+    <string name="resend">Tekrar Gönder</string>
+    <string name="continue_text">Devam</string>
+    <string name="provide_valid_email">Lütfen geçerli bir e-posta adresi giriniz.</string>
+    <string name="please_follow_instructions">Devam etmek için lütfen adresinize gönderilen e-postadaki talimatları izleyin.</string>
+    <string name="sign_in_successful">lbry.tv\'ye başarılı şekilde giriş yaptınız.</string>
+    <string name="retrieving_account_information">Hesap bilgilerinize erişiliyor...</string>
+    <string name="apply_wallet_data">Cüzdan bilgisi aktarılıyor...</string>
+    <string name="please_enter_your_password">Lütfen cüzdanınızı korumak için kullandığınız şifreyi girin.</string>
+    <string name="please_enter_a_password">Lütfen cüzdanınızı korumak için bir şifreyi girin.</string>
+    <string name="wallet_security_purposes">Not: cüzdan güvenliği sebebiyle, LBRY şifrenizi sıfırlayamıyor.</string>
+    <string name="password">Şifre</string>
+    <string name="enable_sync">Eşlemeyi devreye sok</string>
+    <string name="wallet_sync_op_failed">Cüzdan eşleme işlemi şu anda gerçekleştirilemiyor. Lütfen sonra tekrar deneyin. Eğer bu problem devam ederse, lütfen hello@lbry.com\'a bir e-posta yollayın.</string>
+    <string name="phone_number">Telefon Numarası</string>
+    <string name="enter_phone_number">Lütfen telefon numaranızı girin.</string>
+    <string name="not_interested">İlgilenmiyorum</string>
+    <string name="manual_reward_verification">Otomatik Olmayan Ödül Doğrulaması</string>
+    <string name="account_undergo_review">Ödül programına katılmadan önce bu hesabın bir gözden geçirilmesi gerekiyor. Bu süreç birkaç dakikayla birkaç gün arasında değişebilir.</string>
+    <string name="request_to_be_verified">Bu mesajı görmeye devam ederseniz, şuradan, &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;., onaylanmayı isteyebilirsiniz.</string>
+    <string name="enjoy_free_content">Bu arada bedava içeriklerin keyfini çıkarın!</string>
+    <string name="verify_phone_number">Telefon Numarasını Doğrula</string>
+    <string name="enter_phone_verify_code">%1$s\'a gönderilen doğrulama kodunu giriniz.</string>
+    <string name="code_placeholder">0000</string>
+    <string name="verify">Doğrula</string>
+    <string name="please_enter_valid_phone">Lütfen geçerli bir telefon numarası giriniz.</string>
+    <string name="please_enter_verification_code">Lütfen telefon numaranıza gönderilen doğrulama kodunuz giriniz.</string>
+
+    <!-- Forms -->
+    <string name="no_added_tags">Herhangi bir etiket eklemediniz. Keşfedilmeyi arttırmak için etiket ekleyin.</string>
+    <string name="form_no_tag_results">Eklenmemiş yeni bir etiket bulamadık.</string>
+
+    <!-- Channels -->
+    <string name="no_channel_created">Bir kanal oluşturmadınız.\n Şimdi yeni bir kanal oluşturarak başlayın!</string>
+    <string name="create_a_channel">Bir kanal oluştur</string>
+    <string name="create_a_channel_item">Bir kanal oluştur...</string>
+    <string name="edit_channel">Kanalı düzenle</string>
+    <string name="delete_selection">Seçileni sil?</string>
+    <string name="delete_channel">Kanal silinsin mi?</string>
+    <string name="confirm_delete_channel">Bu kanalı silmek istediğinizden emin misiniz?</string>
+    <string name="channel_deleted">Kanal başarıyla silindi.</string>
+    <string name="channel_failed_delete">Kanal şu ​​anda silinemedi. Lütfen daha sonra tekrar deneyiniz.</string>
+    <string name="description">Açıklama</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="show_optional_fields">İsteğe bağlı alanları göster</string>
+    <string name="hide_optional_fields">İsteğe bağlı alanları gizle</string>
+    <string name="save">Kaydet</string>
+    <string name="channel_name">Kanal ismi</string>
+    <string name="title">Başlık</string>
+    <string name="at">\@</string>
+    <string name="deposit">Depozito</string>
+    <string name="deposit_remains_yours">Bu LBC size ait kalacaktır. İsmi saklamak için alınan bir depozitodur ve istediğiniz zaman geri alınabilir.</string>
+    <string name="storage_permission_rationale_download">LBRY, cihazınıza içerik indirmek için erişim gerektirir.</string>
+    <string name="storage_permission_rationale_images">LBRY cihazınızın hafızasından resim yüklemek için izne ihtiyaç duyar.</string>
+    <string name="select_thumbnail">Önizleme görseli seç</string>
+    <string name="select_cover">Kapak görseli seç</string>
+    <string name="undetermined_image_filepath">Seçtiğiniz görsel için dosya yolu belirlenemedi. Lütfen görseli farklı bir yerden seçin.</string>
+    <string name="wait_for_upload">Lütfen güncel yüklemenizin bitmesini bekleyiniz.</string>
+    <string name="image_upload_failed">Görsel yükleme istediği başarısız oldu. Lütfen tekrar deneyin.</string>
+    <string name="uploading">Yükleniyor...</string>
+    <string name="please_enter_channel_name">Lütfen bir kanal ismi girin.</string>
+    <string name="channel_name_invalid_characters">Kanal isminiz geçersiz karakterler içeriyor.</string>
+    <string name="channel_name_already_created">Bu isimle zaten bir kanal oluşturmuşsunuz.</string>
+    <string name="please_enter_valid_deposit">Lütfen geçerli bir depozito miktarı giriniz.</string>
+    <string name="deposit_more_than_balance">Depozito miktarı bakiyenizden yüksek olamaz.</string>
+    <string name="channel_save_failed">Kanal kaydetme isteğiniz başarısız oldu. Lütfen tekrar deneyin.</string>
+    <string name="channel_save_successful">Kanalınız başarıyla kaydedildi.</string>
+    <string name="item_pending_blockchain">İsteğiniz blokzincirinde yayınlanmayı bekliyor. Birazdan isteğinizi görüntüleyebilecek veya değiştirebileceksiniz.</string>
+    <string name="pending">Bekleniyor</string>
+    <string name="create">Oluştur</string>
+    <string name="one_or_more_channels_failed_abandon">Bir veya daha fazla kanal şu ​​anda silinemedi. Lütfen daha sonra tekrar deneyiniz.</string>
+    <plurals name="min_deposit_required">
+        <item quantity="one">En az %1$s miktarında depozito zorunludur.</item>
+        <item quantity="other">En az %1$s miktarında depozito zorunludur.</item>
+    </plurals>
+    <plurals name="confirm_delete_channels">
+        <item quantity="one">Seçilen kanalları silmek istediğinizden emin misiniz?</item>
+        <item quantity="other">Seçilen kanalları silmek istediğinizden emin misiniz?</item>
+    </plurals>
+    <plurals name="channels_deleted">
+        <item quantity="one">Kanal başarıyla silindi.</item>
+        <item quantity="other">Kanallar başarıyla silindi.</item>
+    </plurals>
+
+    <!-- Rewards -->
+    <string name="lbry_credits_allow">LBRY kredileri içerik yayınlamanızı veya satın almanıza imkan verir.</string>
+    <string name="free_credits_worth">Eğer bir e-posta adresi verirseniz, %1$s miktarında bedava kredi kazanabilirsiniz.</string>
+    <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="get_started">Başla</string>
+    <string name="reward_code_placeholder">abc123</string>
+    <string name="claim">Talep et</string>
+    <string name="please_enter_claim_code">Lütfen kredi talep etmek için özel ödül kodunu giriniz.</string>
+    <string name="unclaimed">Talep edilmemiş</string>
+    <string name="custom_reward_title">Özel Kod</string>
+    <string name="up_to">en fazla</string>
+    <string name="custom_reward_description">Özel bir ödül kodu olan bir süpermodel veya rockstar mısınız? Buradan kredinizi talep edin.</string>
+    <plurals name="claim_reward_message">
+        <item quantity="one"> %1$s krediyi ödül olarak kazandın.</item>
+        <item quantity="other">%1$s kredi </item>
+    </plurals>
+    <plurals name="available_credits">
+        <item quantity="one">%1$s mevcut kredi</item>
+        <item quantity="other">%1$s</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">Yayınlama kredi gerektirir.</string>
+    <string name="channel_creation_requires_credits">Kanal oluşturmak kredi gerektirir.</string>
+    <string name="earn_rewards_for_inviting">Arkadaşlarınızı davet ederek ödüller kazanın.</string>
+    <string name="earn_some_credits_to_access">Bu içeriğe erişmek için biraz kredi kazanın.</string>
+    <string name="tap_here_to_get_some">Ücretsiz olarak almak için buraya dokunun.</string>
+    <string name="free_credits_available">Ödüller kısmında ücretsiz krediler mevcut.</string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="one">Ödüller kısmında %1$s ücretsiz kredi mevcut.</item>
+        <item quantity="other">Ödüllerde %1$sücretsiz kredi mevcut.</item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="one">Bir üyelik oluşturup %1$s ücretsiz kredi alın.</item>
+        <item quantity="other">Bir üyelik oluşturup %1$s ücretsiz kredi alın.</item>
+    </plurals>
+
+    <!-- Invites -->
+    <string name="lbry_invite_program">LBRY Davet Programı</string>
+    <string name="earn_extra_credits_invites">LBRY\'te katılmayı davet ettiğiniz insan başına fazladan kredi kazanırsınız.</string>
+    <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="invite_link">Davet Linki</string>
+    <string name="share_this_link">Bu linki dostlarınızla (veya düşmanlarınızla) paylaşın ve lbry.tv\'ye katıldıklarında kredi kazanın.</string>
+    <string name="your_invite_link">Davet linkiniz</string>
+    <string name="customize_invite_link">Özelleştirilmiş davet linki</string>
+    <string name="invite_by_email">E-posta ile Davet Et</string>
+    <string name="invite_someone">E-postasını bildiğiniz birini davet edin ve lbry\'tv\'ye katıldığında kredi kazanın.</string>
+    <string name="invite_email_placeholder">imaginary@friend.com</string>
+    <string name="invite">Davet Et</string>
+    <string name="invite_history">Davet Geçmişi</string>
+    <string name="earn_credits_for_inviting">Dostu düşmanı davet ederek kredi kazanın. Herkesin özgürlüğe ihtiyacı var.</string>
+    <string name="reward">Ödül</string>
+    <string name="claimed">Kazanılan</string>
+    <string name="claimable">Kazanılabilecek</string>
+    <string name="unclaimable">Kazanılamayacak</string>
+    <string name="invite_link_copied">Davet linki kopyalandı.</string>
+    <string name="invite_sent_to">%1$s\'a bir davet linki yollandı. </string>
+
+    <!-- Library -->
+    <string name="downloads">İndirilenler</string>
+    <string name="purchases">Satın Alımlar</string>
+    <string name="history">Geçmiş</string>
+    <string name="library_no_downloads">Bu cihaza henüz bir içerik indirmediniz.</string>
+    <string name="library_no_history">Bu cihazda henüz bir içerik görüntülemediniz.</string>
+    <string name="library_no_purchases">Hesabınızdan hiç içerik satın almadınız.</string>
+    <string name="hide">Gizle</string>
+    <string name="stats">İstatistikler</string>
+    <string name="video">Video</string>
+    <string name="audio">Ses</string>
+    <string name="images">Görseller</string>
+    <string name="mb">MB</string>
+    <string name="kb">KB</string>
+    <string name="gb">GB</string>
+    <string name="zero_mb">0MB</string>
+    <plurals name="confirm_delete_files">
+        <item quantity="one">Seçilen dosyayı cihazınızdan kaldırmak istediğinizden emin misiniz?</item>
+        <item quantity="other">Seçilen dosyaları cihazınızdan kaldırmak istediğinizden emin misiniz?</item>
+    </plurals>
+    <plurals name="files_deleted">
+        <item quantity="one">Dosya başarıyla silindi.</item>
+        <item quantity="other">Dosyalar başarıyla silindi.</item>
+    </plurals>
+
+    <!-- About -->
+    <string name="about_lbry">LBRY Hakkında</string>
+    <string name="content_freedom">İçerik Özgürlüğü</string>
+    <string name="about_paragraph">LBRY ücretsiz, açık ve topluluk tarafından işletilen bir dijital pazardır. Yaratıcıların içerik yüklemeleri, paylaşmaları ve çabaları için LBRY kredisi kazanmalarını sağlayan merkezi olmayan bir eşler arası içerik dağıtım platformudur. Kullanıcılar, ilgilendikleri çok çeşitli video, müzik, e-kitap ve diğer dijital içeriği bulabilecekler.</string>
+    <string name="get_social">Sosyalleş</string>
+    <string name="social_paragraph">LBRY ekibi ve toplumun üyeleriyle Discord, Facebook, Instagram, Twitter veya Reddit ile etkileşime girebilirsiniz.</string>
+    <string name="app_info">Uygulama bilgileri</string>
+    <string name="loading">Yükleniyor...</string>
+    <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;What is LBRY?&lt;/a&gt;</string>
+    <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Basics&lt;/a&gt;</string>
+    <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>
+    <string name="about_link_discord">&lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;Discord&lt;/a&gt;</string>
+    <string name="about_link_facebook">&lt;a href=\"https://www.facebook.com/LBRYio\"&gt;Facebook&lt;/a&gt;</string>
+    <string name="about_link_instagram">&lt;a href=\"https://www.instagram.com/LBRYio\"&gt;Instagram&lt;/a&gt;</string>
+    <string name="about_link_reddit">&lt;a href=\"https://reddit.com/r/lbry\"&gt;Reddit&lt;/a&gt;</string>
+    <string name="about_link_telegram">&lt;a href=\"https://t.me/lbryofficial\"&gt;Telegram&lt;/a&gt;</string>
+    <string name="about_link_twitter">&lt;a href=\"https://twitter.com/LBRYio\"&gt;Twitter&lt;/a&gt;</string>
+    <string name="update_mailing_preferences">Mail seçeneklerini güncelle</string>
+    <string name="app_version">Uygulama versiyonu</string>
+    <string name="lbry_sdk">LBRY SDK</string>
+    <string name="platform">Platform</string>
+    <string name="installation_id">Kurulum Kimliği</string>
+    <string name="firebase_token">Firebase Anahtarı</string>
+    <string name="logs">Kayıtlar</string>
+    <string name="send_log">Kayıt gönder</string>
+    <string name="connected_email">Bağlı e-posta</string>
+    <string name="unknown">Bilinmeyen</string>
+    <string name="cannot_find_lbrynet_log">lbrynet.log dosyası bulunamadı.</string>
+    <string name="cannot_share_lbrynet_log">lbrynet.log dosyası izin kısıtlaması sebebiyle paylaşılamıyor.</string>
+
+    <!-- Font Awesome -->
+    <string name="fa_gift">&#xf06b;</string>
+    <string name="fa_lock">&#xf023;</string>
+    <string name="fa_coins">&#xf51e;</string>
+    <string name="fa_file">&#xf15b;</string>
+    <string name="fa_hashtag">&#xf292;</string>
+    <string name="fa_search">&#xf002;</string>
+    <string name="fa_at">&#xf1fa;</string>
+
+    <string name="fa_heart">&#xf004;</string>
+    <string name="fa_heart_broken">&#xf7a9;</string>
+    <string name="fa_star">&#xf005;</string>
+    <string name="fa_globe_americas">&#xf57d;</string>
+    <string name="fa_upload">&#xf093;</string>
+    <string name="fa_download">&#xf019;</string>
+    <string name="fa_cloud_upload">&#xf382;</string>
+    <string name="fa_wallet">&#xf555;</string>
+    <string name="fa_award">&#xf559;</string>
+    <string name="fa_user_friends">&#xf500;</string>
+    <string name="fa_cog">&#xf013;</string>
+    <string name="fa_mobile_alt">&#xf3cd;</string>
+    <string name="fa_repost">&#xf079;</string>
+    <string name="fa_folder_open">&#xf07c;</string>
+</resources>

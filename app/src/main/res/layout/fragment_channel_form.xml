@@ -115,8 +115,12 @@
                         android:tint="@color/white" />
                 </RelativeLayout>
             </RelativeLayout>
-
         </RelativeLayout>
+
+        <include layout="@layout/card_reward_driver"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"

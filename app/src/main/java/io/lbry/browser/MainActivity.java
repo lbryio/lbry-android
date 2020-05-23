@@ -384,8 +384,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 ViewCompat.onApplyWindowInsets(findViewById(R.id.url_suggestions_container),
                         insets.replaceSystemWindowInsets(0, 0, 0, insets.getSystemWindowInsetBottom()));
                 return ViewCompat.onApplyWindowInsets(v,
-                        insets.replaceSystemWindowInsets(insets.getSystemWindowInsetLeft(), 0,
-                                0, insets.getSystemWindowInsetBottom()));
+                        insets.replaceSystemWindowInsets(
+                                insets.getSystemWindowInsetLeft(),
+                                0,
+                                0,
+                                insets.getSystemWindowInsetBottom()));
             }
         });
 
@@ -510,7 +513,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private void initSpecialRouteMap() {
         specialRouteFragmentClassMap = new HashMap<>();
         specialRouteFragmentClassMap.put("about", AboutFragment.class);
-        specialRouteFragmentClassMap.put("allContent", AllContentFragment.class);
+        specialRouteFragmentClassMap.put("allcontent", AllContentFragment.class);
         specialRouteFragmentClassMap.put("channels", ChannelManagerFragment.class);
         specialRouteFragmentClassMap.put("invite", InvitesFragment.class);
         specialRouteFragmentClassMap.put("invites", InvitesFragment.class);
@@ -762,6 +765,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         params.put("claimId", claim.getClaimId());
         params.put("url", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
         openFragment(FileViewFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
+    }
+
+    public void openRewards() {
+        openFragment(RewardsFragment.class, true, NavMenuItem.ID_ITEM_REWARDS);
     }
 
     private FragmentManager.OnBackStackChangedListener backStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
@@ -2332,7 +2339,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 String url = data.toString();
                 // check special urls
                 if (url.startsWith("lbry://?")) {
-                    String specialPath = url.substring(8);
+                    String specialPath = url.substring(8).toLowerCase();
                     if (specialRouteFragmentClassMap.containsKey(specialPath)) {
                         Class fragmentClass = specialRouteFragmentClassMap.get(specialPath);
                         if (fragmentClassNavIdMap.containsKey(fragmentClass)) {

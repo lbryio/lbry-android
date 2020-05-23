@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/reward_driver_card"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    app:cardCornerRadius="0dp">
+    <RelativeLayout
+        android:background="@color/rewardDriverBlue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+        <io.lbry.browser.ui.controls.SolidIconView
+            android:id="@+id/reward_driver_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:textSize="16dp"
+            android:layout_centerVertical="true"
+            android:text="@string/fa_award"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/reward_driver_text"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/reward_driver_icon"
+            android:fontFamily="@font/inter"
+            android:lineHeight="18dp"
+            android:textColor="@color/white"
+            android:textFontWeight="300"
+            android:textSize="14sp" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

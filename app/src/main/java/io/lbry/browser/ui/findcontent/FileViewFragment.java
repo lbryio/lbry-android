@@ -3,7 +3,6 @@ package io.lbry.browser.ui.findcontent;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,7 +48,6 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.database.ExoDatabaseProvider;
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -99,6 +97,7 @@ import io.lbry.browser.listener.FetchClaimsListener;
 import io.lbry.browser.listener.ScreenOrientationListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.StoragePermissionListener;
+import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.Fee;
@@ -106,6 +105,7 @@ import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.UrlSuggestion;
+import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.GenericTaskHandler;
@@ -126,7 +126,6 @@ import io.lbry.browser.tasks.lbryinc.FetchStatCountTask;
 import io.lbry.browser.tasks.lbryinc.LogFileViewTask;
 import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.ui.controls.SolidIconView;
-import io.lbry.browser.ui.publish.PublishFormFragment;
 import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
@@ -142,7 +141,8 @@ public class FileViewFragment extends BaseFragment implements
         FetchClaimsListener,
         ScreenOrientationListener,
         SdkStatusListener,
-        StoragePermissionListener {
+        StoragePermissionListener,
+        WalletBalanceListener {
     private static final int RELATED_CONTENT_SIZE = 16;
     private static final String DEFAULT_PLAYBACK_SPEED = "1x";
 
@@ -228,8 +228,9 @@ public class FileViewFragment extends BaseFragment implements
             MainActivity activity = (MainActivity) context;
             activity.setBackPressInterceptor(this);
             activity.addDownloadActionListener(this);
-            activity.addScreenOrientationListener(this);
             activity.addFetchClaimsListener(this);
+            activity.addScreenOrientationListener(this);
+            activity.addWalletBalanceListener(this);
             if (!MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
                 activity.addStoragePermissionListener(this);
             }
@@ -567,7 +568,8 @@ public class FileViewFragment extends BaseFragment implements
             activity.removeScreenOrientationListener(this);
             activity.removeSdkStatusListener(this);
             activity.removeStoragePermissionListener(this);
-            //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+            activity.removeWalletBalanceListener(this);
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
         if (webView != null) {
@@ -1232,6 +1234,8 @@ public class FileViewFragment extends BaseFragment implements
                 restoreMainActionButton();
             }
         }
+
+        checkRewardsDriver();
         checkOwnClaim();
     }
 
@@ -2128,6 +2132,19 @@ public class FileViewFragment extends BaseFragment implements
         Context context = getContext();
         if (claim != null && claim.isPlayable() && context instanceof MainActivity && !((MainActivity) context).isInFullscreenMode()) {
             enableFullScreenMode();
+        }
+    }
+
+    @Override
+    public void onWalletBalanceUpdated(WalletBalance walletBalance) {
+        checkRewardsDriver();
+    }
+
+    private void checkRewardsDriver() {
+        Context ctx = getContext();
+        if (ctx != null && claim != null && !claim.isFree() && claim.getFile() == null) {
+            String rewardsDriverText = getString(R.string.earn_some_credits_to_access);
+            checkRewardsDriverCard(rewardsDriverText);
         }
     }
 

@@ -872,6 +872,7 @@ public class PublishFormFragment extends BaseFragment implements
         }
 
         checkParams();
+        checkRewardsDriver();
         updateFieldsFromCurrentClaim();
 
         if (currentClaim == null && (currentGalleryItem != null || !Helper.isNullOrEmpty(currentFilePath))) {
@@ -1254,6 +1255,7 @@ public class PublishFormFragment extends BaseFragment implements
         if (walletBalance != null && inlineDepositBalanceValue != null) {
             inlineDepositBalanceValue.setText(Helper.shortCurrencyFormat(walletBalance.getAvailable().doubleValue()));
         }
+        checkRewardsDriver();
     }
 
     private void setupInlineChannelCreator(
@@ -1421,6 +1423,15 @@ public class PublishFormFragment extends BaseFragment implements
     public void onFilePickerCancelled() {
         // nothing to do here
         // At some point in the future, allow file picking for publish file?
+    }
+
+    private void checkRewardsDriver() {
+        Context ctx = getContext();
+        if (ctx != null) {
+            String rewardsDriverText = String.format("%s\n%s",
+                    getString(R.string.publishing_requires_credits), getString(R.string.tap_here_to_get_some));
+            checkRewardsDriverCard(rewardsDriverText);
+        }
     }
 
     private static class VideoProbeTask extends AsyncTask<Void, Void, VideoInformation> {

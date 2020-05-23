@@ -1,0 +1,570 @@
+<resources>
+    <string name="app_name">LBRY</string>
+    <string name="navigation_drawer_open">Buka panel navigasi</string>
+    <string name="navigation_drawer_close">Tutup panel navigasi</string>
+
+    <!-- Nav menu -->
+    <string name="find_content">Cari Kandungan</string>
+    <string name="your_content">Kandungan Anda</string>
+    <string name="wallet">Dompet</string>
+    <string name="following">Mengikuti</string>
+    <string name="editors_choice">Pilihan Editor</string>
+    <string name="your_tags">Tag Anda</string>
+    <string name="all_content">Semua Kandungan</string>
+    <string name="channels">Saluran</string>
+    <string name="library">Pustaka</string>
+    <string name="publishes">Terbitan</string>
+    <string name="new_publish">Terbitkan Baru</string>
+    <string name="rewards">Ganjaran</string>
+    <string name="invites">Jemputan</string>
+    <string name="settings">Tetapan</string>
+    <string name="about">Perihal</string>
+    <string name="sign_in">Masuk</string>
+    <string name="startup_failed">Aplikasi gagal dimulakan. Periksa sambungan data anda dan cuba lagi. Sekiranya masalah ini berlanjutan, hantarkan e-mel ke hello@lbry.com</string>
+    <string name="no_claim_search_content">Tiada kandungan untuk dipaparkan pada masa ini. Halusi pilihan anda atau periksa semula kemudian.</string>
+
+    <!-- Welcome Page -->
+    <string name="welcome_to_lbry">Selamat datang ke LBRY.</string>
+    <string name="welcome_paragraph">LBRY adalah platform yang kandungannya dikendalikan oleh komuniti di mana anda boleh mencari dan menerbitkan video, muzik, buku, dan banyak lagi.</string>
+    <string name="welcome_tos">Dengan meneruskan, saya bersetuju dengan &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; dan mengesahkan saya berusia di atas 13 tahun.</string>
+    <string name="welcome_please_wait">Sila tunggu sementara kami menyiapkan beberapa perkara ...</string>
+    <string name="use_lbry">Gunakan LBRY »</string>
+
+    <!-- URI bar -->
+    <string name="uri_placeholder">Cari video, muzik, dan banyak lagi</string>
+
+    <!-- Following page -->
+    <string name="find_channels_to_follow">Cari Saluran untuk mengikuti</string>
+    <string name="channels_you_follow">Saluran-saluran yang anda ikuti</string>
+    <string name="discover">Teroka</string>
+    <string name="lbry_works_better">LBRY berfungsi dengan lebih baik jika anda mengikuti sekurang-kurangnya 5 kreator yang anda suka. Masuk untuk melihat kreator yang anda ikuti jika anda sudah mempunyai akaun.</string>
+    <string name="select_five_subscriptions">Sila pilih sehingga 5 kreator untuk mara.</string>
+    <string name="n_remaining">%1$d yang tinggal...</string>
+    <string name="done">Selesai</string>
+    <string name="all">Semua</string>
+    <string name="discover_channels">Teroka saluran baru</string>
+
+    <!-- Claim lists -->
+    <string name="anonymous">Tanpa-nama</string>
+
+    <!-- File view -->
+    <string name="tags">Tag</string>
+    <string name="share">Kongsi</string>
+    <string name="repost">Siar-semula</string>
+    <string name="tip">Tip</string>
+    <string name="edit">Sunting</string>
+    <string name="delete">Padam</string>
+    <string name="download">Muat-turun</string>
+    <string name="open">Buka</string>
+    <string name="report">Lapor</string>
+    <string name="loading_decentralized_data">Memuatkan data terdesentralisasi ...</string>
+    <string name="related_content">Kandungan Berkaitan</string>
+    <string name="share_lbry_content">Kongsi kandungan LBRY</string>
+    <string name="view">Lihat</string>
+    <string name="play">Main</string>
+    <string name="unsupported_content">Kandungan Yang Tidak Disokong</string>
+    <string name="unsupported_content_desc">Maaf, kami tidak dapat memaparkan kandungan ini. Anda boleh mendapatkan fail %1$s dalam folder muat-turun anda.</string>
+    <string name="nothing_at_this_location">Tiada apa-apa yang tersedia di lokasi ini.</string>
+    <string name="publish_something_here">Terbitkan sesuatu di sini</string>
+    <string name="cannot_view_claim">Kandungan ini tidak dapat dipaparkan pada masa ini. Sila cuba sebentar lagi.</string>
+    <string name="zero_duration">0:00</string>
+    <string name="claim_file_not_found">Fail \"%1$s\" tidak wujud.</string>
+    <string name="confirm_purchase">Sahkan Pembelian</string>
+    <string name="delete_file">Padam fail</string>
+    <string name="confirm_delete_file_message">Adakah anda pasti ingin membuang fail ini dari peranti anda?</string>
+    <string name="unable_to_view_url">%1$s gagal dimuatkan. Sila cuba sebentar lagi.</string>
+    <string name="no_cast_session_available">Tiada \'cast session\' yang tersedia buat masa ini.</string>
+    <string name="delete_content">Padamkan kandungan?</string>
+    <string name="confirm_delete_content_message">Adakah anda pasti ingin membatalkan penerbitan kandungan ini? Fail akan masih kekal dalam peranti anda.</string>
+    <string name="content_deleted">Kandungan telah dipadamkan daripada blockchain.</string>
+    <string name="content_failed_delete">Kandungan tersebut tidak dapat dipadamkan pada masa ini. Sila cuba sebentar lagi.</string>
+    <plurals name="view_count">
+        <item quantity="other">%1$s tontonan</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="other">Ini akan membeli \"%1$s\" untuk %2$s kredit.</item>
+    </plurals>
+
+    <!-- Channel view -->
+    <string name="no_channel_info">Belum ada apa-apa di sini.
+Sila kembali sebentar lagi.</string>
+    <string name="content">Kandungan</string>
+    <string name="website">Laman-web</string>
+    <string name="reposted">telah disiar-semula</string>
+    <plurals name="follower_count">
+        <item quantity="other">%1$s pengikut</item>
+    </plurals>
+
+    <!-- Publish -->
+    <string name="record">Rekod</string>
+    <string name="take_photo">Ambil Gambar</string>
+    <string name="upload_file">Muat-naik file</string>
+    <string name="no_videos_found">Kami tidak dapat menjumpai sebarang video di peranti anda. Ambil gambar atau rakam video untuk memulakan process tersebut.</string>
+    <string name="loading_videos">Sila tunggu sementara kami memuatkan video anda...</string>
+    <string name="storage_permission_rationale_videos">LBRY memerlukan akses untuk memaparkan dan menerbitkan video, gambar dan fail lain dari peranti anda.</string>
+    <string name="camera_permission_rationale_record">LBRY memerlukan akses ke kamera anda untuk merakam video.</string>
+    <string name="camera_permission_rationale_photo">LBRY memerlukan akses ke kamera anda untuk mengambil gambar.</string>
+    <string name="edit_content">Sunting kandungan</string>
+    <string name="mature_tags">Tag-tag matang</string>
+    <string name="price">Harga</string>
+    <string name="free_publish">Kandungan anda akan menjadi percuma. Tekan butang toggel untuk menetapkan harga.</string>
+    <string name="content_address">Alamat kandungan</string>
+    <string name="randomize">Rawakan</string>
+    <string name="address">Alamat</string>
+    <string name="content_address_desc">Alamat dimana pengguna dapat menemui kandungan anda (contoh:  lbry://myvideo)</string>
+    <string name="license">Lesen</string>
+    <string name="license_desc">Deskripsi lesen</string>
+    <string name="additional_options">Pilihan Tambahan</string>
+    <string name="show_extra_fields">Sembunyikan medan tambahan</string>
+    <string name="hide_extra_fields">Sorokkan medan tambahan</string>
+    <string name="no_file_found">Tiada fail dijumpai untuk diterbitkan.</string>
+    <string name="video_optimization">Pengoptimuman video</string>
+    <string name="thumbnail_creation_failed">Thumbnail tidak dapat dicipta secara automatik dari fail kandungan anda.</string>
+    <string name="video_being_optimized">Video anda sedang dioptimumkan untuk pelbagai peranti lain. Anda boleh mengisi medan-medan lain dibawah semasa ini sedang dijalankan.</string>
+    <string name="video_optimized">Video anda telah berjaya dioptimumkan untuk seberapa banyak peranti yang mungkin. Sila teruskan proses penerbitan kandungan anda.</string>
+    <string name="video_optimize_failed">Video anda tidak dapat dioptimumkan. Fail akan dimuat-naik tanpa sebarang perubahan.</string>
+    <string name="completed_video_duration">Tempoh Video Diselesaikan: %1$s</string>
+    <string name="sdk_initializing_publish">Anda tidak dapat menerbitkan kandungan sekarang kerana perkhidmatan latar belakang masih diinisialisasi.</string>
+    <string name="publish_successful">Kandungan anda telah berjaya diterbitkan. Ia mungkin memerlukan beberapa saat untuk muncul di blockchain.</string>
+    <string name="transcode_in_progress">Pengoptimuman video sedang dijalankan. Sekiranya anda ingin membatalkan proses ini, tekan Batal di bahagian bawah halaman ini.</string>
+    <string name="optimization_in_progress">Pengoptimuman video sedang dijalankan.</string>
+    <string name="cannot_capture_video">Tiada aplikasi kamera yang tersedia ada untuk merakam video dalam peranti ini.</string>
+    <string name="cannot_take_photo">Tiada aplikasi kamera yang tersedia ada untuk mengambil gambar dalam peranti ini.</string>
+
+    <string name="please_provide_title">Sila berikan tajuk.</string>
+    <string name="please_specify_address">Sila nyatakan alamat di mana pengguna boleh menemui kandungan anda.</string>
+    <string name="address_invalid_characters">Alamat kandungan anda mengandungi aksara yang tidak sah.</string>
+    <string name="address_already_used">Anda sudah menerbitkan sesuatu ke alamat kandungan tersebut. Sila masukkan alamat baru.</string>
+    <string name="no_file_selected">Tiada fail yang dipilih. Pilih video atau ambil gambar, atau pilih fail sebelum memulakan penerbitan.</string>
+    <string name="price_amount_not_set">Sila masukkan harga atau matikan butang toggel untuk menjadikan kandungan anda percuma.</string>
+    <string name="publish_no_thumbnail">Sila pilih thumbnail untuk dimuat-naik sebelum menerbitkan kandungan.</string>
+    <string name="publish_thumbnail_in_progress">Sila tunggu thumbnail selesai dimuat-naik sebelum menerbitkan kandungan.</string>
+
+    <string name="language">Bahasa</string>
+    <string name="english">Inggeris</string>
+    <string name="chinese">Cina</string>
+    <string name="french">Perancis</string>
+    <string name="german">Jerman</string>
+    <string name="japanese">Jepun</string>
+    <string name="russian">Rusia</string>
+    <string name="spanish">Sepanyol</string>
+    <string name="indonesian">Bahasa Indonesia</string>
+    <string name="italian">Italia</string>
+    <string name="dutch">Belanda</string>
+    <string name="turkish">Turki</string>
+    <string name="polish">Poland</string>
+    <string name="malay">Bahasa Melayu</string>
+    <string name="portuguese">Portugis</string>
+    <string name="vietnamese">Vietnam</string>
+    <string name="thai">Thailand</string>
+    <string name="arabic">Bahasa Arab</string>
+    <string name="czech">Czech</string>
+    <string name="croatian">Croatia</string>
+    <string name="cambodian">Kemboja</string>
+    <string name="korean">Korea</string>
+    <string name="norwegian">Norwegia</string>
+    <string name="romanian">Romania</string>
+    <string name="hindi">Hindi</string>
+    <string name="greek">Yunani</string>
+
+    <string name="none">Tiada</string>
+    <string name="public_domain">Domain Awam</string>
+    <string name="copyrighted">Berhak cipta</string>
+    <string name="cca_4_0_international">Creative Commons Atribusi 4.0 Antarabangsa</string>
+    <string name="cca_sa_4_0_international">Creative Commons Atribusi-PerkongsianSerupa 4.0 Antarabangsa</string>
+    <string name="cca_nd_4_0_international">Creative Commons Atribusi-TiadaTerbitan 4.0 Antarabangsa</string>
+    <string name="cca_nc_4_0_international">Creative Commons Atribusi-BukanKomersial 4.0 Antarabangsa</string>
+    <string name="cca_nc_sa_4_0_international">Creative Commons Pengiktirafan-BukanKomersial-PerkongsianSerupa 4.0 Antarabangsa</string>
+    <string name="cca_nc_nd_4_0_international">Creative Commons Atribusi-BukanKomersial-TiadaTerbitan 4.0 Antarabangsa</string>
+
+    <string-array name="publish_currencies">
+        <item>LBC</item>
+        <item>USD</item>
+    </string-array>
+
+    <!-- Publishes -->
+    <string name="one_or_more_publishes_failed_abandon">Satu atau lebih item tidak dapat dipadamkan pada masa ini. Sila cuba sebentar lagi.</string>
+    <plurals name="confirm_delete_publishes">
+        <item quantity="other">Adakah anda pasti ingin memadamkan item kandungan yang dipilih?</item>
+    </plurals>
+    <plurals name="publishes_deleted">
+        <item quantity="other">Item kandungan berjaya dipadamkan.</item>
+    </plurals>
+
+    <!-- Splash -->
+    <string name="oops_something_went_wrong">Alamak! Ada sesuate yang tak kena.</string>
+    <string name="installation_id_loaded">ID pemasangan telah dimuatkan.</string>
+    <string name="known_tags_loaded">Lokal and tag yang diikuti telah dimuatkan.</string>
+    <string name="exchange_rate_loaded">Kadar pertukaran LBC/USD telah dimuatkan.</string>
+    <string name="user_authenticated">Pengguna telah disahkan.</string>
+    <string name="installation_registered">Pemasangan telah didaftarkan.</string>
+    <string name="subscriptions_loaded">Langgannan the dimuatkan.</string>
+    <string name="subscriptions_resolved">Langgangan telah diselesaikan.</string>
+
+    <!-- Settings -->
+    <string name="user_interface">Kandungan &amp; Antaramuka Pengguna</string>
+    <string name="other">Lain-lain</string>
+    <string name="enable_dark_mode">Aktifkan tema gelap</string>
+    <string name="show_mature_content">Tunjukkan kandungan matang</string>
+    <string name="show_url_suggestions">Tunjukkan cadangan URL</string>
+    <string name="notifications">Notifikasi</string>
+    <string name="subscriptions">Langganan</string>
+    <string name="content_interests">Minat Kandungan</string>
+
+    <string name="keep_sdk_in_background">Biarkan servis LBRY beroperasi di later belakang untuk prestasi dompet dan rangkaian yang lebih baik.</string>
+    <string name="participate_in_data_network">Ikut serta dalam rangkaian data (perkhidmatan aplikasi dan latar belakang perlu dimulakan semula)</string>
+
+    <!-- URL suggestions -->
+    <string name="search_url_title">%1$s - Carian</string>
+    <string name="tag_url_title">%1$s - Tag</string>
+    <string name="search_url_desc">Carian untuk \'%1$s\'</string>
+    <string name="explore_tag_url_desc">Teroka dengan tag \'%1$s\'</string>
+    <string name="view_file_url_desc">Lihat kandungan di \'%1$s\'</string>
+    <string name="view_channel_url_desc">Lihat saluran \'%1$s\'</string>
+
+    <!-- Search -->
+    <string name="search_no_results">Tiada keputusan untuk \'%1$s\'. Sila gunakan istilah carian yang berbeza.</string>
+    <string name="search_no_query">Anda boleh mencari apa sahaja termasuk filem, muzik, ebook, perisian dan banyak lagi.</string>
+    <string name="no_related_content">Tiada kandungan berkaitan untuk dipaparkan buat masa ini.</string>
+
+    <!-- Wallet -->
+    <string name="balance">Baki</string>
+    <string name="you_currently_have">Anda kini mempunyai</string>
+    <string name="convert_credits">Anda boleh menukar kredit anda ke USD dan keluarkan jumlah tersebut menerusi sebuah bursa. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Tukar kredit ke USD dengan Bittrex&lt;/a&gt;</string>
+    <string name="you_also_have">Anda juga mempunyai</string>
+    <string name="you_staked">Anda mempertaruhkan</string>
+    <string name="in_tips">dalam tips</string>
+    <string name="in_your_publishes">dalam terbitan anda</string>
+    <string name="in_your_supports">dalam sokongan anda</string>
+    <string name="earn_more_tips">Dapatkan lebih banyak tips dengan memuat-naik video yang menarik</string>
+    <string name="sdk_initializing">Servis latar belakang sedang diinisialisasi...</string>
+    <string name="sdk_still_initializing">Servis latar belakang masih diinisialisasi. Anda boleh meneroka dan menonton kandungan dalam masa yang sama.</string>
+    <string name="sdk_initializing_functionality">Anda tidak dapat melakukan ini sekarang kerana servis latar belakang masih diinisialisasi.</string>
+
+    <string name="backup_synced">Sandaran dompet anda diselaraskan dengan lbry.tv</string>
+    <string name="backup_notsynced">Dompet anda pada masa ini tidak diselaraskan dengan lbry.tv. Anda bertanggungjawab untuk menyandarkan dompet anda.</string>
+    <string name="synced_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/account-sync\"&gt;Apakah maksud ini?&lt;/a&gt;</string>
+    <string name="backup_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Apakah maksud ini?&lt;/a&gt;</string>
+
+    <string name="receive_credits">Terima Kredit</string>
+    <string name="use_this_address_hint">Gunakan alamat dompet ini untuk menerima kredit yang dihantar oleh pengguna lain (atau anda sendiri).</string>
+    <string name="get_new_address">Dapatkan alamat baru</string>
+    <string name="generate_address_hint">Anda boleh mendapatkan alamat baru pada bila-bila masa, dan alamat sebelumnya akan terus berfungsi. Penggunaan lebih daripada satu alamat boleh membantu untuk menjejak pembayaran masuk dari pelbagai sumber.</string>
+
+    <string name="send_credits">Hantar Kredit</string>
+    <string name="recipient_address">Alamat penerima</string>
+    <string name="recipient_address_placeholder">bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs</string>
+    <string name="amount">Jumlah</string>
+    <string name="send">Hantar</string>
+
+    <string name="recent_transactions">Transaksi Terkini</string>
+    <string name="view_all">Lihat Semua</string>
+    <string name="receive">Terima</string>
+    <string name="spend">Berbelanja</string>
+    <string name="publish">Terbitkan</string>
+    <string name="support">Sokong</string>
+    <string name="abandon">Abaikan</string>
+    <string name="channel">Saluran</string>
+    <string name="channel_update">Kemas-kini Saluran</string>
+    <string name="publish_update">Kemas-kini Terbitan</string>
+
+    <string name="wallet_sync">Penyegerakan Dompet</string>
+    <string name="sync_status">Status penyegerakan</string>
+    <string name="on">Hidup</string>
+    <string name="off">Mati</string>
+    <string name="email">E-mel</string>
+    <string name="no_connected_email">Tiada e-mel yang disambungkan</string>
+    <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Sandaran manual&lt;/a&gt;</string>
+    <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Soalan Lazim Penyegerakan&lt;/a&gt;</string>
+    <string name="zero">0</string>
+    <string name="lbc">LBC</string>
+
+    <string name="account_recommended">Akaun Disyorkan</string>
+    <string name="wallet_account_desc">Akaun lbry.tv membolehkan anda memperoleh ganjaran, membuat sandaran dompet, dan memastikan semuanya selaras.</string>
+    <string name="wallet_without_account">Tanpa akaun, anda memikul semua tanggungjawab untuk melindungi data dompet dan LBRY anda.</string>
+    <string name="skip_account">Langkau Akaun</string>
+    <string name="sign_up">Daftar</string>
+    <string name="address_copied">Alamart disalin</string>
+
+    <string name="invalid_recipient_address">Sila masukkan alamat yang sah untuk menghantar kredit kepada</string>
+    <string name="insufficient_balance">Baki tidak mencukupi</string>
+    <string name="invalid_amount">Sila masukkan jumlah yang sah</string>
+    <string name="send_credit_error">Kredit anda tidak dapat dihantar buat masa ini. Sila cuba sebentar lagi.</string>
+    <string name="loading_transactions">Transaksi sedang dimuatkan...</string>
+    <string name="no_recent_transactions">Tiada transaksi terkini untuk dipaparkan.</string>
+    <string name="no_transactions">Tiada transaksi untuk dipaparkan buat masa ini.</string>
+    <string name="tx_list_fee">bayaran %1$s</string>
+    <string name="transaction_history">Sejarah Transaksi</string>
+
+    <string name="unlock">Buka kunci</string>
+    <string name="unlock_tips">Buka tip?</string>
+    <string name="confirm_unlock_tips">Adakah anda pasti ingin membuka semua tip anda?</string>
+
+    <plurals name="you_sent_credits">
+        <item quantity="other">Anda telah menghantar %1$s kredit</item>
+    </plurals>
+
+    <!-- Dialogs -->
+    <string name="customize_your_tags">Sesuaikan tag anda</string>
+    <string name="sort_content_by">Isih kandungan mengikut</string>
+    <string name="content_from">Kandungan dari</string>
+    <string name="trending_content">Kandungan yang sedang tren</string>
+    <string name="new_content">Kandungan baru</string>
+    <string name="top_content">Kandungan top</string>
+    <string name="trending">Trend</string>
+    <string name="top">Top</string>
+    <string name="new_text">Baru</string>
+    <string name="past_24_hours">24 jam yang lalu</string>
+    <string name="past_week">Minggu lepas</string>
+    <string name="past_month">Bulan lepas</string>
+    <string name="past_year">Tahun lepas</string>
+    <string name="all_time">Sepanjang zaman</string>
+    <string name="from">dari</string>
+    <string name="for_text">untuk</string>
+    <string name="filter_for">Tapis untuk</string>
+    <string name="everyone">Semua orang</string>
+    <string name="tags_you_follow">Tag yang anda ikuti</string>
+    <string name="customize">Peribadikan</string>
+    <string name="not_yet_implemented">Paparan yang dipilih belum tersedia.</string>
+    <string name="customize_tags_hint">Nampaknya anda belum mengikuti sebarang tag.</string>
+    <string name="search_for_more_tags">Cari lebih banyak tag</string>
+    <string name="no_followed_tags">Anda belum mengikuti sebarang tag. Mulakan dengan menambahkan tag yang anda minati!</string>
+    <string name="no_tag_results">Kami tidak dapat menemui tag baru yang anda tidak ikuti.</string>
+    <string name="tag_already_added">Tag \'%1$s\' telah ditambahkan.</string>
+    <string name="tag_limit_reached">Anda tidak boleh menambahkan lebih daripada 5 tag.</string>
+    <string name="send_a_tip">Hantar tip</string>
+    <string name="send_a_tip_to">Hantar tip ke %1$s</string>
+    <string name="send_tip_info_content">Ini akan muncul sebagai tip untuk %1$s. Ia yang akan meningkatkan kemampuannya untuk dijumpai ketika aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="send_tip_info_channel">Ini akan muncul sebagai tip untuk %1$s. Ia yang akan meningkatkan kemampuan saluran untuk ditemui semasa aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="cancel">Batalkan</string>
+    <string name="repost_title">Siarkan semula %1$s</string>
+    <string name="repost_your_favorite">Siarkan semula kandungan kegemaran anda untuk membantu lebih ramai orang mencarinya!</string>
+    <string name="channel_to_post_on">Saluran untuk disiarkan</string>
+    <string name="show_advanced">Tunjukkan lanjutan</string>
+    <string name="hide_advanced">Sembunyikan lanjutan</string>
+    <string name="name">Nama</string>
+    <string name="min_deposit">0.001</string>
+    <string name="content_successfully_reposted">Kandungan berjaya disiar-semula!</string>
+    <string name="repost_name_invalid_characters">Nama penyiaran-semula mengandungi aksara (huruf) yang tidak sah.</string>
+    <plurals name="you_sent_a_tip">
+        <item quantity="other">Anda menghantar %1$s kredit sebagai tip, terima kasih</item>
+    </plurals>
+
+    <!-- Verification -->
+    <string name="provide_email_address">Sila bekalkan alamat e-mel.</string>
+    <string name="email_placeholder">anda@contoh.com</string>
+    <string name="email_sent_to">E-mel telah dihantar ke</string>
+    <string name="please_click_link">Sila klik pautan dalam mesej untuk menyelesaikan kemasukan anda.</string>
+    <string name="resend">Hantar semula</string>
+    <string name="continue_text">Teruskan</string>
+    <string name="provide_valid_email">Sila masukkan alamat emel yang sah</string>
+    <string name="please_follow_instructions">Ikuti arahan dalam e-mel yang dihantar ke alamat anda untuk mara.</string>
+    <string name="sign_in_successful">Anda berjaya log masuk ke lbry.tv</string>
+    <string name="retrieving_account_information">Sedang mendapatkan maklumat akaun ...</string>
+    <string name="apply_wallet_data">Menggunakan data dompet ...</string>
+    <string name="please_enter_your_password">Sila masukkan kata laluan yang anda gunakan untuk melindungi dompet anda.</string>
+    <string name="please_enter_a_password">Sila masukkan kata laluan untuk melindungi dompet anda.</string>
+    <string name="wallet_security_purposes">Catatan: untuk tujuan keselamatan dompet, LBRY tidak dapat menetapkan semula kata laluan anda.</string>
+    <string name="password">Kata laluan</string>
+    <string name="enable_sync">Aktifkan penyegerakan</string>
+    <string name="wallet_sync_op_failed">Operasi penyegerakan dompet tidak dapat diselesaikan pada masa ini. Sila cuba sebentar lagi. Sekiranya masalah ini berterusan, hantarkan e-mel ke hello@lbry.com.</string>
+    <string name="phone_number">Nombor telefon</string>
+    <string name="enter_phone_number">Sila masukkan nombor telefon anda.</string>
+    <string name="not_interested">Tidak berminat</string>
+    <string name="manual_reward_verification">Pengesahan Ganjaran Secara Manual</string>
+    <string name="account_undergo_review">Akaun ini mesti menjalani semakan sebelum anda dapat mengambil bahagian dalam program ganjaran. Ini boleh mengambil masa dari beberapa minit ke beberapa hari.</string>
+    <string name="request_to_be_verified">Sekiranya anda masih melihat mesej ini, sila minta untuk disahkan di &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="enjoy_free_content">Nikmati lah kandungan percuma sementara ini!</string>
+    <string name="verify_phone_number">Sahkan Nombor Telefon</string>
+    <string name="enter_phone_verify_code">Masukkan kod pengesahan yang dihantar ke %1$s</string>
+    <string name="code_placeholder">0000</string>
+    <string name="verify">Sahkan</string>
+    <string name="please_enter_valid_phone">Sila masukkan nombor telefon yang sah.</string>
+    <string name="please_enter_verification_code">Masukkan kod pengesahan yang dihantar ke nombor telefon anda.</string>
+
+    <!-- Forms -->
+    <string name="no_added_tags">Anda belum menambah sebarang tag. Tambahkan tag untuk meningkatkan penemuan.</string>
+    <string name="form_no_tag_results">Kami tidak dapat menjumpai tag baru yang belum ditambahkan.</string>
+
+    <!-- Channels -->
+    <string name="no_channel_created">Anda belum menbina saluran.\nMulakan sekarang dengan membina saluran baru!</string>
+    <string name="create_a_channel">Bina saluran</string>
+    <string name="create_a_channel_item">Bina saluran...</string>
+    <string name="edit_channel">Sunting saluran</string>
+    <string name="delete_selection">Padamkan pilihan?</string>
+    <string name="delete_channel">Padamkan saluran?</string>
+    <string name="confirm_delete_channel">Adakah anda pasti ingin memadam saluran yang telah dipilih?</string>
+    <string name="channel_deleted">Saluran tersebut telah berjaya dipadamkan.</string>
+    <string name="channel_failed_delete">Saluran tidak dapat dipadamkan pada masa ini. Sila cuba sebentar lagi.</string>
+    <string name="description">Deskripsi</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="show_optional_fields">Tunjukkan medan pilihan</string>
+    <string name="hide_optional_fields">Sembunyikan medan pilihan</string>
+    <string name="save">Simpan</string>
+    <string name="channel_name">Nama saluran</string>
+    <string name="title">Tajuk</string>
+    <string name="at">\@</string>
+    <string name="deposit">Deposit</string>
+    <string name="deposit_remains_yours">LBC ini tetap menjadi milik anda. Ini adalah deposit untuk menempah nama dan boleh dibatalkan pada bila-bila masa.</string>
+    <string name="storage_permission_rationale_download">LBRY memerlukan akses untuk memuat-turun kandungan ke peranti anda.</string>
+    <string name="storage_permission_rationale_images">LBRY memerlukan akses untuk memuatkan gambar dari storan peranti anda.</string>
+    <string name="select_thumbnail">Pilih lakaran kecil</string>
+    <string name="select_cover">Pilih gambar muka depan</string>
+    <string name="undetermined_image_filepath">Laluan fail tidak dapat ditentukan untuk gambar yang dipilih. Sila pilih gambar di lokasi lain.</string>
+    <string name="wait_for_upload">Sila tunggu sehingga muat-naik semasa selesai.</string>
+    <string name="image_upload_failed">Permintaan muat-naik gambar telah gagal. Sila cuba lagi.</string>
+    <string name="uploading">Sedang muat-naik...</string>
+    <string name="please_enter_channel_name">Sila masukkan nama saluran.</string>
+    <string name="channel_name_invalid_characters">Nama saluran anda mengandungi aksara (huruf) yang tidak sah.</string>
+    <string name="channel_name_already_created">Anda sudah membina saluran dengan nama yang sama.</string>
+    <string name="please_enter_valid_deposit">Sila masukkan jumlah deposit yang sah.</string>
+    <string name="deposit_more_than_balance">Deposit tidak boleh lebih tinggi daripada baki anda.</string>
+    <string name="channel_save_failed">Permintaan untuk menyimpan saluran telah gagal. Sila cuba lagi.</string>
+    <string name="channel_save_successful">Saluran berjaya disimpan.</string>
+    <string name="item_pending_blockchain">Tuntutan itu belum selesai diterbitkan di blockchain. Anda akan dapat mengakses atau menyunting tuntutan dalam beberapa saat.</string>
+    <string name="pending">Belum selesai</string>
+    <string name="create">Bina</string>
+    <string name="one_or_more_channels_failed_abandon">Satu atau lebih saluran tidak dapat dipadamkan pada masa ini. Sila cuba sebentar lagi.</string>
+    <plurals name="min_deposit_required">
+        <item quantity="other">Deposit minimum %1$s kredit diperlukan.</item>
+    </plurals>
+    <plurals name="confirm_delete_channels">
+        <item quantity="other">Adakah anda pasti ingin memadam saluran yang dipilih?</item>
+    </plurals>
+    <plurals name="channels_deleted">
+        <item quantity="other">Saluran-saluran tersebut telah berjaya dipadamkan.</item>
+    </plurals>
+
+    <!-- Rewards -->
+    <string name="lbry_credits_allow">Kredit LBRY membolehkan anda menerbitkan atau membeli kandungan.</string>
+    <string name="free_credits_worth">Anda boleh mendapatkan kredit percuma bernilai $%1$s setelah anda memberikan alamat e-mel.</string>
+    <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Ketahui lebih lanjut&lt;/a&gt;.</string>
+    <string name="get_started">Mulakan</string>
+    <string name="reward_code_placeholder">abc123</string>
+    <string name="claim">Tuntutan</string>
+    <string name="please_enter_claim_code">Sila masukkan kod ganjaran tersuai untuk menuntut.</string>
+    <string name="unclaimed">Tidak dituntut</string>
+    <string name="custom_reward_title">Kod Tersuai</string>
+    <string name="up_to">sehingga</string>
+    <string name="custom_reward_description">Adakah anda supermodel atau rockstar yang telah menerima kod ganjaran tersuai? Tuntut di sini.</string>
+    <plurals name="claim_reward_message">
+        <item quantity="other">Anda telah menuntut %1$s kredit sebagai ganjaran.</item>
+    </plurals>
+    <plurals name="available_credits">
+        <item quantity="other">%1$s kredit dimiliki</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">Penerbitan memerlukan kredit.</string>
+    <string name="channel_creation_requires_credits">Penciptaan saluran memerlukan kredit.</string>
+    <string name="earn_rewards_for_inviting">Dapatkan ganjaran apabila menjemput rakan anda.</string>
+    <string name="earn_some_credits_to_access">Dapatkan beberapa kredit untuk mengakses kandungan ini.</string>
+    <string name="tap_here_to_get_some">Tap sini untuk mendapatkan beberapa kredit secara percuma.</string>
+    <string name="free_credits_available">Kredit percuma terdapat dalam ganjaran.</string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="other">Terdapat %1$s kredit percuma dalam ganjaran.</item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="other">Dapatkan %1$s kredit percuma selepas mencipta akaun.</item>
+    </plurals>
+
+    <!-- Invites -->
+    <string name="lbry_invite_program">Program Jemputan LBRY</string>
+    <string name="earn_extra_credits_invites">Anda boleh mendapat kredit tambahan untuk setiap orang yang anda jemput untuk menggunakan LBRY.</string>
+    <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;Ketahui lebih lanjut&lt;/a&gt;.</string>
+    <string name="invite_link">Pautan Jemputan</string>
+    <string name="share_this_link">Kongsi pautan ini dengan rakan (atau musuh) dan dapatkan kredit apabila mereka menyertai lbry.tv.</string>
+    <string name="your_invite_link">Pautan jemputan anda</string>
+    <string name="customize_invite_link">Sesuaikan pautan jemputan</string>
+    <string name="invite_by_email">Jemput melalui e-mel</string>
+    <string name="invite_someone">Jemput seseorang yang anda kenali melalui e-mel dan dapatkan kredit apabila mereka menyertai lbry.tv.</string>
+    <string name="invite_email_placeholder">khayalan@kawan.com</string>
+    <string name="invite">Jemput</string>
+    <string name="invite_history">Sejarah Jemputan</string>
+    <string name="earn_credits_for_inviting">Dapatkan kredit untuk menjemput rakan atau musuh. Setiap orang memerlukan kebebasan kandungan.</string>
+    <string name="reward">Ganjaran</string>
+    <string name="claimed">Telah dituntut</string>
+    <string name="claimable">Boleh dituntut</string>
+    <string name="unclaimable">Tidah boleh dituntut</string>
+    <string name="invite_link_copied">Pautan jemputan telah disalin.</string>
+    <string name="invite_sent_to">Jemputan telah dihantar ke %1$s</string>
+
+    <!-- Library -->
+    <string name="downloads">Muat-turun</string>
+    <string name="purchases">Pembelian</string>
+    <string name="history">Sejarah</string>
+    <string name="library_no_downloads">Anda belum memuat turun sebarang kandungan ke peranti ini.</string>
+    <string name="library_no_history">Anda belum melihat sebarang kandungan pada peranti ini.</string>
+    <string name="library_no_purchases">Anda belum membeli sebarang kandungan dalam akaun anda.</string>
+    <string name="hide">Sembunyi</string>
+    <string name="stats">Statistik</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="images">Imej</string>
+    <string name="mb">MB</string>
+    <string name="kb">KB</string>
+    <string name="gb">GB</string>
+    <string name="zero_mb">0MB</string>
+    <plurals name="confirm_delete_files">
+        <item quantity="other">Adakah anda pasti ingin membuang fail tersebut dari peranti anda?</item>
+    </plurals>
+    <plurals name="files_deleted">
+        <item quantity="other">Fail-fail tersebut telah berjaya dipadamkan.</item>
+    </plurals>
+
+    <!-- About -->
+    <string name="about_lbry">Perihal LBRY</string>
+    <string name="content_freedom">Kebebasan Kandungan</string>
+    <string name="about_paragraph">LBRY adalah pasaran digital percuma, terbuka, dan dikendalikan oleh komuniti. Ia adalah platform pengedaran kandungan peer-to-peer yang terdesentralisasi untuk pencipta memuat naik dan berkongsi kandungan, dan memperoleh kredit LBRY atas usaha mereka. Pengguna akan dapat mencari pelbagai pilihan video, muzik, ebook dan kandungan digital lain yang mereka minati.</string>
+    <string name="get_social">Jom Social</string>
+    <string name="social_paragraph">Anda boleh berinteraksi dengan pasukan LBRY dan ahli komuniti di Discord, Facebook, Instagram, Twitter atau Reddit.</string>
+    <string name="app_info">Info App</string>
+    <string name="loading">Sedang dimuatkan...</string>
+    <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;Apa itu LBRY?&lt;/a&gt;</string>
+    <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Asas Android&lt;/a&gt;</string>
+    <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;Soalan Lazim&lt;/a&gt;</string>
+    <string name="about_link_discord">&lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;Discord&lt;/a&gt;</string>
+    <string name="about_link_facebook">&lt;a href=\"https://www.facebook.com/LBRYio\"&gt;Facebook&lt;/a&gt;</string>
+    <string name="about_link_instagram">&lt;a href=\"https://www.instagram.com/LBRYio\"&gt;Instagram&lt;/a&gt;</string>
+    <string name="about_link_reddit">&lt;a href=\"https://reddit.com/r/lbry\"&gt;Reddit&lt;/a&gt;</string>
+    <string name="about_link_telegram">&lt;a href=\"https://t.me/lbryofficial\"&gt;Telegram&lt;/a&gt;</string>
+    <string name="about_link_twitter">&lt;a href=\"https://twitter.com/LBRYio\"&gt;Twitter&lt;/a&gt;</string>
+    <string name="update_mailing_preferences">Kemas kini pilihan mel</string>
+    <string name="app_version">Versi aplikasi</string>
+    <string name="lbry_sdk">SDK LBRY</string>
+    <string name="platform">Pelantar</string>
+    <string name="installation_id">ID Pemasangan</string>
+    <string name="firebase_token">Token Firebase</string>
+    <string name="logs">Log</string>
+    <string name="send_log">Hantar log</string>
+    <string name="connected_email">E-mel yang disambungkan</string>
+    <string name="unknown">Tidak diketahui</string>
+    <string name="cannot_find_lbrynet_log">Fail lbrynet.log tidak dapat dijumpai.</string>
+    <string name="cannot_share_lbrynet_log">Fail lbrynet.log tidak dapat dikongsi kerana sekatan kebenaran.</string>
+
+    <!-- Font Awesome -->
+    <string name="fa_gift">&#xf06b;</string>
+    <string name="fa_lock">&#xf023;</string>
+    <string name="fa_coins">&#xf51e;</string>
+    <string name="fa_file">&#xf15b;</string>
+    <string name="fa_hashtag">&#xf292;</string>
+    <string name="fa_search">&#xf002;</string>
+    <string name="fa_at">&#xf1fa;</string>
+
+    <string name="fa_heart">&#xf004;</string>
+    <string name="fa_heart_broken">&#xf7a9;</string>
+    <string name="fa_star">&#xf005;</string>
+    <string name="fa_globe_americas">&#xf57d;</string>
+    <string name="fa_upload">&#xf093;</string>
+    <string name="fa_download">&#xf019;</string>
+    <string name="fa_cloud_upload">&#xf382;</string>
+    <string name="fa_wallet">&#xf555;</string>
+    <string name="fa_award">&#xf559;</string>
+    <string name="fa_user_friends">&#xf500;</string>
+    <string name="fa_cog">&#xf013;</string>
+    <string name="fa_mobile_alt">&#xf3cd;</string>
+    <string name="fa_repost">&#xf079;</string>
+    <string name="fa_folder_open">&#xf07c;</string>
+</resources>
