@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -301,6 +301,10 @@
     <string name="tx_list_fee">fee %1$s</string>
     <string name="transaction_history">Transaction History</string>
 
+    <string name="unlock">Unlock</string>
+    <string name="unlock_tips">Unlock tips?</string>
+    <string name="confirm_unlock_tips">Are you sure you want to unlock all your tips?</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">You sent %1$s credit</item>
         <item quantity="other">You sent %1$s credits</item>
@@ -461,6 +465,22 @@
     <plurals name="available_credits">
         <item quantity="one">%1$s available credit</item>
         <item quantity="other">%1$s available credits</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">Publishing requires credits.</string>
+    <string name="channel_creation_requires_credits">Channel creation requires credits.</string>
+    <string name="earn_rewards_for_inviting">Earn rewards for inviting your friends.</string>
+    <string name="earn_some_credits_to_access">Earn some credits to access this content.</string>
+    <string name="tap_here_to_get_some">Tap here to get some for free.</string>
+    <string name="free_credits_available">Free credits available in rewards.</string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="one">%1$s free credit available in rewards.</item>
+        <item quantity="other">%1$s free credits available in rewards.</item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="one">Get %1$s free credit after creating an account.</item>
+        <item quantity="other">Get %1$s free credits after creating an account.</item>
     </plurals>
 
     <!-- Invites -->

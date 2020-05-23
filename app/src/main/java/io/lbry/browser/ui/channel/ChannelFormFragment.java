@@ -534,6 +534,7 @@ public class ChannelFormFragment extends BaseFragment implements
     public void onResume() {
         super.onResume();
         checkParams();
+        checkRewardsDriver();
         updateFieldsFromCurrentClaim();
 
         Context context = getContext();
@@ -586,6 +587,7 @@ public class ChannelFormFragment extends BaseFragment implements
         if (walletBalance != null && inlineBalanceValue != null) {
             inlineBalanceValue.setText(Helper.shortCurrencyFormat(walletBalance.getAvailable().doubleValue()));
         }
+        checkRewardsDriver();
     }
 
     public void setFilter(String filter) {
@@ -687,6 +689,15 @@ public class ChannelFormFragment extends BaseFragment implements
             addTag(tag);
         } else if (customizeMode == TagListAdapter.CUSTOMIZE_MODE_REMOVE) {
             removeTag(tag);
+        }
+    }
+
+    private void checkRewardsDriver() {
+        Context ctx = getContext();
+        if (ctx != null) {
+            String rewardsDriverText = String.format("%s\n%s",
+                    getString(R.string.channel_creation_requires_credits), getString(R.string.tap_here_to_get_some));
+            checkRewardsDriverCard(rewardsDriverText);
         }
     }
 }

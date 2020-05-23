@@ -463,6 +463,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             activity.setWunderbarValue(null);
+            activity.addWalletBalanceListener(this);
             activity.hideFloatingWalletBalance();
         }
     }
@@ -482,7 +483,6 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             activity.syncWalletAndLoadPreferences();
-            activity.addWalletBalanceListener(this);
         }
 
         // update view
@@ -491,6 +491,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         }
 
         checkReceiveAddress();
+        checkRewardsDriver();
         fetchRecentTransactions();
     }
 
@@ -532,6 +533,23 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             // only update display usd values if the rate is loaded
             Helper.setViewText(textWalletBalanceUSD, String.format("≈$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(usdBalance)));
             Helper.setViewText(textTipsBalanceUSD, String.format("≈$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(tipsUsdBalance)));
+        }
+
+        checkRewardsDriver();
+    }
+
+    private void checkRewardsDriver() {
+        // check rewards driver
+        Context ctx = getContext();
+        if (ctx != null) {
+            String rewardsDriverText = getString(R.string.free_credits_available);
+            if (Lbryio.totalUnclaimedRewardAmount > 0) {
+                rewardsDriverText = getResources().getQuantityString(
+                        Lbryio.isSignedIn() ? R.plurals.wallet_signed_in_free_credits : R.plurals.wallet_get_free_credits,
+                        Lbryio.totalUnclaimedRewardAmount == 1 ? 1 : 2,
+                        Helper.shortCurrencyFormat(Lbryio.totalUnclaimedRewardAmount));
+            }
+            checkRewardsDriverCard(rewardsDriverText);
         }
     }
 }

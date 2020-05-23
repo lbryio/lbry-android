@@ -162,13 +162,6 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <com.google.android.exoplayer2.ui.PlayerControlView android:id="@+id/file_view_cast_control_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:repeat_toggle_modes="all|one"
-            app:show_timeout="-1"/>
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/file_view_scroll_view"
             android:layout_width="match_parent"
@@ -179,6 +172,10 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <include layout="@layout/card_reward_driver"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
                 <RelativeLayout
                     android:id="@+id/file_view_title_area"
                     android:layout_width="match_parent"

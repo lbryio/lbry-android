@@ -289,6 +289,7 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
     public void onResume() {
         super.onResume();
         layoutAccountDriver.setVisibility(Lbryio.isSignedIn() ? View.GONE : View.VISIBLE);
+        checkRewardsDriver();
 
         Context context = getContext();
         if (context instanceof MainActivity) {
@@ -560,6 +561,7 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
         if (walletBalance != null && inlineChannelCreatorInlineBalanceValue != null) {
             inlineChannelCreatorInlineBalanceValue.setText(Helper.shortCurrencyFormat(walletBalance.getAvailable().doubleValue()));
         }
+        checkRewardsDriver();
     }
 
     private void showError(String message) {
@@ -567,6 +569,14 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
         if (context != null) {
             Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).
                     setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+        }
+    }
+
+    private void checkRewardsDriver() {
+        Context ctx = getContext();
+        if (ctx != null) {
+            String rewardsDriverText = getString(R.string.earn_credits_for_inviting);
+            checkRewardsDriverCard(rewardsDriverText);
         }
     }
 }
