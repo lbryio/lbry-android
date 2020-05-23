@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -337,6 +338,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // workaround to fix dark theme because https://issuetracker.google.com/issues/37124582
+        new WebView(this);
         AppCompatDelegate.setDefaultNightMode(isDarkMode() ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
         initKeyStore();

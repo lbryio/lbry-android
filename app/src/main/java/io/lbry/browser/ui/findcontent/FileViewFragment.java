@@ -37,6 +37,8 @@ import androidx.media.session.MediaButtonReceiver;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.webkit.WebSettingsCompat;
+import androidx.webkit.WebViewFeature;
 
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -173,6 +175,9 @@ public class FileViewFragment extends BaseFragment implements
     private View layoutNothingAtLocation;
     private View layoutDisplayArea;
     private View layoutResolving;
+
+    private WebView webView;
+    private boolean webViewAdded;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -360,11 +365,30 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void initWebView(View root) {
-        WebView webView = root.findViewById(R.id.file_view_webview);
-        webView.setWebViewClient(new LbryWebViewClient(getContext()));
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setAllowFileAccess(true);
-        webSettings.setJavaScriptEnabled(true);
+        Context ctx = getContext();
+        if (ctx != null) {
+            if (webView == null) {
+                webView = new WebView(ctx);
+                webView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+                webView.setWebViewClient(new LbryWebViewClient(ctx));
+                WebSettings webSettings = webView.getSettings();
+                webSettings.setAllowFileAccess(true);
+                webSettings.setJavaScriptEnabled(true);
+            }
+
+            if (!webViewAdded && root != null) {
+                ((RelativeLayout) root.findViewById(R.id.file_view_webview_container)).addView(webView);
+                webViewAdded = true;
+            }
+        }
+    }
+
+    private void applyThemeToWebView() {
+        Context context = getContext();
+        if (context instanceof MainActivity && webView != null && WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+            MainActivity activity = (MainActivity) context;
+            WebSettingsCompat.setForceDark(webView.getSettings(), activity.isDarkMode() ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
+        }
     }
 
     private void logUrlEvent(String url) {
@@ -544,6 +568,13 @@ public class FileViewFragment extends BaseFragment implements
             activity.removeSdkStatusListener(this);
             activity.removeStoragePermissionListener(this);
             //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        }
+
+        if (webView != null) {
+            webView.removeAllViews();
+            webView.loadUrl("about:blank");
+            webView.destroy();
+            webView = null;
         }
     }
 
@@ -1585,7 +1616,9 @@ public class FileViewFragment extends BaseFragment implements
                         } else if (mediaType.startsWith("text")) {
                             // show web view (and parse markdown too)
                             View container = root.findViewById(R.id.file_view_webview_container);
-                            WebView webView = root.findViewById(R.id.file_view_webview);
+                            initWebView(root);
+                            applyThemeToWebView();
+
                             if (Arrays.asList("text/markdown", "text/md").contains(mediaType.toLowerCase())) {
                                 loadMarkdownFromFile(claimFile.getDownloadPath());
                             } else {
@@ -1610,8 +1643,9 @@ public class FileViewFragment extends BaseFragment implements
             @Override
             public void onSuccess(String text) {
                 String html = buildMarkdownHtml(text);
-                WebView webView = getView().findViewById(R.id.file_view_webview);
-                webView.loadData(html, "text/html", "utf-8");
+                if (webView != null) {
+                    webView.loadData(html, "text/html", "utf-8");
+                }
             }
 
             @Override
