@@ -35,10 +35,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             activity.lockDrawer();
             activity.hideFloatingWalletBalance();
 
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(R.string.settings);
-            }
+            activity.setActionBarTitle(R.string.settings);
         }
     }
 

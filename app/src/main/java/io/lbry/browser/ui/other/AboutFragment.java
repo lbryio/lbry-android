@@ -180,10 +180,7 @@ public class AboutFragment extends BaseFragment implements SdkStatusListener {
             activity.lockDrawer();
             activity.hideFloatingWalletBalance();
 
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(R.string.about_lbry);
-            }
+            activity.setActionBarTitle(R.string.about_lbry);
         }
     }
 

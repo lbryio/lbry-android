@@ -499,10 +499,7 @@ public class PublishFormFragment extends BaseFragment implements
             activity.addFilePickerListener(this);
             activity.addWalletBalanceListener(this);
 
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(editMode ? R.string.edit_content : R.string.new_publish);
-            }
+            activity.setActionBarTitle(editMode ? R.string.edit_content : R.string.new_publish);
         }
     }
 
@@ -889,10 +886,7 @@ public class PublishFormFragment extends BaseFragment implements
             LbryAnalytics.setCurrentScreen(activity, "Channel Form", "ChannelForm");
             activity.addStoragePermissionListener(this);
             if (editMode) {
-                ActionBar actionBar = activity.getSupportActionBar();
-                if (actionBar != null) {
-                    actionBar.setTitle(R.string.edit_content);
-                }
+                activity.setActionBarTitle(R.string.edit_content);
             }
         }
 
