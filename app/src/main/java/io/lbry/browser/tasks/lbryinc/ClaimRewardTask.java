@@ -22,15 +22,15 @@ public class ClaimRewardTask extends AsyncTask<Void, Void, String> {
 
     private Context context;
     private String type;
-    private String claimCode;
+    private String rewardCode;
     private View progressView;
     private double amountClaimed;
     private ClaimRewardHandler handler;
     private Exception error;
 
-    public ClaimRewardTask(String type, String claimCode, View progressView, Context context, ClaimRewardHandler handler) {
+    public ClaimRewardTask(String type, String rewardCode, View progressView, Context context, ClaimRewardHandler handler) {
         this.type = type;
-        this.claimCode = claimCode;
+        this.rewardCode = rewardCode;
         this.progressView = progressView;
         this.context = context;
         this.handler = handler;
@@ -48,8 +48,8 @@ public class ClaimRewardTask extends AsyncTask<Void, Void, String> {
             Map<String, String> options = new HashMap<>();
             options.put("reward_type", type);
             options.put("wallet_address", address);
-            if (!Helper.isNullOrEmpty(claimCode)) {
-                options.put("claim_code", claimCode);
+            if (!Helper.isNullOrEmpty(rewardCode)) {
+                options.put("code", rewardCode);
 
             }
             JSONObject reward = (JSONObject) Lbryio.parseResponse(
