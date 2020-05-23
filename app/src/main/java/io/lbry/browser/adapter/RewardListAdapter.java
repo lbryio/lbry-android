@@ -168,6 +168,10 @@ public class RewardListAdapter extends RecyclerView.Adapter<RewardListAdapter.Vi
                     return;
                 }
 
+                if (vh.inputCustomCode != null && !vh.inputCustomCode.hasFocus()) {
+                    vh.inputCustomCode.requestFocus();
+                }
+
                 if (clickListener != null) {
                     clickListener.onRewardClicked(reward, vh.loading);
                 }

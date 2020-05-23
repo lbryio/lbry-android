@@ -20,7 +20,7 @@ public class WalletBalanceTask extends AsyncTask<Void, Void, WalletBalance> {
     }
 
     protected WalletBalance doInBackground(Void... params) {
-       WalletBalance balance = new WalletBalance();
+       WalletBalance balance;
         try {
             JSONObject json = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_WALLET_BALANCE);
             balance = WalletBalance.fromJSONObject(json);

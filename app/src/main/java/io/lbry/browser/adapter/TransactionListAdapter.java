@@ -72,7 +72,9 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
         vh.claimView.setText(item.getClaim());
         vh.feeView.setText(context.getString(R.string.tx_list_fee, TX_LIST_AMOUNT_FORMAT.format(item.getFee().doubleValue())));
         vh.txidLinkView.setText(item.getTxid().substring(0, 7));
-        vh.dateView.setText(TX_LIST_DATE_FORMAT.format(item.getTxDate()));
+        vh.dateView.setVisibility(item.getConfirmations() > 0 ? View.VISIBLE : View.GONE);
+        vh.dateView.setText(item.getConfirmations() > 0 ? TX_LIST_DATE_FORMAT.format(item.getTxDate()) : null);
+        vh.pendingView.setVisibility(item.getConfirmations() == 0 ? View.VISIBLE : View.GONE);
 
         vh.infoFeeContainer.setVisibility(!Helper.isNullOrEmpty(item.getClaim()) || Math.abs(item.getFee().doubleValue()) > 0 ?
                 View.VISIBLE : View.GONE);
@@ -111,6 +113,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
         protected TextView feeView;
         protected TextView txidLinkView;
         protected TextView dateView;
+        protected TextView pendingView;
         protected View infoFeeContainer;
 
         public ViewHolder(View v) {
@@ -121,6 +124,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
             feeView = v.findViewById(R.id.transaction_fee);
             txidLinkView = v.findViewById(R.id.transaction_id_link);
             dateView = v.findViewById(R.id.transaction_date);
+            pendingView = v.findViewById(R.id.transaction_pending_text);
             infoFeeContainer = v.findViewById(R.id.transaction_info_fee_container);
         }
     }

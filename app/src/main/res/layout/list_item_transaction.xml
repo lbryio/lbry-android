@@ -102,6 +102,18 @@
             android:singleLine="true"
             android:textColor="@color/lightGrey"
             android:textSize="12sp"
-            android:textFontWeight="300" />
+            android:textFontWeight="300"
+            android:visibility="gone" />
+        <TextView
+            android:id="@+id/transaction_pending_text"
+            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/pending"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:textFontWeight="300"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

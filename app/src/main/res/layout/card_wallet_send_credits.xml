@@ -28,7 +28,8 @@
                 android:fontFamily="@font/inter"
                 android:textSize="14sp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <RelativeLayout

@@ -5,7 +5,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import io.lbry.browser.R;
 import io.lbry.browser.exceptions.LbryUriException;
@@ -53,13 +55,22 @@ public class Transaction {
 
         int descStringId = -1;
         TransactionInfo info = null;
+        List<TransactionInfo> infos = new ArrayList<>();
         try {
             if (jsonObject.has("abandon_info")) {
                 JSONArray array = jsonObject.getJSONArray("abandon_info");
                 if (array.length() > 0) {
-                    info = TransactionInfo.fromJSONObject(array.getJSONObject(0));
-                    descStringId = R.string.abandon;
-                    transaction.setAbandonInfo(info);
+                    if (array.length() == 1) {
+                        info = TransactionInfo.fromJSONObject(array.getJSONObject(0));
+                        descStringId = info.getBalanceDelta().doubleValue() == info.getAmount().doubleValue() ? R.string.unlock : R.string.abandon;
+                        transaction.setAbandonInfo(info);
+                    } else {
+                        // multiple abandon infos (txo_spend unlock tip)
+                        descStringId = R.string.unlock;
+                        for (int i = 0; i < array.length(); i++) {
+                            infos.add(TransactionInfo.fromJSONObject(array.getJSONObject(i)));
+                        }
+                    }
                 }
             }
             if (info == null && jsonObject.has("claim_info")) {
@@ -94,8 +105,18 @@ public class Transaction {
             // pass
         }
 
-        if (transaction.getValue().doubleValue() == 0 && info != null && info.getBalanceDelta().doubleValue() != 0) {
-            transaction.setValue(info.getBalanceDelta());
+
+
+        if (transaction.getValue().doubleValue() == 0) {
+            if (info != null && info.getBalanceDelta().doubleValue() != 0) {
+                transaction.setValue(info.getBalanceDelta());
+            } else if (infos.size() > 0) {
+                BigDecimal total = new BigDecimal(0);
+                for  (TransactionInfo txInfo : infos) {
+                    total = total.add(txInfo.getAmount());
+                }
+                transaction.setValue(total);
+            }
         }
 
         if (descStringId == -1) {
