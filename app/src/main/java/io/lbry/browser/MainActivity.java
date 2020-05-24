@@ -535,8 +535,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     protected void onNewIntent(Intent intent) {
-        android.util.Log.d(TAG, String.format("OnNewIntent: %s", intent));
-
         super.onNewIntent(intent);
         checkUrlIntent(intent);
         checkNotificationOpenIntent(intent);
@@ -914,9 +912,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onResume() {
-        android.util.Log.d(TAG, String.format("OnResume: Intent=%s", getIntent() != null ? getIntent().toString() : "NULL"));
-
         super.onResume();
+        enteringPIPMode = false;
+
         applyNavbarSigninPadding();
         checkFirstRun();
         checkNowPlaying();
@@ -958,7 +956,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onPause() {
-        if (!enteringPIPMode && appPlayer != null) {
+        if (!enteringPIPMode && !inPictureInPictureMode && appPlayer != null) {
             appPlayer.setPlayWhenReady(false);
         }
         super.onPause();
