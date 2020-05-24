@@ -528,6 +528,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         specialRouteFragmentClassMap.put("following", FollowingFragment.class);
         specialRouteFragmentClassMap.put("rewards", RewardsFragment.class);
         specialRouteFragmentClassMap.put("settings", SettingsFragment.class);
+        specialRouteFragmentClassMap.put("subscription", FollowingFragment.class);
         specialRouteFragmentClassMap.put("subscriptions", FollowingFragment.class);
         specialRouteFragmentClassMap.put("wallet", WalletFragment.class);
         specialRouteFragmentClassMap.put("discover", FollowingFragment.class);
@@ -2384,6 +2385,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         // pass
                     }
                 }
+
+                inPictureInPictureMode = false;
+                renderFullMode();
             }
         }
     }
