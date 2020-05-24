@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.format.DateUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -1190,7 +1191,15 @@ public class FileViewFragment extends BaseFragment implements
             Claim.GenericMetadata metadata = claim.getValue();
             if (!Helper.isNullOrEmpty(claim.getThumbnailUrl())) {
                 ImageView thumbnailView = root.findViewById(R.id.file_view_thumbnail);
-                Glide.with(getContext().getApplicationContext()).load(claim.getThumbnailUrl()).centerCrop().into(thumbnailView);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (claim != null && context != null && thumbnailView != null) {
+                            Glide.with(context.getApplicationContext()).load(claim.getThumbnailUrl()).centerCrop().into(thumbnailView);
+                        }
+                    }
+                }, 200);
+
             } else {
                 // display first x letters of claim name, with random background
             }
