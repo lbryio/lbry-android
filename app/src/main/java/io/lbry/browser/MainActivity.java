@@ -534,6 +534,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     protected void onNewIntent(Intent intent) {
+        android.util.Log.d(TAG, String.format("OnNewIntent: %s"));
+
         super.onNewIntent(intent);
         checkUrlIntent(intent);
         checkNotificationOpenIntent(intent);
@@ -904,8 +906,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onResume() {
-        super.onResume();
+        android.util.Log.d(TAG, String.format("OnResume: Intent=%s", getIntent() != null ? getIntent().toString() : "NULL"));
 
+        super.onResume();
         applyNavbarSigninPadding();
         checkFirstRun();
         checkNowPlaying();

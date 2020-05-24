@@ -618,6 +618,7 @@
     <RelativeLayout
         android:id="@+id/file_view_imageviewer_container"
         android:background="@android:color/black"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
