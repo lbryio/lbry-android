@@ -268,6 +268,7 @@ public class LibraryFragment extends BaseFragment implements
         checkStatsLink();
         layoutSdkInitializing.setVisibility(Lbry.SDK_READY ? View.GONE : View.VISIBLE);
         currentPage = 1;
+        currentFiles = new ArrayList<>();
         if (Lbry.SDK_READY) {
             if (!initialOwnClaimsFetched) {
                 fetchOwnClaimsAndShowDownloads();
@@ -381,7 +382,6 @@ public class LibraryFragment extends BaseFragment implements
                 listReachedEnd = hasReachedEnd;
                 List<LbryFile> filteredFiles = Helper.filterDownloads(files);
                 List<Claim> claims = Helper.claimsFromFiles(filteredFiles);
-
                 addFiles(filteredFiles);
                 updateStats();
                 checkStatsLink();

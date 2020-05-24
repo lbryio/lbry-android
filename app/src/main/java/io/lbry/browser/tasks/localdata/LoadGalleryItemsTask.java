@@ -54,7 +54,7 @@ public class LoadGalleryItemsTask extends AsyncTask<Void, GalleryItem, List<Gall
                 cursor = resolver.query(
                         MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                         projection, null, null,
-                        String.format("%s DESC", MediaStore.MediaColumns.DATE_MODIFIED));
+                        String.format("%s DESC LIMIT 150", MediaStore.MediaColumns.DATE_MODIFIED));
                 while (cursor.moveToNext()) {
                     int idColumn = cursor.getColumnIndex(MediaStore.MediaColumns._ID);
                     int nameColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
@@ -71,7 +71,6 @@ public class LoadGalleryItemsTask extends AsyncTask<Void, GalleryItem, List<Gall
                     items.add(item);
                 }
             } catch (SQLiteException ex) {
-
                 // failed to load videos. log and pass
                 Log.e(TAG, ex.getMessage(), ex);
             } finally {

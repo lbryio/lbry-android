@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,6 +79,7 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
     private View progressLoadingInviteByEmail;
     private View progressLoadingStatus;
 
+    private CardView rewardDriverCard;
     private View inlineChannelCreator;
     private TextInputEditText inlineChannelCreatorInputName;
     private TextInputEditText inlineChannelCreatorInputDeposit;
@@ -95,6 +97,7 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
         layoutSdkInitializing = root.findViewById(R.id.container_sdk_initializing);
         textLearnMoreLink = root.findViewById(R.id.invites_account_driver_learn_more);
         buttonGetStarted = root.findViewById(R.id.invites_get_started_button);
+        rewardDriverCard = root.findViewById(R.id.reward_driver_card);
 
         textInviteLink = root.findViewById(R.id.invites_invite_link);
         buttonCopyInviteLink = root.findViewById(R.id.invites_copy_invite_link);
@@ -130,6 +133,16 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
         layoutAccountDriver.setVisibility(Lbryio.isSignedIn() ? View.GONE : View.VISIBLE);
         layoutSdkInitializing.setVisibility(Lbry.SDK_READY ? View.GONE : View.VISIBLE);
         Helper.applyHtmlForTextView(textLearnMoreLink);
+
+        rewardDriverCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = getContext();
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).openRewards();
+                }
+            }
+        });
 
         inputEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
