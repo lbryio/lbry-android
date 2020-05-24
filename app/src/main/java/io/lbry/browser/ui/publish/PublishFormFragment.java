@@ -1430,7 +1430,7 @@ public class PublishFormFragment extends BaseFragment implements
         if (ctx != null) {
             String rewardsDriverText = String.format("%s\n%s",
                     getString(R.string.publishing_requires_credits), getString(R.string.tap_here_to_get_some));
-            checkRewardsDriverCard(rewardsDriverText);
+            checkRewardsDriverCard(rewardsDriverText, Helper.MIN_DEPOSIT);
         }
     }
 

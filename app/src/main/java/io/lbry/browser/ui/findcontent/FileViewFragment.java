@@ -1428,6 +1428,7 @@ public class FileViewFragment extends BaseFragment implements
         if (metadata instanceof Claim.StreamMetadata) {
             Claim.StreamMetadata streamMetadata = (Claim.StreamMetadata) metadata;
             if (claim.getFile() == null && !claim.isFree()) {
+                // TODO: also check ownership from purchase_list
                 // not free (and the user does not own the claim yet), perform a purchase
                 confirmPurchaseUrl();
             } else {
@@ -1436,9 +1437,12 @@ public class FileViewFragment extends BaseFragment implements
                     return;
                 }
 
-                getView().findViewById(R.id.file_view_main_action_button).setVisibility(View.INVISIBLE);
-                getView().findViewById(R.id.file_view_main_action_loading).setVisibility(View.VISIBLE);
-                handleMainActionForClaim();
+                View root = getView();
+                if (root != null) {
+                    root.findViewById(R.id.file_view_main_action_button).setVisibility(View.INVISIBLE);
+                    root.findViewById(R.id.file_view_main_action_loading).setVisibility(View.VISIBLE);
+                    handleMainActionForClaim();
+                }
             }
         } else {
             showError(getString(R.string.cannot_view_claim));
@@ -2161,7 +2165,7 @@ public class FileViewFragment extends BaseFragment implements
         Context ctx = getContext();
         if (ctx != null && claim != null && !claim.isFree() && claim.getFile() == null) {
             String rewardsDriverText = getString(R.string.earn_some_credits_to_access);
-            checkRewardsDriverCard(rewardsDriverText);
+            checkRewardsDriverCard(rewardsDriverText, claim.getActualCost(Lbryio.LBCUSDRate).doubleValue());
         }
     }
 

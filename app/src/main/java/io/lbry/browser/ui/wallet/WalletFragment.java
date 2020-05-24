@@ -604,7 +604,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
                         Lbryio.totalUnclaimedRewardAmount == 1 ? 1 : 2,
                         Helper.shortCurrencyFormat(Lbryio.totalUnclaimedRewardAmount));
             }
-            checkRewardsDriverCard(rewardsDriverText);
+            checkRewardsDriverCard(rewardsDriverText, 0);
         }
     }
 }

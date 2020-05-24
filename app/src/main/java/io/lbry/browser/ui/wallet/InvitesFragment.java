@@ -574,9 +574,9 @@ public class InvitesFragment extends BaseFragment implements SdkStatusListener, 
 
     private void checkRewardsDriver() {
         Context ctx = getContext();
-        if (ctx != null) {
-            String rewardsDriverText = getString(R.string.earn_credits_for_inviting);
-            checkRewardsDriverCard(rewardsDriverText);
+        View root = getView();
+        if (ctx != null && root != null) {
+            Helper.setViewText(root.findViewById(R.id.reward_driver_text), R.string.earn_credits_for_inviting);
         }
     }
 }
