@@ -105,7 +105,7 @@ public class LoadSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
                                 if (db != null) {
                                     DatabaseHelper.createOrUpdateTag(tag, db);
                                 }
-                            } catch (SQLiteException ex) {
+                            } catch (SQLiteException | IllegalStateException ex) {
                                 // pass
                             }
                         }

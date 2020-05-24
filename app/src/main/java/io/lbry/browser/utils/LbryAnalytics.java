@@ -32,8 +32,17 @@ public class LbryAnalytics {
         analytics = FirebaseAnalytics.getInstance(context);
     }
 
+    public static void checkInitAnalytics(Context context) {
+        if (analytics == null && context != null) {
+            analytics = FirebaseAnalytics.getInstance(context);
+        }
+    }
+
     public static void setCurrentScreen(Activity activity, String name, String className) {
-        analytics.setCurrentScreen(activity, name, className);
+        checkInitAnalytics(activity);
+        if (analytics != null) {
+            analytics.setCurrentScreen(activity, name, className);
+        }
     }
 
     public static void logEvent(String name) {
@@ -41,7 +50,9 @@ public class LbryAnalytics {
     }
 
     public static void logEvent(String name, Bundle bundle) {
-        analytics.logEvent(name, bundle);
+        if (analytics != null) {
+            analytics.logEvent(name, bundle);
+        }
     }
 
     public static void logException(String message, String exceptionName) {

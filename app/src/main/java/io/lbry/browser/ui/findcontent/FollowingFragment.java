@@ -524,8 +524,9 @@ public class FollowingFragment extends BaseFragment implements
     }
 
     private void updateChannelFilterListAdapter(List<Claim> resolvedSubs, boolean reset) {
-        if (channelFilterListAdapter == null) {
-            channelFilterListAdapter = new ChannelFilterListAdapter(getContext());
+        Context context = getContext();
+        if (channelFilterListAdapter == null && context != null) {
+            channelFilterListAdapter = new ChannelFilterListAdapter(context);
             channelFilterListAdapter.setListener(new ChannelItemSelectionListener() {
                 @Override
                 public void onChannelItemSelected(Claim claim) {
@@ -560,14 +561,16 @@ public class FollowingFragment extends BaseFragment implements
             });
         }
 
-        if (horizontalChannelList != null && horizontalChannelList.getAdapter() == null) {
-            horizontalChannelList.setAdapter(channelFilterListAdapter);
+        if (channelFilterListAdapter != null) {
+            if (horizontalChannelList != null && horizontalChannelList.getAdapter() == null) {
+                horizontalChannelList.setAdapter(channelFilterListAdapter);
+            }
+            if (reset) {
+                channelFilterListAdapter.clearClaims();
+                channelFilterListAdapter.setSelectedItem(null);
+            }
+            channelFilterListAdapter.addClaims(resolvedSubs);
         }
-        if (reset) {
-            channelFilterListAdapter.clearClaims();
-            channelFilterListAdapter.setSelectedItem(null);
-        }
-        channelFilterListAdapter.addClaims(resolvedSubs);
     }
 
     private void fetchClaimSearchContent() {
@@ -626,11 +629,12 @@ public class FollowingFragment extends BaseFragment implements
     }
 
     private void updateSuggestedDoneButtonText() {
-        int selected = suggestedChannelAdapter == null ? 0 : suggestedChannelAdapter.getSelectedCount();
-        int remaining = MIN_SUGGESTED_SUBSCRIBE_COUNT - selected;
-        String buttonText = remaining <= 0 ? getString(R.string.done) : getString(R.string.n_remaining, remaining);
-        if (suggestedDoneButton != null) {
-            suggestedDoneButton.setText(buttonText);
+        Context context = getContext();
+        if (context != null) {
+            int selected = suggestedChannelAdapter == null ? 0 : suggestedChannelAdapter.getSelectedCount();
+            int remaining = MIN_SUGGESTED_SUBSCRIBE_COUNT - selected;
+            String buttonText = remaining <= 0 ? getString(R.string.done) : getString(R.string.n_remaining, remaining);
+            Helper.setViewText(suggestedDoneButton, buttonText);
         }
     }
 

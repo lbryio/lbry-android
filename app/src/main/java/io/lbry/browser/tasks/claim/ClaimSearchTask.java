@@ -29,7 +29,7 @@ public class ClaimSearchTask extends AsyncTask<Void, Void, List<Claim>> {
     }
     protected List<Claim> doInBackground(Void... params) {
         try {
-            return Helper.filterInvalidReposts(Lbry.claimSearch(options, connectionString));
+            return Lbry.claimSearch(options, connectionString);
         } catch (ApiCallException ex) {
             error = ex;
             return null;
@@ -39,7 +39,7 @@ public class ClaimSearchTask extends AsyncTask<Void, Void, List<Claim>> {
         Helper.setViewVisibility(progressView, View.GONE);
         if (handler != null) {
             if (claims != null) {
-                handler.onSuccess(claims, claims.size() < Helper.parseInt(options.get("page_size"), 0));
+                handler.onSuccess(Helper.filterInvalidReposts(claims), claims.size() < Helper.parseInt(options.get("page_size"), 0));
             } else {
                 handler.onError(error);
             }

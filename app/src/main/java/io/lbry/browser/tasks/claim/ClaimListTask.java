@@ -62,7 +62,8 @@ public class ClaimListTask extends AsyncTask<Void, Void, List<Claim>> {
         Helper.setViewVisibility(progressView, View.GONE);
         if (handler != null) {
             if (claims != null) {
-                handler.onSuccess(claims);
+                // TODO: Add fix for handling invalid reposts in ClaimListAdapter
+                handler.onSuccess(Helper.filterInvalidReposts(claims));
             } else {
                 handler.onError(error);
             }

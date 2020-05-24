@@ -705,6 +705,9 @@ public final class Helper {
         }
     }
     public static String normalizeChannelName(String channelName) {
+        if (Helper.isNullOrEmpty(channelName)) {
+            return "";
+        }
         if (!channelName.startsWith("@")) {
             return String.format("@%s", channelName);
         }

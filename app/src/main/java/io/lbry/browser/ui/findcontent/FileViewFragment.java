@@ -1104,7 +1104,9 @@ public class FileViewFragment extends BaseFragment implements
                 @Override
                 public void onError(Exception error) {
                     actionDelete.setEnabled(true);
-                    showError(error.getMessage());
+                    if (error != null) {
+                        showError(error.getMessage());
+                    }
                 }
             });
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -2055,17 +2057,23 @@ public class FileViewFragment extends BaseFragment implements
         if (claim != null) {
             claim.setFile(null);
         }
-        ((ImageView) getView().findViewById(R.id.file_view_action_download_icon)).setImageResource(R.drawable.ic_download);
-        Helper.setViewVisibility(getView().findViewById(R.id.file_view_download_progress), View.GONE);
-        Helper.setViewVisibility(getView().findViewById(R.id.file_view_unsupported_container), View.GONE);
+        View root = getView();
+        if (root != null) {
+            ((ImageView) root.findViewById(R.id.file_view_action_download_icon)).setImageResource(R.drawable.ic_download);
+            Helper.setViewVisibility(root.findViewById(R.id.file_view_download_progress), View.GONE);
+            Helper.setViewVisibility(root.findViewById(R.id.file_view_unsupported_container), View.GONE);
+        }
 
         checkIsFileComplete();
         restoreMainActionButton();
     }
 
     private void restoreMainActionButton() {
-        getView().findViewById(R.id.file_view_main_action_loading).setVisibility(View.INVISIBLE);
-        getView().findViewById(R.id.file_view_main_action_button).setVisibility(View.VISIBLE);
+        View root = getView();
+        if (root != null) {
+            root.findViewById(R.id.file_view_main_action_loading).setVisibility(View.INVISIBLE);
+            root.findViewById(R.id.file_view_main_action_button).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

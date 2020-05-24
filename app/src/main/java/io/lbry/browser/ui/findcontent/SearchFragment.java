@@ -239,31 +239,36 @@ public class SearchFragment extends BaseFragment implements
             public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
                 contentHasReachedEnd = hasReachedEnd;
                 searchLoading = false;
-
-                if (resultListAdapter == null) {
-                    resultListAdapter = new ClaimListAdapter(claims, getContext());
-                    resultListAdapter.addFeaturedItem(buildFeaturedItem(query));
-                    resolveFeaturedItem(buildVanityUrl(query));
-                    resultListAdapter.setListener(SearchFragment.this);
-                    if (resultList != null) {
-                        resultList.setAdapter(resultListAdapter);
+                Context context = getContext();
+                if (context != null) {
+                    if (resultListAdapter == null) {
+                        resultListAdapter = new ClaimListAdapter(claims, context);
+                        resultListAdapter.addFeaturedItem(buildFeaturedItem(query));
+                        resolveFeaturedItem(buildVanityUrl(query));
+                        resultListAdapter.setListener(SearchFragment.this);
+                        if (resultList != null) {
+                            resultList.setAdapter(resultListAdapter);
+                        }
+                    } else {
+                        resultListAdapter.addItems(claims);
                     }
-                } else {
-                    resultListAdapter.addItems(claims);
-                }
 
-                int itemCount = resultListAdapter.getItemCount();
-                noQueryView.setVisibility(View.GONE);
-                noResultsView.setVisibility(itemCount == 0 ? View.VISIBLE : View.GONE);
-                noResultsView.setText(getString(R.string.search_no_results, currentQuery));
+                    int itemCount = resultListAdapter.getItemCount();
+                    Helper.setViewVisibility(noQueryView, View.GONE);
+                    Helper.setViewVisibility(noResultsView, itemCount == 0 ? View.VISIBLE : View.GONE);
+                    Helper.setViewText(noResultsView, getString(R.string.search_no_results, currentQuery));
+                }
             }
 
             @Override
             public void onError(Exception error) {
+                Context context = getContext();
                 int itemCount = resultListAdapter == null ? 0 : resultListAdapter.getItemCount();
-                noQueryView.setVisibility(View.GONE);
-                noResultsView.setVisibility(itemCount == 0 ? View.VISIBLE : View.GONE);
-                noResultsView.setText(getString(R.string.search_no_results, currentQuery));
+                Helper.setViewVisibility(noQueryView, View.GONE);
+                Helper.setViewVisibility(noResultsView, itemCount == 0 ? View.VISIBLE : View.GONE);
+                if (context != null) {
+                    Helper.setViewText(noResultsView, getString(R.string.search_no_results, currentQuery));
+                }
                 searchLoading = false;
             }
         });

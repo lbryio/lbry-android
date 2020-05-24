@@ -52,6 +52,7 @@ import io.lbry.browser.utils.LbryAnalytics;
 public class PublishFragment extends BaseFragment implements
         CameraPermissionListener, FilePickerListener, StoragePermissionListener {
 
+    private boolean cameraPreviewInitialized;
     private PreviewView cameraPreview;
     private RecyclerView galleryGrid;
     private GalleryGridAdapter adapter;
@@ -122,7 +123,7 @@ public class PublishFragment extends BaseFragment implements
 
     private void displayPreviewWithCameraX() {
         Context context = getContext();
-        if (context != null) {
+        if (context != null && MainActivity.hasPermission(Manifest.permission.CAMERA, context)) {
             cameraProviderFuture = ProcessCameraProvider.getInstance(context);
             cameraProviderFuture.addListener(new Runnable() {
                 @Override
@@ -137,6 +138,7 @@ public class PublishFragment extends BaseFragment implements
 
                             Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) context, cameraSelector, preview);
                             preview.setSurfaceProvider(cameraPreview.createSurfaceProvider(camera.getCameraInfo()));
+                            cameraPreviewInitialized = true;
                         }
                     } catch (ExecutionException | InterruptedException ex) {
                         // pass
@@ -267,7 +269,9 @@ public class PublishFragment extends BaseFragment implements
                 activity.removeFilePickerListener(this);
             }
         }
-        CameraX.unbindAll();
+        if (cameraPreviewInitialized) {
+            CameraX.unbindAll();
+        }
         super.onStop();
     }
 
@@ -361,13 +365,13 @@ public class PublishFragment extends BaseFragment implements
     public void onCameraPermissionRefused() {
         if (takePhotoPending) {
             takePhotoPending = false;
-            Snackbar.make(getView(), R.string.camera_permission_rationale_photo, Toast.LENGTH_LONG).
+            Snackbar.make(getView(), R.string.camera_permission_rationale_photo, Snackbar.LENGTH_LONG).
                     setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
             return;
         }
 
         recordPending = false;
-        Snackbar.make(getView(), R.string.camera_permission_rationale_record, Toast.LENGTH_LONG).
+        Snackbar.make(getView(), R.string.camera_permission_rationale_record, Snackbar.LENGTH_LONG).
                 setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
     }
 
@@ -395,9 +399,8 @@ public class PublishFragment extends BaseFragment implements
 
     @Override
     public void onStoragePermissionRefused() {
-        Snackbar.make(getView(), R.string.storage_permission_rationale_videos, Snackbar.LENGTH_LONG).setBackgroundTint(
-                ContextCompat.getColor(getContext(), R.color.red)
-        ).show();
+        Snackbar.make(getView(), R.string.storage_permission_rationale_videos, Snackbar.LENGTH_LONG).
+                setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
     }
 
     public String getSuggestedPublishUrl() {

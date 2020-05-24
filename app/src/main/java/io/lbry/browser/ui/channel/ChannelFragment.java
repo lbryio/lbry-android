@@ -322,19 +322,21 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         boolean updateRequired = false;
         Map<String, Object> params = getParams();
 
-        if (params.containsKey("claim")) {
-            Claim claim = (Claim) params.get("claim");
-            if (claim != null && !claim.equals(this.claim)) {
-                this.claim = claim;
-                updateRequired = true;
+        if (params != null) {
+            if (params.containsKey("claim")) {
+                Claim claim = (Claim) params.get("claim");
+                if (claim != null && !claim.equals(this.claim)) {
+                    this.claim = claim;
+                    updateRequired = true;
+                }
             }
-        }
-        if (params.containsKey("url")) {
-            String newUrl = params.get("url").toString();
-            if (claim == null || !newUrl.equalsIgnoreCase(url)) {
-                this.claim = null;
-                this.url = newUrl;
-                updateRequired = true;
+            if (params.containsKey("url")) {
+                String newUrl = params.get("url").toString();
+                if (claim == null || !newUrl.equalsIgnoreCase(url)) {
+                    this.claim = null;
+                    this.url = newUrl;
+                    updateRequired = true;
+                }
             }
         }
 
