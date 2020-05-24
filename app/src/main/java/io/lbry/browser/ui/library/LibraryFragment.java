@@ -213,6 +213,7 @@ public class LibraryFragment extends BaseFragment implements
         super.onResume();
 
         Context context = getContext();
+        Helper.setWunderbarValue(null, context);
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
             LbryAnalytics.setCurrentScreen(activity, "Library", "Library");

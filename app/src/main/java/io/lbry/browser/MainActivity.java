@@ -821,9 +821,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
 
         findViewById(R.id.content_main).setVisibility(View.VISIBLE);
-        findViewById(R.id.floating_balance_main_container).setVisibility(inFullscreenMode ? View.INVISIBLE : View.VISIBLE);
-
         Fragment fragment = getCurrentFragment();
+        boolean canShowFloatingBalance = fragment == null ||
+                fragment instanceof FollowingFragment ||
+                fragment instanceof FileViewFragment ||
+                fragment instanceof ChannelFragment ||
+                fragment instanceof EditorsChoiceFragment ||
+                fragment instanceof AllContentFragment ||
+                fragment instanceof LibraryFragment ||
+                fragment instanceof SearchFragment;
+        findViewById(R.id.floating_balance_main_container).setVisibility(!canShowFloatingBalance || inFullscreenMode ? View.INVISIBLE : View.VISIBLE);
         if (!(fragment instanceof FileViewFragment) && !inFullscreenMode) {
             findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
         }
