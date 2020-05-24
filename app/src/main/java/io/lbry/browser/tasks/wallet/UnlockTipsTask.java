@@ -54,6 +54,7 @@ public class UnlockTipsTask extends AsyncTask<Void, Void, Boolean> {
                 options = new HashMap<>();
                 options.put("txid", txids);
                 options.put("claim_id", claimIds);
+                options.put("blocking", true);
                 Lbry.genericApiCall(Lbry.METHOD_TXO_SPEND, options);
             }
 
