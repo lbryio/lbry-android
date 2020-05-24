@@ -30,7 +30,7 @@
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/reward_driver_icon"
             android:fontFamily="@font/inter"
-            android:lineHeight="18dp"
+            android:lineSpacingMultiplier="1.2"
             android:textColor="@color/white"
             android:textFontWeight="300"
             android:textSize="14sp" />

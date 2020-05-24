@@ -97,7 +97,8 @@ public class FirstRunActivity extends AppCompatActivity {
     }
 
     private void handleAuthenticationFailed() {
-        Toast.makeText(this, "Authentication failed.", Toast.LENGTH_LONG).show();
+        findViewById(R.id.welcome_progress_bar).setVisibility(View.GONE);
+        ((TextView) findViewById(R.id.welcome_wait_text)).setText(R.string.startup_failed);
     }
 
     private void authenticate() {

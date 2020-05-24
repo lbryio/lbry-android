@@ -14,6 +14,7 @@
             android:id="@+id/welcome_wait_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="24dp"
             android:visibility="gone">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -23,14 +24,16 @@
                     android:id="@+id/welcome_progress_bar"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:layout_marginRight="8dp"
                     android:layout_gravity="center_vertical"/>
                 <TextView
+                    android:id="@+id/welcome_wait_text"
                     android:fontFamily="@font/inter"
-                    android:layout_marginLeft="8dp"
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/welcome_please_wait"
+                    android:lineSpacingMultiplier="1.2"
                     android:textColor="@color/white"
                     android:textFontWeight="300" />
             </LinearLayout>

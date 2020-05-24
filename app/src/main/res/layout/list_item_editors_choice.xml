@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:lineHeight="14dp"
+                    android:lineSpacingMultiplier="1.2"
                     android:fontFamily="@font/inter"
                     android:ellipsize="end"
                     android:maxLines="8"
