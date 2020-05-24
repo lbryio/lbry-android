@@ -534,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     protected void onNewIntent(Intent intent) {
-        android.util.Log.d(TAG, String.format("OnNewIntent: %s"));
+        android.util.Log.d(TAG, String.format("OnNewIntent: %s", intent));
 
         super.onNewIntent(intent);
         checkUrlIntent(intent);
