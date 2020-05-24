@@ -2450,11 +2450,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 !startingFilePickerActivity &&
                 !startingSignInFlowActivity) {
             enteringPIPMode = true;
-
-            getSupportActionBar().hide();
-            findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
-            findViewById(R.id.pip_player).setVisibility(View.VISIBLE);
-
             PictureInPictureParams params = new PictureInPictureParams.Builder().build();
             enterPictureInPictureMode(params);
             return true;

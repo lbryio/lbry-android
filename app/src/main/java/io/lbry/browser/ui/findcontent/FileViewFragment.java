@@ -42,6 +42,7 @@ import androidx.webkit.WebViewFeature;
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.DefaultControlDispatcher;
 import com.google.android.exoplayer2.ParserException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -154,6 +155,7 @@ public class FileViewFragment extends BaseFragment implements
     private boolean downloadInProgress;
     private boolean downloadRequested;
     private boolean loadFilePending;
+    private boolean isPlaying;
     private boolean resolving;
     private boolean initialFileLoadDone;
     private Claim claim;
@@ -200,6 +202,7 @@ public class FileViewFragment extends BaseFragment implements
                     if (!playbackStarted) {
                         logPlay(currentUrl, startTimeMillis);
                         playbackStarted = true;
+                        isPlaying = true;
                     }
                     renderTotalDuration();
                     scheduleElapsedPlayback();
@@ -859,6 +862,14 @@ public class FileViewFragment extends BaseFragment implements
         TextView textPlaybackSpeed = playerView.findViewById(R.id.player_playback_speed_label);
         textPlaybackSpeed.setText(DEFAULT_PLAYBACK_SPEED);
 
+        playerView.setControlDispatcher(new DefaultControlDispatcher() {
+            @Override
+            public boolean dispatchSetPlayWhenReady(Player player, boolean playWhenReady) {
+                isPlaying = playWhenReady;
+                return super.dispatchSetPlayWhenReady(player, playWhenReady);
+            }
+        });
+
         playbackSpeedContainer.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
             public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
@@ -1119,7 +1130,7 @@ public class FileViewFragment extends BaseFragment implements
         }
 
         if (claim.isPlayable() && MainActivity.appPlayer != null) {
-            MainActivity.appPlayer.setPlayWhenReady(true);
+            MainActivity.appPlayer.setPlayWhenReady(isPlaying);
         }
 
         Helper.setViewVisibility(layoutLoadingState, View.GONE);
@@ -1887,8 +1898,10 @@ public class FileViewFragment extends BaseFragment implements
 
         playbackStarted = false;
         startTimeMillis = 0;
+        isPlaying = false;
 
         if (MainActivity.appPlayer != null) {
+            MainActivity.appPlayer.stop(true);
             MainActivity.appPlayer.removeListener(fileViewPlayerListener);
             PlaybackParameters params = new PlaybackParameters(1.0f);
             MainActivity.appPlayer.setPlaybackParameters(params);
@@ -1896,16 +1909,26 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void showBuffering() {
-        View view = getView();
-        if (view != null) {
-            view.findViewById(R.id.player_buffering_progress).setVisibility(View.VISIBLE);
+        View root = getView();
+        if (root != null) {
+            root.findViewById(R.id.player_buffering_progress).setVisibility(View.VISIBLE);
+
+            PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
+            playerView.findViewById(R.id.player_play_pause).setVisibility(View.INVISIBLE);
+            playerView.findViewById(R.id.player_skip_back_10).setVisibility(View.INVISIBLE);
+            playerView.findViewById(R.id.player_skip_forward_10).setVisibility(View.INVISIBLE);
         }
     }
 
     private void hideBuffering() {
-        View view = getView();
-        if (view != null) {
-            view.findViewById(R.id.player_buffering_progress).setVisibility(View.INVISIBLE);
+        View root = getView();
+        if (root != null) {
+            root.findViewById(R.id.player_buffering_progress).setVisibility(View.INVISIBLE);
+
+            PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
+            playerView.findViewById(R.id.player_play_pause).setVisibility(View.VISIBLE);
+            playerView.findViewById(R.id.player_skip_back_10).setVisibility(View.VISIBLE);
+            playerView.findViewById(R.id.player_skip_forward_10).setVisibility(View.VISIBLE);
         }
     }
 
