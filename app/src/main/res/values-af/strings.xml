@@ -301,6 +301,10 @@
     <string name="tx_list_fee">belasting %1$s</string>
     <string name="transaction_history">Transaksiegeskiedenis</string>
 
+    <string name="unlock">Ontsluit</string>
+    <string name="unlock_tips">Ontsluit wenke?</string>
+    <string name="confirm_unlock_tips">Is u seker dat u al u wenke wil ontsluit?</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">U het %1$s krediete gestuur</item>
         <item quantity="other">U het %1$s krediete gestuur</item>
@@ -461,6 +465,22 @@
     <plurals name="available_credits">
         <item quantity="one">%1$s beskikbare krediete</item>
         <item quantity="other">%1$s beskikbare krediete</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">Uitgewerswese vereis krediete.</string>
+    <string name="channel_creation_requires_credits">Skepping van kanale vereis krediete.</string>
+    <string name="earn_rewards_for_inviting">Verdien belonings vir die uitnodiging van u vriende.</string>
+    <string name="earn_some_credits_to_access">Verdien krediete om toegang tot hierdie inhoud te verkry.</string>
+    <string name="tap_here_to_get_some">Tik hier om gratis te kry.</string>
+    <string name="free_credits_available">Gratis krediete beskikbaar in belonings.</string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="one">%1$s gratis krediete beskikbaar in belonings.</item>
+        <item quantity="other">%1$s gratis krediete beskikbaar in belonings.</item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="one">Kry %1$s gratis krediete nadat u \'n account geskep het.</item>
+        <item quantity="other">Kry %1$s gratis krediete nadat u \'n account geskep het.</item>
     </plurals>
 
     <!-- Invites -->
