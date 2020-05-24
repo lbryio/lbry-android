@@ -2020,11 +2020,8 @@ public class FileViewFragment extends BaseFragment implements
                         amountClaimed == 1 ? 1 : 2,
                         new DecimalFormat(Helper.LBC_CURRENCY_FORMAT_PATTERN).format(amountClaimed));
             }
-            View root = getView();
             Context context = getContext();
-            if (root != null) {
-                Snackbar.make(root.findViewById(R.id.file_view_global_layout), message, Snackbar.LENGTH_LONG).show();
-            } else if (context instanceof MainActivity) {
+            if (context instanceof MainActivity) {
                 ((MainActivity) context).showMessage(message);
             }
         }
