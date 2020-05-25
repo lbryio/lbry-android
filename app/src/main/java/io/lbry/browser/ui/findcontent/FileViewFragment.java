@@ -1520,7 +1520,6 @@ public class FileViewFragment extends BaseFragment implements
 
     private void tryOpenFileOrFileGet() {
         if (claim != null) {
-            android.util.Log.d("#HELP", "TryOpenOrGetFile?");
             String claimId = claim.getClaimId();
             FileListTask task = new FileListTask(claimId, null, new FileListTask.FileListResultHandler() {
                 @Override
@@ -1632,7 +1631,6 @@ public class FileViewFragment extends BaseFragment implements
     private void playOrViewMedia() {
         boolean handled = false;
         String mediaType = claim.getMediaType();
-        android.util.Log.d("#HELP", "mediaType=" + mediaType);
         if (!Helper.isNullOrEmpty(mediaType)) {
             if (claim.isPlayable()) {
                 startTimeMillis = System.currentTimeMillis();
@@ -1685,9 +1683,7 @@ public class FileViewFragment extends BaseFragment implements
             }
         }
 
-        android.util.Log.d("#HELP", "handled=" + handled);
         if (!handled) {
-            android.util.Log.d("#HELP", "showing unsupported view?");
             showUnsupportedView();
         }
     }
