@@ -12,7 +12,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.exceptions.LbryioRequestException;
@@ -102,7 +102,10 @@ public final class Lbryio {
         }
 
         Request request = builder.build();
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder().
+                writeTimeout(120, TimeUnit.SECONDS).
+                readTimeout(120, TimeUnit.SECONDS).
+                build();
         try {
             return client.newCall(request).execute();
         } catch (IOException ex) {
@@ -154,6 +157,7 @@ public final class Lbryio {
             AUTH_TOKEN = json.getString(AUTH_TOKEN_PARAM);
             broadcastAuthTokenGenerated(context);
         } catch (JSONException | ClassCastException ex) {
+            LbryAnalytics.logError(String.format("/user/new failed: %s", ex.getMessage()), ex.getClass().getName());
             throw new LbryioResponseException("auth_token was not set in the response", ex);
         } finally {
             generatingAuthToken = false;
@@ -193,7 +197,7 @@ public final class Lbryio {
             User user = gson.fromJson(object.toString(), type);
             return user;
         } catch (LbryioRequestException | LbryioResponseException | ClassCastException | IllegalStateException ex) {
-            LbryAnalytics.logException(String.format("/user/me failed: %s", ex.getMessage()), ex.getClass().getName());
+            LbryAnalytics.logError(String.format("/user/me failed: %s", ex.getMessage()), ex.getClass().getName());
             android.util.Log.e(TAG, "Could not retrieve the current user", ex);
             return null;
         }

@@ -8,7 +8,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class LbryAnalytics {
 
-    public static final String EVENT_APP_EXCEPTION = "app_exception";
+    public static final String EVENT_APP_ERROR = "app_error";
     public static final String EVENT_APP_LAUNCH = "app_launch";
     public static final String EVENT_EMAIL_ADDED = "email_added";
     public static final String EVENT_EMAIL_VERIFIED = "email_verified";
@@ -56,10 +56,10 @@ public class LbryAnalytics {
         }
     }
 
-    public static void logException(String message, String exceptionName) {
+    public static void logError(String message, String exceptionName) {
         Bundle bundle = new Bundle();
         bundle.putString("message", message);
         bundle.putString("name", exceptionName);
-        logEvent("app_exception", bundle);
+        logEvent(EVENT_APP_ERROR, bundle);
     }
 }

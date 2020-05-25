@@ -1725,6 +1725,7 @@ public class FileViewFragment extends BaseFragment implements
                 "            <style type=\"text/css\">\n" +
                 "              body { font-family: 'Inter', sans-serif; margin: 16px }\n" +
                 "              img { width: 100%; }\n" +
+                "              pre { white-space: pre-wrap; word-wrap: break-word }\n" +
                 "            </style>\n" +
                 "          </head>\n" +
                 "          <body>\n" +
