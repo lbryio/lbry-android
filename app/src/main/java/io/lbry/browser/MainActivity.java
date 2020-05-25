@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static SimpleExoPlayer appPlayer;
     public static Cache playerCache;
     public static boolean playerReassigned;
-    public static CastContext castContext;
+    public CastContext castContext;
     public static CastPlayer castPlayer;
     public static Claim nowPlayingClaim;
     public static String nowPlayingClaimUrl;
@@ -198,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean startingShareActivity = false;
     public static boolean startingPermissionRequest = false;
     public static boolean startingSignInFlowActivity = false;
+    @Getter
     private boolean enteringPIPMode = false;
     private boolean fullSyncInProgress = false;
     private int queuedSyncCount = 0;

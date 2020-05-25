@@ -2196,7 +2196,7 @@ public class FileViewFragment extends BaseFragment implements
         Context context = getContext();
         if (context instanceof MainActivity) {
             MainActivity activity = (MainActivity) context;
-            if (activity.isInPictureInPictureMode()) {
+            if (activity.isEnteringPIPMode() || activity.isInPictureInPictureMode()) {
                 return;
             }
             if (claim != null && claim.isPlayable() && !activity.isInFullscreenMode()) {
