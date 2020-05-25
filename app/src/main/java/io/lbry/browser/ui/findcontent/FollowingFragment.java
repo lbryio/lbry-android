@@ -424,7 +424,7 @@ public class FollowingFragment extends BaseFragment implements
         }
 
         return Lbry.buildClaimSearchOptions(
-                Claim.TYPE_STREAM,
+                Arrays.asList(Claim.TYPE_STREAM, Claim.TYPE_REPOST),
                 null,
                 canShowMatureContent ? null : new ArrayList<>(Predefined.MATURE_TAGS),
                 getChannelIds(),

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -374,8 +375,30 @@ public final class Lbry {
             String releaseTime,
             int page,
             int pageSize) {
+        return buildClaimSearchOptions(
+                Collections.singletonList(claimType),
+                anyTags,
+                notTags,
+                channelIds,
+                notChannelIds,
+                orderBy,
+                releaseTime,
+                page,
+                pageSize);
+    }
+
+    public static Map<String, Object> buildClaimSearchOptions(
+            List<String> claimType,
+            List<String> anyTags,
+            List<String> notTags,
+            List<String> channelIds,
+            List<String> notChannelIds,
+            List<String> orderBy,
+            String releaseTime,
+            int page,
+            int pageSize) {
         Map<String, Object> options = new HashMap<>();
-        if (!Helper.isNullOrEmpty(claimType)) {
+        if (claimType != null && claimType.size() > 0) {
             options.put("claim_type", claimType);
         }
         options.put("no_totals", true);

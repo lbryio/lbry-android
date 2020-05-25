@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -219,7 +220,7 @@ public class ChannelContentFragment extends Fragment implements DownloadActionLi
         }
 
         return Lbry.buildClaimSearchOptions(
-                null,
+                (List) null,
                 null,
                 canShowMatureContent ? null : new ArrayList<>(Predefined.MATURE_TAGS),
                 Arrays.asList(channelId),
@@ -232,7 +233,7 @@ public class ChannelContentFragment extends Fragment implements DownloadActionLi
 
     private List<String> getContentSortOrder() {
         if (contentSortOrder == null) {
-            return Arrays.asList(Claim.ORDER_BY_RELEASE_TIME);
+            return Collections.singletonList(Claim.ORDER_BY_RELEASE_TIME);
         }
         return contentSortOrder;
     }

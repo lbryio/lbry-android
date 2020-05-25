@@ -407,7 +407,7 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
         }
 
         return Lbry.buildClaimSearchOptions(
-                null,
+                (List) null,
                 (currentContentScope == ContentScopeDialogFragment.ITEM_EVERYONE) ? null : tags,
                 canShowMatureContent ? null : new ArrayList<>(Predefined.MATURE_TAGS),
                 null,
