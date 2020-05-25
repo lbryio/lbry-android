@@ -1096,7 +1096,7 @@ public class PublishFormFragment extends BaseFragment implements
                 Bundle bundle = new Bundle();
                 bundle.putString("claim_id", claimResult.getClaimId());
                 bundle.putString("claim_name", claimResult.getName());
-                LbryAnalytics.logEvent(LbryAnalytics.EVENT_PUBLISH, bundle);
+                LbryAnalytics.logEvent(editMode ? LbryAnalytics.EVENT_PUBLISH_UPDATE : LbryAnalytics.EVENT_PUBLISH, bundle);
 
                 Context context = getContext();
                 if (context instanceof MainActivity) {

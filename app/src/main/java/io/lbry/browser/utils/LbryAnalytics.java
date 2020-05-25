@@ -23,6 +23,7 @@ public class LbryAnalytics {
     public static final String EVENT_TAG_FOLLOW = "tag_follow";
     public static final String EVENT_TAG_UNFOLLOW = "tag_unfollow";
     public static final String EVENT_PUBLISH = "publish";
+    public static final String EVENT_PUBLISH_UPDATE = "publish_update";
     public static final String EVENT_CHANNEL_CREATE = "channel_create";
     public static final String EVENT_SEARCH = "search";
 
