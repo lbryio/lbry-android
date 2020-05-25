@@ -314,7 +314,7 @@ public class LibraryFragment extends BaseFragment implements
         if (contentListAdapter != null) {
             contentListAdapter.setHideFee(true);
             contentListAdapter.clearItems();
-            contentListAdapter.setCanEnterSelectionMode(true);
+            contentListAdapter.setCanEnterSelectionMode(false);
         }
         listReachedEnd = false;
 
@@ -353,7 +353,7 @@ public class LibraryFragment extends BaseFragment implements
 
     private void initContentListAdapter(List<Claim> claims) {
         contentListAdapter = new ClaimListAdapter(claims, getContext());
-        contentListAdapter.setCanEnterSelectionMode(true);
+        contentListAdapter.setCanEnterSelectionMode(currentFilter == FILTER_DOWNLOADS);
         contentListAdapter.setSelectionModeListener(this);
         contentListAdapter.setHideFee(currentFilter != FILTER_PURCHASES);
         contentListAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {

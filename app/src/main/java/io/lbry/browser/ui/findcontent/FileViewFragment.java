@@ -480,7 +480,11 @@ public class FileViewFragment extends BaseFragment implements
                 if (files.size() > 0) {
                     claim.setFile(files.get(0));
                     checkIsFileComplete();
+                    if (!claim.isPlayable() && !claim.isViewable()) {
+                        showUnsupportedView();
+                    }
                 }
+
                 initialFileLoadDone = true;
             }
 
@@ -1241,23 +1245,32 @@ public class FileViewFragment extends BaseFragment implements
             } else {
                 mainActionButton.setText(R.string.download);
             }
+        }
 
-            if (claim.isFree()) {
-                if (claim.isPlayable()) {
-                    if (MainActivity.nowPlayingClaim != null && MainActivity.nowPlayingClaim.getClaimId().equalsIgnoreCase(claim.getClaimId())) {
-                        // claim already playing
-                        showExoplayerView();
-                        playMedia();
-                    } else {
-                        onMainActionButtonClicked();
-                    }
-                } else if (claim.isViewable() && Lbry.SDK_READY) {
+        if (claim.isFree()) {
+            if (claim.isPlayable()) {
+                if (MainActivity.nowPlayingClaim != null && MainActivity.nowPlayingClaim.getClaimId().equalsIgnoreCase(claim.getClaimId())) {
+                    // claim already playing
+                    showExoplayerView();
+                    playMedia();
+                } else {
                     onMainActionButtonClicked();
-                } else if (!Lbry.SDK_READY) {
-                    restoreMainActionButton();
                 }
-            } else {
+            } else if (claim.isViewable() && Lbry.SDK_READY) {
+                onMainActionButtonClicked();
+            } else if (!Lbry.SDK_READY) {
                 restoreMainActionButton();
+            }
+        } else {
+            restoreMainActionButton();
+        }
+
+        if (Lbry.SDK_READY && !claim.isPlayable() && !claim.isViewable()) {
+            if (claim.getFile() == null) {
+                loadFile();
+            } else {
+                // file already loaded, but it's unsupported
+                showUnsupportedView();
             }
         }
 
@@ -1276,15 +1289,18 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void showUnsupportedView() {
-        getView().findViewById(R.id.file_view_exoplayer_container).setVisibility(View.GONE);
-        getView().findViewById(R.id.file_view_unsupported_container).setVisibility(View.VISIBLE);
-        String fileNameString = "";
-        if (claim.getFile() != null) {
-            LbryFile lbryFile = claim.getFile();
-            File file = new File(lbryFile.getDownloadPath());
-            fileNameString = String.format("\"%s\" ", file.getName());
+        View root = getView();
+        if (root != null) {
+            root.findViewById(R.id.file_view_exoplayer_container).setVisibility(View.GONE);
+            root.findViewById(R.id.file_view_unsupported_container).setVisibility(View.VISIBLE);
+            String fileNameString = "";
+            if (claim.getFile() != null) {
+                LbryFile lbryFile = claim.getFile();
+                File file = new File(lbryFile.getDownloadPath());
+                fileNameString = String.format("\"%s\" ", file.getName());
+            }
+            ((TextView) root.findViewById(R.id.file_view_unsupported_text)).setText(getString(R.string.unsupported_content_desc, fileNameString));
         }
-        ((TextView) getView().findViewById(R.id.file_view_unsupported_text)).setText(getString(R.string.unsupported_content_desc, fileNameString));
     }
 
     private void showExoplayerView() {
@@ -1504,6 +1520,7 @@ public class FileViewFragment extends BaseFragment implements
 
     private void tryOpenFileOrFileGet() {
         if (claim != null) {
+            android.util.Log.d("#HELP", "TryOpenOrGetFile?");
             String claimId = claim.getClaimId();
             FileListTask task = new FileListTask(claimId, null, new FileListTask.FileListResultHandler() {
                 @Override
@@ -1615,6 +1632,7 @@ public class FileViewFragment extends BaseFragment implements
     private void playOrViewMedia() {
         boolean handled = false;
         String mediaType = claim.getMediaType();
+        android.util.Log.d("#HELP", "mediaType=" + mediaType);
         if (!Helper.isNullOrEmpty(mediaType)) {
             if (claim.isPlayable()) {
                 startTimeMillis = System.currentTimeMillis();
@@ -1667,7 +1685,9 @@ public class FileViewFragment extends BaseFragment implements
             }
         }
 
+        android.util.Log.d("#HELP", "handled=" + handled);
         if (!handled) {
+            android.util.Log.d("#HELP", "showing unsupported view?");
             showUnsupportedView();
         }
     }

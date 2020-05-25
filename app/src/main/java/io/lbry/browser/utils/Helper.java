@@ -322,7 +322,7 @@ public final class Helper {
     }
 
     public static String getValue(CharSequence cs) {
-        return cs != null ? cs.toString() : "";
+        return cs != null ? cs.toString().trim() : "";
     }
 
     public static List<String> buildContentSortOrder(int sortBy) {
