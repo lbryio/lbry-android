@@ -1,0 +1,585 @@
+<resources>
+    <string name="app_name">LBRY</string>
+    <string name="navigation_drawer_open">Ava navigatsiooniriba</string>
+    <string name="navigation_drawer_close">Sulge navigatsiooniriba</string>
+
+    <!-- Nav menu -->
+    <string name="find_content">Otsi materjale</string>
+    <string name="your_content">Sinu materjalid</string>
+    <string name="wallet">Rahakott</string>
+    <string name="following">Jälgimisel</string>
+    <string name="editors_choice">Toimetaja valik</string>
+    <string name="your_tags">Sinu sildid</string>
+    <string name="all_content">Kõik materjalid</string>
+    <string name="channels">Kanalid</string>
+    <string name="library">Raamatukogu</string>
+    <string name="publishes">Avaldamised</string>
+    <string name="new_publish">Uus avaldamine</string>
+    <string name="rewards">Preemiad</string>
+    <string name="invites">Kutsed</string>
+    <string name="settings">Seaded</string>
+    <string name="about">Teave</string>
+    <string name="sign_in">Logi sisse</string>
+    <string name="startup_failed">Käivitumine ebaõnnestus. Kontrolli kas su andmesideühendus töötab ja proovi uuesti. Kui probleem püsib, saada palun email aadressile hello@lbry.com</string>
+    <string name="no_claim_search_content">Siin pole hetkel veel sisu. Palun täpsusta oma valikuid või vaata siia hiljem uuesti.</string>
+
+    <!-- Welcome Page -->
+    <string name="welcome_to_lbry">Tere tulemast LBRY -sse.</string>
+    <string name="welcome_paragraph">LBRY on kasutajate kontrolli all olev avaldamisplatvorm, kust võib leida ja kus saab ise avaldada videoid, muusikat, raamatuid ja palju muud.</string>
+    <string name="welcome_tos">Jätkates nõustute &lt;a href=\"https://lbry.com/termsofservice\"&gt;kasutustingimustega&lt;/a&gt; ja kinnitate, et olete vanem kui 13.</string>
+    <string name="welcome_please_wait">Palun oota, seame esiteks mõned asjad joonde...</string>
+    <string name="use_lbry">LBRYt kasutama</string>
+
+    <!-- URI bar -->
+    <string name="uri_placeholder">Otsi filme, muusikat ja muud</string>
+
+    <!-- Following page -->
+    <string name="find_channels_to_follow">Otsi kanaleid jälgimisse</string>
+    <string name="channels_you_follow">Kanalid mida jälgid</string>
+    <string name="discover">Avasta</string>
+    <string name="lbry_works_better">LBRY töötab paremini, kui sul on jälgimises vähemalt 5 kanalit. Sisse logides näed kanaleid mis sul juba on jälgimisel.</string>
+    <string name="select_five_subscriptions">Jätkamiseks vali kuni 5 autorit.</string>
+    <string name="n_remaining">%1$d jäänud...</string>
+    <string name="done">Tehtud</string>
+    <string name="all">Kõik</string>
+    <string name="discover_channels">Avasta uusi kanaleid</string>
+
+    <!-- Claim lists -->
+    <string name="anonymous">Anonüümne</string>
+
+    <!-- File view -->
+    <string name="tags">Sildid</string>
+    <string name="share">Jaga</string>
+    <string name="repost">Taaspostitus</string>
+    <string name="tip">Jootraha</string>
+    <string name="edit">Muuda</string>
+    <string name="delete">Kustuta</string>
+    <string name="download">Lae alla</string>
+    <string name="open">Ava</string>
+    <string name="report">Raporteeri</string>
+    <string name="loading_decentralized_data">Laen detsentraliseeritud andmeid...</string>
+    <string name="related_content">Seotud materjalid</string>
+    <string name="share_lbry_content">Jaga LBRY materjale</string>
+    <string name="view">Kuva</string>
+    <string name="play">Mängi</string>
+    <string name="unsupported_content">Sisutüüp pole toetatud</string>
+    <string name="unsupported_content_desc">Vabandust, seda sisutüüpi ei saa meie rakendus kuvada. Fail %1$s asub sinu allalaadimiste kataloogis.</string>
+    <string name="nothing_at_this_location">Selles asukohas pole midagi.</string>
+    <string name="publish_something_here">Avalda siin midagi</string>
+    <string name="cannot_view_claim">See materjal pole hetkel kättesaadav. Proovi hiljem uuesti.</string>
+    <string name="zero_duration">0:00</string>
+    <string name="claim_file_not_found">Faili teekonnal %1$s\" ei eksisteeri.</string>
+    <string name="confirm_purchase">Kinnita ost</string>
+    <string name="delete_file">Kustuta fail</string>
+    <string name="confirm_delete_file_message">Oled kindel, et soovid seda faili siit seadmest kustutada?</string>
+    <string name="unable_to_view_url">Faili %1$s laadimine ebaõnnestus. Palun proovi hiljem uuesti.</string>
+    <string name="no_cast_session_available">Hetkel pole ühtegi saatesessiooni saadaval.</string>
+    <string name="delete_content">Kustutan selle materjali?</string>
+    <string name="confirm_delete_content_message">Kindel, et tahad selle postituse tühistada? Ühtegi faili selle käigus su seadmest ei kustutata.</string>
+    <string name="content_deleted">Postitus sai edukalt plokiahelas tühistatud.</string>
+    <string name="content_failed_delete">Postitust ei saanud hetkel kustutada. Proovi palun hiljem uuesti.</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s vaatamist</item>
+        <item quantity="other">%1$s vaatamist</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Sellega ostad \"%1$s\" hinnaga %2$s LBC</item>
+        <item quantity="other">Sellega ostad \"%1$s\" hinnaga %2$s LBC</item>
+    </plurals>
+
+    <!-- Channel view -->
+    <string name="no_channel_info">Siin pole praegu midagi.\nPalun proovi hiljem uuesti.</string>
+    <string name="content">Sisu</string>
+    <string name="website">Veebileht</string>
+    <string name="reposted">taaspostitatud</string>
+    <plurals name="follower_count">
+        <item quantity="one">%1$s jälgib</item>
+        <item quantity="other">%1$s jälgivad</item>
+    </plurals>
+
+    <!-- Publish -->
+    <string name="record">Salvesta</string>
+    <string name="take_photo">Tee foto</string>
+    <string name="upload_file">Lae fail üles</string>
+    <string name="no_videos_found">Sinu seadmes ei leidunud videosid. Alustamiseks tee foto või salvesta video.</string>
+    <string name="loading_videos">Laen sinu videosid...</string>
+    <string name="storage_permission_rationale_videos">Failide postitamiseks ja näitamiseks vajab LBRY ligipääsu sinu failidele.</string>
+    <string name="camera_permission_rationale_record">Videosalvestuse võimaldamiseks vajab LBRY ligipääsu kaamerale.</string>
+    <string name="camera_permission_rationale_photo">Fotode tegemiseks vajab LBRY ligipääsu sinu kaamerale.</string>
+    <string name="edit_content">Muuda postitust</string>
+    <string name="mature_tags">Täiskasvanuile -sildid</string>
+    <string name="price">Hind</string>
+    <string name="free_publish">Postitus on tasuta. Kliki siin, et seada talle hind.</string>
+    <string name="content_address">Postituse aadress</string>
+    <string name="randomize">Juhuvalik</string>
+    <string name="address">Aadress</string>
+    <string name="content_address_desc">Aadress kust Sinu postitused on leitavad (nt. lbry://myvideo).</string>
+    <string name="license">Litsents</string>
+    <string name="license_desc">Litsentsi kirjeldus</string>
+    <string name="additional_options">Lisavõimalused</string>
+    <string name="show_extra_fields">Näita lisavälju</string>
+    <string name="hide_extra_fields">Varja lisaväljad</string>
+    <string name="no_file_found">Faili ei leidunud.</string>
+    <string name="video_optimization">Video optimeerimine</string>
+    <string name="thumbnail_creation_failed">Pisipilti ei saanud automaatselt tekitada sinu lähtefailist.</string>
+    <string name="video_being_optimized">Sinu videot optimeeritakse. Kuniks see töötab, võid täita ära ülejäänud vormiväljad.</string>
+    <string name="video_optimized">Sinu video sai edukalt optimeeritud. Jätka oma postituse avaldamisega.</string>
+    <string name="video_optimize_failed">Sinu videot ei saanud optimeerida. Fail laetakse üles algsel kujul.</string>
+    <string name="completed_video_duration">Video töödeldud: %1$s</string>
+    <string name="sdk_initializing_publish">Hetkel ei saa postitada, taustateenused pole veel käivitunud.</string>
+    <string name="publish_successful">Sinu postitus sai eddukalt avaldatud. See võib võtta paar minutit, et plokiahelas kajastuda.</string>
+    <string name="transcode_in_progress">Video optimeerimine on käimas. Kui soovid, võid selle peatada, vajutades Loobu -nuppu lehe allservas.</string>
+    <string name="optimization_in_progress">Video optimeerimine käib.</string>
+    <string name="cannot_capture_video">Video salvestamiseks ei leidunud siin seadmes kaamerarakendust.</string>
+    <string name="cannot_take_photo">Kaamera rakendus pole saadaval.</string>
+
+    <string name="please_provide_title">Palun sisesta pealkiri.</string>
+    <string name="please_specify_address">Täpsusta aadress, kust inimesed sinu materjale leiavad.</string>
+    <string name="address_invalid_characters">Sinu sisuaadress sisaldab lubamatuid tähemärke.</string>
+    <string name="address_already_used">Siia aadressile oled sa juba postitanud. Sisesta palun uus aadress.</string>
+    <string name="no_file_selected">Faili pole valitud. Palun salvesta video või foto või vali mõni olemasolevaist failidest.</string>
+    <string name="price_amount_not_set">Sisesta hind või lülita see väljaa, et oma postitust tasuta jagada.</string>
+    <string name="publish_no_thumbnail">Palun vali pisipilt enne üleslaadimist.</string>
+    <string name="publish_thumbnail_in_progress">Palun oota, et pisipilt üleslaetud saaks enne kui jätkad.</string>
+
+    <string name="language">Keel</string>
+    <string name="english">Inglise</string>
+    <string name="chinese">Hiina</string>
+    <string name="french">Prantsuse</string>
+    <string name="german">Saksa</string>
+    <string name="japanese">Jaapani</string>
+    <string name="russian">Vene</string>
+    <string name="spanish">Hispaania</string>
+    <string name="indonesian">Indoneesia</string>
+    <string name="italian">Itaalia</string>
+    <string name="dutch">Hollandi</string>
+    <string name="turkish">Türgi</string>
+    <string name="polish">Poola</string>
+    <string name="malay">Malai</string>
+    <string name="portuguese">Portugali</string>
+    <string name="vietnamese">Vietnami</string>
+    <string name="thai">Tai</string>
+    <string name="arabic">Araabia</string>
+    <string name="czech">Tšehhi</string>
+    <string name="croatian">Horvaatia</string>
+    <string name="cambodian">Kambodža</string>
+    <string name="korean">Korea</string>
+    <string name="norwegian">Norra</string>
+    <string name="romanian">Rumeenia</string>
+    <string name="hindi">Hindi</string>
+    <string name="greek">Kreeka</string>
+
+    <string name="none">Puudub</string>
+    <string name="public_domain">Üldkasutatav</string>
+    <string name="copyrighted">Autoriõigusega kaitstud</string>
+    <string name="cca_4_0_international">Creative Commons Autorile viitamine 4.0 International</string>
+    <string name="cca_sa_4_0_international">Creative Commons Autorile viitamine, jagamine samadel tingimustel 4.0 International</string>
+    <string name="cca_nd_4_0_international">Creative Commons Autorile viitamine, tuletatud teoste keeld 4.0 International</string>
+    <string name="cca_nc_4_0_international">Creative Commons Autorile viitamine, mitteäriline eesmärk  4.0 International</string>
+    <string name="cca_nc_sa_4_0_international">Creative Commons Autorile viitamine, mitteäriline eesmärk, jagamine samadel tingimustel  4.0 International</string>
+    <string name="cca_nc_nd_4_0_international">Creative Commons Autorile viitamine, mitteäriline eesmärk, tuletatud teoste keeld 4.0 International</string>
+
+    <string-array name="publish_currencies">
+        <item>LBC</item>
+        <item>USD</item>
+    </string-array>
+
+    <!-- Publishes -->
+    <string name="one_or_more_publishes_failed_abandon">Üht või mitut sisuelementi ei suudetud hetkel kustutada. Palun proovi hiljem uuesti.</string>
+    <plurals name="confirm_delete_publishes">
+        <item quantity="one">Kindel, et soovid valitud sisuelemendi kustutada?</item>
+        <item quantity="other">Kindel, et soovid valitud sisuelemendid kustutada?</item>
+    </plurals>
+    <plurals name="publishes_deleted">
+        <item quantity="one">Sisuelement sai edukalt kustutatud.</item>
+        <item quantity="other">Sisuelemendid said edukalt kustutatud.</item>
+    </plurals>
+
+    <!-- Splash -->
+    <string name="oops_something_went_wrong">Vabandust, midagi läks valesti.</string>
+    <string name="installation_id_loaded">Installi ID laetud.</string>
+    <string name="known_tags_loaded">Laadisin kasutuselolevad sildid.</string>
+    <string name="exchange_rate_loaded">Laadisin LBC/USD vahetuskursi.</string>
+    <string name="user_authenticated">Kasutaja autenditud.</string>
+    <string name="installation_registered">Install registreeritud.</string>
+    <string name="subscriptions_loaded">Tellimused laetud.</string>
+    <string name="subscriptions_resolved">Tellimusaadressid lahendatud.</string>
+
+    <!-- Settings -->
+    <string name="user_interface">Sisu &amp; Kasutajaliides</string>
+    <string name="other">Muud</string>
+    <string name="enable_dark_mode">Lülita tume värviskeem sisse.</string>
+    <string name="show_mature_content">Näita täiskasvanuile mṍeldud sisu</string>
+    <string name="show_url_suggestions">Näita URLi soovitusi</string>
+    <string name="notifications">Teavitused</string>
+    <string name="subscriptions">Tellimused</string>
+    <string name="content_interests">Sisuhuvid</string>
+
+    <string name="keep_sdk_in_background">Hoia LBRY taustateenus käimas peale rakenduse sulgemist, abistamaks parandada LBRY võrgu jõudlust.</string>
+    <string name="participate_in_data_network">Osale LBRY andmeside võrgus (vajab rakenduse ja taustateenuste restarti)</string>
+
+    <!-- URL suggestions -->
+    <string name="search_url_title">%1$s - otsing</string>
+    <string name="tag_url_title">%1$s - silt</string>
+    <string name="search_url_desc">Otsi \'%1$s\'</string>
+    <string name="explore_tag_url_desc">Sirvi \'%1$s\' sildiga materjale</string>
+    <string name="view_file_url_desc">Vaata sisu aadressil %1$s</string>
+    <string name="view_channel_url_desc">Vaata kanalit %1$s</string>
+
+    <!-- Search -->
+    <string name="search_no_results">Vasteid ei leitud otsingule \'%1$s\'. Palun sisesta muu otsingutermin.</string>
+    <string name="search_no_query">Sa võid otsida igat tüüpi materjale, kaasa arvatud filmid, videod, muusika, e-raamatud, tarkvara ja muu.</string>
+    <string name="no_related_content">Seostuvat sisu ei leitud.</string>
+
+    <!-- Wallet -->
+    <string name="balance">Saldo</string>
+    <string name="you_currently_have">Hetkel on sul</string>
+    <string name="convert_credits">Valuutavahetustes saad vahetada oma LBC raha USD vastu ja selle välja võtta. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Loe lisa&lt;/a&gt;.</string>
+    <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Valuutavahetus Bittrex LBC > USD&lt;/a&gt;</string>
+    <string name="you_also_have">Lisaks on sul</string>
+    <string name="you_staked">Sul on panused</string>
+    <string name="in_tips">jootrahana</string>
+    <string name="in_your_publishes">sinu postitustes</string>
+    <string name="in_your_supports">sinu toetustes</string>
+    <string name="earn_more_tips">Teeni lisapreemiaid laadides üles huvitavaid videosid</string>
+    <string name="sdk_initializing">Taustateenus käivitub...</string>
+    <string name="sdk_still_initializing">Taustateenus veel stardib. Võid seniks postitusi sirvida.</string>
+    <string name="sdk_initializing_functionality">Seda ei saa hetkel teha, kuna taustateenus pole veel käivitunud.</string>
+
+    <string name="backup_synced">Rahakoti varukoopia on sünkroniseeritud lbry.tv saidiga.</string>
+    <string name="backup_notsynced">Hetkel pole sinu rahakott sünkroniseeritud lbry.tv -ga. Sinu vastutada jääb rahakotist varukoopia tegemine.</string>
+    <string name="synced_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/account-sync\"&gt;Mida see tähendab?&lt;/a&gt;</string>
+    <string name="backup_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Mida see tähendab?&lt;/a&gt;</string>
+
+    <string name="receive_credits">Võta rahasaadetis vastu</string>
+    <string name="use_this_address_hint">Kasuta seda rahakoti aadressi rahasaadetiste vastuvõtuks.</string>
+    <string name="get_new_address">Tekita rahakotile uus aadress</string>
+    <string name="generate_address_hint">Uusi aadresse saad luua igal ajal, eelmised aadressid jätkavad samuti töötamist. Mitme aadressi kasutamine võib aidata sorteerida sissetulekuid, mis laekuvad mitmest erinevast allikast.</string>
+
+    <string name="send_credits">Saada LBC</string>
+    <string name="recipient_address">Saaja aadress</string>
+    <string name="recipient_address_placeholder">bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs</string>
+    <string name="amount">Summa</string>
+    <string name="send">Saada</string>
+
+    <string name="recent_transactions">Viimatised tehingud</string>
+    <string name="view_all">Näita kõiki</string>
+    <string name="receive">Laekumine</string>
+    <string name="spend">Kulutamine</string>
+    <string name="publish">Postitamine</string>
+    <string name="support">Toetus</string>
+    <string name="abandon">Loobumine</string>
+    <string name="channel">Kanal</string>
+    <string name="channel_update">Kanali uuendus</string>
+    <string name="publish_update">Postituse uuendus</string>
+
+    <string name="wallet_sync">Rahakoti sünkroniseerimine</string>
+    <string name="sync_status">Sünkroniseerimise staatus</string>
+    <string name="on">Sees</string>
+    <string name="off">Väljas</string>
+    <string name="email">Email</string>
+    <string name="no_connected_email">Emailiaadressi pole seostatud</string>
+    <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Käsitsi varukoopia&lt;/a&gt;</string>
+    <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync KKK&lt;/a&gt;</string>
+    <string name="zero">0</string>
+    <string name="lbc">LBC</string>
+
+    <string name="account_recommended">Soovitame konto loomist</string>
+    <string name="wallet_account_desc">Konto lbry.tv saidil võimaldab sul teenida preemiaid, teha varukoopiat oma rahakotist ja rakenduse seadeid sünkroniseerida.</string>
+    <string name="wallet_without_account">Ilma kontota jääb sinu vastutusele rahakoti varukoopia tegemine.</string>
+    <string name="skip_account">Jäta konto loomine vahele</string>
+    <string name="sign_up">Loo konto</string>
+    <string name="address_copied">Aadress kopeeritud</string>
+
+    <string name="invalid_recipient_address">Palun sisesta aadress, kuhu raha saata</string>
+    <string name="insufficient_balance">Ebapiisav saldo</string>
+    <string name="invalid_amount">Palun sisesta summa</string>
+    <string name="send_credit_error">Raha ei õnnestunud hetkel saata. Palun proovi hiljem uuesti.</string>
+    <string name="loading_transactions">Laen tehinguid...</string>
+    <string name="no_recent_transactions">Viimatiseid kandeid pole.</string>
+    <string name="no_transactions">Kandeid pole.</string>
+    <string name="tx_list_fee">teenustasu %1$s</string>
+    <string name="transaction_history">Tehingute ajalugu</string>
+
+    <string name="unlock">Ava</string>
+    <string name="unlock_tips">Lukustan jootrahad lahti?</string>
+    <string name="confirm_unlock_tips">Kindel, et soovid kõiki oma jootrahasid lahtilukustada?</string>
+
+    <plurals name="you_sent_credits">
+        <item quantity="one">Saatsid %1$s LBC</item>
+        <item quantity="other">Saatsid %1$s LBC</item>
+    </plurals>
+
+    <!-- Dialogs -->
+    <string name="customize_your_tags">Muuda oma silte</string>
+    <string name="sort_content_by">Sorteeri postitusi</string>
+    <string name="content_from">Materjalid autorilt</string>
+    <string name="trending_content">Populaarsed</string>
+    <string name="new_content">Uued</string>
+    <string name="top_content">Populaarsed</string>
+    <string name="trending">Populaarsed</string>
+    <string name="top">Populaarsed</string>
+    <string name="new_text">Uued</string>
+    <string name="past_24_hours">Viimased 24 tundi</string>
+    <string name="past_week">Viimane nädal</string>
+    <string name="past_month">Viimane kuu</string>
+    <string name="past_year">Viimane aasta</string>
+    <string name="all_time">Kogu ajalugu</string>
+    <string name="from">kellelt</string>
+    <string name="for_text">kellele</string>
+    <string name="filter_for">Filtreeri</string>
+    <string name="everyone">Kõik kasutajad</string>
+    <string name="tags_you_follow">Sinu jälgitavad sildid</string>
+    <string name="customize">Seadista</string>
+    <string name="not_yet_implemented">Sinu valitud vaade pole veel saadaval.</string>
+    <string name="customize_tags_hint">Paistab, et sul pole veel ühtegi silti jälgimises.</string>
+    <string name="search_for_more_tags">Otsi veel silte</string>
+    <string name="no_followed_tags">Sa ei jälgi veel ühtegi silti. Alustuseks lisa sildid, millistest huvitatud oled.</string>
+    <string name="no_tag_results">Ei leidnud ühtegi silti, mis sul jälgimises poleks.</string>
+    <string name="tag_already_added">Silt \'%1$s\' on juba lisatud.</string>
+    <string name="tag_limit_reached">Rohkem kui 5 sildi lisamine pole võimalik.</string>
+    <string name="send_a_tip">Saada jootraha</string>
+    <string name="send_a_tip_to">Saada jootraha %1$s</string>
+    <string name="send_tip_info_content">See ilmub sinu tehingute nimekirja kui jootraha %1$s jaoks, mis suurendab selle leitavust. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Loe lisa&lt;/a&gt;.</string>
+    <string name="send_tip_info_channel">See ilmub sinu tehingute nimekirja kui jootraha %1$s jaoks, mis suurendab selle kanali leitavust. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Loe lisa&lt;/a&gt;.</string>
+    <string name="cancel">Loobu</string>
+    <string name="repost_title">Taaspostita %1$s</string>
+    <string name="repost_your_favorite">Taaspostita oma lemmikmaterjale, et aidata neil jõuda enamate inimesteni!</string>
+    <string name="channel_to_post_on">Kanal kuhu postitada</string>
+    <string name="show_advanced">Näita lisaseadeid</string>
+    <string name="hide_advanced">Varja lisaseaded</string>
+    <string name="name">Nimi</string>
+    <string name="min_deposit">0,001</string>
+    <string name="content_successfully_reposted">See materjal sai edukalt taaspostitatud!</string>
+    <string name="repost_name_invalid_characters">Taaspostituse nimi sisaldab lubamatuid tähemärke.</string>
+    <plurals name="you_sent_a_tip">
+        <item quantity="one">Saatsid jootraha summas %1$s, tänud!</item>
+        <item quantity="other">Saatsid jootraha summas %1$s, tänud!</item>
+    </plurals>
+
+    <!-- Verification -->
+    <string name="provide_email_address">Palun sisesta emailiaadress.</string>
+    <string name="email_placeholder">you@example.com</string>
+    <string name="email_sent_to">Email saadetud aadressile</string>
+    <string name="please_click_link">Sisselogimiseks kliki lingil, mille leiad emailist.</string>
+    <string name="resend">Saada uuesti</string>
+    <string name="continue_text">Jätka</string>
+    <string name="provide_valid_email">Sisesta kehtiv emailiaadress</string>
+    <string name="please_follow_instructions">Jätkamiseks järgi juhiseid, mis me sinu emailile saatsime.</string>
+    <string name="sign_in_successful">Oled edukalt lbry.tv saidile sisse loginud.</string>
+    <string name="retrieving_account_information">Laen konto infot...</string>
+    <string name="apply_wallet_data">Töötlen rahakoti andmeid...</string>
+    <string name="please_enter_your_password">Sisesta salasõna oma rahakoti dekrüptimiseks.</string>
+    <string name="please_enter_a_password">Sisesta salasõna oma rahakoti enkrüptimiseks.</string>
+    <string name="wallet_security_purposes">Infoks: rahakoti turvalisuse huvides ei saa LBRY sinu salasõna muuta ega tühistada.</string>
+    <string name="password">Salasõna</string>
+    <string name="enable_sync">Lülita sünkroniseerimine sisse</string>
+    <string name="wallet_sync_op_failed">Rahakoti sünkroniseerimine hetkel ei õnnestunud. Palun proovi hiljem uuesti. Kui see probleem jätkub, kirjuta palun aadressile hello@lbry.com</string>
+    <string name="phone_number">Telefoninumber</string>
+    <string name="enter_phone_number">Palun sisesta oma telefoninumber.</string>
+    <string name="not_interested">Pole huvitatud</string>
+    <string name="manual_reward_verification">Käsitsi preemiaprogrammi verifitseerimine</string>
+    <string name="account_undergo_review">See konto vajab ülevaatust, enne kui sa saad osaleda preemiaprogrammis. Protsess võib kesta mõnest minutist kuni mõne päevani.</string>
+    <string name="request_to_be_verified">Kui see teade püsib, siis soovitame küsida manuaalset verifitseerimist &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord serveris&lt;/a&gt;.</string>
+    <string name="enjoy_free_content">Seniks nautige tasuta postitusi!</string>
+    <string name="verify_phone_number">Kinnita telefoninumber</string>
+    <string name="enter_phone_verify_code">Sisesta kinnituskood, mis saadeti %1$s</string>
+    <string name="code_placeholder">0000</string>
+    <string name="verify">Kinnita</string>
+    <string name="please_enter_valid_phone">Sisesta kehtiv telefoninumber.</string>
+    <string name="please_enter_verification_code">Sisesta kinnituskood mis saadeti sinu telefonile.</string>
+
+    <!-- Forms -->
+    <string name="no_added_tags">Sul pole lisatud ühtegi silti. Lisa neid, et parandada oma postituse leitavust.</string>
+    <string name="form_no_tag_results">Ei leidnud ühtegi silti, mis pole veel lisatud.</string>
+
+    <!-- Channels -->
+    <string name="no_channel_created">Sa pole veel kanalit loonud.\nAlustuseks tekita uus kanal.</string>
+    <string name="create_a_channel">Tekita kanal</string>
+    <string name="create_a_channel_item">Tekita kanal...</string>
+    <string name="edit_channel">Muuda kanalit</string>
+    <string name="delete_selection">Kustutan valitud?</string>
+    <string name="delete_channel">Kustutan kanali?</string>
+    <string name="confirm_delete_channel">Kindel, et soovid seda kanalit kustutada?</string>
+    <string name="channel_deleted">Kanal sai edukalt kustutatud.</string>
+    <string name="channel_failed_delete">Kanali kustutamine hetkel ebaaõnnestus. Proovi palun hiljem uuesti.</string>
+    <string name="description">Kirjeldus</string>
+    <string name="yes">Jah</string>
+    <string name="no">Ei</string>
+    <string name="show_optional_fields">Näita lisavälju</string>
+    <string name="hide_optional_fields">Peida lisaväljad</string>
+    <string name="save">Salvesta</string>
+    <string name="channel_name">Kanali nimi</string>
+    <string name="title">Pealkiri</string>
+    <string name="at">\@</string>
+    <string name="deposit">Deposiit</string>
+    <string name="deposit_remains_yours">LBC jääb sinu omaks. See on hoiustatud nime reserveerimiseks ja seda saab igal ajal tühistada.</string>
+    <string name="storage_permission_rationale_download">Failide allalaadimiseks vajab LBRY ligipääsu sinu failidele.</string>
+    <string name="storage_permission_rationale_images">Piltide laadimiseks vajab LBRY rakendus ligipääsu salvestusseadmele.</string>
+    <string name="select_thumbnail">Vali pisipilt</string>
+    <string name="select_cover">Vali kaanepilt</string>
+    <string name="undetermined_image_filepath">Valitud pildi teekonda ei suudetud tuvastada. Palun vali pilt mõnes muus asukohas.</string>
+    <string name="wait_for_upload">Palun oota kuni käimasolev üleslaadimine lõpetab.</string>
+    <string name="image_upload_failed">Pildi üleslaadimine ebaõnnestus. Palun proovi uuesti.</string>
+    <string name="uploading">Laen üles...</string>
+    <string name="please_enter_channel_name">Sisesta kanalinimi.</string>
+    <string name="channel_name_invalid_characters">Kanalinimi sisaldab ebasobivaid tähemärke.</string>
+    <string name="channel_name_already_created">Oled sellenimelise kanali juba tekitanud.</string>
+    <string name="please_enter_valid_deposit">Sisesta deposiidi summa.</string>
+    <string name="deposit_more_than_balance">Deposiit ei saa olla suurem kui saldo.</string>
+    <string name="channel_save_failed">Kanali salvestamise päring ebaõnnestus. Palun proovi uuesti.</string>
+    <string name="channel_save_successful">Kanal edukalt salvestatud.</string>
+    <string name="item_pending_blockchain">Taotletud aadress on plokiahelasse avaldamise ootel. Saad seda kasutada mõne hetke pärast.</string>
+    <string name="pending">Ootel</string>
+    <string name="create">Tekita</string>
+    <string name="one_or_more_channels_failed_abandon">Üks või mitu kanalit jäid hetkel kustutamata. Palun proovi hiljem uuesti.</string>
+    <plurals name="min_deposit_required">
+        <item quantity="one">Minimaalne vajalik deposiit on %1$s LBC.</item>
+        <item quantity="other">Minimaalne vajalik deposiit on %1$s LBC.</item>
+    </plurals>
+    <plurals name="confirm_delete_channels">
+        <item quantity="one">Oled kindel, et soovid valitud kanali kustutada?</item>
+        <item quantity="other">Oled kindel, et soovid valitud kanalid kustutada?</item>
+    </plurals>
+    <plurals name="channels_deleted">
+        <item quantity="one">Kanal edukalt kustutatud.</item>
+        <item quantity="other">Kanalid edukalt kustutatud.</item>
+    </plurals>
+
+    <!-- Rewards -->
+    <string name="lbry_credits_allow">LBRY raha LBC võimaldab sul avaldada või osta avaldatud materjale.</string>
+    <string name="free_credits_worth">Pakume sulle %1$s LBC kui registreerid oma emailiaadressi.</string>
+    <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Loe lisa&lt;/a&gt;.</string>
+    <string name="get_started">Alusta siit</string>
+    <string name="reward_code_placeholder">abc123</string>
+    <string name="claim">Nõue</string>
+    <string name="please_enter_claim_code">Palun sisesta preemiakood.</string>
+    <string name="unclaimed">Lunastamata</string>
+    <string name="custom_reward_title">Preemiakood</string>
+    <string name="up_to">kuni</string>
+    <string name="custom_reward_description">Oled supermodell või rockstaar, et sulle anti preemiakood? Siin saad selle lunastada.</string>
+    <plurals name="claim_reward_message">
+        <item quantity="one">Sa lunastasid preemia väärtusega %1$s LBC.</item>
+        <item quantity="other">Sa lunastasid preemia väärtusega %1$s LBC.</item>
+    </plurals>
+    <plurals name="available_credits">
+        <item quantity="one">Saadaval on %1$s LBC</item>
+        <item quantity="other">Saadaval on %1$s LBC</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">Postitamiseks on vajalik LBRY raha LBC.</string>
+    <string name="channel_creation_requires_credits">Kanali loomine vajaab LBRY raha LBC.</string>
+    <string name="earn_rewards_for_inviting">Teeni preemiaid kutsudes oma sõpru LBRY-sse.</string>
+    <string name="earn_some_credits_to_access">Teeni preemiaid vaadates seda postitust.</string>
+    <string name="tap_here_to_get_some">Kliki siia, saad pisut tasuta raha.</string>
+    <string name="free_credits_available">Preemiate all on tasuta raha saadaval.</string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="one">%1$s tasuta LBC on preemiates saadaval.</item>
+        <item quantity="other">%1$s tasuta LBC on preemiates saadaval.</item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="one">Teeni %1$s tasuta LBC peale konto loomist.</item>
+        <item quantity="other">Teeni %1$s tasuta LBC peale konto loomist.</item>
+    </plurals>
+
+    <!-- Invites -->
+    <string name="lbry_invite_program">LBRY kutsete programm.</string>
+    <string name="earn_extra_credits_invites">Preemiaid võid teenida iga inimese kohta, kelle kutsud LBRY kasutajaks.</string>
+    <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;Loe lisa&lt;/a&gt;.</string>
+    <string name="invite_link">Kutse link</string>
+    <string name="share_this_link">Jaga seda oma sõpradega (või vaenlastega) ja teeni preemiaid kui nad liituvad lbry.tv -ga.</string>
+    <string name="your_invite_link">Sinu kutselink</string>
+    <string name="customize_invite_link">Muuda kutselinki</string>
+    <string name="invite_by_email">Kutse emailiga</string>
+    <string name="invite_someone">Kutsu sõber/tuttav LBRY kasutajaks emaili teel ja teeni preemia kui nad liituvad lbry.tv -ga.</string>
+    <string name="invite_email_placeholder">väljamõeldud@sõber.com</string>
+    <string name="invite">Kutse</string>
+    <string name="invite_history">Kutsete ajalugu</string>
+    <string name="earn_credits_for_inviting">Teeni preemiaid, kutsudes oma sõpru ja tuttavaid LBRY kasutajateks. Sisuvabadust on igaühel tarvis.</string>
+    <string name="reward">Preemia</string>
+    <string name="claimed">Lunastatud</string>
+    <string name="claimable">Lunastatav</string>
+    <string name="unclaimable">Mitte-lunastatav</string>
+    <string name="invite_link_copied">Kutse link kopeeritud.</string>
+    <string name="invite_sent_to">Kutse saadetud aadressile %1$s</string>
+
+    <!-- Library -->
+    <string name="downloads">Allalaadimised</string>
+    <string name="purchases">Ostud</string>
+    <string name="history">Ajalugu</string>
+    <string name="library_no_downloads">Siia seadmesse pole sa veel midagi alla laadinud.</string>
+    <string name="library_no_history">Sa pole selle seadmega veel midagi vaadanud.</string>
+    <string name="library_no_purchases">Sa pole veel ühtegi tasulist postitust ostnud oma kontole.</string>
+    <string name="hide">Varja</string>
+    <string name="stats">Statistika</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="images">Pildid</string>
+    <string name="mb">MB</string>
+    <string name="kb">KB</string>
+    <string name="gb">GB</string>
+    <string name="zero_mb">0MB</string>
+    <plurals name="confirm_delete_files">
+        <item quantity="one">Kindel, et soovid valitud faili oma seadmest kustutada?</item>
+        <item quantity="other">Kindel, et soovid valitud failid oma seadmest kustutada?</item>
+    </plurals>
+    <plurals name="files_deleted">
+        <item quantity="one">Fail sai edukalt kustutatud.</item>
+        <item quantity="other">Failid said edukalt kustutatud.</item>
+    </plurals>
+
+    <!-- About -->
+    <string name="about_lbry">Teave LBRY kohta</string>
+    <string name="content_freedom">Sisuvabadus</string>
+    <string name="about_paragraph">LBRY on vaba, avatud ja kasutajate hallatav digitaalne turg. See on detsentraliseeritud sisu-jagamise platvorm, kus autorid laevad üles ja jagavad oma materjale ning teenivad LBRY preemiaid oma töö eest. Kasutajad leiavad siit laias valikus videosid, muusikat, e-raamatuid ja muid digitaalseid materjale, mis neid huvitavad.</string>
+    <string name="get_social">Sotsiaalmeedia</string>
+    <string name="social_paragraph">LBRY meeskonna ja LBRY kasutajatega saab suhelda Discordis, Facebookis, Instagramis, Twitteris või Redditis.</string>
+    <string name="app_info">Rakenduse info</string>
+    <string name="loading">Laadin...</string>
+    <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;Mis on LBRY?&lt;/a&gt;</string>
+    <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Androidi põhiteadmised&lt;/a&gt;</string>
+    <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;KKK&lt;/a&gt;</string>
+    <string name="about_link_discord">&lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;Discord&lt;/a&gt;</string>
+    <string name="about_link_facebook">&lt;a href=\"https://www.facebook.com/LBRYio\"&gt;Facebook&lt;/a&gt;</string>
+    <string name="about_link_instagram">&lt;a href=\"https://www.instagram.com/LBRYio\"&gt;Instagram&lt;/a&gt;</string>
+    <string name="about_link_reddit">&lt;a href=\"https://reddit.com/r/lbry\"&gt;Reddit&lt;/a&gt;</string>
+    <string name="about_link_telegram">&lt;a href=\"https://t.me/lbryofficial\"&gt;Telegram&lt;/a&gt;</string>
+    <string name="about_link_twitter">&lt;a href=\"https://twitter.com/LBRYio\"&gt;Twitter&lt;/a&gt;</string>
+    <string name="update_mailing_preferences">Uuenda emaili-eelistusi</string>
+    <string name="app_version">Rakenduse versioon</string>
+    <string name="lbry_sdk">LBRY SDK</string>
+    <string name="platform">Platvorm</string>
+    <string name="installation_id">Installatsiooni ID</string>
+    <string name="firebase_token">Firebase sümbol</string>
+    <string name="logs">Logid</string>
+    <string name="send_log">Saada logifail</string>
+    <string name="connected_email">Seostatud emailiaadress</string>
+    <string name="unknown">Tundmatu</string>
+    <string name="cannot_find_lbrynet_log">Logifail lbrynet.log pole leitav.</string>
+    <string name="cannot_share_lbrynet_log">Logifail lbrynet.log pole jagatav ligipääsupiirangute tõttu.</string>
+
+    <!-- Font Awesome -->
+    <string name="fa_gift">&#xf06b;</string>
+    <string name="fa_lock">&#xf023;</string>
+    <string name="fa_coins">&#xf51e;</string>
+    <string name="fa_file">&#xf15b;</string>
+    <string name="fa_hashtag">&#xf292;</string>
+    <string name="fa_search">&#xf002;</string>
+    <string name="fa_at">&#xf1fa;</string>
+
+    <string name="fa_heart">&#xf004;</string>
+    <string name="fa_heart_broken">&#xf7a9;</string>
+    <string name="fa_star">&#xf005;</string>
+    <string name="fa_globe_americas">&#xf57d;</string>
+    <string name="fa_upload">&#xf093;</string>
+    <string name="fa_download">&#xf019;</string>
+    <string name="fa_cloud_upload">&#xf382;</string>
+    <string name="fa_wallet">&#xf555;</string>
+    <string name="fa_award">&#xf559;</string>
+    <string name="fa_user_friends">&#xf500;</string>
+    <string name="fa_cog">&#xf013;</string>
+    <string name="fa_mobile_alt">&#xf3cd;</string>
+    <string name="fa_repost">&#xf079;</string>
+    <string name="fa_folder_open">&#xf07c;</string>
+</resources>

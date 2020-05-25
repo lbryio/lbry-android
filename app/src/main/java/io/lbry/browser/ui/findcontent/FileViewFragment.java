@@ -584,12 +584,17 @@ public class FileViewFragment extends BaseFragment implements
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
+        closeWebView();
+    }
+
+    private void closeWebView() {
         if (webView != null) {
             webView.removeAllViews();
             webView.loadUrl("about:blank");
             webView.destroy();
             webView = null;
         }
+        webViewAdded = false;
     }
 
     private void setPlayerForPlayerView() {
@@ -1808,13 +1813,21 @@ public class FileViewFragment extends BaseFragment implements
         }
 
         if (isImageViewerVisible()) {
-            getView().findViewById(R.id.file_view_imageviewer_container).setVisibility(View.GONE);
+            View root = getView();
+            if (root != null) {
+                root.findViewById(R.id.file_view_imageviewer_container).setVisibility(View.GONE);
+            }
             restoreMainActionButton();
             showFloatingWalletBalance();
             return true;
         }
         if (isWebViewVisible()) {
-            getView().findViewById(R.id.file_view_webview_container).setVisibility(View.GONE);
+            View root = getView();
+            if (root != null) {
+                root.findViewById(R.id.file_view_webview_container).setVisibility(View.GONE);
+                ((RelativeLayout) root.findViewById(R.id.file_view_webview_container)).removeAllViews();
+            }
+            closeWebView();
             restoreMainActionButton();
             showFloatingWalletBalance();
             return true;
