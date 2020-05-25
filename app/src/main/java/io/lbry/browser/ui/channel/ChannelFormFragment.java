@@ -211,7 +211,7 @@ public class ChannelFormFragment extends BaseFragment implements
             @Override
             public void onClick(View view) {
                 if (uploading) {
-                    Snackbar.make(getView(), R.string.wait_for_upload, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(view, R.string.wait_for_upload, Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
@@ -222,6 +222,11 @@ public class ChannelFormFragment extends BaseFragment implements
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (uploading) {
+                    Snackbar.make(view, R.string.wait_for_upload, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
                 Claim claimToSave = buildChannelClaimToSave();
                 validateAndSaveClaim(claimToSave);
             }

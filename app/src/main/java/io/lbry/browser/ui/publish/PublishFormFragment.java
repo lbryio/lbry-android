@@ -428,10 +428,10 @@ public class PublishFormFragment extends BaseFragment implements
             @Override
             public void onClick(View view) {
                 if (uploading) {
-                    Snackbar.make(view, R.string.publish_no_thumbnail, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(view, R.string.publish_thumbnail_in_progress, Snackbar.LENGTH_LONG).show();
                     return;
                 } else if (Helper.isNullOrEmpty(uploadedThumbnailUrl)) {
-                    showError(getString(R.string.publish_thumbnail_in_progress));
+                    showError(getString(R.string.publish_no_thumbnail));
                     return;
                 }
 
