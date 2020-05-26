@@ -71,6 +71,7 @@
         android:id="@+id/splash_view"
         android:visibility="gone"
         android:background="@color/lbryGreen"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
