@@ -248,6 +248,8 @@ public class FollowingFragment extends BaseFragment implements
         discoverLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Helper.setViewEnabled(discoverLink, false);
                 buildChannelIdsAndUrls();
                 currentSuggestedPage = 1;
                 discoverDialog = DiscoverDialogFragment.newInstance();
@@ -268,6 +270,7 @@ public class FollowingFragment extends BaseFragment implements
                         if (suggestedChannelAdapter != null) {
                             suggestedChannelAdapter.clearItems();
                         }
+                        Helper.setViewEnabled(discoverLink, true);
                     }
                     @Override
                     public void onResume() {

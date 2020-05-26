@@ -335,7 +335,10 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             @Override
             public void onClick(View view) {
                 if (isPending) {
-                    Snackbar.make(vh.itemView, R.string.item_pending_blockchain, Snackbar.LENGTH_LONG).show();
+                    Snackbar snackbar = Snackbar.make(vh.itemView, R.string.item_pending_blockchain, Snackbar.LENGTH_LONG);
+                    TextView snackbarText = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+                    snackbarText.setMaxLines(5);
+                    snackbar.show();
                     return;
                 }
 
@@ -356,7 +359,10 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                 }
 
                 if (isPending) {
-                    Snackbar.make(vh.itemView, R.string.item_pending_blockchain, Snackbar.LENGTH_LONG).show();
+                    Snackbar snackbar = Snackbar.make(vh.itemView, R.string.item_pending_blockchain, Snackbar.LENGTH_LONG);
+                    TextView snackbarText = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+                    snackbarText.setMaxLines(5);
+                    snackbar.show();
                     return false;
                 }
 
