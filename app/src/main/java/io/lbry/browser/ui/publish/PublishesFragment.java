@@ -159,7 +159,12 @@ public class PublishesFragment extends BaseFragment implements ActionMode.Callba
                         @Override
                         public void onClaimClicked(Claim claim) {
                             if (context instanceof MainActivity) {
-                                ((MainActivity) context).openFileClaim(claim);
+                                MainActivity activity = (MainActivity) context;
+                                if (claim.getName().startsWith("@")) {
+                                    activity.openChannelClaim(claim);
+                                } else {
+                                    activity.openFileClaim(claim);
+                                }
                             }
                         }
                     });
