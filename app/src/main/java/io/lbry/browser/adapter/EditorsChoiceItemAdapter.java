@@ -95,6 +95,7 @@ public class EditorsChoiceItemAdapter extends RecyclerView.Adapter<EditorsChoice
         vh.descriptionView.setText(item.getDescription());
         if (!Helper.isNullOrEmpty(item.getThumbnailUrl())) {
             Glide.with(context.getApplicationContext()).
+                    asBitmap().
                     load(item.getThumbnailUrl()).
                     centerCrop().
                     placeholder(R.drawable.bg_thumbnail_placeholder).

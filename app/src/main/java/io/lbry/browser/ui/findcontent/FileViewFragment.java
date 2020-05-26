@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,10 +31,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.media.session.MediaButtonReceiver;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -1210,7 +1211,7 @@ public class FileViewFragment extends BaseFragment implements
                     @Override
                     public void run() {
                         if (claim != null && context != null && thumbnailView != null) {
-                            Glide.with(context.getApplicationContext()).load(claim.getThumbnailUrl()).centerCrop().into(thumbnailView);
+                            Glide.with(context.getApplicationContext()).asBitmap().load(claim.getThumbnailUrl()).centerCrop().into(thumbnailView);
                         }
                     }
                 }, 200);

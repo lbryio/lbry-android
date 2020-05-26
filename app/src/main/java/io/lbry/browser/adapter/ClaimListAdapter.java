@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -419,6 +418,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
                 long duration = item.getDuration();
                 if (!Helper.isNullOrEmpty(thumbnailUrl)) {
                     Glide.with(context.getApplicationContext()).
+                            asBitmap().
                             load(thumbnailUrl).
                             centerCrop().
                             placeholder(R.drawable.bg_thumbnail_placeholder).

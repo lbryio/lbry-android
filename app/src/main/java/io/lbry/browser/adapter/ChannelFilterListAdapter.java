@@ -97,7 +97,7 @@ public class ChannelFilterListAdapter extends RecyclerView.Adapter<ChannelFilter
         vh.titleView.setText(Helper.isNullOrEmpty(claim.getTitle()) ? claim.getName() : claim.getTitle());
         String thumbnailUrl = claim.getThumbnailUrl();
         if (!Helper.isNullOrEmpty(thumbnailUrl) && context != null) {
-            Glide.with(context.getApplicationContext()).load(thumbnailUrl).apply(RequestOptions.circleCropTransform()).into(vh.thumbnailView);
+            Glide.with(context.getApplicationContext()).asBitmap().load(thumbnailUrl).apply(RequestOptions.circleCropTransform()).into(vh.thumbnailView);
         }
         vh.alphaContainer.setVisibility(claim.isPlaceholder() || Helper.isNullOrEmpty(thumbnailUrl) ? View.VISIBLE : View.GONE);
         vh.thumbnailView.setVisibility(claim.isPlaceholder() || Helper.isNullOrEmpty(thumbnailUrl) ? View.GONE : View.VISIBLE);
