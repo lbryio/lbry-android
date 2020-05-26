@@ -288,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_AUTH_TOKEN = "io.lbry.browser.Preference.AuthToken";
 
     public static final String SECURE_VALUE_KEY_SAVED_PASSWORD = "io.lbry.browser.PX";
+    public static final String SECURE_VALUE_FIRST_RUN_PASSWORD = "firstRunPassword";
 
     private static final String TAG = "io.lbry.browser.Main";
 

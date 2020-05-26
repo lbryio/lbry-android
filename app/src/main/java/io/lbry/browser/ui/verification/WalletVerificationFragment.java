@@ -1,10 +1,13 @@
 package io.lbry.browser.ui.verification;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -59,6 +62,13 @@ public class WalletVerificationFragment extends Fragment {
                     showError(getString(R.string.please_enter_your_password));
                     return;
                 }
+
+                Context context = getContext();
+                if (context != null) {
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(inputPassword.getWindowToken(), 0);
+                }
+
                 if (listener != null) {
                     listener.onWalletSyncProcessing();
                 }
@@ -89,9 +99,14 @@ public class WalletVerificationFragment extends Fragment {
         verificationStarted = true;
         Helper.setViewVisibility(loading, View.VISIBLE);
         Helper.setViewVisibility(textLoading, View.VISIBLE);
+        // attempt to load secure value from versions pre-0.15.0
+        String prevVersionPassword = Utils.getSecureValue(MainActivity.SECURE_VALUE_FIRST_RUN_PASSWORD, getContext(), Lbry.KEYSTORE);
         String password = Utils.getSecureValue(MainActivity.SECURE_VALUE_KEY_SAVED_PASSWORD, getContext(), Lbry.KEYSTORE);
         // start verification process
-        SyncGetTask task = new SyncGetTask(password, false, null, new DefaultSyncTaskHandler() {
+        SyncGetTask task = new SyncGetTask(!Helper.isNullOrEmpty(prevVersionPassword) ? prevVersionPassword : password,
+                false,
+                null,
+                new DefaultSyncTaskHandler() {
             @Override
             public void onSyncGetSuccess(WalletSync walletSync) {
                 currentWalletSync = walletSync;

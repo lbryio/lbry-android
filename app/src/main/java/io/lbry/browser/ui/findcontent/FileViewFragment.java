@@ -178,6 +178,7 @@ public class FileViewFragment extends BaseFragment implements
     private View layoutNothingAtLocation;
     private View layoutDisplayArea;
     private View layoutResolving;
+    private int lastPositionSaved;
 
     private WebView webView;
     private boolean webViewAdded;
@@ -204,6 +205,11 @@ public class FileViewFragment extends BaseFragment implements
                         logPlay(currentUrl, startTimeMillis);
                         playbackStarted = true;
                         isPlaying = true;
+
+                        long lastPosition = loadLastPlaybackPosition();
+                        if (lastPosition > -1) {
+                            MainActivity.appPlayer.seekTo(lastPosition);
+                        }
                     }
                     renderTotalDuration();
                     scheduleElapsedPlayback();
@@ -1693,6 +1699,31 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
+    private long loadLastPlaybackPosition() {
+        long position = -1;
+        if (claim != null) {
+            String key = String.format("PlayPos_%s", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
+            Context context = getContext();
+            if (context != null) {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                position = sp.getLong(key, -1);
+            }
+        }
+        return position;
+    }
+
+    private void savePlaybackPosition() {
+        if (MainActivity.appPlayer != null && claim != null) {
+            String key = String.format("PlayPos_%s", !Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
+            long position = MainActivity.appPlayer.getCurrentPosition();
+            Context context = getContext();
+            if (context != null) {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                sp.edit().putLong(key, position).apply();
+            }
+        }
+    }
+
     private void loadMarkdownFromFile(String filePath) {
         ReadTextFileTask task = new ReadTextFileTask(filePath, new ReadTextFileTask.ReadTextFileHandler() {
             @Override
@@ -1912,6 +1943,13 @@ public class FileViewFragment extends BaseFragment implements
                             public void run() {
                                 if (MainActivity.appPlayer != null) {
                                     elapsedDuration = MainActivity.appPlayer.getCurrentPosition();
+                                    int elapsedSeconds = Double.valueOf(elapsedDuration / 1000.0).intValue();
+                                    if (elapsedDuration > 0 && elapsedSeconds % 5 == 0 && elapsedSeconds != lastPositionSaved) {
+                                        // save playback position every 5 seconds
+                                        savePlaybackPosition();
+                                        lastPositionSaved = elapsedSeconds;
+                                    }
+
                                     renderElapsedDuration();
                                 }
                             }

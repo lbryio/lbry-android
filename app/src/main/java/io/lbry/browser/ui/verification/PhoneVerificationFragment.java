@@ -1,5 +1,6 @@
 package io.lbry.browser.ui.verification;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -77,6 +79,12 @@ public class PhoneVerificationFragment extends Fragment {
                     Snackbar.make(getView(), R.string.please_enter_valid_phone, Snackbar.LENGTH_LONG).
                             setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                     return;
+                }
+
+                Context context = getContext();
+                if (context != null) {
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(inputPhoneNumber.getWindowToken(), 0);
                 }
 
                 addPhoneNumber();
