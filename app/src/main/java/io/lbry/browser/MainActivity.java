@@ -255,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String ACTION_USER_AUTHENTICATION_FAILED = "io.lbry.browser.Broadcast.UserAuthenticationFailed";
     public static final String ACTION_NOW_PLAYING_CLAIM_UPDATED = "io.lbry.browser.Broadcast.NowPlayingClaimUpdated";
     public static final String ACTION_NOW_PLAYING_CLAIM_CLEARED = "io.lbry.browser.Broadcast.NowPlayingClaimCleared";
+    public static final String ACTION_PUBLISH_SUCCESSFUL = "io.lbry.browser.Broadcast.PublishSuccessful";
     public static final String ACTION_OPEN_ALL_CONTENT_TAG = "io.lbry.browser.Broadcast.OpenAllContentTag";
     public static final String ACTION_WALLET_BALANCE_UPDATED = "io.lbry.browser.Broadcast.WalletBalanceUpdated";
     public static final String ACTION_OPEN_CHANNEL_URL = "io.lbry.browser.Broadcast.OpenChannelUrl";
@@ -1842,6 +1843,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         intentFilter.addAction(ACTION_OPEN_CHANNEL_URL);
         intentFilter.addAction(ACTION_OPEN_WALLET_PAGE);
         intentFilter.addAction(ACTION_OPEN_REWARDS_PAGE);
+        intentFilter.addAction(ACTION_PUBLISH_SUCCESSFUL);
         intentFilter.addAction(ACTION_SAVE_SHARED_USER_STATE);
         requestsReceiver = new BroadcastReceiver() {
             @Override
@@ -1861,6 +1863,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     pendingOpenRewardsPage = true;
                 } else if (ACTION_SAVE_SHARED_USER_STATE.equalsIgnoreCase(action)) {
                     saveSharedUserState();
+                } else if (ACTION_PUBLISH_SUCCESSFUL.equalsIgnoreCase(action)) {
+                    openPublishesOnSuccessfulPublish();
                 }
             }
 

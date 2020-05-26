@@ -286,8 +286,10 @@ public class RewardsFragment extends BaseFragment implements RewardListAdapter.R
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).
-                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                View view = getView();
+                if (view != null && error != null && !Helper.isNullOrEmpty(error.getMessage())) {
+                    Snackbar.make(view, error.getMessage(), Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                }
                 Helper.setViewEnabled(buttonClaim, true);
                 Helper.setViewEnabled(inputClaimCode, true);
                 rewardClaimInProgress = false;

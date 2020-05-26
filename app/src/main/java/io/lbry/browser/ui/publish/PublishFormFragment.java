@@ -1102,7 +1102,7 @@ public class PublishFormFragment extends BaseFragment implements
                 if (context instanceof MainActivity) {
                     MainActivity activity = (MainActivity) context;
                     activity.showMessage(R.string.publish_successful);
-                    activity.openPublishesOnSuccessfulPublish();
+                    activity.sendBroadcast(new Intent(MainActivity.ACTION_PUBLISH_SUCCESSFUL));
                 }
             }
 
