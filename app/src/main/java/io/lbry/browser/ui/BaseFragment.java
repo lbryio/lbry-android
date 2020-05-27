@@ -48,6 +48,7 @@ public class BaseFragment extends Fragment {
                 MainActivity.resumeGlobalPlayer(context);
             }
         }
+        rewardDriverClickListenerSet = false;
         super.onStop();
     }
 
