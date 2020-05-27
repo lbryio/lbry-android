@@ -115,6 +115,7 @@ import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchChannelsListener;
 import io.lbry.browser.listener.FetchClaimsListener;
 import io.lbry.browser.listener.FilePickerListener;
+import io.lbry.browser.listener.PIPModeListener;
 import io.lbry.browser.listener.ScreenOrientationListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.StoragePermissionListener;
@@ -316,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private List<CameraPermissionListener> cameraPermissionListeners;
     private List<DownloadActionListener> downloadActionListeners;
     private List<FilePickerListener> filePickerListeners;
+    private List<PIPModeListener> pipModeListeners;
     private List<ScreenOrientationListener> screenOrientationListeners;
     private List<SdkStatusListener> sdkStatusListeners;
     private List<StoragePermissionListener> storagePermissionListeners;
@@ -426,6 +428,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fetchChannelsListeners = new ArrayList<>();
         fetchClaimsListeners = new ArrayList<>();
         filePickerListeners = new ArrayList<>();
+        pipModeListeners = new ArrayList<>();
         screenOrientationListeners = new ArrayList<>();
         sdkStatusListeners = new ArrayList<>();
         storagePermissionListeners = new ArrayList<>();
@@ -596,6 +599,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void removeFilePickerListener(FilePickerListener listener) {
         filePickerListeners.remove(listener);
+    }
+
+    public void addPIPModeListener(PIPModeListener listener) {
+        if (!pipModeListeners.contains(listener)) {
+            pipModeListeners.add(listener);
+        }
+    }
+
+    public void removePIPModeListener(PIPModeListener listener) {
+        pipModeListeners.remove(listener);
     }
 
     public void addCameraPermissionListener(CameraPermissionListener listener) {
@@ -808,6 +821,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.app_bar_main_container).setFitsSystemWindows(true);
         hideActionBar();
 
+        for (PIPModeListener listener : pipModeListeners) {
+            listener.onEnterPIPMode();
+        }
+
         PlayerView pipPlayer = findViewById(R.id.pip_player);
         pipPlayer.setVisibility(View.VISIBLE);
         pipPlayer.setPlayer(appPlayer);
@@ -837,6 +854,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
         if (!Lbry.SDK_READY && !inFullscreenMode) {
             findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
+        }
+        for (PIPModeListener listener : pipModeListeners) {
+            listener.onExitPIPMode();
         }
 
         PlayerView pipPlayer = findViewById(R.id.pip_player);
@@ -996,7 +1016,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public boolean canShowUrlSuggestions() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        return sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_URL_SUGGESTIONS, false);
+        return sp.getBoolean(MainActivity.PREFERENCE_KEY_SHOW_URL_SUGGESTIONS, true);
     }
 
     public boolean keepSdkBackground() {

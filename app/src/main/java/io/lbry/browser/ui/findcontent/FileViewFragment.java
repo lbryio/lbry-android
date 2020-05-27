@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -97,6 +95,7 @@ import io.lbry.browser.dialog.SendTipDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchClaimsListener;
+import io.lbry.browser.listener.PIPModeListener;
 import io.lbry.browser.listener.ScreenOrientationListener;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.StoragePermissionListener;
@@ -140,8 +139,10 @@ import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.Utils;
 
 public class FileViewFragment extends BaseFragment implements
-        MainActivity.BackPressInterceptor, DownloadActionListener,
+        MainActivity.BackPressInterceptor,
+        DownloadActionListener,
         FetchClaimsListener,
+        PIPModeListener,
         ScreenOrientationListener,
         SdkStatusListener,
         StoragePermissionListener,
@@ -240,6 +241,7 @@ public class FileViewFragment extends BaseFragment implements
             activity.setBackPressInterceptor(this);
             activity.addDownloadActionListener(this);
             activity.addFetchClaimsListener(this);
+            activity.addPIPModeListener(this);
             activity.addScreenOrientationListener(this);
             activity.addWalletBalanceListener(this);
             if (!MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
@@ -584,6 +586,7 @@ public class FileViewFragment extends BaseFragment implements
             MainActivity activity = (MainActivity) context;
             activity.removeDownloadActionListener(this);
             activity.removeFetchClaimsListener(this);
+            activity.removePIPModeListener(this);
             activity.removeScreenOrientationListener(this);
             activity.removeSdkStatusListener(this);
             activity.removeStoragePermissionListener(this);
@@ -2349,6 +2352,22 @@ public class FileViewFragment extends BaseFragment implements
         @Override
         public int getMinimumLoadableRetryCount(int dataType) {
             return Integer.MAX_VALUE;
+        }
+    }
+
+    public void onEnterPIPMode() {
+        View root = getView();
+        if (root != null) {
+            PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
+            playerView.setVisibility(View.GONE);
+        }
+    }
+
+    public void onExitPIPMode() {
+        View root = getView();
+        if (root != null) {
+            PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
+            playerView.setVisibility(View.VISIBLE);
         }
     }
 }
