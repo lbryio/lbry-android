@@ -45,13 +45,15 @@ public class UpdateSuggestedTagsTask extends AsyncTask<Void, Void, List<Tag>> {
             if (suggestedTagsAdapter != null && !clearPrevious) {
                 tags = new ArrayList<>(suggestedTagsAdapter.getTags());
             }
-            while (tags.size() < limit) {
-                Tag randomTag = Lbry.knownTags.get(random.nextInt(Lbry.knownTags.size()));
-                if (excludeMature && randomTag.isMature()) {
-                    continue;
-                }
-                if (!Lbry.followedTags.contains(randomTag) && (addedTagsAdapter == null || !addedTagsAdapter.getTags().contains(randomTag))) {
-                    tags.add(randomTag);
+            if (Lbry.knownTags.size() > 0) {
+                while (tags.size() < limit) {
+                    Tag randomTag = Lbry.knownTags.get(random.nextInt(Lbry.knownTags.size()));
+                    if (excludeMature && randomTag.isMature()) {
+                        continue;
+                    }
+                    if (!Lbry.followedTags.contains(randomTag) && (addedTagsAdapter == null || !addedTagsAdapter.getTags().contains(randomTag))) {
+                        tags.add(randomTag);
+                    }
                 }
             }
         } else {

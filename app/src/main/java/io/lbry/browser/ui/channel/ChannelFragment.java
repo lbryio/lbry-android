@@ -443,16 +443,16 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             if (tabPager.getAdapter() == null && context instanceof MainActivity) {
                 tabPager.setAdapter(new ChannelPagerAdapter(claim, (MainActivity) context));
             }
+            new TabLayoutMediator(tabLayout, tabPager, new TabLayoutMediator.TabConfigurationStrategy() {
+                @Override
+                public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                    tab.setText(position == 0 ? R.string.content : R.string.about);
+                }
+            }).attach();
         } catch (IllegalStateException ex) {
             // TODO: Fix why this is happening
             // pass
         }
-        new TabLayoutMediator(tabLayout, tabPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(position == 0 ? R.string.content : R.string.about);
-            }
-        }).attach();
     }
 
     private void resetSubCount() {

@@ -91,7 +91,11 @@ public class LoadSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
 
                     if (tags != null) {
                         if (db != null && tags.length() > 0) {
-                            DatabaseHelper.setAllTagsUnfollowed(db);
+                            try {
+                                DatabaseHelper.setAllTagsUnfollowed(db);
+                            } catch (IllegalStateException ex) {
+                                // pass
+                            }
                         }
 
                         followedTags = new ArrayList<>();
