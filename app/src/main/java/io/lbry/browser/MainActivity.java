@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                 return ViewCompat.onApplyWindowInsets(v,
                         insets.replaceSystemWindowInsets(
-                                insets.getSystemWindowInsetLeft(),
+                                0,
                                 0,
                                 0,
                                 insets.getSystemWindowInsetBottom()));
@@ -1388,6 +1388,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
         findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         findViewById(R.id.app_bar_main_container).setFitsSystemWindows(false);
+        lockDrawer();
 
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
@@ -1424,6 +1425,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (actionBar != null) {
             actionBar.show();
         }
+        unlockDrawer();
         inFullscreenMode = false;
     }
 

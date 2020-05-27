@@ -1915,7 +1915,7 @@ public class FileViewFragment extends BaseFragment implements
             int statusBarHeight = activity.getStatusBarHeight();
             exoplayerContainer.setPadding(0, 0, 0, statusBarHeight);
 
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         }
     }
 
