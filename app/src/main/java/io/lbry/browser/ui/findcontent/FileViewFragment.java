@@ -1992,7 +1992,6 @@ public class FileViewFragment extends BaseFragment implements
             root.findViewById(R.id.player_buffering_progress).setVisibility(View.VISIBLE);
 
             PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
-            playerView.findViewById(R.id.player_play_pause).setVisibility(View.INVISIBLE);
             playerView.findViewById(R.id.player_skip_back_10).setVisibility(View.INVISIBLE);
             playerView.findViewById(R.id.player_skip_forward_10).setVisibility(View.INVISIBLE);
         }
@@ -2004,7 +2003,6 @@ public class FileViewFragment extends BaseFragment implements
             root.findViewById(R.id.player_buffering_progress).setVisibility(View.INVISIBLE);
 
             PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
-            playerView.findViewById(R.id.player_play_pause).setVisibility(View.VISIBLE);
             playerView.findViewById(R.id.player_skip_back_10).setVisibility(View.VISIBLE);
             playerView.findViewById(R.id.player_skip_forward_10).setVisibility(View.VISIBLE);
         }
