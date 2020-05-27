@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
@@ -20,10 +19,11 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.Lbryio;
+import io.lbry.lbrysdk.LbrynetService;
 
 public class FirstRunActivity extends AppCompatActivity {
 
-    private BroadcastReceiver sdkReadyReceiver;
+    private BroadcastReceiver sdkReceiver;
     private BroadcastReceiver authReceiver;
 
     @Override
@@ -45,19 +45,26 @@ public class FirstRunActivity extends AppCompatActivity {
         registerAuthReceiver();
         if (!Lbry.SDK_READY) {
             findViewById(R.id.welcome_wait_container).setVisibility(View.VISIBLE);
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(MainActivity.ACTION_SDK_READY);
-            sdkReadyReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    // authenticate after we receive the sdk ready event
-                    authenticate();
-                }
-            };
-            registerReceiver(sdkReadyReceiver, filter);
         } else {
             authenticate();
         }
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MainActivity.ACTION_SDK_READY);
+        filter.addAction(LbrynetService.ACTION_STOP_SERVICE);
+        sdkReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (MainActivity.ACTION_SDK_READY.equals(action)) {
+                    // authenticate after we receive the sdk ready event
+                    authenticate();
+                } else if (LbrynetService.ACTION_STOP_SERVICE.equals(action)) {
+                    finish();
+                }
+            }
+        };
+        registerReceiver(sdkReceiver, filter);
     }
 
     public void onResume() {
@@ -122,7 +129,7 @@ public class FirstRunActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         Helper.unregisterReceiver(authReceiver, this);
-        Helper.unregisterReceiver(sdkReadyReceiver, this);
+        Helper.unregisterReceiver(sdkReceiver, this);
         super.onDestroy();
     }
 

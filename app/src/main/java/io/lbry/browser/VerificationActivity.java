@@ -1,6 +1,9 @@
 package io.lbry.browser;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,8 +21,10 @@ import io.lbry.browser.listener.SignInListener;
 import io.lbry.browser.listener.WalletSyncListener;
 import io.lbry.browser.model.lbryinc.User;
 import io.lbry.browser.tasks.lbryinc.FetchCurrentUserTask;
+import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.Lbryio;
+import io.lbry.lbrysdk.LbrynetService;
 
 public class VerificationActivity extends FragmentActivity implements SignInListener, WalletSyncListener {
 
@@ -27,6 +32,7 @@ public class VerificationActivity extends FragmentActivity implements SignInList
     public static final int VERIFICATION_FLOW_REWARDS = 2;
     public static final int VERIFICATION_FLOW_WALLET = 3;
 
+    private BroadcastReceiver sdkReceiver;
     private String email;
     private boolean signedIn;
     private int flow;
@@ -53,6 +59,19 @@ public class VerificationActivity extends FragmentActivity implements SignInList
             finish();
             return;
         }
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(LbrynetService.ACTION_STOP_SERVICE);
+        sdkReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (LbrynetService.ACTION_STOP_SERVICE.equals(action)) {
+                    finish();
+                }
+            }
+        };
+        registerReceiver(sdkReceiver, filter);
 
         setContentView(R.layout.activity_verification);
         ViewPager2 viewPager = findViewById(R.id.verification_pager);
@@ -268,5 +287,11 @@ public class VerificationActivity extends FragmentActivity implements SignInList
     @Override
     public void onWalletSyncFailed(Exception error) {
         findViewById(R.id.verification_close_button).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        Helper.unregisterReceiver(sdkReceiver, this);
+        super.onDestroy();
     }
 }

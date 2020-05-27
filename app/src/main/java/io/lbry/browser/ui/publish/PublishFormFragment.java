@@ -102,6 +102,7 @@ public class PublishFormFragment extends BaseFragment implements
     private static final int MAX_VIDEO_DIMENSION = 1920;
     private static final int MAX_BITRATE = 5000000; // 5mbps
 
+    private boolean storageRefusedOnce;
     private static final int SUGGESTED_LIMIT = 8;
 
     private boolean editMode;
@@ -1394,7 +1395,10 @@ public class PublishFormFragment extends BaseFragment implements
 
     @Override
     public void onStoragePermissionRefused() {
-        showError(getString(R.string.storage_permission_rationale_images));
+        if (!storageRefusedOnce) {
+            showError(getString(R.string.storage_permission_rationale_images));
+            storageRefusedOnce = true;
+        }
         launchPickerPending = false;
     }
 

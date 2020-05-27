@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.exceptions.LbryioRequestException;
 import io.lbry.browser.exceptions.LbryioResponseException;
@@ -81,6 +82,10 @@ public final class Lbryio {
             authToken = getAuthToken(context);
         }
 
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, String.format("Using authToken for request: %s", authToken));
+        }
+
         String url = String.format("%s/%s/%s", CONNECTION_STRING, resource, action);
         if (Helper.METHOD_GET.equalsIgnoreCase(method)) {
             Uri.Builder uriBuilder = Uri.parse(url).buildUpon();
@@ -93,6 +98,9 @@ public final class Lbryio {
                 }
             }
             url = uriBuilder.build().toString();
+        }
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, String.format("Request Method: %s, Sending request to URL: %s", method, url));
         }
 
         Request.Builder builder = new Request.Builder().url(url);
@@ -142,6 +150,9 @@ public final class Lbryio {
         }
 
         generatingAuthToken = true;
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Generating a new auth token");
+        }
 
         Map<String, String> options = new HashMap<>();
         options.put("auth_token", "");
@@ -150,6 +161,9 @@ public final class Lbryio {
         Response response = Lbryio.call("user", "new", options, "post", context);
         try {
             JSONObject json = (JSONObject) parseResponse(response);
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, String.format("/user/new response: %s", json.toString(2)));
+            }
             if (!json.has(AUTH_TOKEN_PARAM)) {
                 throw new LbryioResponseException("auth_token was not set in the response");
             }

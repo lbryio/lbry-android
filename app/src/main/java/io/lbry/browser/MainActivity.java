@@ -921,7 +921,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         applyNavbarSigninPadding();
         checkFirstRun();
         checkNowPlaying();
-        fetchRewards();
 
         // check (and start) the LBRY SDK service
         serviceRunning = isServiceRunning(this, LbrynetService.class);
@@ -1422,13 +1421,18 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         boolean firstRunCompleted = sp.getBoolean(PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED, false);
         if (!firstRunCompleted) {
+            findViewById(R.id.drawer_layout).setVisibility(View.INVISIBLE);
             startActivity(new Intent(this, FirstRunActivity.class));
-        } else if (!appStarted) {
+            return;
+        }
+
+        if (!appStarted) {
             // first run completed, startup
             startup();
             return;
         }
 
+        fetchRewards();
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             openFragment(FollowingFragment.class, false, NavMenuItem.ID_ITEM_FOLLOWING);
         }
@@ -1492,7 +1496,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         initFloatingWalletBalance();
 
-        checkAndClaimNewAndroidReward();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean firstRunCompleted = sp.getBoolean(PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED, false);
+        if (firstRunCompleted) {
+            checkAndClaimNewAndroidReward();
+        }
     }
 
     public void checkAndClaimNewAndroidReward() {
@@ -2196,6 +2204,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 hideActionBar();
                 lockDrawer();
                 findViewById(R.id.splash_view).setVisibility(View.VISIBLE);
+                findViewById(R.id.drawer_layout).setVisibility(View.VISIBLE);
                 LbryAnalytics.setCurrentScreen(MainActivity.this, "Splash", "Splash");
                 initStartupStages();
             }

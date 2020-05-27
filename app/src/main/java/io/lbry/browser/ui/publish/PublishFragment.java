@@ -53,6 +53,7 @@ public class PublishFragment extends BaseFragment implements
         CameraPermissionListener, FilePickerListener, StoragePermissionListener {
 
     private boolean cameraPreviewInitialized;
+    private boolean storageRefusedOnce;
     private PreviewView cameraPreview;
     private RecyclerView galleryGrid;
     private GalleryGridAdapter adapter;
@@ -399,8 +400,16 @@ public class PublishFragment extends BaseFragment implements
 
     @Override
     public void onStoragePermissionRefused() {
-        Snackbar.make(getView(), R.string.storage_permission_rationale_videos, Snackbar.LENGTH_LONG).
-                setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+        if (!storageRefusedOnce) {
+            View root = getView();
+            if (root != null) {
+                Snackbar.make(root, R.string.storage_permission_rationale_videos, Snackbar.LENGTH_LONG).
+                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                Helper.setViewText(noVideosLoaded, R.string.storage_permission_rationale_videos);
+                checkNoVideosLoaded();
+            }
+            storageRefusedOnce = true;
+        }
     }
 
     public String getSuggestedPublishUrl() {
