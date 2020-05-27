@@ -396,7 +396,7 @@ public class PublishFragment extends BaseFragment implements
         }
         if (launchFilePickerPending) {
             launchFilePickerPending = false;
-            launchFilePicker();e
+            launchFilePicker();
         }
     }
 
