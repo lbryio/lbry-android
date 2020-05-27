@@ -175,6 +175,7 @@ public class FileViewFragment extends BaseFragment implements
     private long startTimeMillis;
     private GetFileTask getFileTask;
 
+    private boolean storagePermissionRefusedOnce;
     private View buttonPublishSomething;
     private View layoutLoadingState;
     private View layoutNothingAtLocation;
@@ -1022,6 +1023,12 @@ public class FileViewFragment extends BaseFragment implements
         if (MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
             startDownload();
         } else {
+            if (storagePermissionRefusedOnce) {
+                showStoragePermissionRefusedError();
+                restoreMainActionButton();
+                return;
+            }
+
             startDownloadPending = true;
             MainActivity.requestPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -1035,6 +1042,12 @@ public class FileViewFragment extends BaseFragment implements
     private void checkStoragePermissionAndFileGet() {
         Context context = getContext();
         if (!MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
+            if (storagePermissionRefusedOnce) {
+                showStoragePermissionRefusedError();
+                restoreMainActionButton();
+                return;
+            }
+
             fileGetPending = true;
             MainActivity.requestPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -1082,11 +1095,12 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
     public void onStoragePermissionRefused() {
+        storagePermissionRefusedOnce = true;
         fileGetPending = false;
         startDownloadPending = false;
         onDownloadAborted();
-        Snackbar.make(getView(), R.string.storage_permission_rationale_download, Snackbar.LENGTH_LONG).
-                setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+
+        showStoragePermissionRefusedError();
     }
 
     public void startDownload() {
@@ -2368,6 +2382,14 @@ public class FileViewFragment extends BaseFragment implements
         if (root != null) {
             PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
             playerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showStoragePermissionRefusedError() {
+        View root = getView();
+        if (root != null) {
+            Snackbar.make(root, R.string.storage_permission_rationale_download, Snackbar.LENGTH_LONG).
+                    setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
         }
     }
 }

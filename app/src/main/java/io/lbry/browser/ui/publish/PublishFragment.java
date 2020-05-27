@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.camera.core.Camera;
@@ -53,7 +52,7 @@ public class PublishFragment extends BaseFragment implements
         CameraPermissionListener, FilePickerListener, StoragePermissionListener {
 
     private boolean cameraPreviewInitialized;
-    private boolean storageRefusedOnce;
+    private boolean storagePermissionRefusedOnce;
     private PreviewView cameraPreview;
     private RecyclerView galleryGrid;
     private GalleryGridAdapter adapter;
@@ -255,7 +254,7 @@ public class PublishFragment extends BaseFragment implements
             }
         }
 
-        if (!storageRefusedOnce) {
+        if (!storagePermissionRefusedOnce) {
             checkStoragePermissionAndLoadVideos();
         }
     }
@@ -402,7 +401,7 @@ public class PublishFragment extends BaseFragment implements
 
     @Override
     public void onStoragePermissionRefused() {
-        storageRefusedOnce = true;
+        storagePermissionRefusedOnce = true;
         View root = getView();
         if (root != null) {
             Snackbar.make(root, R.string.storage_permission_rationale_videos, Snackbar.LENGTH_LONG).
