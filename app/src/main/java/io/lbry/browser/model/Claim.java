@@ -289,6 +289,9 @@ public class Claim {
             Claim signingChannel = new Claim();
             signingChannel.setClaimId(viewHistory.getPublisherClaimId());
             signingChannel.setName(viewHistory.getPublisherName());
+
+            LbryUri channelUrl = LbryUri.tryParse(String.format("%s#%s", signingChannel.getName(), signingChannel.getClaimId()));
+            signingChannel.setPermanentUrl(channelUrl != null ? channelUrl.toString() : null);
             if (!Helper.isNullOrEmpty(viewHistory.getPublisherTitle())) {
                 GenericMetadata channelValue = new GenericMetadata();
                 channelValue.setTitle(viewHistory.getPublisherTitle());
