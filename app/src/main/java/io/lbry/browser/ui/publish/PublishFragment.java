@@ -255,7 +255,9 @@ public class PublishFragment extends BaseFragment implements
             }
         }
 
-        checkStoragePermissionAndLoadVideos();
+        if (!storageRefusedOnce) {
+            checkStoragePermissionAndLoadVideos();
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -394,22 +396,21 @@ public class PublishFragment extends BaseFragment implements
         }
         if (launchFilePickerPending) {
             launchFilePickerPending = false;
-            launchFilePicker();
+            launchFilePicker();e
         }
     }
 
     @Override
     public void onStoragePermissionRefused() {
-        if (!storageRefusedOnce) {
-            View root = getView();
-            if (root != null) {
-                Snackbar.make(root, R.string.storage_permission_rationale_videos, Snackbar.LENGTH_LONG).
-                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
-                Helper.setViewText(noVideosLoaded, R.string.storage_permission_rationale_videos);
-                checkNoVideosLoaded();
-            }
-            storageRefusedOnce = true;
+        storageRefusedOnce = true;
+        View root = getView();
+        if (root != null) {
+            Snackbar.make(root, R.string.storage_permission_rationale_videos, Snackbar.LENGTH_LONG).
+                    setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+            Helper.setViewText(noVideosLoaded, R.string.storage_permission_rationale_videos);
         }
+
+        checkNoVideosLoaded();
     }
 
     public String getSuggestedPublishUrl() {

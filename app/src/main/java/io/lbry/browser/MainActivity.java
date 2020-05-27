@@ -2915,11 +2915,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public static void requestPermission(String permission, int requestCode, String rationale, Context context, boolean forceRequest) {
         if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-            if (!forceRequest && ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
-                Toast.makeText(context, rationale, Toast.LENGTH_LONG).show();
-            } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).showMessage(rationale);
+                }
+            } else if (forceRequest) {
                 startingPermissionRequest = true;
                 ActivityCompat.requestPermissions((Activity) context, new String[] { permission }, requestCode);
+            } else {
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).showError(rationale);
+                }
             }
         }
     }
