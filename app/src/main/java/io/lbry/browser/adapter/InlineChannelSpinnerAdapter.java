@@ -44,7 +44,7 @@ public class InlineChannelSpinnerAdapter extends ArrayAdapter<Claim> {
     public int getItemPosition(Claim item) {
         for (int i = 0; i < channels.size(); i++) {
             Claim channel = channels.get(i);
-            if (item.getClaimId().equalsIgnoreCase(channel.getClaimId())) {
+            if (item.getClaimId() != null && item.getClaimId().equalsIgnoreCase(channel.getClaimId())) {
                 return i;
             }
         }

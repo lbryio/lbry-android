@@ -1038,6 +1038,15 @@ public class PublishFormFragment extends BaseFragment implements
             metadata.setLicenseUrl(selectedLicense.getUrl());
         }
 
+        // set release time from current claim (on edit)
+        if (currentClaim != null) {
+            Claim.StreamMetadata currentMetadata = (Claim.StreamMetadata) currentClaim.getValue();
+            metadata.setReleaseTime(currentMetadata.getReleaseTime());
+            if (metadata.getReleaseTime() == 0) {
+                metadata.setReleaseTime(currentClaim.getTimestamp());
+            }
+        }
+
         claim.setValueType(Claim.TYPE_STREAM);
         claim.setValue(metadata);
 

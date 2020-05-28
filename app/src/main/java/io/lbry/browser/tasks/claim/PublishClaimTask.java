@@ -73,6 +73,14 @@ public class PublishClaimTask extends AsyncTask<Void, Void, Claim> {
             options.put("license_url", metadata.getLicenseUrl());
         }
 
+        if (metadata.getReleaseTime() > 0) {
+            options.put("release_time", metadata.getReleaseTime());
+        } else if (claim.getTimestamp() > 0) {
+            options.put("release_time", claim.getTimestamp());
+        } else {
+            options.put("release_time", Double.valueOf(Math.floor(System.currentTimeMillis() / 1000.0)).intValue());
+        }
+
         Claim claimResult = null;
         try {
             JSONObject result = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_PUBLISH, options);
