@@ -1045,6 +1045,7 @@ public class PublishFormFragment extends BaseFragment implements
             if (metadata.getReleaseTime() == 0) {
                 metadata.setReleaseTime(currentClaim.getTimestamp());
             }
+            claim.setTimestamp(currentClaim.getTimestamp());
         }
 
         claim.setValueType(Claim.TYPE_STREAM);
