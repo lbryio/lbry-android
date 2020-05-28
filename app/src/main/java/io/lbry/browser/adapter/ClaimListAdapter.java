@@ -327,7 +327,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         }
 
         boolean isPending = item.getConfirmations() == 0;
-        boolean isSelected = isClaimSelected(item);
+        boolean isSelected = isClaimSelected(original);
         vh.itemView.setSelected(isSelected);
         vh.selectedOverlayView.setVisibility(isSelected ? View.VISIBLE : View.GONE);
         vh.itemView.setOnClickListener(new View.OnClickListener() {

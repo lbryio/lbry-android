@@ -239,7 +239,8 @@ public class PublishesFragment extends BaseFragment implements ActionMode.Callba
     @Override
     public boolean onPrepareActionMode(androidx.appcompat.view.ActionMode actionMode, Menu menu) {
         int selectionCount = adapter != null ? adapter.getSelectedCount() : 0;
-        menu.findItem(R.id.action_edit).setVisible(selectionCount == 1);
+        menu.findItem(R.id.action_edit).setVisible(selectionCount == 1 &&
+                Claim.TYPE_STREAM.equalsIgnoreCase(adapter.getSelectedItems().get(0).getValueType()));
         return true;
     }
 
