@@ -5,10 +5,11 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.annotation.NonNull;
+import lombok.Data;
 
+@Data
 public class Comment {
-    private String channelName, text, id, parentId;
+    private final String channelName, text, id, parentId;
 
     public Comment(String channelName, String text, String id, String parentId) {
         this.channelName = channelName;
@@ -35,19 +36,5 @@ public class Comment {
             Log.e("Comments", ex.toString());
             return null;
         }
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "Channel: " + channelName + " text: " + text + " id: " + id + " parentId: " + parentId;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public String getChannelName() {
-        return channelName;
     }
 }
