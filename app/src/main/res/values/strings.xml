@@ -59,6 +59,9 @@
     <string name="report">Report</string>
     <string name="loading_decentralized_data">Loading decentralized data...</string>
     <string name="related_content">Related Content</string>
+    <string name="comments">Comments</string>
+    <string name="no_comments">No comments to display.</string>
+    <string name="sdk_initializing_comments">Comments will display once the background service is done initializing.</string>
     <string name="share_lbry_content">Share LBRY content</string>
     <string name="view">View</string>
     <string name="play">Play</string>

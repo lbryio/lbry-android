@@ -102,6 +102,8 @@ public final class Lbry {
     public static final String METHOD_STREAM_ABANDON = "stream_abandon";
     public static final String METHOD_STREAM_REPOST = "stream_repost";
 
+    public static final String METHOD_COMMENT_LIST = "comment_list";
+
     public static KeyStore KEYSTORE;
     public static boolean SDK_READY = false;
 
