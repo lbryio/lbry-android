@@ -612,12 +612,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+
                 <View
-                    android:background="@color/divider"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="12dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginBottom="12dp"
-                    android:layout_height="0.5dp" />
+                    android:background="@color/divider" />
 
                 <LinearLayout
                     android:id="@+id/file_view_comments_area"
