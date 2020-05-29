@@ -89,6 +89,7 @@ import java.util.concurrent.TimeUnit;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.ClaimListAdapter;
+import io.lbry.browser.adapter.CommentListAdapter;
 import io.lbry.browser.adapter.TagListAdapter;
 import io.lbry.browser.dialog.RepostClaimDialogFragment;
 import io.lbry.browser.dialog.SendTipDialogFragment;
@@ -102,6 +103,7 @@ import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
+import io.lbry.browser.model.Comment;
 import io.lbry.browser.model.Fee;
 import io.lbry.browser.model.LbryFile;
 import io.lbry.browser.model.NavMenuItem;
@@ -110,6 +112,8 @@ import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.CommentListHandler;
+import io.lbry.browser.tasks.CommentListTask;
 import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.tasks.LighthouseSearchTask;
 import io.lbry.browser.tasks.ReadTextFileTask;
@@ -164,6 +168,7 @@ public class FileViewFragment extends BaseFragment implements
     private Claim claim;
     private String currentUrl;
     private ClaimListAdapter relatedContentAdapter;
+    private CommentListAdapter commentListAdapter;
     private BroadcastReceiver sdkReceiver;
     private Player.EventListener fileViewPlayerListener;
 
@@ -317,6 +322,7 @@ public class FileViewFragment extends BaseFragment implements
         if (claim != null) {
             Helper.saveViewHistory(currentUrl, claim);
             checkAndLoadRelatedContent();
+            checkAndLoadComments();
             renderClaim();
             if (claim.getFile() == null) {
                 loadFile();
@@ -451,6 +457,7 @@ public class FileViewFragment extends BaseFragment implements
             loadFile();
         }
         checkOwnClaim();
+        checkAndLoadComments();
     }
 
     private String getStreamingUrl() {
@@ -532,6 +539,7 @@ public class FileViewFragment extends BaseFragment implements
         if (claim != null) {
             Helper.saveViewHistory(url, claim);
             checkAndLoadRelatedContent();
+            checkAndLoadComments();
             renderClaim();
         }
     }
@@ -571,7 +579,7 @@ public class FileViewFragment extends BaseFragment implements
             loadAndScheduleDurations();
         }
 
-        if (Lbry.SDK_READY) {
+        if (!Lbry.SDK_READY) {
             if (context instanceof MainActivity) {
                 ((MainActivity) context).addSdkStatusListener(this);
             }
@@ -652,6 +660,7 @@ public class FileViewFragment extends BaseFragment implements
                     loadFile();
 
                     checkAndLoadRelatedContent();
+                    checkAndLoadComments();
                     renderClaim();
                 } else {
                     // render nothing at location
@@ -989,9 +998,13 @@ public class FileViewFragment extends BaseFragment implements
         });
 
         RecyclerView relatedContentList = root.findViewById(R.id.file_view_related_content_list);
+        RecyclerView commentsList = root.findViewById(R.id.file_view_comments_list);
         relatedContentList.setNestedScrollingEnabled(false);
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        relatedContentList.setLayoutManager(llm);
+        commentsList.setNestedScrollingEnabled(false);
+        LinearLayoutManager relatedContentListLLM = new LinearLayoutManager(getContext());
+        LinearLayoutManager commentsListLLM = new LinearLayoutManager(getContext());
+        relatedContentList.setLayoutManager(relatedContentListLLM);
+        commentsList.setLayoutManager(commentsListLLM);
     }
 
     private void deleteCurrentClaim() {
@@ -1313,6 +1326,22 @@ public class FileViewFragment extends BaseFragment implements
             RecyclerView relatedContentList = root.findViewById(R.id.file_view_related_content_list);
             if (relatedContentList == null || relatedContentList.getAdapter() == null || relatedContentList.getAdapter().getItemCount() == 0) {
                 loadRelatedContent();
+            }
+        }
+    }
+
+    private void checkAndLoadComments() {
+        View root = getView();
+        if (root != null) {
+            RecyclerView commentsList = root.findViewById(R.id.file_view_comments_list);
+            if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
+                TextView commentsSDKInitializing = root.findViewById(R.id.file_view_comments_sdk_initializing);
+                if (Lbry.SDK_READY) {
+                    Helper.setViewVisibility(commentsSDKInitializing, View.GONE);
+                    loadComments();
+                } else {
+                    Helper.setViewVisibility(commentsSDKInitializing, View.VISIBLE);
+                }
             }
         }
     }
@@ -1843,6 +1872,39 @@ public class FileViewFragment extends BaseFragment implements
                             Helper.setViewVisibility(
                                     v.findViewById(R.id.file_view_no_related_content),
                                     relatedContentAdapter == null || relatedContentAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                        }
+                    }
+                }
+
+                @Override
+                public void onError(Exception error) {
+
+                }
+            });
+            relatedTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private void loadComments() {
+        View root = getView();
+        ProgressBar relatedLoading = root.findViewById(R.id.file_view_comments_progress);
+        if (claim != null && root != null) {
+            CommentListTask relatedTask = new CommentListTask(1, 999, claim.getClaimId(), relatedLoading, new CommentListHandler() {
+                @Override
+                public void onSuccess(List<Comment> comments) {
+                    Context ctx = getContext();
+                    if (ctx != null) {
+                        commentListAdapter = new CommentListAdapter(comments, ctx);
+
+                        View v = getView();
+                        if (v != null) {
+                            RecyclerView relatedContentList = root.findViewById(R.id.file_view_comments_list);
+                            relatedContentList.setAdapter(commentListAdapter);
+                            commentListAdapter.notifyDataSetChanged();
+
+                            Helper.setViewVisibility(
+                                    v.findViewById(R.id.file_view_no_comments),
+                                    commentListAdapter == null || commentListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
                         }
                     }
                 }
