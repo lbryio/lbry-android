@@ -17,12 +17,16 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class CommentListTask extends AsyncTask<Void, Void, List<Comment>> {
-    private String claim;
+    private final int page;
+    private final int pageSize;
+    private final String claim;
     private ProgressBar progressBar;
     private CommentListHandler handler;
     private Exception error;
 
-    public CommentListTask(String claim, ProgressBar progressBar, CommentListHandler handler) {
+    public CommentListTask(int page, int pageSize, String claim, ProgressBar progressBar, CommentListHandler handler) {
+        this.page = page;
+        this.pageSize = pageSize;
         this.claim = claim;
         this.progressBar = progressBar;
         this.handler = handler;
@@ -39,8 +43,8 @@ public class CommentListTask extends AsyncTask<Void, Void, List<Comment>> {
             Map<String, Object> options = new HashMap<>();
 
             options.put("claim_id", claim);
-            options.put("page", 1);
-            options.put("page_size", 999);
+            options.put("page", page);
+            options.put("page_size", pageSize);
             options.put("include_replies", false);
             options.put("is_channel_signature_valid", true);
             options.put("visible", true);

@@ -1872,7 +1872,7 @@ public class FileViewFragment extends BaseFragment implements
         View root = getView();
         ProgressBar relatedLoading = root.findViewById(R.id.file_view_comments_progress);
         if (claim != null && root != null) {
-            CommentListTask relatedTask = new CommentListTask(claim.getClaimId(), relatedLoading, new CommentListHandler() {
+            CommentListTask relatedTask = new CommentListTask(1, 999, claim.getClaimId(), relatedLoading, new CommentListHandler() {
                 @Override
                 public void onSuccess(List<Comment> comments) {
                     Context ctx = getContext();
