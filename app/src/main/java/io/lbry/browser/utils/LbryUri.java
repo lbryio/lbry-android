@@ -66,6 +66,10 @@ public class LbryUri {
                 REGEX_PART_MODIFIER_SEPARATOR));
 
         String cleanUrl = url, queryString = null;
+        if (Helper.isNullOrEmpty(url)) {
+            throw new LbryUriException("Invalid url parameter.");
+        }
+
         Matcher qsMatcher = PATTERN_SEPARATE_QUERY_STRING.matcher(url);
         if (qsMatcher.matches()) {
             queryString = qsMatcher.group(2);

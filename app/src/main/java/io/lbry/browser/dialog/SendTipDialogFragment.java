@@ -91,11 +91,13 @@ public class SendTipDialogFragment extends BottomSheetDialogFragment implements 
 
         TextView infoText = view.findViewById(R.id.tip_info);
         infoText.setMovementMethod(LinkMovementMethod.getInstance());
-        infoText.setText(HtmlCompat.fromHtml(
-                Claim.TYPE_CHANNEL.equalsIgnoreCase(claim.getValueType()) ?
-                        getString(R.string.send_tip_info_channel, claim.getTitleOrName()) :
-                        getString(R.string.send_tip_info_content, claim.getTitleOrName()),
-                HtmlCompat.FROM_HTML_MODE_LEGACY));
+        if (claim != null) {
+            infoText.setText(HtmlCompat.fromHtml(
+                    Claim.TYPE_CHANNEL.equalsIgnoreCase(claim.getValueType()) ?
+                            getString(R.string.send_tip_info_channel, claim.getTitleOrName()) :
+                            getString(R.string.send_tip_info_content, claim.getTitleOrName()),
+                    HtmlCompat.FROM_HTML_MODE_LEGACY));
+        }
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override

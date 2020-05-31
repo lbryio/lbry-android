@@ -581,58 +581,63 @@ public class PublishFormFragment extends BaseFragment implements
     private void updateFieldsFromCurrentClaim() {
         if (currentClaim != null && !editFieldsLoaded) {
             Context context = getContext();
-            Claim.StreamMetadata metadata = (Claim.StreamMetadata) currentClaim.getValue();
-            uploadedThumbnailUrl = currentClaim.getThumbnailUrl();
-            if (context != null && !Helper.isNullOrEmpty(uploadedThumbnailUrl)) {
-                Glide.with(context.getApplicationContext()).load(uploadedThumbnailUrl).centerCrop().into(imageThumbnail);
-            }
-
-            inputTitle.setText(currentClaim.getTitle());
-            inputDescription.setText(currentClaim.getDescription());
-            if (addedTagsAdapter != null && currentClaim.getTagObjects() != null) {
-                addedTagsAdapter.addTags(currentClaim.getTagObjects());
-                updateSuggestedTags(currentFilter, SUGGESTED_LIMIT, true);
-            }
-
-            if (metadata.getFee() != null) {
-                Fee fee = metadata.getFee();
-                switchPrice.setChecked(true);
-                inputPrice.setText(fee.getAmount());
-                priceCurrencySpinner.setSelection("lbc".equalsIgnoreCase(fee.getCurrency()) ? 0 : 1);
-            }
-
-            inputAddress.setText(currentClaim.getName());
-            inputDeposit.setText(currentClaim.getAmount());
-
-            if (metadata.getLanguages() != null && metadata.getLanguages().size() > 0) {
-                // get the first language
-                String langCode = metadata.getLanguages().get(0);
-                int langCodePosition = ((LanguageSpinnerAdapter) languageSpinner.getAdapter()).getItemPosition(langCode);
-                if (langCodePosition > -1) {
-                    languageSpinner.setSelection(langCodePosition);
-                }
-            }
-
-            if (!Helper.isNullOrEmpty(metadata.getLicense())) {
-                LicenseSpinnerAdapter adapter = (LicenseSpinnerAdapter) licenseSpinner.getAdapter();
-                int licPosition = adapter.getItemPosition(metadata.getLicense());
-                if (licPosition == -1) {
-                    licPosition = adapter.getItemPosition(Predefined.LICENSE_OTHER);
-                }
-                if (licPosition > -1) {
-                    licenseSpinner.setSelection(licPosition);
+            try {
+                Claim.StreamMetadata metadata = (Claim.StreamMetadata) currentClaim.getValue();
+                uploadedThumbnailUrl = currentClaim.getThumbnailUrl();
+                if (context != null && !Helper.isNullOrEmpty(uploadedThumbnailUrl)) {
+                    Glide.with(context.getApplicationContext()).load(uploadedThumbnailUrl).centerCrop().into(imageThumbnail);
                 }
 
-                License selectedLicense = (License) licenseSpinner.getSelectedItem();
-                boolean otherLicense = Arrays.asList(
-                        Predefined.LICENSE_COPYRIGHTED.toLowerCase(),
-                        Predefined.LICENSE_OTHER.toLowerCase()).contains(selectedLicense.getName().toLowerCase());
-                inputOtherLicenseDescription.setText(otherLicense ? metadata.getLicense() : null);
-            }
+                inputTitle.setText(currentClaim.getTitle());
+                inputDescription.setText(currentClaim.getDescription());
+                if (addedTagsAdapter != null && currentClaim.getTagObjects() != null) {
+                    addedTagsAdapter.addTags(currentClaim.getTagObjects());
+                    updateSuggestedTags(currentFilter, SUGGESTED_LIMIT, true);
+                }
 
-            inputAddress.setEnabled(false);
-            editMode = true;
-            editFieldsLoaded = true;
+                if (metadata.getFee() != null) {
+                    Fee fee = metadata.getFee();
+                    switchPrice.setChecked(true);
+                    inputPrice.setText(fee.getAmount());
+                    priceCurrencySpinner.setSelection("lbc".equalsIgnoreCase(fee.getCurrency()) ? 0 : 1);
+                }
+
+                inputAddress.setText(currentClaim.getName());
+                inputDeposit.setText(currentClaim.getAmount());
+
+                if (metadata.getLanguages() != null && metadata.getLanguages().size() > 0) {
+                    // get the first language
+                    String langCode = metadata.getLanguages().get(0);
+                    int langCodePosition = ((LanguageSpinnerAdapter) languageSpinner.getAdapter()).getItemPosition(langCode);
+                    if (langCodePosition > -1) {
+                        languageSpinner.setSelection(langCodePosition);
+                    }
+                }
+
+                if (!Helper.isNullOrEmpty(metadata.getLicense())) {
+                    LicenseSpinnerAdapter adapter = (LicenseSpinnerAdapter) licenseSpinner.getAdapter();
+                    int licPosition = adapter.getItemPosition(metadata.getLicense());
+                    if (licPosition == -1) {
+                        licPosition = adapter.getItemPosition(Predefined.LICENSE_OTHER);
+                    }
+                    if (licPosition > -1) {
+                        licenseSpinner.setSelection(licPosition);
+                    }
+
+                    License selectedLicense = (License) licenseSpinner.getSelectedItem();
+                    boolean otherLicense = Arrays.asList(
+                            Predefined.LICENSE_COPYRIGHTED.toLowerCase(),
+                            Predefined.LICENSE_OTHER.toLowerCase()).contains(selectedLicense.getName().toLowerCase());
+                    inputOtherLicenseDescription.setText(otherLicense ? metadata.getLicense() : null);
+                }
+
+                inputAddress.setEnabled(false);
+                editMode = true;
+                editFieldsLoaded = true;
+            } catch (ClassCastException ex) {
+                // invalid claim value type
+                cancelOnFatalCondition(getString(R.string.publish_invalid_claim_type));
+            }
         }
     }
 
@@ -1415,8 +1420,11 @@ public class PublishFormFragment extends BaseFragment implements
     @Override
     public void onFilePicked(String filePath) {
         if (Helper.isNullOrEmpty(filePath)) {
-            Snackbar.make(getView(), R.string.undetermined_image_filepath, Snackbar.LENGTH_LONG).setBackgroundTint(
-                    ContextCompat.getColor(getContext(), R.color.red)).show();
+            View view = getView();
+            if (view != null) {
+                Snackbar.make(view, R.string.undetermined_image_filepath, Snackbar.LENGTH_LONG).
+                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+            }
             return;
         }
 

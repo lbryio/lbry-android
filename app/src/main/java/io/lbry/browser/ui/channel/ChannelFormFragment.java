@@ -254,7 +254,13 @@ public class ChannelFormFragment extends BaseFragment implements
 
     private void checkParams() {
         Map<String, Object> params = getParams();
-        if (params.containsKey("claim")) {
+        if (params == null) {
+            Context context = getContext();
+            if (context instanceof MainActivity) {
+                ((MainActivity) context).onBackPressed();
+                return;
+            }
+        } else if (params.containsKey("claim")) {
             Claim claim = (Claim) params.get("claim");
             if (claim != null && !claim.equals(this.currentClaim)) {
                 this.currentClaim = claim;
