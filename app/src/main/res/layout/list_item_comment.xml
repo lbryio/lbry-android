@@ -78,11 +78,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:lineSpacingMultiplier="1.05"
+                android:lineSpacingMultiplier="1.1"
                 android:fontFamily="@font/inter"
                 android:textFontWeight="300"
+                android:textIsSelectable="true"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/comment_reply_link"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/reply"
+                android:textFontWeight="300"
+                android:textColor="@color/lbryGreen"
+                android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/comment_replies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

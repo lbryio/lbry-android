@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateUtils;
@@ -22,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -200,6 +200,12 @@ public class FileViewFragment extends BaseFragment implements
     private WebView webView;
     private boolean webViewAdded;
 
+    private Comment replyToComment;
+    private View containerReplyToComment;
+    private TextView textReplyingTo;
+    private TextView textReplyToBody;
+    private View buttonClearReplyToComment;
+
     private boolean postingComment;
     private boolean fetchingChannels;
     private View progressLoadingChannels;
@@ -231,6 +237,11 @@ public class FileViewFragment extends BaseFragment implements
         layoutResolving = root.findViewById(R.id.file_view_loading_container);
         layoutDisplayArea = root.findViewById(R.id.file_view_claim_display_area);
         buttonPublishSomething = root.findViewById(R.id.nothing_at_location_publish_button);
+
+        containerReplyToComment = root.findViewById(R.id.comment_form_reply_to_container);
+        textReplyingTo = root.findViewById(R.id.comment_form_replying_to_text);
+        textReplyToBody = root.findViewById(R.id.comment_form_reply_to_body);
+        buttonClearReplyToComment = root.findViewById(R.id.comment_form_clear_reply_to);
 
         commentChannelSpinner = root.findViewById(R.id.comment_form_channel_spinner);
         progressLoadingChannels = root.findViewById(R.id.comment_form_channels_loading);
@@ -494,7 +505,14 @@ public class FileViewFragment extends BaseFragment implements
 
         View root = getView();
         if (root != null) {
+            if (relatedContentAdapter != null) {
+                relatedContentAdapter.clearItems();
+            }
+            if (commentListAdapter != null) {
+                commentListAdapter.clearItems();
+            }
             ((RecyclerView) root.findViewById(R.id.file_view_related_content_list)).setAdapter(null);
+            ((RecyclerView) root.findViewById(R.id.file_view_comments_list)).setAdapter(null);
         }
         if (MainActivity.appPlayer != null) {
             MainActivity.appPlayer.setPlayWhenReady(false);
@@ -641,6 +659,7 @@ public class FileViewFragment extends BaseFragment implements
         } else {
             onSdkReady();
         }
+        checkCommentSdkInitializing();
     }
 
     public void onStop() {
@@ -1400,16 +1419,19 @@ public class FileViewFragment extends BaseFragment implements
     private void checkAndLoadComments() {
         View root = getView();
         if (root != null) {
+            checkCommentSdkInitializing();
             RecyclerView commentsList = root.findViewById(R.id.file_view_comments_list);
             if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
-                TextView commentsSDKInitializing = root.findViewById(R.id.file_view_comments_sdk_initializing);
-                if (Lbry.SDK_READY) {
-                    Helper.setViewVisibility(commentsSDKInitializing, View.GONE);
-                    loadComments();
-                } else {
-                    Helper.setViewVisibility(commentsSDKInitializing, View.VISIBLE);
-                }
+                loadComments();
             }
+        }
+    }
+
+    private void checkCommentSdkInitializing() {
+        View root = getView();
+        if (root != null) {
+            TextView commentsSDKInitializing = root.findViewById(R.id.file_view_comments_sdk_initializing);
+            Helper.setViewVisibility(commentsSDKInitializing, Lbry.SDK_READY ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -1956,7 +1978,7 @@ public class FileViewFragment extends BaseFragment implements
         View root = getView();
         ProgressBar relatedLoading = root.findViewById(R.id.file_view_comments_progress);
         if (claim != null && root != null) {
-            CommentListTask relatedTask = new CommentListTask(1, 999, claim.getClaimId(), relatedLoading, new CommentListHandler() {
+            CommentListTask task = new CommentListTask(1, 500, claim.getClaimId(), relatedLoading, new CommentListHandler() {
                 @Override
                 public void onSuccess(List<Comment> comments, boolean hasReachedEnd) {
                     Context ctx = getContext();
@@ -1971,6 +1993,12 @@ public class FileViewFragment extends BaseFragment implements
                                         ctx instanceof MainActivity) {
                                     ((MainActivity) ctx).openChannelClaim(claim);
                                 }
+                            }
+                        });
+                        commentListAdapter.setReplyListener(new CommentListAdapter.ReplyClickListener() {
+                            @Override
+                            public void onReplyClicked(Comment comment) {
+                                setReplyToComment(comment);
                             }
                         });
 
@@ -1988,7 +2016,7 @@ public class FileViewFragment extends BaseFragment implements
                     // pass
                 }
             });
-            relatedTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
@@ -2648,6 +2676,13 @@ public class FileViewFragment extends BaseFragment implements
         buttonPostComment.setText(buttonText);
         textCommentLimit.setText(String.format("%d / %d", Helper.getValue(inputComment.getText()).length(), Comment.MAX_LENGTH));
 
+        buttonClearReplyToComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearReplyToComment();
+            }
+        });
+
         buttonPostComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -2762,12 +2797,14 @@ public class FileViewFragment extends BaseFragment implements
         postingComment = true;
         Helper.setViewEnabled(commentChannelSpinner, false);
         Helper.setViewEnabled(inputComment, false);
+        Helper.setViewEnabled(buttonClearReplyToComment, false);
         Helper.setViewEnabled(buttonPostComment, false);
     }
 
     private void afterPostComment() {
         Helper.setViewEnabled(commentChannelSpinner, true);
         Helper.setViewEnabled(inputComment, true);
+        Helper.setViewEnabled(buttonClearReplyToComment, true);
         Helper.setViewEnabled(buttonPostComment, true);
         postingComment = false;
     }
@@ -2780,8 +2817,32 @@ public class FileViewFragment extends BaseFragment implements
         comment.setChannelName(channel.getName());
         comment.setText(Helper.getValue(inputComment.getText()));
         comment.setPoster(channel);
+        if (replyToComment != null) {
+            comment.setParentId(replyToComment.getId());
+        }
 
         return comment;
+    }
+
+    private void setReplyToComment(Comment comment) {
+        replyToComment = comment;
+        Helper.setViewText(textReplyingTo, getString(R.string.replying_to, comment.getChannelName()));
+        Helper.setViewText(textReplyToBody, comment.getText());
+        Helper.setViewVisibility(containerReplyToComment, View.VISIBLE);
+
+        inputComment.requestFocus();
+        Context context = getContext();
+        if (context != null) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(inputComment, InputMethodManager.SHOW_FORCED);
+        }
+    }
+
+    private void clearReplyToComment() {
+        Helper.setViewText(textReplyingTo, null);
+        Helper.setViewText(textReplyToBody, null);
+        Helper.setViewVisibility(containerReplyToComment, View.GONE);
+        replyToComment = null;
     }
 
     private void postComment(double tipAmount) {
@@ -2798,9 +2859,15 @@ public class FileViewFragment extends BaseFragment implements
             @Override
             public void onSuccess(Comment createdComment) {
                 inputComment.setText(null);
+                clearReplyToComment();
+
                 if (commentListAdapter != null) {
                     createdComment.setPoster(comment.getPoster());
-                    commentListAdapter.insert(0, createdComment);
+                    if (!Helper.isNullOrEmpty(createdComment.getParentId())) {
+                        commentListAdapter.addReply(createdComment);
+                    } else {
+                        commentListAdapter.insert(0, createdComment);
+                    }
                 }
                 afterPostComment();
                 checkNoComments();

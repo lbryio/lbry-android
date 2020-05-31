@@ -446,7 +446,11 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             new TabLayoutMediator(tabLayout, tabPager, new TabLayoutMediator.TabConfigurationStrategy() {
                 @Override
                 public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                    tab.setText(position == 0 ? R.string.content : R.string.about);
+                    switch (position) {
+                        case 0: tab.setText(R.string.content); break;
+                        case 1: tab.setText(R.string.about); break;
+                        case 2: tab.setText(R.string.comments); break;
+                    }
                 }
             }).attach();
         } catch (IllegalStateException ex) {
@@ -516,6 +520,13 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                         // pass
                     }
                     return aboutFragment;
+
+                case 2:
+                    ChannelCommentsFragment commentsFragment = ChannelCommentsFragment.class.newInstance();
+                    if (channelClaim != null) {
+                        commentsFragment.setClaim(channelClaim);
+                    }
+                    return commentsFragment;
             }
 
             return null;
@@ -527,7 +538,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
 
         @Override
         public int getItemCount() {
-            return 2;
+            return 3;
         }
     }
 }

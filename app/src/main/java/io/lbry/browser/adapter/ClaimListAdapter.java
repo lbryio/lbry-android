@@ -297,17 +297,13 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         return new ClaimListAdapter.ViewHolder(v);
     }
 
-    public int getScaledValue(int value) {
-        return (int) (value * scale + 0.5f);
-    }
-
     @Override
     public void onBindViewHolder(ClaimListAdapter.ViewHolder vh, int position) {
         int type = getItemViewType(position);
         int paddingTop = position == 0 ? 16 : 8;
         int paddingBottom = position == getItemCount() - 1 ? 16 : 8;
-        int paddingTopScaled = getScaledValue(paddingTop);
-        int paddingBottomScaled = getScaledValue(paddingBottom);
+        int paddingTopScaled = Helper.getScaledValue(paddingTop, scale);
+        int paddingBottomScaled = Helper.getScaledValue(paddingBottom, scale);
         vh.itemView.setPadding(vh.itemView.getPaddingLeft(), paddingTopScaled, vh.itemView.getPaddingRight(), paddingBottomScaled);
 
         Claim original = items.get(position);

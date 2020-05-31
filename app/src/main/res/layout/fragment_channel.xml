@@ -95,7 +95,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                app:tabGravity="center" />
+                android:paddingLeft="110dp"
+                app:tabGravity="fill"
+                app:tabMode="scrollable"/>
             <RelativeLayout
                 android:id="@+id/channel_view_icon_container"
                 android:layout_width="80dp"

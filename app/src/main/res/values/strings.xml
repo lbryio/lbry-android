@@ -88,6 +88,8 @@
     <string name="post_comment">Post comment with tip?</string>
     <string name="comment_posted">Your comment was successfully posted.</string>
     <string name="please_select_repost_channel">Please select a channel to repost on.</string>
+    <string name="reply">Reply</string>
+    <string name="replying_to">Replying to %1$s</string>
     <plurals name="post_for_credits">
         <item quantity="one">Post for %1$s credit</item>
         <item quantity="other">Post for %1$s credits</item>
