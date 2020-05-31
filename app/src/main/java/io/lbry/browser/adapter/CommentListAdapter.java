@@ -139,7 +139,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             if (replies != null && replies.size() > 0) {
                 for (int j = 0; j < replies.size(); j++) {
                     Comment reply = item.getReplies().get(j);
-                    if (channelId.equalsIgnoreCase(item.getChannelId())) {
+                    if (channelId.equalsIgnoreCase(reply.getChannelId())) {
                         reply.setPoster(channel);
                         break;
                     }
