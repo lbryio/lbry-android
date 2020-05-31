@@ -60,8 +60,8 @@
     <string name="loading_decentralized_data">Loading decentralized data...</string>
     <string name="related_content">Related Content</string>
     <string name="comments">Comments</string>
-    <string name="no_comments">No comments to display.</string>
-    <string name="sdk_initializing_comments">Comments will display once the background service is done initializing.</string>
+    <string name="no_comments">No comments to display at this time.</string>
+    <string name="sdk_initializing_comments">Comments will display after the background service is initialized.</string>
     <string name="share_lbry_content">Share LBRY content</string>
     <string name="view">View</string>
     <string name="play">Play</string>
@@ -81,6 +81,20 @@
     <string name="confirm_delete_content_message">Are you sure you want to unpublish this content? No files will be removed from your device.</string>
     <string name="content_deleted">The content was successfully deleted from the blockchain.</string>
     <string name="content_failed_delete">The content could not be deleted at this time. Please try again later.</string>
+    <string name="comment">Comment</string>
+    <string name="post_as">Post as</string>
+    <string name="please_enter_comment">Please enter a comment to post.</string>
+    <string name="please_select_channel">Please select a channel to post your comment as.</string>
+    <string name="post_comment">Post comment with tip?</string>
+    <string name="comment_posted">Your comment was successfully posted.</string>
+    <plurals name="post_for_credits">
+        <item quantity="one">Post for %1$s credit</item>
+        <item quantity="other">Post for %1$s credits</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">This will post your comment with a tip of %1$s credit for %2$s</item>
+        <item quantity="other">This will post your comment with a tip of %1$s credits for %2$s</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="one">%1$s view</item>
         <item quantity="other">%1$s views</item>

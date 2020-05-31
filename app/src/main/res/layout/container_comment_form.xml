@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/post_as"
+            android:fontFamily="@font/inter"
+            android:textSize="14sp"
+            android:textFontWeight="300" />
+        <ProgressBar
+            android:id="@+id/comment_form_channels_loading"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/comment_form_channel_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp" />
+
+    <include layout="@layout/container_inline_channel_form" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+        <RelativeLayout
+            android:id="@+id/comment_form_avatar_container"
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+            <RelativeLayout
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_channel_icon"
+                android:id="@+id/comment_form_no_thumbnail"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:visibility="invisible">
+                <TextView
+                    android:id="@+id/comment_form_thumbnail_alpha"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:textAllCaps="true"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300" />
+            </RelativeLayout>
+            <ImageView
+                android:layout_centerInParent="true"
+                android:id="@+id/comment_form_thumbnail"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/comment_form_avatar_container"
+            android:layout_marginLeft="16dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/comment_form_body"
+                android:hint="@string/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textFontWeight="300"
+                android:inputType="textMultiLine"
+                android:maxLength="2000"
+                android:singleLine="false"
+                android:scrollbars="vertical"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/comment_form_text_limit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/inter"
+        android:textColor="@color/lightGrey"
+        android:textFontWeight="300"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/comment_form_post"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter" />
+        <ProgressBar
+            android:id="@+id/comment_form_post_progress"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/comment_form_post"
+            android:layout_marginLeft="24dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>

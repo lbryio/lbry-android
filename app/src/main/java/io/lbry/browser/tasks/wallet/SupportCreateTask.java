@@ -40,6 +40,7 @@ public class SupportCreateTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
         try {
             Map<String, Object> options = new HashMap<>();
+            options.put("blocking", true);
             options.put("claim_id", claimId);
             options.put("amount", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).format(amount.doubleValue()));
             options.put("tip", tip);

@@ -371,13 +371,6 @@ public class ChannelFormFragment extends BaseFragment implements
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void showError(String message) {
-        Context context = getContext();
-        if (context != null) {
-            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
-        }
-    }
-
     public void checkPermissionsAndLaunchFilePicker(boolean isCover) {
         Context context = getContext();
         if (MainActivity.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {

@@ -13,6 +13,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -31,6 +34,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
@@ -40,6 +44,7 @@ import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultControlDispatcher;
@@ -64,6 +69,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -90,6 +96,7 @@ import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.ClaimListAdapter;
 import io.lbry.browser.adapter.CommentListAdapter;
+import io.lbry.browser.adapter.InlineChannelSpinnerAdapter;
 import io.lbry.browser.adapter.TagListAdapter;
 import io.lbry.browser.dialog.RepostClaimDialogFragment;
 import io.lbry.browser.dialog.SendTipDialogFragment;
@@ -112,6 +119,7 @@ import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.CommentCreateWithTipTask;
 import io.lbry.browser.tasks.CommentListHandler;
 import io.lbry.browser.tasks.CommentListTask;
 import io.lbry.browser.tasks.GenericTaskHandler;
@@ -121,6 +129,7 @@ import io.lbry.browser.tasks.SetSdkSettingTask;
 import io.lbry.browser.tasks.claim.AbandonHandler;
 import io.lbry.browser.tasks.claim.AbandonStreamTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
+import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
 import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.tasks.file.DeleteFileTask;
@@ -191,6 +200,28 @@ public class FileViewFragment extends BaseFragment implements
     private WebView webView;
     private boolean webViewAdded;
 
+    private boolean postingComment;
+    private boolean fetchingChannels;
+    private View progressLoadingChannels;
+    private View progressPostComment;
+    private InlineChannelSpinnerAdapter commentChannelSpinnerAdapter;
+    private AppCompatSpinner commentChannelSpinner;
+    private TextInputEditText inputComment;
+    private TextView textCommentLimit;
+    private MaterialButton buttonPostComment;
+    private ImageView commentPostAsThumbnail;
+    private View commentPostAsNoThumbnail;
+    private TextView commentPostAsAlpha;
+
+    private View inlineChannelCreator;
+    private TextInputEditText inlineChannelCreatorInputName;
+    private TextInputEditText inlineChannelCreatorInputDeposit;
+    private View inlineChannelCreatorInlineBalance;
+    private TextView inlineChannelCreatorInlineBalanceValue;
+    private View inlineChannelCreatorCancelLink;
+    private View inlineChannelCreatorProgress;
+    private MaterialButton inlineChannelCreatorCreateButton;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_file_view, container, false);
@@ -200,6 +231,25 @@ public class FileViewFragment extends BaseFragment implements
         layoutResolving = root.findViewById(R.id.file_view_loading_container);
         layoutDisplayArea = root.findViewById(R.id.file_view_claim_display_area);
         buttonPublishSomething = root.findViewById(R.id.nothing_at_location_publish_button);
+
+        commentChannelSpinner = root.findViewById(R.id.comment_form_channel_spinner);
+        progressLoadingChannels = root.findViewById(R.id.comment_form_channels_loading);
+        progressPostComment = root.findViewById(R.id.comment_form_post_progress);
+        inputComment = root.findViewById(R.id.comment_form_body);
+        textCommentLimit = root.findViewById(R.id.comment_form_text_limit);
+        buttonPostComment = root.findViewById(R.id.comment_form_post);
+        commentPostAsThumbnail = root.findViewById(R.id.comment_form_thumbnail);
+        commentPostAsNoThumbnail = root.findViewById(R.id.comment_form_no_thumbnail);
+        commentPostAsAlpha = root.findViewById(R.id.comment_form_thumbnail_alpha);
+
+        inlineChannelCreator = root.findViewById(R.id.container_inline_channel_form_create);
+        inlineChannelCreatorInputName = root.findViewById(R.id.inline_channel_form_input_name);
+        inlineChannelCreatorInputDeposit = root.findViewById(R.id.inline_channel_form_input_deposit);
+        inlineChannelCreatorInlineBalance = root.findViewById(R.id.inline_channel_form_inline_balance_container);
+        inlineChannelCreatorInlineBalanceValue = root.findViewById(R.id.inline_channel_form_inline_balance_value);
+        inlineChannelCreatorProgress = root.findViewById(R.id.inline_channel_form_create_progress);
+        inlineChannelCreatorCancelLink = root.findViewById(R.id.inline_channel_form_cancel_link);
+        inlineChannelCreatorCreateButton = root.findViewById(R.id.inline_channel_form_create_button);
 
         initUi(root);
 
@@ -457,6 +507,7 @@ public class FileViewFragment extends BaseFragment implements
             loadFile();
         }
         checkOwnClaim();
+        fetchChannels();
         checkAndLoadComments();
     }
 
@@ -499,6 +550,10 @@ public class FileViewFragment extends BaseFragment implements
                     checkIsFileComplete();
                     if (!claim.isPlayable() && !claim.isViewable()) {
                         showUnsupportedView();
+                    }
+                } else {
+                    if (!claim.isPlayable() && !claim.isViewable()) {
+                        restoreMainActionButton();
                     }
                 }
 
@@ -997,6 +1052,23 @@ public class FileViewFragment extends BaseFragment implements
             }
         });
 
+        commentChannelSpinnerAdapter = new InlineChannelSpinnerAdapter(getContext(), R.layout.spinner_item_channel, new ArrayList<>());
+        commentChannelSpinnerAdapter.addPlaceholder(false);
+
+        initCommentForm(root);
+        setupInlineChannelCreator(
+                inlineChannelCreator,
+                inlineChannelCreatorInputName,
+                inlineChannelCreatorInputDeposit,
+                inlineChannelCreatorInlineBalance,
+                inlineChannelCreatorInlineBalanceValue,
+                inlineChannelCreatorCancelLink,
+                inlineChannelCreatorCreateButton,
+                inlineChannelCreatorProgress,
+                commentChannelSpinner,
+                commentChannelSpinnerAdapter
+        );
+
         RecyclerView relatedContentList = root.findViewById(R.id.file_view_related_content_list);
         RecyclerView commentsList = root.findViewById(R.id.file_view_comments_list);
         relatedContentList.setNestedScrollingEnabled(false);
@@ -1237,15 +1309,7 @@ public class FileViewFragment extends BaseFragment implements
             Claim.GenericMetadata metadata = claim.getValue();
             if (!Helper.isNullOrEmpty(claim.getThumbnailUrl())) {
                 ImageView thumbnailView = root.findViewById(R.id.file_view_thumbnail);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (claim != null && context != null && thumbnailView != null) {
-                            Glide.with(context.getApplicationContext()).asBitmap().load(claim.getThumbnailUrl()).centerCrop().into(thumbnailView);
-                        }
-                    }
-                }, 200);
-
+                Glide.with(context.getApplicationContext()).asBitmap().load(claim.getThumbnailUrl()).centerCrop().into(thumbnailView);
             } else {
                 // display first x letters of claim name, with random background
             }
@@ -1891,30 +1955,72 @@ public class FileViewFragment extends BaseFragment implements
         if (claim != null && root != null) {
             CommentListTask relatedTask = new CommentListTask(1, 999, claim.getClaimId(), relatedLoading, new CommentListHandler() {
                 @Override
-                public void onSuccess(List<Comment> comments) {
+                public void onSuccess(List<Comment> comments, boolean hasReachedEnd) {
                     Context ctx = getContext();
-                    if (ctx != null) {
+                    View root = getView();
+                    if (ctx != null && root != null) {
                         commentListAdapter = new CommentListAdapter(comments, ctx);
+                        commentListAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
+                            @Override
+                            public void onClaimClicked(Claim claim) {
+                                if (!Helper.isNullOrEmpty(claim.getName()) &&
+                                        claim.getName().startsWith("@") &&
+                                        ctx instanceof MainActivity) {
+                                    ((MainActivity) ctx).openChannelClaim(claim);
+                                }
+                            }
+                        });
 
-                        View v = getView();
-                        if (v != null) {
-                            RecyclerView relatedContentList = root.findViewById(R.id.file_view_comments_list);
-                            relatedContentList.setAdapter(commentListAdapter);
-                            commentListAdapter.notifyDataSetChanged();
+                        RecyclerView relatedContentList = root.findViewById(R.id.file_view_comments_list);
+                        relatedContentList.setAdapter(commentListAdapter);
+                        commentListAdapter.notifyDataSetChanged();
 
-                            Helper.setViewVisibility(
-                                    v.findViewById(R.id.file_view_no_comments),
-                                    commentListAdapter == null || commentListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
-                        }
+                        checkNoComments();
+                        resolveCommentPosters();
                     }
                 }
 
                 @Override
                 public void onError(Exception error) {
-
+                    // pass
                 }
             });
             relatedTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private void checkNoComments() {
+        View root = getView();
+        if (root != null) {
+            Helper.setViewVisibility(root.findViewById(R.id.file_view_no_comments),
+                    commentListAdapter == null || commentListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void resolveCommentPosters() {
+        if (commentListAdapter != null) {
+            List<String> urlsToResolve = new ArrayList<>(commentListAdapter.getClaimUrlsToResolve());
+            if (urlsToResolve.size() > 0) {
+                ResolveTask task = new ResolveTask(urlsToResolve, Lbry.SDK_CONNECTION_STRING, null, new ClaimListResultHandler() {
+                    @Override
+                    public void onSuccess(List<Claim> claims) {
+                        if (commentListAdapter != null) {
+                            for (Claim claim : claims) {
+                                if (claim.getClaimId() != null) {
+                                    commentListAdapter.updatePosterForComment(claim.getClaimId(), claim);
+                                }
+                            }
+                            commentListAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        // pass
+                    }
+                });
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
         }
     }
 
@@ -2333,6 +2439,9 @@ public class FileViewFragment extends BaseFragment implements
 
     @Override
     public void onWalletBalanceUpdated(WalletBalance walletBalance) {
+        if (walletBalance != null && inlineChannelCreatorInlineBalanceValue != null) {
+            inlineChannelCreatorInlineBalanceValue.setText(Helper.shortCurrencyFormat(walletBalance.getAvailable().doubleValue()));
+        }
         checkRewardsDriver();
     }
 
@@ -2453,5 +2562,258 @@ public class FileViewFragment extends BaseFragment implements
             Snackbar.make(root, R.string.storage_permission_rationale_download, Snackbar.LENGTH_LONG).
                     setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
         }
+    }
+
+    private void fetchChannels() {
+        if (Lbry.ownChannels != null && Lbry.ownChannels.size() > 0) {
+            updateChannelList(Lbry.ownChannels);
+            return;
+        }
+
+        fetchingChannels = true;
+        disableChannelSpinner();
+        ClaimListTask task = new ClaimListTask(Claim.TYPE_CHANNEL, progressLoadingChannels, new ClaimListResultHandler() {
+            @Override
+            public void onSuccess(List<Claim> claims) {
+                Lbry.ownChannels = new ArrayList<>(claims);
+                updateChannelList(Lbry.ownChannels);
+                enableChannelSpinner();
+                fetchingChannels = false;
+            }
+
+            @Override
+            public void onError(Exception error) {
+                enableChannelSpinner();
+                fetchingChannels = false;
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+    private void disableChannelSpinner() {
+        Helper.setViewEnabled(commentChannelSpinner, false);
+        hideInlineChannelCreator();
+    }
+    private void enableChannelSpinner() {
+        Helper.setViewEnabled(commentChannelSpinner, true);
+        if (commentChannelSpinner != null) {
+            Claim selectedClaim = (Claim) commentChannelSpinner.getSelectedItem();
+            if (selectedClaim != null) {
+                if (selectedClaim.isPlaceholder()) {
+                    showInlineChannelCreator();
+                } else {
+                    hideInlineChannelCreator();
+                }
+            }
+        }
+    }
+    private void showInlineChannelCreator() {
+        Helper.setViewVisibility(inlineChannelCreator, View.VISIBLE);
+    }
+    private void hideInlineChannelCreator() {
+        Helper.setViewVisibility(inlineChannelCreator, View.GONE);
+    }
+
+    private void updateChannelList(List<Claim> channels) {
+        if (commentChannelSpinnerAdapter == null) {
+            Context context = getContext();
+            if (context != null) {
+                commentChannelSpinnerAdapter = new InlineChannelSpinnerAdapter(context, R.layout.spinner_item_channel, new ArrayList<>(channels));
+                commentChannelSpinnerAdapter.addPlaceholder(false);
+                commentChannelSpinnerAdapter.notifyDataSetChanged();
+            }
+        } else {
+            commentChannelSpinnerAdapter.clear();
+            commentChannelSpinnerAdapter.addAll(channels);
+            commentChannelSpinnerAdapter.addPlaceholder(false);
+            commentChannelSpinnerAdapter.notifyDataSetChanged();
+        }
+
+        if (commentChannelSpinner != null) {
+            commentChannelSpinner.setAdapter(commentChannelSpinnerAdapter);
+        }
+
+        if (commentChannelSpinnerAdapter != null && commentChannelSpinner != null) {
+            if (commentChannelSpinnerAdapter.getCount() > 1) {
+                commentChannelSpinner.setSelection(1);
+            }
+        }
+    }
+
+    private void initCommentForm(View root) {
+        double amount = Comment.COST / Lbryio.LBCUSDRate;
+        String buttonText = getResources().getQuantityString(R.plurals.post_for_credits, amount == 1 ? 1 : 2, Helper.LBC_CURRENCY_FORMAT.format(amount));
+        buttonPostComment.setText(buttonText);
+        textCommentLimit.setText(String.format("%d / %d", Helper.getValue(inputComment.getText()).length(), Comment.MAX_LENGTH));
+
+        buttonPostComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Lbry.SDK_READY) {
+                    Snackbar.make(root.findViewById(R.id.file_view_claim_display_area), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                validateAndCheckPostComment(amount);
+            }
+        });
+
+        inputComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int len = charSequence.length();
+                textCommentLimit.setText(String.format("%d / %d", len, Comment.MAX_LENGTH));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        commentChannelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                Object item = adapterView.getItemAtPosition(position);
+                if (item instanceof Claim) {
+                    Claim claim = (Claim) item;
+                    if (claim.isPlaceholder()) {
+                        if (!fetchingChannels) {
+                            showInlineChannelCreator();
+                        }
+                    } else {
+                        hideInlineChannelCreator();
+                        updatePostAsChannel(claim);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void validateAndCheckPostComment(double amount) {
+        String comment = Helper.getValue(inputComment.getText());
+        Claim channel = (Claim) commentChannelSpinner.getSelectedItem();
+
+        if (Helper.isNullOrEmpty(comment)) {
+            showError(getString(R.string.please_enter_comment));
+            return;
+        }
+        if (channel == null || Helper.isNullOrEmpty(channel.getClaimId())) {
+            showError(getString(R.string.please_select_channel));
+            return;
+        }
+        if (Lbry.walletBalance == null || amount > Lbry.walletBalance.getAvailable().doubleValue()) {
+            showError(getString(R.string.insufficient_balance));
+            return;
+        }
+
+        Context context = getContext();
+        if (context != null) {
+            String confirmText = getResources().getQuantityString(
+                    R.plurals.confirm_post_comment,
+                    amount == 1 ? 1 : 2,
+                    Helper.LBC_CURRENCY_FORMAT.format(amount),
+                    claim.getTitleOrName());
+            AlertDialog.Builder builder = new AlertDialog.Builder(context).
+                    setTitle(R.string.post_comment).
+                    setMessage(confirmText)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            postComment(amount);
+                        }
+                    }).setNegativeButton(R.string.no, null);
+            builder.show();
+        }
+    }
+
+    private void updatePostAsChannel(Claim channel) {
+        boolean hasThumbnail = !Helper.isNullOrEmpty(channel.getThumbnailUrl());
+        Helper.setViewVisibility(commentPostAsThumbnail, hasThumbnail ? View.VISIBLE : View.INVISIBLE);
+        Helper.setViewVisibility(commentPostAsNoThumbnail, !hasThumbnail ? View.VISIBLE : View.INVISIBLE);
+        Helper.setViewText(commentPostAsAlpha, channel.getName() != null ? channel.getName().substring(1, 2).toUpperCase() : null);
+
+        Context context = getContext();
+        int bgColor = Helper.generateRandomColorForValue(channel.getClaimId());
+        Helper.setIconViewBackgroundColor(commentPostAsNoThumbnail, bgColor, false, context);
+
+        if (hasThumbnail && context != null) {
+            Glide.with(context.getApplicationContext()).
+                    asBitmap().
+                    load(channel.getThumbnailUrl()).
+                    apply(RequestOptions.circleCropTransform()).
+                    into(commentPostAsThumbnail);
+        }
+    }
+
+    private void beforePostComment() {
+        postingComment = true;
+        Helper.setViewEnabled(commentChannelSpinner, false);
+        Helper.setViewEnabled(inputComment, false);
+        Helper.setViewEnabled(buttonPostComment, false);
+    }
+
+    private void afterPostComment() {
+        Helper.setViewEnabled(commentChannelSpinner, true);
+        Helper.setViewEnabled(inputComment, true);
+        Helper.setViewEnabled(buttonPostComment, true);
+        postingComment = false;
+    }
+
+    private Comment buildPostComment() {
+        Comment comment = new Comment();
+        Claim channel = (Claim) commentChannelSpinner.getSelectedItem();
+        comment.setClaimId(claim.getClaimId());
+        comment.setChannelId(channel.getClaimId());
+        comment.setChannelName(channel.getName());
+        comment.setText(Helper.getValue(inputComment.getText()));
+        comment.setPoster(channel);
+
+        return comment;
+    }
+
+    private void postComment(double tipAmount) {
+        if (postingComment) {
+            return;
+        }
+
+        Comment comment = buildPostComment();
+        // only use 2 decimal places
+        BigDecimal amount = new BigDecimal(new DecimalFormat(Helper.PLAIN_CURRENCY_FORMAT_PATTERN).format(tipAmount));
+
+        beforePostComment();
+        CommentCreateWithTipTask task = new CommentCreateWithTipTask(comment, amount, progressPostComment, new CommentCreateWithTipTask.CommentCreateWithTipHandler() {
+            @Override
+            public void onSuccess(Comment createdComment) {
+                inputComment.setText(null);
+                if (commentListAdapter != null) {
+                    createdComment.setPoster(comment.getPoster());
+                    commentListAdapter.insert(0, createdComment);
+                }
+                afterPostComment();
+                checkNoComments();
+
+                Context context = getContext();
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).showMessage(R.string.comment_posted);
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                showError(error.getMessage());
+                afterPostComment();
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
