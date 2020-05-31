@@ -89,6 +89,8 @@ public final class Lbry {
     public static final String METHOD_PREFERENCE_GET = "preference_get";
     public static final String METHOD_PREFERENCE_SET = "preference_set";
 
+    public static final String METHOD_COMMENT_CREATE = "comment_create";
+
     public static final String METHOD_TXO_LIST = "txo_list";
     public static final String METHOD_TXO_SPEND = "txo_spend";
 

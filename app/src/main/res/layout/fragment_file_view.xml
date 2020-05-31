@@ -37,7 +37,6 @@
     <LinearLayout
         android:id="@+id/file_view_claim_display_area"
         android:orientation="vertical"
-        android:layout_weight="10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
@@ -45,8 +44,7 @@
             android:id="@+id/file_view_media_container"
             android:background="@color/mediaContainerBackground"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3.55">
+            android:layout_height="246dp">
             <RelativeLayout
                 android:id="@+id/file_view_media_meta_container"
                 android:clickable="true"
@@ -167,8 +165,7 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/file_view_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6.45"
+            android:layout_height="match_parent"
             android:clipToPadding="false">
             <LinearLayout
                 android:orientation="vertical"
@@ -571,7 +568,7 @@
                 <LinearLayout
                     android:id="@+id/file_view_related_content_area"
                     android:orientation="vertical"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp">
                     <RelativeLayout
@@ -590,7 +587,7 @@
                             android:id="@+id/file_view_related_content_progress"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:layout_alignParentRight="true"
+                            android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:visibility="gone" />
                     </RelativeLayout>
@@ -623,7 +620,7 @@
                     android:id="@+id/file_view_comments_area"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp"
+                    android:paddingBottom="16dp"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -631,12 +628,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp">
-
                         <ProgressBar
                             android:id="@+id/file_view_comments_progress"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:layout_alignParentRight="true"
+                            android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:visibility="gone" />
 
@@ -648,6 +644,8 @@
                             android:text="@string/comments"
                             android:textSize="16sp" />
                     </RelativeLayout>
+
+                    <include layout="@layout/container_comment_form" />
 
                     <TextView
                         android:id="@+id/file_view_no_comments"

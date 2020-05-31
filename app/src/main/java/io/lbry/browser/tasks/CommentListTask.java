@@ -52,9 +52,27 @@ public class CommentListTask extends AsyncTask<Void, Void, List<Comment>> {
 
             JSONObject result = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_COMMENT_LIST, options);
             JSONArray items = result.getJSONArray("items");
+
+            List<Comment> children = new ArrayList<>();
             comments = new ArrayList<>();
             for (int i = 0; i < items.length(); i++) {
-                comments.add(Comment.fromJSONObject(items.getJSONObject(i)));
+                Comment comment = Comment.fromJSONObject(items.getJSONObject(i));
+                if (comment != null) {
+                    if (!Helper.isNullOrEmpty(comment.getParentId())) {
+                        children.add(comment);
+                    } else {
+                        comments.add(comment);
+                    }
+                }
+            }
+
+            for (Comment child : children) {
+                for (Comment parent : comments) {
+                    if (parent.getId().equalsIgnoreCase(child.getParentId())) {
+                        parent.addReply(child);
+                        break;
+                    }
+                }
             }
         } catch (Exception ex) {
             error = ex;
@@ -65,12 +83,10 @@ public class CommentListTask extends AsyncTask<Void, Void, List<Comment>> {
     protected void onPostExecute(List<Comment> comments) {
         Helper.setViewVisibility(progressBar, View.GONE);
         if (handler != null) {
-            if (comments != null && error == null) {
-                handler.onSuccess(comments);
+            if (comments != null) {
+                handler.onSuccess(comments, comments.size() < pageSize);
             } else {
                 handler.onError(error);
-                if (error != null) {
-                }
             }
         }
     }

@@ -11,26 +11,96 @@
     android:paddingRight="16dp"
     android:paddingTop="8dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/comment_channel_name"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/comment_avatar_container"
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+            <RelativeLayout
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_channel_icon"
+                android:id="@+id/comment_no_thumbnail"
+                android:layout_width="40dp"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/comment_thumbnail_alpha"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:textAllCaps="true"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300" />
+            </RelativeLayout>
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:id="@+id/comment_thumbnail"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter"
-            android:text="channel_name"
-            android:textColor="@color/lbryGreen"
-            android:textSize="14sp" />
+            android:layout_toRightOf="@id/comment_avatar_container"
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/comment_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter"
-            android:text="comment_text" />
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/comment_channel_name"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:textColor="@color/lbryGreen"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/comment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/inter"
+                    android:textColor="@color/lightGrey"
+                    android:textSize="12sp" />
+            </RelativeLayout>
 
+            <TextView
+                android:id="@+id/comment_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:lineSpacingMultiplier="1.1"
+                android:fontFamily="@font/inter"
+                android:textFontWeight="300"
+                android:textIsSelectable="true"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/comment_reply_link"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/reply"
+                android:textFontWeight="300"
+                android:textColor="@color/lbryGreen"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/comment_replies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
