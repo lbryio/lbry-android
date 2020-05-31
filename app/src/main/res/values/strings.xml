@@ -87,6 +87,7 @@
     <string name="please_select_channel">Please select a channel to post your comment as.</string>
     <string name="post_comment">Post comment with tip?</string>
     <string name="comment_posted">Your comment was successfully posted.</string>
+    <string name="please_select_repost_channel">Please select a channel to repost on.</string>
     <plurals name="post_for_credits">
         <item quantity="one">Post for %1$s credit</item>
         <item quantity="other">Post for %1$s credits</item>
@@ -137,6 +138,7 @@
     <string name="show_extra_fields">Show extra fields</string>
     <string name="hide_extra_fields">Hide extra fields</string>
     <string name="no_file_found">No file found to publish.</string>
+    <string name="publish_invalid_claim_type">Invalid claim specified for editing.</string>
     <string name="video_optimization">Video optimization</string>
     <string name="thumbnail_creation_failed">A thumbnail could not be automatically created from your content file.</string>
     <string name="video_being_optimized">Your video is being optimized for better support on a wide range of devices. You can fill out the remaining fields below while this is in progress.</string>
@@ -405,6 +407,7 @@
     <string name="verify">Verify</string>
     <string name="please_enter_valid_phone">Please enter a valid phone number.</string>
     <string name="please_enter_verification_code">Please enter the verification code sent to your phone number.</string>
+    <string name="fetch_current_user_error">User account could not be retrieved at this time. Please try again later.</string>
 
     <!-- Forms -->
     <string name="no_added_tags">You have not added any tags yet. Add tags to improve discovery.</string>

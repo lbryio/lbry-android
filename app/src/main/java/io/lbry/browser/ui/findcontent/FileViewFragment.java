@@ -835,7 +835,10 @@ public class FileViewFragment extends BaseFragment implements
                     dialog.setListener(new RepostClaimDialogFragment.RepostClaimListener() {
                         @Override
                         public void onClaimReposted(Claim claim) {
-                            Snackbar.make(root.findViewById(R.id.file_view_claim_display_area), R.string.content_successfully_reposted, Snackbar.LENGTH_LONG).show();
+                            Context context = getContext();
+                            if (context instanceof MainActivity) {
+                                ((MainActivity) context).showMessage(R.string.content_successfully_reposted);
+                            }
                         }
                     });
                     Context context = getContext();
@@ -1416,7 +1419,7 @@ public class FileViewFragment extends BaseFragment implements
             root.findViewById(R.id.file_view_exoplayer_container).setVisibility(View.GONE);
             root.findViewById(R.id.file_view_unsupported_container).setVisibility(View.VISIBLE);
             String fileNameString = "";
-            if (claim.getFile() != null) {
+            if (claim.getFile() != null && !Helper.isNullOrEmpty(claim.getFile().getDownloadPath())) {
                 LbryFile lbryFile = claim.getFile();
                 File file = new File(lbryFile.getDownloadPath());
                 fileNameString = String.format("\"%s\" ", file.getName());

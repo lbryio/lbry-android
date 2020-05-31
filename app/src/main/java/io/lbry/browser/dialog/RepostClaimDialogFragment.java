@@ -231,6 +231,11 @@ public class RepostClaimDialogFragment extends BottomSheetDialogFragment impleme
         }
 
         Claim channel = (Claim) channelSpinner.getSelectedItem();
+        if (channel == null) {
+            showError(getString(R.string.please_select_repost_channel));
+            return;
+        }
+
         StreamRepostTask task = new StreamRepostTask(name, bid, claim.getClaimId(), channel.getClaimId(), repostProgress, new ClaimResultHandler() {
             @Override
             public void beforeStart() {
@@ -256,10 +261,13 @@ public class RepostClaimDialogFragment extends BottomSheetDialogFragment impleme
     }
 
     private void showError(String message) {
-        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).
-                setBackgroundTint(Color.RED).
-                setTextColor(Color.WHITE).
-                show();
+        View view = getView();
+        if (view != null && !Helper.isNullOrEmpty(message)) {
+            Snackbar.make(view, message, Snackbar.LENGTH_LONG).
+                    setBackgroundTint(Color.RED).
+                    setTextColor(Color.WHITE).
+                    show();
+        }
     }
 
     private void startLoading() {
