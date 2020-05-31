@@ -342,6 +342,7 @@ public class FileViewFragment extends BaseFragment implements
             ((MainActivity) context).onBackPressed();
         }
 
+        boolean invalidRepost = false;
         if (updateRequired) {
             if (context instanceof MainActivity) {
                 ((MainActivity) context).clearNowPlayingClaim();
@@ -365,6 +366,20 @@ public class FileViewFragment extends BaseFragment implements
                 onNewClaim(currentUrl);
                 if (Lbry.claimCache.containsKey(key)) {
                     claim = Lbry.claimCache.get(key);
+                    if (Claim.TYPE_REPOST.equalsIgnoreCase(claim.getValueType())) {
+                        claim = claim.getRepostedClaim();
+                        if (claim == null || Helper.isNullOrEmpty(claim.getClaimId())) {
+                            // Invalid repost, probably
+                            invalidRepost = true;
+                            renderNothingAtLocation();
+                        } else if (claim.getName().startsWith("@")) {
+                            // this is a reposted channel, so launch the channel url
+                            if (context instanceof  MainActivity) {
+                                ((MainActivity) context).openChannelUrl(!Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
+                            }
+                            return;
+                        }
+                    }
                 } else {
                     resolveUrl(currentUrl);
                 }
@@ -380,7 +395,7 @@ public class FileViewFragment extends BaseFragment implements
             Helper.saveUrlHistory(currentUrl, claim != null ? claim.getTitle() : null, UrlSuggestion.TYPE_FILE);
         }
 
-        if (claim != null) {
+        if (claim != null && !invalidRepost) {
             Helper.saveViewHistory(currentUrl, claim);
             checkAndLoadRelatedContent();
             checkAndLoadComments();

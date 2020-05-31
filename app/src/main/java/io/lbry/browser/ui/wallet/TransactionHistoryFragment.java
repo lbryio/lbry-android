@@ -103,16 +103,20 @@ public class TransactionHistoryFragment extends BaseFragment implements Transact
         TransactionListTask task = new TransactionListTask(currentTransactionPage, TRANSACTION_PAGE_LIMIT, loading, new TransactionListTask.TransactionListHandler() {
             @Override
             public void onSuccess(List<Transaction> transactions, boolean hasReachedEnd) {
+                Context context = getContext();
+
                 transactionsLoading = false;
                 transactionsHaveReachedEnd = hasReachedEnd;
-                if (adapter == null) {
-                    adapter = new TransactionListAdapter(transactions, getContext());
-                    adapter.setListener(TransactionHistoryFragment.this);
-                    if (transactionList != null) {
-                        transactionList.setAdapter(adapter);
+                if (context != null) {
+                    if (adapter == null) {
+                        adapter = new TransactionListAdapter(transactions, context);
+                        adapter.setListener(TransactionHistoryFragment.this);
+                        if (transactionList != null) {
+                            transactionList.setAdapter(adapter);
+                        }
+                    } else {
+                        adapter.addTransactions(transactions);
                     }
-                } else {
-                    adapter.addTransactions(transactions);
                 }
                 checkNoTransactions();
             }
