@@ -55,20 +55,22 @@ public class LoadGalleryItemsTask extends AsyncTask<Void, GalleryItem, List<Gall
                         MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                         projection, null, null,
                         String.format("%s DESC LIMIT 150", MediaStore.MediaColumns.DATE_MODIFIED));
-                while (cursor.moveToNext()) {
-                    int idColumn = cursor.getColumnIndex(MediaStore.MediaColumns._ID);
-                    int nameColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
-                    int typeColumn = cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE);
-                    int pathColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
-                    int durationColumn = cursor.getColumnIndex(MediaStore.Video.Media.DURATION);
+                if (cursor != null) {
+                    while (cursor.moveToNext()) {
+                        int idColumn = cursor.getColumnIndex(MediaStore.MediaColumns._ID);
+                        int nameColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
+                        int typeColumn = cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE);
+                        int pathColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
+                        int durationColumn = cursor.getColumnIndex(MediaStore.Video.Media.DURATION);
 
-                    GalleryItem item = new GalleryItem();
-                    item.setId(cursor.getString(idColumn));
-                    item.setName(cursor.getString(nameColumn));
-                    item.setType(cursor.getString(typeColumn));
-                    item.setFilePath(cursor.getString(pathColumn));
-                    item.setDuration(cursor.getLong(durationColumn));
-                    items.add(item);
+                        GalleryItem item = new GalleryItem();
+                        item.setId(cursor.getString(idColumn));
+                        item.setName(cursor.getString(nameColumn));
+                        item.setType(cursor.getString(typeColumn));
+                        item.setFilePath(cursor.getString(pathColumn));
+                        item.setDuration(cursor.getLong(durationColumn));
+                        items.add(item);
+                    }
                 }
             } catch (SQLiteException ex) {
                 // failed to load videos. log and pass

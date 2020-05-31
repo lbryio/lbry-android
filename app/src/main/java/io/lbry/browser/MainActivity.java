@@ -353,7 +353,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // workaround to fix dark theme because https://issuetracker.google.com/issues/37124582
-        new WebView(this);
+        try {
+            new WebView(this);
+        } catch (Exception ex) {
+            // pass (don't fail initialization on some _weird_ device implementations)
+        }
         AppCompatDelegate.setDefaultNightMode(isDarkMode() ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
         initKeyStore();
@@ -365,17 +369,20 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         initSpecialRouteMap();
 
         LbryAnalytics.init(this);
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-            @Override
-            public void onComplete(Task<InstanceIdResult> task) {
-                if (!task.isSuccessful()) {
-                    return;
+        try {
+            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                @Override
+                public void onComplete(Task<InstanceIdResult> task) {
+                    if (!task.isSuccessful()) {
+                        return;
+                    }
+                    // Get new Instance ID token
+                    firebaseMessagingToken = task.getResult().getToken();
                 }
-
-                // Get new Instance ID token
-                firebaseMessagingToken = task.getResult().getToken();
-            }
-        });
+            });
+        } catch (IllegalStateException ex) {
+            // pass
+        }
 
         super.onCreate(savedInstanceState);
         dbHelper = new DatabaseHelper(this);
@@ -739,8 +746,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void openPublishesOnSuccessfulPublish() {
         // close publish form
-        getSupportFragmentManager().popBackStack();
-        openFragment(PublishesFragment.class, true, NavMenuItem.ID_ITEM_PUBLISHES);
+        try {
+            getSupportFragmentManager().popBackStack();
+            openFragment(PublishesFragment.class, true, NavMenuItem.ID_ITEM_PUBLISHES);
+        } catch (IllegalStateException ex) {
+            // pass
+            onBackPressed();
+        }
     }
 
     public void openPublishForm(Claim claim) {
@@ -2486,8 +2498,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 !startingSignInFlowActivity) {
             enteringPIPMode = true;
             PictureInPictureParams params = new PictureInPictureParams.Builder().build();
-            enterPictureInPictureMode(params);
-            return true;
+
+            try {
+                enterPictureInPictureMode(params);
+                return true;
+            } catch (IllegalStateException ex) {
+                // pass
+                enteringPIPMode = false;
+            }
         }
 
         return false;
@@ -2933,6 +2951,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     public static boolean hasPermission(String permission, Context context) {
+        if (context == null) {
+            return false;
+        }
         return (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
     }
 

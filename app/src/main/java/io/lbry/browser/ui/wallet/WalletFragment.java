@@ -409,14 +409,22 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         // wallet_send task
         String recipientAddress = Helper.getValue(inputSendAddress.getText());
         String amountString = Helper.getValue(inputSendAmount.getText());
-        String amount = new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).
-                format(new BigDecimal(amountString).doubleValue());
+        String amount = null;
+        try {
+            amount = new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).
+                    format(new BigDecimal(amountString).doubleValue());
+        } catch (NumberFormatException ex) {
+            Snackbar.make(getView(), R.string.invalid_amount, Snackbar.LENGTH_LONG).
+                    setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+            return;
+        }
 
         disableSendControls();
+        double actualSendAmount = Double.valueOf(amount);
         WalletSendTask task = new WalletSendTask(recipientAddress, amount, walletSendProgress, new WalletSendTask.WalletSendHandler() {
             @Override
             public void onSuccess() {
-                double sentAmount = Double.valueOf(amount);
+                double sentAmount = actualSendAmount;
                 String message = getResources().getQuantityString(
                         R.plurals.you_sent_credits, sentAmount == 1.0 ? 1 : 2,
                         new DecimalFormat("#,###.##").format(sentAmount));
@@ -530,8 +538,11 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             }
             @Override
             public void onSuccess(String newAddress) {
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-                sp.edit().putString(MainActivity.PREFERENCE_KEY_INTERNAL_WALLET_RECEIVE_ADDRESS, newAddress).apply();
+                Context context = getContext();
+                if (context != null) {
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                    sp.edit().putString(MainActivity.PREFERENCE_KEY_INTERNAL_WALLET_RECEIVE_ADDRESS, newAddress).apply();
+                }
                 Helper.setViewText(textWalletReceiveAddress, newAddress);
                 Helper.setViewEnabled(buttonGetNewAddress, true);
             }

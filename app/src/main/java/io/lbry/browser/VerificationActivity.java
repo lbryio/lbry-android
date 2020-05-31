@@ -177,7 +177,7 @@ public class VerificationActivity extends FragmentActivity implements SignInList
 
                 @Override
                 public void onError(Exception error) {
-                    showFetchUserError(error.getMessage());
+                    showFetchUserError(error != null ? error.getMessage() : getString(R.string.fetch_current_user_error));
                     hideLoading();
                 }
             });
@@ -213,7 +213,7 @@ public class VerificationActivity extends FragmentActivity implements SignInList
                 }
                 @Override
                 public void onError(Exception error) {
-                    showFetchUserError(error.getMessage());
+                    showFetchUserError(error != null ? error.getMessage() : getString(R.string.fetch_current_user_error));
                     hideLoading();
                 }
             });
@@ -250,7 +250,7 @@ public class VerificationActivity extends FragmentActivity implements SignInList
 
             @Override
             public void onError(Exception error) {
-                showFetchUserError(error.getMessage());
+                showFetchUserError(error != null ? error.getMessage() : getString(R.string.fetch_current_user_error));
                 hideLoading();
             }
         });

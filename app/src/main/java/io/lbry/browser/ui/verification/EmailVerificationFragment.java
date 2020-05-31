@@ -70,8 +70,12 @@ public class EmailVerificationFragment extends Fragment {
         inputEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                String layoutHint = !hasFocus ? "" : getString(R.string.email);
-                inputLayoutEmail.setHint(layoutHint);
+                try {
+                    String layoutHint = !hasFocus ? "" : getString(R.string.email);
+                    inputLayoutEmail.setHint(layoutHint);
+                } catch (IllegalStateException ex) {
+                    // pass
+                }
             }
         });
         buttonContinue.setOnClickListener(new View.OnClickListener() {
@@ -98,9 +102,12 @@ public class EmailVerificationFragment extends Fragment {
 
     private void addEmail() {
         currentEmail = Helper.getValue(inputEmail.getText());
-        if (Helper.isNullOrEmpty(currentEmail) || currentEmail.indexOf("@") == -1) {
-            Snackbar.make(getView(), R.string.provide_valid_email, Snackbar.LENGTH_LONG).
-                    setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+        if (Helper.isNullOrEmpty(currentEmail) || !currentEmail.contains("@")) {
+            View view = getView();
+            if (view != null) {
+                Snackbar.make(view, R.string.provide_valid_email, Snackbar.LENGTH_LONG).
+                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+            }
             return;
         }
 
@@ -136,8 +143,11 @@ public class EmailVerificationFragment extends Fragment {
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).
-                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                View view = getView();
+                if (view != null && error != null) {
+                    Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).
+                            setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                };
                 Helper.setViewVisibility(buttonContinue, View.VISIBLE);
             }
         });
@@ -194,14 +204,20 @@ public class EmailVerificationFragment extends Fragment {
 
             @Override
             public void onSuccess() {
-                Snackbar.make(getView(), R.string.please_follow_instructions, Snackbar.LENGTH_LONG).show();
+                View view = getView();
+                if (view != null) {
+                    Snackbar.make(view, R.string.please_follow_instructions, Snackbar.LENGTH_LONG).show();
+                }
                 Helper.setViewEnabled(buttonResend, true);
             }
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).
-                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                View view = getView();
+                if (view != null && error != null) {
+                    Snackbar.make(view, error.getMessage(), Snackbar.LENGTH_LONG).
+                            setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                }
                 Helper.setViewEnabled(buttonResend, true);
             }
         });
