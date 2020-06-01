@@ -18,11 +18,18 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class PurchaseListTask extends AsyncTask<Void, Void, List<Claim>> {
+    private String claimId;
     private int page;
     private int pageSize;
     private ClaimSearchResultHandler handler;
     private View progressView;
     private Exception error;
+
+    public PurchaseListTask(String claimId, View progressView, ClaimSearchResultHandler handler) {
+        this.claimId = claimId;
+        this.progressView = progressView;
+        this.handler = handler;
+    }
 
     public PurchaseListTask(int page, int pageSize, View progressView, ClaimSearchResultHandler handler) {
         this.page = page;
@@ -38,8 +45,15 @@ public class PurchaseListTask extends AsyncTask<Void, Void, List<Claim>> {
         List<Claim> claims = null;
         try {
             Map<String, Object> options = new HashMap<>();
-            options.put("page", page);
-            options.put("page_size", pageSize);
+            if (!Helper.isNullOrEmpty(claimId)) {
+                options.put("claim_id", claimId);
+            }
+            if (page > 0) {
+                options.put("page", page);
+            }
+            if (pageSize > 0) {
+                options.put("page_size", pageSize);
+            }
             options.put("resolve", true);
 
             JSONObject result = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_PURCHASE_LIST, options);
@@ -47,9 +61,10 @@ public class PurchaseListTask extends AsyncTask<Void, Void, List<Claim>> {
             claims = new ArrayList<>();
             for (int i = 0; i < items.length(); i++) {
                 Claim claim = Claim.fromJSONObject(items.getJSONObject(i).getJSONObject("claim"));
-                claims.add(claim);
-
-                Lbry.addClaimToCache(claim);
+                if (!Helper.isNullOrEmpty(claim.getClaimId())) {
+                    claims.add(claim);
+                    Lbry.addClaimToCache(claim);
+                }
             }
         } catch (ApiCallException | JSONException | ClassCastException ex) {
             error = ex;

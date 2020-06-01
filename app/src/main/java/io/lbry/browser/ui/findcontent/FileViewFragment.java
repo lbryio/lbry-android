@@ -131,6 +131,7 @@ import io.lbry.browser.tasks.claim.AbandonStreamTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.tasks.claim.ClaimSearchResultHandler;
+import io.lbry.browser.tasks.claim.PurchaseListTask;
 import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.tasks.file.DeleteFileTask;
 import io.lbry.browser.tasks.file.FileListTask;
@@ -1624,26 +1625,62 @@ public class FileViewFragment extends BaseFragment implements
         // Check if the claim is free
         Claim.GenericMetadata metadata = claim.getValue();
         if (metadata instanceof Claim.StreamMetadata) {
-            Claim.StreamMetadata streamMetadata = (Claim.StreamMetadata) metadata;
+            View root = getView();
+            if (root != null) {
+                root.findViewById(R.id.file_view_main_action_button).setVisibility(View.INVISIBLE);
+                root.findViewById(R.id.file_view_main_action_loading).setVisibility(View.VISIBLE);
+            }
             if (claim.getFile() == null && !claim.isFree()) {
-                // TODO: also check ownership from purchase_list
-                // not free (and the user does not own the claim yet), perform a purchase
-                confirmPurchaseUrl();
-            } else {
-                if (!claim.isPlayable() && !Lbry.SDK_READY) {
+                if (!Lbry.SDK_READY) {
                     Snackbar.make(getView().findViewById(R.id.file_view_global_layout), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    restoreMainActionButton();
                     return;
                 }
 
-                View root = getView();
-                if (root != null) {
-                    root.findViewById(R.id.file_view_main_action_button).setVisibility(View.INVISIBLE);
-                    root.findViewById(R.id.file_view_main_action_loading).setVisibility(View.VISIBLE);
-                    handleMainActionForClaim();
+                checkAndConfirmPurchaseUrl();
+            } else {
+                if (!claim.isPlayable() && !Lbry.SDK_READY) {
+                    Snackbar.make(getView().findViewById(R.id.file_view_global_layout), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    restoreMainActionButton();
+                    return;
                 }
+
+                handleMainActionForClaim();
             }
         } else {
             showError(getString(R.string.cannot_view_claim));
+        }
+    }
+
+    private void checkAndConfirmPurchaseUrl() {
+        if (claim != null) {
+            PurchaseListTask task = new PurchaseListTask(claim.getClaimId(), null, new ClaimSearchResultHandler() {
+                @Override
+                public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
+                    boolean purchased = false;
+                    if (claims.size() == 1) {
+                        Claim purchasedClaim = claims.get(0);
+                        if (claim.getClaimId().equalsIgnoreCase(purchasedClaim.getClaimId())) {
+                            // already purchased
+                            purchased = true;
+                        }
+                    }
+
+                    if (purchased) {
+                        handleMainActionForClaim();
+                    } else {
+                        restoreMainActionButton();
+                        confirmPurchaseUrl();
+                    }
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    // pass
+                    restoreMainActionButton();
+                }
+            });
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
