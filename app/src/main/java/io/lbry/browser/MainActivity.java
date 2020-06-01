@@ -837,10 +837,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             listener.onEnterPIPMode();
         }
 
+        View pipPlayerContainer = findViewById(R.id.pip_player_container);
         PlayerView pipPlayer = findViewById(R.id.pip_player);
-        pipPlayer.setVisibility(View.VISIBLE);
         pipPlayer.setPlayer(appPlayer);
         pipPlayer.setUseController(false);
+        pipPlayerContainer.setVisibility(View.VISIBLE);
         playerReassigned = true;
     }
     private void renderFullMode() {
@@ -871,9 +872,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             listener.onExitPIPMode();
         }
 
+        View pipPlayerContainer = findViewById(R.id.pip_player_container);
         PlayerView pipPlayer = findViewById(R.id.pip_player);
-        pipPlayer.setVisibility(View.INVISIBLE);
         pipPlayer.setPlayer(null);
+        pipPlayerContainer.setVisibility(View.INVISIBLE);
         playerReassigned = true;
     }
 

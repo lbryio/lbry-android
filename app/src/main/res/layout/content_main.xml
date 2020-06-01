@@ -128,12 +128,18 @@
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/pip_player"
+    <RelativeLayout
+        android:id="@+id/pip_player_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible" />
+        app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/pip_player"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

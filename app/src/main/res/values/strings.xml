@@ -82,7 +82,7 @@
     <string name="content_deleted">The content was successfully deleted from the blockchain.</string>
     <string name="content_failed_delete">The content could not be deleted at this time. Please try again later.</string>
     <string name="comment">Comment</string>
-    <string name="post_as">Post as</string>
+    <string name="comment_as">Comment as</string>
     <string name="please_enter_comment">Please enter a comment to post.</string>
     <string name="please_select_channel">Please select a channel to post your comment as.</string>
     <string name="post_comment">Post comment with tip?</string>
