@@ -10,6 +10,7 @@ public class LbryAnalytics {
 
     public static final String EVENT_APP_ERROR = "app_error";
     public static final String EVENT_APP_LAUNCH = "app_launch";
+    public static final String EVENT_COMMENT_CREATE = "comment_create";
     public static final String EVENT_EMAIL_ADDED = "email_added";
     public static final String EVENT_EMAIL_VERIFIED = "email_verified";
     public static final String EVENT_FIRST_RUN_COMPLETED = "first_run_completed";

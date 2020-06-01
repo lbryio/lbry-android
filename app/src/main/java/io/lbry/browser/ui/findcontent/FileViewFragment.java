@@ -2924,6 +2924,12 @@ public class FileViewFragment extends BaseFragment implements
                 afterPostComment();
                 checkNoComments();
 
+                Bundle bundle = new Bundle();
+                bundle.putDouble("amount", amount.doubleValue());
+                bundle.putString("claim_id", claim != null ? claim.getClaimId() : null);
+                bundle.putString("claim_name", claim != null ? claim.getName() : null);
+                LbryAnalytics.logEvent(LbryAnalytics.EVENT_COMMENT_CREATE, bundle);
+
                 Context context = getContext();
                 if (context instanceof MainActivity) {
                     ((MainActivity) context).showMessage(R.string.comment_posted);
