@@ -2815,13 +2815,17 @@ public class FileViewFragment extends BaseFragment implements
 
         Context context = getContext();
         if (context != null) {
+            String titleText = getResources().getQuantityString(
+                    R.plurals.post_and_tip,
+                    amount == 1 ? 1 : 2,
+                    Helper.LBC_CURRENCY_FORMAT.format(amount));
             String confirmText = getResources().getQuantityString(
                     R.plurals.confirm_post_comment,
                     amount == 1 ? 1 : 2,
                     Helper.LBC_CURRENCY_FORMAT.format(amount),
                     claim.getTitleOrName());
             AlertDialog.Builder builder = new AlertDialog.Builder(context).
-                    setTitle(R.string.post_comment).
+                    setTitle(titleText).
                     setMessage(confirmText)
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
