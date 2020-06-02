@@ -531,7 +531,7 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
 
         Comment comment = buildPostComment();
         // only use 2 decimal places
-        BigDecimal amount = new BigDecimal(new DecimalFormat(Helper.PLAIN_CURRENCY_FORMAT_PATTERN).format(tipAmount));
+        BigDecimal amount = new BigDecimal(String.valueOf(tipAmount));
 
         beforePostComment();
         CommentCreateWithTipTask task = new CommentCreateWithTipTask(comment, amount, progressPostComment, new CommentCreateWithTipTask.CommentCreateWithTipHandler() {
