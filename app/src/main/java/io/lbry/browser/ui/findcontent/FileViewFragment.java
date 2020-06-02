@@ -1171,13 +1171,19 @@ public class FileViewFragment extends BaseFragment implements
                 return;
             }
 
-            fileGetPending = true;
-            MainActivity.requestPermission(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    MainActivity.REQUEST_STORAGE_PERMISSION,
-                    getString(R.string.storage_permission_rationale_download),
-                    context,
-                    true);
+            try {
+                if (context != null) {
+                    fileGetPending = true;
+                    MainActivity.requestPermission(
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            MainActivity.REQUEST_STORAGE_PERMISSION,
+                            getString(R.string.storage_permission_rationale_download),
+                            context,
+                            true);
+                }
+            } catch (IllegalStateException ex) {
+                // pass
+            }
         } else {
             fileGet(true);
         }
@@ -2082,6 +2088,7 @@ public class FileViewFragment extends BaseFragment implements
 
     private void resolveCommentPosters() {
         if (commentListAdapter != null) {
+            long st = System.currentTimeMillis();;
             List<String> urlsToResolve = new ArrayList<>(commentListAdapter.getClaimUrlsToResolve());
             if (urlsToResolve.size() > 0) {
                 ResolveTask task = new ResolveTask(urlsToResolve, Lbry.SDK_CONNECTION_STRING, null, new ClaimListResultHandler() {
@@ -2723,7 +2730,7 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void initCommentForm(View root) {
-        double amount = Comment.COST / Lbryio.LBCUSDRate;
+        double amount = Comment.LBC_COST;
         String buttonText = getResources().getQuantityString(R.plurals.post_for_credits, amount == 1 ? 1 : 2, Helper.LBC_CURRENCY_FORMAT.format(amount));
         buttonPostComment.setText(buttonText);
         textCommentLimit.setText(String.format("%d / %d", Helper.getValue(inputComment.getText()).length(), Comment.MAX_LENGTH));

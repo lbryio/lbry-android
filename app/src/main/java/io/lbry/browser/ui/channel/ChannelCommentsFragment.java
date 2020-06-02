@@ -350,7 +350,7 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
     }
 
     private void initCommentForm(View root) {
-        double amount = Comment.COST / Lbryio.LBCUSDRate;
+        double amount = Comment.LBC_COST;
         String buttonText = getResources().getQuantityString(R.plurals.post_for_credits, amount == 1 ? 1 : 2, Helper.LBC_CURRENCY_FORMAT.format(amount));
         buttonPostComment.setText(buttonText);
         textCommentLimit.setText(String.format("%d / %d", Helper.getValue(inputComment.getText()).length(), Comment.MAX_LENGTH));

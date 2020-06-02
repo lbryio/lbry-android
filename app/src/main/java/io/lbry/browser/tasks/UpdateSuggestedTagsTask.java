@@ -66,10 +66,15 @@ public class UpdateSuggestedTagsTask extends AsyncTask<Void, Void, List<Tag>> {
                 if (excludeMature && knownTag.isMature()) {
                     continue;
                 }
-                if ((knownTag.getLowercaseName().startsWith(filter) || knownTag.getLowercaseName().matches(filter)) &&
-                        (!tags.contains(knownTag) &&
-                                !Lbry.followedTags.contains(knownTag) && (addedTagsAdapter == null || !addedTagsAdapter.getTags().contains(knownTag)))) {
-                    tags.add(knownTag);
+                try {
+                    if ((knownTag.getLowercaseName().startsWith(filter) ||
+                            knownTag.getLowercaseName().matches(filter)) &&
+                            (!tags.contains(knownTag) && !Lbry.followedTags.contains(knownTag) && (addedTagsAdapter == null || !addedTagsAdapter.getTags().contains(knownTag)))
+                    ) {
+                        tags.add(knownTag);
+                    }
+                } catch (Exception ex) {
+                    // continue
                 }
             }
         }

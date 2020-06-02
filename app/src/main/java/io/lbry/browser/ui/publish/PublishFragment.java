@@ -140,7 +140,7 @@ public class PublishFragment extends BaseFragment implements
                             preview.setSurfaceProvider(cameraPreview.createSurfaceProvider(camera.getCameraInfo()));
                             cameraPreviewInitialized = true;
                         }
-                    } catch (ExecutionException | InterruptedException ex) {
+                    } catch (ExecutionException | IllegalArgumentException | InterruptedException ex) {
                         // pass
                     }
                 }

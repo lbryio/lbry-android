@@ -746,13 +746,22 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void openPublishesOnSuccessfulPublish() {
         // close publish form
-        try {
-            getSupportFragmentManager().popBackStack();
-            openFragment(PublishesFragment.class, true, NavMenuItem.ID_ITEM_PUBLISHES);
-        } catch (IllegalStateException ex) {
-            // pass
-            onBackPressed();
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getSupportFragmentManager().popBackStack();
+                    openFragment(PublishesFragment.class, true, NavMenuItem.ID_ITEM_PUBLISHES);
+                } catch (IllegalStateException ex) {
+                    // pass
+                    try {
+                        onBackPressed();
+                    } catch (IllegalStateException iex) {
+                        // if this fails on some devices. what's the solution?
+                    }
+                }
+            }
+        });
     }
 
     public void openPublishForm(Claim claim) {

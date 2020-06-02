@@ -118,6 +118,7 @@
     </plurals>
 
     <!-- Publish -->
+    <string name="no_publishes_created">It looks like you have not published content to LBRY yet.</string>
     <string name="record">Record</string>
     <string name="take_photo">Take a Photo</string>
     <string name="upload_file">Upload a file</string>
