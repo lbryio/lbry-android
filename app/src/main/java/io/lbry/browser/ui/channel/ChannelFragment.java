@@ -426,7 +426,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             Glide.with(context.getApplicationContext()).load(coverUrl).centerCrop().into(imageCover);
         }
         if (context != null && !Helper.isNullOrEmpty(thumbnailUrl)) {
-            Glide.with(context.getApplicationContext()).asBitmap().load(thumbnailUrl).apply(RequestOptions.circleCropTransform()).into(imageThumbnail);
+            Glide.with(context.getApplicationContext()).load(thumbnailUrl).apply(RequestOptions.circleCropTransform()).into(imageThumbnail);
             noThumbnailView.setVisibility(View.GONE);
         } else {
             imageThumbnail.setVisibility(View.GONE);

@@ -1037,7 +1037,7 @@ public class FileViewFragment extends BaseFragment implements
             }
         });
 
-        root.findViewById(R.id.file_view_publisher_name).setOnClickListener(new View.OnClickListener() {
+        root.findViewById(R.id.file_view_publisher_info_area).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (claim != null && claim.getSigningChannel() != null) {
@@ -1304,6 +1304,8 @@ public class FileViewFragment extends BaseFragment implements
         
         View root = getView();
         if (root != null) {
+            Context context = getContext();
+
             root.findViewById(R.id.file_view_scroll_view).scrollTo(0, 0);
             Helper.setViewVisibility(layoutDisplayArea, View.VISIBLE);
 
@@ -1325,7 +1327,29 @@ public class FileViewFragment extends BaseFragment implements
             ((TextView) root.findViewById(R.id.file_view_publisher_name)).setText(
                     Helper.isNullOrEmpty(claim.getPublisherName()) ? getString(R.string.anonymous) : claim.getPublisherName());
 
-            Context context = getContext();
+            Claim signingChannel = claim.getSigningChannel();
+            boolean hasPublisher = signingChannel != null;
+            boolean hasPublisherThumbnail = hasPublisher && !Helper.isNullOrEmpty(signingChannel.getThumbnailUrl());
+            root.findViewById(R.id.file_view_publisher_avatar).setVisibility(hasPublisher ? View.VISIBLE : View.GONE);
+            root.findViewById(R.id.file_view_publisher_thumbnail).setVisibility(hasPublisherThumbnail ? View.VISIBLE : View.INVISIBLE);
+            root.findViewById(R.id.file_view_publisher_no_thumbnail).setVisibility(!hasPublisherThumbnail ? View.VISIBLE : View.INVISIBLE);
+            if (hasPublisher) {
+                int bgColor = Helper.generateRandomColorForValue(signingChannel.getClaimId());
+                Helper.setIconViewBackgroundColor(root.findViewById(R.id.file_view_publisher_no_thumbnail), bgColor, false, context);
+                if (hasPublisherThumbnail && context != null) {
+                    Glide.with(context.getApplicationContext()).load(signingChannel.getThumbnailUrl()).
+                            apply(RequestOptions.circleCropTransform()).into((ImageView) root.findViewById(R.id.file_view_publisher_thumbnail));
+                }
+                ((TextView) root.findViewById(R.id.file_view_publisher_thumbnail_alpha)).
+                        setText(signingChannel.getName() != null ? signingChannel.getName().substring(1, 2).toUpperCase() : null);
+
+            }
+
+            String publisherTitle = signingChannel != null ? signingChannel.getTitle() : null;
+            TextView textPublisherTitle = root.findViewById(R.id.file_view_publisher_title);
+            textPublisherTitle.setVisibility(Helper.isNullOrEmpty(publisherTitle) ? View.GONE : View.VISIBLE);
+            textPublisherTitle.setText(publisherTitle);
+
             RecyclerView descTagsList = root.findViewById(R.id.file_view_tag_list);
             FlexboxLayoutManager flm = new FlexboxLayoutManager(context);
             descTagsList.setLayoutManager(flm);

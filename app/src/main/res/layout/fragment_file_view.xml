@@ -468,41 +468,89 @@
                     android:background="@color/divider"
                     android:layout_width="match_parent"
                     android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
                     android:layout_height="0.5dp" />
 
                 <RelativeLayout
                     android:id="@+id/file_view_publisher_area"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/file_view_publisher_name_area"
+                        android:id="@+id/file_view_publisher_info_area"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:orientation="vertical">
+                        android:paddingTop="12dp"
+                        android:paddingLeft="16dp"
+                        android:paddingBottom="12dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_toLeftOf="@id/file_view_icon_follow_unfollow">
+                        <RelativeLayout
+                            android:id="@+id/file_view_publisher_avatar"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:visibility="gone">
+                            <RelativeLayout
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/bg_channel_icon"
+                                android:id="@+id/file_view_publisher_no_thumbnail"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp">
+                                <TextView
+                                    android:id="@+id/file_view_publisher_thumbnail_alpha"
+                                    android:layout_centerInParent="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter"
+                                    android:textAllCaps="true"
+                                    android:textSize="24sp"
+                                    android:textColor="@color/white"
+                                    android:textFontWeight="300" />
+                            </RelativeLayout>
+                            <ImageView
+                                android:layout_centerHorizontal="true"
+                                android:id="@+id/file_view_publisher_thumbnail"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp" />
+                        </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/file_view_publisher_name"
+                        <LinearLayout
+                            android:id="@+id/file_view_publisher_name_area"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="?attr/selectableItemBackground"
-                            android:clickable="true"
-                            android:fontFamily="@font/inter"
-                            android:textColor="@color/lbryGreen"
-                            android:textFontWeight="600"
-                            android:textSize="14sp" />
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/file_view_publisher_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:textFontWeight="300"
+                                android:textSize="14sp"
+                                android:visibility="gone" />
+                            <TextView
+                                android:id="@+id/file_view_publisher_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:textColor="@color/lbryGreen"
+                                android:textFontWeight="600"
+                                android:textSize="14sp" />
+                        </LinearLayout>
                     </LinearLayout>
+
                     <io.lbry.browser.ui.controls.SolidIconView
                         android:id="@+id/file_view_icon_follow_unfollow"
                         android:clickable="true"
                         android:background="?attr/selectableItemBackground"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:layout_marginRight="16dp"
                         android:text="@string/fa_heart"
                         android:textColor="@color/red"
                         android:textSize="20dp" />
@@ -511,7 +559,6 @@
                 <View
                     android:background="@color/divider"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
                     android:layout_height="0.5dp" />
 

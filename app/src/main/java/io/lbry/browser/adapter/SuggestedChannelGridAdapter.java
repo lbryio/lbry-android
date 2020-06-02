@@ -97,7 +97,7 @@ public class SuggestedChannelGridAdapter extends RecyclerView.Adapter<SuggestedC
         vh.alphaView.setText(claim.getName().substring(1, 2));
         if (!Helper.isNullOrEmpty(thumbnailUrl)) {
             vh.thumbnailView.setVisibility(View.VISIBLE);
-            Glide.with(context.getApplicationContext()).asBitmap().load(thumbnailUrl).apply(RequestOptions.circleCropTransform()).into(vh.thumbnailView);
+            Glide.with(context.getApplicationContext()).load(thumbnailUrl).apply(RequestOptions.circleCropTransform()).into(vh.thumbnailView);
         } else {
             vh.thumbnailView.setVisibility(View.GONE);
         }
