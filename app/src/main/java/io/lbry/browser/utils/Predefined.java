@@ -1878,7 +1878,8 @@ public final class Predefined {
             new Language("no", "Norwegian", R.string.norwegian),
             new Language("ro", "Romanian", R.string.romanian),
             new Language("hi", "Hindi", R.string.hindi),
-            new Language("el", "Greek", R.string.greek)
+            new Language("el", "Greek", R.string.greek),
+            new Language("ca", "Catalan", R.string.catalan)
     );
 
     public static final String LICENSE_COPYRIGHTED = "Copyrighted";
