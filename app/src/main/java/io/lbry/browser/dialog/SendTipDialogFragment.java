@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -21,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
@@ -111,6 +109,10 @@ public class SendTipDialogFragment extends BottomSheetDialogFragment implements 
                 BigDecimal amount = new BigDecimal(amountString);
                 if (amount.doubleValue() > Lbry.walletBalance.getAvailable().doubleValue()) {
                     showError(getString(R.string.insufficient_balance));
+                    return;
+                }
+                if (amount.doubleValue() < Helper.MIN_SPEND) {
+                    showError(getString(R.string.min_spend_required));
                     return;
                 }
 

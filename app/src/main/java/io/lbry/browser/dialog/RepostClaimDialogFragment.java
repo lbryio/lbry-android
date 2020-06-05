@@ -231,6 +231,11 @@ public class RepostClaimDialogFragment extends BottomSheetDialogFragment impleme
             showError(getString(R.string.insufficient_balance));
             return;
         }
+        if (bid.doubleValue() < Helper.MIN_DEPOSIT) {
+            String message = getResources().getQuantityString(R.plurals.min_deposit_required, 2, String.valueOf(Helper.MIN_DEPOSIT));
+            showError(message);
+            return;
+        }
 
         Claim channel = (Claim) channelSpinner.getSelectedItem();
         if (channel == null) {

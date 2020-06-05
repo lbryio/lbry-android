@@ -140,7 +140,6 @@ public class ChannelFormFragment extends BaseFragment implements
         Context context = getContext();
         FlexboxLayoutManager flm1 = new FlexboxLayoutManager(context);
         FlexboxLayoutManager flm2 = new FlexboxLayoutManager(context);
-        FlexboxLayoutManager flm3 = new FlexboxLayoutManager(context);
         addedTagsList = root.findViewById(R.id.form_added_tags);
         addedTagsList.setLayoutManager(flm1);
         suggestedTagsList = root.findViewById(R.id.form_suggested_tags);
@@ -326,7 +325,7 @@ public class ChannelFormFragment extends BaseFragment implements
             showError(getString(R.string.please_enter_valid_deposit));
             return;
         }
-        if (depositAmount == 0) {
+        if (depositAmount < Helper.MIN_DEPOSIT) {
             String error = getResources().getQuantityString(R.plurals.min_deposit_required, depositAmount == 1 ? 1 : 2, String.valueOf(Helper.MIN_DEPOSIT));
             showError(error);
             return;

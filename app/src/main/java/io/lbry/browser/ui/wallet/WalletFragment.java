@@ -407,6 +407,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
 
     private void sendCredits() {
         // wallet_send task
+        View view = getView();
         String recipientAddress = Helper.getValue(inputSendAddress.getText());
         String amountString = Helper.getValue(inputSendAmount.getText());
         String amount = null;
@@ -414,13 +415,24 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             amount = new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).
                     format(new BigDecimal(amountString).doubleValue());
         } catch (NumberFormatException ex) {
-            Snackbar.make(getView(), R.string.invalid_amount, Snackbar.LENGTH_LONG).
-                    setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+            if (view != null) {
+                Snackbar.make(view, R.string.invalid_amount, Snackbar.LENGTH_LONG).
+                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+            }
+            return;
+        }
+
+
+        double actualSendAmount = Double.valueOf(amount);
+        if (actualSendAmount < Helper.MIN_SPEND) {
+            if (view != null) {
+                Snackbar.make(view, R.string.min_spend_required, Snackbar.LENGTH_LONG).
+                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+            }
             return;
         }
 
         disableSendControls();
-        double actualSendAmount = Double.valueOf(amount);
         WalletSendTask task = new WalletSendTask(recipientAddress, amount, walletSendProgress, new WalletSendTask.WalletSendHandler() {
             @Override
             public void onSuccess() {
@@ -428,16 +440,20 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
                 String message = getResources().getQuantityString(
                         R.plurals.you_sent_credits, sentAmount == 1.0 ? 1 : 2,
                         new DecimalFormat("#,###.##").format(sentAmount));
-                Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
-                inputSendAddress.setText(null);
-                inputSendAmount.setText(null);
+                Helper.setViewText(inputSendAddress, null);
+                Helper.setViewText(inputSendAmount, null);
+                if (view != null) {
+                    Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+                }
                 enableSendControls();
             }
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(getView(), R.string.send_credit_error, Snackbar.LENGTH_LONG).
-                        setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                if (view != null) {
+                    Snackbar.make(view, R.string.send_credit_error, Snackbar.LENGTH_LONG).
+                            setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                }
                 enableSendControls();
             }
         });
