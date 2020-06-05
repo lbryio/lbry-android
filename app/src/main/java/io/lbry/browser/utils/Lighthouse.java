@@ -40,9 +40,11 @@ public class Lighthouse {
         Uri.Builder uriBuilder = Uri.parse(String.format("%s/search", CONNECTION_STRING)).buildUpon().
                 appendQueryParameter("s", rawQuery).
                 appendQueryParameter("resolve", "true").
-                appendQueryParameter("nsfw", String.valueOf(nsfw).toLowerCase()).
                 appendQueryParameter("size", String.valueOf(size)).
                 appendQueryParameter("from", String.valueOf(from));
+        if (!nsfw) {
+            uriBuilder.appendQueryParameter("nsfw", String.valueOf(nsfw).toLowerCase());
+        }
         if (!Helper.isNullOrEmpty(relatedTo)) {
             uriBuilder.appendQueryParameter("related_to", relatedTo);
         }
