@@ -496,6 +496,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 stopExoplayer();
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 nowPlayingClaim = null;
+                nowPlayingClaimUrl = null;
+                nowPlayingClaimBitmap = null;
                 findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
             }
         });
@@ -929,6 +931,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             stopExoplayer();
             nowPlayingClaim = null;
             nowPlayingClaimUrl = null;
+            nowPlayingClaimBitmap = null;
         }
         appStarted = false;
 
@@ -2749,6 +2752,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public void clearNowPlayingClaim() {
         nowPlayingClaim = null;
         nowPlayingClaimUrl = null;
+        nowPlayingClaimBitmap = null;
         findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
         ((TextView) findViewById(R.id.global_now_playing_title)).setText(null);
         ((TextView) findViewById(R.id.global_now_playing_channel_title)).setText(null);
