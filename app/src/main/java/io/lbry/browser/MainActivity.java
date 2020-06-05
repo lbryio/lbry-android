@@ -1643,10 +1643,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         @Nullable
         @Override
         public PendingIntent createCurrentContentIntent(Player player) {
-            Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(nowPlayingClaimUrl));
-            launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent intent = PendingIntent.getActivity(MainActivity.this, 0, launchIntent, 0);
-            return intent;
+            if (nowPlayingClaimUrl != null) {
+                Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(nowPlayingClaimUrl));
+                launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                PendingIntent intent = PendingIntent.getActivity(MainActivity.this, 0, launchIntent, 0);
+                return intent;
+            }
+            return null;
         }
 
         @Nullable
