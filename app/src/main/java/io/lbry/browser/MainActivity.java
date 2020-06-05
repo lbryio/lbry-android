@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -44,9 +45,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
+import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.gms.cast.framework.CastContext;
@@ -99,6 +103,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -307,6 +312,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static boolean appStarted;
     private boolean serviceRunning;
     private CheckSdkReadyTask checkSdkReadyTask;
+    private PlayerNotificationManager playerNotificationManager;
     private MediaSessionCompat mediaSession;
     private boolean receivedStopService;
     private ActionBarDrawerToggle toggle;
@@ -345,11 +351,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final int STARTUP_STAGE_NEW_INSTALL_DONE = 5;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_LOADED = 6;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED = 7;
-
-    public boolean isDarkMode() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        return sp.getBoolean(PREFERENCE_KEY_DARK_MODE, false);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -391,6 +392,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        playerNotificationManager = new PlayerNotificationManager(
+                this, LbrynetService.NOTIFICATION_CHANNEL_ID, PLAYBACK_NOTIFICATION_ID, new PlayerNotificationDescriptionAdapter());
 
         // TODO: Check Google Play Services availability
         // castContext = CastContext.getSharedInstance(this);
@@ -527,6 +531,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 walletSyncSignIn();
             }
         });
+    }
+
+    public boolean isDarkMode() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        return sp.getBoolean(PREFERENCE_KEY_DARK_MODE, false);
+    }
+
+    public boolean isBackgroundPlaybackEnabled() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        return sp.getBoolean(PREFERENCE_KEY_BACKGROUND_PLAYBACK, false);
     }
 
     private void initSpecialRouteMap() {
@@ -899,12 +913,15 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (dbHelper != null) {
             dbHelper.close();
         }
-        if (mediaSession != null) {
+        if (mediaSession != null && !isBackgroundPlaybackEnabled()) {
             mediaSession.release();
         }
-        stopExoplayer();
-        nowPlayingClaim = null;
-        nowPlayingClaimUrl = null;
+        if (!isBackgroundPlaybackEnabled()) {
+            playerNotificationManager.setPlayer(null);
+            stopExoplayer();
+            nowPlayingClaim = null;
+            nowPlayingClaimUrl = null;
+        }
         appStarted = false;
 
         if (!keepSdkBackground()) {
@@ -1002,7 +1019,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onPause() {
-        if (!enteringPIPMode && !inPictureInPictureMode && appPlayer != null) {
+        if (!enteringPIPMode && !inPictureInPictureMode && appPlayer != null && !isBackgroundPlaybackEnabled()) {
             appPlayer.setPlayWhenReady(false);
         }
         super.onPause();
@@ -1591,6 +1608,47 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         MediaSessionConnector connector = new MediaSessionConnector(mediaSession);
         connector.setPlayer(MainActivity.appPlayer);
         mediaSession.setActive(true);
+    }
+
+    private static final String CHANNEL_ID_PLAYBACK = "io.lbry.browser.LBRY_PLAYBACK_CHANNEL";
+    private static final int PLAYBACK_NOTIFICATION_ID = 3;
+
+    public void initPlaybackNotification() {
+        if (isBackgroundPlaybackEnabled()) {
+            playerNotificationManager.setPlayer(MainActivity.appPlayer);
+            if (mediaSession != null) {
+                playerNotificationManager.setMediaSessionToken(mediaSession.getSessionToken());
+            }
+        }
+    }
+
+    private class PlayerNotificationDescriptionAdapter implements PlayerNotificationManager.MediaDescriptionAdapter {
+
+        @Override
+        public CharSequence getCurrentContentTitle(Player player) {
+            return nowPlayingClaim != null ? nowPlayingClaim.getTitle() : "";
+        }
+
+        @Nullable
+        @Override
+        public PendingIntent createCurrentContentIntent(Player player) {
+            Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(nowPlayingClaimUrl));
+            launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent intent = PendingIntent.getActivity(MainActivity.this, 0, launchIntent, 0);
+            return intent;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getCurrentContentText(Player player) {
+            return nowPlayingClaim != null && nowPlayingClaim.getSigningChannel() != null ? nowPlayingClaim.getSigningChannel().getTitleOrName() : null;
+        }
+
+        @Nullable
+        @Override
+        public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
+            return null;
+        }
     }
 
     public void showFloatingWalletBalance() {
@@ -2793,7 +2851,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     protected void onStop() {
-        if (appPlayer != null && inPictureInPictureMode) {
+        if (appPlayer != null && inPictureInPictureMode && !isBackgroundPlaybackEnabled()) {
             appPlayer.setPlayWhenReady(false);
         }
         super.onStop();

@@ -1520,10 +1520,17 @@ public class FileViewFragment extends BaseFragment implements
                     new SimpleCache(context.getCacheDir(),
                             new LeastRecentlyUsedCacheEvictor(1024 * 1024 * 256), new ExoDatabaseProvider(context));
             if (context instanceof MainActivity) {
-                ((MainActivity) context).initMediaSession();
+                MainActivity activity = (MainActivity) context;
+                activity.initMediaSession();
+                activity.initPlaybackNotification();
             }
 
             newPlayerCreated = true;
+        }
+
+        if (context instanceof MainActivity) {
+            MainActivity activity = (MainActivity) context;
+            activity.initPlaybackNotification();
         }
 
         View root = getView();
