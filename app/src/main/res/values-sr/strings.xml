@@ -1,0 +1,622 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">LBRY</string>
+    <string name="navigation_drawer_open">Otvori navigacionu traku</string>
+    <string name="navigation_drawer_close">Zatvori navigacionu traku</string>
+
+    <!-- Nav menu -->
+    <string name="find_content">Pronađji Sadržaj</string>
+    <string name="your_content">Vaš Sadržaj</string>
+    <string name="wallet">Novčanik</string>
+    <string name="following">Pratite</string>
+    <string name="editors_choice">Naš Izbor</string>
+    <string name="your_tags">Vaši Tagovi</string>
+    <string name="all_content">Sav Sadržaj</string>
+    <string name="channels">Kanali</string>
+    <string name="library">Zbirka</string>
+    <string name="publishes">Objave</string>
+    <string name="new_publish">Nova Objava</string>
+    <string name="rewards">Nagrade</string>
+    <string name="invites">Pozivnice</string>
+    <string name="settings">Podešavanja</string>
+    <string name="about">O Nama</string>
+    <string name="sign_in">Prijavi Se</string>
+    <string name="startup_failed">Aplikacija je naišla na problem. Molimo vas da proverite vašu vezu sa internetom i probate ponovo. Ukoliko problem i dalje postoji, kontaktirajte nas na hello@lbry.com</string>
+    <string name="no_claim_search_content">Trenutno nemamo sadržaja za vas. Preciznije definišite ono šta tražite ili pokušajte ponovo kasnije.</string>
+
+    <!-- Welcome Page -->
+    <string name="welcome_to_lbry">Dobrodošli na LBRY.</string>
+    <string name="welcome_paragraph">LBRY je sadržajna platforma pod kontrolom zajednice gde možete pronaći i objaviti video zapise, muziku, knjige i drugo.</string>
+    <string name="welcome_tos">Ukoliko nastavite, slažete se sa &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; i potvrđjujete da ste stariji od 13 godina.</string>
+    <string name="welcome_please_wait">Molimo pričekajte dok neke stvari ne budu bile spremne...</string>
+    <string name="use_lbry">Koristite LBRY</string>
+
+    <!-- URI bar -->
+    <string name="uri_placeholder">Pretraga filmova, muzike i još mnogo čega</string>
+
+    <!-- Following page -->
+    <string name="find_channels_to_follow">Pronađi kanale  za praćenje</string>
+    <string name="channels_you_follow">Kanali koje pratite</string>
+    <string name="discover">Otkrij</string>
+    <string name="lbry_works_better">LBRY radi bolje ako pratite bar 5 ili više kreatora koji vam se se dopadaju. Prijavite se da bi vam kreatori koje pratite bili prikazani ukoliko već posedujete nalog.</string>
+    <string name="select_five_subscriptions">Molimo vas odaberite do 5 kreatora da bi nastavili.</string>
+    <string name="n_remaining">%1$d preostalo...</string>
+    <string name="done">Urađjeno</string>
+    <string name="all">Sve</string>
+    <string name="discover_channels">Otkrij nove kanale</string>
+
+    <!-- Claim lists -->
+    <string name="anonymous">Anoniman</string>
+
+    <!-- File view -->
+    <string name="tags">Tagovi</string>
+    <string name="share">Podelite</string>
+    <string name="repost">Preporuči</string>
+    <string name="tip">Tipuj</string>
+    <string name="edit">Uredi</string>
+    <string name="delete">Izbriši</string>
+    <string name="download">Preuzmi</string>
+    <string name="open">Otvori</string>
+    <string name="report">Prijavi</string>
+    <string name="loading_decentralized_data">Učitavam decentralizovane podatke...</string>
+    <string name="related_content">Sličan Sadržaj</string>
+    <string name="comments">Komentari</string>
+    <string name="no_comments">Trenutno nema komentara.</string>
+    <string name="sdk_initializing_comments">Komentari će biti prikazani nakon pokretanja pozadinskog servisa.</string>
+    <string name="share_lbry_content">Podeli LBRY sadržaj</string>
+    <string name="view">Pregled</string>
+    <string name="play">Reprodukuj</string>
+    <string name="unsupported_content">Nepodržani Sadržaj</string>
+    <string name="unsupported_content_desc">Izvinjavamo se, nismo uspeli da prikažemo ovaj sadržaj unutar aplikacije. Možete doći do datoteke %1$s u vašem Downloads direktorijumu.</string>
+    <string name="nothing_at_this_location">Ne postoji ništa na ovoj lokaciji.</string>
+    <string name="publish_something_here">Objavite nešto ovde</string>
+    <string name="cannot_view_claim">Trenutno ne možemo pristupiti ovom sadržaju. Molimo Vas pokušajte kasnije.</string>
+    <string name="zero_duration">0:00</string>
+    <string name="claim_file_not_found">Datoteka na lokaciji \"%1$s\" ne postoji.</string>
+    <string name="confirm_purchase">Potvrdi Kupovinu</string>
+    <string name="delete_file">Obriši datoteku</string>
+    <string name="confirm_delete_file_message">Da li ste sigurni da želite da obrišete ovu datoteku sa Vašeg uređaja?</string>
+    <string name="unable_to_view_url">Neuspešno učitavanje %1$s. Molimo Vas pokušajte kasnije.</string>
+    <string name="no_cast_session_available">Trenutno nije dostupna ni jedna sesija.</string>
+    <string name="delete_content">Obrisati sadržaj?</string>
+    <string name="confirm_delete_content_message">Da li ste sigurni da želite da poništite objavu ovog sadržaja? Datoteke sa vašeg uređaja neće biti obrisani.</string>
+    <string name="content_deleted">Sadržaj je uspešno otklonjen sa blockchain-a.</string>
+    <string name="content_failed_delete">Nismo uspeli da obrišemo sadržaj. Molimo Vas pokušajte kasnije.</string>
+    <string name="comment">Komentar</string>
+    <string name="comment_as">Komentariši kao</string>
+    <string name="please_enter_comment">Molimo unesite komentar koji želite objaviti.</string>
+    <string name="please_select_channel">Molimo odaberite kanal pod čijim imenom ćete komentarisati.</string>
+    <string name="comment_posted">Vaš komentar je uspešno objavljen.</string>
+    <string name="please_select_repost_channel">Molimo odaberite kanal na kojem ćete preporučiti.</string>
+    <string name="reply">Odgovori</string>
+    <string name="replying_to">Odgovarate korisniku %1$s</string>
+    <plurals name="post_for_credits">
+        <item quantity="one">Objavi za %1$s kredit</item>
+        <item quantity="few">Objavi za %1$s kredita</item>
+        <item quantity="other">Objavi za %1$s kredita</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">Ovo će objaviti vaš komentar uz tip od %1$s kredit namenjen %2$s</item>
+        <item quantity="few">Ovo će objaviti vaš komentar uz tip od %1$s kredita namenjena %2$s</item>
+        <item quantity="other">Ovo će objaviti vaš komentar uz tip od %1$s kredita namenjena %2$s</item>
+    </plurals>
+    <plurals name="view_count">
+        <item quantity="one">%1$s pregled</item>
+        <item quantity="few">%1$s pregleda</item>
+        <item quantity="other">%1$s pregleda</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Ovo će platiti \"%1$s\" u vrednosti od %2$s kredit</item>
+        <item quantity="few">Ovo će platiti \"%1$s\" u vrednosti od %2$s kredita</item>
+        <item quantity="other">Ovo će platiti \"%1$s\" u vrednosti od %2$s kredita</item>
+    </plurals>
+
+    <!-- Channel view -->
+    <string name="no_channel_info">Trenutno ovde nema ničega. Molimo Vas pokušajte ponovo kasnije.</string>
+    <string name="content">Sadržaj</string>
+    <string name="website">Vebsajt</string>
+    <string name="reposted">preporučeno</string>
+    <plurals name="follower_count">
+        <item quantity="one">%1$s pratilac</item>
+        <item quantity="few">%1$s pratioca</item>
+        <item quantity="other">%1$s pratioca</item>
+    </plurals>
+
+    <string name="record">Snimanje</string>
+    <string name="take_photo">Slikajte se</string>
+    <string name="upload_file">Otpremite datoteku</string>
+    <string name="no_videos_found">Ne možemo pronaći ni jedan video na vašem uređaju. Snimite sliku ili video da bi započeli.</string>
+    <string name="loading_videos">Molimo pričekajte dok učitamo vaše video snimke...</string>
+    <string name="storage_permission_rationale_videos">LBRY zahteva od Vas da odobrite pristup kako bi mogao da prikazuje ili otprema video, slike ili druge datoteke sa Vašeg uređjaja.</string>
+    <string name="camera_permission_rationale_record">LBRY zahteva pristup Vašoj kameri kako bi snimao video snimke.</string>
+    <string name="camera_permission_rationale_photo">LBRY zahteva pristup Vašoj kameri kako bi mogao da slika.</string>
+    <string name="edit_content">Izmeni sadržaj</string>
+    <string name="mature_tags">Tagovi za odrasle</string>
+    <string name="price">Cena</string>
+    <string name="free_publish">Vaš sadržaj će biti besplatan. Pritisnite dugme za podešavanje cene ukoliko želite.</string>
+    <string name="content_address">Adresa sadržaja</string>
+    <string name="randomize">Odaberi nasumično</string>
+    <string name="address">Adresa</string>
+    <string name="content_address_desc">Adresa na kojoj ljudi mogu pronaći vaš sadržaj (na primer lbry://myvideo).</string>
+    <string name="license">Licenca</string>
+    <string name="license_desc">Opis licence</string>
+    <string name="additional_options">Dodatne Opcije</string>
+    <string name="show_extra_fields">Prikaži dodatna polja</string>
+    <string name="hide_extra_fields">Sakrij dodatna polja</string>
+    <string name="no_file_found">Datoteka za objavu nije pronadjena.</string>
+    <string name="publish_invalid_claim_type">Zahtev koji ste odabrali je neispravan za obradu.</string>
+    <string name="video_optimization">Video optimizacija</string>
+    <string name="thumbnail_creation_failed">Sličica vašeg snimka nije automatski napravljena iz datoteke.</string>
+    <string name="video_being_optimized">Vaš video se optimizuje da bi dobio što veću pokrivenost različitih uredjaja. Za to vreme možete popuniti preostala polja ispod.</string>
+    <string name="video_optimized">Vaš video je uspešno optimizovan za bolju reprodukciju na što većem broju uređaja.  Molimo vas nastavite sa objavom vašeg sadržaja.</string>
+    <string name="video_optimize_failed">Vaš video ne može biti optimizovan. Otpremićemo ga u originalu.</string>
+    <string name="completed_video_duration">Optimizacija Video Snimka %1$s</string>
+    <string name="sdk_initializing_publish">Ne možete objavljivati sadržaj za vreme učitavanja pozadinskog servisa.</string>
+    <string name="publish_successful">Vaš sadržaj je uspešno objavljen. Potrajaće par trenutaka dok se ne pojavi na blockchain-u.</string>
+    <string name="transcode_in_progress">Video optimizacija je u toku. Ukoliko želite da otkažete, pritisnite Otkaži na dnu stranice.</string>
+    <string name="optimization_in_progress">Video optimizacija je u toku.</string>
+    <string name="cannot_capture_video">Nema aplikacije kamere sa mogućnošću snimanja video snimaka na ovom uredjaju.</string>
+    <string name="cannot_take_photo">Nema aplikacije kamere sa mogućnošću snimanja fotografija na ovom uredjaju.</string>
+
+    <string name="please_provide_title">Molimo Vas unesite naslov.</string>
+    <string name="please_specify_address">Molimo vas da navedete adresu na kojoj ljudi mogu naći vaš sadržaj.</string>
+    <string name="address_invalid_characters">Adresa vašeg sadržaja sadrži nedozvoljene znake.</string>
+    <string name="address_already_used">Već ste objavili na navedenoj adresi sadržaja. Molimo unesite novu adresu.</string>
+    <string name="no_file_selected">Niste izabrali datoteku. Molimo vas da izaberete video, fotografišete sliku ili izaberete datoteku pre objavljivanja.</string>
+    <string name="price_amount_not_set">Molimo vas da unesete cenu ili isključite ovu opciju i učinite vaš sadržaj besplatnim.</string>
+    <string name="publish_no_thumbnail">Molimo vas da odaberete sličicu i otpremite je pre objavljivanja.</string>
+    <string name="publish_thumbnail_in_progress">Molimo vas da budete strpljivi dok se sličica otpremi pre nego što objavite.</string>
+
+    <string name="language">Jezik</string>
+    <string name="english">Engleski</string>
+    <string name="chinese">Kineski</string>
+    <string name="french">Francuski</string>
+    <string name="german">Nemački</string>
+    <string name="japanese">Japanski</string>
+    <string name="russian">Ruski</string>
+    <string name="spanish">Španski</string>
+    <string name="indonesian">Indonežanski</string>
+    <string name="italian">Italijanski</string>
+    <string name="dutch">Holandski</string>
+    <string name="turkish">Turski</string>
+    <string name="polish">Poljski</string>
+    <string name="malay">Malajski</string>
+    <string name="portuguese">Portugalski</string>
+    <string name="vietnamese">Vijetnamski</string>
+    <string name="thai">Tajlandski</string>
+    <string name="arabic">Arapski</string>
+    <string name="czech">Češki</string>
+    <string name="croatian">Hrvatski</string>
+    <string name="cambodian">Kambodžanski</string>
+    <string name="korean">Korejski</string>
+    <string name="norwegian">Norvežanski</string>
+    <string name="romanian">Rumunski</string>
+    <string name="hindi">Hindi</string>
+    <string name="greek">Grčki</string>
+
+    <string name="none">Nijedan</string>
+    <string name="public_domain">Javni Domen</string>
+    <string name="copyrighted">Zaštićeno autorskim pravima</string>
+    <string name="cca_4_0_international">Creative Commons Attribution 4.0 International</string>
+    <string name="cca_sa_4_0_international">Creative Commons Attribution-ShareAlike 4.0 International</string>
+    <string name="cca_nd_4_0_international">Creative Commons Attribution-NoDerivatives 4.0 International</string>
+    <string name="cca_nc_4_0_international">Creative Commons Attribution-NonCommercial 4.0 International</string>
+    <string name="cca_nc_sa_4_0_international">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</string>
+    <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
+
+    <string-array name="publish_currencies">
+        <item>LBC</item>
+        <item>USD</item>
+    </string-array>
+
+    <!-- Publishes -->
+    <string name="one_or_more_publishes_failed_abandon">Jedan ili više sadržaja trenutno nije moguće obrisati. Molimo vas da pokušate kasnije.</string>
+    <plurals name="confirm_delete_publishes">
+        <item quantity="one">Da li ste sigurni da želite obrisati izabrani sadržaj?</item>
+        <item quantity="few">Da li ste sigurni da želite obrisati izabrane sadržaje?</item>
+        <item quantity="other">Da li ste sigurni da želite obrisati izabrane sadržaje?</item>
+    </plurals>
+    <plurals name="publishes_deleted">
+        <item quantity="one">Sadržaj je uspešno obrisan.</item>
+        <item quantity="few">Sadržaji su uspešno obrisani.</item>
+        <item quantity="other">Sadržaji su uspešno obrisani.</item>
+    </plurals>
+
+    <!-- Splash -->
+    <string name="oops_something_went_wrong">Oops! Nešto je pošlo po zlu.</string>
+    <string name="installation_id_loaded">Učitan ID Instalacije</string>
+    <string name="known_tags_loaded">Učitali smo poznate lokalne i praćene tagovi.</string>
+    <string name="exchange_rate_loaded">Kurs zamene LBC/USD je osvežen.</string>
+    <string name="user_authenticated">Korisnik je autorizovan.</string>
+    <string name="installation_registered">Instalacija je registrovana.</string>
+    <string name="subscriptions_loaded">Pretplate su učitane.</string>
+    <string name="subscriptions_resolved">Razrešene pretplate.</string>
+
+    <!-- Settings -->
+    <string name="user_interface">Sadržaj &amp; Korisnički interfejs</string>
+    <string name="other">Ostalo</string>
+    <string name="enable_dark_mode">Uključi tamnu temu</string>
+    <string name="show_mature_content">Sadržaj za odrasle</string>
+    <string name="show_url_suggestions">Prikazuj URL sugestije</string>
+    <string name="notifications">Obaveštenja</string>
+    <string name="subscriptions">Vaše pretplate</string>
+    <string name="content_interests">Zanimljivi sadržaji</string>
+
+    <string name="keep_sdk_in_background">Dozvoli LBRY servisu da radi u pozadini i time povećaj funkcionalnost novčanika i same mreže</string>
+    <string name="participate_in_data_network">Budi deo mreže podataka (ovo zahteva restart aplikacije i pozadinskog servisa)</string>
+
+    <!-- URL suggestions -->
+    <string name="search_url_title">%1$s - Pretraži</string>
+    <string name="tag_url_title">%1$s - Pretraži Tagove</string>
+    <string name="search_url_desc">Pretraži \'%1$s\'</string>
+    <string name="explore_tag_url_desc">Pretraži sve sa tagom \'%1$s\' </string>
+    <string name="view_file_url_desc">Pregledaj sadržaj na %1$s</string>
+    <string name="view_channel_url_desc">Pogledaj kanal %1$s</string>
+
+    <!-- Search -->
+    <string name="search_no_results">Nema rezultata za \'%1$s\'. Molimo pretražite nešto drugo.</string>
+    <string name="search_no_query">Možete pretraživati bilo šta uključujući filmove, muziku, knjige, softver i još mnogo toga.</string>
+    <string name="no_related_content">Trenutno nema sličnih sadržaja za prikaz.</string>
+
+    <!-- Wallet -->
+    <string name="balance">Balans</string>
+    <string name="you_currently_have">Trenutno imate</string>
+    <string name="convert_credits">Možete konvertovati vaše kredite u USD i unovčiti konvertovani iznos koristeći menjačnicu. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
+    <string name="you_also_have">Takođje imate</string>
+    <string name="you_staked">Vi štedite</string>
+    <string name="in_tips">u tipovima</string>
+    <string name="in_your_publishes">u vašim objavama</string>
+    <string name="in_your_supports">u vašim podrškama</string>
+    <string name="earn_more_tips">Zaradi više tipova tako što ćeš objaviti  što više cool video klipova</string>
+    <string name="sdk_initializing">Pozadinski servis se pokreće...</string>
+    <string name="sdk_still_initializing">Pokretanje pozadinskog servisa je i dalje u toku. Za to vreme možete istraživati i gledati sadržaje.</string>
+    <string name="sdk_initializing_functionality">Ne možete uraditi ovo za vreme učitavanja pozadinskog servisa.</string>
+
+    <string name="backup_synced">Sigurnosna kopija Vašeg novčanika je sinhronizovana sa lbry.tv</string>
+    <string name="backup_notsynced">Vaš novčanik trenutno nije sinhronizovan sa lbry.tv. Vi ste odgovorni za rezervnu kopiju Vašeg novčanika.</string>
+    <string name="synced_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/account-sync\"&gt;What does this mean?&lt;/a&gt;</string>
+    <string name="backup_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;What does this mean?&lt;/a&gt;</string>
+
+    <string name="receive_credits">Primite Kredite</string>
+    <string name="use_this_address_hint">Ovu adresu novčanika koristite za primanje kredita koji je poslao drugi korisnik (ili vi sami).</string>
+    <string name="get_new_address">Napravite novu adresu</string>
+    <string name="generate_address_hint">Možete generisati novu adresu u bilo kom trenutku, a sve prethodne adrese će i dalje raditi. Korišćenje više adresa može biti od koristi za praćenje dolaznih plaćanja iz više izvora.</string>
+
+    <string name="send_credits">Pošaljite Kredit</string>
+    <string name="recipient_address">Adresa primaoca</string>
+    <string name="recipient_address_placeholder">bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs</string>
+    <string name="amount">Iznos</string>
+    <string name="send">Poslati</string>
+
+    <string name="recent_transactions">Nedavne Transakcije</string>
+    <string name="view_all">Pogledajte Sve</string>
+    <string name="receive">Primite</string>
+    <string name="spend">Potroši</string>
+    <string name="publish">Objavite</string>
+    <string name="support">Pomoć</string>
+    <string name="abandon">Odustani</string>
+    <string name="channel">Kanal</string>
+    <string name="channel_update">Novi Kanal</string>
+    <string name="publish_update">Nova Objava</string>
+
+    <string name="wallet_sync">Sinhronizacija Novčanika</string>
+    <string name="sync_status">Status sinhronizacije</string>
+    <string name="on">Uključeno</string>
+    <string name="off">Isključeno</string>
+    <string name="email">Email</string>
+    <string name="no_connected_email">Nema povezanog email-a</string>
+    <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
+    <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
+    <string name="zero">0</string>
+    <string name="lbc">LBC</string>
+
+    <string name="account_recommended">Nalog Preporučen</string>
+    <string name="wallet_account_desc">lbry.tv račun omogućava vam da zaradite nagrade, napravite rezervnu kopiju vašeg novčanika i sve sinhronizujete.</string>
+    <string name="wallet_without_account">Bez naloga preuzimate svu odgovornost za obezbeđenje vašeg novčanika i LBRY podataka.</string>
+    <string name="skip_account">Preskočite Nalog</string>
+    <string name="sign_up">Registrujte Se</string>
+    <string name="address_copied">Adresa kopirana</string>
+
+    <string name="invalid_recipient_address">Unesite ispravnu adresu na koju želite poslati kredite</string>
+    <string name="insufficient_balance">Nedovoljno sredstava</string>
+    <string name="invalid_amount">Molimo unesite ispravni iznos</string>
+    <string name="send_credit_error">Vaši krediti ne mogu biti poslati u ovom trenutku. Pokušajte kasnije.</string>
+    <string name="loading_transactions">Učitavanje transakcija...</string>
+    <string name="no_recent_transactions">Nema skorašnjih transakcija za prikaz.</string>
+    <string name="no_transactions">Trenutno nema transakcija za prikaz.</string>
+    <string name="tx_list_fee">provizija %1$s</string>
+    <string name="transaction_history">Istorija Transakcija</string>
+
+    <string name="unlock">Otključaj</string>
+    <string name="unlock_tips">Otključaj tipove?</string>
+    <string name="confirm_unlock_tips">Da li ste sigurni da želite da otključate sve vaše tipove?</string>
+    <plurals name="you_sent_credits">
+        <item quantity="one">Poslali ste %1$s kredit</item>
+        <item quantity="few">Poslali ste %1$s kredita</item>
+        <item quantity="other">Poslali ste %1$s kredita</item>
+    </plurals>
+
+    <!-- Dialogs -->
+    <string name="customize_your_tags">Prilagodite vaše tagove</string>
+    <string name="sort_content_by">Poređjajte sadržaj po</string>
+    <string name="content_from">Sadržaj pripada</string>
+    <string name="trending_content">Sadržaj u trendu</string>
+    <string name="new_content">Novi sadržaj</string>
+    <string name="top_content">Top sadržaj</string>
+    <string name="trending">U trendu</string>
+    <string name="top">Top</string>
+    <string name="new_text">Novo</string>
+    <string name="past_24_hours">Poslednja 24 časa</string>
+    <string name="past_week">Prošle nedelje</string>
+    <string name="past_month">Prošlog meseca</string>
+    <string name="past_year">Prošle godine</string>
+    <string name="all_time">Od početka</string>
+    <string name="from">od</string>
+    <string name="for_text">za</string>
+    <string name="filter_for">Filtriraj</string>
+    <string name="everyone">Svi</string>
+    <string name="tags_you_follow">Tagovi koje pratite</string>
+    <string name="customize">Prilagodi</string>
+    <string name="not_yet_implemented">Odabrani pregled nije dostupan trenutno.</string>
+    <string name="customize_tags_hint">Izgleda da još niste zapratili nijedan tag.</string>
+    <string name="search_for_more_tags">Pretraga za više tagova</string>
+    <string name="no_followed_tags">Ne pratite ni jedan tag. Počnite tako što ćete dodati tagove za koje ste zainteresovani!</string>
+    <string name="no_tag_results">Nismo mogli da pronadjemo nove tagove koje već ne pratite.</string>
+    <string name="tag_already_added">Tag \'%1$s\' je već odabran.</string>
+    <string name="tag_limit_reached">Ne možete dodati više od 5 tagova.</string>
+    <string name="send_a_tip">Pošaljite tip</string>
+    <string name="send_a_tip_to">Pošalji tip korisniku %1$s</string>
+    <string name="send_tip_info_content">Ovaj tip će postati vidljiv na profilu korisnika %1$s, i to će mu pomoći da bude lakše uočljiv dokle god taj tip ne unovči.  &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="send_tip_info_channel">Ovaj tip će postati vidljiv na kanalu korisnika %1$s, i to će mu pomoći da bude lakše uočljiv dokle god taj tip ne unovči. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="cancel">Poništi</string>
+    <string name="repost_title">Preporuči %1$s</string>
+    <string name="repost_your_favorite">Preporučite vaš omiljeni sadržaj i time pomognite ljudima da ga otkriju lakše!</string>
+    <string name="channel_to_post_on">Kanal na kojem objavljujete</string>
+    <string name="show_advanced">Prikaži napredne opcije</string>
+    <string name="hide_advanced">Sakrij napredne opcije</string>
+    <string name="name">Ime</string>
+    <string name="min_deposit">0.001</string>
+    <string name="content_successfully_reposted">Sadržaj je uspešno preporučen!</string>
+    <string name="repost_name_invalid_characters">Naziv u preporuci sadrži nedozvoljene znake.</string>
+    <plurals name="you_sent_a_tip">
+        <item quantity="one">Poslali ste %1$s kredit u vidu tipa, bravo!</item>
+        <item quantity="few">Poslali ste %1$s kredita u vidu tipa, bravo!</item>
+        <item quantity="other">Poslali ste %1$s kredita u vidu tipa, bravo!</item>
+    </plurals>
+
+    <!-- Verification -->
+    <string name="provide_email_address">Molimo unesite email adresu.</string>
+    <string name="email_placeholder">petarpetrovic@mail.com</string>
+    <string name="email_sent_to">Email je poslat na</string>
+    <string name="please_click_link">Molimo kliknite na link u poruci da biste se ulogovali.</string>
+    <string name="resend">Pošalji ponovo</string>
+    <string name="continue_text">Nastavite</string>
+    <string name="provide_valid_email">Molimo unesite ispravnu email adresu</string>
+    <string name="please_follow_instructions">Za nastavak sledite uputstva iz emaila koji je poslat na vašu adresu.</string>
+    <string name="sign_in_successful">Uspešno ste se prijavili na lbry.tv</string>
+    <string name="retrieving_account_information">Skupljamo informacije o nalogu...</string>
+    <string name="apply_wallet_data">Podaci novčanika se primenjuju...</string>
+    <string name="please_enter_your_password">Molimo unesite lozinku koju ste koristili da biste osigurali novčanik.</string>
+    <string name="please_enter_a_password">Molimo unesite lozinku da biste obezbedili vaš novčanik.</string>
+    <string name="wallet_security_purposes">Napomena: iz bezbednosnih razloga novčanika, LBRY ne može da resetuje vašu lozinku.</string>
+    <string name="password">Lozinka</string>
+    <string name="enable_sync">Omogući sinhronizaciju</string>
+    <string name="wallet_sync_op_failed">Sinhronizacija novčanika nije uspela. Molimo vas da probate ponovo. Ukoliko problem i dalje postoji, kontaktirajte nas na hello@lbry.com.</string>
+    <string name="phone_number">Broj Telefona</string>
+    <string name="enter_phone_number">Molimo vas unesite vaš telefonski broj.</string>
+    <string name="not_interested">Nisam zainteresovan</string>
+    <string name="manual_reward_verification">Ručna Verifikacija za Nagrade</string>
+    <string name="account_undergo_review">Vaš nalog mora proći proveru pre nego što budete odobreni za nagradni program. Ovaj proces može trajati od nekoliko minuta do nekoliko dana.</string>
+    <string name="request_to_be_verified">Ukoliko i dalje vidite ovu poruku, molimo vas prijavite se za verifikaciju na &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="enjoy_free_content">Uživajte u besplatnim sadržajima u međjuvremenu!</string>
+    <string name="verify_phone_number">Potvrdite Broj Telefona</string>
+    <string name="enter_phone_verify_code">Unesite verifikacioni kod koji vam je poslat na %1$s</string>
+    <string name="code_placeholder">0000</string>
+    <string name="verify">Provera</string>
+    <string name="please_enter_valid_phone">Molimo vas da unesete ispravan telefonski broj.</string>
+    <string name="please_enter_verification_code">Unesite verifikacioni kod koji smo poslali na vaš broj telefona.</string>
+    <string name="fetch_current_user_error">Korisnički nalog ne može biti učitan u ovom trenutku. Molimo pokušajte kasnije.</string>
+
+    <!-- Forms -->
+    <string name="no_added_tags">Niste odabrali ni jedan tag. Odaberite tagove kako bi poboljšali vidljivost sadržaja.</string>
+    <string name="form_no_tag_results">Nismo mogli da pronadjemo nove tagove koji već nisu dodati.</string>
+
+    <!-- Channels -->
+    <string name="no_channel_created">Još niste napravili kanal.\nPočnite tako što ćete napraviti novi kanal!</string>
+    <string name="create_a_channel">Napravite kanal</string>
+    <string name="create_a_channel_item">Napravite kanal...</string>
+    <string name="edit_channel">Ažurirajte kanal</string>
+    <string name="delete_selection">Obrisati selekciju?</string>
+    <string name="delete_channel">Obrisati kanal?</string>
+    <string name="confirm_delete_channel">Da li ste sigurni da želite da obrišete ovaj kanal?</string>
+    <string name="channel_deleted">Kanal je uspešno obrisan.</string>
+    <string name="channel_failed_delete">Nismo uspeli da obrišemo vaš kanal. Molimo vas pokušajte kasnije.</string>
+    <string name="description">Opis</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
+    <string name="show_optional_fields">Prikaži neobavezna polja</string>
+    <string name="hide_optional_fields">Sakrij neobavezna polja</string>
+    <string name="save">Usnimi</string>
+    <string name="channel_name">Ime kanala</string>
+    <string name="title">Naziv</string>
+    <string name="at">\@</string>
+    <string name="deposit">Depozit</string>
+    <string name="deposit_remains_yours">Ovaj LBC ostaje vaš. To je depozit koji vam vrši rezervaciju imena i može se poništiti u bilo kojem trenutku.</string>
+    <string name="storage_permission_rationale_download">LBRY zahteva pristup vašem uređaju kako bi mogao da preuzima sadržaje.</string>
+    <string name="storage_permission_rationale_images">LBRY zahteva pristup memoriji vašeg uredjaja kako bi mogao da učita fotografije.</string>
+    <string name="select_thumbnail">Odaberi sličicu</string>
+    <string name="select_cover">Izaberi pozadinsku fotografiju</string>
+    <string name="undetermined_image_filepath">Putanja do vaše odabrane fotografije nije ispravna. Molimo izaberite drugu fotografiju. </string>
+    <string name="wait_for_upload">Molimo budite strpljivi dok se trenutno otpremanje ne završi.</string>
+    <string name="image_upload_failed">Otpremanje fotografije nije uspelo. Molimo pokušajte ponovo.</string>
+    <string name="uploading">Otpremanje...</string>
+    <string name="please_enter_channel_name">Molimo vas unesite naziv kanala.</string>
+    <string name="channel_name_invalid_characters">Naziv vašeg kanala sadrži nedozvoljene znake.</string>
+    <string name="channel_name_already_created">Već ste napravili kanal koristeći isti naziv.</string>
+    <string name="please_enter_valid_deposit">Molimo unesite ispravni iznos depozita.</string>
+    <string name="deposit_more_than_balance">Depozit ne može biti veći od vašeg balansa.</string>
+    <string name="channel_save_failed">Zahtev usnimavanja kanala neuspešan. Molimo pokušajte kasnije.</string>
+    <string name="channel_save_successful">Kanal je uspešno sačuvan.</string>
+    <string name="item_pending_blockchain">Objava vašeg zahteva na blockchain je u toku. Bićete u mogućnosti da pristupate ili ažurirate zahtev za par trenutaka.</string>
+    <string name="pending">Obrada u toku</string>
+    <string name="create">Napravite</string>
+    <string name="one_or_more_channels_failed_abandon">Jedan ili više kanala trenutno nije moguće obrisati. Molimo vas da pokušate kasnije.</string>
+    <plurals name="min_deposit_required">
+        <item quantity="one">Minimalni depozit od %1$s kredit je potreban.</item>
+        <item quantity="few">Minimalni depozit od %1$s kredita je potreban.</item>
+        <item quantity="other">Minimalni depozit od %1$s kredita je potreban.</item>
+    </plurals>
+    <plurals name="confirm_delete_channels">
+        <item quantity="one">Da li ste sigurni da želite obrisati izabrani kanal?</item>
+        <item quantity="few">Da li ste sigurni da želite obrisati izabrane kanale?</item>
+        <item quantity="other">Da li ste sigurni da želite obrisati izabrane kanale?</item>
+    </plurals>
+    <plurals name="channels_deleted">
+        <item quantity="one">Kanal je uspešno obrisan.</item>
+        <item quantity="few">Kanali su uspešno obrisani.</item>
+        <item quantity="other">Kanali su uspešno obrisani.</item>
+    </plurals>
+
+    <!-- Rewards -->
+    <string name="lbry_credits_allow">LBRY krediti omogućavaju vam da objavite ili kupite sadržaj.</string>
+    <string name="free_credits_worth">Možete dobiti besplatne kredite u vrednosti od $%1$s nakon sto navedete svoju e-mail adresu.</string>
+    <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="get_started">Počni</string>
+    <string name="reward_code_placeholder">abc123</string>
+    <string name="claim">Aktiviraj</string>
+    <string name="please_enter_claim_code">Molimo unesite specijalni nagradni kôd radi aktivacije.</string>
+    <string name="unclaimed">Dostupno</string>
+    <string name="custom_reward_title">Specijalni Kôd</string>
+    <string name="up_to">do</string>
+    <string name="custom_reward_description">Da li ste supermodel ili rok zvezda koja poseduje nagradni kôd? Aktivirajte ga ovde.</string>
+    <plurals name="claim_reward_message">
+        <item quantity="one">Dobili ste %1$s kredit kao nagradu.</item>
+        <item quantity="few">Dobili ste %1$s kredita kao nagradu.</item>
+        <item quantity="other">Dobili ste %1$s kredita kao nagradu.</item>
+    </plurals>
+    <plurals name="available_credits">
+        <item quantity="one">%1$s dostupan kredit</item>
+        <item quantity="few">%1$s dostupnih kredita</item>
+        <item quantity="other">%1$s dostupnih kredita</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">Objavljivanje zahteva kredite.</string>
+    <string name="channel_creation_requires_credits">Kreiranje kanala zahteva kredite.</string>
+    <string name="earn_rewards_for_inviting">Otključajte nagrade pozivanjem vaših prijatelja.</string>
+    <string name="earn_some_credits_to_access">Zaradite malo kredita i pristupite ovom sadržaju.</string>
+    <string name="tap_here_to_get_some">Kliknite ovde da dobijete par besplatno.</string>
+    <string name="free_credits_available">Imate besplatnih kredita u nagradama.</string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="one">%1$s besplatan kredit dostupan u nagradama.</item>
+        <item quantity="few">%1$s besplatnih kredita dostupno u nagradama.</item>
+        <item quantity="other">%1$s besplatnih kredita dostupno u nagradama.</item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="one">Zaradite %1$s besplatan kredit nakon kreiranja naloga.</item>
+        <item quantity="few">Zaradite %1$s besplatnih kredita nakon kreiranja naloga.</item>
+        <item quantity="other">Zaradite %1$s besplatnih kredita nakon kreiranja naloga.</item>
+    </plurals>
+
+    <!-- Invites -->
+    <string name="lbry_invite_program">LBRY Program Pozivnica</string>
+    <string name="earn_extra_credits_invites">Možete zaraditi dodatne kredite za svaku osobu koju pozovete da koristi LBRY.</string>
+    <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="invite_link">Pozovi putem Linka</string>
+    <string name="share_this_link">Podeli ovaj link sa prijateljima (ili neprijateljima) i dobij kredite kada se oni pridruže lbry.tv.</string>
+    <string name="your_invite_link">Vaš link pozivnice</string>
+    <string name="customize_invite_link">Prilagodi link pozivnice</string>
+    <string name="invite_by_email">Pozovi putem Email-a</string>
+    <string name="invite_someone">Pozovi nekog poznanika putem email-a i dobij kredite kada se oni pridruže lbry.tv.</string>
+    <string name="invite_email_placeholder">petarpetrovic@mail.com</string>
+    <string name="invite">Pozovi prijatelja</string>
+    <string name="invite_history">Istorija Pozivnica</string>
+    <string name="earn_credits_for_inviting">Zaradi kredite pozivanjem prijatelja, neprijatelja, Slavka, Mirka ili Zokija. Svima je potrebna sloboda sadržaja.</string>
+    <string name="reward">Nagrada</string>
+    <string name="claimed">Preuzeto</string>
+    <string name="claimable">Dostupno</string>
+    <string name="unclaimable">Nedostupno</string>
+    <string name="invite_link_copied">Link pozivnice je kopiran.</string>
+    <string name="invite_sent_to">Pozivnica je poslata %1$s</string>
+
+    <!-- Library -->
+    <string name="downloads">Preuzeto</string>
+    <string name="purchases">Kupovine</string>
+    <string name="history">Istorija</string>
+    <string name="library_no_downloads">Nemate preuzetog sadržaja na ovom uredjaju.</string>
+    <string name="library_no_history">Nemate odgledanih sadržaja na ovom uredjaju.</string>
+    <string name="library_no_purchases">Nemate kupljenih sadržaja na ovom nalogu.</string>
+    <string name="hide">Sakrij</string>
+    <string name="stats">Statistika</string>
+    <string name="video">Snimci</string>
+    <string name="audio">Audio zapisi</string>
+    <string name="images">Fotografije</string>
+    <string name="mb">MB</string>
+    <string name="kb">KB</string>
+    <string name="gb">GB</string>
+    <string name="zero_mb">0MB</string>
+    <plurals name="confirm_delete_files">
+        <item quantity="one">Da li ste sigurni da želite da obrišete odabranu datoteku sa Vašeg uređaja?</item>
+        <item quantity="few">Da li ste sigurni da želite da obrišete odabrane datoteke sa Vašeg uređaja?</item>
+        <item quantity="other">Da li ste sigurni da želite da obrišete odabrane datoteke sa Vašeg uređaja?</item>
+    </plurals>
+    <plurals name="files_deleted">
+        <item quantity="one">Datoteka je uspešno obrisana.</item>
+        <item quantity="few">Datoteke su uspešno obrisane.</item>
+        <item quantity="other">Datoteke su uspešno obrisane.</item>
+    </plurals>
+
+    <!-- About -->
+    <string name="about_lbry">O Nama</string>
+    <string name="content_freedom">Sloboda Sadržaja</string>
+    <string name="about_paragraph">LBRY je slobodno, otvoreno i digitalno tržište koje vodi zajednica. То је decentralizovana platforma za distribuciju sadržaja peer-to-peer za kreatore koji otpremaju i dele sadržaj i zarađjuju LBRY kredite za svoj trud. Korisnici će moći da pronađu širok izbor video zapisa, muzike, e-knjiga kao i drugog digitalnog sadržaja koji ih zanima.</string>
+    <string name="get_social">Druži Se Sa Nama</string>
+    <string name="social_paragraph">Možete komunicirati sa LBRY timom i članovima zajednice na Diskordu, Fejsbuku, Instagramu, Tviteru, ili Reditu.</string>
+    <string name="app_info">Informacije O Aplikaciji</string>
+    <string name="loading">Učitavanje...</string>
+    <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;What is LBRY?&lt;/a&gt;</string>
+    <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Basics&lt;/a&gt;</string>
+    <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>
+    <string name="about_link_discord">&lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;Discord&lt;/a&gt;</string>
+    <string name="about_link_facebook">&lt;a href=\"https://www.facebook.com/LBRYio\"&gt;Facebook&lt;/a&gt;</string>
+    <string name="about_link_instagram">&lt;a href=\"https://www.instagram.com/LBRYio\"&gt;Instagram&lt;/a&gt;</string>
+    <string name="about_link_reddit">&lt;a href=\"https://reddit.com/r/lbry\"&gt;Reddit&lt;/a&gt;</string>
+    <string name="about_link_telegram">&lt;a href=\"https://t.me/lbryofficial\"&gt;Telegram&lt;/a&gt;</string>
+    <string name="about_link_twitter">&lt;a href=\"https://twitter.com/LBRYio\"&gt;Twitter&lt;/a&gt;</string>
+    <string name="update_mailing_preferences">Ažurirajte obaveštenja koja dobijate na email</string>
+    <string name="app_version">Verzija Aplikacije</string>
+    <string name="lbry_sdk">LBRY SDK</string>
+    <string name="platform">Platforma</string>
+    <string name="installation_id">ID Instalacije</string>
+    <string name="firebase_token">Firebase Token</string>
+    <string name="logs">Logovi</string>
+    <string name="send_log">Pošaljite log</string>
+    <string name="connected_email">Povezan email</string>
+    <string name="unknown">Nepoznato</string>
+    <string name="cannot_find_lbrynet_log">lbrynet.log datoteka nije pronadjena.</string>
+    <string name="cannot_share_lbrynet_log">lbrynet.log datoteka ne može biti podeljena zbog nedostatka dozvola na vašem uredjaju.</string>
+
+    <!-- Font Awesome -->
+    <string name="fa_gift">&#xf06b;</string>
+    <string name="fa_lock">&#xf023;</string>
+    <string name="fa_coins">&#xf51e;</string>
+    <string name="fa_file">&#xf15b;</string>
+    <string name="fa_hashtag">&#xf292;</string>
+    <string name="fa_search">&#xf002;</string>
+    <string name="fa_at">&#xf1fa;</string>
+
+    <string name="fa_heart">&#xf004;</string>
+    <string name="fa_heart_broken">&#xf7a9;</string>
+    <string name="fa_star">&#xf005;</string>
+    <string name="fa_globe_americas">&#xf57d;</string>
+    <string name="fa_upload">&#xf093;</string>
+    <string name="fa_download">&#xf019;</string>
+    <string name="fa_cloud_upload">&#xf382;</string>
+    <string name="fa_wallet">&#xf555;</string>
+    <string name="fa_award">&#xf559;</string>
+    <string name="fa_user_friends">&#xf500;</string>
+    <string name="fa_cog">&#xf013;</string>
+    <string name="fa_mobile_alt">&#xf3cd;</string>
+    <string name="fa_repost">&#xf079;</string>
+    <string name="fa_folder_open">&#xf07c;</string>
+</resources>

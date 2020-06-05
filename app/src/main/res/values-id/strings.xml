@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Buka laci navigasi</string>
     <string name="navigation_drawer_close">Tutup laci navigasi</string>
@@ -59,6 +59,9 @@
     <string name="report">Laporkan</string>
     <string name="loading_decentralized_data">Memuat data desentralisasi...</string>
     <string name="related_content">Konten terkait</string>
+    <string name="comments">Komentar</string>
+    <string name="no_comments">Tidak ada komentar untuk ditampilkan saat ini.</string>
+    <string name="sdk_initializing_comments">Komentar akan ditampilkan setelah layanan latar belakang diinisialisasi.</string>
     <string name="share_lbry_content">Bagikan konten LBRY</string>
     <string name="view">Lihat</string>
     <string name="play">Putar</string>
@@ -78,6 +81,20 @@
     <string name="confirm_delete_content_message">Apakah Anda yakin ingin membatalkan publikasi konten ini? Tidak ada file yang akan dihapus dari perangkat Anda.</string>
     <string name="content_deleted">Konten berhasil dihapus dari blockchain.</string>
     <string name="content_failed_delete">Konten tidak dapat dihapus saat ini. Silakan coba lagi nanti.</string>
+    <string name="comment">Komentar</string>
+    <string name="comment_as">Beri komentar sebagai</string>
+    <string name="please_enter_comment">Silakan masukkan komentar untuk dikirim.</string>
+    <string name="please_select_channel">Silakan pilih saluran untuk memposting komentar Anda sebagai.</string>
+    <string name="comment_posted">Komentar Anda berhasil dikirim.</string>
+    <string name="please_select_repost_channel">Silakan pilih saluran yang akan dikirimi ulang.</string>
+    <string name="reply">Balas</string>
+    <string name="replying_to">Membalas ke %1$s</string>
+    <plurals name="post_for_credits">
+        <item quantity="other">Poskan untuk %1$s kredit</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="other">Ini akan memposting komentar Anda dengan tip%1$s kredit untuk%2$s</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="other">%1$s dilihat</item>
     </plurals>
@@ -94,7 +111,6 @@
         <item quantity="other">%1$s pengikut</item>
     </plurals>
 
-    <!-- Publish -->
     <string name="record">Rekam</string>
     <string name="take_photo">Ambil Foto</string>
     <string name="upload_file">Unggah file</string>
@@ -117,6 +133,7 @@
     <string name="show_extra_fields">Tampilkan bidang tambahan</string>
     <string name="hide_extra_fields">Sembunyikan bidang tambahan</string>
     <string name="no_file_found">Tidak ada file yang ditemukan untuk dipublikasikan.</string>
+    <string name="publish_invalid_claim_type">Klaim tidak valid untuk diedit.</string>
     <string name="video_optimization">Pengoptimalan video</string>
     <string name="thumbnail_creation_failed">Thumbnail tidak dapat dibuat secara otomatis dari file konten Anda.</string>
     <string name="video_being_optimized">Video Anda sedang dioptimalkan untuk dukungan yang lebih baik pada berbagai perangkat. Anda dapat mengisi bidang yang tersisa di bawah saat ini sedang berlangsung.</string>
@@ -299,7 +316,6 @@
     <string name="unlock">Buka kunci</string>
     <string name="unlock_tips">Buka tips</string>
     <string name="confirm_unlock_tips">Yakin ingin membuka kunci semua tips Anda?</string>
-
     <plurals name="you_sent_credits">
         <item quantity="other">Kamu mengirim%1$s kredit</item>
     </plurals>
@@ -381,6 +397,7 @@
     <string name="verify">Verifikasi </string>
     <string name="please_enter_valid_phone">Silahkan masukkan nomor telepon yang benar.</string>
     <string name="please_enter_verification_code">Silakan masukkan kode verifikasi yang dikirim ke nomor telepon Anda.</string>
+    <string name="fetch_current_user_error">Akun pengguna tidak dapat diambil saat ini. Silakan coba lagi nanti.</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Anda belum menambahkan tag apa pun. Tambahkan tag untuk meningkatkan penemuan.</string>
@@ -482,7 +499,7 @@
     <string name="invite_email_placeholder">imaginary@friend.com</string>
     <string name="invite">Undang</string>
     <string name="invite_history">Riwayat Undangan</string>
-    <string name="earn_credits_for_inviting">Dapatkan kredit untuk mengundang teman, musuh, atau teman. Semua orang membutuhkan kebebasan konten.</string>
+    <string name="earn_credits_for_inviting">Dapatkan kredit untuk mengundang teman, musuh, monster, atau teman. Semua orang membutuhkan kebebasan konten.</string>
     <string name="reward">Hadiah</string>
     <string name="claimed">Diklaim</string>
     <string name="claimable">Bisa di klaim</string>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Apri il selettore navigazione</string>
     <string name="navigation_drawer_close">Chiudi il selettore navigazione</string>
@@ -59,6 +59,9 @@
     <string name="report">Segnala</string>
     <string name="loading_decentralized_data">Caricamento dati decentralizzati...</string>
     <string name="related_content">Contenuti connessi</string>
+    <string name="comments">Commenti</string>
+    <string name="no_comments">Nessun commento al momento.</string>
+    <string name="sdk_initializing_comments">I commenti verranno visualizzati dopo l\'inizializzazione del servizio in background.</string>
     <string name="share_lbry_content">Condividi contenuti LBRY</string>
     <string name="view">Guarda</string>
     <string name="play">Avvia</string>
@@ -78,6 +81,22 @@
     <string name="confirm_delete_content_message">Sei sicuro di ritirare questo contenuto? Nessun file verrà rimosso dal tuo dispositivo.</string>
     <string name="content_deleted">Il contenuto è stato eliminato dalla blockchain.</string>
     <string name="content_failed_delete">Il contenuto non può essere eliminato al momento. Riprova più tardi.</string>
+    <string name="comment">Commento</string>
+    <string name="comment_as">Commenta come</string>
+    <string name="please_enter_comment">Inserire un commento da postare.</string>
+    <string name="please_select_channel">Selezionare un canale per inviare un commento.</string>
+    <string name="comment_posted">Il tuo commento è stato postato con successo.</string>
+    <string name="please_select_repost_channel">Selezionare un canale su cui ripostare.</string>
+    <string name="reply">Rispondi</string>
+    <string name="replying_to">Rispondendo a %1$s</string>
+    <plurals name="post_for_credits">
+        <item quantity="one">Invio per %1$s credito</item>
+        <item quantity="other">Invio per %1$s crediti</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">Questo invierà il tuo commento con una mancia di  %1$s credito per %2$s</item>
+        <item quantity="other">Questo invierà il tuo commento con una mancia di %1$s crediti per %2$s</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="one">%1$s visualizzazioni</item>
         <item quantity="other">%1$s visualizzazioni</item>
@@ -97,7 +116,6 @@
         <item quantity="other">%1$s follower</item>
     </plurals>
 
-    <!-- Publish -->
     <string name="record">Registra</string>
     <string name="take_photo">Scatta una foto</string>
     <string name="upload_file">Carica un file</string>
@@ -120,6 +138,7 @@
     <string name="show_extra_fields">Mostra campi aggiuntivi</string>
     <string name="hide_extra_fields">Nascondi campi aggiuntivi</string>
     <string name="no_file_found">Nessun file da pubblicare trovato.</string>
+    <string name="publish_invalid_claim_type">Claim specificato per la modifica non valido.</string>
     <string name="video_optimization">Ottimizzazione video</string>
     <string name="thumbnail_creation_failed">Una miniatura non può essere creata automaticamente dal file del tuo contenuto.</string>
     <string name="video_being_optimized">Il tuo video è in fase di ottimizzazione per essere supportato meglio da un ampio tipo di dispositivi. Nel frattempo puoi compilare gli altri campi sottostanti.</string>
@@ -304,7 +323,6 @@
     <string name="unlock">Sbloccare</string>
     <string name="unlock_tips">sbloccare la donazione?</string>
     <string name="confirm_unlock_tips">Sei sicuro di voler sbloccare tutti i tuoi donaziones?</string>
-
     <plurals name="you_sent_credits">
         <item quantity="one">Hai spedito %1$s crediti</item>
         <item quantity="other">Hai spedito %1$s crediti</item>
@@ -388,6 +406,7 @@
     <string name="verify">Verifica</string>
     <string name="please_enter_valid_phone">Per favore inserire un numero di telefono valido.</string>
     <string name="please_enter_verification_code">Per favore inserisci il codice di verifica inviato al tuo numero di telefono.</string>
+    <string name="fetch_current_user_error">L\'account utente non può essere recuperato al momento. Riprova più tardi.</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Non hai ancora aggiunto nessuna etichetta. Aggiungi etichette per migliorare la scoperta.</string>
@@ -496,7 +515,7 @@
     <string name="invite_email_placeholder">imaginary@friend.com</string>
     <string name="invite">Invita</string>
     <string name="invite_history">Storico inviti</string>
-    <string name="earn_credits_for_inviting">Guadagna crediti invitando un amico, un nemico, un aminemico o un nemicamico. Tutti hanno bisogno della libertà dei contenuti.</string>
+    <string name="earn_credits_for_inviting">Guadagna crediti invitando un amico, un nemico o un nemiamico. Tutti hanno bisogno dei contenuti liberi.</string>
     <string name="reward">Ricompensa</string>
     <string name="claimed">Richiesto</string>
     <string name="claimable">Richiedibile</string>

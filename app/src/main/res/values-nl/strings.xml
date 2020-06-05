@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Navigatiemenu openen</string>
     <string name="navigation_drawer_close">Navigatiemenu sluiten</string>
@@ -59,6 +59,9 @@
     <string name="report">Rapporteren</string>
     <string name="loading_decentralized_data">Gedecentraliseerde gegevens laden...</string>
     <string name="related_content">Gerelateerde Content</string>
+    <string name="comments">Opmerkingen</string>
+    <string name="no_comments">Geen opmerkingen om op dit moment weer te geven.</string>
+    <string name="sdk_initializing_comments">Opmerkingen worden weergegeven nadat de achtergrondservice is geïnitialiseerd.</string>
     <string name="share_lbry_content">Deel LBRY content</string>
     <string name="view">Bekijk</string>
     <string name="play">Afspelen</string>
@@ -78,6 +81,26 @@
     <string name="confirm_delete_content_message">Weet u zeker dat u de publicatie van deze inhoud ongedaan wilt maken? Er worden geen bestanden van uw apparaat verwijderd.</string>
     <string name="content_deleted">De inhoud is met succes verwijderd van de blockchain.</string>
     <string name="content_failed_delete">De inhoud kan op dit moment niet worden verwijderd. Probeer het later opnieuw.</string>
+    <string name="comment">Opmerking</string>
+    <string name="comment_as">Reageren als</string>
+    <string name="please_enter_comment">Voer een opmerking in om te plaatsen.</string>
+    <string name="please_select_channel">Selecteer een kanaal om uw reactie op te plaatsen.</string>
+    <string name="comment_posted">Uw reactie is succesvol geplaatst.</string>
+    <string name="please_select_repost_channel">Selecteer een kanaal om op te posten.</string>
+    <string name="reply">Antwoord</string>
+    <string name="replying_to">Beantwoorden van %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">Publiceer en doneer %1$s credit?</item>
+        <item quantity="other">Publiceer en doneer %1$s credits</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="one">Publiceer voor %1$s credit</item>
+        <item quantity="other">Publiceer voor %1$s credits</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">Dit zal uw opmerking plaatsen met een fooi van %1$s credits voor %2$s</item>
+        <item quantity="other">Dit zal uw opmerking plaatsen met een fooi van %1$s credits voor %2$s</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="one">%1$s weergave</item>
         <item quantity="other">%1$s weergaven</item>
@@ -98,6 +121,7 @@
     </plurals>
 
     <!-- Publish -->
+    <string name="no_publishes_created">Het lijkt erop dat u nog geen content op LBRY heeft gepubliceerd.</string>
     <string name="record">Opnemen</string>
     <string name="take_photo">Neem een Foto</string>
     <string name="upload_file">Upload een bestand</string>
@@ -120,6 +144,7 @@
     <string name="show_extra_fields">Weergeef extra velden</string>
     <string name="hide_extra_fields">Verberg extra velden</string>
     <string name="no_file_found">Geen bestand gevonden om te publiceren.</string>
+    <string name="publish_invalid_claim_type">Ongeldige claim opgegeven om te bewerken.</string>
     <string name="video_optimization">Video optimalisatie</string>
     <string name="thumbnail_creation_failed">Er kan niet automatisch een miniatuur worden gemaakt op basis van uw inhoudsbestand.</string>
     <string name="video_being_optimized">Uw video wordt geoptimaliseerd voor betere ondersteuning op een groot aantal apparaten. U kunt de overige velden hieronder invullen terwijl dit bezig is.</string>
@@ -304,7 +329,6 @@
     <string name="unlock">Ontgrendelen</string>
     <string name="unlock_tips">Tips ontgrendelen?</string>
     <string name="confirm_unlock_tips">Weet u zeker dat u al uw tips wilt ontgrendelen?</string>
-
     <plurals name="you_sent_credits">
         <item quantity="one">U heeft %1$s credits verzonden</item>
         <item quantity="other">U heeft %1$s credits verzonden</item>
@@ -388,6 +412,7 @@
     <string name="verify">Verifieer</string>
     <string name="please_enter_valid_phone">Voer alstublieft een geldig telefoonnummer in.</string>
     <string name="please_enter_verification_code">Voer de verificatiecode in die naar uw telefoonnummer is gestuurd.</string>
+    <string name="fetch_current_user_error">Gebruikersaccount kan op dit moment niet worden opgehaald. Probeer het later opnieuw.</string>
 
     <!-- Forms -->
     <string name="no_added_tags">U heeft nog geen labels toegevoegd. Voeg labels toe om de ontdekking te verbeteren.</string>
@@ -496,7 +521,7 @@
     <string name="invite_email_placeholder">imaginary@friend.com</string>
     <string name="invite">Nodig uit</string>
     <string name="invite_history">Uitnodigingsgeschiedenis</string>
-    <string name="earn_credits_for_inviting">Verdien credits voor het uitnodigen van een vriend, een vijand, een vijand of een vriend. Iedereen heeft inhoudelijke vrijheid nodig.</string>
+    <string name="earn_credits_for_inviting">Verdien credits voor het uitnodigen van een vriend of een vijand. Iedereen heeft inhoudelijke vrijheid nodig.</string>
     <string name="reward">Beloning</string>
     <string name="claimed">Beweerde</string>
     <string name="claimable">Opeisbaar</string>

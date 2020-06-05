@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">लाइब्रेरी</string>
     <string name="navigation_drawer_open">पथ प्रदर्शन दराज को खोलें</string>
     <string name="navigation_drawer_close">पथ प्रदर्शन दराज को बंद करें</string>
@@ -59,6 +59,9 @@
     <string name="report">रिपोर्ट</string>
     <string name="loading_decentralized_data">लोडिंग विकेंद्रीकृत डाटा</string>
     <string name="related_content">संबंधित सामग्री</string>
+    <string name="comments">टिप्पणियां</string>
+    <string name="no_comments">इस समय प्रदर्शित करने के लिए कोई कमेंट्स नहीं हैं।</string>
+    <string name="sdk_initializing_comments">पृष्ठभूमि सेवाएं शुरू होने के बाद कमैंट्स प्रदर्शित किए जाएंगे।</string>
     <string name="share_lbry_content">लाइब्रेरी सामग्री को शेयर करें</string>
     <string name="view">व्यू</string>
     <string name="play">प्ले , शुरू करें</string>
@@ -78,6 +81,26 @@
     <string name="confirm_delete_content_message">क्या आप वाकई इस सामग्री को अनपब्लिश करना चाहते हैं? कोई भी फाइल आपकी डिवाइस से नहीं हटेगी।</string>
     <string name="content_deleted">यह सामग्री सफलतापूर्वक ब्लॉकचेन से हटा दी गई है</string>
     <string name="content_failed_delete">यह सामग्री इस समय नहीं हटाई जा सकी है । कृपया कुछ देर बाद फिर प्रयास करें</string>
+    <string name="comment">टिप्पणी</string>
+    <string name="comment_as">के रूप में कमेंट करें</string>
+    <string name="please_enter_comment">पोस्ट करने हेतु कमेंट में प्रवेश करें।</string>
+    <string name="please_select_channel">कमेंट पोस्ट करने के लिए कृपया एक चैनल को चुनें।</string>
+    <string name="comment_posted">आपका कमेंट सफलतापूर्वक पोस्ट हो गया है।</string>
+    <string name="please_select_repost_channel">रीपोस्ट करने हेतु कृपया एक चैनल चुने</string>
+    <string name="reply">जवाब</string>
+    <string name="replying_to">%1$s को जवाब</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">पोस्ट और टिप %1$s क्रेडिट?</item>
+        <item quantity="other">पोस्ट और टिप %1$s क्रेडिट्स?</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="one">%1$s क्रेडिट के लिए पोस्ट करें।</item>
+        <item quantity="other">%1$s क्रेडिटस के लिए पोस्ट करें।</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">यह आपके कमेंट को पोस्ट करेगा इस टिप %1$s क्रेडिट के साथ इसके लिए %2$s</item>
+        <item quantity="other">यह आपके कमेंट को पोस्ट करेगा इस टिप %1$s क्रेडिटस के साथ इसके लिए  %2$s</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="one">%1$s व्यूज़</item>
         <item quantity="other">%1$s व्यूज़</item>
@@ -98,6 +121,7 @@
     </plurals>
 
     <!-- Publish -->
+    <string name="no_publishes_created">ऐसा प्रतीत होता है कि आपने अभी तक LBRY पर कोई सामग्री प्रकाशित नहीं की है।</string>
     <string name="record">रिकॉर्ड</string>
     <string name="take_photo">एक तस्वीर खींचे</string>
     <string name="upload_file">एक फाइल अपलोड करें</string>
@@ -120,6 +144,7 @@
     <string name="show_extra_fields">कृपया अतिरिक्त क्षेत्र दिखाएं</string>
     <string name="hide_extra_fields">अतिरिक्त क्षेत्र छिपाएं</string>
     <string name="no_file_found">पब्लिश करने हेतु कोई फाइल नहीं मिली</string>
+    <string name="publish_invalid_claim_type">एडिटिंग हेतु अमान्य दावा।</string>
     <string name="video_optimization">वीडियो अनुकूलन</string>
     <string name="thumbnail_creation_failed">आपकी सामग्री फाइल से खुद-ब-खुद थंबनेल नहीं बनाया जा सका</string>
     <string name="video_being_optimized">सभी प्रकार की डिवाइस इस पर बेहतर रूप से चलने हेतु आपके वीडियो को अनुकूलित किया जा रहा है। इस दौरान आप निम्न रिक्त स्थानों को भर सकते हैं।</string>
@@ -304,7 +329,6 @@
     <string name="unlock">खोलें</string>
     <string name="unlock_tips">टिप्स को खोलें?</string>
     <string name="confirm_unlock_tips">क्या आप निश्चित रूप से अपनी सारी टिप्स खोलना चाहते हैं?</string>
-
     <plurals name="you_sent_credits">
         <item quantity="one">आपने भेजे हैं %1$s क्रेडिट</item>
         <item quantity="other">आपने भेजे हैं %1$s क्रेडिटस</item>
@@ -388,6 +412,7 @@
     <string name="verify">सत्यापित</string>
     <string name="please_enter_valid_phone">कृपया एक वैध फोन नंबर दर्ज करें</string>
     <string name="please_enter_verification_code">अपने फोन नंबर पर भेजे गए सत्यापन कोड को दर्ज करें</string>
+    <string name="fetch_current_user_error">उपभोक्ता खाता इस समय नहीं खोला जा सका है। कृपया कुछ देर बाद प्रयास करें।</string>
 
     <!-- Forms -->
     <string name="no_added_tags">आपने अभी तक कोई भी टैक्स नहीं जोड़े हैं। खोजे जाने की संभावना बढ़ाने के लिए टैक्स जोड़ें।</string>

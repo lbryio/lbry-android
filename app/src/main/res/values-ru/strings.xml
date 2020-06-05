@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Открыть поисковик</string>
     <string name="navigation_drawer_close">Закрыть поисковик</string>
@@ -13,7 +13,7 @@
     <string name="all_content">Весь контент</string>
     <string name="channels">Каналы</string>
     <string name="library">Библиотека</string>
-    <string name="publishes">Публикует</string>
+    <string name="publishes">Публикации</string>
     <string name="new_publish">Новая Публикация</string>
     <string name="rewards">Награды</string>
     <string name="invites">Приглашения</string>
@@ -36,7 +36,7 @@
     <!-- Following page -->
     <string name="find_channels_to_follow">Найдите каналы, чтобы подписаться</string>
     <string name="channels_you_follow">Каналы, на которые Вы подписаны</string>
-    <string name="discover">Найдите</string>
+    <string name="discover">Найти новые</string>
     <string name="lbry_works_better">LBRY работает лучше, если Вы следуете как минимум 5 каналам, которые Вам нравятся. Войдите в аккаунт, чтобы показать творцам, что Вы подписаны на них, если Вы уже имеете аккаунт. </string>
     <string name="select_five_subscriptions">Пожалуйста, выберите 5 каналов, чтобы продолжить.</string>
     <string name="n_remaining">%1$d осталось... </string>
@@ -59,6 +59,9 @@
     <string name="report">Пожаловаться</string>
     <string name="loading_decentralized_data">Загружаем децентрализованные данные...</string>
     <string name="related_content">Похожие материалы</string>
+    <string name="comments">Комментарии</string>
+    <string name="no_comments">Нет комментариев для отображения.</string>
+    <string name="sdk_initializing_comments">Комментарии отобразятся тогда, когда фоновый процесс закончит инициализацию.</string>
     <string name="share_lbry_content">Поделиться контентом LBRY</string>
     <string name="view">Просмотреть</string>
     <string name="play">Воспроизвести</string>
@@ -78,6 +81,32 @@
     <string name="confirm_delete_content_message">Вы уверены, что хотите отменить публикацию? Это не затронет файлы на Вашем устройстве.</string>
     <string name="content_deleted">Контент был успешно удалён из блокчейна.</string>
     <string name="content_failed_delete">Удаление контента временно невозможно. Попробуйте позже.</string>
+    <string name="comment">Комментарий</string>
+    <string name="comment_as">Прокомментировать от имени</string>
+    <string name="please_enter_comment">Пожалуйста, введите комментарий для отправки.</string>
+    <string name="please_select_channel">Пожалуйста, выберите канал, от имени которого отправить комментарий.</string>
+    <string name="comment_posted">Ваш комментарий был успешно отправлен.</string>
+    <string name="please_select_repost_channel">Пожалуйста, выберите канал, на который отправить репост.</string>
+    <string name="reply">Ответить</string>
+    <string name="replying_to">Ответ %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">Отправить чаевые и запостить за %1$s кредит?</item>
+        <item quantity="few">Отправить чаевые и запостить за %1$s кредитов?</item>
+        <item quantity="many">Отправить чаевые и запостить за %1$s кредитов?</item>
+        <item quantity="other">Отправить чаевые и запостить за %1$s кредитов?</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="one">Отправить за %1$s кредит</item>
+        <item quantity="few">Отправить за %1$s кредита</item>
+        <item quantity="many">Отправить за %1$sкредита</item>
+        <item quantity="other">Отправить за %1$sкредитов</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">Это отправит ваш комментарий с чаевыми в кол-ве %1$s кредит для %2$s</item>
+        <item quantity="few">Это отправит ваш комментарий с чаевыми в кол-ве %1$s кредитов для %2$s</item>
+        <item quantity="many">Это отправит ваш комментарий с чаевыми в кол-ве %1$s кредитов для %2$s</item>
+        <item quantity="other">Это отправит ваш комментарий с чаевыми в кол-ве %1$s кредитов для %2$s</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="one">%1$s просмотр </item>
         <item quantity="few">%1$s просмотров</item>
@@ -104,6 +133,7 @@
     </plurals>
 
     <!-- Publish -->
+    <string name="no_publishes_created">Похоже, что у Вас пока нет опубликованного контента на LBRY.</string>
     <string name="record">Запись</string>
     <string name="take_photo">Сделать фото</string>
     <string name="upload_file">Загрузить файл</string>
@@ -126,6 +156,7 @@
     <string name="show_extra_fields">Показать дополнительные поля</string>
     <string name="hide_extra_fields">Скрыть дополнительные поля</string>
     <string name="no_file_found">Файл для публикации не найден.</string>
+    <string name="publish_invalid_claim_type">Неверно указан материал для редактирования</string>
     <string name="video_optimization">Оптимизация видео</string>
     <string name="thumbnail_creation_failed">Не удалось автоматически создать миниатюру для Вашего видео.</string>
     <string name="video_being_optimized">Сейчас Ваше видео оптимизируется для улучшения воспроизведения другими устройствами. Пока идёт обработка, Вы можете заполнить оставшиеся поля.</string>
@@ -314,7 +345,6 @@
     <string name="unlock">Разблокировать</string>
     <string name="unlock_tips">Разблокировать чаевые?</string>
     <string name="confirm_unlock_tips">Вы уверены, что хотите разблокировать все Ваши чаевые?</string>
-
     <plurals name="you_sent_credits">
         <item quantity="one">Вы отправили %1$s кредит</item>
         <item quantity="few">Вы отправили %1$s кредитов</item>
@@ -402,6 +432,7 @@
     <string name="verify">Подтвердить </string>
     <string name="please_enter_valid_phone">Пожалуйста, введите действительный номер телефона. </string>
     <string name="please_enter_verification_code">Пожалуйста, введите код подтверждения, отправленный на Ваш номер телефона. </string>
+    <string name="fetch_current_user_error">Не удалось получить информацию об аккаунте. Пожалуйста, попробуйте позже.</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Вы пока не подписаны ни на один тег. Добавьте теги, чтобы улучшить поиск. </string>

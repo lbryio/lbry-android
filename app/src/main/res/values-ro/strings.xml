@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Deschidere meniu navigare</string>
     <string name="navigation_drawer_close">Închidere meniu navigare</string>
@@ -59,6 +59,9 @@
     <string name="report">Raportare</string>
     <string name="loading_decentralized_data">Se încarcă datele descentralizate...</string>
     <string name="related_content">Conţinut asemănător</string>
+    <string name="comments">Comentarii</string>
+    <string name="no_comments">Nu sunt comentarii de afișat momentan.</string>
+    <string name="sdk_initializing_comments">Comentariile vor fi afișate după inițializarea serviciului din fundal.</string>
     <string name="share_lbry_content">Partajare conşinut LBRY</string>
     <string name="view">Afişare</string>
     <string name="play">Redare</string>
@@ -78,6 +81,29 @@
     <string name="confirm_delete_content_message">Sigur doriți să anulați publicarea acestui conținut? Niciun fișier nu va fi eliminat de pe dispozitivul dumneavoastră.</string>
     <string name="content_deleted">Conținutul a fost șters cu succes din blockchain.</string>
     <string name="content_failed_delete">Conținutul nu a putut fi șters în acest moment. Vă rugăm să încercați din nou mai târziu.</string>
+    <string name="comment">Comentariu</string>
+    <string name="comment_as">Comentare ca</string>
+    <string name="please_enter_comment">Introdu un comentariu.</string>
+    <string name="please_select_channel">Selectează canalul în numele căruia comentezi.</string>
+    <string name="comment_posted">Comentariul tău a fost publicat.</string>
+    <string name="please_select_repost_channel">Selectează un canal în care vei republica.</string>
+    <string name="reply">Răspuns</string>
+    <string name="replying_to">Răspuns la %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">Publici și oferi bacșiș %1$s credit?</item>
+        <item quantity="few">Publici și oferi bacșiș %1$s credite?</item>
+        <item quantity="other">Publici și oferi bacșiș %1$s de credite?</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="one">Publici pentru %1$s credit</item>
+        <item quantity="few">Publici pentru %1$s credite</item>
+        <item quantity="other">Publici pentru %1$s de credite</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">Se va publica comentariul tău și vei oferi un bacșiș de %1$s credit pentru %2$s</item>
+        <item quantity="few">Se va publica comentariul tău și vei oferi un bacșiș de %1$s credite pentru %2$s</item>
+        <item quantity="other">Se va publica comentariul tău și vei oferi un bacșiș de %1$s de credite pentru %2$s</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="one">%1$s afişare</item>
         <item quantity="few">%1$s afişări</item>
@@ -101,6 +127,7 @@
     </plurals>
 
     <!-- Publish -->
+    <string name="no_publishes_created">Se pare că încă nu a publicat conținut în LBRY.</string>
     <string name="record">Înregistrare</string>
     <string name="take_photo">Faceți o fotografie</string>
     <string name="upload_file">Încărcați un fișier</string>
@@ -123,6 +150,7 @@
     <string name="show_extra_fields">Afișați câmpuri suplimentare</string>
     <string name="hide_extra_fields">Ascundeți câmpuri suplimentare</string>
     <string name="no_file_found">Nu a fost găsit niciun fișier pentru a fi publicat.</string>
+    <string name="publish_invalid_claim_type">Revendicare nevalidă specificată pentru editare.</string>
     <string name="video_optimization">Optimizare video</string>
     <string name="thumbnail_creation_failed">O pictogramă nu a putut fi creată automat din fișierul dumneavoastră de conținut.</string>
     <string name="video_being_optimized">Videoclipul dumneavoastră este optimizat pentru o redare mai bună pe o gamă largă de dispozitive. Puteți completa câmpurile rămase mai jos, în timp ce acest lucru este în desfășurare.</string>
@@ -309,7 +337,6 @@
     <string name="unlock">Deblocare</string>
     <string name="unlock_tips">Deblocare bacşişuri?</string>
     <string name="confirm_unlock_tips">Sunteți sigur că doriți să deblocați toate bacşişurile dumneavoastră?</string>
-
     <plurals name="you_sent_credits">
         <item quantity="one">Ai trimis %1$s credit</item>
         <item quantity="few">Ai trimis %1$s credite</item>
@@ -395,6 +422,7 @@
     <string name="verify">Verificare</string>
     <string name="please_enter_valid_phone">Introdu un număr de telefon valid.</string>
     <string name="please_enter_verification_code">Introdu codul de verificare trimis la numărul tău de telefon.</string>
+    <string name="fetch_current_user_error">Contul de utilizator nu a putut fi preluat în acest moment. Reîncearcă mai târziu.</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Încă nu ţi-ai ales etichete. Adaugă-ţi câteva pentru a descoperi conţinut.</string>
@@ -510,7 +538,7 @@
     <string name="invite_email_placeholder">prieten@imaginar.com</string>
     <string name="invite">Invitare</string>
     <string name="invite_history">Istoric invitări</string>
-    <string name="earn_credits_for_inviting">Câştigă credite invitând un prieten, inamic, amic sau cunoscut. Oricine are nevoie de conţinut liber.</string>
+    <string name="earn_credits_for_inviting">Câștigă credite invitând un priten, inamic sau orice persoană. Oricine are nevoie de conținut liber.</string>
     <string name="reward">Recompensă</string>
     <string name="claimed">Revendicată</string>
     <string name="claimable">Revendicabilă</string>
