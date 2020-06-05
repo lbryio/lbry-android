@@ -665,6 +665,15 @@ public class FileViewFragment extends BaseFragment implements
                 setPlayerForPlayerView();
                 MainActivity.playerReassigned = false;
             }
+
+            View root = getView();
+            if (root != null) {
+                PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
+                if (playerView.getPlayer() == null) {
+                    playerView.setPlayer(MainActivity.appPlayer);
+                }
+            }
+
             loadAndScheduleDurations();
         }
 
