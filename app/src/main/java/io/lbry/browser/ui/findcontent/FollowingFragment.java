@@ -441,7 +441,7 @@ public class FollowingFragment extends BaseFragment implements
     private List<String> getChannelIds() {
         if (channelFilterListAdapter != null) {
             Claim selected = channelFilterListAdapter.getSelectedItem();
-            if (selected != null) {
+            if (selected != null && !Helper.isNullOrEmpty(selected.getClaimId())) {
                 return Arrays.asList(selected.getClaimId());
             }
         }
@@ -490,6 +490,11 @@ public class FollowingFragment extends BaseFragment implements
                     String url = subscription.getUrl();
                     LbryUri uri = LbryUri.parse(url);
                     String claimId = uri.getClaimId();
+                    if (Helper.isNullOrEmpty(claimId) || Helper.isNullOrEmpty(url)) {
+                        // don't add null / empty claim IDs or URLs
+                        continue;
+                    }
+
                     channelIds.add(claimId);
                     channelUrls.add(url);
                 } catch (LbryUriException ex) {
