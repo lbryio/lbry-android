@@ -1719,31 +1719,41 @@ public class FileViewFragment extends BaseFragment implements
             Fee fee = ((Claim.StreamMetadata) claim.getValue()).getFee();
             double cost = claim.getActualCost(Lbryio.LBCUSDRate).doubleValue();
             String formattedCost = Helper.LBC_CURRENCY_FORMAT.format(cost);
-            String message = getResources().getQuantityString(
-                    R.plurals.confirm_purchase_message,
-                    cost == 1 ? 1 : 2,
-                    claim.getTitle(),
-                    formattedCost.equals("0") ? Helper.FULL_LBC_CURRENCY_FORMAT.format(cost) : formattedCost);
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
-                    setTitle(R.string.confirm_purchase).
-                    setMessage(message)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString("uri", currentUrl);
-                            bundle.putString("paid", "true");
-                            bundle.putDouble("amount", Helper.parseDouble(fee.getAmount(), 0));
-                            bundle.putDouble("lbc_amount", cost);
-                            bundle.putString("currency", fee.getCurrency());
-                            LbryAnalytics.logEvent(LbryAnalytics.EVENT_PURCHASE_URI, bundle);
+            Context context = getContext();
+            if (context != null) {
+                try {
+                    String message = getResources().getQuantityString(
+                            R.plurals.confirm_purchase_message,
+                            cost == 1 ? 1 : 2,
+                            claim.getTitle(),
+                            formattedCost.equals("0") ? Helper.FULL_LBC_CURRENCY_FORMAT.format(cost) : formattedCost);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context).
+                            setTitle(R.string.confirm_purchase).
+                            setMessage(message)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("uri", currentUrl);
+                                    bundle.putString("paid", "true");
+                                    bundle.putDouble("amount", Helper.parseDouble(fee.getAmount(), 0));
+                                    bundle.putDouble("lbc_amount", cost);
+                                    bundle.putString("currency", fee.getCurrency());
+                                    LbryAnalytics.logEvent(LbryAnalytics.EVENT_PURCHASE_URI, bundle);
 
-                            getView().findViewById(R.id.file_view_main_action_button).setVisibility(View.INVISIBLE);
-                            getView().findViewById(R.id.file_view_main_action_loading).setVisibility(View.VISIBLE);
-                            handleMainActionForClaim();
-                        }
-                    }).setNegativeButton(R.string.no, null);
-            builder.show();
+                                    View root = getView();
+                                    if (root != null) {
+                                        root.findViewById(R.id.file_view_main_action_button).setVisibility(View.INVISIBLE);
+                                        root.findViewById(R.id.file_view_main_action_loading).setVisibility(View.VISIBLE);
+                                    }
+                                    handleMainActionForClaim();
+                                }
+                            }).setNegativeButton(R.string.no, null);
+                    builder.show();
+                } catch (IllegalStateException ex) {
+                    // pass
+                }
+            }
         }
     }
 
@@ -2973,7 +2983,11 @@ public class FileViewFragment extends BaseFragment implements
 
             @Override
             public void onError(Exception error) {
-                showError(error.getMessage());
+                try {
+                    showError(error != null ? error.getMessage() : getString(R.string.comment_error));
+                } catch (IllegalStateException ex) {
+                    // pass
+                }
                 afterPostComment();
             }
         });

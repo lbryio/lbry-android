@@ -2,6 +2,7 @@ package io.lbry.browser.ui.verification;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -243,8 +244,10 @@ public class WalletVerificationFragment extends Fragment {
     }
 
     private void showError(String message) {
-        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).setBackgroundTint(
-                getResources().getColor(R.color.red)
-        ).show();
+        View view = getView();
+        if (view != null) {
+            Snackbar.make(view, message, Snackbar.LENGTH_LONG).
+                    setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+        }
     }
 }

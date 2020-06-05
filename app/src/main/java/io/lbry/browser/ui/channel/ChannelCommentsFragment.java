@@ -569,7 +569,11 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
 
             @Override
             public void onError(Exception error) {
-                showError(error.getMessage());
+                try {
+                    showError(error != null ? error.getMessage() : getString(R.string.comment_error));
+                } catch (IllegalStateException ex) {
+                    // pass
+                }
                 afterPostComment();
             }
         });

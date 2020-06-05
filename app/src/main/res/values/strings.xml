@@ -62,6 +62,7 @@
     <string name="comments">Comments</string>
     <string name="no_comments">No comments to display at this time.</string>
     <string name="sdk_initializing_comments">Comments will display after the background service is initialized.</string>
+    <string name="comment_error">Your comment could not be posted at this time. Please try again later.</string>
     <string name="share_lbry_content">Share LBRY content</string>
     <string name="view">View</string>
     <string name="play">Play</string>
@@ -233,6 +234,7 @@
     <!-- Settings -->
     <string name="user_interface">Content &amp; User interface</string>
     <string name="other">Other</string>
+    <string name="enable_background_playback">Enable background playback</string>
     <string name="enable_dark_mode">Enable dark theme</string>
     <string name="show_mature_content">Show mature content</string>
     <string name="show_url_suggestions">Show URL suggestions</string>

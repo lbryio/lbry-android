@@ -259,22 +259,25 @@ public class ChannelContentFragment extends Fragment implements DownloadActionLi
             @Override
             public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
                 if (contentListAdapter == null) {
-                    contentListAdapter = new ClaimListAdapter(claims, getContext());
-                    contentListAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
-                        @Override
-                        public void onClaimClicked(Claim claim) {
-                            Context context = getContext();
-                            if (context instanceof MainActivity) {
-                                MainActivity activity = (MainActivity) context;
-                                if (claim.getName().startsWith("@")) {
-                                    // channel claim
-                                    activity.openChannelClaim(claim);
-                                } else {
-                                    activity.openFileClaim(claim);
+                    Context context = getContext();
+                    if (context != null) {
+                        contentListAdapter = new ClaimListAdapter(claims, context);
+                        contentListAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
+                            @Override
+                            public void onClaimClicked(Claim claim) {
+                                Context context = getContext();
+                                if (context instanceof MainActivity) {
+                                    MainActivity activity = (MainActivity) context;
+                                    if (claim.getName().startsWith("@")) {
+                                        // channel claim
+                                        activity.openChannelClaim(claim);
+                                    } else {
+                                        activity.openFileClaim(claim);
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }
                 } else {
                     contentListAdapter.addItems(claims);
                 }

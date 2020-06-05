@@ -149,21 +149,23 @@ public class ChannelManagerFragment extends BaseFragment implements ActionMode.C
             @Override
             public void onSuccess(List<Claim> claims) {
                 Lbry.ownChannels = Helper.filterDeletedClaims(new ArrayList<>(claims));
-                Context context = getContext();
                 if (adapter == null) {
-                    adapter = new ClaimListAdapter(claims, context);
-                    adapter.setCanEnterSelectionMode(true);
-                    adapter.setSelectionModeListener(ChannelManagerFragment.this);
-                    adapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
-                        @Override
-                        public void onClaimClicked(Claim claim) {
-                            if (context instanceof MainActivity) {
-                                ((MainActivity) context).openChannelClaim(claim);
+                    Context context = getContext();
+                    if (context != null) {
+                        adapter = new ClaimListAdapter(claims, context);
+                        adapter.setCanEnterSelectionMode(true);
+                        adapter.setSelectionModeListener(ChannelManagerFragment.this);
+                        adapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
+                            @Override
+                            public void onClaimClicked(Claim claim) {
+                                if (context instanceof MainActivity) {
+                                    ((MainActivity) context).openChannelClaim(claim);
+                                }
                             }
+                        });
+                        if (channelList != null) {
+                            channelList.setAdapter(adapter);
                         }
-                    });
-                    if (channelList != null) {
-                        channelList.setAdapter(adapter);
                     }
                 } else {
                     adapter.setItems(claims);

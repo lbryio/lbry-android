@@ -6,6 +6,10 @@
         android:title="@string/user_interface"
         app:iconSpaceReserved="false">
         <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.userinterface.BackgroundPlayback"
+            app:title="@string/enable_background_playback"
+            app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
             app:key="io.lbry.browser.preference.userinterface.DarkMode"
             app:title="@string/enable_dark_mode"
             app:iconSpaceReserved="false" />

@@ -151,26 +151,28 @@ public class PublishesFragment extends BaseFragment implements ActionMode.Callba
             @Override
             public void onSuccess(List<Claim> claims) {
                 Lbry.ownClaims = Helper.filterDeletedClaims(new ArrayList<>(claims));
-                Context context = getContext();
                 if (adapter == null) {
-                    adapter = new ClaimListAdapter(claims, context);
-                    adapter.setCanEnterSelectionMode(true);
-                    adapter.setSelectionModeListener(PublishesFragment.this);
-                    adapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
-                        @Override
-                        public void onClaimClicked(Claim claim) {
-                            if (context instanceof MainActivity) {
-                                MainActivity activity = (MainActivity) context;
-                                if (claim.getName().startsWith("@")) {
-                                    activity.openChannelClaim(claim);
-                                } else {
-                                    activity.openFileClaim(claim);
+                    Context context = getContext();
+                    if (context != null) {
+                        adapter = new ClaimListAdapter(claims, context);
+                        adapter.setCanEnterSelectionMode(true);
+                        adapter.setSelectionModeListener(PublishesFragment.this);
+                        adapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
+                            @Override
+                            public void onClaimClicked(Claim claim) {
+                                if (context instanceof MainActivity) {
+                                    MainActivity activity = (MainActivity) context;
+                                    if (claim.getName().startsWith("@")) {
+                                        activity.openChannelClaim(claim);
+                                    } else {
+                                        activity.openFileClaim(claim);
+                                    }
                                 }
                             }
+                        });
+                        if (contentList != null) {
+                            contentList.setAdapter(adapter);
                         }
-                    });
-                    if (contentList != null) {
-                        contentList.setAdapter(adapter);
                     }
                 } else {
                     adapter.setItems(claims);

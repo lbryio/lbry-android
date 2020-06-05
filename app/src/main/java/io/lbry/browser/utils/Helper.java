@@ -552,7 +552,11 @@ public final class Helper {
                         split[1]
                 };
 
-                return getDataColumn(context, contentUri, selection, selectionArgs);
+                try {
+                    return getDataColumn(context, contentUri, selection, selectionArgs);
+                } catch (Exception ex) {
+                    return null;
+                }
             }
         }
         // MediaStore (and general)

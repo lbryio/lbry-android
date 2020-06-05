@@ -265,6 +265,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String ACTION_SAVE_SHARED_USER_STATE = "io.lbry.browser.Broadcast.SaveSharedUserState";
 
     // preference keys
+    public static final String PREFERENCE_KEY_BACKGROUND_PLAYBACK = "io.lbry.browser.preference.userinterface.BackgroundPlayback";
     public static final String PREFERENCE_KEY_DARK_MODE = "io.lbry.browser.preference.userinterface.DarkMode";
     public static final String PREFERENCE_KEY_SHOW_MATURE_CONTENT = "io.lbry.browser.preference.userinterface.ShowMatureContent";
     public static final String PREFERENCE_KEY_SHOW_URL_SUGGESTIONS = "io.lbry.browser.preference.userinterface.UrlSuggestions";

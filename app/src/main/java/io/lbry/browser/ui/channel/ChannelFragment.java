@@ -180,10 +180,13 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                         @Override
                         public void onTipSent(BigDecimal amount) {
                             double sentAmount = amount.doubleValue();
-                            String message = getResources().getQuantityString(
-                                    R.plurals.you_sent_a_tip, sentAmount == 1.0 ? 1 : 2,
-                                    new DecimalFormat("#,###.##").format(sentAmount));
-                            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+                            View view = getView();
+                            if (view != null) {
+                                String message = getResources().getQuantityString(
+                                        R.plurals.you_sent_a_tip, sentAmount == 1.0 ? 1 : 2,
+                                        new DecimalFormat("#,###.##").format(sentAmount));
+                                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+                            }
                         }
                     });
                     Context context = getContext();

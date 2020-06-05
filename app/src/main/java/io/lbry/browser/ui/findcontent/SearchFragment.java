@@ -192,7 +192,7 @@ public class SearchFragment extends BaseFragment implements
             }
             if (resolved.isMature() && !canShowMatureContent) {
                 resultListAdapter.removeFeaturedItem();
-            } else {
+            } else if (unresolved != null) {
                 // only set the values we need
                 unresolved.setClaimId(resolved.getClaimId());
                 unresolved.setName(resolved.getName());

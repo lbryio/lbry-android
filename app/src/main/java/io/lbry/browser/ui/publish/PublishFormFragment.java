@@ -728,7 +728,10 @@ public class PublishFormFragment extends BaseFragment implements
 
     private void uploadThumbnail(String thumbnailPath) {
         if (uploading) {
-            Snackbar.make(getView(), R.string.wait_for_upload, Snackbar.LENGTH_LONG).show();
+            View view = getView();
+            if (view != null) {
+                Snackbar.make(view, R.string.wait_for_upload, Snackbar.LENGTH_LONG).show();
+            }
             return;
         }
 
@@ -1294,7 +1297,11 @@ public class PublishFormFragment extends BaseFragment implements
     @Override
     public void onStoragePermissionRefused() {
         if (!storageRefusedOnce) {
-            showError(getString(R.string.storage_permission_rationale_images));
+            try {
+                showError(getString(R.string.storage_permission_rationale_images));
+            } catch (IllegalStateException ex) {
+                // pass
+            }
             storageRefusedOnce = true;
         }
         launchPickerPending = false;

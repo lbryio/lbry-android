@@ -352,24 +352,27 @@ public class LibraryFragment extends BaseFragment implements
     }
 
     private void initContentListAdapter(List<Claim> claims) {
-        contentListAdapter = new ClaimListAdapter(claims, getContext());
-        contentListAdapter.setCanEnterSelectionMode(currentFilter == FILTER_DOWNLOADS);
-        contentListAdapter.setSelectionModeListener(this);
-        contentListAdapter.setHideFee(currentFilter != FILTER_PURCHASES);
-        contentListAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
-            @Override
-            public void onClaimClicked(Claim claim) {
-                Context context = getContext();
-                if (context instanceof MainActivity) {
-                    MainActivity activity = (MainActivity) getContext();
-                    if (claim.getName().startsWith("@")) {
-                        activity.openChannelUrl(claim.getPermanentUrl());
-                    } else {
-                        activity.openFileUrl(claim.getPermanentUrl());
+        Context context = getContext();
+        if (context != null) {
+            contentListAdapter = new ClaimListAdapter(claims, context);
+            contentListAdapter.setCanEnterSelectionMode(currentFilter == FILTER_DOWNLOADS);
+            contentListAdapter.setSelectionModeListener(this);
+            contentListAdapter.setHideFee(currentFilter != FILTER_PURCHASES);
+            contentListAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
+                @Override
+                public void onClaimClicked(Claim claim) {
+                    Context context = getContext();
+                    if (context instanceof MainActivity) {
+                        MainActivity activity = (MainActivity) context;
+                        if (claim.getName().startsWith("@")) {
+                            activity.openChannelUrl(claim.getPermanentUrl());
+                        } else {
+                            activity.openFileUrl(claim.getPermanentUrl());
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void fetchDownloads() {
@@ -391,7 +394,7 @@ public class LibraryFragment extends BaseFragment implements
                 } else {
                     contentListAdapter.addItems(claims);
                 }
-                if (contentList.getAdapter() == null) {
+                if (contentListAdapter != null && contentList.getAdapter() == null) {
                     contentList.setAdapter(contentListAdapter);
                 }
                 resolveMissingChannelNames(buildUrlsToResolve(claims));
@@ -423,7 +426,7 @@ public class LibraryFragment extends BaseFragment implements
                 } else {
                     contentListAdapter.addItems(claims);
                 }
-                if (contentList.getAdapter() == null) {
+                if (contentListAdapter != null && contentList.getAdapter() == null) {
                     contentList.setAdapter(contentListAdapter);
                 }
                 checkListEmpty();
@@ -459,7 +462,7 @@ public class LibraryFragment extends BaseFragment implements
                     } else {
                         contentListAdapter.addItems(claims);
                     }
-                    if (contentList.getAdapter() == null) {
+                    if (contentListAdapter != null && contentList.getAdapter() == null) {
                         contentList.setAdapter(contentListAdapter);
                     }
                     checkListEmpty();
@@ -637,18 +640,21 @@ public class LibraryFragment extends BaseFragment implements
     public boolean onActionItemClicked(androidx.appcompat.view.ActionMode actionMode, MenuItem menuItem) {
         if (R.id.action_delete == menuItem.getItemId()) {
             if (contentListAdapter != null && contentListAdapter.getSelectedCount() > 0) {
-                final List<Claim> selectedClaims = new ArrayList<>(contentListAdapter.getSelectedItems());
-                String message = getResources().getQuantityString(R.plurals.confirm_delete_files, selectedClaims.size());
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
-                        setTitle(R.string.delete_selection).
-                        setMessage(message)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                handleDeleteSelectedClaims(selectedClaims);
-                            }
-                        }).setNegativeButton(R.string.no, null);
-                builder.show();
+                Context context = getContext();
+                if (context != null) {
+                    final List<Claim> selectedClaims = new ArrayList<>(contentListAdapter.getSelectedItems());
+                    String message = getResources().getQuantityString(R.plurals.confirm_delete_files, selectedClaims.size());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context).
+                            setTitle(R.string.delete_selection).
+                            setMessage(message)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    handleDeleteSelectedClaims(selectedClaims);
+                                }
+                            }).setNegativeButton(R.string.no, null);
+                    builder.show();
+                }
                 return true;
             }
         }
