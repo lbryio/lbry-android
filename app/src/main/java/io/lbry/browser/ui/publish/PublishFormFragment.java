@@ -1108,6 +1108,7 @@ public class PublishFormFragment extends BaseFragment implements
 
                 // Run the logPublish task
                 if (!BuildConfig.DEBUG) {
+                    claimResult.setSigningChannel(claim.getSigningChannel());
                     LogPublishTask logPublish = new LogPublishTask(claimResult);
                     logPublish.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }

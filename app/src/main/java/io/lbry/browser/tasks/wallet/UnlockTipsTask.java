@@ -29,7 +29,6 @@ public class UnlockTipsTask extends AsyncTask<Void, Void, Boolean> {
     public Boolean doInBackground(Void... params) {
 
         List<String> txids = new ArrayList<>();
-        List<String> claimIds = new ArrayList<>();
 
         try {
             Map<String, Object> options = new HashMap<>();
@@ -42,18 +41,15 @@ public class UnlockTipsTask extends AsyncTask<Void, Void, Boolean> {
                 for (int i = 0; i < items.length(); i++) {
                     JSONObject item = items.getJSONObject(i);
                     String txid = Helper.getJSONString("txid", null, item);
-                    String claimId = Helper.getJSONString("claim_id", null, item);
-                    if (!Helper.isNullOrEmpty(txid) && !Helper.isNullOrEmpty(claimId)) {
+                    if (!Helper.isNullOrEmpty(txid)) {
                         txids.add(txid);
-                        claimIds.add(claimId);
                     }
                 }
             }
 
-            if (txids.size() > 0 && txids.size() == claimIds.size()) {
+            if (txids.size() > 0) {
                 options = new HashMap<>();
                 options.put("txid", txids);
-                options.put("claim_id", claimIds);
                 options.put("blocking", true);
                 Lbry.genericApiCall(Lbry.METHOD_TXO_SPEND, options);
             }
