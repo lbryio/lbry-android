@@ -62,6 +62,7 @@
     <string name="comments">Kommentare</string>
     <string name="no_comments">Derzeit gibt es keine anzeigbaren Kommentare.</string>
     <string name="sdk_initializing_comments">Kommentare werden angezeigt, nachdem der Hintergrunddienst initialisiert wurde.</string>
+    <string name="comment_error">Ihr Kommentar konnte zu diesem Zeitpunkt nicht veröffentlicht werden. Bitte versuchen Sie es später noch einmal.</string>
     <string name="share_lbry_content">Neue Inhalte</string>
     <string name="view">Ansehen</string>
     <string name="play">Abspielen</string>
@@ -234,6 +235,7 @@ Bitte versuche es später erneut.</string>
     <!-- Settings -->
     <string name="user_interface">Inhalt &amp; Benutzeroberfläche</string>
     <string name="other">Andere</string>
+    <string name="enable_background_playback">Aktivieren Sie die Hintergrundwiedergabe</string>
     <string name="enable_dark_mode">Aktiviere Darkmode</string>
     <string name="show_mature_content">Zeige altersbeschränkte Inhalte</string>
     <string name="show_url_suggestions">Zeige URL-Vorschläge</string>
@@ -330,6 +332,8 @@ Bitte versuche es später erneut.</string>
     <string name="unlock">Freischalten</string>
     <string name="unlock_tips">Trinkgeld freischalten?</string>
     <string name="confirm_unlock_tips">Möchtest Du wirklich all Deine Trinkgelder freigeben?</string>
+    <string name="min_spend_required">Bitte geben Sie einen Betrag von mehr als 0,0001 Credits ein.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">Sie haben %1$s Credits gesendet</item>
         <item quantity="other"> Du hast %1$s Credits gesendet</item>

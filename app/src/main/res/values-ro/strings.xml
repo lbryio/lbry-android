@@ -62,6 +62,7 @@
     <string name="comments">Comentarii</string>
     <string name="no_comments">Nu sunt comentarii de afișat momentan.</string>
     <string name="sdk_initializing_comments">Comentariile vor fi afișate după inițializarea serviciului din fundal.</string>
+    <string name="comment_error">Comentariul dumneavoastră nu a putut fi postat în acest moment. Vă rugăm să încercați din nou mai târziu.</string>
     <string name="share_lbry_content">Partajare conşinut LBRY</string>
     <string name="view">Afişare</string>
     <string name="play">Redare</string>
@@ -241,6 +242,7 @@
     <!-- Settings -->
     <string name="user_interface">Conţinut şi interfaţă</string>
     <string name="other">Altele</string>
+    <string name="enable_background_playback">Activați redarea în fundal</string>
     <string name="enable_dark_mode">Activare temă neagră</string>
     <string name="show_mature_content">Afişare conţinut adulţi</string>
     <string name="show_url_suggestions">Afişare sugestii adrese</string>
@@ -337,6 +339,8 @@
     <string name="unlock">Deblocare</string>
     <string name="unlock_tips">Deblocare bacşişuri?</string>
     <string name="confirm_unlock_tips">Sunteți sigur că doriți să deblocați toate bacşişurile dumneavoastră?</string>
+    <string name="min_spend_required">Vă rugăm să introduceți o sumă mai mare de 0,0001 credite.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">Ai trimis %1$s credit</item>
         <item quantity="few">Ai trimis %1$s credite</item>

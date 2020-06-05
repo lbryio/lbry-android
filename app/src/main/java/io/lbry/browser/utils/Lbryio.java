@@ -34,6 +34,7 @@ import io.lbry.browser.model.WalletSync;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.model.lbryinc.User;
+import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.Utils;
 import lombok.Data;
 import okhttp3.OkHttpClient;
@@ -43,9 +44,6 @@ import okhttp3.Response;
 
 @Data
 public final class Lbryio {
-
-    // TODO: Get this from the bundled aar
-    public static String SDK_VERSION = "0.74.0";
 
     public static User currentUser;
     public static boolean userHasSyncedWallet = false;
@@ -239,7 +237,7 @@ public final class Lbryio {
         options.put("app_version", appVersion);
         options.put("app_id", Lbry.INSTALLATION_ID);
         options.put("node_id", "");
-        options.put("daemon_version", SDK_VERSION);
+        options.put("daemon_version", LbrynetService.LBRY_SDK_VERSION);
         options.put("operating_system", "android");
         options.put("platform", String.format("Android %s (API %d)", Utils.getAndroidRelease(), Utils.getAndroidSdk()));
         try {

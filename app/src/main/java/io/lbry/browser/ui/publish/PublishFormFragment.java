@@ -794,73 +794,75 @@ public class PublishFormFragment extends BaseFragment implements
         }
 
         Context context = getContext();
-        String outputPath = String.format("%s/videos", Utils.getAppInternalStorageDir(context));
-        File dir = new File(outputPath);
-        if (!dir.isDirectory()) {
-            dir.mkdirs();
-        }
+        if (context != null) {
+            String outputPath = String.format("%s/videos", Utils.getAppInternalStorageDir(context));
+            File dir = new File(outputPath);
+            if (!dir.isDirectory()) {
+                dir.mkdirs();
+            }
 
-        boolean hasFullDuration = videoInformation != null && videoInformation.getDurationSeconds() > 0;
-        Helper.setViewVisibility(optimizationRealProgress, hasFullDuration ? View.VISIBLE : View.GONE);
-        Helper.setViewVisibility(optimizationProgress, hasFullDuration ? View.GONE : View.VISIBLE);
+            boolean hasFullDuration = videoInformation != null && videoInformation.getDurationSeconds() > 0;
+            Helper.setViewVisibility(optimizationRealProgress, hasFullDuration ? View.VISIBLE : View.GONE);
+            Helper.setViewVisibility(optimizationProgress, hasFullDuration ? View.GONE : View.VISIBLE);
 
-        File sourceFile = new File(filePath);
-        String filename = sourceFile.getName();
-        if (!filename.endsWith(".mp4")) {
-            int lastDotIndex = filename.lastIndexOf('.');
-            filename = String.format("%s.mp4", lastDotIndex > -1 ? filename.substring(0, lastDotIndex) : filename);
-        }
+            File sourceFile = new File(filePath);
+            String filename = sourceFile.getName();
+            if (!filename.endsWith(".mp4")) {
+                int lastDotIndex = filename.lastIndexOf('.');
+                filename = String.format("%s.mp4", lastDotIndex > -1 ? filename.substring(0, lastDotIndex) : filename);
+            }
 
-        String videoFilePath = String.format("%s/%s", outputPath, filename);
-        File targetFile = new File(videoFilePath);
-        if (targetFile.exists()) {
-            targetFile.delete();
-        }
+            String videoFilePath = String.format("%s/%s", outputPath, filename);
+            File targetFile = new File(videoFilePath);
+            if (targetFile.exists()) {
+                targetFile.delete();
+            }
 
-        transcodeInProgress = true;
-        videoTranscodeTask = new VideoTranscodeTask(filePath, videoFilePath, scalePart, transcodeRequired, new VideoTranscodeTask.VideoTranscodeHandler() {
-            @Override
-            public void onProgress(int time) {
-                if (context != null) {
-                    int currentDuration = Double.valueOf(time / 1000.0).intValue();
-                    int fullDuration = videoInformation != null ? videoInformation.getDurationSeconds() : 0;
-                    long elapsed = System.currentTimeMillis() - transcodeStartTime;
-                    String completedDurationText = Helper.formatDuration(currentDuration);
-                    if (fullDuration > 0) {
-                        completedDurationText = String.format("%s / %s", completedDurationText, Helper.formatDuration(fullDuration));
-                        int percentComplete = Double.valueOf(Math.ceil((double) currentDuration / (double) fullDuration * 100.0)).intValue();
-                        optimizationRealProgress.setProgress(percentComplete);
+            transcodeInProgress = true;
+            videoTranscodeTask = new VideoTranscodeTask(filePath, videoFilePath, scalePart, transcodeRequired, new VideoTranscodeTask.VideoTranscodeHandler() {
+                @Override
+                public void onProgress(int time) {
+                    if (context != null) {
+                        int currentDuration = Double.valueOf(time / 1000.0).intValue();
+                        int fullDuration = videoInformation != null ? videoInformation.getDurationSeconds() : 0;
+                        long elapsed = System.currentTimeMillis() - transcodeStartTime;
+                        String completedDurationText = Helper.formatDuration(currentDuration);
+                        if (fullDuration > 0) {
+                            completedDurationText = String.format("%s / %s", completedDurationText, Helper.formatDuration(fullDuration));
+                            int percentComplete = Double.valueOf(Math.ceil((double) currentDuration / (double) fullDuration * 100.0)).intValue();
+                            optimizationRealProgress.setProgress(percentComplete);
+                        }
+
+
+                        String text = context.getString(R.string.completed_video_duration, completedDurationText);
+                        Helper.setViewText(textOptimizationProgress, text);
+                        Helper.setViewText(textOptimizationElapsed, Helper.formatDuration(Double.valueOf(elapsed / 1000.0).longValue()));
                     }
-
-
-                    String text = context.getString(R.string.completed_video_duration, completedDurationText);
-                    Helper.setViewText(textOptimizationProgress, text);
-                    Helper.setViewText(textOptimizationElapsed, Helper.formatDuration(Double.valueOf(elapsed / 1000.0).longValue()));
                 }
-            }
 
-            @Override
-            public void onSuccess(String outputFilePath) {
-                transcodedFilePath = outputFilePath;
-                transcodeInProgress = false;
-                Helper.setViewText(textOptimizationStatus, R.string.video_optimized);
-                Helper.setViewVisibility(optimizationRealProgress, View.GONE);
-                Helper.setViewVisibility(optimizationProgress, View.GONE);
-                Helper.setViewVisibility(textOptimizationProgress, View.GONE);
-            }
+                @Override
+                public void onSuccess(String outputFilePath) {
+                    transcodedFilePath = outputFilePath;
+                    transcodeInProgress = false;
+                    Helper.setViewText(textOptimizationStatus, R.string.video_optimized);
+                    Helper.setViewVisibility(optimizationRealProgress, View.GONE);
+                    Helper.setViewVisibility(optimizationProgress, View.GONE);
+                    Helper.setViewVisibility(textOptimizationProgress, View.GONE);
+                }
 
-            @Override
-            public void onErrorOrCancelled() {
-                transcodeInProgress = false;
-                Helper.setViewText(textOptimizationStatus, R.string.video_optimize_failed);
-                Helper.setViewVisibility(optimizationRealProgress, View.GONE);
-                Helper.setViewVisibility(optimizationProgress, View.GONE);
-                Helper.setViewVisibility(textOptimizationProgress, View.GONE);
-            }
-        });
+                @Override
+                public void onErrorOrCancelled() {
+                    transcodeInProgress = false;
+                    Helper.setViewText(textOptimizationStatus, R.string.video_optimize_failed);
+                    Helper.setViewVisibility(optimizationRealProgress, View.GONE);
+                    Helper.setViewVisibility(optimizationProgress, View.GONE);
+                    Helper.setViewVisibility(textOptimizationProgress, View.GONE);
+                }
+            });
 
-        transcodeStartTime = System.currentTimeMillis();
-        videoTranscodeTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            transcodeStartTime = System.currentTimeMillis();
+            videoTranscodeTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 
     private void cancelOnFatalCondition(String message) {

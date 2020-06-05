@@ -62,6 +62,7 @@
     <string name="comments">Kommentaar</string>
     <string name="no_comments">Op die oomblik is daar geen kommentaar om te vertoon nie.</string>
     <string name="sdk_initializing_comments">Opmerkings sal vertoon word nadat die agtergronddiens geïnialiseer is.</string>
+    <string name="comment_error">U opmerking kon tans nie geplaas word nie. Probeer asseblief weer later.</string>
     <string name="share_lbry_content">Deel LBRY-inhoud</string>
     <string name="view">Beskou</string>
     <string name="play">Speel</string>
@@ -233,6 +234,7 @@
     <!-- Settings -->
     <string name="user_interface">Inhoud &amp; Gebruikerskoppelvlak</string>
     <string name="other">Ander</string>
+    <string name="enable_background_playback">Aktiveer agtergrondweergawe</string>
     <string name="enable_dark_mode">Aktiveer donker tema</string>
     <string name="show_mature_content">Wys volwasse inhoud</string>
     <string name="show_url_suggestions">Wys URL-voorstelle</string>
@@ -329,6 +331,8 @@
     <string name="unlock">Ontsluit</string>
     <string name="unlock_tips">Ontsluit wenke?</string>
     <string name="confirm_unlock_tips">Is u seker dat u al u wenke wil ontsluit?</string>
+    <string name="min_spend_required">Voer \'n bedrag van meer as 0,0001 krediete in.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">U het %1$s krediete gestuur</item>
         <item quantity="other">U het %1$s krediete gestuur</item>

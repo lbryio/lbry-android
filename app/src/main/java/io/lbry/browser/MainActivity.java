@@ -1,5 +1,6 @@
 package io.lbry.browser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -2317,6 +2318,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.splash_view_error_container).setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void startup() {
         final Context context = this;
         Lbry.startupInit();

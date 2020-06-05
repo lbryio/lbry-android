@@ -62,6 +62,7 @@
     <string name="comments">Opmerkingen</string>
     <string name="no_comments">Geen opmerkingen om op dit moment weer te geven.</string>
     <string name="sdk_initializing_comments">Opmerkingen worden weergegeven nadat de achtergrondservice is geïnitialiseerd.</string>
+    <string name="comment_error">Uw reactie kan op dit moment niet worden geplaatst. Probeer het later opnieuw.</string>
     <string name="share_lbry_content">Deel LBRY content</string>
     <string name="view">Bekijk</string>
     <string name="play">Afspelen</string>
@@ -233,6 +234,7 @@
     <!-- Settings -->
     <string name="user_interface">Content &amp; User interface</string>
     <string name="other">Ander</string>
+    <string name="enable_background_playback">Schakel afspelen op de achtergrond in</string>
     <string name="enable_dark_mode">Schakel donker thema in</string>
     <string name="show_mature_content">Volwassen inhoud weergeven</string>
     <string name="show_url_suggestions">Toon URL suggesties</string>
@@ -329,6 +331,8 @@
     <string name="unlock">Ontgrendelen</string>
     <string name="unlock_tips">Tips ontgrendelen?</string>
     <string name="confirm_unlock_tips">Weet u zeker dat u al uw tips wilt ontgrendelen?</string>
+    <string name="min_spend_required">Voer een bedrag van meer dan 0,0001 credits in.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">U heeft %1$s credits verzonden</item>
         <item quantity="other">U heeft %1$s credits verzonden</item>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Gezinme menüsünü aç</string>
     <string name="navigation_drawer_close">Gezinme menüsünü kapat</string>
@@ -59,6 +59,10 @@
     <string name="report">Bildir</string>
     <string name="loading_decentralized_data">Dağıtılmış bilgi yükleniyor...</string>
     <string name="related_content">Alakalı İçerik</string>
+    <string name="comments">Yorumlar</string>
+    <string name="no_comments">Şu anda gösterilecek bir yorum yok.</string>
+    <string name="sdk_initializing_comments">Yorumlar, arka plan hizmeti başlatıldıktan sonra görüntülenecektir. </string>
+    <string name="comment_error">Yorumunuz şu anda gönderilemedi. Lütfen daha sonra tekrar deneyiniz.</string>
     <string name="share_lbry_content">LBRY içeriği paylaş</string>
     <string name="view">Görüntülenme</string>
     <string name="play">Oynatma</string>
@@ -78,6 +82,26 @@
     <string name="confirm_delete_content_message">Bu içeriği yayından kaldırmak istediğinizden emin misiniz? Cihazınızdan hiçbir dosya kaldırılmayacak.</string>
     <string name="content_deleted">İçerik blok zincirinden başarıyla silindi.</string>
     <string name="content_failed_delete">Bu içerik şu anda silinemiyor. Lütfen daha sonra tekrar deneyiniz.</string>
+    <string name="comment">Yorum</string>
+    <string name="comment_as">Yorum sahibi</string>
+    <string name="please_enter_comment">Lütfen yayınlamak için bir yorum girin.</string>
+    <string name="please_select_channel">Lütfenyorum sahibi olarak görünecek kanalınızı seçin.</string>
+    <string name="comment_posted">Yorumunuz başarıyla gönderildi.</string>
+    <string name="please_select_repost_channel">Lütfen yeniden yayınlanacak bir kanal seçin.</string>
+    <string name="reply">Cevap</string>
+    <string name="replying_to">%1$s yanıtlanıyor</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">Yayınlansın ve %1$skredi bahşiş verilsin mi?</item>
+        <item quantity="other">Yayınlansın ve %1$skredi bahşiş verilsin mi?</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="one">%1$s kredi için yayınla.</item>
+        <item quantity="other">%1$s kredi için yayınla.</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">Bu, yorumunuzu%2$s için %1$s kredilik bir bahşiş ile gönderir</item>
+        <item quantity="other">Bu, yorumunuzu %2$s için %1$s kredilik bir bahşiş ile gönderir</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="one">%1$s izlenme</item>
         <item quantity="other">%1$s izlenme</item>
@@ -98,6 +122,7 @@
     </plurals>
 
     <!-- Publish -->
+    <string name="no_publishes_created">Görünüşe göre henüz LBRY\'de içerik yayınlamamışsınız.</string>
     <string name="record">Kaydet</string>
     <string name="take_photo">Bir fotoğraf çek</string>
     <string name="upload_file">Bir dosya yükle</string>
@@ -120,6 +145,7 @@
     <string name="show_extra_fields">Ekstra alanları göster</string>
     <string name="hide_extra_fields">Ekstra alanları gizle</string>
     <string name="no_file_found">Yayınlanacak dosya bulunamadı.</string>
+    <string name="publish_invalid_claim_type">Düzenleme için geçersiz hak talebi belirtildi.</string>
     <string name="video_optimization">Video optimizasyonu</string>
     <string name="thumbnail_creation_failed">İçerik dosyanızdan otomatik olarak bir küçük resim oluşturulamadı.</string>
     <string name="video_being_optimized">Videonuz, çeşitli cihazlarda daha iyi bir deneyim için optimize edilmektedir. Bu işlem devam ederken aşağıdaki alanları doldurabilirsiniz.</string>
@@ -208,6 +234,7 @@
     <!-- Settings -->
     <string name="user_interface">İçerik &amp; Kullanıcı Arayüzü</string>
     <string name="other">Diğer</string>
+    <string name="enable_background_playback">Arka planda oynatmayı etkinleştir</string>
     <string name="enable_dark_mode">Karanlık temayı etkinleştir</string>
     <string name="show_mature_content">Yetişkin içerikleri göster</string>
     <string name="show_url_suggestions">URL önerilerini göster</string>
@@ -304,6 +331,7 @@
     <string name="unlock">Kilidi Aç</string>
     <string name="unlock_tips">Bahşişlerin kilidi açılsın mı ?</string>
     <string name="confirm_unlock_tips">Tüm bahşişlerin kilidini açmak istediğinizden emin misiniz?</string>
+    <string name="min_spend_required">Lütfen 0.0001 krediden fazla bir miktar girin.</string>
 
     <plurals name="you_sent_credits">
         <item quantity="one"> 1%1$s kredi yolladınız</item>
@@ -388,6 +416,7 @@
     <string name="verify">Doğrula</string>
     <string name="please_enter_valid_phone">Lütfen geçerli bir telefon numarası giriniz.</string>
     <string name="please_enter_verification_code">Lütfen telefon numaranıza gönderilen doğrulama kodunuz giriniz.</string>
+    <string name="fetch_current_user_error">Kullanıcı hesabı şu anda alınamıyor. Lütfen daha sonra tekrar deneyiniz.</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Herhangi bir etiket eklemediniz. Keşfedilmeyi arttırmak için etiket ekleyin.</string>
@@ -496,7 +525,7 @@
     <string name="invite_email_placeholder">imaginary@friend.com</string>
     <string name="invite">Davet Et</string>
     <string name="invite_history">Davet Geçmişi</string>
-    <string name="earn_credits_for_inviting">Dostu düşmanı davet ederek kredi kazanın. Herkesin özgürlüğe ihtiyacı var.</string>
+    <string name="earn_credits_for_inviting">Bir arkadaşınızı, bir düşmanınızı, bir düşman arkadaşınızı davet edince kredi kazanın. Herkesin içerik özgürlüğüne ihtiyacı vardır.</string>
     <string name="reward">Ödül</string>
     <string name="claimed">Kazanılan</string>
     <string name="claimable">Kazanılabilecek</string>

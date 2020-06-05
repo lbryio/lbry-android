@@ -62,6 +62,7 @@
     <string name="comments">Commenti</string>
     <string name="no_comments">Nessun commento al momento.</string>
     <string name="sdk_initializing_comments">I commenti verranno visualizzati dopo l\'inizializzazione del servizio in background.</string>
+    <string name="comment_error">Il tuo commento non può essere inviato al momento. Riprova più tardi.</string>
     <string name="share_lbry_content">Condividi contenuti LBRY</string>
     <string name="view">Guarda</string>
     <string name="play">Avvia</string>
@@ -89,6 +90,10 @@
     <string name="please_select_repost_channel">Selezionare un canale su cui ripostare.</string>
     <string name="reply">Rispondi</string>
     <string name="replying_to">Rispondendo a %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">Invia e mancia di %1$s credito?</item>
+        <item quantity="other">Invio e mancia di %1$s crediti?</item>
+    </plurals>
     <plurals name="post_for_credits">
         <item quantity="one">Invio per %1$s credito</item>
         <item quantity="other">Invio per %1$s crediti</item>
@@ -116,6 +121,8 @@
         <item quantity="other">%1$s follower</item>
     </plurals>
 
+    <!-- Publish -->
+    <string name="no_publishes_created">Sembra che non abbia ancora pubblicato contenuti su LBRY.</string>
     <string name="record">Registra</string>
     <string name="take_photo">Scatta una foto</string>
     <string name="upload_file">Carica un file</string>
@@ -227,6 +234,7 @@
     <!-- Settings -->
     <string name="user_interface">Interfaccia contenuto &amp; utente</string>
     <string name="other">Altro</string>
+    <string name="enable_background_playback">Abilita la riproduzione in background</string>
     <string name="enable_dark_mode">Abilita il tema scuro</string>
     <string name="show_mature_content">Visualizza contenuto per adulti</string>
     <string name="show_url_suggestions">Mostra URL suggeriti</string>
@@ -323,6 +331,8 @@
     <string name="unlock">Sbloccare</string>
     <string name="unlock_tips">sbloccare la donazione?</string>
     <string name="confirm_unlock_tips">Sei sicuro di voler sbloccare tutti i tuoi donaziones?</string>
+    <string name="min_spend_required">Inserire un valore superiore a 0.0001 crediti.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">Hai spedito %1$s crediti</item>
         <item quantity="other">Hai spedito %1$s crediti</item>

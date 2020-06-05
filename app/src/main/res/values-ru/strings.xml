@@ -62,6 +62,7 @@
     <string name="comments">Комментарии</string>
     <string name="no_comments">Нет комментариев для отображения.</string>
     <string name="sdk_initializing_comments">Комментарии отобразятся тогда, когда фоновый процесс закончит инициализацию.</string>
+    <string name="comment_error">Не удалось отправить комментарий. Пожалуйста, попробуйте ещё раз позже. </string>
     <string name="share_lbry_content">Поделиться контентом LBRY</string>
     <string name="view">Просмотреть</string>
     <string name="play">Воспроизвести</string>
@@ -249,6 +250,7 @@
     <!-- Settings -->
     <string name="user_interface">Контент &amp; Пользовательский интерфейс</string>
     <string name="other">Другое</string>
+    <string name="enable_background_playback">Включить фоновое воспроизведение</string>
     <string name="enable_dark_mode">Включить темную тему</string>
     <string name="show_mature_content">Показывать контент для взрослых</string>
     <string name="show_url_suggestions">Показать URL рекомендации</string>
@@ -345,6 +347,8 @@
     <string name="unlock">Разблокировать</string>
     <string name="unlock_tips">Разблокировать чаевые?</string>
     <string name="confirm_unlock_tips">Вы уверены, что хотите разблокировать все Ваши чаевые?</string>
+    <string name="min_spend_required">Пожалуйста, введите количество кредитов больше 0.0001.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">Вы отправили %1$s кредит</item>
         <item quantity="few">Вы отправили %1$s кредитов</item>
