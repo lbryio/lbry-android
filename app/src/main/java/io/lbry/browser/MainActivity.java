@@ -46,6 +46,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.ImageViewTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
@@ -60,6 +64,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -204,11 +209,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean startingShareActivity = false;
     public static boolean startingPermissionRequest = false;
     public static boolean startingSignInFlowActivity = false;
+
+
     @Getter
     private boolean enteringPIPMode = false;
     private boolean fullSyncInProgress = false;
     private int queuedSyncCount = 0;
     private String cameraOutputFilename;
+    private Bitmap nowPlayingClaimBitmap;
 
     @Setter
     private BackPressInterceptor backPressInterceptor;
@@ -1647,7 +1655,23 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         @Nullable
         @Override
         public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-            return null;
+            if (nowPlayingClaimBitmap == null &&
+                    nowPlayingClaim != null &&
+                    !Helper.isNullOrEmpty(nowPlayingClaim.getThumbnailUrl())) {
+                Glide.with(getApplicationContext()).asBitmap().load(nowPlayingClaim.getThumbnailUrl()).into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        nowPlayingClaimBitmap = resource;
+                        callback.onBitmap(resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
+            }
+            return nowPlayingClaimBitmap;
         }
     }
 
