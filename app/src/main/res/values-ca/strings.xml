@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Obre el menú de navegació</string>
     <string name="navigation_drawer_close">Tanca el menú de navegació</string>
@@ -193,7 +193,6 @@
     <string name="romanian">Romanès</string>
     <string name="hindi">Hindi</string>
     <string name="greek">Grec</string>
-    <string name="catalan">Català</string>
 
     <string name="none">Cap</string>
     <string name="public_domain">Domini públic</string>
@@ -330,7 +329,6 @@
     <string name="unlock">Desbloca</string>
     <string name="unlock_tips">Desblocar propines?</string>
     <string name="confirm_unlock_tips">Segur que vols desblocar totes les teves propines?</string>
-
     <plurals name="you_sent_credits">
         <item quantity="one">Has enviat %1$s crèdit</item>
         <item quantity="other">Has enviat %1$s crèdits</item>
