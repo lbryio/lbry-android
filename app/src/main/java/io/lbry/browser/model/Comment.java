@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 public class Comment {
-    public static final double LBC_COST = 2;
+    public static final double LBC_COST = 1;
     public static final int MAX_LENGTH = 2000;
 
     private Claim poster;
