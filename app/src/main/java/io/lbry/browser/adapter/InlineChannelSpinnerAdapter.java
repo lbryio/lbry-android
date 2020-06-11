@@ -10,6 +10,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import io.lbry.browser.R;
@@ -39,6 +40,19 @@ public class InlineChannelSpinnerAdapter extends ArrayAdapter<Claim> {
             insert(anonymous, 1);
             channels.add(1, anonymous);
         }
+    }
+
+    public void addAll(Collection<? extends Claim> collection) {
+        for (Claim claim : collection) {
+            if (!channels.contains(claim)) {
+                channels.add(claim);
+            }
+        }
+        super.addAll(collection);
+    }
+    public void clear() {
+        channels.clear();
+        super.clear();
     }
 
     public int getItemPosition(Claim item) {
