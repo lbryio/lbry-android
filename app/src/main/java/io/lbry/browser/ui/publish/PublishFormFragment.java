@@ -983,8 +983,8 @@ public class PublishFormFragment extends BaseFragment implements
             }
         } else {
             channelSpinnerAdapter.clear();
-            channelSpinnerAdapter.addAll(channels);
             channelSpinnerAdapter.addPlaceholder(true);
+            channelSpinnerAdapter.addAll(channels);
             channelSpinnerAdapter.notifyDataSetChanged();
         }
 
@@ -993,12 +993,14 @@ public class PublishFormFragment extends BaseFragment implements
         }
 
         if (channelSpinnerAdapter != null && channelSpinner != null) {
-            if (editMode && currentClaim.getSigningChannel() != null && !editChannelSpinnerLoaded) {
-                int position = channelSpinnerAdapter.getItemPosition(currentClaim.getSigningChannel());
-                if (position > -1) {
-                    channelSpinner.setSelection(position);
+            if (editMode) {
+                if (currentClaim.getSigningChannel() != null && !editChannelSpinnerLoaded) {
+                    int position = channelSpinnerAdapter.getItemPosition(currentClaim.getSigningChannel());
+                    if (position > -1) {
+                        channelSpinner.setSelection(position);
+                    }
+                    editChannelSpinnerLoaded = true;
                 }
-                editChannelSpinnerLoaded = true;
             } else {
                 if (channelSpinnerAdapter.getCount() > 2) {
                     // if anonymous displayed, select first channel if available
