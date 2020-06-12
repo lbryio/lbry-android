@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -30,11 +33,19 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
@@ -57,6 +68,10 @@ import io.lbry.browser.utils.Lbryio;
 
 public class WalletFragment extends BaseFragment implements SdkStatusListener, WalletBalanceListener {
 
+    private static final String MOONPAY_KEY = "c2tfbGl2ZV9ueVJqVXNDbE5pcnVSdnlCMkJLWW5JcFA5VnA3dWU=";
+    private static final String MOONPAY_URL_FORMAT =
+            "https://buy.moonpay.io?apiKey=pk_live_xNFffrN5NWKy6fu0ggbV8VQIwRieRzy&currencyCode=LBC&walletAddress=%s";
+
     private View layoutAccountRecommended;
     private View layoutSdkInitializing;
     private View linkSkipAccount;
@@ -75,6 +90,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     private View inlineBalanceContainer;
     private TextView textWalletInlineBalance;
     private MaterialButton buttonSignUp;
+    private MaterialButton buttonBuyLBC;
     private RecyclerView recentTransactionsList;
     private View linkViewAll;
     private TextView textConvertCredits;
@@ -125,6 +141,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         recentTransactionsList = root.findViewById(R.id.wallet_recent_transactions_list);
         linkViewAll = root.findViewById(R.id.wallet_link_view_all);
         textNoRecentTransactions = root.findViewById(R.id.wallet_no_recent_transactions);
+        buttonBuyLBC = root.findViewById(R.id.wallet_buy_lbc_button);
         textConvertCredits = root.findViewById(R.id.wallet_hint_convert_credits);
         textConvertCreditsBittrex = root.findViewById(R.id.wallet_hint_convert_credits_bittrex);
         textEarnMoreTips = root.findViewById(R.id.wallet_hint_earn_more_tips);
@@ -313,6 +330,13 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             }
         });
 
+        buttonBuyLBC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchMoonpayFlow();
+            }
+        });
+
         inputSendAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
@@ -479,6 +503,46 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     private boolean hasSkippedAccount() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         return sp.getBoolean(MainActivity.PREFERENCE_KEY_INTERNAL_SKIP_WALLET_ACCOUNT, false);
+    }
+
+    public void launchMoonpayFlow() {
+        Context context = getContext();
+        String receiveAddress = null;
+        if (context != null) {
+            try {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                receiveAddress = sp.getString(MainActivity.PREFERENCE_KEY_INTERNAL_WALLET_RECEIVE_ADDRESS, null);
+                if (Helper.isNullOrEmpty(receiveAddress)) {
+                    showError(getString(R.string.receive_address_not_set));
+                    return;
+                }
+
+                String url = String.format(MOONPAY_URL_FORMAT, receiveAddress);
+                String email = Lbryio.getSignedInEmail();
+                if (!Helper.isNullOrEmpty(email)) {
+                    url = String.format("%s&email=%s", url, URLEncoder.encode(email, StandardCharsets.UTF_8.name()));
+                }
+                // Sign the URL
+                String query = url.substring(url.indexOf("?"));
+                Mac hmacSHA256 = Mac.getInstance("HmacSHA256");
+
+                SecretKeySpec secretKey = new SecretKeySpec(
+                        new String(Base64.decode(MOONPAY_KEY, Base64.NO_WRAP), StandardCharsets.UTF_8.name()).getBytes(), "HmacSHA256");
+                hmacSHA256.init(secretKey);
+                String signature = new String(
+                        Base64.encode(hmacSHA256.doFinal(query.getBytes(StandardCharsets.UTF_8.name())), Base64.NO_WRAP),
+                        StandardCharsets.UTF_8.name());
+                url = String.format("%s&signature=%s", url, URLEncoder.encode(signature, StandardCharsets.UTF_8.name()));
+
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder().setToolbarColor(
+                        ContextCompat.getColor(context, R.color.lbryGreen)
+                );
+                CustomTabsIntent intent = builder.build();
+                intent.launchUrl(context, Uri.parse(url));
+            } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException ex) {
+                showError(getString(R.string.hash_not_supported));
+            }
+        }
     }
 
     public void onResume() {
