@@ -69,11 +69,22 @@
                 android:textFontWeight="300" />
         </RelativeLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/wallet_buy_lbc_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/buy_lbc"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/wallet_hint_convert_credits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="6dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:fontFamily="@font/inter"

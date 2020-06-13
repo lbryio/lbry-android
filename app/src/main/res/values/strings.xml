@@ -334,6 +334,10 @@
     <string name="confirm_unlock_tips">Are you sure you want to unlock all your tips?</string>
     <string name="min_spend_required">Please enter an amount more than 0.0001 credits.</string>
 
+    <string name="buy_lbc">Buy LBC</string>
+    <string name="hash_not_supported">Your device does not support the minimum requirements for securing your purchase request.</string>
+    <string name="receive_address_not_set">You do not have a wallet address set. Please generate a new address and try again.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">You sent %1$s credit</item>
         <item quantity="other">You sent %1$s credits</item>
