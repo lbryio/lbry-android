@@ -13,7 +13,7 @@ public class LbryUri {
     public static final String LBRY_TV_BASE_URL = "https://lbry.tv";
     public static final String PROTO_DEFAULT = "lbry://";
     public static final String REGEX_INVALID_URI = "[ =&#:$@%?;/\\\\\"<>%\\{\\}|^~\\[\\]`\u0000-\u0008\u000b-\u000c\u000e-\u001F\uD800-\uDFFF\uFFFE-\uFFFF]";
-    public static final String REGEX_ADDRESS = "^(b|r)(?=[^0OIl]{32,33})[0-9A-Za-z]{32,33}$";
+    public static final String REGEX_ADDRESS = "^(b)(?=[^0OIl]{32,33})[0-9A-Za-z]{32,33}$";
     public static final int CHANNEL_NAME_MIN_LENGTH = 1;
     public static final int CLAIM_ID_MAX_LENGTH = 40;
 
