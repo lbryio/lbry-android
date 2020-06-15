@@ -62,6 +62,7 @@
     <string name="comments">Komentar</string>
     <string name="no_comments">Tidak ada komentar untuk ditampilkan saat ini.</string>
     <string name="sdk_initializing_comments">Komentar akan ditampilkan setelah layanan latar belakang diinisialisasi.</string>
+    <string name="comment_error">Komentar Anda tidak dapat diposkan saat ini. Silakan coba lagi nanti.</string>
     <string name="share_lbry_content">Bagikan konten LBRY</string>
     <string name="view">Lihat</string>
     <string name="play">Putar</string>
@@ -89,6 +90,9 @@
     <string name="please_select_repost_channel">Silakan pilih saluran yang akan dikirimi ulang.</string>
     <string name="reply">Balas</string>
     <string name="replying_to">Membalas ke %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="other">Pos dan tip %1$s credits?</item>
+    </plurals>
     <plurals name="post_for_credits">
         <item quantity="other">Poskan untuk %1$s kredit</item>
     </plurals>
@@ -111,6 +115,8 @@
         <item quantity="other">%1$s pengikut</item>
     </plurals>
 
+    <!-- Publish -->
+    <string name="no_publishes_created">Sepertinya Anda belum mempublikasikan konten ke LBRY.</string>
     <string name="record">Rekam</string>
     <string name="take_photo">Ambil Foto</string>
     <string name="upload_file">Unggah file</string>
@@ -182,6 +188,7 @@
     <string name="romanian">Romania</string>
     <string name="hindi">Hindi</string>
     <string name="greek">Yunani</string>
+    <string name="catalan">Catalan</string>
 
     <string name="none">Tidak ada</string>
     <string name="public_domain">Domain Publik</string>
@@ -220,6 +227,7 @@
     <!-- Settings -->
     <string name="user_interface">Content &amp; User interface</string>
     <string name="other">Lain-lain</string>
+    <string name="enable_background_playback">Aktifkan pemutaran latar belakang</string>
     <string name="enable_dark_mode">Aktifkan tema gelap</string>
     <string name="show_mature_content">Tampilkan konten dewasa</string>
     <string name="show_url_suggestions">Tampilkan URL yang disarankan</string>
@@ -316,6 +324,12 @@
     <string name="unlock">Buka kunci</string>
     <string name="unlock_tips">Buka tips</string>
     <string name="confirm_unlock_tips">Yakin ingin membuka kunci semua tips Anda?</string>
+    <string name="min_spend_required">Silakan masukkan jumlah lebih dari 0,0001 kredit.</string>
+
+    <string name="buy_lbc">Beli LBC</string>
+    <string name="hash_not_supported">Perangkat Anda tidak mendukung persyaratan minimum untuk mengamankan permintaan pembelian Anda.</string>
+    <string name="receive_address_not_set">Anda tidak memiliki set alamat dompet. Harap buat alamat baru dan coba lagi.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="other">Kamu mengirim%1$s kredit</item>
     </plurals>

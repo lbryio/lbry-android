@@ -100,14 +100,13 @@
 
                 <RelativeLayout
                     android:id="@+id/publish_upload_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="148.5dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toRightOf="@id/publish_vertical_divider"
-                    android:clickable="true"
                     android:background="@android:color/black"
+                    android:clickable="true"
                     android:foreground="?attr/selectableItemBackground"
-                    >
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/publish_photo_upload_divider"
+                    android:layout_toRightOf="@id/publish_vertical_divider">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

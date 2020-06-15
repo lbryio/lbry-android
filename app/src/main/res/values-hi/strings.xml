@@ -62,6 +62,7 @@
     <string name="comments">टिप्पणियां</string>
     <string name="no_comments">इस समय प्रदर्शित करने के लिए कोई कमेंट्स नहीं हैं।</string>
     <string name="sdk_initializing_comments">पृष्ठभूमि सेवाएं शुरू होने के बाद कमैंट्स प्रदर्शित किए जाएंगे।</string>
+    <string name="comment_error">आपका कमेंट अभी पोस्ट नहीं किया जा सका है। कृपया कुछ देर बाद प्रयास करें।</string>
     <string name="share_lbry_content">लाइब्रेरी सामग्री को शेयर करें</string>
     <string name="view">व्यू</string>
     <string name="play">प्ले , शुरू करें</string>
@@ -193,6 +194,7 @@
     <string name="romanian">रोमानियन</string>
     <string name="hindi">हिंदी</string>
     <string name="greek">ग्रीक</string>
+    <string name="catalan">कैटलन</string>
 
     <string name="none">कोई नहीं</string>
     <string name="public_domain">पब्लिक डोमेन</string>
@@ -233,6 +235,7 @@
     <!-- Settings -->
     <string name="user_interface">सामग्री &amp; उपभोक्ता इंटरफ़ेस</string>
     <string name="other">अन्य</string>
+    <string name="enable_background_playback">पृष्ठभूमि प्लेबैक को शुरू करें</string>
     <string name="enable_dark_mode">अंधेरी थीम शुरू करें</string>
     <string name="show_mature_content">परिपक्व सामग्री दिखाएं</string>
     <string name="show_url_suggestions">यू आर एल सुझाव दिखाएं</string>
@@ -329,6 +332,12 @@
     <string name="unlock">खोलें</string>
     <string name="unlock_tips">टिप्स को खोलें?</string>
     <string name="confirm_unlock_tips">क्या आप निश्चित रूप से अपनी सारी टिप्स खोलना चाहते हैं?</string>
+    <string name="min_spend_required"> 0.0001 क्रेडिटस से अधिक मूल्य को दर्ज करें।</string>
+
+    <string name="buy_lbc">LBC खरीदें</string>
+    <string name="hash_not_supported">आपका डिवाइस आपके खरीदारी अनुरोध को हासिल करने के लिए न्यूनतम आवश्यकताओं का समर्थन नहीं करता है।</string>
+    <string name="receive_address_not_set">आपके पास एक वॉलेट पता सेट नहीं है। कृपया एक नया पता जेनरेट करें और पुनः प्रयास करें।</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">आपने भेजे हैं %1$s क्रेडिट</item>
         <item quantity="other">आपने भेजे हैं %1$s क्रेडिटस</item>

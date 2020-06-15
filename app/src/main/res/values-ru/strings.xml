@@ -48,7 +48,7 @@
     <string name="anonymous">Анонимно</string>
 
     <!-- File view -->
-    <string name="tags">Теги</string>
+    <string name="tags">Тегов</string>
     <string name="share">Поделиться</string>
     <string name="repost">Репостнуть </string>
     <string name="tip">Чаевые</string>
@@ -206,6 +206,7 @@
     <string name="romanian">Румынский </string>
     <string name="hindi">Хинди</string>
     <string name="greek">Греческий </string>
+    <string name="catalan">Català</string>
 
     <string name="none">Отсутствует</string>
     <string name="public_domain">Общественное достояние </string>
@@ -286,7 +287,7 @@
     <string name="in_your_supports">в Ваших поддержках</string>
     <string name="earn_more_tips">Заработайте больше чаевых, загружая крутые видео</string>
     <string name="sdk_initializing">Фоновый сервис запускается...</string>
-    <string name="sdk_still_initializing">Фоновый сервис всё ещё запускается. Вы можете искать и смотреть контент пока.</string>
+    <string name="sdk_still_initializing">Фоновый сервис всё ещё запускается. Между тем Вы уже можете искать и смотреть какой-либо контент.</string>
     <string name="sdk_initializing_functionality">Вы не можете сделать это прямо сейчас, потому что фоновый сервис всё ещё запускается.</string>
 
     <string name="backup_synced">Ваш кошелек синхронизирован с lbry.tv</string>
@@ -349,6 +350,10 @@
     <string name="confirm_unlock_tips">Вы уверены, что хотите разблокировать все Ваши чаевые?</string>
     <string name="min_spend_required">Пожалуйста, введите количество кредитов больше 0.0001.</string>
 
+    <string name="buy_lbc">Купить LBC</string>
+    <string name="hash_not_supported">Ваше устройство не отвечает минимальным требованиям для обеспечения защиты Вашего запроса на покупку.</string>
+    <string name="receive_address_not_set">У Вас не настроен адрес кошелька. Пожалуйста, сгенерируйте новый адрес и попробуйте ещё раз.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">Вы отправили %1$s кредит</item>
         <item quantity="few">Вы отправили %1$s кредитов</item>
@@ -372,10 +377,10 @@
     <string name="past_year">Прошлый год</string>
     <string name="all_time">За всё время</string>
     <string name="from">с</string>
-    <string name="for_text">до</string>
+    <string name="for_text">для</string>
     <string name="filter_for">Сортировать для</string>
     <string name="everyone">Всех</string>
-    <string name="tags_you_follow">Подписки</string>
+    <string name="tags_you_follow">Теги, на которые Вы подписаны</string>
     <string name="customize">Настроить</string>
     <string name="not_yet_implemented">Выбранный просмотр пока не доступен.</string>
     <string name="customize_tags_hint">Похоже, Вы пока не подписаны ни на один тег. </string>
@@ -509,7 +514,7 @@
     <string name="reward_code_placeholder">abc123</string>
     <string name="claim">Взнос</string>
     <string name="please_enter_claim_code">Пожалуйста, введите действительный код вознаграждения.</string>
-    <string name="unclaimed">Не забрано </string>
+    <string name="unclaimed">Доступные</string>
     <string name="custom_reward_title">Особый код</string>
     <string name="up_to">до</string>
     <string name="custom_reward_description">Вы супермодель или рок-звезда, получившая особый код вознаграждения? Укажите его здесь.</string>
@@ -551,11 +556,11 @@
     <string name="earn_extra_credits_invites">Вы можете заработать дополнительные кредиты за каждого приглашенного использовать LBRY. </string>
     <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="invite_link">Пригласительная ссылка</string>
-    <string name="share_this_link">Поделитесь этой ссылкой с друзьями (или с врагами) и получите кредиты, когда они присоединяться к lbry.tv.</string>
+    <string name="share_this_link">Поделитесь этой ссылкой с друзьями (или с врагами) и получите кредиты, когда они присоединятся к lbry.tv.</string>
     <string name="your_invite_link">Ваша пригласительная ссылка</string>
     <string name="customize_invite_link">Настроить пригласительную ссылку</string>
     <string name="invite_by_email">Пригласить по почте</string>
-    <string name="invite_someone">Пригласите знакомых по почте и получите кредиты, когда они присоединяться к lbry.tv.</string>
+    <string name="invite_someone">Пригласите знакомых по почте и получите кредиты, когда они присоединятся к lbry.tv.</string>
     <string name="invite_email_placeholder">imaginary@friend.com</string>
     <string name="invite">Пригласить</string>
     <string name="invite_history">История приглашений</string>

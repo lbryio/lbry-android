@@ -1,15 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
-    <string name="navigation_drawer_open">Deschidere meniu navigare</string>
-    <string name="navigation_drawer_close">Închidere meniu navigare</string>
+    <string name="navigation_drawer_open">Deschidere meniu</string>
+    <string name="navigation_drawer_close">Închidere meniu</string>
 
     <!-- Nav menu -->
     <string name="find_content">Găsire conţinut</string>
     <string name="your_content">Conţinutul meu</string>
     <string name="wallet">Portofel</string>
-    <string name="following">Abonat</string>
-    <string name="editors_choice">Alegerea editorului</string>
-    <string name="your_tags">Etichetele mele</string>
+    <string name="following">Abonări</string>
+    <string name="editors_choice">Alese de noi</string>
+    <string name="your_tags">Etichete alese</string>
     <string name="all_content">Tot conţinutul</string>
     <string name="channels">Canale</string>
     <string name="library">Bibliotecă</string>
@@ -28,7 +28,7 @@
     <string name="welcome_paragraph">LBRY este o platformă de conţinut controlată de comunitate unde poţi găsi sau publica videoclipuri, muzică, cărţi şi altele.</string>
     <string name="welcome_tos">Continuând, sunt de acord cu &lt;a href=\"https://lbry.com/termsofservice\"&gt;Termenii serviciului&lt;/a&gt; şi confirm că am vârsta peste 13 ani.</string>
     <string name="welcome_please_wait">Aşteaptă puţin până pregătim lucrurile...</string>
-    <string name="use_lbry">Folosire LBRY »</string>
+    <string name="use_lbry">Pornire LBRY »</string>
 
     <!-- URI bar -->
     <string name="uri_placeholder">Căutare filme, muzică şi altele</string>
@@ -38,8 +38,8 @@
     <string name="channels_you_follow">Canale urmărite</string>
     <string name="discover">Descoperire</string>
     <string name="lbry_works_better">LBRY funcţionează mai bine dacă te abonezi la cel puţin 5 creatori de care îţi place. Dacă deja ai un cont, conectează-te pentru a vedea creatorii la care eşti abonat.</string>
-    <string name="select_five_subscriptions">Selectează până la 5 creatori pentru a continua. Caută de exemplu canalul „@lbryro”, pentru ştiri în română despre LBRY.</string>
-    <string name="n_remaining">Au rămas %1$d...</string>
+    <string name="select_five_subscriptions">Selectează până la 5 creatori pentru a continua. Caută canalul „@lbryro” cu știri în română.</string>
+    <string name="n_remaining">Mai alege încă %1$d...</string>
     <string name="done">Gata</string>
     <string name="all">Toate</string>
     <string name="discover_channels">Descoperă canale noi</string>
@@ -53,17 +53,17 @@
     <string name="repost">Republicare</string>
     <string name="tip">Bacşiş</string>
     <string name="edit">Editare</string>
-    <string name="delete">Şterge</string>
+    <string name="delete">Ştergere</string>
     <string name="download">Descarcă</string>
     <string name="open">Deschide</string>
     <string name="report">Raportare</string>
     <string name="loading_decentralized_data">Se încarcă datele descentralizate...</string>
     <string name="related_content">Conţinut asemănător</string>
     <string name="comments">Comentarii</string>
-    <string name="no_comments">Nu sunt comentarii de afișat momentan.</string>
+    <string name="no_comments">Nu sunt comentarii de afișat.</string>
     <string name="sdk_initializing_comments">Comentariile vor fi afișate după inițializarea serviciului din fundal.</string>
-    <string name="comment_error">Comentariul dumneavoastră nu a putut fi postat în acest moment. Vă rugăm să încercați din nou mai târziu.</string>
-    <string name="share_lbry_content">Partajare conşinut LBRY</string>
+    <string name="comment_error">Comentariul nu a putut fi publicat. Reîncearcă mai târziu.</string>
+    <string name="share_lbry_content">Partajare conținut LBRY</string>
     <string name="view">Afişare</string>
     <string name="play">Redare</string>
     <string name="unsupported_content">Conţinut nesuportat</string>
@@ -73,15 +73,15 @@
     <string name="cannot_view_claim">Acest conţinut nu poate fi accesat acum. Reîncearcă mai târziu.</string>
     <string name="zero_duration">0:00</string>
     <string name="claim_file_not_found">Fişierul de la „%1$s” nu există.</string>
-    <string name="confirm_purchase">Confirm achiziţia</string>
-    <string name="delete_file">Şterge fişier</string>
-    <string name="confirm_delete_file_message">Sigur doreşti să ştergi acest fişier din dispozitiv?</string>
-    <string name="unable_to_view_url">Eşuare încărcare %1$s. Reîncearcă mai târziu.</string>
+    <string name="confirm_purchase">Confirmare achiziţie</string>
+    <string name="delete_file">Ştergere fişier</string>
+    <string name="confirm_delete_file_message">Confirmi ştergerea fişierului din dispozitiv?</string>
+    <string name="unable_to_view_url">Eşuare încărcare „%1$s”. Reîncearcă mai târziu.</string>
     <string name="no_cast_session_available">Nu există nicio sesiune de distribuție disponibilă acum.</string>
-    <string name="delete_content">Ștergeți conținut?</string>
-    <string name="confirm_delete_content_message">Sigur doriți să anulați publicarea acestui conținut? Niciun fișier nu va fi eliminat de pe dispozitivul dumneavoastră.</string>
-    <string name="content_deleted">Conținutul a fost șters cu succes din blockchain.</string>
-    <string name="content_failed_delete">Conținutul nu a putut fi șters în acest moment. Vă rugăm să încercați din nou mai târziu.</string>
+    <string name="delete_content">Ștergi conținutul?</string>
+    <string name="confirm_delete_content_message">Confirmi anularea conținutului publicat? Nu va fi șters niciun fișier din dispozitiv.</string>
+    <string name="content_deleted">Conținutul a fost șters cu succes din rețea.</string>
+    <string name="content_failed_delete">Conținutul nu a putut fi șters în acest moment. Reîncearcă mai târziu.</string>
     <string name="comment">Comentariu</string>
     <string name="comment_as">Comentare ca</string>
     <string name="please_enter_comment">Introdu un comentariu.</string>
@@ -101,9 +101,9 @@
         <item quantity="other">Publici pentru %1$s de credite</item>
     </plurals>
     <plurals name="confirm_post_comment">
-        <item quantity="one">Se va publica comentariul tău și vei oferi un bacșiș de %1$s credit pentru %2$s</item>
-        <item quantity="few">Se va publica comentariul tău și vei oferi un bacșiș de %1$s credite pentru %2$s</item>
-        <item quantity="other">Se va publica comentariul tău și vei oferi un bacșiș de %1$s de credite pentru %2$s</item>
+        <item quantity="one">Comentariul tău va fi publicat și vei oferi un bacșiș de %1$s credit pentru %2$s</item>
+        <item quantity="few">Comentariul tău va fi publicat și vei oferi un bacșiș de %1$s credite pentru %2$s</item>
+        <item quantity="other">Comentariul tău va fi publicat și vei oferi un bacșiș de %1$s de credite pentru %2$s</item>
     </plurals>
     <plurals name="view_count">
         <item quantity="one">%1$s afişare</item>
@@ -111,9 +111,9 @@
         <item quantity="other">%1$s de afişări</item>
     </plurals>
     <plurals name="confirm_purchase_message">
-        <item quantity="one">Vei cumpăra „%1$s” cu %2$s credit.</item>
-        <item quantity="few">Vei cumpăra „%1$s” cu %2$s credite.</item>
-        <item quantity="other">Vei cumpăra „%1$s” cu %2$s de credite.</item>
+        <item quantity="one">Cumperi „%1$s” cu %2$s credit?</item>
+        <item quantity="few">Cumperi „%1$s” cu %2$s credite.</item>
+        <item quantity="other">Cumperi „%1$s” cu %2$s de credite?</item>
     </plurals>
 
     <!-- Channel view -->
@@ -128,51 +128,51 @@
     </plurals>
 
     <!-- Publish -->
-    <string name="no_publishes_created">Se pare că încă nu a publicat conținut în LBRY.</string>
+    <string name="no_publishes_created">Se pare că încă nu ai publicat conținut în LBRY.</string>
     <string name="record">Înregistrare</string>
-    <string name="take_photo">Faceți o fotografie</string>
-    <string name="upload_file">Încărcați un fișier</string>
-    <string name="no_videos_found">Nu am găsit niciun videoclip pe dispozitivul dumneavoastră. Faceți o fotografie sau înregistrați un videoclip pentru a începe.</string>
-    <string name="loading_videos">Vă rugăm să așteptați cât timp vă încărcăm videoclipurile...</string>
-    <string name="storage_permission_rationale_videos">LBRY necesită acces pentru a vă putea afișa și publica videoclipurile, imaginile și alte fișiere de pe dispozitivul dumneavoastră.</string>
-    <string name="camera_permission_rationale_record">LBRY necesită acces la camera dumneavoastră pentru a înregistra videoclipuri.</string>
-    <string name="camera_permission_rationale_photo">LBRY necesită acces la camera foto a dumneavoastră pentru a face fotografii.</string>
-    <string name="edit_content">Editați conținut</string>
+    <string name="take_photo">Fac o poză</string>
+    <string name="upload_file">Încarc un fișier</string>
+    <string name="no_videos_found">Nu există videoclipuri în dispozitiv. Fă o poză sau înregistrează un videoclip.</string>
+    <string name="loading_videos">Așteaptă până se încarcă videoclipurile...</string>
+    <string name="storage_permission_rationale_videos">LBRY necesită dreptul de a putea afișa și publica videoclipuri, imagini și alte fișiere din dispozitiv.</string>
+    <string name="camera_permission_rationale_record">LBRY necesită accesul la camera foto pentru a înregistra videoclipuri.</string>
+    <string name="camera_permission_rationale_photo">LBRY necesită accesul la camera foto pentru a face poze.</string>
+    <string name="edit_content">Editare conținut</string>
     <string name="mature_tags">Etichete adulți</string>
     <string name="price">Preț</string>
-    <string name="free_publish">Conținutul dumneavoastră va fi gratuit. Apăsați comutatorul pentru a stabili un preț.</string>
-    <string name="content_address">Adresa de conținut</string>
+    <string name="free_publish">Conținutul tău va fi gratuit. Apasă comutatorul dacă ceri un preț.</string>
+    <string name="content_address">Adresă conținut</string>
     <string name="randomize">Aleator</string>
-    <string name="address">Adresă</string>
-    <string name="content_address_desc">Adresa unde oamenii vă pot găsi conținutul (ex. lbry://filmulmeu).</string>
+    <string name="address">Adresa</string>
+    <string name="content_address_desc">Adresa unde poate fi găsit conținutul (ex. lbry://filmulmeu).</string>
     <string name="license">Licența</string>
-    <string name="license_desc">Descrierea licenței</string>
-    <string name="additional_options">Opțiuni suplimentare</string>
-    <string name="show_extra_fields">Afișați câmpuri suplimentare</string>
-    <string name="hide_extra_fields">Ascundeți câmpuri suplimentare</string>
-    <string name="no_file_found">Nu a fost găsit niciun fișier pentru a fi publicat.</string>
+    <string name="license_desc">Descriere licență</string>
+    <string name="additional_options">Opțiuni adiționale</string>
+    <string name="show_extra_fields">Afișare câmpuri adiționale</string>
+    <string name="hide_extra_fields">Ascundere câmpuri adiționale</string>
+    <string name="no_file_found">Nu există fișiere de publicat.</string>
     <string name="publish_invalid_claim_type">Revendicare nevalidă specificată pentru editare.</string>
     <string name="video_optimization">Optimizare video</string>
-    <string name="thumbnail_creation_failed">O pictogramă nu a putut fi creată automat din fișierul dumneavoastră de conținut.</string>
-    <string name="video_being_optimized">Videoclipul dumneavoastră este optimizat pentru o redare mai bună pe o gamă largă de dispozitive. Puteți completa câmpurile rămase mai jos, în timp ce acest lucru este în desfășurare.</string>
-    <string name="video_optimized">Videoclipul dumneavoastră a fost optimizat cu succes pentru o redare mai bună pe cât mai multe dispozitive. Vă rugăm să continuați să publicați conținutul dumneavoastră.</string>
-    <string name="video_optimize_failed">Videoclipul dumneavoastră nu a putut fi optimizat. Fișierul va fi încărcat fără modificări.</string>
-    <string name="completed_video_duration">Finalizat Durata Video: %1$s</string>
-    <string name="sdk_initializing_publish">Nu puteți publica conținut în acest moment deoarece serviciul de fundal se inițializează încă.</string>
-    <string name="publish_successful">Conținutul dumneavoastră a fost publicat cu succes. Poate dura câteva momente pentru a apărea pe blockchain.</string>
-    <string name="transcode_in_progress">Optimizarea videoclipului este în derulare. Dacă doriți să anulați, apăsați Anulare în partea de jos a paginii.</string>
-    <string name="optimization_in_progress">Optimizarea videoclipului este în derulare.</string>
-    <string name="cannot_capture_video">Nu există o aplicație pentru camere foto disponibilă ca să înregistrați videoclipuri pe acest dispozitiv.</string>
-    <string name="cannot_take_photo">Nu există o aplicație pentru camere foto disponibilă ca să faceți fotografii pe acest dispozitiv.</string>
+    <string name="thumbnail_creation_failed">Nu s-a putut crea automat miniatura din conținutul fișierului.</string>
+    <string name="video_being_optimized">Videoclipul este optimizat pentru o redare mai bună pe o gamă largă de dispozitive. Între timp poți completa câmpurile rămase de mai jos.</string>
+    <string name="video_optimized">Videoclipul a fost optimizat pentru o redare mai bună pe cât mai multe dispozitive posibile. Continuă publicarea conținutului.</string>
+    <string name="video_optimize_failed">Videoclipul nu a putut fi optimizat. Fișierul va fi încărcat fără modificări.</string>
+    <string name="completed_video_duration">Durată videoclip finalizat: %1$s</string>
+    <string name="sdk_initializing_publish">Așteaptă finalizarea inițializării serviciului din fundal pentru a putea publica.</string>
+    <string name="publish_successful">Conținutul a fost publicat. Mai durează puțin până când apare în rețea.</string>
+    <string name="transcode_in_progress">Optimizarea videoclipului se execută. Dacă dorești anularea, apasă pe «Anulare» mai jos.</string>
+    <string name="optimization_in_progress">Optimizarea videoclipului se execută.</string>
+    <string name="cannot_capture_video">În acest dispozitiv nu există aplicație ce poate înregistra videoclipuri.</string>
+    <string name="cannot_take_photo">În acest dispozitiv nu există aplicație ce poate înregistra fotografii.</string>
 
-    <string name="please_provide_title">Vă rugăm să introduceți un titlu.</string>
-    <string name="please_specify_address">Vă rugăm să specificați o adresă în care oamenii vă poată găsi conținutul.</string>
-    <string name="address_invalid_characters">Adresa dumneavoastră de conținut conține caractere nevalide.</string>
-    <string name="address_already_used">Ați publicat deja pe adresa de conținut specificată. Vă rugăm să introduceți o nouă adresă.</string>
-    <string name="no_file_selected">Niciun fisier selectat. Vă rugăm să alegeți un videoclip sau să faceți o fotografie sau să selectați un fișier înainte de a publica.</string>
-    <string name="price_amount_not_set">Vă rugăm să introduceți un preț sau să dezactivați comutatorul pentru a vă face conținutul gratuit.</string>
-    <string name="publish_no_thumbnail">Vă rugăm să selectați o pictogramă pe care să o încărcați înainte de publicare.</string>
-    <string name="publish_thumbnail_in_progress">Vă rugăm să așteptați ca pictograma să termine încărcarea înainte de publicare.</string>
+    <string name="please_provide_title">Introdu un titlu.</string>
+    <string name="please_specify_address">Specifică adresa unde poate fi găsit conținutul.</string>
+    <string name="address_invalid_characters">Adresa conținutului conține caractere nevalide.</string>
+    <string name="address_already_used">Deja ai publicat ceva pe această adresă. Introdu o adresă nouă.</string>
+    <string name="no_file_selected">Nu ai selectat vreun fișier. Alege un videoclip, fă o poză sau selectează un fișier pentru a publica.</string>
+    <string name="price_amount_not_set">Introdu un preț sau dezactivează comutatorul pentru a-l publica gratuit.</string>
+    <string name="publish_no_thumbnail">Selectează o miniatură pentru conținut înainte de a-l publica.</string>
+    <string name="publish_thumbnail_in_progress">Așteaptă finalizarea încărcării miniaturii înainte de a putea publica.</string>
 
     <string name="language">Limba</string>
     <string name="english">Engleză</string>
@@ -187,29 +187,30 @@
     <string name="dutch">Olandeză</string>
     <string name="turkish">Turcă</string>
     <string name="polish">Poloneză</string>
-    <string name="malay">Malaeziană</string>
+    <string name="malay">Malaeză</string>
     <string name="portuguese">Portugheză</string>
     <string name="vietnamese">Vietnameză</string>
-    <string name="thai">Tailandeză</string>
+    <string name="thai">Thailandeză</string>
     <string name="arabic">Arabă</string>
     <string name="czech">Cehă</string>
     <string name="croatian">Croată</string>
-    <string name="cambodian">Cambodgiană</string>
+    <string name="cambodian">Khmeră</string>
     <string name="korean">Coreeană</string>
     <string name="norwegian">Norvegiană</string>
     <string name="romanian">Română</string>
-    <string name="hindi">Hindusă</string>
+    <string name="hindi">Hindi</string>
     <string name="greek">Greacă</string>
+    <string name="catalan">Catalană</string>
 
     <string name="none">Niciuna</string>
     <string name="public_domain">Domeniu public</string>
-    <string name="copyrighted">Supus drepturilor de autor</string>
-    <string name="cca_4_0_international">Creative Commons Atribuire 4.0 Internațional</string>
-    <string name="cca_sa_4_0_international">Creative Commons Atribuire - Partajare în Condiții Identice 4.0 Internațional</string>
-    <string name="cca_nd_4_0_international">Creative Commons Atribuire-FărăDerivate 4.0 Internațional</string>
-    <string name="cca_nc_4_0_international">Creative Commons Atribuire-Necomercial 4.0 Internațional</string>
-    <string name="cca_nc_sa_4_0_international">Creative Commons Atribuire-Necomercial-Partajare în Condiții Identice 4.0 Internațional</string>
-    <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
+    <string name="copyrighted">Drepturi de autor</string>
+    <string name="cca_4_0_international">Atribuire bunuri creative 4.0 Internațional</string>
+    <string name="cca_sa_4_0_international">Atribuire bunuri creative-Distribuire în condiții identice 4.0 Internațional</string>
+    <string name="cca_nd_4_0_international">Atribuire bunuri creative-FărăDerivate 4.0 Internațional</string>
+    <string name="cca_nc_4_0_international">Atribuire bunuri creative-Necomercial 4.0 Internațional</string>
+    <string name="cca_nc_sa_4_0_international">Atribuire bunuri creative-Necomercial-Distribuire în condiții identice 4.0 Internațional</string>
+    <string name="cca_nc_nd_4_0_international">Atribuire bunuri creative-Necomercial-Fără derivate 4.0 Internațional</string>
 
     <string-array name="publish_currencies">
         <item>LBC</item>
@@ -217,16 +218,16 @@
     </string-array>
 
     <!-- Publishes -->
-    <string name="one_or_more_publishes_failed_abandon">Unul sau mai multe elemente de conținut nu au putut fi șterse în acest moment. Vă rugăm să încercați din nou mai târziu.</string>
+    <string name="one_or_more_publishes_failed_abandon">Una sau mai multe publicări nu au putut fi șterse. Reîncearcă mai târziu.</string>
     <plurals name="confirm_delete_publishes">
         <item quantity="one">Sigur doriți să ștergeți articolul de conținut selectat?</item>
         <item quantity="few">Sigur doriți să ștergeți articolele de conținut selectate?</item>
-        <item quantity="other">Sigur doriți să ștergeți articolele de conținut selectate?</item>
+        <item quantity="other">Confirmi ștergerea publicărilor selectate?</item>
     </plurals>
     <plurals name="publishes_deleted">
         <item quantity="one">Elementul de conținut a fost șters cu succes.</item>
         <item quantity="few">Elementele de conținut au fost șterse cu succes.</item>
-        <item quantity="other">Elementele de conținut au fost șterse cu succes.</item>
+        <item quantity="other">Publicările au fost șterse.</item>
     </plurals>
 
     <!-- Splash -->
@@ -242,7 +243,7 @@
     <!-- Settings -->
     <string name="user_interface">Conţinut şi interfaţă</string>
     <string name="other">Altele</string>
-    <string name="enable_background_playback">Activați redarea în fundal</string>
+    <string name="enable_background_playback">Activare redare în fundal</string>
     <string name="enable_dark_mode">Activare temă neagră</string>
     <string name="show_mature_content">Afişare conţinut adulţi</string>
     <string name="show_url_suggestions">Afişare sugestii adrese</string>
@@ -251,7 +252,7 @@
     <string name="content_interests">Conţinut preferat</string>
 
     <string name="keep_sdk_in_background">Păstrează serviciul LBRY activ în fundal pentru o performanţă a portofelului şi reţelei  mai bună</string>
-    <string name="participate_in_data_network">Participați la rețeaua de date (necesită repornirea aplicației și a serviciului de de fundal)</string>
+    <string name="participate_in_data_network">Participă la rețeaua de date (aplicația și serviciul din fundal trebuie repornite).</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Căutare</string>
@@ -276,20 +277,20 @@
     <string name="in_tips">în bacşişuri</string>
     <string name="in_your_publishes">în publicările tale</string>
     <string name="in_your_supports">în susţinerile tale</string>
-    <string name="earn_more_tips">Câştigă mai multe bacşişuri încărcând conţinut nou</string>
+    <string name="earn_more_tips">Câştigă mai multe bacşişuri publicând conţinut</string>
     <string name="sdk_initializing">Serviciul din fundal se iniţializează...</string>
     <string name="sdk_still_initializing">Serviciul din fundal încă se iniţializează. Poţi explora şi vedea conţinut între timp.</string>
     <string name="sdk_initializing_functionality">Nu poţi face asta acum deoarce serviciul din fundal încă se iniţializează.</string>
 
     <string name="backup_synced">O copie a portofelului este sincronizată cu lbry.tv</string>
-    <string name="backup_notsynced">Portofelul tău nu este sincronizat cu lbry.tv. Trebuie să-i faci o copie de siguranţă.</string>
+    <string name="backup_notsynced">Portofelul nu este sincronizat cu lbry.tv. Ești răspunzător de conservarea sa. Fă-i o copie de siguranţă.</string>
     <string name="synced_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/account-sync\"&gt;Ce înseamnă asta?&lt;/a&gt;</string>
     <string name="backup_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Ce înseamnă asta?&lt;/a&gt;</string>
 
     <string name="receive_credits">Primire credite</string>
     <string name="use_this_address_hint">Foloseşte acest portofel pentru a primi credite trimise de alt utilizator (sau de la tine).</string>
-    <string name="get_new_address">Obţinere adresă nouă</string>
-    <string name="generate_address_hint">Puteți genera o nouă adresă în orice moment și orice adresă anterioară va continua să funcționeze. Utilizarea mai multor adrese poate fi utilă pentru a urmări plățile primite din surse multiple.</string>
+    <string name="get_new_address">Creare adresă nouă</string>
+    <string name="generate_address_hint">Poți genera o adresă nouă oricând. Orice adresă anterioară va funcționa în continuare. Utilizarea adreselor multiple poate fi utilă pentru a urmări plățile primite din surse diferite.</string>
 
     <string name="send_credits">Trimitere credite</string>
     <string name="recipient_address">Adresă destinatar</string>
@@ -300,7 +301,7 @@
     <string name="recent_transactions">Tranzacții recente</string>
     <string name="view_all">Afișare toate</string>
     <string name="receive">Primire</string>
-    <string name="spend">Cheltuie</string>
+    <string name="spend">Cheltuire</string>
     <string name="publish">Publică</string>
     <string name="support">Susţinere</string>
     <string name="abandon">Abandonare</string>
@@ -337,9 +338,13 @@
     <string name="transaction_history">Istoric tranzacţii</string>
 
     <string name="unlock">Deblocare</string>
-    <string name="unlock_tips">Deblocare bacşişuri?</string>
-    <string name="confirm_unlock_tips">Sunteți sigur că doriți să deblocați toate bacşişurile dumneavoastră?</string>
-    <string name="min_spend_required">Vă rugăm să introduceți o sumă mai mare de 0,0001 credite.</string>
+    <string name="unlock_tips">Deblochezi bacşişurile?</string>
+    <string name="confirm_unlock_tips">Sigur deblochezi toate bacşişurile?</string>
+    <string name="min_spend_required">Trebuie introdusă o sumă mai mare de 0,0001 credite.</string>
+
+    <string name="buy_lbc">Cumpărare LBC</string>
+    <string name="hash_not_supported">Dispozitivul nu suportă cerințele minime pentru a asigura solicitarea de cumpărare.</string>
+    <string name="receive_address_not_set">Nu ai setat un portofel. Generează o adresă nouă și reîncearcă.</string>
 
     <plurals name="you_sent_credits">
         <item quantity="one">Ai trimis %1$s credit</item>
@@ -370,36 +375,36 @@
     <string name="customize">Personalizare</string>
     <string name="not_yet_implemented">Afişarea selectată nu este încă disponibilă.</string>
     <string name="customize_tags_hint">Se pare că încă nu ţi-ai ales nicio etichetă de urmărit.</string>
-    <string name="search_for_more_tags">Căutare mai multe etichete</string>
+    <string name="search_for_more_tags">Căutare alte etichete</string>
     <string name="no_followed_tags">Încă nu ţi-ai ales nicio etichetă. Adaugă-ţi etichete pentru subiecte care te-ar putea interesa!</string>
     <string name="no_tag_results">Nu am putut găsi etichete noi pe care să nu le urmăreşti.</string>
     <string name="tag_already_added">Eticheta „%1$s” a fost deja adăugată.</string>
-    <string name="tag_limit_reached">Nu puteți adăuga mai mult de 5 etichete.</string>
+    <string name="tag_limit_reached">Se pot adăuga maxim 5 etichete.</string>
     <string name="send_a_tip">Trimite bacşiş</string>
     <string name="send_a_tip_to">Trimitere bacşiş la %1$s</string>
-    <string name="send_tip_info_content">Aceasta sumă va apărea ca bacșiș pentru %1$s, mărindu-i șansele de a fi descoperit cât timp este activ.</string>
+    <string name="send_tip_info_content">Aceasta sumă va apărea ca bacșiș pentru %1$s, mărindu-i șansele de a fi descoperit cât timp este activ.  &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Detalii&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Aceasta sumă va apărea ca bacșiș pentru %1$s, mărind șansele canalului de a fi descoperit cât timp este activ. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Detalii&lt;/a&gt;.</string>
     <string name="cancel">Anulare</string>
     <string name="repost_title">Republicare %1$s</string>
     <string name="repost_your_favorite">Republică conţinutul tău favorit pentru a-i ajuta şi pe alţii să-l descopere!</string>
     <string name="channel_to_post_on">Publicare în canalul</string>
-    <string name="show_advanced">Afişare avansate</string>
-    <string name="hide_advanced">Ascundere avansate</string>
+    <string name="show_advanced">Afişare detalii</string>
+    <string name="hide_advanced">Ascundere detalii</string>
     <string name="name">Nume</string>
-    <string name="min_deposit">0,001</string>
-    <string name="content_successfully_reposted">Conţinutul a fost republicat cu succes!</string>
+    <string name="min_deposit">0.001</string>
+    <string name="content_successfully_reposted">Conţinutul a fost republicat!</string>
     <string name="repost_name_invalid_characters">Numele republicării conţine caractere nevalide!</string>
     <plurals name="you_sent_a_tip">
         <item quantity="one">Bravo! Ai trimis %1$s credit ca bacşiş.</item>
         <item quantity="few">Bravo! Ai trimis %1$s credite ca bacşiş.</item>
-        <item quantity="other">Bravo! Ai trimis %1$s credite ca bacşiş.</item>
+        <item quantity="other">Bravo! Ai trimis %1$s de credite ca bacşiş.</item>
     </plurals>
 
     <!-- Verification -->
     <string name="provide_email_address">Furnizează o adresă de e-mail.</string>
     <string name="email_placeholder">adresa_ta@exemplu.com</string>
     <string name="email_sent_to">A fost trimis un e-mail la</string>
-    <string name="please_click_link">Accesează legătura din mesajul primit pentru a finaliza înscrierea.</string>
+    <string name="please_click_link">Accesează legătura din mesajul primit pentru a finaliza conectarea.</string>
     <string name="resend">Retrimite</string>
     <string name="continue_text">Continuare</string>
     <string name="provide_valid_email">Introdu o adresă de e-mail validă.</string>
@@ -407,7 +412,7 @@
     <string name="sign_in_successful">Te-ai conectat cu succes în lbry.tv</string>
     <string name="retrieving_account_information">Preluare informaţii cont...</string>
     <string name="apply_wallet_data">Aplicare date din portofel...</string>
-    <string name="please_enter_your_password">Introdu parola folosită pentru aţi securiza portofelul.</string>
+    <string name="please_enter_your_password">Introdu parola pe care ai folosit-o la securizarea portofelului.</string>
     <string name="please_enter_a_password">Introdu o parolă pentru a-ți securiza portofelul.</string>
     <string name="wallet_security_purposes">Notă: din motive de securitate a portofelului, LBRY nu îţi poate reseta parola.</string>
     <string name="password">Parola</string>
@@ -417,7 +422,7 @@
     <string name="enter_phone_number">Introdu numărul tău de telefon.</string>
     <string name="not_interested">Nu mă interesează</string>
     <string name="manual_reward_verification">Verificare manuală recompensare</string>
-    <string name="account_undergo_review">Acest cont trebuie verificat înainte de a putea participa la programul de recompensare. Aceasta poate dura între câteva minute sau zile.</string>
+    <string name="account_undergo_review">Acest cont trebuie verificat înainte de a putea participa la programul de recompensare. Aceasta poate dura câteva minute sau zile.</string>
     <string name="request_to_be_verified">Dacă vezi în continuare acest mesaj, poţi solicita o verificare pe &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;serverul Discord al LBRY&lt;/a&gt;.</string>
     <string name="enjoy_free_content">Între timp bucură-te de conţinutul gratuit!</string>
     <string name="verify_phone_number">Verificare număr de telefon</string>
@@ -438,10 +443,10 @@
     <string name="create_a_channel_item">Crează un canal...</string>
     <string name="edit_channel">Editare canal</string>
     <string name="delete_selection">Ştergi selecţia?</string>
-    <string name="delete_channel">Ștergeți canalul?</string>
-    <string name="confirm_delete_channel">Sunteți sigur că doriți să ștergeți acest canal?</string>
+    <string name="delete_channel">Ștergi canalul?</string>
+    <string name="confirm_delete_channel">Confirmi ștergerea acestui canal?</string>
     <string name="channel_deleted">Canalul a fost șters cu succes.</string>
-    <string name="channel_failed_delete">Canalul nu a putut fi șters în acest moment. Vă rugăm să încercați din nou mai târziu.</string>
+    <string name="channel_failed_delete">Nu s-a putut șterge canalul. Reîncearcă mai târziu.</string>
     <string name="description">Descriere</string>
     <string name="yes">Da</string>
     <string name="no">Nu</string>
@@ -453,8 +458,8 @@
     <string name="at">\@</string>
     <string name="deposit">Depozit</string>
     <string name="deposit_remains_yours">Acești LBC rămân ai tăi. Este o depunere pentru a rezerva numele și poate fi anulată în orice moment.</string>
-    <string name="storage_permission_rationale_download">LBRY necesită acces pentru a descărca conținut pe dispozitivul dumneavoastră.</string>
-    <string name="storage_permission_rationale_images">LBRY solicită dreptul de a putea încărca imagini din dispozitiv.</string>
+    <string name="storage_permission_rationale_download">LBRY necesită acces pentru a descărca conținut pe dispozitiv.</string>
+    <string name="storage_permission_rationale_images">LBRY necesită dreptul de a putea încărca imagini din dispozitiv.</string>
     <string name="select_thumbnail">Selectare miniatură</string>
     <string name="select_cover">Selectare imagine antet</string>
     <string name="undetermined_image_filepath">Calea fişierului nu a putut fi determinată pentru imaginea selectată. Selectează o imagine din alt loc.</string>
@@ -471,16 +476,16 @@
     <string name="item_pending_blockchain">Conţinutul este în curs de publicare. Vei putea să-l accesezi sau să-l editezi în curând.</string>
     <string name="pending">În așteptare</string>
     <string name="create">Creare</string>
-    <string name="one_or_more_channels_failed_abandon">Unul sau mai multe canale nu au putut fi șterse în acest moment. Vă rugăm să încercați din nou mai târziu.</string>
+    <string name="one_or_more_channels_failed_abandon">Unul sau mai multe canale nu au putut fi șterse. Reîncearcă mai târziu.</string>
     <plurals name="min_deposit_required">
         <item quantity="one">Este necesar un depozit de minim %1$s credite.</item>
         <item quantity="few">Este necesar un depozit de minim %1$s credite.</item>
-        <item quantity="other">Este necesar un depozit de minim %1$s credite.</item>
+        <item quantity="other">Este necesar un depozit de minim %1$s de credite.</item>
     </plurals>
     <plurals name="confirm_delete_channels">
         <item quantity="one">Sigur dorești să ștergi canalul selectat?</item>
         <item quantity="few">Sigur dorești să ștergi canalele selectate?</item>
-        <item quantity="other">Sigur dorești să ștergi canalele selectate?</item>
+        <item quantity="other">Confirmi ștergerea canalelor selectate?</item>
     </plurals>
     <plurals name="channels_deleted">
         <item quantity="one">Canalul a fost șters cu succes.</item>
@@ -496,13 +501,13 @@
     <string name="reward_code_placeholder">abc123</string>
     <string name="claim">Revendicare</string>
     <string name="please_enter_claim_code">Introdu un cod personal pentru revendicare credite.</string>
-    <string name="unclaimed">Nerevendicat</string>
+    <string name="unclaimed">Nerevendicate</string>
     <string name="custom_reward_title">Cod personal</string>
     <string name="up_to">până la</string>
     <string name="custom_reward_description">Ești un supermodel sau vedetă care a primit un cod de recompensă personal? Revendică-l aici.</string>
     <plurals name="claim_reward_message">
         <item quantity="one">Ai revendicat %1$s credit ca recompensă.</item>
-        <item quantity="few">Ai revendicat %1$s de credite ca recompensă.</item>
+        <item quantity="few">Ai revendicat %1$s credite ca recompensă.</item>
         <item quantity="other">Ai revendicat %1$s de credite ca recompensă.</item>
     </plurals>
     <plurals name="available_credits">
@@ -514,19 +519,19 @@
     <!-- Reward drivers -->
     <string name="publishing_requires_credits">Publicarea necesită credite.</string>
     <string name="channel_creation_requires_credits">Crearea canalului necesită credite.</string>
-    <string name="earn_rewards_for_inviting">Câștigați recompense pentru invitarea prietenilor dumneavoastră.</string>
-    <string name="earn_some_credits_to_access">Dobândiți câteva credite pentru a accesa acest conținut.</string>
-    <string name="tap_here_to_get_some">Apăsaţi aici pentru a obține câteva gratis.</string>
+    <string name="earn_rewards_for_inviting">Câștigă recompense invitându-ți prietenii.</string>
+    <string name="earn_some_credits_to_access">Obține credite pentru a accesa acest conținut.</string>
+    <string name="tap_here_to_get_some">Atinge aici pentru a primi câteva gratis.</string>
     <string name="free_credits_available">Credite gratuite disponibile în recompense.</string>
     <plurals name="wallet_signed_in_free_credits">
         <item quantity="one">%1$s credit gratuit disponibil în recompense.</item>
         <item quantity="few">%1$s credite gratuite disponibile în recompense.</item>
-        <item quantity="other">%1$s credite gratuite disponibile în recompense.</item>
+        <item quantity="other">%1$s de credite gratuite disponibile în recompense.</item>
     </plurals>
     <plurals name="wallet_get_free_credits">
-        <item quantity="one">Obțineți %1$s credit gratuit după crearea unui cont.</item>
-        <item quantity="few">Obțineți %1$s credite gratuite după crearea unui cont.</item>
-        <item quantity="other">Obțineți %1$s credite gratuite după crearea unui cont.</item>
+        <item quantity="one">Obține %1$s credit gratuit după crearea unui cont.</item>
+        <item quantity="few">Obține %1$s credite gratuite după crearea unui cont.</item>
+        <item quantity="other">Obține %1$s de credite gratuite după crearea unui cont.</item>
     </plurals>
 
     <!-- Invites -->
@@ -542,7 +547,7 @@
     <string name="invite_email_placeholder">prieten@imaginar.com</string>
     <string name="invite">Invitare</string>
     <string name="invite_history">Istoric invitări</string>
-    <string name="earn_credits_for_inviting">Câștigă credite invitând un priten, inamic sau orice persoană. Oricine are nevoie de conținut liber.</string>
+    <string name="earn_credits_for_inviting">Câștigă credite invitând un prieten, inamic sau orice persoană. Oricine are nevoie de conținut liber.</string>
     <string name="reward">Recompensă</string>
     <string name="claimed">Revendicată</string>
     <string name="claimable">Revendicabilă</string>
@@ -554,9 +559,9 @@
     <string name="downloads">Descărcări</string>
     <string name="purchases">Achiziții</string>
     <string name="history">Istoric</string>
-    <string name="library_no_downloads">Nu ai nici un conținut descărcat pe acest dispozitiv.</string>
+    <string name="library_no_downloads">Nu există conținut descărcat pe acest dispozitiv.</string>
     <string name="library_no_history">Nu ai vizionat niciun conţinut pe acest dispozitiv.</string>
-    <string name="library_no_purchases">Nu ați cumpărat niciun conținut din contul dvs.</string>
+    <string name="library_no_purchases">Nu ai conținut cumpărat în acest cont.</string>
     <string name="hide">Ascunde</string>
     <string name="stats">Statistici</string>
     <string name="video">Videoclip</string>
@@ -567,14 +572,14 @@
     <string name="gb">GB</string>
     <string name="zero_mb">0 MB</string>
     <plurals name="confirm_delete_files">
-        <item quantity="one">Sigur doriți să eliminați fișierul selectat de pe dispozitivul dumneavoastră?</item>
-        <item quantity="few">Sigur doriți să eliminați fișierele selectate de pe dispozitivul dumneavoastră?</item>
-        <item quantity="other">Sigur doriți să eliminați fișierele selectate de pe dispozitivul dumneavoastră?</item>
+        <item quantity="one">Confirmi ștergerea fișierului selectat din dispozitiv?</item>
+        <item quantity="few">Confirmi ștergerea fișierelor selectate din dispozitiv?</item>
+        <item quantity="other">Confirmi ștergerea fișierelor selectate din dispozitiv?</item>
     </plurals>
     <plurals name="files_deleted">
-        <item quantity="one">Fișierul a fost șters cu succes.</item>
-        <item quantity="few">Fișierele au fost șterse cu succes.</item>
-        <item quantity="other">Fișierele au fost șterse cu succes.</item>
+        <item quantity="one">Fișierul a fost șters.</item>
+        <item quantity="few">Fișierele au fost șterse.</item>
+        <item quantity="other">Fișierele au fost șterse.</item>
     </plurals>
 
     <!-- About -->
@@ -583,7 +588,7 @@
     <string name="about_paragraph">LBRY este o piață digitală liberă, deschisă și condusă de comunitate. Este o platformă descentralizată de distribuție a conținutului de la persoană la persoană pentru creatori, care pot încărca și partaja conținut și pot câștiga credite LBRY pentru efortul lor. Utilizatorii vor putea găsi o gamă largă de videoclipuri, muzică, cărți și alt conținut digital de care sunt interesați.</string>
     <string name="get_social">Socializare</string>
     <string name="social_paragraph">Poți interacționa cu echipa LBRY și cu membrii comunității pe Discord, Facebook, Instagram, Twitter sau Reddit.</string>
-    <string name="app_info">Info aplicaţie</string>
+    <string name="app_info">Informații aplicaţie</string>
     <string name="loading">Se încarcă...</string>
     <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;Ce este LBRY?&lt;/a&gt;</string>
     <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Bazele Androidului&lt;/a&gt;</string>

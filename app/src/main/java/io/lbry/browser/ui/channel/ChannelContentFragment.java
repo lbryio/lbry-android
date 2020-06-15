@@ -65,7 +65,7 @@ public class ChannelContentFragment extends Fragment implements DownloadActionLi
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_channel_content, container, false);
 
-        currentSortBy = ContentSortDialogFragment.ITEM_SORT_BY_TRENDING;
+        currentSortBy = ContentSortDialogFragment.ITEM_SORT_BY_NEW;
         currentContentFrom = ContentFromDialogFragment.ITEM_FROM_PAST_WEEK;
 
         sortLink = root.findViewById(R.id.channel_content_sort_link);

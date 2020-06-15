@@ -1,0 +1,600 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">LBRY</string>
+    <string name="navigation_drawer_open">Mbukak laci navigasi</string>
+    <string name="navigation_drawer_close">Tutup laci pandhu arah</string>
+
+    <!-- Nav menu -->
+    <string name="find_content">Temokake Konten</string>
+    <string name="your_content">Konten Sampeyan</string>
+    <string name="wallet">Dompet</string>
+    <string name="following">Dipuntedahaken</string>
+    <string name="editors_choice">Pilihan Editor</string>
+    <string name="your_tags">Tag Sampeyan</string>
+    <string name="all_content">Kabeh Konten</string>
+    <string name="channels">Saluran</string>
+    <string name="library">Perpustakaane</string>
+    <string name="publishes">Nerbitake</string>
+    <string name="new_publish">Nerbitake Anyar</string>
+    <string name="rewards">Hadiah</string>
+    <string name="invites">Ngajak</string>
+    <string name="settings">Setelane</string>
+    <string name="about">Babagan</string>
+    <string name="sign_in">Mlebu</string>
+    <string name="startup_failed">Wiwiti app gagal. Mangga priksa sambungan data lan coba maneh. Yen masalah iki terus-terusan, kirim email menyang hello@lbry.com</string>
+    <string name="no_claim_search_content">Ora ana konten sing ditampilake ing wektu iki. Mangga dirampungake pilihan utawa mriksa maneh mengko.</string>
+
+    <!-- Welcome Page -->
+    <string name="welcome_to_lbry">Sugeng rawuh ing LBRY.</string>
+    <string name="welcome_paragraph">LBRY minangka platform konten sing dikontrol karo komunitas sing sampeyan bisa nemokake lan nerbitake video, musik, buku, lan liya-liyane.</string>
+    <string name="welcome_tos">Kanthi terus, aku setuju karo &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; lan konfirmasi aku umur 13 taun.</string>
+    <string name="welcome_please_wait">Mangga ngenteni nalika wis siyap...</string>
+    <string name="use_lbry">Gunakake LBRY »</string>
+
+    <!-- URI bar -->
+    <string name="uri_placeholder">Goleki film, musik, lan liya-liyane</string>
+
+    <!-- Following page -->
+    <string name="find_channels_to_follow">Temokake Saluran sing bakal dituruti</string>
+    <string name="channels_you_follow">Saluran sing sampeyan meloki</string>
+    <string name="discover">Nggoleki</string>
+    <string name="lbry_works_better">LBRY kerja luwih apik yen sampeyan ngetutake paling ora 5 kreator sing disenengi. Mlebu kanggo nuduhake kreator sing sampeyan tindakake yen sampeyan wis duwe akun.</string>
+    <string name="select_five_subscriptions">Mangga pilih nganti 5 kreator kanggo terus.</string>
+    <string name="n_remaining">%1$d isih...</string>
+    <string name="done">Rampung</string>
+    <string name="all">Kabeh</string>
+    <string name="discover_channels">Temokake saluran anyar</string>
+
+    <!-- Claim lists -->
+    <string name="anonymous">Anonim</string>
+
+    <!-- File view -->
+    <string name="tags">Tags</string>
+    <string name="share">Nuduhake</string>
+    <string name="repost">Repost</string>
+    <string name="tip">Tip</string>
+    <string name="edit">Sunting</string>
+    <string name="delete">Busak</string>
+    <string name="download">Download</string>
+    <string name="open">Bukak</string>
+    <string name="report">Laporane</string>
+    <string name="loading_decentralized_data">Nemokake data sing disentralisasi...</string>
+    <string name="related_content">Konten sing gegandhengan</string>
+    <string name="comments">Komentar</string>
+    <string name="no_comments">Ora komentar sing ditampilake ing wektu iki.</string>
+    <string name="sdk_initializing_comments">Komentar bakal ditampilake sawise layanan latar mburi diprisisi.</string>
+    <string name="comment_error">Komentar sampeyan ora bisa dikirim ing wektu iki. Coba maneh mengko.</string>
+    <string name="share_lbry_content">Nuduhake konten LBRY</string>
+    <string name="view">Ndeleng</string>
+    <string name="play">Puter</string>
+    <string name="unsupported_content">Konten sing ora didhukung</string>
+    <string name="unsupported_content_desc">Nyuwun sewu, sampeyan ora bisa nampilake konten iki ing app. Sampeyan bisa nemokake file kasebut %1$s ing folder download sampeyan.</string>
+    <string name="nothing_at_this_location">Ora ana sing ana ing lokasi iki.</string>
+    <string name="publish_something_here">Publish soko kene</string>
+    <string name="cannot_view_claim">Konten iki ora bisa diakses ing wektu iki. Coba maneh mengko.</string>
+    <string name="zero_duration">0:00</string>
+    <string name="claim_file_not_found">File ing \"%1$s\" ora ana.</string>
+    <string name="confirm_purchase">Konfirmasi Pembelian</string>
+    <string name="delete_file">Busak file</string>
+    <string name="confirm_delete_file_message">Apa sampeyan pengin ngilangi file iki saka piranti sampeyan?</string>
+    <string name="unable_to_view_url">Gagal mbukak %1$s. Coba maneh mengko.</string>
+    <string name="no_cast_session_available">Ora ana sesi cast ing wektu iki.</string>
+    <string name="delete_content">Mbusak konten?</string>
+    <string name="confirm_delete_content_message">Apa sampeyan pengin pengin nggawe konten iki? Ora ana file sing bakal dicopot saka piranti sampeyan.</string>
+    <string name="content_deleted">Konten semalat bisa diilangi saka blockchain.</string>
+    <string name="content_failed_delete">Konten semono ora bisa diilangi wektu iki. Coba maneh mengko.</string>
+    <string name="comment">Komentar</string>
+    <string name="comment_as">Komentar minangka</string>
+    <string name="please_enter_comment">Mangga ketik komentar kanggo dikirim.</string>
+    <string name="please_select_channel">Pilih pilih saluran kanggo ngirim komentar sampeyan.</string>
+    <string name="comment_posted">Komentar sampeyan wis sukses dikirim.</string>
+    <string name="please_select_repost_channel">Pilih-pilih saluran kanggo repost.</string>
+    <string name="reply">Bales</string>
+    <string name="replying_to">Mbales menyang %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="other">Pos lan tip %1$s kredit?</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="other">Kirim kanggo %1$s kredit</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="other">Iki bakal ngirim komentar sampeyan kanthi tip %1$s kredit kanggo %2$s</item>
+    </plurals>
+    <plurals name="view_count">
+        <item quantity="other">%1$s di delok</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="other">Iki bakal tuku \"%1$s\" kanggo %2$s kredit</item>
+    </plurals>
+
+    <!-- Channel view -->
+    <string name="no_channel_info">Ora ana ing kene. \nCoba mriksa maneh mengko.</string>
+    <string name="content">Konten</string>
+    <string name="website">Website</string>
+    <string name="reposted">dipos ulangake</string>
+    <plurals name="follower_count">
+        <item quantity="other">%1$s pengikut</item>
+    </plurals>
+
+    <!-- Publish -->
+    <string name="no_publishes_created">Katon manawa sampeyan durung nerbitake konten menyang LBRY.</string>
+    <string name="record">Rekam</string>
+    <string name="take_photo">Njupuk foto</string>
+    <string name="upload_file">Upload file</string>
+    <string name="no_videos_found">Ora bisa nemokake video ing piranti sampeyan. Coba foto utawa ngrekam video supaya diwiwiti.</string>
+    <string name="loading_videos">Mangga ngenteni nalika mbukak video sampeyan...</string>
+    <string name="storage_permission_rationale_videos">LBRY mbutuhake akses supaya bisa nampilake lan nerbitake video, gambar lan file liyane saka piranti sampeyan.</string>
+    <string name="camera_permission_rationale_record">LBRY mbutuhake akses menyang kamera kanggo ngrekam video.</string>
+    <string name="camera_permission_rationale_photo">LBRY mbutuhake akses menyang kamera kanggo njupuk foto.</string>
+    <string name="edit_content">Edit konten</string>
+    <string name="mature_tags">Tag diwasa</string>
+    <string name="price">Rega</string>
+    <string name="free_publish">Konten sampeyan bakal gratis. Pencet pilihan kanggo nyetel rega.</string>
+    <string name="content_address">Alamat konten</string>
+    <string name="randomize">Ngacak</string>
+    <string name="address">Alamate</string>
+    <string name="content_address_desc">Alamat ing ngendi wong bisa nemokake konten sampeyan (contohe. lbry://myvideo). </string>
+    <string name="license">Lisensi</string>
+    <string name="license_desc">Katrangan lisensine</string>
+    <string name="additional_options">Pilihan tambahan</string>
+    <string name="show_extra_fields">Tampilake bidang tambahan</string>
+    <string name="hide_extra_fields">Singidaken kolom ekstra</string>
+    <string name="no_file_found">Ora ana file sing ditemokake sing bisa diterbitake.</string>
+    <string name="publish_invalid_claim_type">Pratelan sing ora bener sing ditemtokake kanggo diedit.</string>
+    <string name="video_optimization">Optimisasi video</string>
+    <string name="thumbnail_creation_failed">Gambar cilik ora bisa digawe kanthi otomatis saka file konten sampeyan.</string>
+    <string name="video_being_optimized">Video sampeyan dioptimalake kanggo dhukungan sing luwih apik ing sawetara piranti. Sampeyan bisa ngisi sisa sisa ing ngisor iki nalika lagi ditindakake.</string>
+    <string name="video_optimized">Video sampeyan bisa dioptimalake kanggo muter maneh kanthi luwih akeh nganti bisa. Terusake nerbitake konten sampeyan.</string>
+    <string name="video_optimize_failed">Video sampeyan ora bisa dioptimalake. File bakal diunggah tanpa owah-owahan.</string>
+    <string name="completed_video_duration">Durasi Video Komplite : %1$s</string>
+    <string name="sdk_initializing_publish">Sampeyan ora bisa nerbitake konten saiki amarga layanan latar mburi isih diwiwiti.</string>
+    <string name="publish_successful">Konten sampeyan wis diterbitake kanthi sukses. Perlu sawetara wektu katon ing blockchain.</string>
+    <string name="transcode_in_progress">Optimisasi video saiki wis ditindakake. Yen sampeyan pengin mbatalake, penet Batal ing sisih ngisor kaca.</string>
+    <string name="optimization_in_progress">Optimisasi video saiki wis ditindakake.</string>
+    <string name="cannot_capture_video">Ora ana aplikasi kamera sing kasedhiya kanggo ngrekam video ing piranti iki.</string>
+    <string name="cannot_take_photo">Ora ana aplikasi kamera sing kasedhiya kanggo njupuk foto ing piranti iki.</string>
+
+    <string name="please_provide_title">Mangga maringi judhul.</string>
+    <string name="please_specify_address">Mangga wenehi alamat ing ngendi wong bisa nemokake konten.</string>
+    <string name="address_invalid_characters">Alamat konten sampeyan duwe karakter sing ora bener.</string>
+    <string name="address_already_used">Sampeyan wis nerbitake menyang alamat konten sing wis ditemtokake. Ketik alamat anyar.</string>
+    <string name="no_file_selected">Ora ana file sing dipilih. Mangga pilih video utawa njupuk foto, utawa pilih file sadurunge diterbitake.</string>
+    <string name="price_amount_not_set">Mangga ketik rega utawa mateni sakelare supaya konten sampeyan gratis.</string>
+    <string name="publish_no_thumbnail">Mangga pilih gambar cilik kanggo diunggah sadurunge nerbitake.</string>
+    <string name="publish_thumbnail_in_progress">Mangga ngenteni gambar cilik rampung diunggah sadurunge nerbitake.</string>
+
+    <string name="language">Basa</string>
+    <string name="english">Inggris</string>
+    <string name="chinese">Cina</string>
+    <string name="french">Prancis</string>
+    <string name="german">Jerman</string>
+    <string name="japanese">Jepang</string>
+    <string name="russian">Rusia</string>
+    <string name="spanish">Spanyol</string>
+    <string name="indonesian">Indonesia</string>
+    <string name="italian">Italia</string>
+    <string name="dutch">Londo</string>
+    <string name="turkish">Turki</string>
+    <string name="polish">Polandia</string>
+    <string name="malay">Melayu</string>
+    <string name="portuguese">Portugis</string>
+    <string name="vietnamese">Vietnam</string>
+    <string name="thai">Thailand</string>
+    <string name="arabic">Arab</string>
+    <string name="czech">Ceko</string>
+    <string name="croatian">Kroasia</string>
+    <string name="cambodian">Kamboja</string>
+    <string name="korean">Korea</string>
+    <string name="norwegian">Norwegia</string>
+    <string name="romanian">Romania</string>
+    <string name="hindi">Hindi</string>
+    <string name="greek">Yunani</string>
+    <string name="catalan">Katalan</string>
+
+    <string name="none">Ora Ana</string>
+    <string name="public_domain">Domain Umum</string>
+    <string name="copyrighted">Hak cipta...</string>
+    <string name="cca_4_0_international">Creative Commons Attribution 4.0 International</string>
+    <string name="cca_sa_4_0_international">Creative Commons Attribution-ShareAlike 4.0 International</string>
+    <string name="cca_nd_4_0_international">Creative Commons Attribution-NoDerivatives 4.0 International</string>
+    <string name="cca_nc_4_0_international">Creative Commons Attribution-NonCommercial 4.0 International</string>
+    <string name="cca_nc_sa_4_0_international">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</string>
+    <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
+
+    <string-array name="publish_currencies">
+        <item>LBC</item>
+        <item>USD</item>
+    </string-array>
+
+    <!-- Publishes -->
+    <string name="one_or_more_publishes_failed_abandon">Siji utawa luwih item konten ora bisa dibusak ing wektu iki. Coba maneh mengko.</string>
+    <plurals name="confirm_delete_publishes">
+        <item quantity="other">Apa sampeyan pengin mbusak item konten sing dipilih?</item>
+    </plurals>
+    <plurals name="publishes_deleted">
+        <item quantity="other">Item konten kasebut wis bisa dibusak.</item>
+    </plurals>
+
+    <!-- Splash -->
+    <string name="oops_something_went_wrong">Dhuh! Ana prekara sing salah.</string>
+    <string name="installation_id_loaded">ID Instalasi sing wis Disedhiyakake</string>
+    <string name="known_tags_loaded">Disedhiyakake tag sing dikenal lan dituruti.</string>
+    <string name="exchange_rate_loaded">Disedhiyakake Kurs rega pasar LBC/USD</string>
+    <string name="user_authenticated">Pangguna asli.</string>
+    <string name="installation_registered">instalasine Kadhaptar .</string>
+    <string name="subscriptions_loaded">Langganan sing wis dirilis.</string>
+    <string name="subscriptions_resolved">Langganan sing wis dirampungake.</string>
+
+    <!-- Settings -->
+    <string name="user_interface">Content &amp; Antarmuka pangguna</string>
+    <string name="other">Liyane</string>
+    <string name="enable_background_playback">Aktifake puter maneh media latar mburi</string>
+    <string name="enable_dark_mode">Aktifake tema peteng</string>
+    <string name="show_mature_content">Tampilake konten sing diwasa</string>
+    <string name="show_url_suggestions">Tampilake saran URL</string>
+    <string name="notifications">Kabar</string>
+    <string name="subscriptions">Langganan</string>
+    <string name="content_interests">Minat konten</string>
+
+    <string name="keep_sdk_in_background">Tindakake layanan LBRY ing latar mburi supaya dompet lan kinerja jaringan luwih apik</string>
+    <string name="participate_in_data_network">Melok jaringan data (mbutuhake layanan app lan latar mburi maneh)</string>
+
+    <!-- URL suggestions -->
+    <string name="search_url_title">%1$s - Goleki</string>
+    <string name="tag_url_title">%1$s - Tag</string>
+    <string name="search_url_desc">Goleki gawe \'%1$s\'</string>
+    <string name="explore_tag_url_desc">Njelajahi \'%1$s\' tag</string>
+    <string name="view_file_url_desc">Ndeleng konten ing %1$s</string>
+    <string name="view_channel_url_desc">Ndeleng %1$s saluran</string>
+
+    <!-- Search -->
+    <string name="search_no_results">Ora ana asil sing ditemokake \'%1$s\'. Mangga ketik istilah telusuran sing beda.</string>
+    <string name="search_no_query">Sampeyan bisa nggoleki apa wae kalebu film, musik, ebook, piranti lunak lan liya-liyane.</string>
+    <string name="no_related_content">Ora ana konten sing gegandhengan sing ditampilake.</string>
+
+    <!-- Wallet -->
+    <string name="balance">Duwitmu</string>
+    <string name="you_currently_have">Sampeyan saiki duwe</string>
+    <string name="convert_credits">Sampeyan bisa ngowahi kridit sampeyan menyang USD lan mbatalake jumlah sing diowahi nggunakake ijol-ijolan. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
+    <string name="you_also_have">Sampeyan yo duwe</string>
+    <string name="you_staked">Sampeyan naruhno</string>
+    <string name="in_tips">ing tips</string>
+    <string name="in_your_publishes">ing nerbitake sampeyan</string>
+    <string name="in_your_supports">ing dhukungan sampeyan</string>
+    <string name="earn_more_tips">Entuk tips liyane kanthi ngunggah video sing viral</string>
+    <string name="sdk_initializing">Miwiti Layanan latar mburi...</string>
+    <string name="sdk_still_initializing">Layanan latar mburi isih miwiti. Sampeyan bisa njelajah lan nonton konten ing wektu tegese.</string>
+    <string name="sdk_initializing_functionality">Sampeyan ora bisa nindakake iki saiki amarga layanan latar mburi isih miwiti.</string>
+
+    <string name="backup_synced">Serep dompet sampeyan diselarasake karo lbry.tv</string>
+    <string name="backup_notsynced">Dompet sampeyan saiki durung diselarasake karo lbry.tv. Sampeyan tanggung jawab kanggo nggawe serep dompet.</string>
+    <string name="synced_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/account-sync\"&gt;What does this mean?&lt;/a&gt;</string>
+    <string name="backup_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;What does this mean?&lt;/a&gt;</string>
+
+    <string name="receive_credits">Nampa Kredit</string>
+    <string name="use_this_address_hint">Gunakake alamat dompet iki kanggo nampa kridit sing dikirim dening pangguna liyane (utawa dhewe).</string>
+    <string name="get_new_address">Entuk alamat anyar</string>
+    <string name="generate_address_hint">Sampeyan bisa ngasilake alamat anyar sawayah-wayah, lan wae alamat sadurunge bakal terus digunakake. Nggunakake pirang-pirang alamat bisa migunani kanggo nglacak pambayaran sing mlebu saka pirang-pirang sumber.</string>
+
+    <string name="send_credits">Kirimi Kredit</string>
+    <string name="recipient_address">Alamat panrima</string>
+    <string name="recipient_address_placeholder">bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs</string>
+    <string name="amount">Jumlahe</string>
+    <string name="send">Kirimke</string>
+
+    <string name="recent_transactions">Transaksi Paling Anyar</string>
+    <string name="view_all">Ndeleng Kabeh</string>
+    <string name="receive">Nampa</string>
+    <string name="spend">Nglampahi</string>
+    <string name="publish">Terbitake</string>
+    <string name="support">Dhukungan</string>
+    <string name="abandon">Nolak</string>
+    <string name="channel">Saluran</string>
+    <string name="channel_update">Nganyari Channel</string>
+    <string name="publish_update">Nganyari seng mbok Terbitake</string>
+
+    <string name="wallet_sync">Sync Dompet</string>
+    <string name="sync_status">Status sync</string>
+    <string name="on">Urip</string>
+    <string name="off">Mati</string>
+    <string name="email">Email</string>
+    <string name="no_connected_email">Ora ana Email sing nyambung</string>
+    <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
+    <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
+    <string name="zero">0</string>
+    <string name="lbc">LBC</string>
+
+    <string name="account_recommended">Rekomendasine Akun</string>
+    <string name="wallet_account_desc">Akun lbry.tv ngidini sampeyan entuk hadiah, serep dompet lan tetep diselarasake.</string>
+    <string name="wallet_without_account">Tanpa akun, sampeyan bakal nganggep kabeh tanggung jawab kanggo ngamanake dompet lan data LBRY.</string>
+    <string name="skip_account">Lewati Akune</string>
+    <string name="sign_up">Daftarke</string>
+    <string name="address_copied">Alamat disalin</string>
+
+    <string name="invalid_recipient_address">Ketik alamat sing bener kanggo ngirim kridit ing</string>
+    <string name="insufficient_balance">Ora Duwe Duwit</string>
+    <string name="invalid_amount">Ketik jumlah sing bener</string>
+    <string name="send_credit_error">Kridit sampeyan ora bisa dikirim ing wektu iki. Coba maneh mengko.</string>
+    <string name="loading_transactions">Enteni Sek transaksine...</string>
+    <string name="no_recent_transactions">Ora ana transaksi anyar sing ditampilake.</string>
+    <string name="no_transactions">Ora ana transaksi sing bisa ditampilake ing wektu iki.</string>
+    <string name="tx_list_fee">biaya %1$s</string>
+    <string name="transaction_history">Riwayate Transaksine</string>
+
+    <string name="unlock">Mbukak kunci</string>
+    <string name="unlock_tips">Mbukak kunci tips?</string>
+    <string name="confirm_unlock_tips">Apa sampeyan pengin mbukak kunci kabeh tips?</string>
+    <string name="min_spend_required">Ketik jumlah luwih saka 0.0001 kridit.</string>
+
+    <string name="buy_lbc">Tuku LBC</string>
+    <string name="hash_not_supported">Piranti sampeyan ora ndhukung syarat minimal kanggo njamin panjalukan sampeyan.</string>
+    <string name="receive_address_not_set">Sampeyan ora duwe alamat dompet. Mangga ngasilake alamat anyar lan coba maneh.</string>
+
+    <plurals name="you_sent_credits">
+        <item quantity="other">Sampeyan Kirim %1$s Kredit</item>
+    </plurals>
+
+    <!-- Dialogs -->
+    <string name="customize_your_tags">Setel tag sampeyan</string>
+    <string name="sort_content_by">Urut konten kanthi</string>
+    <string name="content_from">Konten Saka</string>
+    <string name="trending_content">Konten seng tren</string>
+    <string name="new_content">Konten anyar</string>
+    <string name="top_content">Konten paling ndhuwur</string>
+    <string name="trending">Trending</string>
+    <string name="top">Ndhuwur</string>
+    <string name="new_text">Anyar</string>
+    <string name="past_24_hours">24 jam kepungkur</string>
+    <string name="past_week">Seminggu kepungkur</string>
+    <string name="past_month">sewulan kepungkur</string>
+    <string name="past_year">Setahun Kepungkur</string>
+    <string name="all_time">Kabeh wektu</string>
+    <string name="from">saka</string>
+    <string name="for_text">kanggo</string>
+    <string name="filter_for">Filter kanggo</string>
+    <string name="everyone">Saben uwong</string>
+    <string name="tags_you_follow">Tags sing sampeyan meloki</string>
+    <string name="customize">Setel</string>
+    <string name="not_yet_implemented">Tampilan sing dipilih durung kasedhiya.</string>
+    <string name="customize_tags_hint">Katon manawa sampeyan durung ngetutake tag.</string>
+    <string name="search_for_more_tags">Telusuri luwih akeh tag</string>
+    <string name="no_followed_tags">Sampeyan durung ngetutake tag. Miwiti kanthi nambahake tag sing kasengsem!</string>
+    <string name="no_tag_results">Kita ora bisa nemokake tag anyar sing ora sampeyan tindakake.</string>
+    <string name="tag_already_added">Tag \'%1$s\' wis ditambah..</string>
+    <string name="tag_limit_reached">Sampeyan ora bisa nambah luwih saka 5 tag.</string>
+    <string name="send_a_tip">Kirim tip</string>
+    <string name="send_a_tip_to">Kirim tip menyang %1$s</string>
+    <string name="send_tip_info_content">Iki bakal katon minangka tip kanggo %1$s, sing bakal nambah kemampuan kanggo ditemokake nalika aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="send_tip_info_channel">Iki bakal katon minangka tip kanggo %1$s, sing bakal ningkatake kemampuan saluran kasebut ditemokake nalika aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="cancel">Batalke</string>
+    <string name="repost_title">Repost %1$s</string>
+    <string name="repost_your_favorite">Repost maneh konten favorit kanggo mbantu luwih akeh wong sing nemokake!</string>
+    <string name="channel_to_post_on">Saluran kanggo ngirim ing</string>
+    <string name="show_advanced">Tampilake canggih</string>
+    <string name="hide_advanced">Singidaken canggih</string>
+    <string name="name">Jeneng</string>
+    <string name="min_deposit">0.001</string>
+    <string name="content_successfully_reposted">Komentar sampeyan wis sukses dipos ulangake.</string>
+    <string name="repost_name_invalid_characters">Jeneng repost ngemot karakter sing ora bener.</string>
+    <plurals name="you_sent_a_tip">
+        <item quantity="other">Sampeyan ngirim %1$s kredit minangka tip, Mahalo!</item>
+    </plurals>
+
+    <!-- Verification -->
+    <string name="provide_email_address">Mangga maringi alamat email.</string>
+    <string name="email_placeholder">you@example.com</string>
+    <string name="email_sent_to">Email wis dikirim menyang</string>
+    <string name="please_click_link">Mangga klik link ing pesen kanggo ngrampungake mlebu.</string>
+    <string name="resend">Kirim Maneh</string>
+    <string name="continue_text">Terusake</string>
+    <string name="provide_valid_email">Ketik alamat email sing bener</string>
+    <string name="please_follow_instructions">Mangga tindakake pandhuan ing email sing dikirim menyang alamat sampeyan supaya bisa terus.</string>
+    <string name="sign_in_successful">Sampeyan wis mlebu menyang lbry.tv</string>
+    <string name="retrieving_account_information">Njupuk informasi akun...</string>
+    <string name="apply_wallet_data">Njupuk data duwitmu ...</string>
+    <string name="please_enter_your_password">Mangga ketik sandhi sing sampeyan gunakake kanggo ngamanake dompet.</string>
+    <string name="please_enter_a_password">Mangga ketik sandhi kanggo ngamanake dompet.</string>
+    <string name="wallet_security_purposes">Note: kanggo tujuan keamanan dompet, LBRY ora bisa ngreset sandhi.</string>
+    <string name="password">sandhi</string>
+    <string name="enable_sync">Aktifake sync</string>
+    <string name="wallet_sync_op_failed">Operasi nyelarasake dompet ora bisa dirampungake ing wektu iki. Coba maneh mengko. Yen masalah iki terus, kirim email menyang hello@lbry.com.</string>
+    <string name="phone_number">Nomer Telpon</string>
+    <string name="enter_phone_number">Mangga ketik nomer telpon sampeyan.</string>
+    <string name="not_interested">Ora kasengsem</string>
+    <string name="manual_reward_verification">Verifikasi Hadiah Manual</string>
+    <string name="account_undergo_review">Akun iki kudu ngalami review sadurunge sampeyan bisa melu ing program hadiah. Iki bisa njupuk ing endi wae saka sawetara menit nganti pirang-pirang dina.</string>
+    <string name="request_to_be_verified">Yen sampeyan terus ndeleng pesen iki, nyuwun supaya bisa diverifikasi ing &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="enjoy_free_content">Mumpung konten gratis!</string>
+    <string name="verify_phone_number">Verifikasi Nomer Telpon</string>
+    <string name="enter_phone_verify_code">Ketik kode verifikasi sing dikirim menyang %1$s</string>
+    <string name="code_placeholder">0000</string>
+    <string name="verify">Verifikasi</string>
+    <string name="please_enter_valid_phone">Ketik nomer telpon sing bener.</string>
+    <string name="please_enter_verification_code">Mangga ketik kode verifikasi sing dikirim menyang nomer telpon.</string>
+    <string name="fetch_current_user_error">Akun pangguna ora bisa dijupuk maneh ing wektu iki. Coba maneh mengko.</string>
+
+    <!-- Forms -->
+    <string name="no_added_tags">Sampeyan durung nambahake tag. Nambah tag kanggo nambah panemuan.</string>
+    <string name="form_no_tag_results">Kita ora bisa nemokake tag anyar sing durung ditambahake.</string>
+
+    <!-- Channels -->
+    <string name="no_channel_created">Sampeyan durung nggawe saluran. \nStart saiki kanthi nggawe saluran anyar!</string>
+    <string name="create_a_channel">Gawe saluran</string>
+    <string name="create_a_channel_item">Gawe saluran...</string>
+    <string name="edit_channel">Edit saluran</string>
+    <string name="delete_selection">Mbusak pilihan?</string>
+    <string name="delete_channel">Mbusak saluran?</string>
+    <string name="confirm_delete_channel">Apa sampeyan pengin mbusak saluran iki?</string>
+    <string name="channel_deleted">Saluran sukses dibusak.</string>
+    <string name="channel_failed_delete">Saluran iki ora bisa dibusak ing wektu iki. Coba maneh mengko.</string>
+    <string name="description">Katrangan</string>
+    <string name="yes">Ya</string>
+    <string name="no">Ora</string>
+    <string name="show_optional_fields">Tampilake kolom opsional</string>
+    <string name="hide_optional_fields">Singidaken kolom opsional</string>
+    <string name="save">Nyimpen</string>
+    <string name="channel_name">Jeneng saluran</string>
+    <string name="title">Judule</string>
+    <string name="at">\@</string>
+    <string name="deposit">Deposit</string>
+    <string name="deposit_remains_yours">LBC iki tetep dadi gone sampeyan. Iki minangka simpenan kanggo cadangan jeneng kasebut lan bisa dibatalake kapan wae.</string>
+    <string name="storage_permission_rationale_download">LBRY mbutuhake akses kanggo ndownload konten menyang piranti sampeyan.</string>
+    <string name="storage_permission_rationale_images">LBRY mbutuhake akses kanggo mbukak gambar saka piranti piranti.</string>
+    <string name="select_thumbnail">Pilih gambar cilik</string>
+    <string name="select_cover">Pilih cover gambare </string>
+    <string name="undetermined_image_filepath">Jalur file ora bisa ditemtokake kanggo gambar sing dipilih. Mangga pilih gambar ing lokasi sing beda.</string>
+    <string name="wait_for_upload">Mangga ngenteni rampung sek upload saiki.</string>
+    <string name="image_upload_failed">Panjaluk upload gambar gagal. Coba maneh.</string>
+    <string name="uploading">Ngunggah...</string>
+    <string name="please_enter_channel_name">Mangga ketik jeneng saluran.</string>
+    <string name="channel_name_invalid_characters">Jeneng saluran sampeyan ngemot karakter sing ora bener.</string>
+    <string name="channel_name_already_created">Sampeyan wis nggawe saluran kanthi jeneng sing padha.</string>
+    <string name="please_enter_valid_deposit">Ketik jumlah simpenan sing bener.</string>
+    <string name="deposit_more_than_balance">Deposit ora bisa luwih dhuwur tinimbang imbangan sampeyan.</string>
+    <string name="channel_save_failed">Panyuwunan nyimpen saluran gagal. Coba maneh.</string>
+    <string name="channel_save_successful">Saluran wis disimpen.</string>
+    <string name="item_pending_blockchain">Tuntutan kasebut isih nerbitake ing blockchain. Sampeyan bakal bisa ngakses utawa ngowahi klaim kasebut ing sawetara wektu.</string>
+    <string name="pending">Ditundha</string>
+    <string name="create">Gawe</string>
+    <string name="one_or_more_channels_failed_abandon">Siji utawa luwih item saluran ora bisa dibusak ing wektu iki. Coba maneh mengko.</string>
+    <plurals name="min_deposit_required">
+        <item quantity="other">Dibutuhake Simpenan kridit %1$s  minimal.</item>
+    </plurals>
+    <plurals name="confirm_delete_channels">
+        <item quantity="other">Apa sampeyan pengin mbusak saluran sing dipilih?</item>
+    </plurals>
+    <plurals name="channels_deleted">
+        <item quantity="other">Saluran kasebut wis dibusak.</item>
+    </plurals>
+
+    <!-- Rewards -->
+    <string name="lbry_credits_allow">Kridit LBRY ngidini sampeyan nerbitake utawa tuku konten.</string>
+    <string name="free_credits_worth">Sampeyan bisa entuk biaya kridit gratis $%1$s sawise sampeyan nyedhiyani alamat email.</string>
+    <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="get_started">Miwiti</string>
+    <string name="reward_code_placeholder">abc123</string>
+    <string name="claim">Klaim</string>
+    <string name="please_enter_claim_code">Mangga ketik kode hadiah khusus gawe klaim.</string>
+    <string name="unclaimed">Durung Diklaim</string>
+    <string name="custom_reward_title">Ongko Kustom</string>
+    <string name="up_to">nganti</string>
+    <string name="custom_reward_description">Apa sampeyan supermodel utawa rockstar sing nampa ongko hadiah khusus? Tuntut ing kene.</string>
+    <plurals name="claim_reward_message">
+        <item quantity="other">Sampeyan wis klaim %1$s kridit minangka hadiah.</item>
+    </plurals>
+    <plurals name="available_credits">
+        <item quantity="other">%1$s kridit sing kasedhiya</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">Publishing mbutuhake kridit.</string>
+    <string name="channel_creation_requires_credits">Nggawe saluran mbutuhake kridit.</string>
+    <string name="earn_rewards_for_inviting">Entuk hadiah kanggo ngundang kanca.</string>
+    <string name="earn_some_credits_to_access">Entuk sawetara kridit kanggo ngakses konten iki.</string>
+    <string name="tap_here_to_get_some">Tutul ing kene kanggo njaluk sawetara gratis.</string>
+    <string name="free_credits_available">Kridit gratis kasedhiya ing hadiah.</string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="other">%1$s kridit gratis kasedhiya ing hadiah.</item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="other">Entuk %1$s kredit gratis sawise nggawe akun.</item>
+    </plurals>
+
+    <!-- Invites -->
+    <string name="lbry_invite_program">Program Undhangan LBRY</string>
+    <string name="earn_extra_credits_invites">Sampeyan bisa entuk kridit ekstra kanggo saben wong sing dienggo nggunakake LBRY.</string>
+    <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="invite_link">Ngundang Link</string>
+    <string name="share_this_link">Nuduhake tautan iki karo kanca (utawa mungsuh) lan entuk kridit nalika gabung karo lbry.tv.</string>
+    <string name="your_invite_link">Link Undangan sampeyan</string>
+    <string name="customize_invite_link">Ngatur link undhangan</string>
+    <string name="invite_by_email">Ngundang Kanggo Email</string>
+    <string name="invite_someone">Ajak wong sing sampeyan kenal karo email lan entuk kridit nalika gabung ing lbry.tv.</string>
+    <string name="invite_email_placeholder">imaginary@friend.com</string>
+    <string name="invite">Undang</string>
+    <string name="invite_history">Riwayat Undangane</string>
+    <string name="earn_credits_for_inviting">Entuk kridit kanggo ngundang kanca, mungsuh, frenemy, utawa kanca. Kabeh wong butuh kabebasan konten.</string>
+    <string name="reward">Hadiah</string>
+    <string name="claimed">Diklaim</string>
+    <string name="claimable">Iso Diklaim iki</string>
+    <string name="unclaimable">Ora bisa di klaim</string>
+    <string name="invite_link_copied">link undangane disalin.</string>
+    <string name="invite_sent_to">Ngundang dikirim menyang %1$s</string>
+
+    <!-- Library -->
+    <string name="downloads">Downloads</string>
+    <string name="purchases">Pembelian</string>
+    <string name="history">Riwayat</string>
+    <string name="library_no_downloads">Sampeyan durung ndownload konten menyang piranti iki.</string>
+    <string name="library_no_history">Sampeyan durung ndeleng konten ing piranti iki.</string>
+    <string name="library_no_purchases">Sampeyan ora tuku konten ing akun sampeyan.</string>
+    <string name="hide">Singidaken</string>
+    <string name="stats">Stats</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="images">Gambar</string>
+    <string name="mb">MB</string>
+    <string name="kb">KB</string>
+    <string name="gb">GB</string>
+    <string name="zero_mb">0MB</string>
+    <plurals name="confirm_delete_files">
+        <item quantity="other">Apa sampeyan pengin mbusak file sing dipilih saka piranti?</item>
+    </plurals>
+    <plurals name="files_deleted">
+        <item quantity="other">File kasebut sukses dibusak.</item>
+    </plurals>
+
+    <!-- About -->
+    <string name="about_lbry">Babagan LBRY</string>
+    <string name="content_freedom">Merdika Konten</string>
+    <string name="about_paragraph">LBRY minangka pasar digital sing bebas, mbukak, lan komunitas. Iku platform distribusi konten peer-to-peer desentralisasi kanggo pencipta supaya bisa ngunggah lan nuduhake konten, lan entuk kridit LBRY kanggo upaya. Panganggo bakal bisa nemokake. pilihan video, musik, ebook lan konten digital liyane sing kasengsem. </string>
+    <string name="get_social">Entuk Sosial</string>
+    <string name="social_paragraph">Sampeyan bisa sesambungan karo tim LBRY lan anggota komunitas ing Discord, Facebook, Instagram, Twitter utawa Reddit.</string>
+    <string name="app_info">Infone aplikasi</string>
+    <string name="loading">Enteni Sek...</string>
+    <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;What is LBRY?&lt;/a&gt;</string>
+    <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Basics&lt;/a&gt;</string>
+    <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>
+    <string name="about_link_discord">&lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;Discord&lt;/a&gt;</string>
+    <string name="about_link_facebook">&lt;a href=\"https://www.facebook.com/LBRYio\"&gt;Facebook&lt;/a&gt;</string>
+    <string name="about_link_instagram">&lt;a href=\"https://www.instagram.com/LBRYio\"&gt;Instagram&lt;/a&gt;</string>
+    <string name="about_link_reddit">&lt;a href=\"https://reddit.com/r/lbry\"&gt;Reddit&lt;/a&gt;</string>
+    <string name="about_link_telegram">&lt;a href=\"https://t.me/lbryofficial\"&gt;Telegram&lt;/a&gt;</string>
+    <string name="about_link_twitter">&lt;a href=\"https://twitter.com/LBRYio\"&gt;Twitter&lt;/a&gt;</string>
+    <string name="update_mailing_preferences">Anyari pilihan kiriman</string>
+    <string name="app_version">Versine aplikasi</string>
+    <string name="lbry_sdk">LBRY SDK</string>
+    <string name="platform">Platform</string>
+    <string name="installation_id">ID instalasine</string>
+    <string name="firebase_token">Firebase Token</string>
+    <string name="logs">Log</string>
+    <string name="send_log">Kirim Log</string>
+    <string name="connected_email">Email sing nyambung</string>
+    <string name="unknown">Ora dingerteni</string>
+    <string name="cannot_find_lbrynet_log">File lbrynet.log ora bisa ditemokake.</string>
+    <string name="cannot_share_lbrynet_log">File lbrynet.log ora bisa dienggo bareng amarga watesan ijin.</string>
+
+    <!-- Font Awesome -->
+    <string name="fa_gift">&#xf06b;</string>
+    <string name="fa_lock">&#xf023;</string>
+    <string name="fa_coins">&#xf51e;</string>
+    <string name="fa_file">&#xf15b;</string>
+    <string name="fa_hashtag">&#xf292;</string>
+    <string name="fa_search">&#xf002;</string>
+    <string name="fa_at">&#xf1fa;</string>
+
+    <string name="fa_heart">&#xf004;</string>
+    <string name="fa_heart_broken">&#xf7a9;</string>
+    <string name="fa_star">&#xf005;</string>
+    <string name="fa_globe_americas">&#xf57d;</string>
+    <string name="fa_upload">&#xf093;</string>
+    <string name="fa_download">&#xf019;</string>
+    <string name="fa_cloud_upload">&#xf382;</string>
+    <string name="fa_wallet">&#xf555;</string>
+    <string name="fa_award">&#xf559;</string>
+    <string name="fa_user_friends">&#xf500;</string>
+    <string name="fa_cog">&#xf013;</string>
+    <string name="fa_mobile_alt">&#xf3cd;</string>
+    <string name="fa_repost">&#xf079;</string>
+    <string name="fa_folder_open">&#xf07c;</string>
+</resources>

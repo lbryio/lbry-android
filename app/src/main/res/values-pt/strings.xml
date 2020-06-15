@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ImpliedQuantity">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Abrir janela de navegação</string>
     <string name="navigation_drawer_close">Fechar janela de navegação</string>
@@ -59,6 +59,10 @@
     <string name="report">Reportar</string>
     <string name="loading_decentralized_data">Carregando dados descentralizados...</string>
     <string name="related_content">Conteúdo relacionado</string>
+    <string name="comments">Comentários</string>
+    <string name="no_comments">Sem comentários até agora</string>
+    <string name="sdk_initializing_comments">Os comentários serão exibidos após a inicialização do serviço em segundo plano.</string>
+    <string name="comment_error">Não foi possível postar seu comentário no momento. Por favor, tente novamente mais tarde.</string>
     <string name="share_lbry_content">Compartilhe conteúdo do LBRY</string>
     <string name="view">Vizualização</string>
     <string name="play">Play</string>
@@ -78,6 +82,26 @@
     <string name="confirm_delete_content_message">Tem certeza de que deseja cancelar a publicação deste conteúdo? Nenhum arquivo será removido do seu dispositivo.</string>
     <string name="content_deleted">O conteúdo foi excluído com sucesso da blockchain.</string>
     <string name="content_failed_delete">Não foi possível excluir o conteúdo no momento. Por favor, tente novamente mais tarde.</string>
+    <string name="comment">Comentário</string>
+    <string name="comment_as">Comentar como</string>
+    <string name="please_enter_comment">Digite um comentário para postar.</string>
+    <string name="please_select_channel">Por favor selecione um canal para postar seu comentário.</string>
+    <string name="comment_posted">O seu comentário foi publicado com sucesso.</string>
+    <string name="please_select_repost_channel">Selecione um canal para repostar.</string>
+    <string name="reply">Responder</string>
+    <string name="replying_to">Respondendo para %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">Postar e doar %1$s crédito?</item>
+        <item quantity="other">Postar e doar %1$s créditos?</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="one">Postar por %1$s crédito</item>
+        <item quantity="other">Postar por %1$s créditos</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">Isso postará seu comentário com uma gorjeta de %1$scréditos para %2$s</item>
+        <item quantity="other">Isso postará seu comentário com uma gorjeta de %1$s créditos para %2$s</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="one">%1$s vizualizações</item>
         <item quantity="other">%1$s vizualizações</item>
@@ -98,6 +122,7 @@
     </plurals>
 
     <!-- Publish -->
+    <string name="no_publishes_created">Parece que você ainda não publicou conteúdo na LBRY.</string>
     <string name="record">Gravar</string>
     <string name="take_photo">Tirar Foto</string>
     <string name="upload_file">Enviar um arquivo</string>
@@ -120,6 +145,7 @@
     <string name="show_extra_fields">Mostrar campos opcionais</string>
     <string name="hide_extra_fields">Esconder campos opcionais</string>
     <string name="no_file_found">Nenhum arquivo encontrado para publicar.</string>
+    <string name="publish_invalid_claim_type">Reivindicação especificada inválida para edição.</string>
     <string name="video_optimization">Otimização de vídeo</string>
     <string name="thumbnail_creation_failed">Não foi possível criar automaticamente uma miniatura do seu arquivo de conteúdo.</string>
     <string name="video_being_optimized">Seu vídeo está sendo otimizado para melhor suporte em uma ampla variedade de dispositivos. Você pode preencher os campos restantes abaixo enquanto isso estiver em andamento.</string>
@@ -168,6 +194,7 @@
     <string name="romanian">Romeno</string>
     <string name="hindi">Hindi</string>
     <string name="greek">Grego</string>
+    <string name="catalan">Catalão</string>
 
     <string name="none">Nenhum</string>
     <string name="public_domain">Domínio Público</string>
@@ -208,6 +235,7 @@
     <!-- Settings -->
     <string name="user_interface">Conteúdo &amp; interface do usuário</string>
     <string name="other">Outros</string>
+    <string name="enable_background_playback">Ativar reprodução em segundo plano</string>
     <string name="enable_dark_mode">Ativar tema dark</string>
     <string name="show_mature_content">Mostrar conteúdo adulto </string>
     <string name="show_url_suggestions">Mostrar sugestões de URL</string>
@@ -304,6 +332,11 @@
     <string name="unlock">Desbloquear</string>
     <string name="unlock_tips">Desbloquear gorjetas</string>
     <string name="confirm_unlock_tips">Tem certeza de que deseja desbloquear todas as suas dicas?</string>
+    <string name="min_spend_required">Digite um valor superior a 0,0001 créditos.</string>
+
+    <string name="buy_lbc">Comprar LBC</string>
+    <string name="hash_not_supported">Seu dispositivo não suporta os requisitos mínimos para proteger sua solicitação de compra.</string>
+    <string name="receive_address_not_set">Você não tem um endereço de carteira definido. Gere um novo endereço e tente novamente.</string>
 
     <plurals name="you_sent_credits">
         <item quantity="one">Você enviou %1$s créditos</item>
@@ -388,6 +421,7 @@
     <string name="verify">Verificar</string>
     <string name="please_enter_valid_phone">Por favor insira um número de telefone válido.</string>
     <string name="please_enter_verification_code">Digite o código de verificação enviado para o seu número de telefone.</string>
+    <string name="fetch_current_user_error">Não foi possível recuperar a conta do usuário no momento. Por favor, tente novamente mais tarde.</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Você ainda não adicionou nenhuma tag. Adicione tags para melhorar seu alcance.</string>
@@ -496,7 +530,7 @@
     <string name="invite_email_placeholder">imaginary@friend.com</string>
     <string name="invite">Convite</string>
     <string name="invite_history">Histórico de Convites</string>
-    <string name="earn_credits_for_inviting">Ganhe créditos por convidar os amiguxs. Todo mundo precisa de liberdade de conteúdo.</string>
+    <string name="earn_credits_for_inviting">Ganhe créditos por convidar um amigo, um inimigo ou até seu rival. Todo mundo precisa de liberdade de conteúdo.</string>
     <string name="reward">Recompensa</string>
     <string name="claimed">Obtido</string>
     <string name="claimable">Disponível</string>
