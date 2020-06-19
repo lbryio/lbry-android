@@ -47,9 +47,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.target.ImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -109,7 +107,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -296,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_INTERNAL_WALLET_RECEIVE_ADDRESS = "io.lbry.browser.preference.internal.WalletReceiveAddress";
     public static final String PREFERENCE_KEY_INTERNAL_REWARDS_NOT_INTERESTED = "io.lbry.browser.preference.internal.RewardsNotInterested";
     public static final String PREFERENCE_KEY_INTERNAL_NEW_ANDROID_REWARD_CLAIMED = "io.lbry.browser.preference.internal.NewAndroidRewardClaimed";
+    public static final String PREFERENCE_KEY_INTERNAL_INITIAL_SUBSCRIPTION_MERGE_DONE = "io.lbry.browser.preference.internal.InitialSubscriptionMergeDone";
 
     public static final String PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED = "io.lbry.browser.preference.internal.FirstRunCompleted";
     public static final String PREFERENCE_KEY_INTERNAL_FIRST_AUTH_COMPLETED = "io.lbry.browser.preference.internal.FirstAuthCompleted";
@@ -552,6 +550,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public boolean isBackgroundPlaybackEnabled() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         return sp.getBoolean(PREFERENCE_KEY_BACKGROUND_PLAYBACK, false);
+    }
+
+    public boolean initialSubscriptionMergeDone() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        return sp.getBoolean(PREFERENCE_KEY_INTERNAL_INITIAL_SUBSCRIPTION_MERGE_DONE, false);
     }
 
     private void initSpecialRouteMap() {
@@ -1780,13 +1783,19 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     // reload subscriptions if wallet fragment is FollowingFragment
                     //openNavFragments.get
                     MergeSubscriptionsTask mergeTask = new MergeSubscriptionsTask(
-                            subscriptions, MainActivity.this, new MergeSubscriptionsTask.MergeSubscriptionsHandler() {
+                            subscriptions,
+                            !initialSubscriptionMergeDone(),
+                            MainActivity.this, new MergeSubscriptionsTask.MergeSubscriptionsHandler() {
                         @Override
                         public void onSuccess(List<Subscription> subscriptions, List<Subscription> diff) {
                             Lbryio.subscriptions = new ArrayList<>(subscriptions);
                             if (diff != null && diff.size() > 0) {
                                 saveSharedUserState();
                             }
+
+                            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                            sp.edit().putBoolean(PREFERENCE_KEY_INTERNAL_INITIAL_SUBSCRIPTION_MERGE_DONE, true).apply();
+
                             for (Fragment fragment : openNavFragments.values()) {
                                 if (fragment instanceof FollowingFragment) {
                                     // reload local subscriptions

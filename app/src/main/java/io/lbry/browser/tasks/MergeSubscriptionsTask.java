@@ -34,9 +34,11 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
     private List<Subscription> diff;
     private MergeSubscriptionsHandler handler;
     private Exception error;
+    private boolean replaceLocal;
 
-    public MergeSubscriptionsTask(List<Subscription> base, Context context, MergeSubscriptionsHandler handler) {
+    public MergeSubscriptionsTask(List<Subscription> base, boolean replaceLocal, Context context, MergeSubscriptionsHandler handler) {
         this.base = base;
+        this.replaceLocal = replaceLocal;
         this.context = context;
         this.handler = handler;
     }
@@ -53,10 +55,17 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                 db = ((MainActivity) context).getDbHelper().getWritableDatabase();
             }
             if (db != null) {
-                localSubs = DatabaseHelper.getSubscriptions(db);
-                for (Subscription sub : localSubs) {
-                    if (!combined.contains(sub)) {
-                        combined.add(sub);
+                if (replaceLocal) {
+                    DatabaseHelper.clearSubscriptions(db);
+                    for (Subscription sub : base) {
+                        DatabaseHelper.createOrUpdateSubscription(sub, db);
+                    }
+                } else {
+                    localSubs = DatabaseHelper.getSubscriptions(db);
+                    for (Subscription sub : localSubs) {
+                        if (!combined.contains(sub)) {
+                            combined.add(sub);
+                        }
                     }
                 }
             }
@@ -98,10 +107,12 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                 }
             }
 
-            for (int i = 0; i < localSubs.size(); i++) {
-                Subscription local = localSubs.get(i);
-                if (!base.contains(local) && !diff.contains(local)) {
-                    diff.add(local);
+            if (!replaceLocal) {
+                for (int i = 0; i < localSubs.size(); i++) {
+                    Subscription local = localSubs.get(i);
+                    if (!base.contains(local) && !diff.contains(local)) {
+                        diff.add(local);
+                    }
                 }
             }
             for (int i = 0; i < remoteSubs.size(); i++) {
