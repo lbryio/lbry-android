@@ -2,7 +2,7 @@
 [![pipeline status](https://ci.lbry.tech/lbry/lbry-android/badges/master/pipeline.svg)](https://ci.lbry.tech/lbry/lbry-android/commits/master)
 [![GitHub license](https://img.shields.io/github/license/lbryio/lbry-android)](https://github.com/lbryio/lbry-android/blob/master/LICENSE)
 
-An Android browser and wallet for the [LBRY](https://lbry.com) network. This app bundles [LBRY SDK](https://github.com/lbryio/lbry) as a background service with a UI layer built with React Native.
+An Android browser and wallet for the [LBRY](https://lbry.com) network.
 
 
 <img src="https://spee.ch/@lbry:3f/android-08-homepage.gif" alt="LBRY Android GIF" width="384px" />
@@ -18,7 +18,7 @@ The minimum supported Android version is 5.0 Lollipop. There are two ways to ins
 The app can be launched by opening **LBRY** from the device's app drawer or via the shortcut on the home screen if that was created upon installation.
 
 ## Running from Source
-Please refer to https://github.com/lbryio/lbry-react-native/blob/master/README.md
+Clone the repository and open the project in Android Studio. Android Studio will automatically run the initial build process. Click the Run button to launch the app on your simulator or connected debugging device after the build process is complete.
 
 ## Contributing
 Contributions to this project are welcome, encouraged, and compensated. For more details, see https://lbry.io/faq/contributing
