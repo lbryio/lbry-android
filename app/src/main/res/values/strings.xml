@@ -594,26 +594,26 @@
     <string name="cannot_share_lbrynet_log">The lbrynet.log file cannot be shared due to permission restrictions.</string>
 
     <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
+    <string name="fa_gift" translatable="false">&#xf06b;</string>
+    <string name="fa_lock" translatable="false">&#xf023;</string>
+    <string name="fa_coins" translatable="false">&#xf51e;</string>
+    <string name="fa_file" translatable="false">&#xf15b;</string>
+    <string name="fa_hashtag" translatable="false">&#xf292;</string>
+    <string name="fa_search" translatable="false">&#xf002;</string>
+    <string name="fa_at" translatable="false">&#xf1fa;</string>
 
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
+    <string name="fa_heart" translatable="false">&#xf004;</string>
+    <string name="fa_heart_broken" translatable="false">&#xf7a9;</string>
+    <string name="fa_star" translatable="false">&#xf005;</string>
+    <string name="fa_globe_americas" translatable="false">&#xf57d;</string>
+    <string name="fa_upload" translatable="false">&#xf093;</string>
+    <string name="fa_download" translatable="false">&#xf019;</string>
+    <string name="fa_cloud_upload" translatable="false">&#xf382;</string>
+    <string name="fa_wallet" translatable="false">&#xf555;</string>
+    <string name="fa_award" translatable="false">&#xf559;</string>
+    <string name="fa_user_friends" translatable="false">&#xf500;</string>
+    <string name="fa_cog" translatable="false">&#xf013;</string>
+    <string name="fa_mobile_alt" translatable="false">&#xf3cd;</string>
+    <string name="fa_repost" translatable="false">&#xf079;</string>
+    <string name="fa_folder_open" translatable="false">&#xf07c;</string>
 </resources>
