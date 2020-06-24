@@ -363,7 +363,7 @@
     <string name="filter_for">Filter for</string>
     <string name="everyone">Everyone</string>
     <string name="tags_you_follow">Tags you follow</string>
-    <string name="customize">Customize</string>
+    <string name="customize">Customize</string>Send a tip
     <string name="not_yet_implemented">The selected view is not yet available.</string>
     <string name="customize_tags_hint">It looks like you have not followed any tags yet.</string>
     <string name="search_for_more_tags">Search for more tags</string>
@@ -373,6 +373,12 @@
     <string name="tag_limit_reached">You cannot add more than 5 tags.</string>
     <string name="send_a_tip">Send a tip</string>
     <string name="send_a_tip_to">Send a tip to %1$s</string>
+    <string name="support_this_content">Support this content</string>
+    <string name="support_info">This will increase the overall bid amount for this content, which will boost its ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Channel to show support as</string>
+    <string name="make_this_a_tip">Make this a tip</string>
+    <string name="send_revocable_support">Send Revocable Support</string>
+    <string name="send_lbc_tip">Send a %1$s LBC Tip</string>
     <string name="send_tip_info_content">This will appear as a tip for %1$s, which will boost its ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">This will appear as a tip for %1$s, which will boost the channel\'s ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Cancel</string>
@@ -388,6 +394,10 @@
     <plurals name="you_sent_a_tip">
         <item quantity="one">You sent %1$s credit as a tip, Mahalo!</item>
         <item quantity="other">You sent %1$s credits as a tip, Mahalo!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">You staked %1$s credit as a support. You can revoke your support at any time.</item>
+        <item quantity="other">You staked %1$s credits as a support. You can revoke your support at any time.</item>
     </plurals>
 
     <!-- Verification -->

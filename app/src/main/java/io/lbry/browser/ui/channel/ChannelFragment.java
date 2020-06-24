@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -36,7 +35,7 @@ import java.util.Map;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
-import io.lbry.browser.dialog.SendTipDialogFragment;
+import io.lbry.browser.dialog.CreateSupportDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.FetchChannelsListener;
 import io.lbry.browser.model.Claim;
@@ -174,16 +173,16 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                 }
 
                 if (claim != null) {
-                    SendTipDialogFragment dialog = SendTipDialogFragment.newInstance();
+                    CreateSupportDialogFragment dialog = CreateSupportDialogFragment.newInstance();
                     dialog.setClaim(claim);
-                    dialog.setListener(new SendTipDialogFragment.SendTipListener() {
+                    dialog.setListener(new CreateSupportDialogFragment.CreateSupportListener() {
                         @Override
-                        public void onTipSent(BigDecimal amount) {
+                        public void onSupportCreated(BigDecimal amount, boolean isTip) {
                             double sentAmount = amount.doubleValue();
                             View view = getView();
                             if (view != null) {
                                 String message = getResources().getQuantityString(
-                                        R.plurals.you_sent_a_tip, sentAmount == 1.0 ? 1 : 2,
+                                        isTip ? R.plurals.you_sent_a_tip : R.plurals.you_sent_a_support, sentAmount == 1.0 ? 1 : 2,
                                         new DecimalFormat("#,###.##").format(sentAmount));
                                 Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
                             }
@@ -191,7 +190,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                     });
                     Context context = getContext();
                     if (context instanceof MainActivity) {
-                        dialog.show(((MainActivity) context).getSupportFragmentManager(), SendTipDialogFragment.TAG);
+                        dialog.show(((MainActivity) context).getSupportFragmentManager(), CreateSupportDialogFragment.TAG);
                     }
                 }
             }

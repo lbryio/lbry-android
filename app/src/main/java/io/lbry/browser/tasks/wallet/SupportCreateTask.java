@@ -17,14 +17,16 @@ import io.lbry.browser.utils.Lbry;
 
 public class SupportCreateTask extends AsyncTask<Void, Void, Boolean> {
     private String claimId;
+    private String channelId;
     private BigDecimal amount;
     private boolean tip;
     private View progressView;
     private GenericTaskHandler handler;
     private Exception error;
 
-    public SupportCreateTask(String claimId, BigDecimal amount, boolean tip, View progressView, GenericTaskHandler handler) {
+    public SupportCreateTask(String claimId, String channelId, BigDecimal amount, boolean tip, View progressView, GenericTaskHandler handler) {
         this.claimId = claimId;
+        this.channelId = channelId;
         this.amount = amount;
         this.tip = tip;
         this.progressView = progressView;
@@ -44,6 +46,9 @@ public class SupportCreateTask extends AsyncTask<Void, Void, Boolean> {
             options.put("claim_id", claimId);
             options.put("amount", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).format(amount.doubleValue()));
             options.put("tip", tip);
+            if (!Helper.isNullOrEmpty(channelId)) {
+                options.put("channel_id", channelId);
+            }
             Lbry.genericApiCall(Lbry.METHOD_SUPPORT_CREATE, options);
         } catch (ApiCallException ex) {
             error = ex;

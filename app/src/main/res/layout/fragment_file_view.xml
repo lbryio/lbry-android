@@ -295,7 +295,7 @@
                         <TextView
                             android:fontFamily="@font/inter"
                             android:textSize="12sp"
-                            android:text="@string/tip"
+                            android:text="@string/support"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal" />

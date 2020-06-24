@@ -41,6 +41,12 @@ public class InlineChannelSpinnerAdapter extends ArrayAdapter<Claim> {
             channels.add(1, anonymous);
         }
     }
+    public void addAnonymousPlaceholder() {
+        Claim anonymous = new Claim();
+        anonymous.setPlaceholderAnonymous(true);
+        insert(anonymous, 0);
+        channels.add(0, anonymous);
+    }
 
     public void addAll(Collection<? extends Claim> collection) {
         for (Claim claim : collection) {
