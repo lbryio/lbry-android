@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,6 +113,22 @@ public class CreateSupportDialogFragment extends BottomSheetDialogFragment imple
                 inlineBalanceContainer.setVisibility(hasFocus ? View.VISIBLE : View.INVISIBLE);
             }
         });
+        inputAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                updateSendButtonText();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         updateInfoText();
         updateSendButtonText();
 
@@ -203,9 +221,14 @@ public class CreateSupportDialogFragment extends BottomSheetDialogFragment imple
     }
 
     private void updateSendButtonText() {
-        String amountString = Helper.getValue(inputAmount.getText());
-        double parsedAmount = Helper.parseDouble(amountString, 0);
-        sendButton.setText(parsedAmount == 0 ? getString(R.string.send_a_tip) : getString(R.string.send_lbc_tip, amountString));
+        boolean isTip = switchTip.isChecked();
+        if (!isTip) {
+            sendButton.setText(R.string.send_revocable_support);
+        } else {
+            String amountString = Helper.getValue(inputAmount.getText());
+            double parsedAmount = Helper.parseDouble(amountString, 0);
+            sendButton.setText(parsedAmount == 0 ? getString(R.string.send_a_tip) : getString(R.string.send_lbc_tip, amountString));
+        }
     }
 
     private void updateInfoText() {
