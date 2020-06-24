@@ -308,7 +308,8 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
 
         Claim original = items.get(position);
         boolean isRepost = Claim.TYPE_REPOST.equalsIgnoreCase(original.getValueType());
-        final Claim item = Claim.TYPE_REPOST.equalsIgnoreCase(original.getValueType()) ? original.getRepostedClaim() : original;
+        final Claim item = Claim.TYPE_REPOST.equalsIgnoreCase(original.getValueType()) ?
+                (original.getRepostedClaim() != null ? original.getRepostedClaim() : original): original;
         Claim.GenericMetadata metadata = item.getValue();
         Claim signingChannel = item.getSigningChannel();
         Claim.StreamMetadata streamMetadata = null;
@@ -383,7 +384,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
 
         vh.publishTimeView.setVisibility(!isPending ? View.VISIBLE : View.GONE);
         vh.pendingTextView.setVisibility(isPending ? View.VISIBLE : View.GONE);
-        vh.repostInfoView.setVisibility(isRepost ? View.VISIBLE : View.GONE);
+        vh.repostInfoView.setVisibility(isRepost && type != VIEW_TYPE_FEATURED ? View.VISIBLE : View.GONE);
         vh.repostChannelView.setText(isRepost ? original.getSigningChannel().getName() : null);
         vh.repostChannelView.setOnClickListener(new View.OnClickListener() {
             @Override

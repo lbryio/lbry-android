@@ -201,6 +201,7 @@ public class SearchFragment extends BaseFragment implements
                 unresolved.setPermanentUrl(resolved.getPermanentUrl());
                 unresolved.setValue(resolved.getValue());
                 unresolved.setSigningChannel(resolved.getSigningChannel());
+                unresolved.setRepostedClaim(resolved.getRepostedClaim());
                 unresolved.setUnresolved(false);
                 unresolved.setConfirmations(resolved.getConfirmations());
             }
