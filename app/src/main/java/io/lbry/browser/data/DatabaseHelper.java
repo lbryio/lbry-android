@@ -64,6 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     };
 
     private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
+    private static final String SQL_CLEAR_SUBSCRIPTIONS = "DELETE FROM subscriptions";
     private static final String SQL_DELETE_SUBSCRIPTION = "DELETE FROM subscriptions WHERE url = ?";
     private static final String SQL_GET_SUBSCRIPTIONS = "SELECT channel_name, url FROM subscriptions";
 
@@ -229,6 +230,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public static void deleteSubscription(Subscription subscription, SQLiteDatabase db) {
         db.execSQL(SQL_DELETE_SUBSCRIPTION, new Object[] { subscription.getUrl() });
+    }
+    public static void clearSubscriptions(SQLiteDatabase db) {
+        db.execSQL(SQL_CLEAR_SUBSCRIPTIONS, null);
     }
     public static List<Subscription> getSubscriptions(SQLiteDatabase db) {
         List<Subscription> subscriptions = new ArrayList<>();
