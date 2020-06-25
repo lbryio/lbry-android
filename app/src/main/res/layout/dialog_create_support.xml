@@ -9,7 +9,7 @@
         android:orientation="vertical"
         android:padding="16dp">
         <TextView
-            android:id="@+id/tip_send_title"
+            android:id="@+id/create_support_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -22,19 +22,58 @@
             android:layout_height="0.5dp"
             android:background="@color/divider"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp" />
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/create_support_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="@string/send_tip_info_content"
+            android:textFontWeight="300"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/lightDivider"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/channel_to_show_support_as" />
+            <ProgressBar
+                android:id="@+id/create_support_channel_progress"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/create_support_channel_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp" />
 
         <RelativeLayout
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tip_input_layout_amount"
+                android:id="@+id/create_support_input_layout_amount"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/amount">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tip_input_amount"
+                    android:id="@+id/create_support_input_amount"
                     android:fontFamily="@font/inter"
                     android:textSize="14sp"
                     android:layout_width="match_parent"
@@ -43,8 +82,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/tip_input_currency"
-                android:layout_toRightOf="@id/tip_input_layout_amount"
+                android:id="@+id/create_support_input_currency"
+                android:layout_toRightOf="@id/create_support_input_layout_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -56,8 +95,8 @@
                 android:textFontWeight="300" />
 
             <LinearLayout
-                android:id="@+id/tip_inline_balance_container"
-                android:layout_toRightOf="@id/tip_input_currency"
+                android:id="@+id/create_support_inline_balance_container"
+                android:layout_toRightOf="@id/create_support_input_currency"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="28dp"
                 android:layout_width="wrap_content"
@@ -69,7 +108,7 @@
                     android:layout_height="18dp"
                     android:text="@string/fa_coins" />
                 <TextView
-                    android:id="@+id/tip_inline_balance_value"
+                    android:id="@+id/create_support_inline_balance_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
@@ -78,14 +117,15 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tip_info"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/create_support_make_tip_switch"
+            android:checked="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/make_this_a_tip"
             android:fontFamily="@font/inter"
-            android:text="@string/send_tip_info_content"
             android:textFontWeight="300"
             android:textSize="14sp" />
 
@@ -93,7 +133,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/tip_cancel_link"
+                android:id="@+id/create_support_cancel_link"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:layout_width="wrap_content"
@@ -105,20 +145,20 @@
                 android:textSize="14sp" />
 
             <ProgressBar
-                android:id="@+id/tip_send_progress"
+                android:id="@+id/create_support_progress"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_toLeftOf="@id/tip_send"
+                android:layout_toLeftOf="@id/create_support_send"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
                 android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/tip_send"
+                android:id="@+id/create_support_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:text="@string/send"
+                android:text="@string/send_lbc_tip"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true" />
         </RelativeLayout>

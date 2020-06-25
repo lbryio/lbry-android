@@ -99,7 +99,7 @@ import io.lbry.browser.adapter.CommentListAdapter;
 import io.lbry.browser.adapter.InlineChannelSpinnerAdapter;
 import io.lbry.browser.adapter.TagListAdapter;
 import io.lbry.browser.dialog.RepostClaimDialogFragment;
-import io.lbry.browser.dialog.SendTipDialogFragment;
+import io.lbry.browser.dialog.CreateSupportDialogFragment;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.DownloadActionListener;
 import io.lbry.browser.listener.FetchClaimsListener;
@@ -845,21 +845,21 @@ public class FileViewFragment extends BaseFragment implements
                 }
 
                 if (claim != null) {
-                    SendTipDialogFragment dialog = SendTipDialogFragment.newInstance();
+                    CreateSupportDialogFragment dialog = CreateSupportDialogFragment.newInstance();
                     dialog.setClaim(claim);
-                    dialog.setListener(new SendTipDialogFragment.SendTipListener() {
+                    dialog.setListener(new CreateSupportDialogFragment.CreateSupportListener() {
                         @Override
-                        public void onTipSent(BigDecimal amount) {
+                        public void onSupportCreated(BigDecimal amount, boolean isTip) {
                             double sentAmount = amount.doubleValue();
                             String message = getResources().getQuantityString(
-                                    R.plurals.you_sent_a_tip, sentAmount == 1.0 ? 1 : 2,
+                                    isTip ? R.plurals.you_sent_a_tip : R.plurals.you_sent_a_support, sentAmount == 1.0 ? 1 : 2,
                                     new DecimalFormat("#,###.##").format(sentAmount));
                             Snackbar.make(root.findViewById(R.id.file_view_claim_display_area), message, Snackbar.LENGTH_LONG).show();
                         }
                     });
                     Context context = getContext();
                     if (context instanceof MainActivity) {
-                        dialog.show(((MainActivity) context).getSupportFragmentManager(), SendTipDialogFragment.TAG);
+                        dialog.show(((MainActivity) context).getSupportFragmentManager(), CreateSupportDialogFragment.TAG);
                     }
                 }
             }
