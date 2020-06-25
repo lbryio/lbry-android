@@ -62,13 +62,6 @@ public class CommentCreateWithTipTask extends AsyncTask<Void, Void, Comment> {
             }
 
             Map<String, Object> options = new HashMap<>();
-            options.put("blocking", true);
-            options.put("claim_id", comment.getClaimId());
-            options.put("amount", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).format(amount.doubleValue()));
-            options.put("tip", true);
-            Lbry.genericApiCall(Lbry.METHOD_SUPPORT_CREATE, options);
-
-            options = new HashMap<>();
             options.put("comment", comment.getText());
             options.put("claim_id", comment.getClaimId());
             options.put("channel_id", comment.getChannelId());
@@ -78,6 +71,14 @@ public class CommentCreateWithTipTask extends AsyncTask<Void, Void, Comment> {
             }
             JSONObject jsonObject = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_COMMENT_CREATE, options);
             createdComment = Comment.fromJSONObject(jsonObject);
+            if (createdComment != null) {
+                options = new HashMap<>();
+                options.put("blocking", true);
+                options.put("claim_id", comment.getClaimId());
+                options.put("amount", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).format(amount.doubleValue()));
+                options.put("tip", true);
+                Lbry.genericApiCall(Lbry.METHOD_SUPPORT_CREATE, options);
+            }
         } catch (ApiCallException | ClassCastException | IOException | JSONException ex) {
             error = ex;
         }
