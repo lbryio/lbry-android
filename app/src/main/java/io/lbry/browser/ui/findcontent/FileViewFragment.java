@@ -1678,15 +1678,21 @@ public class FileViewFragment extends BaseFragment implements
             }
             if (claim.getFile() == null && !claim.isFree()) {
                 if (!Lbry.SDK_READY) {
-                    Snackbar.make(getView().findViewById(R.id.file_view_global_layout), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    if (root != null) {
+                        Snackbar.make(root.findViewById(R.id.file_view_global_layout),
+                                R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    }
                     restoreMainActionButton();
                     return;
                 }
 
                 checkAndConfirmPurchaseUrl();
             } else {
-                if (!claim.isPlayable() && !Lbry.SDK_READY) {
-                    Snackbar.make(getView().findViewById(R.id.file_view_global_layout), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                if (claim != null && !claim.isPlayable() && !Lbry.SDK_READY) {
+                    if (root != null) {
+                        Snackbar.make(root.findViewById(R.id.file_view_global_layout),
+                                R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    }
                     restoreMainActionButton();
                     return;
                 }

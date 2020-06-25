@@ -60,7 +60,13 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
 
     public ClaimListAdapter(List<Claim> items, Context context) {
         this.context = context;
-        this.items = new ArrayList<>(items);
+        this.items = new ArrayList<>();
+        for (Claim item : items) {
+            if (item != null) {
+                items.add(item);
+            }
+        }
+
         this.selectedItems = new ArrayList<>();
         quickClaimIdMap = new HashMap<>();
         quickClaimUrlMap = new HashMap<>();
@@ -139,7 +145,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
 
     public void addItems(List<Claim> claims) {
         for (Claim claim : claims) {
-            if (!items.contains(claim)) {
+            if (claim != null && !items.contains(claim)) {
                 items.add(claim);
             }
         }
@@ -149,7 +155,12 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         notifyDataSetChanged();
     }
     public void setItems(List<Claim> claims) {
-        items = new ArrayList<>(claims);
+        items = new ArrayList<>();
+        for (Claim claim : claims) {
+            if (claim != null) {
+                items.add(claim);
+            }
+        }
         notifyDataSetChanged();
     }
 
