@@ -363,7 +363,7 @@
     <string name="filter_for">Filter for</string>
     <string name="everyone">Everyone</string>
     <string name="tags_you_follow">Tags you follow</string>
-    <string name="customize">Customize</string>Send a tip
+    <string name="customize">Customize</string>
     <string name="not_yet_implemented">The selected view is not yet available.</string>
     <string name="customize_tags_hint">It looks like you have not followed any tags yet.</string>
     <string name="search_for_more_tags">Search for more tags</string>

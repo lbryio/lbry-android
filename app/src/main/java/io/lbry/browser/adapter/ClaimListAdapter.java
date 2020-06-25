@@ -63,7 +63,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         this.items = new ArrayList<>();
         for (Claim item : items) {
             if (item != null) {
-                items.add(item);
+                this.items.add(item);
             }
         }
 
