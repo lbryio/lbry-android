@@ -232,7 +232,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_SUBSCRIPTION, new Object[] { subscription.getUrl() });
     }
     public static void clearSubscriptions(SQLiteDatabase db) {
-        db.execSQL(SQL_CLEAR_SUBSCRIPTIONS, null);
+        db.execSQL(SQL_CLEAR_SUBSCRIPTIONS);
     }
     public static List<Subscription> getSubscriptions(SQLiteDatabase db) {
         List<Subscription> subscriptions = new ArrayList<>();
