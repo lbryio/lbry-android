@@ -119,6 +119,7 @@ import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.BufferEventTask;
 import io.lbry.browser.tasks.CommentCreateWithTipTask;
 import io.lbry.browser.tasks.CommentListHandler;
 import io.lbry.browser.tasks.CommentListTask;
@@ -163,6 +164,7 @@ public class FileViewFragment extends BaseFragment implements
         WalletBalanceListener {
     private static final int RELATED_CONTENT_SIZE = 16;
     private static final String DEFAULT_PLAYBACK_SPEED = "1x";
+    private static final String CDN_PREFIX = "https://cdn.lbryplayer.xyz";
 
     private PlayerControlView castControlView;
     private Player currentPlayer;
@@ -290,6 +292,27 @@ public class FileViewFragment extends BaseFragment implements
                         loadingNewClaim = false;
                     }
                 } else if (playbackState == Player.STATE_BUFFERING) {
+                    if (MainActivity.appPlayer != null && MainActivity.appPlayer.getCurrentPosition() > 0) {
+                        // we only want to log a buffer event after the media has already started playing
+                        String mediaSourceUrl = getStreamingUrl();
+                        long duration = MainActivity.appPlayer.getDuration();
+                        long position = MainActivity.appPlayer.getCurrentPosition();
+                        // TODO: Determine a hash for the userId
+                        String userIdHash = Lbryio.currentUser != null ? String.valueOf(Lbryio.currentUser.getId()) : "0";
+                        if (mediaSourceUrl.startsWith(CDN_PREFIX)) {
+                            BufferEventTask bufferEvent = new BufferEventTask(getStreamingUrl(), duration, position, userIdHash);
+                            bufferEvent.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                        } else {
+                            // sdk stream buffer events should be handled differently
+                            Bundle bundle = new Bundle();
+                            bundle.putString("url", claim.getPermanentUrl());
+                            bundle.putLong("stream_duration", duration);
+                            bundle.putLong("stream_position", position);
+                            bundle.putString("user_id_hash", userIdHash);
+                            LbryAnalytics.logEvent(LbryAnalytics.EVENT_BUFFER, bundle);
+                        }
+                    }
+
                     showBuffering();
                 } else {
                     hideBuffering();
