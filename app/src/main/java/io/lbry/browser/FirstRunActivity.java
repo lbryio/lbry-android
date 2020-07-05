@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 import androidx.preference.PreferenceManager;
 
+import io.lbry.browser.exceptions.AuthTokenInvalidatedException;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
@@ -139,7 +140,11 @@ public class FirstRunActivity extends AppCompatActivity {
             this.context = context;
         }
         protected Void doInBackground(Void... params) {
-            Lbryio.authenticate(context);
+            try {
+                Lbryio.authenticate(context);
+            } catch (AuthTokenInvalidatedException ex) {
+                // pass
+            }
             return null;
         }
     }

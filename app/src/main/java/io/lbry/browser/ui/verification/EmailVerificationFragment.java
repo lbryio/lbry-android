@@ -165,7 +165,8 @@ public class EmailVerificationFragment extends Fragment {
     }
 
     private void checkEmailVerified() {
-        CheckUserEmailVerifiedTask task = new CheckUserEmailVerifiedTask(new CheckUserEmailVerifiedTask.CheckUserEmailVerifiedHandler() {
+        Context context = getContext();
+        CheckUserEmailVerifiedTask task = new CheckUserEmailVerifiedTask(context, new CheckUserEmailVerifiedTask.CheckUserEmailVerifiedHandler() {
             @Override
             public void onUserEmailVerified() {
                 if (listener != null) {

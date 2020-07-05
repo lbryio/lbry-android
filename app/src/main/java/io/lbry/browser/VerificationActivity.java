@@ -167,7 +167,7 @@ public class VerificationActivity extends FragmentActivity implements SignInList
 
             // only sign in required, don't do anything else
             showLoading();
-            FetchCurrentUserTask task = new FetchCurrentUserTask(new FetchCurrentUserTask.FetchUserTaskHandler() {
+            FetchCurrentUserTask task = new FetchCurrentUserTask(this, new FetchCurrentUserTask.FetchUserTaskHandler() {
                 @Override
                 public void onSuccess(User user) {
                     Lbryio.currentUser = user;
@@ -185,7 +185,7 @@ public class VerificationActivity extends FragmentActivity implements SignInList
         } else {
             // change pager view depending on flow
             showLoading();
-            FetchCurrentUserTask task = new FetchCurrentUserTask(new FetchCurrentUserTask.FetchUserTaskHandler() {
+            FetchCurrentUserTask task = new FetchCurrentUserTask(this, new FetchCurrentUserTask.FetchUserTaskHandler() {
                 @Override
                 public void onSuccess(User user) {
                     hideLoading();
@@ -229,7 +229,7 @@ public class VerificationActivity extends FragmentActivity implements SignInList
     @Override
     public void onPhoneVerified() {
         showLoading();
-        FetchCurrentUserTask task = new FetchCurrentUserTask(new FetchCurrentUserTask.FetchUserTaskHandler() {
+        FetchCurrentUserTask task = new FetchCurrentUserTask(this, new FetchCurrentUserTask.FetchUserTaskHandler() {
             @Override
             public void onSuccess(User user) {
                 Lbryio.currentUser = user;
