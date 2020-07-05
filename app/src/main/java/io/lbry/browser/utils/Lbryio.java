@@ -2,10 +2,13 @@ package io.lbry.browser.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -27,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
+import io.lbry.browser.exceptions.AuthTokenInvalidatedException;
 import io.lbry.browser.exceptions.LbryioRequestException;
 import io.lbry.browser.exceptions.LbryioResponseException;
 import io.lbry.browser.model.Claim;
@@ -200,7 +204,7 @@ public final class Lbryio {
         }
     }
 
-    public static User fetchCurrentUser(Context context) {
+    public static User fetchCurrentUser(Context context) throws AuthTokenInvalidatedException {
         try {
             Response response = Lbryio.call("user", "me", context);
             JSONObject object = (JSONObject) parseResponse(response);
@@ -210,6 +214,22 @@ public final class Lbryio {
             return user;
         } catch (LbryioRequestException | LbryioResponseException | ClassCastException | IllegalStateException ex) {
             LbryAnalytics.logError(String.format("/user/me failed: %s", ex.getMessage()), ex.getClass().getName());
+
+            if (ex instanceof LbryioResponseException) {
+                LbryioResponseException error = (LbryioResponseException) ex;
+                if (error.getStatusCode() == 403) {
+                    // auth token invalidated
+                    AUTH_TOKEN = null;
+                    // remove the cached auth token
+                    if (context != null) {
+                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                        sp.edit().remove(MainActivity.PREFERENCE_KEY_AUTH_TOKEN).apply();
+                    }
+
+                    throw new AuthTokenInvalidatedException();
+                }
+            }
+
             android.util.Log.e(TAG, "Could not retrieve the current user", ex);
             return null;
         }
@@ -256,7 +276,7 @@ public final class Lbryio {
         return currentUser != null && currentUser.isHasVerifiedEmail();
     }
 
-    public static void authenticate(Context context) {
+    public static void authenticate(Context context) throws AuthTokenInvalidatedException {
         User user = fetchCurrentUser(context);
         if (user != null) {
             currentUser = user;

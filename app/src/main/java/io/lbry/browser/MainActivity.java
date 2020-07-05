@@ -117,6 +117,7 @@ import io.lbry.browser.adapter.NavigationMenuAdapter;
 import io.lbry.browser.adapter.UrlSuggestionListAdapter;
 import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.ContentScopeDialogFragment;
+import io.lbry.browser.exceptions.AuthTokenInvalidatedException;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.CameraPermissionListener;
 import io.lbry.browser.listener.DownloadActionListener;
@@ -2384,7 +2385,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     }
                     startupStages.put(STARTUP_STAGE_EXCHANGE_RATE_LOADED, true);
 
-                    Lbryio.authenticate(context);
+                    try {
+                        Lbryio.authenticate(context);
+                    } catch (AuthTokenInvalidatedException ex) {
+                        // if this happens, attempt to authenticate again, so that we can obtain a new auth token
+                        // this will also result in the user having to sign in again
+                        Lbryio.authenticate(context);
+                    }
                     if (Lbryio.currentUser == null) {
                         throw new Exception("Did not retrieve authenticated user.");
                     }
