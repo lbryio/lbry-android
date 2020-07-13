@@ -17,7 +17,8 @@ public class LbryUri {
     public static final int CHANNEL_NAME_MIN_LENGTH = 1;
     public static final int CLAIM_ID_MAX_LENGTH = 40;
 
-    private static final String REGEX_PART_PROTOCOL = "^((?:lbry://)?)";
+    private static final String REGEX_PART_PROTOCOL = "^((?:lbry://|https://)?)";
+    private static final String REGEX_PART_HOST = "^((?:open.lbry.com/)?)";
     private static final String REGEX_PART_STREAM_OR_CHANNEL_NAME = "([^:$#/]*)";
     private static final String REGEX_PART_MODIFIER_SEPARATOR = "([:$#]?)([^/]*)";
     private static final String QUERY_STRING_BREAKER = "^([\\S]+)([?][\\S]*)";
@@ -58,8 +59,9 @@ public class LbryUri {
         return parse(url, false);
     }
     public static LbryUri parse(String url, boolean requireProto) throws LbryUriException {
-        Pattern componentsPattern = Pattern.compile(String.format("%s%s%s(/?)%s%s",
+        Pattern componentsPattern = Pattern.compile(String.format("%s%s%s%s(/?)%s%s",
                 REGEX_PART_PROTOCOL,
+                REGEX_PART_HOST,
                 REGEX_PART_STREAM_OR_CHANNEL_NAME,
                 REGEX_PART_MODIFIER_SEPARATOR,
                 REGEX_PART_STREAM_OR_CHANNEL_NAME,
@@ -93,37 +95,48 @@ public class LbryUri {
         }
 
         // components[0] = proto
-        // components[1] = streamNameOrChannelName
-        // components[2] = primaryModSeparator
-        // components[3] = primaryModValue
-        // components[4] = pathSep
-        // components[5] = possibleStreamName
-        // components[6] = secondaryModSeparator
-        // components[7] = secondaryModValue
+        // components[1] = host
+        // components[2] = streamNameOrChannelName
+        // components[3] = primaryModSeparator
+        // components[4] = primaryModValue
+        // components[5] = pathSep
+        // components[6] = possibleStreamName
+        // components[7] = secondaryModSeparator
+        // components[8] = secondaryModValue
         if (requireProto && Helper.isNullOrEmpty(components.get(0))) {
             throw new LbryUriException("LBRY URLs must include a protocol prefix (lbry://).");
         }
 
-        if (Helper.isNullOrEmpty(components.get(1))) {
+        if (Helper.isNullOrEmpty(components.get(2))) {
             throw new LbryUriException("URL does not include name.");
         }
 
-        for (String component : components.subList(1, components.size())) {
+        for (String component : components.subList(2, components.size())) {
             if (component.indexOf(' ') > -1) {
                 throw new LbryUriException("URL cannot include a space.");
             }
         }
 
-        String streamOrChannelName = components.get(1);
-        String primaryModSeparator = components.get(2);
-        String primaryModValue = components.get(3);
-        String possibleStreamName = components.get(5);
-        String secondaryModSeparator = components.get(6);
-        String secondaryModValue = components.get(7);
+        String streamOrChannelName = components.get(2);
+        String primaryModSeparator = components.get(3);
+        String primaryModValue = components.get(4);
+        String possibleStreamName = components.get(6);
+        String secondaryModSeparator = components.get(7);
+        String secondaryModValue = components.get(8);
 
         boolean includesChannel = streamOrChannelName.startsWith("@");
         boolean isChannel = includesChannel && Helper.isNullOrEmpty(possibleStreamName);
         String channelName = includesChannel && streamOrChannelName.length() > 1 ? streamOrChannelName.substring(1) : null;
+
+        // It would have thrown already on the RegEx parser if protocol value was incorrect
+        // open.lbry.com uses ':' as ModSeparators while lbry:// expects '#'
+        if (components.get(1).equals("open.lbry.com/")) {
+            if (primaryModSeparator.equals(":"))
+                primaryModSeparator = "#";
+            if (secondaryModSeparator.equals(":"))
+                secondaryModSeparator = "#";
+        }
+
         if (includesChannel) {
             if (Helper.isNullOrEmpty(channelName)) {
                 throw new LbryUriException("No channel name after @.");
@@ -147,7 +160,7 @@ public class LbryUri {
 
         LbryUri uri = new LbryUri();
         uri.setChannel(isChannel);
-        uri.setPath(Helper.join(components.subList(1, components.size()), ""));
+        uri.setPath(Helper.join(components.subList(2, components.size()), ""));
         uri.setStreamName(streamName);
         uri.setStreamClaimId(streamClaimId);
         uri.setChannelName(channelName);
