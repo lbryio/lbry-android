@@ -21,9 +21,11 @@ public class BufferEventTask extends AsyncTask<Void, Void, Void> {
     private String userIdHash;
     private long streamDuration;
     private long streamPosition;
+    private long bufferDuration;
 
-    public BufferEventTask(String streamUrl, long streamDuration, long streamPosition, String userIdHash) {
+    public BufferEventTask(String streamUrl, long streamDuration, long streamPosition, long bufferDuration, String userIdHash) {
         this.streamUrl = streamUrl;
+        this.bufferDuration = bufferDuration;
         this.streamDuration = streamDuration;
         this.streamPosition = streamPosition;
         this.userIdHash = userIdHash;
@@ -31,13 +33,17 @@ public class BufferEventTask extends AsyncTask<Void, Void, Void> {
 
     protected Void doInBackground(Void... params) {
         JSONObject requestBody = new JSONObject();
+        JSONObject data = new JSONObject();
         try {
-            requestBody.put("name", "buffer");
-            requestBody.put("mobile", true);
-            requestBody.put("url", streamUrl);
-            requestBody.put("stream_duration", streamDuration);
-            requestBody.put("stream_position", streamPosition);
-            requestBody.put("user_id_hash", userIdHash);
+            data.put("url", streamUrl);
+            data.put("position", streamPosition);
+            data.put("stream_duration", streamDuration);
+            data.put("duration", bufferDuration);
+
+            requestBody.put("device", "mobile");
+            requestBody.put("type", "buffering");
+            requestBody.put("client", userIdHash);
+            requestBody.put("data", data);
 
             RequestBody body = RequestBody.create(requestBody.toString(), Helper.JSON_MEDIA_TYPE);
             Request request =  new Request.Builder().url(ENDPOINT).post(body).build();
