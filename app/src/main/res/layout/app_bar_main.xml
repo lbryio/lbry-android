@@ -61,6 +61,20 @@
                         android:src="@drawable/ic_close"
                         android:tint="@color/actionBarForeground" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wunderbar_notifications"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_notifications"
+                        android:tint="@color/actionBarForeground" />
+                </LinearLayout>
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
