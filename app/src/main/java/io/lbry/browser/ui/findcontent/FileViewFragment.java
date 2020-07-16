@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.Outline;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -141,6 +142,7 @@ import io.lbry.browser.tasks.lbryinc.ClaimRewardTask;
 import io.lbry.browser.tasks.lbryinc.FetchStatCountTask;
 import io.lbry.browser.tasks.lbryinc.LogFileViewTask;
 import io.lbry.browser.ui.BaseFragment;
+import io.lbry.browser.ui.controls.OutlineIconView;
 import io.lbry.browser.ui.controls.SolidIconView;
 import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.utils.Helper;
@@ -724,6 +726,44 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
+    private View.OnClickListener followUnfollowListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (claim != null && claim.getSigningChannel() != null) {
+                Claim publisher = claim.getSigningChannel();
+                boolean isFollowing = Lbryio.isFollowing(publisher);
+                Subscription subscription = Subscription.fromClaim(publisher);
+                view.setEnabled(false);
+                Context context = getContext();
+                new ChannelSubscribeTask(context, publisher.getClaimId(), subscription, isFollowing, new ChannelSubscribeTask.ChannelSubscribeHandler() {
+                    @Override
+                    public void onSuccess() {
+                        if (isFollowing) {
+                            Lbryio.removeSubscription(subscription);
+                            Lbryio.removeCachedResolvedSubscription(publisher);
+                        } else {
+                            Lbryio.addSubscription(subscription);
+                            Lbryio.addCachedResolvedSubscription(publisher);
+                        }
+                        view.setEnabled(true);
+                        checkIsFollowing();
+                        FollowingFragment.resetClaimSearchContent = true;
+
+                        // Save shared user state
+                        if (context != null) {
+                            context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        view.setEnabled(true);
+                    }
+                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        }
+    };
+
     private void resolveUrl(String url) {
         resolving = true;
         Helper.setViewVisibility(layoutDisplayArea, View.INVISIBLE);
@@ -1060,44 +1100,10 @@ public class FileViewFragment extends BaseFragment implements
             }
         });
 
-        View buttonFollowUnfollow = root.findViewById(R.id.file_view_icon_follow_unfollow);
-        buttonFollowUnfollow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (claim != null && claim.getSigningChannel() != null) {
-                    Claim publisher = claim.getSigningChannel();
-                    boolean isFollowing = Lbryio.isFollowing(publisher);
-                    Subscription subscription = Subscription.fromClaim(publisher);
-                    buttonFollowUnfollow.setEnabled(false);
-                    Context context = getContext();
-                    new ChannelSubscribeTask(context, publisher.getClaimId(), subscription, isFollowing, new ChannelSubscribeTask.ChannelSubscribeHandler() {
-                        @Override
-                        public void onSuccess() {
-                            if (isFollowing) {
-                                Lbryio.removeSubscription(subscription);
-                                Lbryio.removeCachedResolvedSubscription(publisher);
-                            } else {
-                                Lbryio.addSubscription(subscription);
-                                Lbryio.addCachedResolvedSubscription(publisher);
-                            }
-                            buttonFollowUnfollow.setEnabled(true);
-                            checkIsFollowing();
-                            FollowingFragment.resetClaimSearchContent = true;
-
-                            // Save shared user state
-                            if (context != null) {
-                                context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
-                            }
-                        }
-
-                        @Override
-                        public void onError(Exception exception) {
-                            buttonFollowUnfollow.setEnabled(true);
-                        }
-                    }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                }
-            }
-        });
+        View buttonFollow = root.findViewById(R.id.file_view_icon_follow);
+        View buttonUnfollow = root.findViewById(R.id.file_view_icon_unfollow);
+        buttonFollow.setOnClickListener(followUnfollowListener);
+        buttonUnfollow.setOnClickListener(followUnfollowListener);
 
         commentChannelSpinnerAdapter = new InlineChannelSpinnerAdapter(getContext(), R.layout.spinner_item_channel, new ArrayList<>());
         commentChannelSpinnerAdapter.addPlaceholder(false);
@@ -1418,7 +1424,17 @@ public class FileViewFragment extends BaseFragment implements
                 }
             }
 
-            root.findViewById(R.id.file_view_icon_follow_unfollow).setVisibility(claim.getSigningChannel() != null ? View.VISIBLE : View.GONE);
+            boolean isAnonymous = claim.getSigningChannel() == null;
+            View iconFollow = root.findViewById(R.id.file_view_icon_follow);
+            View iconUnfollow = root.findViewById(R.id.file_view_icon_unfollow);
+            if (isAnonymous) {
+                if (iconFollow.getVisibility() == View.VISIBLE) {
+                    iconFollow.setVisibility(View.INVISIBLE);
+                }
+                if (iconUnfollow.getVisibility() == View.VISIBLE) {
+                    iconUnfollow.setVisibility(View.INVISIBLE);
+                }
+            }
 
             MaterialButton mainActionButton = root.findViewById(R.id.file_view_main_action_button);
             if (claim.isPlayable()) {
@@ -2408,11 +2424,10 @@ public class FileViewFragment extends BaseFragment implements
             Context context = getContext();
             View root = getView();
             if (context != null && root != null) {
-                SolidIconView iconFollowUnfollow = root.findViewById(R.id.file_view_icon_follow_unfollow);
-                if (iconFollowUnfollow != null) {
-                    iconFollowUnfollow.setText(isFollowing ? R.string.fa_heart_broken : R.string.fa_heart);
-                    iconFollowUnfollow.setTextColor(ContextCompat.getColor(context, isFollowing ? R.color.foreground : R.color.red));
-                }
+                OutlineIconView iconFollow = root.findViewById(R.id.file_view_icon_follow);
+                SolidIconView iconUnfollow = root.findViewById(R.id.file_view_icon_unfollow);
+                Helper.setViewVisibility(iconFollow, !isFollowing ? View.VISIBLE: View.INVISIBLE);
+                Helper.setViewVisibility(iconUnfollow, isFollowing ? View.VISIBLE : View.INVISIBLE);
             }
         }
     }

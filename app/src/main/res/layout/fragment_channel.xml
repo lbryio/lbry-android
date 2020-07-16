@@ -210,14 +210,22 @@
                     android:clickable="true"
                     android:layout_width="36dp"
                     android:layout_height="36dp">
-                    <io.lbry.browser.ui.controls.SolidIconView
-                        android:id="@+id/channel_view_icon_follow_unfollow"
+                    <io.lbry.browser.ui.controls.OutlineIconView
+                        android:id="@+id/channel_view_icon_follow"
                         android:layout_centerInParent="true"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:text="@string/fa_heart"
                         android:textColor="@color/red"
                         android:textSize="20dp" />
+                    <io.lbry.browser.ui.controls.SolidIconView
+                        android:id="@+id/channel_view_icon_unfollow"
+                        android:layout_centerInParent="true"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:text="@string/fa_heart_broken"
+                        android:textSize="20dp"
+                        android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
