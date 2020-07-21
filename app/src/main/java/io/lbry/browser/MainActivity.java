@@ -2644,7 +2644,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         LbryAnalytics.logEvent(LbryAnalytics.EVENT_LBRY_NOTIFICATION_OPEN, bundle);
     }
 
-
     private void registerServiceActionsReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_EVENT);
@@ -2806,9 +2805,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     JSONObject startupStatus = status.getJSONObject("startup_status");
                     sdkReady = startupStatus.getBoolean("file_manager") && startupStatus.getBoolean("wallet");
                 }
-            } catch (ConnectException ex) {
-                // pass
-            } catch (JSONException ex) {
+            } catch (ConnectException | JSONException ex) {
                 // pass
             }
 
