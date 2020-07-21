@@ -106,27 +106,6 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                 }
             }
 
-            for (int i = 0; i < combined.size(); i++) {
-                Subscription local = combined.get(i);
-                if (!finalRemoteSubs.contains(local)) {
-                    // add to remote subscriptions
-                    try {
-                        LbryUri uri = LbryUri.parse(local.getUrl());
-                        Map<String, String> options = new HashMap<>();
-                        String channelClaimId = uri.getChannelClaimId();
-                        String channelName = Helper.normalizeChannelName(local.getChannelName());
-                        if (!Helper.isNullOrEmpty(channelClaimId) && !Helper.isNullOrEmpty(channelName)) {
-                            options.put("claim_id", channelClaimId);
-                            options.put("channel_name", channelName);
-                            Lbryio.parseResponse(Lbryio.call("subscription", "new", options, context));
-                        }
-                    } catch (LbryUriException | LbryioRequestException | LbryioResponseException ex) {
-                        // pass
-                        Log.e(TAG, String.format("subscription/new failed: %s", ex.getMessage()), ex);
-                    }
-                }
-            }
-
             if (!replaceLocal) {
                 for (int i = 0; i < localSubs.size(); i++) {
                     Subscription local = localSubs.get(i);
