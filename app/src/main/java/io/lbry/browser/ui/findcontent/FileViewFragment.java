@@ -298,9 +298,9 @@ public class FileViewFragment extends BaseFragment implements
                         long duration = MainActivity.appPlayer.getDuration();
                         long position = MainActivity.appPlayer.getCurrentPosition();
                         // TODO: Determine a hash for the userId
-                        String userIdHash = Lbryio.currentUser != null ? String.valueOf(Lbryio.currentUser.getId()) : "0";
+                        String userIdHash = Helper.SHA256(Lbryio.currentUser != null ? String.valueOf(Lbryio.currentUser.getId()) : "0");
                         if (mediaSourceUrl.startsWith(CDN_PREFIX)) {
-                            BufferEventTask bufferEvent = new BufferEventTask(claim.getPermanentUrl(), duration, position, userIdHash);
+                            BufferEventTask bufferEvent = new BufferEventTask(claim.getPermanentUrl(), duration, position, 1, userIdHash);
                             bufferEvent.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                         } else {
                             // sdk stream buffer events should be handled differently

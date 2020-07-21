@@ -15,7 +15,7 @@ import okhttp3.Response;
 
 public class BufferEventTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "LbryBufferEvent";
-    private static final String ENDPOINT = "https://api.lbry.tv/api/v1/metric/ui";
+    private static final String ENDPOINT = "https://collector-service.lbry.tv/api/v1/events/video";
 
     private String streamUrl;
     private String userIdHash;
@@ -40,7 +40,7 @@ public class BufferEventTask extends AsyncTask<Void, Void, Void> {
             data.put("stream_duration", streamDuration);
             data.put("duration", bufferDuration);
 
-            requestBody.put("device", "mobile");
+            requestBody.put("device", "android");
             requestBody.put("type", "buffering");
             requestBody.put("client", userIdHash);
             requestBody.put("data", data);
