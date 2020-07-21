@@ -63,6 +63,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "ALTER TABLE view_history ADD COLUMN currency TEXT"
     };
 
+    private static final String[] SQL_V2_V3_UPGRADE = {
+            "CREATE TABLE notifications (" +
+                    "  id INTEGER PRIMARY KEY NOT NULL" +
+                    ", title TEXT" +
+                    ", description TEXT" +
+                    
+    };
+
     private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
     private static final String SQL_CLEAR_SUBSCRIPTIONS = "DELETE FROM subscriptions";
     private static final String SQL_DELETE_SUBSCRIPTION = "DELETE FROM subscriptions WHERE url = ?";
