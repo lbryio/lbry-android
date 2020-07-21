@@ -38,7 +38,7 @@ public class BufferEventTask extends AsyncTask<Void, Void, Void> {
             data.put("url", streamUrl);
             data.put("position", streamPosition);
             data.put("stream_duration", streamDuration);
-            data.put("duration", bufferDuration);
+            //data.put("duration", bufferDuration);
 
             requestBody.put("device", "android");
             requestBody.put("type", "buffering");
