@@ -15,7 +15,7 @@ import okhttp3.Response;
 
 public class BufferEventTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "LbryBufferEvent";
-    private static final String ENDPOINT = "https://collector-service.lbry.tv/api/v1/events/video";
+    private static final String ENDPOINT = "https://collector-service.api.lbry.tv/api/v1/events/video";
 
     private String streamUrl;
     private String userIdHash;
@@ -54,7 +54,7 @@ public class BufferEventTask extends AsyncTask<Void, Void, Void> {
 
             Response response = client.newCall(request).execute();
             String responseString = response.body().string();
-            Log.d(TAG, responseString);
+            Log.d(TAG, String.format("buffer event sent: %s", responseString));
         } catch (Exception ex) {
             // we don't want to fail if a buffer event fails to register
             Log.d(TAG, String.format("buffer event log failed: %s", ex.getMessage()), ex);
