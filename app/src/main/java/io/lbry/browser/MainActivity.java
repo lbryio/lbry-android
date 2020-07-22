@@ -1750,7 +1750,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 public void run() {
                     syncWalletAndLoadPreferences();
                 }
-            }, 0, 2, TimeUnit.MINUTES);
+            }, 0, 5, TimeUnit.MINUTES);
             walletSyncScheduled = true;
         }
     }
