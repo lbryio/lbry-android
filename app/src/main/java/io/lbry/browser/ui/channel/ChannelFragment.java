@@ -49,6 +49,7 @@ import io.lbry.browser.tasks.claim.ClaimListResultHandler;
 import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.tasks.lbryinc.FetchStatCountTask;
 import io.lbry.browser.ui.BaseFragment;
+import io.lbry.browser.ui.controls.OutlineIconView;
 import io.lbry.browser.ui.controls.SolidIconView;
 import io.lbry.browser.ui.findcontent.FollowingFragment;
 import io.lbry.browser.utils.Helper;
@@ -80,7 +81,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private View buttonTip;
     private View buttonFollowUnfollow;
     private int subCount;
-    private SolidIconView iconFollowUnfollow;
+    private OutlineIconView iconFollow;
+    private SolidIconView iconUnfollow;
     private View layoutNothingAtLocation;
     private View layoutLoadingState;
 
@@ -105,7 +107,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         buttonShare = root.findViewById(R.id.channel_view_share);
         buttonTip = root.findViewById(R.id.channel_view_tip);
         buttonFollowUnfollow = root.findViewById(R.id.channel_view_follow_unfollow);
-        iconFollowUnfollow = root.findViewById(R.id.channel_view_icon_follow_unfollow);
+        iconFollow = root.findViewById(R.id.channel_view_icon_follow);
+        iconUnfollow = root.findViewById(R.id.channel_view_icon_unfollow);
 
         tabPager = root.findViewById(R.id.channel_view_pager);
         tabLayout = root.findViewById(R.id.channel_view_tabs);
@@ -274,13 +277,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private void checkIsFollowing() {
         if (claim != null) {
             boolean isFollowing = Lbryio.isFollowing(claim);
-            if (iconFollowUnfollow != null) {
-                iconFollowUnfollow.setText(isFollowing ? R.string.fa_heart_broken : R.string.fa_heart);
-                Context context = getContext();
-                if (context != null) {
-                    iconFollowUnfollow.setTextColor(ContextCompat.getColor(context, isFollowing ? R.color.foreground : R.color.red));
-                }
-            }
+            Helper.setViewVisibility(iconFollow, !isFollowing ? View.VISIBLE : View.GONE);
+            Helper.setViewVisibility(iconUnfollow, isFollowing ? View.VISIBLE : View.GONE);
         }
     }
 

@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.PictureInPictureParams;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -107,6 +108,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -306,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String SECURE_VALUE_KEY_SAVED_PASSWORD = "io.lbry.browser.PX";
     public static final String SECURE_VALUE_FIRST_RUN_PASSWORD = "firstRunPassword";
 
-    private static final String TAG = "io.lbry.browser.Main";
+    private static final String TAG = "LbryMain";
 
     private NavigationMenuAdapter navMenuAdapter;
     private UrlSuggestionListAdapter urlSuggestionListAdapter;
@@ -579,6 +581,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        checkSendToIntent(intent);
         checkUrlIntent(intent);
         checkNotificationOpenIntent(intent);
     }
@@ -831,6 +834,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         Map<String, Object> params = new HashMap<>();
         params.put("url", url);
         openFragment(FileViewFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
+    }
+
+    public void openSendTo(String path) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("directFilePath", path);
+        openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
     }
 
     public void openFileClaim(Claim claim) {
@@ -1567,7 +1576,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
 
-        syncWalletAndLoadPreferences();
         scheduleWalletBalanceUpdate();
         scheduleWalletSyncTask();
         fetchOwnChannels();
@@ -1785,7 +1793,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     //openNavFragments.get
                     MergeSubscriptionsTask mergeTask = new MergeSubscriptionsTask(
                             subscriptions,
-                            !initialSubscriptionMergeDone(),
+                            initialSubscriptionMergeDone(),
                             MainActivity.this, new MergeSubscriptionsTask.MergeSubscriptionsHandler() {
                         @Override
                         public void onSuccess(List<Subscription> subscriptions, List<Subscription> diff) {
@@ -1800,7 +1808,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                             for (Fragment fragment : openNavFragments.values()) {
                                 if (fragment instanceof FollowingFragment) {
                                     // reload local subscriptions
-                                    ((FollowingFragment) fragment).fetchLoadedSubscriptions(true);
+                                    Lbryio.cacheResolvedSubscriptions.clear();
+                                    FollowingFragment followingFragment = (FollowingFragment) fragment;
+                                    followingFragment.fetchLoadedSubscriptions(true);
                                 }
                             }
                         }
@@ -1938,7 +1948,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onSyncGetSuccess(WalletSync walletSync) {
                 Lbryio.lastWalletSync = walletSync;
                 Lbryio.lastRemoteHash = walletSync.getHash();
-                loadSharedUserState();
             }
 
             @Override
@@ -2644,6 +2653,18 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         LbryAnalytics.logEvent(LbryAnalytics.EVENT_LBRY_NOTIFICATION_OPEN, bundle);
     }
 
+    private void checkSendToIntent(Intent intent) {
+        String intentAction = intent.getAction();
+        if (intentAction != null && intentAction.equals("android.intent.action.SEND")) {
+            ClipData clipData = intent.getClipData();
+            if (clipData != null) {
+                Uri uri = clipData.getItemAt(0).getUri();
+
+                String path = Helper.getRealPathFromURI_API19(this, uri);
+                openSendTo(path);
+            }
+        }
+    }
 
     private void registerServiceActionsReceiver() {
         IntentFilter intentFilter = new IntentFilter();

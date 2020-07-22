@@ -73,6 +73,7 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
             // fetch remote subscriptions
             JSONArray array = (JSONArray) Lbryio.parseResponse(Lbryio.call("subscription", "list", context));
             if (array != null) {
+                // check for any remote subs that may have been removed, and unsubscribe from them
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject item = array.getJSONObject(i);
                     String claimId = item.getString("claim_id");
@@ -86,23 +87,21 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                 }
             }
 
-            for (int i = 0; i < combined.size(); i++) {
-                Subscription local = combined.get(i);
-                if (!remoteSubs.contains(local)) {
-                    // add to remote subscriptions
-                    try {
-                        LbryUri uri = LbryUri.parse(local.getUrl());
+            List<Subscription> remoteUnsubs = new ArrayList<>();
+            List<Subscription> finalRemoteSubs = new ArrayList<>();
+            if (remoteSubs.size() > 0) {
+                for (int i = 0; i < remoteSubs.size(); i++) {
+                    Subscription sub = remoteSubs.get(i);
+                    if (!combined.contains(sub)) {
                         Map<String, String> options = new HashMap<>();
-                        String channelClaimId = uri.getChannelClaimId();
-                        String channelName = Helper.normalizeChannelName(local.getChannelName());
-                        if (!Helper.isNullOrEmpty(channelClaimId) && !Helper.isNullOrEmpty(channelName)) {
-                            options.put("claim_id", channelClaimId);
-                            options.put("channel_name", channelName);
-                            Lbryio.parseResponse(Lbryio.call("subscription", "new", options, context));
+                        LbryUri uri = LbryUri.tryParse(sub.getUrl());
+                        if (uri != null) {
+                            options.put("claim_id", uri.getChannelClaimId());
+                            Lbryio.parseResponse(Lbryio.call("subscription", "delete", options, context));
+                            remoteUnsubs.add(sub);
+                        } else {
+                            finalRemoteSubs.add(sub);
                         }
-                    } catch (LbryUriException | LbryioRequestException | LbryioResponseException ex) {
-                        // pass
-                        Log.e(TAG, String.format("subscription/new failed: %s", ex.getMessage()), ex);
                     }
                 }
             }
@@ -114,13 +113,13 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                         diff.add(local);
                     }
                 }
-            }
-            for (int i = 0; i < remoteSubs.size(); i++) {
-                Subscription remote = remoteSubs.get(i);
-                if (!combined.contains(remote)) {
-                    combined.add(remote);
-                    if (!diff.contains(remote)) {
-                        diff.add(remote);
+                for (int i = 0; i < finalRemoteSubs.size(); i++) {
+                    Subscription remote = finalRemoteSubs.get(i);
+                    if (!combined.contains(remote)) {
+                        combined.add(remote);
+                        if (!diff.contains(remote)) {
+                            diff.add(remote);
+                        }
                     }
                 }
             }

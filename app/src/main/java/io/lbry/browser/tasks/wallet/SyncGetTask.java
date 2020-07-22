@@ -107,7 +107,7 @@ public class SyncGetTask extends AsyncTask<Void, Void, WalletSync> {
             if (applySyncChanges) {
                 if (applySyncSuccessful) {
                     handler.onSyncApplySuccess(syncHash, syncData);
-                } else {
+                } else if (syncApplyError != null) {
                     handler.onSyncApplyError(syncApplyError);
                 }
             }
