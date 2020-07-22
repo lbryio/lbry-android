@@ -1,31 +1,38 @@
 package io.lbry.browser;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.preference.PreferenceManager;
 
+import android.text.Html;
 import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import io.lbry.browser.data.DatabaseHelper;
+import io.lbry.browser.model.lbryinc.LbryNotification;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.lbrysdk.LbrynetService;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -66,6 +73,21 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                 }
 
                 sendNotification(title, body, type, url, name, contentTitle, channelUrl, publishTime);
+            }
+
+            // persist the notification data
+            try {
+                DatabaseHelper helper = DatabaseHelper.getInstance();
+                SQLiteDatabase db = helper.getWritableDatabase();
+                LbryNotification lnotification = new LbryNotification();
+                lnotification.setTitle(title);
+                lnotification.setDescription(body);
+                lnotification.setTargetUrl(url);
+                lnotification.setTimestamp(new Date());
+                DatabaseHelper.createNotification(lnotification, db);
+            } catch (Exception ex) {
+                // don't fail if any error occurs while saving a notification
+                Log.e(TAG, "could not save notification", ex);
             }
         }
     }
@@ -120,8 +142,8 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                 new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                         .setColor(ContextCompat.getColor(this, R.color.lbryGreen))
                         .setSmallIcon(R.drawable.ic_lbry)
-                        .setContentTitle(title)
-                        .setContentText(messageBody)
+                        .setContentTitle(HtmlCompat.fromHtml(messageBody, HtmlCompat.FROM_HTML_MODE_LEGACY))
+                        .setContentText(HtmlCompat.fromHtml(messageBody, HtmlCompat.FROM_HTML_MODE_LEGACY))
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);

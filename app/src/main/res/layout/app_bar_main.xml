@@ -42,6 +42,7 @@
                     android:hint="@string/uri_placeholder"
                     android:imeOptions="actionGo"
                     android:inputType="textNoSuggestions"
+                    android:paddingRight="36dp"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
                     android:textFontWeight="300"

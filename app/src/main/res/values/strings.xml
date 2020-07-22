@@ -603,6 +603,9 @@
     <string name="cannot_find_lbrynet_log">The lbrynet.log file could not be found.</string>
     <string name="cannot_share_lbrynet_log">The lbrynet.log file cannot be shared due to permission restrictions.</string>
 
+    <!-- Notifications -->
+    <string name="no_notifications">It\'s quiet here! New notifications will be displayed when you receive them.</string>
+
     <!-- Font Awesome -->
     <string name="fa_gift" translatable="false">&#xf06b;</string>
     <string name="fa_lock" translatable="false">&#xf023;</string>

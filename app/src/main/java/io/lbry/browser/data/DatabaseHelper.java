@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.opengl.Visibility;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -13,16 +12,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.ViewHistory;
+import io.lbry.browser.model.lbryinc.LbryNotification;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "LbryApp.db";
     private static DatabaseHelper instance;
 
@@ -48,7 +47,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", thumbnail_url TEXT" +
                     ", release_time INTEGER " +
                     ", device TEXT" +
-                    ", timestamp TEXT NOT NULL)"
+                    ", timestamp TEXT NOT NULL)",
+            "CREATE TABLE notifications (" +
+                    "  id INTEGER PRIMARY KEY NOT NULL" +
+                    ", title TEXT" +
+                    ", description TEXT" +
+                    ", thumbnail_url TEXT" +
+                    ", target_url TEXT" +
+                    ", timestamp TEXT NOT NULL)",
     };
     private static final String[] SQL_CREATE_INDEXES = {
             "CREATE UNIQUE INDEX idx_subscription_url ON subscriptions (url)",
@@ -56,7 +62,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE UNIQUE INDEX idx_url_history_url ON url_history (url)",
             "CREATE UNIQUE INDEX idx_tag_name ON tags (name)",
             "CREATE UNIQUE INDEX idx_view_history_url_device ON view_history (url, device)",
-            "CREATE INDEX idx_view_history_device ON view_history (device)"
+            "CREATE INDEX idx_view_history_device ON view_history (device)",
+            "CREATE INDEX idx_notification_timestamp ON notifications (timestamp)"
     };
 
     private static final String[] SQL_V1_V2_UPGRADE = {
@@ -68,7 +75,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "  id INTEGER PRIMARY KEY NOT NULL" +
                     ", title TEXT" +
                     ", description TEXT" +
-                    
+                    ", thumbnail_url TEXT" +
+                    ", target_url TEXT" +
+                    ", timestamp TEXT NOT NULL)",
+            "CREATE INDEX idx_notification_timestamp ON notifications (timestamp)"
     };
 
     private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
@@ -80,6 +90,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_CLEAR_URL_HISTORY = "DELETE FROM url_history";
     private static final String SQL_CLEAR_URL_HISTORY_BEFORE_TIME = "DELETE FROM url_history WHERE timestamp < ?";
     private static final String SQL_GET_RECENT_URL_HISTORY = "SELECT value, url, type FROM url_history ORDER BY timestamp DESC LIMIT 10";
+
+    private static final String SQL_INSERT_NOTIFICATION = "INSERT INTO notifications (title, description, target_url, timestamp) VALUES (?, ?, ?, ?)";
+    private static final String SQL_GET_NOTIFICATIONS = "SELECT id, title, description, target_url, timestamp FROM notifications ORDER BY timestamp DESC LIMIT 500";
 
     private static final String SQL_INSERT_VIEW_HISTORY =
             "REPLACE INTO view_history (url, claim_id, claim_name, cost, currency, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -116,6 +129,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
             for (String sql : SQL_V1_V2_UPGRADE) {
+                db.execSQL(sql);
+            }
+        }
+        if (oldVersion < 3) {
+            for (String sql : SQL_V2_V3_UPGRADE) {
                 db.execSQL(sql);
             }
         }
@@ -259,4 +277,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return subscriptions;
     }
 
+    public static void createNotification(LbryNotification notification, SQLiteDatabase db) {
+        db.execSQL(SQL_INSERT_NOTIFICATION, new Object[] {
+                notification.getTitle(),
+                notification.getDescription(),
+                notification.getTargetUrl(),
+                new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).format(notification.getTimestamp() != null ? notification.getTimestamp() : new Date())
+        });
+    }
+    public static List<LbryNotification> getNotifications(SQLiteDatabase db) {
+        List<LbryNotification> notifications = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(SQL_GET_NOTIFICATIONS, null);
+            while (cursor.moveToNext()) {
+                LbryNotification notification = new LbryNotification();
+                notification.setId(cursor.getLong(0));
+                notification.setTitle(cursor.getString(1));
+                notification.setDescription(cursor.getString(2));
+                notification.setTargetUrl(cursor.getString(3));
+                try {
+                    notification.setTimestamp(new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).parse(cursor.getString(4)));
+                } catch (ParseException ex) {
+                    // invalid timestamp (which shouldn't happen). Skip this item
+                    continue;
+                }
+            }
+        } finally {
+            Helper.closeCursor(cursor);
+        }
+        return notifications;
+    }
 }

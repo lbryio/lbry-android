@@ -438,6 +438,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         // setup uri bar
         setupUriBar();
+        initNotificationsPage();
 
         // other
         pendingSyncSetQueue = new ArrayList<>();
@@ -499,6 +500,18 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 nowPlayingClaimUrl = null;
                 nowPlayingClaimBitmap = null;
                 findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
+            }
+        });
+
+        findViewById(R.id.wunderbar_notifications).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View container = findViewById(R.id.notifications_container);
+                if (container.getVisibility() != View.VISIBLE) {
+                    showNotifications();
+                } else {
+                    hideNotifications();
+                }
             }
         });
 
@@ -1059,7 +1072,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         View container = findViewById(R.id.url_suggestions_container);
         View closeIcon = findViewById(R.id.wunderbar_close);
         EditText wunderbar = findViewById(R.id.wunderbar);
-        wunderbar.setPadding(0, 0, visible ? getScaledValue(36) : 0, 0);
+        //wunderbar.setPadding(0, 0, visible ? getScaledValue(36) : 0, 0);
 
         container.setVisibility(visible ? View.VISIBLE : View.GONE);
         closeIcon.setVisibility(visible ? View.VISIBLE : View.GONE);
@@ -1094,8 +1107,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
+                    hideNotifications();
+                    findViewById(R.id.wunderbar_notifications).setVisibility(View.INVISIBLE);
+
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(view, 0);
+                } else {
+                    findViewById(R.id.wunderbar_notifications).setVisibility(View.VISIBLE);
                 }
 
                 if (canShowUrlSuggestions()) {
@@ -1629,6 +1647,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final String CHANNEL_ID_PLAYBACK = "io.lbry.browser.LBRY_PLAYBACK_CHANNEL";
     private static final int PLAYBACK_NOTIFICATION_ID = 3;
 
+    public void initNotificationsPage() {
+        findViewById(R.id.notification_list_empty_container).setVisibility(View.VISIBLE);
+    }
+
     public void initPlaybackNotification() {
         if (isBackgroundPlaybackEnabled()) {
             playerNotificationManager.setPlayer(MainActivity.appPlayer);
@@ -2063,11 +2085,23 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
     }
 
+    public void showNotifications() {
+        clearWunderbarFocus(findViewById(R.id.wunderbar));
+        findViewById(R.id.notifications_container).setVisibility(View.VISIBLE);
+    }
+
+    public void hideNotifications() {
+        findViewById(R.id.notifications_container).setVisibility(View.GONE);
+    }
+
     @Override
     public void onBackPressed() {
-
         if (findViewById(R.id.url_suggestions_container).getVisibility() == View.VISIBLE) {
             clearWunderbarFocus(findViewById(R.id.wunderbar));
+            return;
+        }
+        if (findViewById(R.id.notifications_container).getVisibility() == View.VISIBLE) {
+            hideNotifications();
             return;
         }
         if (backPressInterceptor != null && backPressInterceptor.onBackPressed()) {
