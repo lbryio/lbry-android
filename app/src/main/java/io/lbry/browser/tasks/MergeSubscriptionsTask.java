@@ -60,12 +60,12 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                     for (Subscription sub : base) {
                         DatabaseHelper.createOrUpdateSubscription(sub, db);
                     }
-                }
-
-                localSubs = DatabaseHelper.getSubscriptions(db);
-                for (Subscription sub : localSubs) {
-                    if (!combined.contains(sub)) {
-                        combined.add(sub);
+                } else {
+                    localSubs = DatabaseHelper.getSubscriptions(db);
+                    for (Subscription sub : localSubs) {
+                        if (!combined.contains(sub)) {
+                            combined.add(sub);
+                        }
                     }
                 }
             }
@@ -113,13 +113,13 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                         diff.add(local);
                     }
                 }
-            }
-            for (int i = 0; i < finalRemoteSubs.size(); i++) {
-                Subscription remote = finalRemoteSubs.get(i);
-                if (!combined.contains(remote)) {
-                    combined.add(remote);
-                    if (!diff.contains(remote)) {
-                        diff.add(remote);
+                for (int i = 0; i < finalRemoteSubs.size(); i++) {
+                    Subscription remote = finalRemoteSubs.get(i);
+                    if (!combined.contains(remote)) {
+                        combined.add(remote);
+                        if (!diff.contains(remote)) {
+                            diff.add(remote);
+                        }
                     }
                 }
             }
