@@ -1795,11 +1795,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                             sp.edit().putBoolean(PREFERENCE_KEY_INTERNAL_INITIAL_SUBSCRIPTION_MERGE_DONE, true).apply();
+                            Lbryio.cacheResolvedSubscriptions.clear();
 
                             for (Fragment fragment : openNavFragments.values()) {
                                 if (fragment instanceof FollowingFragment) {
                                     // reload local subscriptions
-                                    Lbryio.cacheResolvedSubscriptions.clear();
                                     FollowingFragment followingFragment = (FollowingFragment) fragment;
                                     followingFragment.fetchLoadedSubscriptions(true);
                                 }
