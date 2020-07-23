@@ -56,6 +56,13 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="lbry" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="https" android:host="open.lbry.com"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <activity

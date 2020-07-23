@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.Outline;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -119,6 +120,7 @@ import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.tasks.BufferEventTask;
 import io.lbry.browser.tasks.CommentCreateWithTipTask;
 import io.lbry.browser.tasks.CommentListHandler;
 import io.lbry.browser.tasks.CommentListTask;
@@ -141,6 +143,7 @@ import io.lbry.browser.tasks.lbryinc.ClaimRewardTask;
 import io.lbry.browser.tasks.lbryinc.FetchStatCountTask;
 import io.lbry.browser.tasks.lbryinc.LogFileViewTask;
 import io.lbry.browser.ui.BaseFragment;
+import io.lbry.browser.ui.controls.OutlineIconView;
 import io.lbry.browser.ui.controls.SolidIconView;
 import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.utils.Helper;
@@ -163,6 +166,7 @@ public class FileViewFragment extends BaseFragment implements
         WalletBalanceListener {
     private static final int RELATED_CONTENT_SIZE = 16;
     private static final String DEFAULT_PLAYBACK_SPEED = "1x";
+    private static final String CDN_PREFIX = "https://cdn.lbryplayer.xyz";
 
     private PlayerControlView castControlView;
     private Player currentPlayer;
@@ -290,6 +294,27 @@ public class FileViewFragment extends BaseFragment implements
                         loadingNewClaim = false;
                     }
                 } else if (playbackState == Player.STATE_BUFFERING) {
+                    if (MainActivity.appPlayer != null && MainActivity.appPlayer.getCurrentPosition() > 0) {
+                        // we only want to log a buffer event after the media has already started playing
+                        String mediaSourceUrl = getStreamingUrl();
+                        long duration = MainActivity.appPlayer.getDuration();
+                        long position = MainActivity.appPlayer.getCurrentPosition();
+                        // TODO: Determine a hash for the userId
+                        String userIdHash = Helper.SHA256(Lbryio.currentUser != null ? String.valueOf(Lbryio.currentUser.getId()) : "0");
+                        if (mediaSourceUrl.startsWith(CDN_PREFIX)) {
+                            BufferEventTask bufferEvent = new BufferEventTask(claim.getPermanentUrl(), duration, position, 1, userIdHash);
+                            bufferEvent.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                        } else {
+                            // sdk stream buffer events should be handled differently
+                            Bundle bundle = new Bundle();
+                            bundle.putString("url", claim.getPermanentUrl());
+                            bundle.putLong("stream_duration", duration);
+                            bundle.putLong("stream_position", position);
+                            bundle.putString("user_id_hash", userIdHash);
+                            LbryAnalytics.logEvent(LbryAnalytics.EVENT_BUFFER, bundle);
+                        }
+                    }
+
                     showBuffering();
                 } else {
                     hideBuffering();
@@ -724,6 +749,44 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
+    private View.OnClickListener followUnfollowListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (claim != null && claim.getSigningChannel() != null) {
+                Claim publisher = claim.getSigningChannel();
+                boolean isFollowing = Lbryio.isFollowing(publisher);
+                Subscription subscription = Subscription.fromClaim(publisher);
+                view.setEnabled(false);
+                Context context = getContext();
+                new ChannelSubscribeTask(context, publisher.getClaimId(), subscription, isFollowing, new ChannelSubscribeTask.ChannelSubscribeHandler() {
+                    @Override
+                    public void onSuccess() {
+                        if (isFollowing) {
+                            Lbryio.removeSubscription(subscription);
+                            Lbryio.removeCachedResolvedSubscription(publisher);
+                        } else {
+                            Lbryio.addSubscription(subscription);
+                            Lbryio.addCachedResolvedSubscription(publisher);
+                        }
+                        view.setEnabled(true);
+                        checkIsFollowing();
+                        FollowingFragment.resetClaimSearchContent = true;
+
+                        // Save shared user state
+                        if (context != null) {
+                            context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        view.setEnabled(true);
+                    }
+                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        }
+    };
+
     private void resolveUrl(String url) {
         resolving = true;
         Helper.setViewVisibility(layoutDisplayArea, View.INVISIBLE);
@@ -1060,44 +1123,10 @@ public class FileViewFragment extends BaseFragment implements
             }
         });
 
-        View buttonFollowUnfollow = root.findViewById(R.id.file_view_icon_follow_unfollow);
-        buttonFollowUnfollow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (claim != null && claim.getSigningChannel() != null) {
-                    Claim publisher = claim.getSigningChannel();
-                    boolean isFollowing = Lbryio.isFollowing(publisher);
-                    Subscription subscription = Subscription.fromClaim(publisher);
-                    buttonFollowUnfollow.setEnabled(false);
-                    Context context = getContext();
-                    new ChannelSubscribeTask(context, publisher.getClaimId(), subscription, isFollowing, new ChannelSubscribeTask.ChannelSubscribeHandler() {
-                        @Override
-                        public void onSuccess() {
-                            if (isFollowing) {
-                                Lbryio.removeSubscription(subscription);
-                                Lbryio.removeCachedResolvedSubscription(publisher);
-                            } else {
-                                Lbryio.addSubscription(subscription);
-                                Lbryio.addCachedResolvedSubscription(publisher);
-                            }
-                            buttonFollowUnfollow.setEnabled(true);
-                            checkIsFollowing();
-                            FollowingFragment.resetClaimSearchContent = true;
-
-                            // Save shared user state
-                            if (context != null) {
-                                context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
-                            }
-                        }
-
-                        @Override
-                        public void onError(Exception exception) {
-                            buttonFollowUnfollow.setEnabled(true);
-                        }
-                    }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                }
-            }
-        });
+        View buttonFollow = root.findViewById(R.id.file_view_icon_follow);
+        View buttonUnfollow = root.findViewById(R.id.file_view_icon_unfollow);
+        buttonFollow.setOnClickListener(followUnfollowListener);
+        buttonUnfollow.setOnClickListener(followUnfollowListener);
 
         commentChannelSpinnerAdapter = new InlineChannelSpinnerAdapter(getContext(), R.layout.spinner_item_channel, new ArrayList<>());
         commentChannelSpinnerAdapter.addPlaceholder(false);
@@ -1418,7 +1447,17 @@ public class FileViewFragment extends BaseFragment implements
                 }
             }
 
-            root.findViewById(R.id.file_view_icon_follow_unfollow).setVisibility(claim.getSigningChannel() != null ? View.VISIBLE : View.GONE);
+            boolean isAnonymous = claim.getSigningChannel() == null;
+            View iconFollow = root.findViewById(R.id.file_view_icon_follow);
+            View iconUnfollow = root.findViewById(R.id.file_view_icon_unfollow);
+            if (isAnonymous) {
+                if (iconFollow.getVisibility() == View.VISIBLE) {
+                    iconFollow.setVisibility(View.INVISIBLE);
+                }
+                if (iconUnfollow.getVisibility() == View.VISIBLE) {
+                    iconUnfollow.setVisibility(View.INVISIBLE);
+                }
+            }
 
             MaterialButton mainActionButton = root.findViewById(R.id.file_view_main_action_button);
             if (claim.isPlayable()) {
@@ -2408,11 +2447,10 @@ public class FileViewFragment extends BaseFragment implements
             Context context = getContext();
             View root = getView();
             if (context != null && root != null) {
-                SolidIconView iconFollowUnfollow = root.findViewById(R.id.file_view_icon_follow_unfollow);
-                if (iconFollowUnfollow != null) {
-                    iconFollowUnfollow.setText(isFollowing ? R.string.fa_heart_broken : R.string.fa_heart);
-                    iconFollowUnfollow.setTextColor(ContextCompat.getColor(context, isFollowing ? R.color.foreground : R.color.red));
-                }
+                OutlineIconView iconFollow = root.findViewById(R.id.file_view_icon_follow);
+                SolidIconView iconUnfollow = root.findViewById(R.id.file_view_icon_unfollow);
+                Helper.setViewVisibility(iconFollow, !isFollowing ? View.VISIBLE: View.INVISIBLE);
+                Helper.setViewVisibility(iconUnfollow, isFollowing ? View.VISIBLE : View.INVISIBLE);
             }
         }
     }
