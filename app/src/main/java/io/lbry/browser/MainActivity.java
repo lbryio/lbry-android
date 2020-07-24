@@ -114,6 +114,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import io.lbry.browser.adapter.NavigationMenuAdapter;
+import io.lbry.browser.adapter.NotificationListAdapter;
 import io.lbry.browser.adapter.UrlSuggestionListAdapter;
 import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.ContentScopeDialogFragment;
@@ -136,6 +137,7 @@ import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.model.WalletSync;
+import io.lbry.browser.model.lbryinc.LbryNotification;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.tasks.GenericTaskHandler;
@@ -222,6 +224,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Getter
     private String firebaseMessagingToken;
+
+    private NotificationListAdapter notificationListAdapter;
 
     private Map<String, Fragment> openNavFragments;
     private static final Map<Class, Integer> fragmentClassNavIdMap = new HashMap<>();
@@ -439,6 +443,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         // setup uri bar
         setupUriBar();
         initNotificationsPage();
+        loadUnreadNotificationsCount();
 
         // other
         pendingSyncSetQueue = new ArrayList<>();
@@ -519,6 +524,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onClick(View view) {
                 if (nowPlayingClaim != null && !Helper.isNullOrEmpty(nowPlayingClaimUrl)) {
+                    hideNotifications();
                     openFileUrl(nowPlayingClaimUrl);
                 }
             }
@@ -728,8 +734,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     private void openSelectedMenuItem() {
+        hideNotifications();
+
         switch (selectedMenuItemId) {
-            // TODO: reverse map lookup for class?
             case NavMenuItem.ID_ITEM_FOLLOWING:
                 openFragment(FollowingFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING);
                 break;
@@ -1648,6 +1655,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void initNotificationsPage() {
         findViewById(R.id.notification_list_empty_container).setVisibility(View.VISIBLE);
+
+        RecyclerView notificationsList = findViewById(R.id.notifications_list);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        notificationsList.setLayoutManager(llm);
     }
 
     public void initPlaybackNotification() {
@@ -2020,6 +2031,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         intentFilter.addAction(ACTION_OPEN_REWARDS_PAGE);
         intentFilter.addAction(ACTION_PUBLISH_SUCCESSFUL);
         intentFilter.addAction(ACTION_SAVE_SHARED_USER_STATE);
+        intentFilter.addAction(LbrynetMessagingService.ACTION_NOTIFICATION_RECEIVED);
         requestsReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -2040,6 +2052,25 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     saveSharedUserState();
                 } else if (ACTION_PUBLISH_SUCCESSFUL.equalsIgnoreCase(action)) {
                     openPublishesOnSuccessfulPublish();
+                } else if (LbrynetMessagingService.ACTION_NOTIFICATION_RECEIVED.equalsIgnoreCase(action)) {
+                    handleNotificationReceived(intent);
+                }
+            }
+
+            private void handleNotificationReceived(Intent intent) {
+                loadUnreadNotificationsCount();
+
+                if (notificationListAdapter != null) {
+                    LbryNotification lnotification = new LbryNotification();
+                    lnotification.setTitle(intent.getStringExtra("title"));
+                    lnotification.setDescription(intent.getStringExtra("body"));
+                    lnotification.setTargetUrl(intent.getStringExtra("url"));
+                    lnotification.setTimestamp(new Date(intent.getLongExtra("timestamp", System.currentTimeMillis())));
+                    // show at the top
+                    notificationListAdapter.insertNotification(lnotification, 0);
+                    findViewById(R.id.notification_list_empty_container).setVisibility(View.GONE);
+                } else {
+                    loadNotifications();
                 }
             }
 
@@ -2088,10 +2119,33 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public void showNotifications() {
         clearWunderbarFocus(findViewById(R.id.wunderbar));
         findViewById(R.id.notifications_container).setVisibility(View.VISIBLE);
+        ((ImageView) findViewById(R.id.notifications_toggle_icon)).setColorFilter(ContextCompat.getColor(this, R.color.lbryGreen));
+        if (notificationListAdapter == null) {
+            loadNotifications();
+        }
+        markNotificationsRead();
     }
 
     public void hideNotifications() {
+        ((ImageView) findViewById(R.id.notifications_toggle_icon)).setColorFilter(ContextCompat.getColor(this, R.color.actionBarForeground));
         findViewById(R.id.notifications_container).setVisibility(View.GONE);
+    }
+
+    private void markNotificationsRead() {
+        (new AsyncTask<Void, Void, Void>() {
+            protected Void doInBackground(Void... params) {
+                try {
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    DatabaseHelper.markNotificationsRead(db);
+                } catch (Exception ex) {
+                    // pass
+                }
+                return null;
+            }
+            protected void onPostExecute(Void result) {
+                loadUnreadNotificationsCount();
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -3062,6 +3116,72 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void displayUnreadNotificationCount(int count) {
+        String text = count > 99 ? "99+" : String.valueOf(count);
+
+        TextView badge = findViewById(R.id.notifications_badge_count);
+        badge.setVisibility(count > 0 ? View.VISIBLE : View.INVISIBLE);
+        badge.setText(text);
+    }
+
+    private void loadUnreadNotificationsCount() {
+        (new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... params) {
+                try {
+                    SQLiteDatabase db = dbHelper.getReadableDatabase();
+                    return DatabaseHelper.getUnreadNotificationsCount(db);
+                } catch (Exception ex) {
+                    return 0;
+                }
+            }
+            protected void onPostExecute(Integer count) {
+                displayUnreadNotificationCount(count);
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void loadNotifications() {
+        (new AsyncTask<Void, Void, List<LbryNotification>>() {
+            protected void onPreExecute() {
+                findViewById(R.id.notification_list_empty_container).setVisibility(View.GONE);
+                findViewById(R.id.notifications_progress).setVisibility(View.VISIBLE);
+            }
+            @Override
+            protected List<LbryNotification> doInBackground(Void... params) {
+                List<LbryNotification> notifications = new ArrayList<>();
+                try {
+                    SQLiteDatabase db = dbHelper.getReadableDatabase();
+                    notifications = DatabaseHelper.getNotifications(db);
+                } catch (Exception ex) {
+                    // pass
+                }
+                return notifications;
+            }
+            protected void onPostExecute(List<LbryNotification> notifications) {
+                findViewById(R.id.notification_list_empty_container).setVisibility(notifications.size() == 0 ? View.VISIBLE : View.GONE);
+                findViewById(R.id.notifications_progress).setVisibility(View.GONE);
+                notificationListAdapter = new NotificationListAdapter(notifications, MainActivity.this);
+                notificationListAdapter.setClickListener(new NotificationListAdapter.NotificationClickListener() {
+                    @Override
+                    public void onNotificationClicked(LbryNotification notification) {
+                        LbryUri target = LbryUri.tryParse(notification.getTargetUrl());
+                        if (target != null) {
+                            hideNotifications();
+                            if (target.isChannel()) {
+                                openChannelUrl(target.toString());
+                            } else {
+                                openFileUrl(target.toString());
+                            }
+                        }
+                    }
+                });
+
+                ((RecyclerView) findViewById(R.id.notifications_list)).setAdapter(notificationListAdapter);
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void checkSyncedWallet() {

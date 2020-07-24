@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LbrynetMessagingService extends FirebaseMessagingService {
+    public static final String ACTION_NOTIFICATION_RECEIVED = "io.lbry.browser.Broadcast.NotificationReceived";
 
     private static final String TAG = "LbrynetMessagingService";
     private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.LBRY_ENGAGEMENT_CHANNEL";
@@ -59,10 +60,6 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             String title = payload.get("title");
             String body = payload.get("body");
             String name = payload.get("name"); // notification name
-            String contentTitle = payload.get("content_title");
-            String channelUrl = payload.get("channel_url");
-            //String publishTime = payload.get("publish_time");
-            String publishTime = null;
 
             if (type != null && getEnabledTypes().indexOf(type) > -1 && body != null && body.trim().length() > 0) {
                 // only log the receive event for valid notifications received
@@ -72,7 +69,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                     firebaseAnalytics.logEvent(LbryAnalytics.EVENT_LBRY_NOTIFICATION_RECEIVE, bundle);
                 }
 
-                sendNotification(title, body, type, url, name, contentTitle, channelUrl, publishTime);
+                sendNotification(title, body, type, url, name);
             }
 
             // persist the notification data
@@ -85,6 +82,14 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                 lnotification.setTargetUrl(url);
                 lnotification.setTimestamp(new Date());
                 DatabaseHelper.createNotification(lnotification, db);
+
+                // send a broadcast
+                Intent intent = new Intent(ACTION_NOTIFICATION_RECEIVED);
+                intent.putExtra("title", title);
+                intent.putExtra("body", body);
+                intent.putExtra("url", url);
+                intent.putExtra("timestamp", lnotification.getTimestamp().getTime());
+                sendBroadcast(intent);
             } catch (Exception ex) {
                 // don't fail if any error occurs while saving a notification
                 Log.e(TAG, "could not save notification", ex);
@@ -119,8 +124,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String title, String messageBody, String type, String url, String name,
-                                  String contentTitle, String channelUrl, String publishTime) {
+    private void sendNotification(String title, String messageBody, String type, String url, String name) {
         //Intent intent = new Intent(this, MainActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (url == null) {
@@ -142,8 +146,8 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                 new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                         .setColor(ContextCompat.getColor(this, R.color.lbryGreen))
                         .setSmallIcon(R.drawable.ic_lbry)
-                        .setContentTitle(HtmlCompat.fromHtml(messageBody, HtmlCompat.FROM_HTML_MODE_LEGACY))
-                        .setContentText(HtmlCompat.fromHtml(messageBody, HtmlCompat.FROM_HTML_MODE_LEGACY))
+                        .setContentTitle(title)
+                        .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);

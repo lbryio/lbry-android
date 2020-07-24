@@ -41,6 +41,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
+        <ProgressBar
+            android:id="@+id/notifications_progress"
+            android:layout_centerInParent="true"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="gone" />
         <LinearLayout
             android:id="@+id/notification_list_empty_container"
             android:orientation="vertical"

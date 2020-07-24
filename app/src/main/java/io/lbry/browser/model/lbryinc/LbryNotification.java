@@ -11,5 +11,6 @@ public class LbryNotification {
     private String description;
     private String thumbnailUrl;
     private String targetUrl;
+    private boolean read;
     private Date timestamp;
 }

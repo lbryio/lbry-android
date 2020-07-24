@@ -54,6 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", description TEXT" +
                     ", thumbnail_url TEXT" +
                     ", target_url TEXT" +
+                    ", is_read INTEGER DEFAULT 0 NOT NULL" +
                     ", timestamp TEXT NOT NULL)",
     };
     private static final String[] SQL_CREATE_INDEXES = {
@@ -77,6 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", description TEXT" +
                     ", thumbnail_url TEXT" +
                     ", target_url TEXT" +
+                    ", is_read INTEGER DEFAULT 0 NOT NULL" +
                     ", timestamp TEXT NOT NULL)",
             "CREATE INDEX idx_notification_timestamp ON notifications (timestamp)"
     };
@@ -93,6 +95,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String SQL_INSERT_NOTIFICATION = "INSERT INTO notifications (title, description, target_url, timestamp) VALUES (?, ?, ?, ?)";
     private static final String SQL_GET_NOTIFICATIONS = "SELECT id, title, description, target_url, timestamp FROM notifications ORDER BY timestamp DESC LIMIT 500";
+    private static final String SQL_GET_UNREAD_NOTIFICATIONS_COUNT = "SELECT COUNT(id) FROM notifications WHERE is_read <> 1";
+    private static final String SQL_MARK_NOTIFICATIONS_READ = "UPDATE notifications SET is_read = 1 WHERE is_read = 0";
 
     private static final String SQL_INSERT_VIEW_HISTORY =
             "REPLACE INTO view_history (url, claim_id, claim_name, cost, currency, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -302,10 +306,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     // invalid timestamp (which shouldn't happen). Skip this item
                     continue;
                 }
+                notifications.add(notification);
             }
         } finally {
             Helper.closeCursor(cursor);
         }
         return notifications;
+    }
+    public static int getUnreadNotificationsCount(SQLiteDatabase db) {
+        int count = 0;
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(SQL_GET_UNREAD_NOTIFICATIONS_COUNT, null);
+            if (cursor.moveToNext()) {
+                count = cursor.getInt(0);
+            }
+        } finally {
+            Helper.closeCursor(cursor);
+        }
+        return count;
+    }
+    public static void markNotificationsRead(SQLiteDatabase db) {
+        db.execSQL(SQL_MARK_NOTIFICATIONS_READ);
     }
 }
