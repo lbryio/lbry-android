@@ -480,6 +480,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 if (slideOffset != 0) {
                     clearWunderbarFocus(findViewById(R.id.wunderbar));
+                    hideNotifications();
                 }
                 super.onDrawerSlide(drawerView, slideOffset);
             }
@@ -3169,12 +3170,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     public void onNotificationClicked(LbryNotification notification) {
                         LbryUri target = LbryUri.tryParse(notification.getTargetUrl());
                         if (target != null) {
-                            hideNotifications();
                             if (target.isChannel()) {
                                 openChannelUrl(target.toString());
                             } else {
                                 openFileUrl(target.toString());
                             }
+                            hideNotifications();
                         }
                     }
                 });
