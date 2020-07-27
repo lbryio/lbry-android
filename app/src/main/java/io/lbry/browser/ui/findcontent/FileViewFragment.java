@@ -298,7 +298,15 @@ public class FileViewFragment extends BaseFragment implements
                         loadingNewClaim = false;
                     }
                 } else if (playbackState == Player.STATE_BUFFERING) {
-                    if (MainActivity.appPlayer != null && MainActivity.appPlayer.getCurrentPosition() > 0) {
+                    Context ctx = getContext();
+                    boolean sendBufferingEvents = false;
+
+                    if (ctx != null) {
+                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+                        sendBufferingEvents = sp.getBoolean(MainActivity.PREFERENCE_KEY_SEND_BUFFERING_EVENTS, true);
+                    }
+
+                    if (MainActivity.appPlayer != null && MainActivity.appPlayer.getCurrentPosition() > 0 && sendBufferingEvents) {
                         // we only want to log a buffer event after the media has already started playing
                         String mediaSourceUrl = getStreamingUrl();
                         long duration = MainActivity.appPlayer.getDuration();
