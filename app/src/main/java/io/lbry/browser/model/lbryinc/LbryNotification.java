@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class LbryNotification {
     private long id;
+    private long remoteId;
     private String title;
     private String description;
     private String thumbnailUrl;

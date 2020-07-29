@@ -1,6 +1,5 @@
 package io.lbry.browser;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,10 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.text.HtmlCompat;
 import androidx.preference.PreferenceManager;
 
-import android.text.Html;
 import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -27,10 +24,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.model.lbryinc.LbryNotification;
 import io.lbry.browser.utils.LbryAnalytics;
-import io.lbry.lbrysdk.LbrynetService;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -81,7 +75,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                 lnotification.setDescription(body);
                 lnotification.setTargetUrl(url);
                 lnotification.setTimestamp(new Date());
-                DatabaseHelper.createNotification(lnotification, db);
+                DatabaseHelper.createOrUpdateNotification(lnotification, db);
 
                 // send a broadcast
                 Intent intent = new Intent(ACTION_NOTIFICATION_RECEIVED);

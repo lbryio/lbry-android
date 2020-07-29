@@ -148,6 +148,7 @@ import io.lbry.browser.tasks.lbryinc.FetchRewardsTask;
 import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.MergeSubscriptionsTask;
 import io.lbry.browser.tasks.claim.ResolveTask;
+import io.lbry.browser.tasks.lbryinc.ListNotificationsTask;
 import io.lbry.browser.tasks.localdata.FetchRecentUrlHistoryTask;
 import io.lbry.browser.tasks.wallet.DefaultSyncTaskHandler;
 import io.lbry.browser.tasks.wallet.LoadSharedUserStateTask;
@@ -1562,6 +1563,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             try {
                 Lbryio.AUTH_TOKEN = new String(Utils.decrypt(
                         Base64.decode(encryptedAuthToken, Base64.NO_WRAP), this, Lbry.KEYSTORE), "UTF8");
+                Log.d(TAG, Lbryio.AUTH_TOKEN);
             } catch (Exception ex) {
                 // pass. A new auth token would have to be generated if the old one cannot be decrypted
                 Log.e(TAG, "Could not decrypt existing auth token.", ex);
@@ -2071,7 +2073,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     notificationListAdapter.insertNotification(lnotification, 0);
                     findViewById(R.id.notification_list_empty_container).setVisibility(View.GONE);
                 } else {
-                    loadNotifications();
+                    loadRemoteNotifications();
                 }
             }
 
@@ -2122,7 +2124,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.notifications_container).setVisibility(View.VISIBLE);
         ((ImageView) findViewById(R.id.notifications_toggle_icon)).setColorFilter(ContextCompat.getColor(this, R.color.lbryGreen));
         if (notificationListAdapter == null) {
-            loadNotifications();
+            loadRemoteNotifications();
         }
         markNotificationsRead();
     }
@@ -3144,7 +3146,25 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void loadNotifications() {
+    private void loadRemoteNotifications() {
+        findViewById(R.id.notification_list_empty_container).setVisibility(View.GONE);
+        ListNotificationsTask task = new ListNotificationsTask(this, findViewById(R.id.notifications_progress), new ListNotificationsTask.ListNotificationsHandler() {
+            @Override
+            public void onSuccess(List<LbryNotification> notifications) {
+                loadLocalNotifications();
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                // pass
+                Log.e(TAG, "error loading remote notifications", exception);
+                loadLocalNotifications();
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void loadLocalNotifications() {
         (new AsyncTask<Void, Void, List<LbryNotification>>() {
             protected void onPreExecute() {
                 findViewById(R.id.notification_list_empty_container).setVisibility(View.GONE);

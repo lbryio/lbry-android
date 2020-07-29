@@ -21,7 +21,7 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "LbryApp.db";
     private static DatabaseHelper instance;
 
@@ -50,6 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", timestamp TEXT NOT NULL)",
             "CREATE TABLE notifications (" +
                     "  id INTEGER PRIMARY KEY NOT NULL" +
+                    ", remote_id INTEGER NOT NULL" +
                     ", title TEXT" +
                     ", description TEXT" +
                     ", thumbnail_url TEXT" +
@@ -64,6 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE UNIQUE INDEX idx_tag_name ON tags (name)",
             "CREATE UNIQUE INDEX idx_view_history_url_device ON view_history (url, device)",
             "CREATE INDEX idx_view_history_device ON view_history (device)",
+            "CREATE UNIQUE INDEX idx_notification_remote_id ON notifications (remote_id)",
             "CREATE INDEX idx_notification_timestamp ON notifications (timestamp)"
     };
 
@@ -83,6 +85,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE INDEX idx_notification_timestamp ON notifications (timestamp)"
     };
 
+    private static final String[] SQL_V3_V4_UPGRADE = {
+            "ALTER TABLE notifications ADD COLUMN remote_id INTEGER",
+            "CREATE UNIQUE INDEX idx_notification_remote_id ON notifications (remote_id)",
+    };
+
     private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
     private static final String SQL_CLEAR_SUBSCRIPTIONS = "DELETE FROM subscriptions";
     private static final String SQL_DELETE_SUBSCRIPTION = "DELETE FROM subscriptions WHERE url = ?";
@@ -93,7 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_CLEAR_URL_HISTORY_BEFORE_TIME = "DELETE FROM url_history WHERE timestamp < ?";
     private static final String SQL_GET_RECENT_URL_HISTORY = "SELECT value, url, type FROM url_history ORDER BY timestamp DESC LIMIT 10";
 
-    private static final String SQL_INSERT_NOTIFICATION = "INSERT INTO notifications (title, description, target_url, timestamp) VALUES (?, ?, ?, ?)";
+    private static final String SQL_INSERT_NOTIFICATION = "REPLACE INTO notifications (remote_id, title, description, target_url, is_read, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SQL_GET_NOTIFICATIONS = "SELECT id, title, description, target_url, timestamp FROM notifications ORDER BY timestamp DESC LIMIT 500";
     private static final String SQL_GET_UNREAD_NOTIFICATIONS_COUNT = "SELECT COUNT(id) FROM notifications WHERE is_read <> 1";
     private static final String SQL_MARK_NOTIFICATIONS_READ = "UPDATE notifications SET is_read = 1 WHERE is_read = 0";
@@ -138,6 +145,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         if (oldVersion < 3) {
             for (String sql : SQL_V2_V3_UPGRADE) {
+                db.execSQL(sql);
+            }
+        }
+        if (oldVersion < 4) {
+            for (String sql : SQL_V3_V4_UPGRADE) {
                 db.execSQL(sql);
             }
         }
@@ -281,11 +293,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return subscriptions;
     }
 
-    public static void createNotification(LbryNotification notification, SQLiteDatabase db) {
+    public static void createOrUpdateNotification(LbryNotification notification, SQLiteDatabase db) {
         db.execSQL(SQL_INSERT_NOTIFICATION, new Object[] {
+                notification.getRemoteId(),
                 notification.getTitle(),
                 notification.getDescription(),
                 notification.getTargetUrl(),
+                notification.isRead() ? 1 : 0,
                 new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).format(notification.getTimestamp() != null ? notification.getTimestamp() : new Date())
         });
     }
