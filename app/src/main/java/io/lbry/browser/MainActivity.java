@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.PictureInPictureParams;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -579,6 +580,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        checkSendToIntent(intent);
         checkUrlIntent(intent);
         checkNotificationOpenIntent(intent);
     }
@@ -831,6 +833,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         Map<String, Object> params = new HashMap<>();
         params.put("url", url);
         openFragment(FileViewFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
+    }
+
+    public void openSendTo(String path) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("directFilePath", path);
+        openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
     }
 
     public void openFileClaim(Claim claim) {
@@ -2642,6 +2650,19 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         Bundle bundle = new Bundle();
         bundle.putString("name", name);
         LbryAnalytics.logEvent(LbryAnalytics.EVENT_LBRY_NOTIFICATION_OPEN, bundle);
+    }
+
+    private void checkSendToIntent(Intent intent) {
+        String intentAction = intent.getAction();
+        if (intentAction != null && intentAction.equals("android.intent.action.SEND")) {
+            ClipData clipData = intent.getClipData();
+            if (clipData != null) {
+                Uri uri = clipData.getItemAt(0).getUri();
+
+                String path = Helper.getRealPathFromURI_API19(this, uri);
+                openSendTo(path);
+            }
+        }
     }
 
     private void registerServiceActionsReceiver() {
