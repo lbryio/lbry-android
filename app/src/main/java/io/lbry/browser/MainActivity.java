@@ -1563,7 +1563,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             try {
                 Lbryio.AUTH_TOKEN = new String(Utils.decrypt(
                         Base64.decode(encryptedAuthToken, Base64.NO_WRAP), this, Lbry.KEYSTORE), "UTF8");
-                Log.d(TAG, Lbryio.AUTH_TOKEN);
             } catch (Exception ex) {
                 // pass. A new auth token would have to be generated if the old one cannot be decrypted
                 Log.e(TAG, "Could not decrypt existing auth token.", ex);
