@@ -101,6 +101,7 @@ public final class Lbryio {
             }
             url = uriBuilder.build().toString();
         }
+
         /*if (BuildConfig.DEBUG) {
             Log.d(TAG, String.format("Request Method: %s, Sending request to URL: %s", method, url));
         }*/
@@ -200,6 +201,7 @@ public final class Lbryio {
                 throw new LbryioResponseException("Unknown API error signature.", response.code());
             }
         } catch (JSONException | IOException ex) {
+
             throw new LbryioResponseException(String.format("Could not parse response: %s", responseString), ex);
         }
     }
@@ -230,7 +232,7 @@ public final class Lbryio {
                 }
             }
 
-            android.util.Log.e(TAG, "Could not retrieve the current user", ex);
+            Log.e(TAG, "Could not retrieve the current user", ex);
             return null;
         }
     }
@@ -308,7 +310,7 @@ public final class Lbryio {
                 context.sendBroadcast(intent);
             }
         } catch (Exception ex) {
-            android.util.Log.e(TAG, "Error sending encrypted auth token action broadcast", ex);
+            Log.e(TAG, "Error sending encrypted auth token action broadcast", ex);
             // pass
         }
     }

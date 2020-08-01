@@ -1,5 +1,12 @@
 import com.google.gms.googleservices.GoogleServicesPlugin
 
+Properties props = new Properties()
+try {
+    props.load(file('twitter.properties').newDataInputStream())
+} catch (Exception ex) {
+    throw new GradleException("Missing twitter.properties.")
+}
+
 apply plugin: 'com.android.application'
 
 android {
@@ -22,6 +29,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
     productFlavors {
         __32bit {
             versionCode android.defaultConfig.versionCode * 10 + 1
@@ -38,7 +49,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            resValue "string", "TWITTER_CONSUMER_KEY",  "\"${props.getProperty("twitterConsumerKey")}\""
+            resValue "string", "TWITTER_CONSUMER_SECRET", "\"${props.getProperty("twitterConsumerSecret")}\""
+        }
         release {
+            resValue "string", "TWITTER_CONSUMER_KEY",  "\"${props.getProperty("twitterConsumerKey")}\""
+            resValue "string", "TWITTER_CONSUMER_SECRET", "\"${props.getProperty("twitterConsumerSecret")}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -48,6 +65,13 @@ android {
 task printVersionName {
     doLast {
         println android.defaultConfig.versionName
+    }
+}
+
+configurations {
+    all {
+        exclude module: 'httpclient'
+        exclude module: 'commons-logging'
     }
 }
 
@@ -76,6 +100,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.4.2'
     implementation 'com.google.android.gms:play-services-base:17.2.1'
     implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.google.oauth-client:google-oauth-client:1.30.4'
+
+    implementation 'com.android.billingclient:billing:3.0.0'
 
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.11.4'

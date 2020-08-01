@@ -7,4 +7,7 @@ public interface SignInListener {
     void onPhoneAdded(String countryCode, String phoneNumber);
     void onPhoneVerified();
     void onManualVerifyContinue();
+    void onSkipQueueAction();
+    void onTwitterVerified();
+    void onManualProgress(boolean progress);
 }
