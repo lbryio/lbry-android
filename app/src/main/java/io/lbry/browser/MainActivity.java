@@ -876,7 +876,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.content_main).setVisibility(View.GONE);
         findViewById(R.id.floating_balance_main_container).setVisibility(View.GONE);
         findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
-        findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
+        //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         findViewById(R.id.app_bar_main_container).setFitsSystemWindows(true);
         hideActionBar();
 
@@ -912,9 +912,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (!(fragment instanceof FileViewFragment) && !inFullscreenMode) {
             findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
         }
-        if (!Lbry.SDK_READY && !inFullscreenMode) {
+        /*if (!Lbry.SDK_READY && !inFullscreenMode) {
             findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
-        }
+        }*/
         for (PIPModeListener listener : pipModeListeners) {
             listener.onExitPIPMode();
         }
@@ -1011,16 +1011,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         serviceRunning = isServiceRunning(this, LbrynetService.class);
         if (!serviceRunning) {
             Lbry.SDK_READY = false;
-            findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
+            //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
             ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
         }
         checkSdkReady();
         showSignedInUser();
         checkPendingOpens();
 
-        if (Lbry.SDK_READY) {
+        /*if (Lbry.SDK_READY) {
             findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
-        }
+        }*/
     }
 
     private void checkPendingOpens() {
@@ -1451,7 +1451,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (actionBar != null) {
             actionBar.hide();
         }
-        findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
+        //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         findViewById(R.id.app_bar_main_container).setFitsSystemWindows(false);
         lockDrawer();
 
@@ -1482,9 +1482,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         appBarMainContainer.setFitsSystemWindows(true);
         decorView.setSystemUiVisibility(flags);
 
-        if (!Lbry.SDK_READY) {
+        /*if (!Lbry.SDK_READY) {
             findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
-        }
+        }*/
         showFloatingWalletBalance();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -1573,7 +1573,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             checkSyncedWallet();
         }
 
-        findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
+        //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
 
         scheduleWalletBalanceUpdate();
         scheduleWalletSyncTask();
