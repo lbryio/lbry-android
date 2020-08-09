@@ -121,6 +121,8 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
     private void sendNotification(String title, String messageBody, String type, String url, String name) {
         //Intent intent = new Intent(this, MainActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        android.util.Log.d("#HELP", "Title=" + title + "; Body=" + messageBody + "; Type=" + type +"; url=" + url + "; name=" + name);
+
         if (url == null) {
             if (TYPE_REWARD.equals(type)) {
                 url = "lbry://?rewards";

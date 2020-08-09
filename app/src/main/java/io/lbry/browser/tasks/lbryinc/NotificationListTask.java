@@ -25,13 +25,13 @@ import io.lbry.browser.model.lbryinc.LbryNotification;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
-public class ListNotificationsTask extends AsyncTask<Void, Void, List<LbryNotification>> {
+public class NotificationListTask extends AsyncTask<Void, Void, List<LbryNotification>> {
     private Context context;
     private ListNotificationsHandler handler;
     private ProgressBar progressBar;
     private Exception error;
 
-    public ListNotificationsTask(Context context, ProgressBar progressBar, ListNotificationsHandler handler) {
+    public NotificationListTask(Context context, ProgressBar progressBar, ListNotificationsHandler handler) {
         this.context = context;
         this.progressBar = progressBar;
         this.handler = handler;
@@ -59,9 +59,14 @@ public class ListNotificationsTask extends AsyncTask<Void, Void, List<LbryNotifi
                         }
                         if (notificationParams.has("dynamic")) {
                             JSONObject dynamic = notificationParams.getJSONObject("dynamic");
-                            String channelUrl = Helper.getJSONString("channelURI", null, dynamic);
-                            if (!Helper.isNullOrEmpty(channelUrl)) {
-                                notification.setTargetUrl(channelUrl);
+                            if (dynamic.has("channelURI")) {
+                                String channelUrl = Helper.getJSONString("channelURI", null, dynamic);
+                                if (!Helper.isNullOrEmpty(channelUrl)) {
+                                    notification.setTargetUrl(channelUrl);
+                                }
+                            }
+                            if (dynamic.has("hash") && "comment".equalsIgnoreCase(Helper.getJSONString("notification_rule", null, item))) {
+                                notification.setTargetUrl(String.format("%s?comment_hash=%s", notification.getTargetUrl(), dynamic.getString("hash")));
                             }
                         }
 

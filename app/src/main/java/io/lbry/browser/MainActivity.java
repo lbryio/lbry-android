@@ -148,7 +148,7 @@ import io.lbry.browser.tasks.lbryinc.FetchRewardsTask;
 import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.MergeSubscriptionsTask;
 import io.lbry.browser.tasks.claim.ResolveTask;
-import io.lbry.browser.tasks.lbryinc.ListNotificationsTask;
+import io.lbry.browser.tasks.lbryinc.NotificationListTask;
 import io.lbry.browser.tasks.localdata.FetchRecentUrlHistoryTask;
 import io.lbry.browser.tasks.wallet.DefaultSyncTaskHandler;
 import io.lbry.browser.tasks.wallet.LoadSharedUserStateTask;
@@ -3147,7 +3147,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     private void loadRemoteNotifications() {
         findViewById(R.id.notification_list_empty_container).setVisibility(View.GONE);
-        ListNotificationsTask task = new ListNotificationsTask(this, findViewById(R.id.notifications_progress), new ListNotificationsTask.ListNotificationsHandler() {
+        NotificationListTask task = new NotificationListTask(this, findViewById(R.id.notifications_progress), new NotificationListTask.ListNotificationsHandler() {
             @Override
             public void onSuccess(List<LbryNotification> notifications) {
                 loadLocalNotifications();
@@ -3190,9 +3190,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         LbryUri target = LbryUri.tryParse(notification.getTargetUrl());
                         if (target != null) {
                             if (target.isChannel()) {
-                                openChannelUrl(target.toString());
+                                openChannelUrl(notification.getTargetUrl());
                             } else {
-                                openFileUrl(target.toString());
+                                openFileUrl(notification.getTargetUrl());
                             }
                             hideNotifications();
                         }

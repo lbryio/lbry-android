@@ -233,6 +233,9 @@ public class FileViewFragment extends BaseFragment implements
     private View inlineChannelCreatorProgress;
     private MaterialButton inlineChannelCreatorCreateButton;
 
+    // if this is set, scroll to the specific comment on load
+    private String commentHash;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_file_view, container, false);
@@ -357,9 +360,27 @@ public class FileViewFragment extends BaseFragment implements
                 }
             }
             if (params.containsKey("url")) {
-                newUrl = params.get("url").toString();
-                if (claim == null || !newUrl.equalsIgnoreCase(currentUrl)) {
-                    updateRequired = true;
+                LbryUri newLbryUri = LbryUri.tryParse(params.get("url").toString());
+                if (newLbryUri != null) {
+                    newUrl = newLbryUri.toString();
+                    String qs = newLbryUri.getQueryString();
+                    if (!Helper.isNullOrEmpty(qs)) {
+                        String[] qsPairs = qs.split("&");
+                        for (String pair : qsPairs) {
+                            String[] parts = pair.split("=");
+                            if (parts.length < 2) {
+                                continue;
+                            }
+                            if ("comment_hash".equalsIgnoreCase(parts[0])) {
+                                commentHash = parts[1];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (claim == null || !newUrl.equalsIgnoreCase(currentUrl)) {
+                        updateRequired = true;
+                    }
                 }
             }
         } else if (currentUrl != null) {
@@ -567,7 +588,6 @@ public class FileViewFragment extends BaseFragment implements
         }
         checkOwnClaim();
         fetchChannels();
-        checkAndLoadComments();
     }
 
     private String getStreamingUrl() {
@@ -709,7 +729,6 @@ public class FileViewFragment extends BaseFragment implements
         } else {
             onSdkReady();
         }
-        checkCommentSdkInitializing();
     }
 
     public void onStop() {
@@ -1513,19 +1532,10 @@ public class FileViewFragment extends BaseFragment implements
     private void checkAndLoadComments() {
         View root = getView();
         if (root != null) {
-            checkCommentSdkInitializing();
             RecyclerView commentsList = root.findViewById(R.id.file_view_comments_list);
             if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
                 loadComments();
             }
-        }
-    }
-
-    private void checkCommentSdkInitializing() {
-        View root = getView();
-        if (root != null) {
-            TextView commentsSDKInitializing = root.findViewById(R.id.file_view_comments_sdk_initializing);
-            Helper.setViewVisibility(commentsSDKInitializing, Lbry.SDK_READY ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -2137,9 +2147,9 @@ public class FileViewFragment extends BaseFragment implements
 
     private void loadComments() {
         View root = getView();
-        ProgressBar relatedLoading = root.findViewById(R.id.file_view_comments_progress);
+        ProgressBar commentsLoading = root.findViewById(R.id.file_view_comments_progress);
         if (claim != null && root != null) {
-            CommentListTask task = new CommentListTask(1, 500, claim.getClaimId(), relatedLoading, new CommentListHandler() {
+            CommentListTask task = new CommentListTask(1, 100, claim.getClaimId(), commentsLoading, new CommentListHandler() {
                 @Override
                 public void onSuccess(List<Comment> comments, boolean hasReachedEnd) {
                     Context ctx = getContext();
@@ -2166,6 +2176,15 @@ public class FileViewFragment extends BaseFragment implements
                         RecyclerView relatedContentList = root.findViewById(R.id.file_view_comments_list);
                         relatedContentList.setAdapter(commentListAdapter);
                         commentListAdapter.notifyDataSetChanged();
+
+                        // check for the position of commentHash if set
+                        if (!Helper.isNullOrEmpty(commentHash)) {
+                            int position = commentListAdapter.getPositionForComment(commentHash);
+                            if (position > -1) {
+                                android.util.Log.d("#HELP", "scrolling to position: " + position);
+                                relatedContentList.getLayoutManager().scrollToPosition(position);
+                            }
+                        }
 
                         checkNoComments();
                         resolveCommentPosters();

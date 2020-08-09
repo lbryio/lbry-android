@@ -721,19 +721,6 @@
                         android:textSize="14sp"
                         android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/file_view_comments_sdk_initializing"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/inter"
-                        android:text="@string/sdk_initializing_comments"
-                        android:textFontWeight="300"
-                        android:textSize="14sp"
-                        android:visibility="gone" />
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/file_view_comments_list"
                         android:layout_width="match_parent"
