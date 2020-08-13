@@ -23,6 +23,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.model.lbryinc.LbryNotification;
+import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryAnalytics;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             String title = payload.get("title");
             String body = payload.get("body");
             String name = payload.get("name"); // notification name
+            String hash = payload.get("hash"); // comment hash
 
             if (type != null && getEnabledTypes().indexOf(type) > -1 && body != null && body.trim().length() > 0) {
                 // only log the receive event for valid notifications received
@@ -61,6 +63,10 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                     Bundle bundle = new Bundle();
                     bundle.putString("name", name);
                     firebaseAnalytics.logEvent(LbryAnalytics.EVENT_LBRY_NOTIFICATION_RECEIVE, bundle);
+                }
+
+                if (!Helper.isNullOrEmpty(hash)) {
+                    url = String.format("%s?comment_hash=%s", url, hash);
                 }
 
                 sendNotification(title, body, type, url, name);
@@ -121,8 +127,6 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
     private void sendNotification(String title, String messageBody, String type, String url, String name) {
         //Intent intent = new Intent(this, MainActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        android.util.Log.d("#HELP", "Title=" + title + "; Body=" + messageBody + "; Type=" + type +"; url=" + url + "; name=" + name);
-
         if (url == null) {
             if (TYPE_REWARD.equals(type)) {
                 url = "lbry://?rewards";

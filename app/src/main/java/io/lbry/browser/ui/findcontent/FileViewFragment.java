@@ -38,6 +38,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -2133,6 +2134,10 @@ public class FileViewFragment extends BaseFragment implements
                                     v.findViewById(R.id.file_view_no_related_content),
                                     relatedContentAdapter == null || relatedContentAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
                         }
+
+                        // if related content loads before comment, this will affect the scroll position
+                        // so just ensure that we are at the correct position
+                        scrollToCommentHash();
                     }
                 }
 
@@ -2177,15 +2182,7 @@ public class FileViewFragment extends BaseFragment implements
                         relatedContentList.setAdapter(commentListAdapter);
                         commentListAdapter.notifyDataSetChanged();
 
-                        // check for the position of commentHash if set
-                        if (!Helper.isNullOrEmpty(commentHash)) {
-                            int position = commentListAdapter.getPositionForComment(commentHash);
-                            if (position > -1) {
-                                android.util.Log.d("#HELP", "scrolling to position: " + position);
-                                relatedContentList.getLayoutManager().scrollToPosition(position);
-                            }
-                        }
-
+                        scrollToCommentHash();
                         checkNoComments();
                         resolveCommentPosters();
                     }
@@ -2197,6 +2194,20 @@ public class FileViewFragment extends BaseFragment implements
                 }
             });
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private void scrollToCommentHash() {
+        View root = getView();
+        // check for the position of commentHash if set
+        if (root != null && !Helper.isNullOrEmpty(commentHash) && commentListAdapter != null && commentListAdapter.getItemCount() > 0) {
+            RecyclerView commentList = root.findViewById(R.id.file_view_comments_list);
+            int position = commentListAdapter.getPositionForComment(commentHash);
+            if (position > -1) {
+                NestedScrollView scrollView = root.findViewById(R.id.file_view_scroll_view);
+                scrollView.requestChildFocus(commentList, commentList);
+                commentList.getLayoutManager().scrollToPosition(position);
+            }
         }
     }
 

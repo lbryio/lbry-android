@@ -57,7 +57,7 @@ public class NotificationListTask extends AsyncTask<Void, Void, List<LbryNotific
                             notification.setDescription(Helper.getJSONString("text", null, device));
                             notification.setTargetUrl(Helper.getJSONString("target", null, device));
                         }
-                        if (notificationParams.has("dynamic")) {
+                        if (notificationParams.has("dynamic") && !notificationParams.isNull("dynamic")) {
                             JSONObject dynamic = notificationParams.getJSONObject("dynamic");
                             if (dynamic.has("channelURI")) {
                                 String channelUrl = Helper.getJSONString("channelURI", null, dynamic);
