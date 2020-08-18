@@ -36,6 +36,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "LbrynetMessagingService";
     private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.LBRY_ENGAGEMENT_CHANNEL";
+    private static final String TYPE_COMMENT = "comment";
     private static final String TYPE_SUBSCRIPTION = "subscription";
     private static final String TYPE_REWARD = "reward";
     private static final String TYPE_INTERESTS = "interests";
@@ -169,6 +170,9 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         List<String> enabledTypes = new ArrayList<String>();
 
+        if (sp.getBoolean(MainActivity.PREFERENCE_KEY_NOTIFICATION_COMMENTS, true)) {
+            enabledTypes.add(TYPE_COMMENT);
+        }
         if (sp.getBoolean(MainActivity.PREFERENCE_KEY_NOTIFICATION_SUBSCRIPTIONS, true)) {
             enabledTypes.add(TYPE_SUBSCRIPTION);
         }

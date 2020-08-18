@@ -629,4 +629,7 @@
     <string name="fa_mobile_alt" translatable="false">&#xf3cd;</string>
     <string name="fa_repost" translatable="false">&#xf079;</string>
     <string name="fa_folder_open" translatable="false">&#xf07c;</string>
+
+    <string name="fa_asterisk" translatable="false">&#xf069;</string>
+    <string name="fa_comment_alt" translatable="false">&#xf27a;</string>
 </resources>

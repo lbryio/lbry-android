@@ -138,6 +138,13 @@
                     android:src="@drawable/ic_check"
                     android:tint="@color/nextLbryGreen" />
             </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/claim_thumbnail_placeholder"
+                android:background="@color/lighterGrey"
+                android:orientation="vertical"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <LinearLayout
@@ -146,6 +153,22 @@
             android:orientation="vertical"
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@id/claim_media_container">
+            <LinearLayout
+                android:id="@+id/claim_text_loading_placeholder_1"
+                android:background="@color/lighterGrey"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/claim_text_loading_placeholder_2"
+                android:background="@color/lighterGrey"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/claim_vanity_url"
                 android:layout_width="wrap_content"

@@ -2086,10 +2086,21 @@ public class FileViewFragment extends BaseFragment implements
         // reset the list view
         View root = getView();
         if (claim != null && root != null) {
+            Context context = getContext();
+
+            List<Claim> loadingPlaceholders = new ArrayList<>();
+            for (int i = 0; i < 15; i++) {
+                Claim placeholder = new Claim();
+                placeholder.setLoadingPlaceholder(true);
+                loadingPlaceholders.add(placeholder);
+            }
+            relatedContentAdapter = new ClaimListAdapter(loadingPlaceholders, context);
+            RecyclerView relatedContentList = root.findViewById(R.id.file_view_related_content_list);
+            relatedContentList.setAdapter(relatedContentAdapter);
+
             String title = claim.getTitle();
             String claimId = claim.getClaimId();
             ProgressBar relatedLoading = root.findViewById(R.id.file_view_related_content_progress);
-            Context context = getContext();
             boolean canShowMatureContent = false;
             if (context != null) {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -2109,10 +2120,14 @@ public class FileViewFragment extends BaseFragment implements
 
                     Context ctx = getContext();
                     if (ctx != null) {
-                        relatedContentAdapter = new ClaimListAdapter(filteredClaims, ctx);
+                        relatedContentAdapter.setItems(filteredClaims);
                         relatedContentAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
                             @Override
                             public void onClaimClicked(Claim claim) {
+                                if (claim.isLoadingPlaceholder()) {
+                                    return;
+                                }
+
                                 if (context instanceof MainActivity) {
                                     MainActivity activity = (MainActivity) context;
                                     if (claim.getName().startsWith("@")) {
@@ -2154,7 +2169,7 @@ public class FileViewFragment extends BaseFragment implements
         View root = getView();
         ProgressBar commentsLoading = root.findViewById(R.id.file_view_comments_progress);
         if (claim != null && root != null) {
-            CommentListTask task = new CommentListTask(1, 100, claim.getClaimId(), commentsLoading, new CommentListHandler() {
+            CommentListTask task = new CommentListTask(1, 200, claim.getClaimId(), commentsLoading, new CommentListHandler() {
                 @Override
                 public void onSuccess(List<Comment> comments, boolean hasReachedEnd) {
                     Context ctx = getContext();
@@ -2224,7 +2239,7 @@ public class FileViewFragment extends BaseFragment implements
             long st = System.currentTimeMillis();;
             List<String> urlsToResolve = new ArrayList<>(commentListAdapter.getClaimUrlsToResolve());
             if (urlsToResolve.size() > 0) {
-                ResolveTask task = new ResolveTask(urlsToResolve, Lbry.SDK_CONNECTION_STRING, null, new ClaimListResultHandler() {
+                ResolveTask task = new ResolveTask(urlsToResolve, Lbry.LBRY_TV_CONNECTION_STRING, null, new ClaimListResultHandler() {
                     @Override
                     public void onSuccess(List<Claim> claims) {
                         if (commentListAdapter != null) {

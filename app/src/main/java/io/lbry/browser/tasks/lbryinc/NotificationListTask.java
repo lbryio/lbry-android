@@ -70,8 +70,10 @@ public class NotificationListTask extends AsyncTask<Void, Void, List<LbryNotific
                             }
                         }
 
+                        notification.setRule(Helper.getJSONString("notification_rule", null, item));
                         notification.setRemoteId(Helper.getJSONLong("id", 0, item));
                         notification.setRead(Helper.getJSONBoolean("is_read", false, item));
+                        notification.setSeen(Helper.getJSONBoolean("is_seen", false, item));
 
                         try {
                             SimpleDateFormat dateFormat = new SimpleDateFormat(Helper.ISO_DATE_FORMAT_JSON, Locale.US);

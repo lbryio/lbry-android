@@ -21,7 +21,7 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "LbryApp.db";
     private static DatabaseHelper instance;
 
@@ -55,7 +55,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", description TEXT" +
                     ", thumbnail_url TEXT" +
                     ", target_url TEXT" +
+                    ", rule TEXT" +
                     ", is_read INTEGER DEFAULT 0 NOT NULL" +
+                    ", is_seen INTEGER DEFAULT 0 NOT NULL " +
                     ", timestamp TEXT NOT NULL)",
     };
     private static final String[] SQL_CREATE_INDEXES = {
@@ -87,7 +89,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String[] SQL_V3_V4_UPGRADE = {
             "ALTER TABLE notifications ADD COLUMN remote_id INTEGER",
-            "CREATE UNIQUE INDEX idx_notification_remote_id ON notifications (remote_id)",
+            "CREATE UNIQUE INDEX idx_notification_remote_id ON notifications (remote_id)"
+    };
+    private static final String[] SQL_V4_V5_UPGRADE = {
+            "ALTER TABLE notifications ADD COLUMN rule TEXT",
+            "ALTER TABLE notifications ADD COLUMN is_seen TEXT"
     };
 
     private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
@@ -100,8 +106,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_CLEAR_URL_HISTORY_BEFORE_TIME = "DELETE FROM url_history WHERE timestamp < ?";
     private static final String SQL_GET_RECENT_URL_HISTORY = "SELECT value, url, type FROM url_history ORDER BY timestamp DESC LIMIT 10";
 
-    private static final String SQL_INSERT_NOTIFICATION = "REPLACE INTO notifications (remote_id, title, description, target_url, is_read, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String SQL_GET_NOTIFICATIONS = "SELECT id, title, description, target_url, timestamp FROM notifications ORDER BY timestamp DESC LIMIT 500";
+    private static final String SQL_INSERT_NOTIFICATION = "REPLACE INTO notifications (remote_id, title, description, rule, target_url, is_read, is_seen, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_GET_NOTIFICATIONS = "SELECT id, title, description, rule, target_url, is_read, is_seen, timestamp FROM notifications ORDER BY timestamp DESC LIMIT 500";
     private static final String SQL_GET_UNREAD_NOTIFICATIONS_COUNT = "SELECT COUNT(id) FROM notifications WHERE is_read <> 1";
     private static final String SQL_MARK_NOTIFICATIONS_READ = "UPDATE notifications SET is_read = 1 WHERE is_read = 0";
 
@@ -150,6 +156,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         if (oldVersion < 4) {
             for (String sql : SQL_V3_V4_UPGRADE) {
+                db.execSQL(sql);
+            }
+        }
+        if (oldVersion < 5) {
+            for (String sql : SQL_V4_V5_UPGRADE) {
                 db.execSQL(sql);
             }
         }
@@ -298,8 +309,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 notification.getRemoteId(),
                 notification.getTitle(),
                 notification.getDescription(),
+                notification.getRule(),
                 notification.getTargetUrl(),
                 notification.isRead() ? 1 : 0,
+                notification.isSeen() ? 1 : 0,
                 new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).format(notification.getTimestamp() != null ? notification.getTimestamp() : new Date())
         });
     }
@@ -310,12 +323,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(SQL_GET_NOTIFICATIONS, null);
             while (cursor.moveToNext()) {
                 LbryNotification notification = new LbryNotification();
-                notification.setId(cursor.getLong(0));
-                notification.setTitle(cursor.getString(1));
-                notification.setDescription(cursor.getString(2));
-                notification.setTargetUrl(cursor.getString(3));
+                int columnIndex = 0;
+                notification.setId(cursor.getLong(columnIndex++));
+                notification.setTitle(cursor.getString(columnIndex++));
+                notification.setDescription(cursor.getString(columnIndex++));
+                notification.setRule(cursor.getString(columnIndex++));
+                notification.setTargetUrl(cursor.getString(columnIndex++));
+                notification.setRead(cursor.getInt(columnIndex++) == 1);
+                notification.setSeen(cursor.getInt(columnIndex++) == 1);
                 try {
-                    notification.setTimestamp(new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).parse(cursor.getString(4)));
+                    notification.setTimestamp(new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).parse(cursor.getString(columnIndex++)));
                 } catch (ParseException ex) {
                     // invalid timestamp (which shouldn't happen). Skip this item
                     continue;

@@ -286,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_DARK_MODE = "io.lbry.browser.preference.userinterface.DarkMode";
     public static final String PREFERENCE_KEY_SHOW_MATURE_CONTENT = "io.lbry.browser.preference.userinterface.ShowMatureContent";
     public static final String PREFERENCE_KEY_SHOW_URL_SUGGESTIONS = "io.lbry.browser.preference.userinterface.UrlSuggestions";
+    public static final String PREFERENCE_KEY_NOTIFICATION_COMMENTS = "io.lbry.browser.preference.notifications.Comments";
     public static final String PREFERENCE_KEY_NOTIFICATION_SUBSCRIPTIONS = "io.lbry.browser.preference.notifications.Subscriptions";
     public static final String PREFERENCE_KEY_NOTIFICATION_REWARDS = "io.lbry.browser.preference.notifications.Rewards";
     public static final String PREFERENCE_KEY_NOTIFICATION_CONTENT_INTERESTS = "io.lbry.browser.preference.notifications.ContentInterests";
@@ -571,7 +572,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public boolean isBackgroundPlaybackEnabled() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        return sp.getBoolean(PREFERENCE_KEY_BACKGROUND_PLAYBACK, false);
+        return sp.getBoolean(PREFERENCE_KEY_BACKGROUND_PLAYBACK, true);
     }
 
     public boolean initialSubscriptionMergeDone() {
