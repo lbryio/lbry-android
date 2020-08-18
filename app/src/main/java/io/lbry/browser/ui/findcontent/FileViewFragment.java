@@ -38,6 +38,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -233,6 +234,9 @@ public class FileViewFragment extends BaseFragment implements
     private View inlineChannelCreatorProgress;
     private MaterialButton inlineChannelCreatorCreateButton;
 
+    // if this is set, scroll to the specific comment on load
+    private String commentHash;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_file_view, container, false);
@@ -357,9 +361,27 @@ public class FileViewFragment extends BaseFragment implements
                 }
             }
             if (params.containsKey("url")) {
-                newUrl = params.get("url").toString();
-                if (claim == null || !newUrl.equalsIgnoreCase(currentUrl)) {
-                    updateRequired = true;
+                LbryUri newLbryUri = LbryUri.tryParse(params.get("url").toString());
+                if (newLbryUri != null) {
+                    newUrl = newLbryUri.toString();
+                    String qs = newLbryUri.getQueryString();
+                    if (!Helper.isNullOrEmpty(qs)) {
+                        String[] qsPairs = qs.split("&");
+                        for (String pair : qsPairs) {
+                            String[] parts = pair.split("=");
+                            if (parts.length < 2) {
+                                continue;
+                            }
+                            if ("comment_hash".equalsIgnoreCase(parts[0])) {
+                                commentHash = parts[1];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (claim == null || !newUrl.equalsIgnoreCase(currentUrl)) {
+                        updateRequired = true;
+                    }
                 }
             }
         } else if (currentUrl != null) {
@@ -567,7 +589,6 @@ public class FileViewFragment extends BaseFragment implements
         }
         checkOwnClaim();
         fetchChannels();
-        checkAndLoadComments();
     }
 
     private String getStreamingUrl() {
@@ -709,7 +730,6 @@ public class FileViewFragment extends BaseFragment implements
         } else {
             onSdkReady();
         }
-        checkCommentSdkInitializing();
     }
 
     public void onStop() {
@@ -1513,19 +1533,10 @@ public class FileViewFragment extends BaseFragment implements
     private void checkAndLoadComments() {
         View root = getView();
         if (root != null) {
-            checkCommentSdkInitializing();
             RecyclerView commentsList = root.findViewById(R.id.file_view_comments_list);
             if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
                 loadComments();
             }
-        }
-    }
-
-    private void checkCommentSdkInitializing() {
-        View root = getView();
-        if (root != null) {
-            TextView commentsSDKInitializing = root.findViewById(R.id.file_view_comments_sdk_initializing);
-            Helper.setViewVisibility(commentsSDKInitializing, Lbry.SDK_READY ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -2075,10 +2086,21 @@ public class FileViewFragment extends BaseFragment implements
         // reset the list view
         View root = getView();
         if (claim != null && root != null) {
+            Context context = getContext();
+
+            List<Claim> loadingPlaceholders = new ArrayList<>();
+            for (int i = 0; i < 15; i++) {
+                Claim placeholder = new Claim();
+                placeholder.setLoadingPlaceholder(true);
+                loadingPlaceholders.add(placeholder);
+            }
+            relatedContentAdapter = new ClaimListAdapter(loadingPlaceholders, context);
+            RecyclerView relatedContentList = root.findViewById(R.id.file_view_related_content_list);
+            relatedContentList.setAdapter(relatedContentAdapter);
+
             String title = claim.getTitle();
             String claimId = claim.getClaimId();
             ProgressBar relatedLoading = root.findViewById(R.id.file_view_related_content_progress);
-            Context context = getContext();
             boolean canShowMatureContent = false;
             if (context != null) {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -2098,10 +2120,14 @@ public class FileViewFragment extends BaseFragment implements
 
                     Context ctx = getContext();
                     if (ctx != null) {
-                        relatedContentAdapter = new ClaimListAdapter(filteredClaims, ctx);
+                        relatedContentAdapter.setItems(filteredClaims);
                         relatedContentAdapter.setListener(new ClaimListAdapter.ClaimListItemListener() {
                             @Override
                             public void onClaimClicked(Claim claim) {
+                                if (claim.isLoadingPlaceholder()) {
+                                    return;
+                                }
+
                                 if (context instanceof MainActivity) {
                                     MainActivity activity = (MainActivity) context;
                                     if (claim.getName().startsWith("@")) {
@@ -2123,6 +2149,10 @@ public class FileViewFragment extends BaseFragment implements
                                     v.findViewById(R.id.file_view_no_related_content),
                                     relatedContentAdapter == null || relatedContentAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
                         }
+
+                        // if related content loads before comment, this will affect the scroll position
+                        // so just ensure that we are at the correct position
+                        scrollToCommentHash();
                     }
                 }
 
@@ -2137,9 +2167,9 @@ public class FileViewFragment extends BaseFragment implements
 
     private void loadComments() {
         View root = getView();
-        ProgressBar relatedLoading = root.findViewById(R.id.file_view_comments_progress);
+        ProgressBar commentsLoading = root.findViewById(R.id.file_view_comments_progress);
         if (claim != null && root != null) {
-            CommentListTask task = new CommentListTask(1, 500, claim.getClaimId(), relatedLoading, new CommentListHandler() {
+            CommentListTask task = new CommentListTask(1, 200, claim.getClaimId(), commentsLoading, new CommentListHandler() {
                 @Override
                 public void onSuccess(List<Comment> comments, boolean hasReachedEnd) {
                     Context ctx = getContext();
@@ -2167,6 +2197,7 @@ public class FileViewFragment extends BaseFragment implements
                         relatedContentList.setAdapter(commentListAdapter);
                         commentListAdapter.notifyDataSetChanged();
 
+                        scrollToCommentHash();
                         checkNoComments();
                         resolveCommentPosters();
                     }
@@ -2178,6 +2209,20 @@ public class FileViewFragment extends BaseFragment implements
                 }
             });
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private void scrollToCommentHash() {
+        View root = getView();
+        // check for the position of commentHash if set
+        if (root != null && !Helper.isNullOrEmpty(commentHash) && commentListAdapter != null && commentListAdapter.getItemCount() > 0) {
+            RecyclerView commentList = root.findViewById(R.id.file_view_comments_list);
+            int position = commentListAdapter.getPositionForComment(commentHash);
+            if (position > -1) {
+                NestedScrollView scrollView = root.findViewById(R.id.file_view_scroll_view);
+                scrollView.requestChildFocus(commentList, commentList);
+                commentList.getLayoutManager().scrollToPosition(position);
+            }
         }
     }
 
@@ -2194,7 +2239,7 @@ public class FileViewFragment extends BaseFragment implements
             long st = System.currentTimeMillis();;
             List<String> urlsToResolve = new ArrayList<>(commentListAdapter.getClaimUrlsToResolve());
             if (urlsToResolve.size() > 0) {
-                ResolveTask task = new ResolveTask(urlsToResolve, Lbry.SDK_CONNECTION_STRING, null, new ClaimListResultHandler() {
+                ResolveTask task = new ResolveTask(urlsToResolve, Lbry.LBRY_TV_CONNECTION_STRING, null, new ClaimListResultHandler() {
                     @Override
                     public void onSuccess(List<Claim> claims) {
                         if (commentListAdapter != null) {

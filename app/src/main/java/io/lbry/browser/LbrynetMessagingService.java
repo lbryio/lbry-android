@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -20,19 +21,22 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import io.lbry.browser.data.DatabaseHelper;
+import io.lbry.browser.model.lbryinc.LbryNotification;
+import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryAnalytics;
-import io.lbry.lbrysdk.LbrynetService;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class LbrynetMessagingService extends FirebaseMessagingService {
+    public static final String ACTION_NOTIFICATION_RECEIVED = "io.lbry.browser.Broadcast.NotificationReceived";
 
     private static final String TAG = "LbrynetMessagingService";
     private static final String NOTIFICATION_CHANNEL_ID = "io.lbry.browser.LBRY_ENGAGEMENT_CHANNEL";
+    private static final String TYPE_COMMENT = "comment";
     private static final String TYPE_SUBSCRIPTION = "subscription";
     private static final String TYPE_REWARD = "reward";
     private static final String TYPE_INTERESTS = "interests";
@@ -52,10 +56,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             String title = payload.get("title");
             String body = payload.get("body");
             String name = payload.get("name"); // notification name
-            String contentTitle = payload.get("content_title");
-            String channelUrl = payload.get("channel_url");
-            //String publishTime = payload.get("publish_time");
-            String publishTime = null;
+            String hash = payload.get("hash"); // comment hash
 
             if (type != null && getEnabledTypes().indexOf(type) > -1 && body != null && body.trim().length() > 0) {
                 // only log the receive event for valid notifications received
@@ -65,7 +66,34 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
                     firebaseAnalytics.logEvent(LbryAnalytics.EVENT_LBRY_NOTIFICATION_RECEIVE, bundle);
                 }
 
-                sendNotification(title, body, type, url, name, contentTitle, channelUrl, publishTime);
+                if (!Helper.isNullOrEmpty(hash)) {
+                    url = String.format("%s?comment_hash=%s", url, hash);
+                }
+
+                sendNotification(title, body, type, url, name);
+            }
+
+            // persist the notification data
+            try {
+                DatabaseHelper helper = DatabaseHelper.getInstance();
+                SQLiteDatabase db = helper.getWritableDatabase();
+                LbryNotification lnotification = new LbryNotification();
+                lnotification.setTitle(title);
+                lnotification.setDescription(body);
+                lnotification.setTargetUrl(url);
+                lnotification.setTimestamp(new Date());
+                DatabaseHelper.createOrUpdateNotification(lnotification, db);
+
+                // send a broadcast
+                Intent intent = new Intent(ACTION_NOTIFICATION_RECEIVED);
+                intent.putExtra("title", title);
+                intent.putExtra("body", body);
+                intent.putExtra("url", url);
+                intent.putExtra("timestamp", lnotification.getTimestamp().getTime());
+                sendBroadcast(intent);
+            } catch (Exception ex) {
+                // don't fail if any error occurs while saving a notification
+                Log.e(TAG, "could not save notification", ex);
             }
         }
     }
@@ -97,8 +125,7 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String title, String messageBody, String type, String url, String name,
-                                  String contentTitle, String channelUrl, String publishTime) {
+    private void sendNotification(String title, String messageBody, String type, String url, String name) {
         //Intent intent = new Intent(this, MainActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (url == null) {
@@ -143,6 +170,9 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         List<String> enabledTypes = new ArrayList<String>();
 
+        if (sp.getBoolean(MainActivity.PREFERENCE_KEY_NOTIFICATION_COMMENTS, true)) {
+            enabledTypes.add(TYPE_COMMENT);
+        }
         if (sp.getBoolean(MainActivity.PREFERENCE_KEY_NOTIFICATION_SUBSCRIPTIONS, true)) {
             enabledTypes.add(TYPE_SUBSCRIPTION);
         }

@@ -61,6 +61,16 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         notifyDataSetChanged();
     }
 
+
+    public int getPositionForComment(String commentHash) {
+        for (int i = 0; i < items.size(); i++) {
+            if (commentHash.equalsIgnoreCase(items.get(i).getId())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @Override
     public int getItemCount() {
         return items != null ? items.size() : 0;

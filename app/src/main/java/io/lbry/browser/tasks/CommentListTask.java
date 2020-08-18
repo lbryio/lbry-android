@@ -45,10 +45,12 @@ public class CommentListTask extends AsyncTask<Void, Void, List<Comment>> {
             options.put("claim_id", claim);
             options.put("page", page);
             options.put("page_size", pageSize);
+            options.put("hidden", false);
             options.put("include_replies", false);
             options.put("is_channel_signature_valid", true);
+            options.put("skip_validation", true);
             options.put("visible", true);
-            options.put("hidden", false);
+
 
             JSONObject result = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_COMMENT_LIST, options);
             JSONArray items = result.getJSONArray("items");

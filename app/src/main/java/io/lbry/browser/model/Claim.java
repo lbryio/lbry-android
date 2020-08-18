@@ -54,6 +54,7 @@ public class Claim {
     @EqualsAndHashCode.Include
     private boolean placeholder;
     private boolean placeholderAnonymous;
+    private boolean loadingPlaceholder;
     private boolean featured;
     private boolean unresolved; // used for featured
     private String address;

@@ -193,6 +193,10 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         protected TextView fileSizeView;
         protected ProgressBar downloadProgressView;
         protected TextView deviceView;
+
+        protected View loadingImagePlaceholder;
+        protected View loadingTextPlaceholder1;
+        protected View loadingTextPlaceholder2;
         public ViewHolder(View v) {
             super(v);
             feeContainer = v.findViewById(R.id.claim_fee_container);
@@ -212,6 +216,10 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
             fileSizeView = v.findViewById(R.id.claim_file_size);
             downloadProgressView = v.findViewById(R.id.claim_download_progress);
             deviceView = v.findViewById(R.id.claim_view_device);
+
+            loadingImagePlaceholder = v.findViewById(R.id.claim_thumbnail_placeholder);
+            loadingTextPlaceholder1 = v.findViewById(R.id.claim_text_loading_placeholder_1);
+            loadingTextPlaceholder2 = v.findViewById(R.id.claim_text_loading_placeholder_2);
         }
     }
 
@@ -394,7 +402,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         });
 
         vh.publishTimeView.setVisibility(!isPending ? View.VISIBLE : View.GONE);
-        vh.pendingTextView.setVisibility(isPending ? View.VISIBLE : View.GONE);
+        vh.pendingTextView.setVisibility(isPending && !item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
         vh.repostInfoView.setVisibility(isRepost && type != VIEW_TYPE_FEATURED ? View.VISIBLE : View.GONE);
         vh.repostChannelView.setText(isRepost ? original.getSigningChannel().getName() : null);
         vh.repostChannelView.setOnClickListener(new View.OnClickListener() {
@@ -416,6 +424,13 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         vh.feeContainer.setVisibility(item.isUnresolved() || !Claim.TYPE_STREAM.equalsIgnoreCase(item.getValueType()) ? View.GONE : View.VISIBLE);
         vh.noThumbnailView.setVisibility(Helper.isNullOrEmpty(thumbnailUrl) ? View.VISIBLE : View.GONE);
         Helper.setIconViewBackgroundColor(vh.noThumbnailView, bgColor, false, context);
+
+        Helper.setViewVisibility(vh.loadingImagePlaceholder, item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
+        Helper.setViewVisibility(vh.loadingTextPlaceholder1, item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
+        Helper.setViewVisibility(vh.loadingTextPlaceholder2, item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
+        Helper.setViewVisibility(vh.titleView, !item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
+        Helper.setViewVisibility(vh.publisherView, !item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
+        Helper.setViewVisibility(vh.publishTimeView, !item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
 
         if (type == VIEW_TYPE_FEATURED && item.isUnresolved()) {
             vh.durationView.setVisibility(View.GONE);

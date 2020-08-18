@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.opengl.Visibility;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -13,16 +12,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.ViewHistory;
+import io.lbry.browser.model.lbryinc.LbryNotification;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "LbryApp.db";
     private static DatabaseHelper instance;
 
@@ -48,7 +47,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", thumbnail_url TEXT" +
                     ", release_time INTEGER " +
                     ", device TEXT" +
-                    ", timestamp TEXT NOT NULL)"
+                    ", timestamp TEXT NOT NULL)",
+            "CREATE TABLE notifications (" +
+                    "  id INTEGER PRIMARY KEY NOT NULL" +
+                    ", remote_id INTEGER NOT NULL" +
+                    ", title TEXT" +
+                    ", description TEXT" +
+                    ", thumbnail_url TEXT" +
+                    ", target_url TEXT" +
+                    ", rule TEXT" +
+                    ", is_read INTEGER DEFAULT 0 NOT NULL" +
+                    ", is_seen INTEGER DEFAULT 0 NOT NULL " +
+                    ", timestamp TEXT NOT NULL)",
     };
     private static final String[] SQL_CREATE_INDEXES = {
             "CREATE UNIQUE INDEX idx_subscription_url ON subscriptions (url)",
@@ -56,11 +66,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE UNIQUE INDEX idx_url_history_url ON url_history (url)",
             "CREATE UNIQUE INDEX idx_tag_name ON tags (name)",
             "CREATE UNIQUE INDEX idx_view_history_url_device ON view_history (url, device)",
-            "CREATE INDEX idx_view_history_device ON view_history (device)"
+            "CREATE INDEX idx_view_history_device ON view_history (device)",
+            "CREATE UNIQUE INDEX idx_notification_remote_id ON notifications (remote_id)",
+            "CREATE INDEX idx_notification_timestamp ON notifications (timestamp)"
     };
 
     private static final String[] SQL_V1_V2_UPGRADE = {
             "ALTER TABLE view_history ADD COLUMN currency TEXT"
+    };
+
+    private static final String[] SQL_V2_V3_UPGRADE = {
+            "CREATE TABLE notifications (" +
+                    "  id INTEGER PRIMARY KEY NOT NULL" +
+                    ", title TEXT" +
+                    ", description TEXT" +
+                    ", thumbnail_url TEXT" +
+                    ", target_url TEXT" +
+                    ", is_read INTEGER DEFAULT 0 NOT NULL" +
+                    ", timestamp TEXT NOT NULL)",
+            "CREATE INDEX idx_notification_timestamp ON notifications (timestamp)"
+    };
+
+    private static final String[] SQL_V3_V4_UPGRADE = {
+            "ALTER TABLE notifications ADD COLUMN remote_id INTEGER",
+            "CREATE UNIQUE INDEX idx_notification_remote_id ON notifications (remote_id)"
+    };
+    private static final String[] SQL_V4_V5_UPGRADE = {
+            "ALTER TABLE notifications ADD COLUMN rule TEXT",
+            "ALTER TABLE notifications ADD COLUMN is_seen TEXT"
     };
 
     private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
@@ -72,6 +105,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_CLEAR_URL_HISTORY = "DELETE FROM url_history";
     private static final String SQL_CLEAR_URL_HISTORY_BEFORE_TIME = "DELETE FROM url_history WHERE timestamp < ?";
     private static final String SQL_GET_RECENT_URL_HISTORY = "SELECT value, url, type FROM url_history ORDER BY timestamp DESC LIMIT 10";
+
+    private static final String SQL_INSERT_NOTIFICATION = "REPLACE INTO notifications (remote_id, title, description, rule, target_url, is_read, is_seen, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_GET_NOTIFICATIONS = "SELECT id, title, description, rule, target_url, is_read, is_seen, timestamp FROM notifications ORDER BY timestamp DESC LIMIT 500";
+    private static final String SQL_GET_UNREAD_NOTIFICATIONS_COUNT = "SELECT COUNT(id) FROM notifications WHERE is_read <> 1";
+    private static final String SQL_MARK_NOTIFICATIONS_READ = "UPDATE notifications SET is_read = 1 WHERE is_read = 0";
 
     private static final String SQL_INSERT_VIEW_HISTORY =
             "REPLACE INTO view_history (url, claim_id, claim_name, cost, currency, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -108,6 +146,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
             for (String sql : SQL_V1_V2_UPGRADE) {
+                db.execSQL(sql);
+            }
+        }
+        if (oldVersion < 3) {
+            for (String sql : SQL_V2_V3_UPGRADE) {
+                db.execSQL(sql);
+            }
+        }
+        if (oldVersion < 4) {
+            for (String sql : SQL_V3_V4_UPGRADE) {
+                db.execSQL(sql);
+            }
+        }
+        if (oldVersion < 5) {
+            for (String sql : SQL_V4_V5_UPGRADE) {
                 db.execSQL(sql);
             }
         }
@@ -251,4 +304,60 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return subscriptions;
     }
 
+    public static void createOrUpdateNotification(LbryNotification notification, SQLiteDatabase db) {
+        db.execSQL(SQL_INSERT_NOTIFICATION, new Object[] {
+                notification.getRemoteId(),
+                notification.getTitle(),
+                notification.getDescription(),
+                notification.getRule(),
+                notification.getTargetUrl(),
+                notification.isRead() ? 1 : 0,
+                notification.isSeen() ? 1 : 0,
+                new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).format(notification.getTimestamp() != null ? notification.getTimestamp() : new Date())
+        });
+    }
+    public static List<LbryNotification> getNotifications(SQLiteDatabase db) {
+        List<LbryNotification> notifications = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(SQL_GET_NOTIFICATIONS, null);
+            while (cursor.moveToNext()) {
+                LbryNotification notification = new LbryNotification();
+                int columnIndex = 0;
+                notification.setId(cursor.getLong(columnIndex++));
+                notification.setTitle(cursor.getString(columnIndex++));
+                notification.setDescription(cursor.getString(columnIndex++));
+                notification.setRule(cursor.getString(columnIndex++));
+                notification.setTargetUrl(cursor.getString(columnIndex++));
+                notification.setRead(cursor.getInt(columnIndex++) == 1);
+                notification.setSeen(cursor.getInt(columnIndex++) == 1);
+                try {
+                    notification.setTimestamp(new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).parse(cursor.getString(columnIndex++)));
+                } catch (ParseException ex) {
+                    // invalid timestamp (which shouldn't happen). Skip this item
+                    continue;
+                }
+                notifications.add(notification);
+            }
+        } finally {
+            Helper.closeCursor(cursor);
+        }
+        return notifications;
+    }
+    public static int getUnreadNotificationsCount(SQLiteDatabase db) {
+        int count = 0;
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(SQL_GET_UNREAD_NOTIFICATIONS_COUNT, null);
+            if (cursor.moveToNext()) {
+                count = cursor.getInt(0);
+            }
+        } finally {
+            Helper.closeCursor(cursor);
+        }
+        return count;
+    }
+    public static void markNotificationsRead(SQLiteDatabase db) {
+        db.execSQL(SQL_MARK_NOTIFICATIONS_READ);
+    }
 }

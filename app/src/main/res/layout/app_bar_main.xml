@@ -28,20 +28,22 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="24dp">
+                android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/wunderbar"
                     android:background="@android:color/transparent"
+                    android:layout_centerVertical="true"
                     android:drawableLeft="@drawable/ic_search"
                     android:drawablePadding="8dp"
                     android:drawableTint="@color/actionBarForeground"
                     android:fontFamily="@font/inter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="24dp"
                     android:hint="@string/uri_placeholder"
                     android:imeOptions="actionGo"
                     android:inputType="textNoSuggestions"
+                    android:paddingRight="36dp"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
                     android:textFontWeight="300"
@@ -52,6 +54,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="24dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:visibility="gone">
@@ -61,6 +64,39 @@
                         android:src="@drawable/ic_close"
                         android:tint="@color/actionBarForeground" />
                 </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/wunderbar_notifications"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true">
+                    <ImageView
+                        android:id="@+id/notifications_toggle_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_notifications"
+                        android:tint="@color/actionBarForeground" />
+                    <TextView
+                        android:id="@+id/notifications_badge_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_notification_badge"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center_horizontal"
+                        android:minWidth="12dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="24dp"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:visibility="invisible"
+                        />
+                </RelativeLayout>
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

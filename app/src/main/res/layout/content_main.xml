@@ -33,6 +33,53 @@
             android:layout_height="match_parent" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/notifications_container"
+        android:background="@color/pageBackground"
+        android:elevation="6dp"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ProgressBar
+            android:id="@+id/notifications_progress"
+            android:layout_centerInParent="true"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/notification_list_empty_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="36dp"
+            android:visibility="gone">
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="160dp"
+                android:layout_height="300dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/gerbil_happy" />
+            <TextView
+                android:text="@string/no_notifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/inter"
+                android:textSize="16sp"
+                android:textAlignment="center" />
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notifications_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="8dp"
+            android:clipToPadding="false"
+            />
+     </RelativeLayout>
+
     <include layout="@layout/floating_wallet_balance" />
 
     <RelativeLayout

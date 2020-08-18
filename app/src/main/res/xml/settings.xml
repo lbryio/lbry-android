@@ -7,6 +7,7 @@
         app:iconSpaceReserved="false">
         <SwitchPreferenceCompat
             app:key="io.lbry.browser.preference.userinterface.BackgroundPlayback"
+            app:defaultValue="true"
             app:title="@string/enable_background_playback"
             app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
@@ -27,6 +28,11 @@
     <PreferenceCategory
         android:title="@string/notifications"
         app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.notifications.Comments"
+            app:title="@string/comments"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
             app:key="io.lbry.browser.preference.notifications.Subscriptions"
             app:title="@string/subscriptions"
