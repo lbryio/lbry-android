@@ -11,7 +11,7 @@ build apk:
     - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign
     - chmod u+x $CI_PROJECT_DIR/gradlew
     - export ANDROID_SDK_ROOT=~/.buildozer/android/platform/android-sdk-23
-    - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)
+    - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -p $CI_PROJECT_DIR -q printVersionName --console=plain | tail -1)
   artifacts:
     paths:
       - bin/browser-*-release__arm.apk
@@ -39,7 +39,7 @@ deploy build.lbry.io:
     - apt-get -y update && apt-get -y install openjdk-8-jdk
     - pip install awscli
     - chmod u+x $CI_PROJECT_DIR/gradlew
-    - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)
+    - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -p $CI_PROJECT_DIR -q printVersionName --console=plain | tail -1)
     - export BUILD_APK_FILENAME__32=browser-$BUILD_VERSION-release__arm.apk
     - export BUILD_APK_FILENAME__64=browser-$BUILD_VERSION-release__arm64.apk
   script:
@@ -58,7 +58,7 @@ release apk:
     - apt-get -y update && apt-get -y install openjdk-8-jdk
     - pip install awscli githubrelease
     - chmod u+x $CI_PROJECT_DIR/gradlew
-    - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -q printVersionName --console=plain | tail -1)
+    - export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -p $CI_PROJECT_DIR -q printVersionName --console=plain | tail -1)
     - export BUILD_APK_FILENAME__32=browser-$BUILD_VERSION-release__arm.apk
     - export BUILD_APK_FILENAME__64=browser-$BUILD_VERSION-release__arm64.apk
   script:

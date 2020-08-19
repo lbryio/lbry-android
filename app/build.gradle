@@ -2,7 +2,7 @@ import com.google.gms.googleservices.GoogleServicesPlugin
 
 Properties twitterProps = new Properties()
 try {
-    twitterProps.load(file('twitter.properties').newDataInputStream())
+    twitterProps.load(project.file('twitter.properties').newDataInputStream())
 } catch (Exception ex) {
     throw new GradleException("Missing twitter.properties.")
 }
