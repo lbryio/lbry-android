@@ -239,6 +239,7 @@ public class ManualVerificationFragment extends Fragment {
                                     setTextColor(Color.WHITE).
                                     setBackgroundTint(Color.RED).show();
                         }
+                        hideLoading();
                     }
                 }
 

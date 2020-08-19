@@ -27,8 +27,8 @@ build apk:
     - yarn
     - chmod u+x ./release.sh
     - ./release.sh
-    - cp bin/browser-$BUILD_VERSION-release__arm.apk /dev/null
-    - cp bin/browser-$BUILD_VERSION-release__arm64.apk /dev/null
+    - cp bin/browser-$BUILD_VERSION-release__arm.apk $CI_PROJECT_DIR
+    - cp bin/browser-$BUILD_VERSION-release__arm64.apk $CI_PROJECT_DIR
 
 deploy build.lbry.io:
   image: python:stretch
