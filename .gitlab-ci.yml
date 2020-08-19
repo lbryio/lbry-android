@@ -24,7 +24,6 @@ build apk:
     - wget -O - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | apt-key add -
     - apt-get -y update && apt-get -y install git-secret
     - git secret reveal
-    - yarn
     - chmod u+x ./release.sh
     - ./release.sh
     - cp bin/browser-$BUILD_VERSION-release__arm.apk $CI_PROJECT_DIR
