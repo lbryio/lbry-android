@@ -1,5 +1,7 @@
 package io.lbry.browser.utils;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -128,7 +130,7 @@ public final class Lbry {
             IS_STATUS_PARSED = true;
         } catch (JSONException | LbryResponseException ex) {
             // pass
-            android.util.Log.e(TAG, "Could not parse status response.", ex);
+            Log.e(TAG, "Could not parse status response.", ex);
         }
     }
 

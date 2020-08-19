@@ -422,8 +422,18 @@
     <string name="enter_phone_number">Please enter your phone number.</string>
     <string name="not_interested">Not interested</string>
     <string name="manual_reward_verification">Manual Reward Verification</string>
+    <string name="reward_verification">Reward Verification</string>
+    <string name="social_media_verification">Social Media Verification</string>
+    <string name="skip_the_queue">Skip the Queue</string>
+    <string name="skip_queue_button_text">Skip for $%1$s</string>
     <string name="account_undergo_review">This account must undergo review before you can participate in the rewards program. This can take anywhere from several minutes to several days.</string>
-    <string name="request_to_be_verified">If you continue to see this message, please request to be verified on the &lt;a href="https://discordapp.com/invite/Z3bERWA"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="get_instantly_verified">You can get instantly verified to be able to participate in the rewards program using your Twitter account or skipping the manual verification queue.</string>
+    <string name="twitter_verification">Twitter Verification</string>
+    <string name="twitter_verification_desc">Get instantly verified using your Twitter account. Your Twitter email address must match the email that you provided and your account should be active.</string>
+    <string name="twitter_verify">Verify with Twitter</string>
+    <string name="skip_queue_verification">Skip the Queue</string>
+    <string name="skip_queue_verification_desc">Skip the manual verification queue by paying a fee in order to start participating in the rewards program immediately.</string>
+    <string name="request_to_be_verified">Please request to be verified on the &lt;a href="https://discordapp.com/invite/Z3bERWA"&gt;LBRY Discord server&lt;/a&gt;. A manual review can take anywhere from several minutes to several days.</string>
     <string name="enjoy_free_content">Please enjoy free content in the meantime!</string>
     <string name="verify_phone_number">Verify Phone Number</string>
     <string name="enter_phone_verify_code">Please enter the verification code sent to %1$s</string>
@@ -432,6 +442,12 @@
     <string name="please_enter_valid_phone">Please enter a valid phone number.</string>
     <string name="please_enter_verification_code">Please enter the verification code sent to your phone number.</string>
     <string name="fetch_current_user_error">User account could not be retrieved at this time. Please try again later.</string>
+    <string name="purchase_request_pending">Your purchase request is still being processed. Please send an email to support@lbry.com.</string>
+    <string name="purchase_request_failed_error">Your purchase request could not be completed at this time. Please send an email to support@lbry.com.</string>
+    <string name="twitter_account_ineligible">Your Twitter account is not eligible at this time: %1$s</string>
+    <string name="twitter_verification_not_approved">Your account was not approved for the rewards program. Please try again later.</string>
+    <string name="twitter_verification_failed">Twitter verification failed. Please try again later.</string>
+    <string name="reward_verification_successful">You are now eligible to participate in the rewards program!</string>
 
     <!-- Forms -->
     <string name="no_added_tags">You have not added any tags yet. Add tags to improve discovery.</string>

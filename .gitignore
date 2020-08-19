@@ -60,6 +60,7 @@ buck-out/
 
 # Other Files
 app/google-services.json
+app/twitter.properties
 *.log
 .vagrant
 *.hprof

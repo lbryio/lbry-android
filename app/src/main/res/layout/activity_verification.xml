@@ -11,6 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/verification_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <RelativeLayout
             android:id="@+id/verification_close_button"
             android:visibility="gone"
@@ -29,10 +34,6 @@
                 android:tint="@color/white" />
         </RelativeLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/verification_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
         <ProgressBar
             android:id="@+id/verification_loading_progress"
             android:visibility="gone"

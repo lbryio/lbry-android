@@ -4,57 +4,134 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="vertical"
+
+    <ProgressBar
+        android:id="@+id/verification_manual_loading"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/verification_manual_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:visibility="visible"
-        android:layout_margin="36dp">
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:visibility="visible"
+            android:layout_margin="36dp">
+            <TextView
+                android:textSize="28sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="@string/reward_verification"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/get_instantly_verified"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
 
-        <TextView
-            android:textSize="28sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter"
-            android:text="@string/manual_reward_verification"
-            android:textColor="@color/white"
-            android:textFontWeight="300" />
-        <TextView
-            android:textSize="16sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/inter"
-            android:text="@string/account_undergo_review"
-            android:textColor="@color/white"
-            android:textFontWeight="300" />
-        <TextView
-            android:id="@+id/verification_manual_discord_verify"
-            android:textSize="16sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/inter"
-            android:text="@string/request_to_be_verified"
-            android:textColor="@color/white"
-            android:textFontWeight="300" />
-        <TextView
-            android:textSize="16sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/inter"
-            android:text="@string/enjoy_free_content"
-            android:textColor="@color/white"
-            android:textFontWeight="300" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/verification_manual_continue_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/inter"
-            android:text="@string/continue_text" />
-    </LinearLayout>
+            <TextView
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/twitter_verification"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/twitter_verification_desc"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verification_manual_twitter_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/twitter_verify" />
+
+            <TextView
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/skip_queue_verification"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/skip_queue_verification_desc"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verification_manual_skip_queue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/skip_queue_button_text" />
+
+
+            <TextView
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/manual_reward_verification"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+            <TextView
+                android:id="@+id/verification_manual_discord_verify"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/request_to_be_verified"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/enjoy_free_content"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verification_manual_continue_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/continue_text" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>
