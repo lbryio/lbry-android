@@ -1,8 +1,8 @@
 import com.google.gms.googleservices.GoogleServicesPlugin
 
-Properties props = new Properties()
+Properties twitterProps = new Properties()
 try {
-    props.load(file('twitter.properties').newDataInputStream())
+    twitterProps.load(file('twitter.properties').newDataInputStream())
 } catch (Exception ex) {
     throw new GradleException("Missing twitter.properties.")
 }
@@ -50,12 +50,12 @@ android {
 
     buildTypes {
         debug {
-            resValue "string", "TWITTER_CONSUMER_KEY",  "\"${props.getProperty("twitterConsumerKey")}\""
-            resValue "string", "TWITTER_CONSUMER_SECRET", "\"${props.getProperty("twitterConsumerSecret")}\""
+            resValue "string", "TWITTER_CONSUMER_KEY",  "\"${twitterProps.getProperty("twitterConsumerKey")}\""
+            resValue "string", "TWITTER_CONSUMER_SECRET", "\"${twitterProps.getProperty("twitterConsumerSecret")}\""
         }
         release {
-            resValue "string", "TWITTER_CONSUMER_KEY",  "\"${props.getProperty("twitterConsumerKey")}\""
-            resValue "string", "TWITTER_CONSUMER_SECRET", "\"${props.getProperty("twitterConsumerSecret")}\""
+            resValue "string", "TWITTER_CONSUMER_KEY",  "\"${twitterProps.getProperty("twitterConsumerKey")}\""
+            resValue "string", "TWITTER_CONSUMER_SECRET", "\"${twitterProps.getProperty("twitterConsumerSecret")}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
