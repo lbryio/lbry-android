@@ -1,12 +1,5 @@
 import com.google.gms.googleservices.GoogleServicesPlugin
 
-Properties twitterProps = new Properties()
-try {
-    twitterProps.load(project.file('twitter.properties').newDataInputStream())
-} catch (Exception ex) {
-    throw new GradleException("Missing twitter.properties.")
-}
-
 apply plugin: 'com.android.application'
 
 android {
@@ -50,10 +43,14 @@ android {
 
     buildTypes {
         debug {
+            Properties twitterProps = new Properties()
+            twitterProps.load(project.file('twitter.properties').newDataInputStream())
             resValue "string", "TWITTER_CONSUMER_KEY",  "\"${twitterProps.getProperty("twitterConsumerKey")}\""
             resValue "string", "TWITTER_CONSUMER_SECRET", "\"${twitterProps.getProperty("twitterConsumerSecret")}\""
         }
         release {
+            Properties twitterProps = new Properties()
+            twitterProps.load(project.file('twitter.properties').newDataInputStream())
             resValue "string", "TWITTER_CONSUMER_KEY",  "\"${twitterProps.getProperty("twitterConsumerKey")}\""
             resValue "string", "TWITTER_CONSUMER_SECRET", "\"${twitterProps.getProperty("twitterConsumerSecret")}\""
             minifyEnabled false
