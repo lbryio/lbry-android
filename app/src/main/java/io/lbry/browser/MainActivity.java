@@ -205,8 +205,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final String CHANNEL_ID_PLAYBACK = "io.lbry.browser.LBRY_PLAYBACK_CHANNEL";
     private static final int PLAYBACK_NOTIFICATION_ID = 3;
     private static final String SPECIAL_URL_PREFIX = "lbry://?";
+    private static final int REMOTE_NOTIFICATION_REFRESH_TTL = 300000; // 5 minutes
     public static final String SKU_SKIP = "lbryskip";
 
+    private Date remoteNotifcationsLastLoaded;
     private Map<String, Class> specialRouteFragmentClassMap;
     @Getter
     private boolean inPictureInPictureMode;
@@ -2192,9 +2194,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         clearWunderbarFocus(findViewById(R.id.wunderbar));
         findViewById(R.id.notifications_container).setVisibility(View.VISIBLE);
         ((ImageView) findViewById(R.id.notifications_toggle_icon)).setColorFilter(ContextCompat.getColor(this, R.color.lbryGreen));
-        if (notificationListAdapter == null || notificationListAdapter.getItemCount() == 0) {
+        if (remoteNotifcationsLastLoaded == null ||
+                (System.currentTimeMillis() - remoteNotifcationsLastLoaded.getTime() > REMOTE_NOTIFICATION_REFRESH_TTL)) {
             loadRemoteNotifications(true);
-        } else {
+        }
+
+        if (notificationListAdapter != null) {
             markNotificationsRead();
         }
     }
@@ -3249,6 +3254,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         NotificationListTask task = new NotificationListTask(this, findViewById(R.id.notifications_progress), new NotificationListTask.ListNotificationsHandler() {
             @Override
             public void onSuccess(List<LbryNotification> notifications) {
+                remoteNotifcationsLastLoaded = new Date();
+
                 loadLocalNotifications();
                 loadUnreadNotificationsCount();
                 if (markRead && findViewById(R.id.notifications_container).getVisibility() == View.VISIBLE) {
@@ -3289,6 +3296,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                 if (notificationListAdapter == null) {
                     notificationListAdapter = new NotificationListAdapter(notifications, MainActivity.this);
+                    ((RecyclerView) findViewById(R.id.notifications_list)).setAdapter(notificationListAdapter);
                 } else {
                     notificationListAdapter.addNotifications(notifications);
                 }
@@ -3322,8 +3330,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         hideNotifications();
                     }
                 });
-
-                ((RecyclerView) findViewById(R.id.notifications_list)).setAdapter(notificationListAdapter);
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

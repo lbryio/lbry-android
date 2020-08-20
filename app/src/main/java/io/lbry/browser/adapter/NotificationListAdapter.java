@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.lbry.browser.R;
@@ -23,9 +24,13 @@ import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.LbryNotification;
 import io.lbry.browser.ui.controls.SolidIconView;
 import io.lbry.browser.utils.Helper;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@Data
 public class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapter.ViewHolder> {
 
     private static final String RULE_CREATOR_SUBSCRIBER = "creator_subscriber";
@@ -42,10 +47,6 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     public NotificationListAdapter(List<LbryNotification> notifications, Context context) {
         this.context = context;
         this.items = new ArrayList<>(notifications);
-    }
-
-    public List<LbryNotification> getItems() {
-        return new ArrayList<>(items);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -117,8 +118,10 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 items.add(notification);
             }
         }
+        Collections.sort(items, Collections.reverseOrder(new LbryNotification()));
         notifyDataSetChanged();
     }
+
     @Override
     public NotificationListAdapter.ViewHolder onCreateViewHolder(ViewGroup root, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.list_item_notification, root, false);
