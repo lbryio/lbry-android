@@ -202,8 +202,11 @@ import lombok.Setter;
 import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements SdkStatusListener {
+    private static final String CHANNEL_ID_PLAYBACK = "io.lbry.browser.LBRY_PLAYBACK_CHANNEL";
+    private static final int PLAYBACK_NOTIFICATION_ID = 3;
+    private static final String SPECIAL_URL_PREFIX = "lbry://?";
+    public static final String SKU_SKIP = "lbryskip";
 
-    static final String SKU_SKIP = "lbryskip";
     private Map<String, Class> specialRouteFragmentClassMap;
     @Getter
     private boolean inPictureInPictureMode;
@@ -886,6 +889,21 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         Map<String, Object> params = new HashMap<>();
         params.put("url", url);
         openFragment(FileViewFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
+    }
+
+    private void openSpecialUrl(String url) {
+        String specialPath = url.substring(8).toLowerCase();
+        if (specialRouteFragmentClassMap.containsKey(specialPath)) {
+            Class fragmentClass = specialRouteFragmentClassMap.get(specialPath);
+            if (fragmentClassNavIdMap.containsKey(fragmentClass)) {
+                openFragment(
+                        specialRouteFragmentClassMap.get(specialPath),
+                        true,
+                        fragmentClassNavIdMap.get(fragmentClass),
+                        null
+                );
+            }
+        }
     }
 
     public void openSendTo(String path) {
@@ -1718,9 +1736,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         connector.setPlayer(MainActivity.appPlayer);
         mediaSession.setActive(true);
     }
-
-    private static final String CHANNEL_ID_PLAYBACK = "io.lbry.browser.LBRY_PLAYBACK_CHANNEL";
-    private static final int PLAYBACK_NOTIFICATION_ID = 3;
 
     public void initNotificationsPage() {
         findViewById(R.id.notification_list_empty_container).setVisibility(View.VISIBLE);
@@ -2687,7 +2702,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             if (data != null) {
                 String url = data.toString();
                 // check special urls
-                if (url.startsWith("lbry://?")) {
+                if (url.startsWith(SPECIAL_URL_PREFIX)) {
                     String specialPath = url.substring(8).toLowerCase();
                     if (specialRouteFragmentClassMap.containsKey(specialPath)) {
                         Class fragmentClass = specialRouteFragmentClassMap.get(specialPath);
@@ -3291,15 +3306,20 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                             notificationListAdapter.notifyDataSetChanged();
                         }
 
-                        LbryUri target = LbryUri.tryParse(notification.getTargetUrl());
-                        if (target != null) {
-                            if (target.isChannel()) {
-                                openChannelUrl(notification.getTargetUrl());
-                            } else {
-                                openFileUrl(notification.getTargetUrl());
+                        String targetUrl = notification.getTargetUrl();
+                        if (targetUrl.startsWith(SPECIAL_URL_PREFIX)) {
+                            openSpecialUrl(targetUrl);
+                        } else {
+                            LbryUri target = LbryUri.tryParse(notification.getTargetUrl());
+                            if (target != null) {
+                                if (target.isChannel()) {
+                                    openChannelUrl(notification.getTargetUrl());
+                                } else {
+                                    openFileUrl(notification.getTargetUrl());
+                                }
                             }
-                            hideNotifications();
                         }
+                        hideNotifications();
                     }
                 });
 

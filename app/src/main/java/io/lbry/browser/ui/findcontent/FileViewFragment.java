@@ -1489,7 +1489,7 @@ public class FileViewFragment extends BaseFragment implements
             }
         }
 
-        if (claim.isFree()) {
+        if (claim.isFree() && Helper.isNullOrEmpty(commentHash)) {
             if (claim.isPlayable() || (!Lbry.SDK_READY && Lbryio.isSignedIn())) {
                 if (MainActivity.nowPlayingClaim != null && MainActivity.nowPlayingClaim.getClaimId().equalsIgnoreCase(claim.getClaimId())) {
                     // claim already playing
@@ -1507,7 +1507,7 @@ public class FileViewFragment extends BaseFragment implements
             restoreMainActionButton();
         }
 
-        if (Lbry.SDK_READY && !claim.isPlayable() && !claim.isViewable()) {
+        if (Lbry.SDK_READY && !claim.isPlayable() && !claim.isViewable() && Helper.isNullOrEmpty(commentHash)) {
             if (claim.getFile() == null) {
                 loadFile();
             } else {
