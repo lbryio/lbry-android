@@ -2144,7 +2144,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             }
 
             private void handleNotificationReceived(Intent intent) {
-                loadUnreadNotificationsCount();
                 loadRemoteNotifications(false);
             }
 
@@ -3255,9 +3254,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onSuccess(List<LbryNotification> notifications) {
                 remoteNotifcationsLastLoaded = new Date();
-
                 loadLocalNotifications();
-                loadUnreadNotificationsCount();
                 if (markRead && findViewById(R.id.notifications_container).getVisibility() == View.VISIBLE) {
                     markNotificationsRead();
                 }
@@ -3293,6 +3290,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             protected void onPostExecute(List<LbryNotification> notifications) {
                 findViewById(R.id.notification_list_empty_container).setVisibility(notifications.size() == 0 ? View.VISIBLE : View.GONE);
                 findViewById(R.id.notifications_progress).setVisibility(View.GONE);
+                loadUnreadNotificationsCount();
 
                 if (notificationListAdapter == null) {
                     notificationListAdapter = new NotificationListAdapter(notifications, MainActivity.this);

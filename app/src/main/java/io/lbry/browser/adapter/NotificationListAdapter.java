@@ -16,8 +16,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.lbry.browser.R;
 import io.lbry.browser.model.Claim;
@@ -160,9 +162,11 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         vh.titleView.setVisibility(!Helper.isNullOrEmpty(notification.getTitle()) ? View.VISIBLE : View.GONE);
         vh.titleView.setText(notification.getTitle());
         vh.bodyView.setText(notification.getDescription());
+
+        Calendar utcCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         vh.timeView.setText(DateUtils.getRelativeTimeSpanString(
                 notification.getTimestamp().getTime(),
-                System.currentTimeMillis(), 0, DateUtils.FORMAT_ABBREV_RELATIVE));
+                utcCalendar.getTimeInMillis(), 0, DateUtils.FORMAT_ABBREV_RELATIVE));
 
         vh.thumbnailView.setVisibility(notification.getCommentAuthor() == null ? View.INVISIBLE : View.VISIBLE);
         if (notification.getCommentAuthor() != null) {
