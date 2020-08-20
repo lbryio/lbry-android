@@ -18,6 +18,8 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -162,11 +164,8 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         vh.titleView.setVisibility(!Helper.isNullOrEmpty(notification.getTitle()) ? View.VISIBLE : View.GONE);
         vh.titleView.setText(notification.getTitle());
         vh.bodyView.setText(notification.getDescription());
-
-        Calendar utcCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         vh.timeView.setText(DateUtils.getRelativeTimeSpanString(
-                notification.getTimestamp().getTime(),
-                utcCalendar.getTimeInMillis(), 0, DateUtils.FORMAT_ABBREV_RELATIVE));
+                getLocalNotificationTime(notification), System.currentTimeMillis(), 0, DateUtils.FORMAT_ABBREV_RELATIVE));
 
         vh.thumbnailView.setVisibility(notification.getCommentAuthor() == null ? View.INVISIBLE : View.VISIBLE);
         if (notification.getCommentAuthor() != null) {
@@ -186,6 +185,17 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 }
             }
         });
+    }
+
+    private long getLocalNotificationTime(LbryNotification notification) {
+        TimeZone utcTZ = TimeZone.getTimeZone("UTC");
+        TimeZone targetTZ = TimeZone.getDefault();
+        Calendar cal = new GregorianCalendar(utcTZ);
+        cal.setTimeInMillis(notification.getTimestamp().getTime());
+
+        cal.add(Calendar.MILLISECOND, utcTZ.getRawOffset() * -1);
+        cal.add(Calendar.MILLISECOND, targetTZ.getRawOffset());
+        return cal.getTimeInMillis();
     }
 
     public interface NotificationClickListener {
