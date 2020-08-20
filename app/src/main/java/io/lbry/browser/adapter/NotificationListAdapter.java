@@ -48,6 +48,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     public NotificationListAdapter(List<LbryNotification> notifications, Context context) {
         this.context = context;
         this.items = new ArrayList<>(notifications);
+        Collections.sort(items, Collections.reverseOrder(new LbryNotification()));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

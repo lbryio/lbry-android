@@ -29,11 +29,11 @@ public class LbryNotification implements Comparator<LbryNotification> {
     public int compare(LbryNotification a, LbryNotification b) {
         long t1 = a.getTimestamp() != null ? a.getTimestamp().getTime() : 0;
         long t2 = b.getTimestamp() != null ? b.getTimestamp().getTime() : 0;
-        if (t2 > t1) {
-            return 1;
+        if (t1 < t2) {
+            return -1;
         }
         if (t1 > t2) {
-            return -1;
+            return 1;
         }
         return 0;
     }
