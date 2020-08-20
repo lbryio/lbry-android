@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,6 +65,8 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
 
     @Setter
     private Claim claim;
+    @Setter
+    private String commentHash;
     private CommentListAdapter commentListAdapter;
 
     private Comment replyToComment;
@@ -156,7 +159,8 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
         if (context instanceof MainActivity) {
             ((MainActivity) context).addWalletBalanceListener(this);
         }
-        checkCommentSdkInitializing();
+
+        checkAndLoadComments();
     }
 
     public void onStop() {
@@ -180,13 +184,11 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
     @Override
     public void onSdkReady() {
         fetchChannels();
-        checkAndLoadComments();
     }
 
     private void checkAndLoadComments() {
         View root = getView();
         if (root != null) {
-            checkCommentSdkInitializing();
             RecyclerView commentsList = root.findViewById(R.id.channel_comments_list);
             if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
                 loadComments();
@@ -198,7 +200,7 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
         View root = getView();
         ProgressBar relatedLoading = root.findViewById(R.id.channel_comments_progress);
         if (claim != null && root != null) {
-            CommentListTask task = new CommentListTask(1, 500, claim.getClaimId(), relatedLoading, new CommentListHandler() {
+            CommentListTask task = new CommentListTask(1, 200, claim.getClaimId(), relatedLoading, new CommentListHandler() {
                 @Override
                 public void onSuccess(List<Comment> comments, boolean hasReachedEnd) {
                     Context ctx = getContext();
@@ -228,6 +230,7 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
 
                         checkNoComments();
                         resolveCommentPosters();
+                        scrollToCommentHash();
                     }
                 }
 
@@ -237,6 +240,20 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
                 }
             });
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private void scrollToCommentHash() {
+        View root = getView();
+        // check for the position of commentHash if set
+        if (root != null && !Helper.isNullOrEmpty(commentHash) && commentListAdapter != null && commentListAdapter.getItemCount() > 0) {
+            RecyclerView commentList = root.findViewById(R.id.channel_comments_list);
+            int position = commentListAdapter.getPositionForComment(commentHash);
+            if (position > -1 && commentList.getLayoutManager() != null) {
+                NestedScrollView scrollView = root.findViewById(R.id.channel_comments_area);
+                scrollView.requestChildFocus(commentList, commentList);
+                commentList.getLayoutManager().scrollToPosition(position);
+            }
         }
     }
 
