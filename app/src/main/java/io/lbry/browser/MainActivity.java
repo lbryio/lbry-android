@@ -2645,6 +2645,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 loadLastFragment();
                 showSignedInUser();
                 fetchRewards();
+                loadRemoteNotifications(false);
 
                 checkUrlIntent(getIntent());
                 LbryAnalytics.logEvent(LbryAnalytics.EVENT_APP_LAUNCH);
