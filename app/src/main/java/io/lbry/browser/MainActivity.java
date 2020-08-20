@@ -3254,6 +3254,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onSuccess(List<LbryNotification> notifications) {
                 remoteNotifcationsLastLoaded = new Date();
+
+                loadUnreadNotificationsCount();
                 loadLocalNotifications();
                 if (markRead && findViewById(R.id.notifications_container).getVisibility() == View.VISIBLE) {
                     markNotificationsRead();
