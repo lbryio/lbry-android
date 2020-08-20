@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -62,7 +62,7 @@ import lombok.SneakyThrows;
 public class ChannelFragment extends BaseFragment implements FetchChannelsListener {
     private Claim claim;
     private boolean subscribing;
-    private String url;
+    private String currentUrl;
 
     private View layoutResolving;
     private View layoutDisplayArea;
@@ -85,6 +85,9 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private SolidIconView iconUnfollow;
     private View layoutNothingAtLocation;
     private View layoutLoadingState;
+
+    // if this is set, scroll to the specific comment on load
+    private String commentHash;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -321,7 +324,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private void checkParams() {
         boolean updateRequired = false;
         Map<String, Object> params = getParams();
-
+        String newUrl = null;
         if (params != null) {
             if (params.containsKey("claim")) {
                 Claim claim = (Claim) params.get("claim");
@@ -331,21 +334,39 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                 }
             }
             if (params.containsKey("url")) {
-                String newUrl = params.get("url").toString();
-                if (claim == null || !newUrl.equalsIgnoreCase(url)) {
-                    this.claim = null;
-                    this.url = newUrl;
-                    updateRequired = true;
+                LbryUri newLbryUri = LbryUri.tryParse(params.get("url").toString());
+                if (newLbryUri != null) {
+                    newUrl = newLbryUri.toString();
+                    String qs = newLbryUri.getQueryString();
+                    if (!Helper.isNullOrEmpty(qs)) {
+                        String[] qsPairs = qs.split("&");
+                        for (String pair : qsPairs) {
+                            String[] parts = pair.split("=");
+                            if (parts.length < 2) {
+                                continue;
+                            }
+                            if ("comment_hash".equalsIgnoreCase(parts[0])) {
+                                commentHash = parts[1];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (claim == null || !newUrl.equalsIgnoreCase(currentUrl)) {
+                        this.claim = null;
+                        this.currentUrl = newUrl;
+                        updateRequired = true;
+                    }
                 }
             }
         }
 
         if (updateRequired) {
             resetSubCount();
-            if (!Helper.isNullOrEmpty(url)) {
+            if (!Helper.isNullOrEmpty(currentUrl)) {
                 // check if the claim is already cached
                 ClaimCacheKey key = new ClaimCacheKey();
-                key.setUrl(url);
+                key.setUrl(currentUrl);
                 if (Lbry.claimCache.containsKey(key)) {
                     claim = Lbry.claimCache.get(key);
                 } else {
@@ -357,8 +378,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             }
         }
 
-        if (!Helper.isNullOrEmpty(url)) {
-            Helper.saveUrlHistory(url, claim != null ? claim.getTitle() : null, UrlSuggestion.TYPE_CHANNEL);
+        if (!Helper.isNullOrEmpty(currentUrl)) {
+            Helper.saveUrlHistory(currentUrl, claim != null ? claim.getTitle() : null, UrlSuggestion.TYPE_CHANNEL);
         }
 
         if (claim != null) {
@@ -369,13 +390,13 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private void resolveUrl() {
         Helper.setViewVisibility(layoutDisplayArea, View.INVISIBLE);
         Helper.setViewVisibility(layoutLoadingState, View.VISIBLE);
-        ResolveTask task = new ResolveTask(url, Lbry.LBRY_TV_CONNECTION_STRING, layoutResolving, new ClaimListResultHandler() {
+        ResolveTask task = new ResolveTask(currentUrl, Lbry.LBRY_TV_CONNECTION_STRING, layoutResolving, new ClaimListResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims) {
                 if (claims.size() > 0 && !Helper.isNullOrEmpty(claims.get(0).getClaimId())) {
                     claim = claims.get(0);
-                    if (!Helper.isNullOrEmpty(url)) {
-                        Helper.saveUrlHistory(url, claim.getTitle(), UrlSuggestion.TYPE_CHANNEL);
+                    if (!Helper.isNullOrEmpty(currentUrl)) {
+                        Helper.saveUrlHistory(currentUrl, claim.getTitle(), UrlSuggestion.TYPE_CHANNEL);
                     }
 
                     renderClaim();
@@ -441,7 +462,16 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
 
         try {
             if (tabPager.getAdapter() == null && context instanceof MainActivity) {
-                tabPager.setAdapter(new ChannelPagerAdapter(claim, (MainActivity) context));
+                tabPager.setAdapter(new ChannelPagerAdapter(claim, commentHash, (MainActivity) context));
+                if (!Helper.isNullOrEmpty(commentHash)) {
+                    // set the Comments tab active if a comment hash is set
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tabPager.setCurrentItem(2);
+                        }
+                    }, 500);
+                }
             }
             new TabLayoutMediator(tabLayout, tabPager, new TabLayoutMediator.TabConfigurationStrategy() {
                 @Override
@@ -491,9 +521,11 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
 
     private static class ChannelPagerAdapter extends FragmentStateAdapter {
         private Claim channelClaim;
-        public ChannelPagerAdapter(Claim channelClaim, FragmentActivity activity) {
+        private String commentHash;
+        public ChannelPagerAdapter(Claim channelClaim, String commentHash, FragmentActivity activity) {
             super(activity);
             this.channelClaim = channelClaim;
+            this.commentHash = commentHash;
         }
 
         @SneakyThrows
@@ -525,6 +557,9 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                     ChannelCommentsFragment commentsFragment = ChannelCommentsFragment.class.newInstance();
                     if (channelClaim != null) {
                         commentsFragment.setClaim(channelClaim);
+                    }
+                    if (!Helper.isNullOrEmpty(commentHash)) {
+                        commentsFragment.setCommentHash(commentHash);
                     }
                     return commentsFragment;
             }

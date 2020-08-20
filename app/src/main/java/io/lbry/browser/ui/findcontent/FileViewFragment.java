@@ -2218,7 +2218,7 @@ public class FileViewFragment extends BaseFragment implements
         if (root != null && !Helper.isNullOrEmpty(commentHash) && commentListAdapter != null && commentListAdapter.getItemCount() > 0) {
             RecyclerView commentList = root.findViewById(R.id.file_view_comments_list);
             int position = commentListAdapter.getPositionForComment(commentHash);
-            if (position > -1) {
+            if (position > -1 && commentList.getLayoutManager() != null) {
                 NestedScrollView scrollView = root.findViewById(R.id.file_view_scroll_view);
                 scrollView.requestChildFocus(commentList, commentList);
                 commentList.getLayoutManager().scrollToPosition(position);
