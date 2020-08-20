@@ -5,10 +5,13 @@ import java.util.Date;
 
 import io.lbry.browser.model.Claim;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public class LbryNotification implements Comparator<LbryNotification> {
     private long id;
+    @EqualsAndHashCode.Include
     private long remoteId;
     private String title;
     private String description;

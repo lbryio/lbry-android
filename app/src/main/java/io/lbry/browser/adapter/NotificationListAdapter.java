@@ -31,6 +31,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapter.ViewHolder> {
 
     private static final String RULE_CREATOR_SUBSCRIBER = "creator_subscriber";
