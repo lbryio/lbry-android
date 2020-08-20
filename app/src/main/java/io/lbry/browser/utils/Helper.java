@@ -132,6 +132,16 @@ public final class Helper {
         return sb.toString();
     }
 
+    public static String joinL(List<Long> list, String delimiter) {
+        StringBuilder sb = new StringBuilder();
+        String delim = "";
+        for (Long item : list) {
+            sb.append(delim).append(item);
+            delim = delimiter;
+        }
+        return sb.toString();
+    }
+
     public static <T> JSONArray jsonArrayFromList(List<T> values) {
         JSONArray array = new JSONArray();
         for (T value : values) {

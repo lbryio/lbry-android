@@ -2,7 +2,9 @@ package io.lbry.browser.tasks.lbryinc;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -26,6 +28,8 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class NotificationListTask extends AsyncTask<Void, Void, List<LbryNotification>> {
+    private static final String TAG = "Notifications";
+
     private Context context;
     private ListNotificationsHandler handler;
     private ProgressBar progressBar;
@@ -59,6 +63,9 @@ public class NotificationListTask extends AsyncTask<Void, Void, List<LbryNotific
                         }
                         if (notificationParams.has("dynamic") && !notificationParams.isNull("dynamic")) {
                             JSONObject dynamic = notificationParams.getJSONObject("dynamic");
+                            if (dynamic.has("comment_author")) {
+                                notification.setAuthorUrl(Helper.getJSONString("comment_author", null, dynamic));
+                            }
                             if (dynamic.has("channelURI")) {
                                 String channelUrl = Helper.getJSONString("channelURI", null, dynamic);
                                 if (!Helper.isNullOrEmpty(channelUrl)) {
@@ -95,7 +102,8 @@ public class NotificationListTask extends AsyncTask<Void, Void, List<LbryNotific
                     }
                 }
             }
-        } catch (ClassCastException | LbryioRequestException | LbryioResponseException | JSONException | IllegalStateException ex) {
+        } catch (ClassCastException | LbryioRequestException | LbryioResponseException | JSONException | SQLiteException | IllegalStateException ex) {
+            Log.e(TAG, ex.getMessage(), ex);
             error = ex;
             return null;
         }
