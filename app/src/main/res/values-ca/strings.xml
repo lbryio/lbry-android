@@ -194,6 +194,8 @@
     <string name="romanian">Romanès</string>
     <string name="hindi">Hindi</string>
     <string name="greek">Grec</string>
+    <string name="catalan">Català</string>
+
     <string name="none">Cap</string>
     <string name="public_domain">Domini públic</string>
     <string name="copyrighted">Amb Copyright</string>
@@ -332,6 +334,10 @@
     <string name="confirm_unlock_tips">Segur que vols desblocar totes les teves propines?</string>
     <string name="min_spend_required">Sisplau, introdueix una quantitat mínima de 0.0001 crèdits.</string>
 
+    <string name="buy_lbc">Compra LBC</string>
+    <string name="hash_not_supported">El teu dispositiu no té suport pels requeriments mínims per assegurar la teva petició de compra.</string>
+    <string name="receive_address_not_set">No has especificat cap adreça de cartera. Sisplau, genera\'n una de nova i torna a intentar-ho.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">Has enviat %1$s crèdit</item>
         <item quantity="other">Has enviat %1$s crèdits</item>
@@ -367,6 +373,12 @@
     <string name="tag_limit_reached">No pots afegir més de 5 etiquetes.</string>
     <string name="send_a_tip">Envia una propina</string>
     <string name="send_a_tip_to">Envia una propina a %1$s</string>
+    <string name="support_this_content">Dóna suport a aquest contingut</string>
+    <string name="support_info">Això s\'afegirà a l\'oferta total per aquest contingut, i n\'augmentarà l\'habilitat de ser descobert mentre estigui actiu. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Aprèn-ne més&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Canal des del qual dones suport</string>
+    <string name="make_this_a_tip">Fes-ne una propina</string>
+    <string name="send_revocable_support">Envia suport revocable</string>
+    <string name="send_lbc_tip">Envia una propina de %1$s LBC</string>
     <string name="send_tip_info_content">Això apareixerà com una propina per %1$s, i n\'augmentarà l\'habilitat de ser descobert mentre estigui activa. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Aprèn-ne més&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Això apareixerà com una propina per %1$s, i augmentarà l\'habilitat del canal de ser descobert mentre estigui activa. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Aprèn-ne més&lt;/a&gt;.</string>
     <string name="cancel">Cancel·la</string>
@@ -382,6 +394,10 @@
     <plurals name="you_sent_a_tip">
         <item quantity="one">Has enviat %1$s crèdit com a propina. Mahalo!</item>
         <item quantity="other">Has enviat %1$s crèdits com a propina, Mahalo!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">Has invertit %1$s crèdit com a suport. Pots revocar el teu suport en qualsevol moment.</item>
+        <item quantity="other">Has invertit %1$s crèdits com a suport. Pots revocar el teu suport en qualsevol moment.</item>
     </plurals>
 
     <!-- Verification -->
@@ -406,8 +422,18 @@
     <string name="enter_phone_number">Sisplau, introdueix el teu número de telèfon.</string>
     <string name="not_interested">No m\'interessa</string>
     <string name="manual_reward_verification">Verificació de recompenses manual</string>
+    <string name="reward_verification">Verificació de recompenses</string>
+    <string name="social_media_verification">Verificació de xarxes socials</string>
+    <string name="skip_the_queue">Salta\'t la cua</string>
+    <string name="skip_queue_button_text">Salta-te-la per %1$s$</string>
     <string name="account_undergo_review">Aquest compte ha de passar per una revissió abans que puguis participar en el programa de recompenses. Això pot trigar des d\'uns minuts fins a alguns dies.</string>
-    <string name="request_to_be_verified">Si segueixes veient aquest missatge, sol·licita que et verifiquin al &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;servidor de LBRY a Discord&lt;/a&gt;.</string>
+    <string name="get_instantly_verified">Et pots verificar instantàniament per poder participar en el programa de recompenses emprant el teu compte de Twitter, o saltant-te la cua de la verificació manual.</string>
+    <string name="twitter_verification">Verificació mitjançant Twitter</string>
+    <string name="twitter_verification_desc">Pots verificar-te instantàniament emprant el teu compte de Twitter. La teva direcció de correu electrònic amb Twitter ha de coincidir amb la direcció que has proveït, i el teu compte ha d\'estar actiu.</string>
+    <string name="twitter_verify">Verifica mitjançant Twitter</string>
+    <string name="skip_queue_verification">Salta\'t la cua</string>
+    <string name="skip_queue_verification_desc">Salta\'t la verificació manual pagant una quota per tal de participar en el programa de recompenses immediatament.</string>
+    <string name="request_to_be_verified">Sisplau, demana que et verifiquin al &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;servidor de Discord de LBRY&lt;/a&gt;. Una verificació manual pot trigar des d\'alguns minuts fins a diversos dies.</string>
     <string name="enjoy_free_content">Gaudeix del contingut gratis mentrestant!</string>
     <string name="verify_phone_number">Verifica el número de telèfon</string>
     <string name="enter_phone_verify_code">Sisplau, introdueix el codi de verificació enviat a %1$s</string>
@@ -416,6 +442,12 @@
     <string name="please_enter_valid_phone">Sisplau, introdueix un número de telèfon vàlid.</string>
     <string name="please_enter_verification_code">Sisplau, introdueix el codi de verificació enviat al teu número de telèfon.</string>
     <string name="fetch_current_user_error">El compte d\'usuari no s\'ha pogut recuperar. Sisplau, torna a internar-ho més tard.</string>
+    <string name="purchase_request_pending">La teva petició de compra encara s\'està processant. Sisplau, envia\'ns un correu a support@lbry.com.</string>
+    <string name="purchase_request_failed_error">La teva petició de compra no s\'ha pogut completar en aquest moment. Sisplau, envia\'ns un correu a support@lbry.com</string>
+    <string name="twitter_account_ineligible">El teu compte de Twitter no és elegible en aquest moment: %1$s</string>
+    <string name="twitter_verification_not_approved">El teu compte no ha estat aprovat pel programa de recompenses. Sisplau, torna a provar-ho més tard.</string>
+    <string name="twitter_verification_failed">La verificació mitjançant Twitter ha fallat. Sisplau, torna a intentar-ho més tard.</string>
+    <string name="reward_verification_successful">Ets elegible per participar en el programa de recompenses!</string>
 
     <!-- Forms -->
     <string name="no_added_tags">No has afegit cap etiqueta encara. Afegeix etiquetes per millorar la descoberta.</string>
@@ -587,27 +619,4 @@
     <string name="cannot_find_lbrynet_log">No s\'ha pogut trobar el fitxer lbrynet.log.</string>
     <string name="cannot_share_lbrynet_log">El fitxer lbrynet.log no s\'ha pogut compartir per manca de permisos.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

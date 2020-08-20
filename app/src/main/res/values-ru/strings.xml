@@ -391,6 +391,12 @@
     <string name="tag_limit_reached">Вы не можете добавить больше 5 тегов.</string>
     <string name="send_a_tip">Отправить чаевые</string>
     <string name="send_a_tip_to">Пожертвовать %1$s</string>
+    <string name="support_this_content">Поддержать этот контент</string>
+    <string name="support_info">Это увеличит общее вложенное количество LBC в этот контент, и, пока поддержка активна, будет больше вероятность обнаружения видео другими пользователями.  &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">От лица какого канала отображать поддержку</string>
+    <string name="make_this_a_tip">Отправить как чаевые</string>
+    <string name="send_revocable_support">Отправить временную поддержку</string>
+    <string name="send_lbc_tip">Отправить чаевые в кол-ве %1$s</string>
     <string name="send_tip_info_content">Это пожертвование для %1$s увеличит его возможность быть найденным. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Это пожертвование для %1$s увеличит возможность  канала быть найденным. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Отмена</string>
@@ -408,6 +414,12 @@
         <item quantity="few">Вы пожертвовали %1$s кредитов, спасибо!</item>
         <item quantity="many">Вы пожертвовали %1$s кредитов, спасибо!</item>
         <item quantity="other">Вы пожертвовали %1$s кредитов, спасибо!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">Вы оставили %1$s кредит в качестве поддержки. Вы можете вернуть средства в любое время.</item>
+        <item quantity="few">Вы оставили %1$s кредита в качестве поддержки. Вы можете вернуть средства в любое время.</item>
+        <item quantity="many">Вы оставили %1$s кредитов в качестве поддержки. Вы можете вернуть средства в любое время.</item>
+        <item quantity="other">Вы оставили %1$s кредитов в качестве поддержки. Вы можете вернуть средства в любое время.</item>
     </plurals>
 
     <!-- Verification -->
@@ -432,8 +444,18 @@
     <string name="enter_phone_number">Пожалуйста, введите номер телефона. </string>
     <string name="not_interested">Не интересно </string>
     <string name="manual_reward_verification">Ручное подтверждение наград </string>
+    <string name="reward_verification">Подтверждение наград</string>
+    <string name="social_media_verification">Верификация через социальные сети</string>
+    <string name="skip_the_queue">Пропустить очередь</string>
+    <string name="skip_queue_button_text">Пропустить за $%1$s</string>
     <string name="account_undergo_review">Этот аккаунт должен проследовать проверке перед участием в программе вознаграждений. Это может занять от нескольких минут до нескольких дней. </string>
-    <string name="request_to_be_verified">Если Вы продолжаете видеть это сообщение, пожалуйста, обратитесь, чтобы стать подтвержденным сюда:  &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="get_instantly_verified">Вы можете сразу пройти проверку для того, чтобы участвовать в программе наград, используя Ваш аккаунт в Твиттере или пропустив проверку вручную.</string>
+    <string name="twitter_verification">Проверка с помощью Твиттера</string>
+    <string name="twitter_verification_desc">Пройдите проверку быстрее с помощью Вашего акккаунта в Твиттере. Адрес электронной почты этого аккаунта должен совпадать с адресом, который Вы предоставили ранее, а также аккаунт должен быть активен.</string>
+    <string name="twitter_verify">Верифицировать с помощью Твиттера</string>
+    <string name="skip_queue_verification">Пропустить очередь</string>
+    <string name="skip_queue_verification_desc">Пропустить очередь проверки, заплатив небольшую сумму, чтобы незамедлительно принять участие в программе наград.</string>
+    <string name="request_to_be_verified">Пожалуйста, запросите проверку в &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;. Проверка вручную может занять от пары минут до нескольких дней.</string>
     <string name="enjoy_free_content">Наслаждайтесь бесплатным контентом в любое время!</string>
     <string name="verify_phone_number">Подтвердите номер телефона</string>
     <string name="enter_phone_verify_code">Пожалуйста, введите код подтверждения, отправленный на %1$s</string>
@@ -442,6 +464,12 @@
     <string name="please_enter_valid_phone">Пожалуйста, введите действительный номер телефона. </string>
     <string name="please_enter_verification_code">Пожалуйста, введите код подтверждения, отправленный на Ваш номер телефона. </string>
     <string name="fetch_current_user_error">Не удалось получить информацию об аккаунте. Пожалуйста, попробуйте позже.</string>
+    <string name="purchase_request_pending">Ваш запрос о покупке всё ещё обрабатывается. Пожалуйста, отправьте письмо на support@lbry.com.</string>
+    <string name="purchase_request_failed_error">Ваш запрос о покупке не может быть обработан на данный момент. Пожалуйста, обратитесь к нам с письмом по адресу support@lbry.com.</string>
+    <string name="twitter_account_ineligible">Пока что Ваш аккаунт в Твиттере нам не подходит: %1$s</string>
+    <string name="twitter_verification_not_approved">Ваш аккаунт не был подтверждён для участия в программе наград. Пожалуйста, повторите попытку позже.</string>
+    <string name="twitter_verification_failed">Проверка Твиттер аккаунта неудалась. Пожалуйста, повторите попытку позже</string>
+    <string name="reward_verification_successful">Теперь Вы являетесь участником программмы наград!</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Вы пока не подписаны ни на один тег. Добавьте теги, чтобы улучшить поиск. </string>
@@ -483,7 +511,7 @@
     <string name="deposit_more_than_balance">Вложение не может быть выше Вашего счета</string>
     <string name="channel_save_failed">Запрос сохранения канала не удался. Пожалуйста, попробуйте ещё раз. </string>
     <string name="channel_save_successful">Канал успешно сохранён.</string>
-    <string name="item_pending_blockchain">Происходит загрузка в блокчейн. Вы сможете получить доступ ко взносу через некоторое время. </string>
+    <string name="item_pending_blockchain">Происходит загрузка в блокчейн. Вы сможете получить доступ к материалу через некоторое время. </string>
     <string name="pending">Загрузка</string>
     <string name="create">Создать</string>
     <string name="one_or_more_channels_failed_abandon">Удаление одного или более каналов временно невозможно. Пожалуйста, попробуйте позже.</string>
@@ -631,27 +659,4 @@
     <string name="cannot_find_lbrynet_log">Файл lbrynet.log не может быть найден.</string>
     <string name="cannot_share_lbrynet_log">Файлом lbrynet.log  нельзя поделиться из-за ограничений разрешений. </string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

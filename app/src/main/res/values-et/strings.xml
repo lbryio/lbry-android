@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Ava navigatsiooniriba</string>
     <string name="navigation_drawer_close">Sulge navigatsiooniriba</string>
@@ -97,7 +97,6 @@
         <item quantity="other">%1$s jälgivad</item>
     </plurals>
 
-    <!-- Publish -->
     <string name="record">Salvesta</string>
     <string name="take_photo">Tee foto</string>
     <string name="upload_file">Lae fail üles</string>
@@ -168,7 +167,6 @@
     <string name="romanian">Rumeenia</string>
     <string name="hindi">Hindi</string>
     <string name="greek">Kreeka</string>
-
     <string name="none">Puudub</string>
     <string name="public_domain">Üldkasutatav</string>
     <string name="copyrighted">Autoriõigusega kaitstud</string>
@@ -304,7 +302,6 @@
     <string name="unlock">Ava</string>
     <string name="unlock_tips">Lukustan jootrahad lahti?</string>
     <string name="confirm_unlock_tips">Kindel, et soovid kõiki oma jootrahasid lahtilukustada?</string>
-
     <plurals name="you_sent_credits">
         <item quantity="one">Saatsid %1$s LBC</item>
         <item quantity="other">Saatsid %1$s LBC</item>
@@ -356,7 +353,6 @@
         <item quantity="one">Saatsid jootraha summas %1$s, tänud!</item>
         <item quantity="other">Saatsid jootraha summas %1$s, tänud!</item>
     </plurals>
-
     <!-- Verification -->
     <string name="provide_email_address">Palun sisesta emailiaadress.</string>
     <string name="email_placeholder">you@example.com</string>
@@ -380,7 +376,6 @@
     <string name="not_interested">Pole huvitatud</string>
     <string name="manual_reward_verification">Käsitsi preemiaprogrammi verifitseerimine</string>
     <string name="account_undergo_review">See konto vajab ülevaatust, enne kui sa saad osaleda preemiaprogrammis. Protsess võib kesta mõnest minutist kuni mõne päevani.</string>
-    <string name="request_to_be_verified">Kui see teade püsib, siis soovitame küsida manuaalset verifitseerimist &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord serveris&lt;/a&gt;.</string>
     <string name="enjoy_free_content">Seniks nautige tasuta postitusi!</string>
     <string name="verify_phone_number">Kinnita telefoninumber</string>
     <string name="enter_phone_verify_code">Sisesta kinnituskood, mis saadeti %1$s</string>
@@ -388,7 +383,6 @@
     <string name="verify">Kinnita</string>
     <string name="please_enter_valid_phone">Sisesta kehtiv telefoninumber.</string>
     <string name="please_enter_verification_code">Sisesta kinnituskood mis saadeti sinu telefonile.</string>
-
     <!-- Forms -->
     <string name="no_added_tags">Sul pole lisatud ühtegi silti. Lisa neid, et parandada oma postituse leitavust.</string>
     <string name="form_no_tag_results">Ei leidnud ühtegi silti, mis pole veel lisatud.</string>
@@ -496,7 +490,6 @@
     <string name="invite_email_placeholder">väljamõeldud@sõber.com</string>
     <string name="invite">Kutse</string>
     <string name="invite_history">Kutsete ajalugu</string>
-    <string name="earn_credits_for_inviting">Teeni preemiaid, kutsudes oma sõpru ja tuttavaid LBRY kasutajateks. Sisuvabadust on igaühel tarvis.</string>
     <string name="reward">Preemia</string>
     <string name="claimed">Lunastatud</string>
     <string name="claimable">Lunastatav</string>
@@ -559,27 +552,4 @@
     <string name="cannot_find_lbrynet_log">Logifail lbrynet.log pole leitav.</string>
     <string name="cannot_share_lbrynet_log">Logifail lbrynet.log pole jagatav ligipääsupiirangute tõttu.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

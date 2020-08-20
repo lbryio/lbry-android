@@ -382,6 +382,12 @@
     <string name="tag_limit_reached">Se pot adăuga maxim 5 etichete.</string>
     <string name="send_a_tip">Trimite bacşiş</string>
     <string name="send_a_tip_to">Trimitere bacşiş la %1$s</string>
+    <string name="support_this_content">Susține acest conținut</string>
+    <string name="support_info">Va crește suma totală licitată pentru acest conținut și implicit posibilitatea de a fi descoperit cât este activ. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Detalii&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Canalul susținător</string>
+    <string name="make_this_a_tip">Trimite ca bacşiş</string>
+    <string name="send_revocable_support">Trimite susţinere revocabilă</string>
+    <string name="send_lbc_tip">Trimite %1$s LBC bacşiş</string>
     <string name="send_tip_info_content">Aceasta sumă va apărea ca bacșiș pentru %1$s, mărindu-i șansele de a fi descoperit cât timp este activ.  &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Detalii&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Aceasta sumă va apărea ca bacșiș pentru %1$s, mărind șansele canalului de a fi descoperit cât timp este activ. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Detalii&lt;/a&gt;.</string>
     <string name="cancel">Anulare</string>
@@ -398,6 +404,11 @@
         <item quantity="one">Bravo! Ai trimis %1$s credit ca bacşiş.</item>
         <item quantity="few">Bravo! Ai trimis %1$s credite ca bacşiş.</item>
         <item quantity="other">Bravo! Ai trimis %1$s de credite ca bacşiş.</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">Susţii cu %1$s credit. Poți revoca suportul în orice moment.</item>
+        <item quantity="few">Susţii cu %1$s credite. Poți revoca suportul în orice moment.</item>
+        <item quantity="other">Îl susţii cu %1$s credite. Poți anula suportul în orice moment.</item>
     </plurals>
 
     <!-- Verification -->
@@ -423,7 +434,6 @@
     <string name="not_interested">Nu mă interesează</string>
     <string name="manual_reward_verification">Verificare manuală recompensare</string>
     <string name="account_undergo_review">Acest cont trebuie verificat înainte de a putea participa la programul de recompensare. Aceasta poate dura câteva minute sau zile.</string>
-    <string name="request_to_be_verified">Dacă vezi în continuare acest mesaj, poţi solicita o verificare pe &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;serverul Discord al LBRY&lt;/a&gt;.</string>
     <string name="enjoy_free_content">Între timp bucură-te de conţinutul gratuit!</string>
     <string name="verify_phone_number">Verificare număr de telefon</string>
     <string name="enter_phone_verify_code">Introdu codul de verificare trimis la %1$s</string>
@@ -432,7 +442,6 @@
     <string name="please_enter_valid_phone">Introdu un număr de telefon valid.</string>
     <string name="please_enter_verification_code">Introdu codul de verificare trimis la numărul tău de telefon.</string>
     <string name="fetch_current_user_error">Contul de utilizator nu a putut fi preluat în acest moment. Reîncearcă mai târziu.</string>
-
     <!-- Forms -->
     <string name="no_added_tags">Încă nu ţi-ai ales etichete. Adaugă-ţi câteva pentru a descoperi conţinut.</string>
     <string name="form_no_tag_results">Nu am putut găsi etichete noi pe care să nu le ai deja adăugate.</string>
@@ -612,27 +621,4 @@
     <string name="cannot_find_lbrynet_log">Fişierul „lbrynet.log” nu a putut fi găsit.</string>
     <string name="cannot_share_lbrynet_log">Fişierul „lbrynet.log” nu poate fi partajat datorită restricţiilor.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

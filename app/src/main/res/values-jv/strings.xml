@@ -364,6 +364,12 @@
     <string name="tag_limit_reached">Sampeyan ora bisa nambah luwih saka 5 tag.</string>
     <string name="send_a_tip">Kirim tip</string>
     <string name="send_a_tip_to">Kirim tip menyang %1$s</string>
+    <string name="support_this_content">Ndhukung konten iki</string>
+    <string name="support_info">Iki bakal nambah jumlah bidaan umume kanggo konten iki, sing bakal bisa nambah katrampilan nalika aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Saluran kanggo nuduhake dhukungan minangka</string>
+    <string name="make_this_a_tip">Gawe iki tip </string>
+    <string name="send_revocable_support">Kirim Dhukungan seng iso di jupuk maneh</string>
+    <string name="send_lbc_tip">Ngirim %1$s LBC Tip</string>
     <string name="send_tip_info_content">Iki bakal katon minangka tip kanggo %1$s, sing bakal nambah kemampuan kanggo ditemokake nalika aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Iki bakal katon minangka tip kanggo %1$s, sing bakal ningkatake kemampuan saluran kasebut ditemokake nalika aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Batalke</string>
@@ -378,6 +384,9 @@
     <string name="repost_name_invalid_characters">Jeneng repost ngemot karakter sing ora bener.</string>
     <plurals name="you_sent_a_tip">
         <item quantity="other">Sampeyan ngirim %1$s kredit minangka tip, Mahalo!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="other">Sampeyan naruhno %1$skridit minangka dhukungan. Sampeyan bisa mbatalake dhukungan kapan wae.</item>
     </plurals>
 
     <!-- Verification -->
@@ -402,8 +411,18 @@
     <string name="enter_phone_number">Mangga ketik nomer telpon sampeyan.</string>
     <string name="not_interested">Ora kasengsem</string>
     <string name="manual_reward_verification">Verifikasi Hadiah Manual</string>
+    <string name="reward_verification">Verifikasino Hadiahe</string>
+    <string name="social_media_verification">Verifikasino Media Sosial</string>
+    <string name="skip_the_queue">Nglewati ing Antrian</string>
+    <string name="skip_queue_button_text">Mlebet $%1$s</string>
     <string name="account_undergo_review">Akun iki kudu ngalami review sadurunge sampeyan bisa melu ing program hadiah. Iki bisa njupuk ing endi wae saka sawetara menit nganti pirang-pirang dina.</string>
-    <string name="request_to_be_verified">Yen sampeyan terus ndeleng pesen iki, nyuwun supaya bisa diverifikasi ing &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="get_instantly_verified">Sampeyan bisa langsung diverifikasi supaya bisa melu program hadiah kanthi nggunakake akun Twitter utawa nglumpukake antrian verifikasi manual.</string>
+    <string name="twitter_verification">Verifikasi Twitter</string>
+    <string name="twitter_verification_desc">Cepet langsung diverifikasi nggunakake akun Twitter sampeyan. Alamat email Twitter sampeyan kudu cocog karo email sing diwenehake lan akun sampeyan kudu aktif.</string>
+    <string name="twitter_verify">Verifikasi karo Twitter</string>
+    <string name="skip_queue_verification">Nglewati ing Antrian</string>
+    <string name="skip_queue_verification_desc">Langsung antrian verifikasi manual kanthi mbayar ragad supaya miwiti melu program hadiah langsung.</string>
+    <string name="request_to_be_verified">Nyuwun sewengi ing kene &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;. Review manual bisa dideleng saka sawetara menit nganti pirang-pirang dina.</string>
     <string name="enjoy_free_content">Mumpung konten gratis!</string>
     <string name="verify_phone_number">Verifikasi Nomer Telpon</string>
     <string name="enter_phone_verify_code">Ketik kode verifikasi sing dikirim menyang %1$s</string>
@@ -412,6 +431,12 @@
     <string name="please_enter_valid_phone">Ketik nomer telpon sing bener.</string>
     <string name="please_enter_verification_code">Mangga ketik kode verifikasi sing dikirim menyang nomer telpon.</string>
     <string name="fetch_current_user_error">Akun pangguna ora bisa dijupuk maneh ing wektu iki. Coba maneh mengko.</string>
+    <string name="purchase_request_pending">Panjaluk tuku sampeyan isih diproses. Mangga ngirim email menyang support@lbry.com.</string>
+    <string name="purchase_request_failed_error">Panjaluk tuku sampeyan ora bisa dirampungake ing wektu iki. Mangga ngirim email menyang support@lbry.com.</string>
+    <string name="twitter_account_ineligible">Akun Twitter sampeyan ora layak ing wektu iki: %1$s</string>
+    <string name="twitter_verification_not_approved">Akun sampeyan ora disetujoni kanggo program hadiah. Coba maneh mengko.</string>
+    <string name="twitter_verification_failed">Verifikasi Twitter gagal. Coba maneh mengko.</string>
+    <string name="reward_verification_successful">Sampeyan saiki bisa melu program penghargaan!</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Sampeyan durung nambahake tag. Nambah tag kanggo nambah panemuan.</string>
@@ -574,27 +599,4 @@
     <string name="cannot_find_lbrynet_log">File lbrynet.log ora bisa ditemokake.</string>
     <string name="cannot_share_lbrynet_log">File lbrynet.log ora bisa dienggo bareng amarga watesan ijin.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

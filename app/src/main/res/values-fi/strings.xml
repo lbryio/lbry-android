@@ -1,0 +1,605 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">LBRY</string>
+    <string name="navigation_drawer_open">Avaa navigointilaatikko</string>
+    <string name="navigation_drawer_close">Sulje navigointilaatikko</string>
+
+    <!-- Nav menu -->
+    <string name="find_content">Etsi sisältöä</string>
+    <string name="your_content">Sinun sisältö</string>
+    <string name="wallet">Lompakko</string>
+    <string name="following">Seuraamassa</string>
+    <string name="editors_choice">Toimittajan valinta</string>
+    <string name="your_tags">Sinun Tunnisteet</string>
+    <string name="all_content">Kaikki sisältö</string>
+    <string name="channels">Kanavat</string>
+    <string name="library">Kirjasto</string>
+    <string name="publishes">Julkaisut</string>
+    <string name="new_publish">Uusi julkaisu</string>
+    <string name="rewards">Palkinnot</string>
+    <string name="invites">Kutsut</string>
+    <string name="settings">Asetukset</string>
+    <string name="about">Noin</string>
+    <string name="sign_in">Kirjaudu sisään</string>
+    <string name="startup_failed">Sovelluksen käynnistys epäonnistui. Tarkista datayhteys ja yritä uudelleen. Jos tämä ongelma jatkuu, lähetä sähköpostia osoitteeseen hello@lbry.com</string>
+    <string name="no_claim_search_content">Ei näytettävää sisältöä tällä hetkellä. Tarkenna valintaasi tai tarkista myöhemmin uudelleen.</string>
+
+    <!-- Welcome Page -->
+    <string name="welcome_to_lbry">Tervetuloa LBRY:lle</string>
+    <string name="welcome_paragraph">LBRY on yhteisön ohjaama sisältöalusta, josta voit löytää ja julkaista videoita, musiikkia, kirjoja ja paljon muuta.</string>
+    <string name="welcome_tos">Jatkamalla, hyväksyn &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; ja vahvistan että olen yli 13vuotias.</string>
+    <string name="welcome_please_wait">Odota, kunnes saamme asiat valmiiksi ...</string>
+    <string name="use_lbry">Käytä LBRY »</string>
+
+    <!-- URI bar -->
+    <string name="uri_placeholder">Etsi videoita, musiikkia ja muuta</string>
+
+    <!-- Following page -->
+    <string name="find_channels_to_follow">Etsi seurattavat kanavat</string>
+    <string name="channels_you_follow">Kanavat joita seuraat</string>
+    <string name="discover">Tutustu</string>
+    <string name="lbry_works_better">LBRY toimii paremmin, jos seuraat vähintään 5 haluamaasi tekijää. Kirjaudu sisään näyttääksesi seuraamasi tekijät, jos sinulla on jo tili.</string>
+    <string name="select_five_subscriptions">Valitse enintään 5 tekijää jatkaaksesi.</string>
+    <string name="n_remaining">%1$djäljellä...</string>
+    <string name="done">Tehty</string>
+    <string name="all">Kaikki</string>
+    <string name="discover_channels">Löydä uusia kanavia</string>
+
+    <!-- Claim lists -->
+    <string name="anonymous">Anonyymi</string>
+
+    <!-- File view -->
+    <string name="tags">Tunnisteet</string>
+    <string name="share">Jaa</string>
+    <string name="repost">Repost</string>
+    <string name="tip">Tippi</string>
+    <string name="edit">Muokkaa</string>
+    <string name="delete">Poista</string>
+    <string name="download">Lataa</string>
+    <string name="open">Avoin</string>
+    <string name="report">Ilmianna</string>
+    <string name="loading_decentralized_data">Ladataan hajautettua tietoa ...</string>
+    <string name="related_content">Samankaltaista sisältöä</string>
+    <string name="comments">Kommentit</string>
+    <string name="no_comments">Ei kommentteja näytettäväksi tällä hetkellä.</string>
+    <string name="sdk_initializing_comments">Kommentit tulevat näkyviin, kun taustapalvelu on alustettu.</string>
+    <string name="comment_error">Kommenttiasi ei voitu lähettää tällä hetkellä. Yritä uudelleen myöhemmin.</string>
+    <string name="share_lbry_content">Jaa LBRY-sisältö</string>
+    <string name="view">Näytä</string>
+    <string name="play">Toista</string>
+    <string name="unsupported_content">Ei tuettu sisältö</string>
+    <string name="unsupported_content_desc">Valitettavasti emme pysty näyttämään tätä sisältöä sovelluksessa. Löydät tiedoston %1$s latauskansiostasi.</string>
+    <string name="nothing_at_this_location">Tässä paikassa ei ole mitään.</string>
+    <string name="publish_something_here">Julkaise jotain täällä</string>
+    <string name="cannot_view_claim">Tätä sisältöä ei voida käyttää tällä hetkellä. Yritä uudelleen myöhemmin.</string>
+    <string name="zero_duration">0:00</string>
+    <string name="claim_file_not_found">Tiedostoa kohteessa \"%1$s\" ei ole.</string>
+    <string name="confirm_purchase">Vahvista ostos</string>
+    <string name="delete_file">Poista tiedosto</string>
+    <string name="confirm_delete_file_message">Haluatko varmasti poistaa tämän tiedoston laitteestasi?</string>
+    <string name="unable_to_view_url">Lataus epäonnistui %1$s.Yritä uudelleen myöhemmin.</string>
+    <string name="no_cast_session_available">Tällä hetkellä ei ole saatavana suoratoistoistuntoa.</string>
+    <string name="delete_content">Poistetaanko sisältö?</string>
+    <string name="confirm_delete_content_message">Haluatko varmasti poistaa tämän sisällön julkaisun? Laitteistasi ei poisteta tiedostoja.</string>
+    <string name="content_deleted">Sisältö poistettiin onnistuneesti lohkoketjusta.</string>
+    <string name="content_failed_delete">Sisältöä ei voitu poistaa tällä hetkellä. Yritä uudelleen myöhemmin.</string>
+    <string name="comment">Kommentti</string>
+    <string name="comment_as">Kommentoi nimellä</string>
+    <string name="please_enter_comment">Kirjoita kommentti lähettääksesi viestin.</string>
+    <string name="please_select_channel">Valitse kanava, johon haluat lähettää kommenttisi.</string>
+    <string name="comment_posted">Kommenttisi lähetetty onnistuneesti.</string>
+    <string name="please_select_repost_channel">Valitse kanava, johon haluat lähettää uudelleen.</string>
+    <string name="reply">Vastaa</string>
+    <string name="replying_to">Vastaa käyttäjille %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">Posti- ja tip-l%1$s uottotiedot?</item>
+        <item quantity="other">Posti- ja tippi %1$s krediitit?</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="one">Lähetä %1$s krediitillä</item>
+        <item quantity="other">Post for %1$scredits</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">Tämä lähettää kommenttisi %1$s hyvityksellä %2$s</item>
+        <item quantity="other">Tämä lähettää kommenttisi %1$s hyvityksellä %2$s</item>
+    </plurals>
+    <plurals name="view_count">
+        <item quantity="one">%1$s  Näyttökertaa</item>
+        <item quantity="other">%1$s Näyttökertaa</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Tämä ostos \"%1$s\" maksaa %2$s Crediittiä</item>
+        <item quantity="other">Tämä ostos \"%1$s\" maksaa %2$s Crediittiä</item>
+    </plurals>
+
+    <!-- Channel view -->
+    <string name="no_channel_info">Täällä ei ole vielä mitään.\nTarkista myöhemmin uudelleen.</string>
+    <string name="content">Sisältö</string>
+    <string name="website">Nettisivu</string>
+    <string name="reposted">uudelleen julkaistu</string>
+    <plurals name="follower_count">
+        <item quantity="one">%1$s Seuraaja</item>
+        <item quantity="other">%1$s Seuraajaa</item>
+    </plurals>
+
+    <!-- Publish -->
+    <string name="no_publishes_created">Näyttää siltä, että et ole vielä julkaissut sisältöä LBRY: lle.</string>
+    <string name="record">Tallentaa</string>
+    <string name="take_photo">Ota kuva</string>
+    <string name="upload_file">Lähetä tiedosto</string>
+    <string name="no_videos_found">Laitteestasi ei löytynyt videoita. Ota valokuva tai nauhoita video aloittaaksesi.</string>
+    <string name="loading_videos">Odota, kun lataamme videoitasi ...</string>
+    <string name="storage_permission_rationale_videos">LBRY vaatii pääsyn voidaksesi näyttää ja julkaista videoitasi, kuvia ja muita tiedostoja laitteeltasi.</string>
+    <string name="camera_permission_rationale_record">LBRY vaatii pääsyn kameraan videoiden tallentamiseksi.</string>
+    <string name="camera_permission_rationale_photo">LBRY vaatii pääsyn kameraan valokuvien ottamista varten.</string>
+    <string name="edit_content">Muokkaa sisältöä</string>
+    <string name="mature_tags">Kypsät tunnisteet</string>
+    <string name="price">Hinta</string>
+    <string name="free_publish">Sisältösi on ilmaista. Aseta hinta painamalla kytkintä.</string>
+    <string name="content_address">Sisältöosoite</string>
+    <string name="randomize">Satunnainen</string>
+    <string name="address">Osoite</string>
+    <string name="content_address_desc">Osoite, josta ihmiset voivat löytää sisältösi (esim. Lbry://myvideo)</string>
+    <string name="license">Lisenssi</string>
+    <string name="license_desc">Kuvaus</string>
+    <string name="additional_options">Lisävaihtoehtoja</string>
+    <string name="show_extra_fields">Näytä ylimääräiset kentät</string>
+    <string name="hide_extra_fields">Piilota ylimääräiset kentät</string>
+    <string name="no_file_found">Tiedostoa ei löytynyt julkaistavaksi.</string>
+    <string name="publish_invalid_claim_type">Muokkaamiseen määritetty virheellinen vaatimus.</string>
+    <string name="video_optimization">Videon optimointi</string>
+    <string name="thumbnail_creation_failed">Pikkukuvaa ei voitu luoda automaattisesti sisältötiedostostasi.</string>
+    <string name="video_being_optimized">Videosi on optimoitu paremman tuen tarjoamiseksi monille laitteille. Voit täyttää jäljellä olevat kentät alla, kun tämä on käynnissä.</string>
+    <string name="video_optimized">Videosi optimoitiin onnistuneesti parempaan toistoon mahdollisimman monissa laitteissa. Jatka julkaisemasi sisältöä.</string>
+    <string name="video_optimize_failed">Videota ei voitu optimoida. Tiedosto ladataan ilman muutoksia.</string>
+    <string name="completed_video_duration">Valmistunut videon kesto: %1$s</string>
+    <string name="sdk_initializing_publish">Et voi julkaista sisältöä tällä hetkellä, koska taustapalvelu on edelleen alustamassa.</string>
+    <string name="publish_successful">Sisällön julkaiseminen onnistui. Voi kestää hetken, että näyttöön pääsyketju.</string>
+    <string name="transcode_in_progress">Videon optimointi on käynnissä. Jos haluat peruuttaa, paina Peruuta sivun alaosassa.</string>
+    <string name="optimization_in_progress">Videon optimointi on käynnissä.</string>
+    <string name="cannot_capture_video">Tällä laitteella ei ole käytettävissä kamerasovellusta videoiden nauhoittamiseen.</string>
+    <string name="cannot_take_photo">Tällä laitteella ei ole käytettävissä kamerasovellusta valokuvien ottamiseen.</string>
+
+    <string name="please_provide_title">Anna otsikko.</string>
+    <string name="please_specify_address">Määritä osoite, josta ihmiset voivat löytää sisältösi.</string>
+    <string name="address_invalid_characters">Sisältöosoitteesi sisältää virheellisiä merkkejä.</string>
+    <string name="address_already_used">Olet jo julkaissut määritettyyn sisältöosoitteeseen. Anna uusi osoite.</string>
+    <string name="no_file_selected">Ei tiedostoa valittuna. Valitse video tai ota valokuva tai valitse tiedosto ennen julkaisemista.</string>
+    <string name="price_amount_not_set">Anna hinta tai kytke kytkin pois päältä, jotta sisältösi on ilmaista.</string>
+    <string name="publish_no_thumbnail">Valitse ladattava pikkukuva ennen julkaisua.</string>
+    <string name="publish_thumbnail_in_progress">Odota, että pikkukuva latautuu loppuun ennen julkaisua.</string>
+
+    <string name="language">Kieli</string>
+    <string name="english">Englanti</string>
+    <string name="chinese">Kiina</string>
+    <string name="french">Ranska</string>
+    <string name="german">Saksa</string>
+    <string name="japanese">Japani</string>
+    <string name="russian">Venäjä</string>
+    <string name="spanish">Espanja</string>
+    <string name="indonesian">Indoneesia</string>
+    <string name="italian">Italia</string>
+    <string name="dutch">Hollanti</string>
+    <string name="turkish">Turkki</string>
+    <string name="polish">Puola</string>
+    <string name="malay">Malaiji</string>
+    <string name="portuguese">Portugali</string>
+    <string name="vietnamese">Vietnami</string>
+    <string name="thai">Thaimaa</string>
+    <string name="arabic">Arabi</string>
+    <string name="czech">Tshekki</string>
+    <string name="croatian">Kroatia</string>
+    <string name="cambodian">Kambodžan</string>
+    <string name="korean">Korea</string>
+    <string name="norwegian">Norja</string>
+    <string name="romanian">Romaania</string>
+    <string name="hindi">Hindi</string>
+    <string name="greek">Kreikka</string>
+    <string name="catalan">Katalaani</string>
+
+    <string name="none">Ei mitään</string>
+    <string name="public_domain">Julkinen</string>
+    <string name="copyrighted">Tekijänoikeudella suojattuja ...</string>
+    <string name="cca_4_0_international">Creative Commons Attribution 4.0 International</string>
+    <string name="cca_sa_4_0_international">Creative Commons Attribution-ShareAlike 4.0 International</string>
+    <string name="cca_nd_4_0_international">Creative Commons Attribution-NoDerivatives 4.0 International</string>
+    <string name="cca_nc_4_0_international">Creative Commons Attribution-NonCommercial 4.0 International</string>
+    <string name="cca_nc_sa_4_0_international">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</string>
+    <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
+
+    <string-array name="publish_currencies">
+        <item>LBC</item>
+        <item>USD</item>
+    </string-array>
+
+    <!-- Publishes -->
+    <string name="one_or_more_publishes_failed_abandon">Yhtä tai useampaa sisältökohdetta ei voitu poistaa tällä hetkellä. Yritä uudelleen myöhemmin.</string>
+    <plurals name="confirm_delete_publishes">
+        <item quantity="one">Haluatko varmasti poistaa valitut sisältökohteet?</item>
+        <item quantity="other">Haluatko varmasti poistaa valitut sisältökohteet?</item>
+    </plurals>
+    <plurals name="publishes_deleted">
+        <item quantity="one">Sisältökohteet poistettiin onnistuneesti.</item>
+        <item quantity="other">Sisältökohteet poistettiin onnistuneesti.</item>
+    </plurals>
+
+    <!-- Splash -->
+    <string name="oops_something_went_wrong">Oho! Jotain meni pieleen.</string>
+    <string name="installation_id_loaded">Ladattu asennustunnus.</string>
+    <string name="known_tags_loaded">Ladattu paikalliset tunnetut ja seuratut tunnisteet.</string>
+    <string name="exchange_rate_loaded">Ladattu LBC / USD-vaihtokurssi.</string>
+    <string name="user_authenticated">Käyttäjän todennettu.</string>
+    <string name="installation_registered">Asennus rekisteröity.</string>
+    <string name="subscriptions_loaded">Ladatut tilaukset.</string>
+    <string name="subscriptions_resolved">Ratkaistut tilaukset.</string>
+
+    <!-- Settings -->
+    <string name="user_interface">Content &amp; Käyttäjä näkymä</string>
+    <string name="other">Muu</string>
+    <string name="enable_background_playback">Ota taustamedian toisto käyttöön</string>
+    <string name="enable_dark_mode">Ota tumma teema käyttöön</string>
+    <string name="show_mature_content">Näytä kypsä sisältö</string>
+    <string name="show_url_suggestions">Näytä URL-ehdotukset</string>
+    <string name="notifications">Ilmoitukset</string>
+    <string name="subscriptions">Tilaukset</string>
+    <string name="content_interests">Sisältö kiinnostaa</string>
+
+    <string name="keep_sdk_in_background">Pidä LBRY-palvelu käynnissä taustalla parantaaksesi lompakkoa ja verkon suorituskykyä</string>
+    <string name="participate_in_data_network">Osallistu tietoverkkoon (vaatii sovelluksen ja taustapalvelun uudelleenkäynnistyksen)</string>
+
+    <!-- URL suggestions -->
+    <string name="search_url_title">%1$s - Etsi</string>
+    <string name="tag_url_title">%1$s - Tunniste</string>
+    <string name="search_url_desc">Etsi  \'%1$s\'</string>
+    <string name="explore_tag_url_desc">Tutustu  \'%1$s\' Tunnisteeseen</string>
+    <string name="view_file_url_desc">Näytä sisältöä %1$s</string>
+    <string name="view_channel_url_desc">Näytä %1$s kanava</string>
+
+    <!-- Search -->
+    <string name="search_no_results">Ei tuloksia, joita näyttää \'%1$s\'. Kokeile toista hakutermiä.</string>
+    <string name="search_no_query">Voit etsiä mitä tahansa, mukaan lukien elokuvat, musiikki, e-kirjat, ohjelmistot ja paljon muuta.</string>
+    <string name="no_related_content">Ei liittyvää sisältöä näytettäväksi tällä hetkellä.</string>
+
+    <!-- Wallet -->
+    <string name="balance">Saldo</string>
+    <string name="you_currently_have">Sinulla on tällä hetkellä</string>
+    <string name="convert_credits">Voit muuntaa luotosi USD: iin ja nostaa muunnetun summan vaihdon avulla. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert Muunna hyvitykset USD: ksi Bittrexillä&lt;/a&gt;</string>
+    <string name="you_also_have">Sinulla on myös</string>
+    <string name="you_staked">Olet panostanut</string>
+    <string name="in_tips">Lahjoituksissa</string>
+    <string name="in_your_publishes">julkaisuissasi</string>
+    <string name="in_your_supports">tuillasi</string>
+    <string name="earn_more_tips">Ansaitse lisää vinkkejä lähettämällä hienoja videoita</string>
+    <string name="sdk_initializing">Taustapalvelu alustetaan ...</string>
+    <string name="sdk_still_initializing">Taustapalvelu on edelleen alustamassa. Voit tutkia ja katsella sisältöä sillä välin.</string>
+    <string name="sdk_initializing_functionality">Et voi tehdä tätä nyt, koska taustapalvelu on edelleen käynnistymässä.</string>
+
+    <string name="backup_synced">Varmuuskopio lompakostasi synkronoidaan lbry.tv-tiedoston kanssa</string>
+    <string name="backup_notsynced">Lompakkoasi ei ole tällä hetkellä synkronoitu lbry.tv: n kanssa. Olet vastuussa lompakkosi varmuuskopiosta.</string>
+    <string name="synced_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/account-sync\"&gt;What Mitä se tarkoittaa?&lt;/a&gt;</string>
+    <string name="backup_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;What Mitä se tarkoittaa?&lt;/a&gt;</string>
+
+    <string name="receive_credits">Saa krediittejä</string>
+    <string name="use_this_address_hint">Käytä tätä lompakko-osoitetta saadaksesi toisen käyttäjän (tai itsesi) lähettämiä krediittejä.</string>
+    <string name="get_new_address">Saa uusi osoite</string>
+    <string name="generate_address_hint">Voit luoda uuden osoitteen milloin tahansa, ja kaikki aiemmat osoitteet toimivat edelleen. Useiden osoitteiden käyttäminen voi olla hyödyllistä seurata useista lähteistä tulevia maksuja.</string>
+
+    <string name="send_credits">Lähetä krediittejä</string>
+    <string name="recipient_address">Vastaanottajan osoite</string>
+    <string name="recipient_address_placeholder">bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs</string>
+    <string name="amount">Määrä</string>
+    <string name="send">Lähetä</string>
+
+    <string name="recent_transactions">Viimeaikaiset tapahtumat</string>
+    <string name="view_all">Näytä kaikki</string>
+    <string name="receive">Vastaanota</string>
+    <string name="spend">Tuhlaa</string>
+    <string name="publish">Julkaise</string>
+    <string name="support">Tue</string>
+    <string name="abandon">Hylätä</string>
+    <string name="channel">Kanava</string>
+    <string name="channel_update">Kanavan päivitys</string>
+    <string name="publish_update">Julkaise päivitys</string>
+
+    <string name="wallet_sync">Synkronoi lompakko</string>
+    <string name="sync_status">Synkronoinnin tila</string>
+    <string name="on">Päällä</string>
+    <string name="off">Kiinni</string>
+    <string name="email">Sähköposti</string>
+    <string name="no_connected_email">Ei yhdistettyjä sähköposteja</string>
+    <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual Manuaalinen palautus&lt;/a&gt;</string>
+    <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
+    <string name="zero">0</string>
+    <string name="lbc">LBC</string>
+
+    <string name="account_recommended">Suositellut tilit</string>
+    <string name="wallet_account_desc">Lbry.tv-tilin avulla voit ansaita palkintoja, varmuuskopioida lompakkosi ja pitää kaiken synkronoituna.</string>
+    <string name="wallet_without_account">Ilman tiliäsi olet vastuussa lompakon ja LBRY-tietojen suojaamisesta.</string>
+    <string name="skip_account">Ohita tili</string>
+    <string name="sign_up">Rekisteröidy</string>
+    <string name="address_copied">Osoite kopioitu</string>
+
+    <string name="invalid_recipient_address">Anna kelvollinen osoite, johon haluat lähettää hyvityksiä</string>
+    <string name="insufficient_balance">Riittämätön tasapaino</string>
+    <string name="invalid_amount">Anna oikea summa</string>
+    <string name="send_credit_error">Hyvityksiäsi ei voitu lähettää tällä hetkellä. Yritä uudelleen myöhemmin.</string>
+    <string name="loading_transactions">Ladataan tapahtumia ...</string>
+    <string name="no_recent_transactions">Viimeisimmät näytettävät tapahtumat eivät ole.</string>
+    <string name="no_transactions">Tällä hetkellä ei ole näkyviä tapahtumia.</string>
+    <string name="tx_list_fee">maksu %1$s</string>
+    <string name="transaction_history">Tapahtumahistoria</string>
+
+    <string name="unlock">Avata</string>
+    <string name="unlock_tips">Avaako tippejä?</string>
+    <string name="confirm_unlock_tips">Haluatko varmasti avata kaikki tippisi?</string>
+    <string name="min_spend_required">Anna summa, joka on enemmän kuin 0,0001 krediittiä.</string>
+
+    <string name="buy_lbc">Osta LBC</string>
+    <string name="hash_not_supported">Laitteesi ei tue vähimmäisvaatimuksia ostopyynnön turvaamiseksi.</string>
+    <string name="receive_address_not_set">Sinulla ei ole lompakon osoitetta määritetty. Luo uusi osoite ja yritä uudelleen.</string>
+
+    <plurals name="you_sent_credits">
+        <item quantity="one">Sinä lähetät %1$s krediittiä</item>
+        <item quantity="other">Sinä lähetät %1$s krediittiä</item>
+    </plurals>
+
+    <!-- Dialogs -->
+    <string name="customize_your_tags">Muokkaa sinun tunnisteita</string>
+    <string name="sort_content_by">Lajittele sisältö</string>
+    <string name="content_from">Sisältö</string>
+    <string name="trending_content">Trendikäs sisältö</string>
+    <string name="new_content">Uusi sisältö</string>
+    <string name="top_content">Suosituin sisältö</string>
+    <string name="trending">Nousussa</string>
+    <string name="top">Paras</string>
+    <string name="new_text">Uusi</string>
+    <string name="past_24_hours">Viimeisen 24 tunnin aikana</string>
+    <string name="past_week">Mennyt viikko</string>
+    <string name="past_month">Viime kuukausi</string>
+    <string name="past_year">Viime vuosi</string>
+    <string name="all_time">Koko aikana</string>
+    <string name="from">tullut</string>
+    <string name="for_text">varten</string>
+    <string name="filter_for">Suodata</string>
+    <string name="everyone">Jokaiselle</string>
+    <string name="tags_you_follow">Tunnisteet mitä sinä seuraat</string>
+    <string name="customize">Muokkaa</string>
+    <string name="not_yet_implemented">Valittu näkymä ei ole vielä käytettävissä.</string>
+    <string name="customize_tags_hint">Näyttää siltä, että et ole vielä seurannut yhtään tunnistetta.</string>
+    <string name="search_for_more_tags">Etsi lisää tunnisteita</string>
+    <string name="no_followed_tags">Et ole vielä seurannut yhtään tunnistetta. Aloita lisäämällä kiinnostavia tunnisteita!</string>
+    <string name="no_tag_results">Emme löytäneet uusia tunnisteita, joita et seuraa.</string>
+    <string name="tag_already_added">\'%1$s\' tunniste on jo lisätty.</string>
+    <string name="tag_limit_reached">Et voi lisätä enempää kuin 5 tunnistetta.</string>
+    <string name="send_a_tip">Lähetä tippi</string>
+    <string name="send_a_tip_to">Lähetä tippiä %1$s</string>
+    <string name="support_this_content">Tue tätä sisältöä</string>
+    <string name="support_info">Tämä nostaa tämän sisällön kokonaishintamäärää, mikä parantaa sen kykyä löytää edelleen aktiivisena. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Kanava tuen näyttämiseksi nimellä</string>
+    <string name="make_this_a_tip">Tee tästä Tippi</string>
+    <string name="send_revocable_support">Lähetä peruutettava tuki</string>
+    <string name="send_lbc_tip">Lähetä %1$s LBC tippi</string>
+    <string name="send_tip_info_content">Tämä näyttää tipille %1$s, mikä parantaa sen kykyä löytää edelleen aktiivisena. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="send_tip_info_channel">Tämä näyttää tipille %1$s, mikä parantaa sen kykyä löytää edelleen aktiivisena. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="cancel">Peruuta</string>
+    <string name="repost_title">Repost %1$s</string>
+    <string name="repost_your_favorite">Lähetä suosikkisisältösi uudelleen, jotta useammat ihmiset löytävät ne!</string>
+    <string name="channel_to_post_on">Kanava, johon lähettää viesti</string>
+    <string name="show_advanced">Näytä edistyneet</string>
+    <string name="hide_advanced">Piilota edistynyt</string>
+    <string name="name">Nimi</string>
+    <string name="min_deposit">0.001</string>
+    <string name="content_successfully_reposted">Sisältö postitettiin onnistuneesti!</string>
+    <string name="repost_name_invalid_characters">Jälleenlähetys nimi sisältää virheellisiä merkkejä.</string>
+    <plurals name="you_sent_a_tip">
+        <item quantity="one">Sinä lähetit %1$s LBC tippinä, Mahtavaa!</item>
+        <item quantity="other">Sinä lähetit %1$s LBC tippinä, Mahtavaa!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">Panosit %1$s hyvityksiä tueksi. Voit peruuttaa tuen milloin tahansa. </item>
+        <item quantity="other">Panosit %1$s hyvityksiä tueksi. Voit peruuttaa tuen milloin tahansa. </item>
+    </plurals>
+
+    <!-- Verification -->
+    <string name="provide_email_address">Anna sähköpostiosoite.</string>
+    <string name="email_placeholder">you@example.com</string>
+    <string name="email_sent_to">Sähköposti on lähetetty osoitteeseen</string>
+    <string name="please_click_link">Napsauta viestin linkkiä suorittaaksesi kirjautumisen loppuun.</string>
+    <string name="resend">Uudelleen lähetä</string>
+    <string name="continue_text">Jatka</string>
+    <string name="provide_valid_email">Ole hyvä ja syötä toimiva sähköpostiosoite</string>
+    <string name="please_follow_instructions">Noudata osoitteeseesi lähetetyn sähköpostin ohjeita jatkaaksesi.</string>
+    <string name="sign_in_successful">Olet onnistuneesti kirjautunut sisään lbry.tv-sivustoon</string>
+    <string name="retrieving_account_information">Haetaan tilitietoja ...</string>
+    <string name="apply_wallet_data">Sovelletaan lompakotietoja ...</string>
+    <string name="please_enter_your_password">Anna salasana, jolla turvasit lompakon.</string>
+    <string name="please_enter_a_password">Anna salasana suojataksesi lompakon.</string>
+    <string name="wallet_security_purposes">Huomaa: LBRY ei pysty uudelleen asettaa salasanaa lompakon suojausta varten.</string>
+    <string name="password">Salasana</string>
+    <string name="enable_sync">Ota synkronointi käyttöön</string>
+    <string name="wallet_sync_op_failed">Lompakon synkronointia ei voitu suorittaa tällä hetkellä. Yritä uudelleen myöhemmin. Jos ongelma jatkuu, lähetä sähköpostia osoitteeseen hello@lbry.com</string>
+    <string name="phone_number">Puhelinnumero</string>
+    <string name="enter_phone_number">Ole hyvä ja anna puhelinnumerosi.</string>
+    <string name="not_interested">Ei kiinnostunut</string>
+    <string name="manual_reward_verification">Manuaalinen palkkion todentaminen</string>
+    <string name="account_undergo_review">Tämä tili on tarkistettava ennen kuin voit osallistua palkitsemisohjelmaan. Tämä voi viedä useita minuutteja useisiin päiviin.</string>
+    <string name="enjoy_free_content">Nauti ilmaisesta sisällöstä sillä välin!</string>
+    <string name="verify_phone_number">Vahvista puhelinnumero</string>
+    <string name="enter_phone_verify_code">Anna vahvistuskoodi, joka lähetettiin osoitteeseen %1$s</string>
+    <string name="code_placeholder">0000</string>
+    <string name="verify">Vahvista</string>
+    <string name="please_enter_valid_phone">Ole hyvä ja näppäile voimassaoleva puhelinnumero.</string>
+    <string name="please_enter_verification_code">Anna puhelinnumeroosi lähetetty vahvistuskoodi.</string>
+    <string name="fetch_current_user_error">Käyttäjätiliä ei voitu noutaa tällä hetkellä. Yritä uudelleen myöhemmin.</string>
+    <!-- Forms -->
+    <string name="no_added_tags">Et ole vielä lisännyt tageja. Lisää tunnisteita etsinnän parantamiseksi.</string>
+    <string name="form_no_tag_results">Emme löytäneet uusia tunnisteita, joita ei ole vielä lisätty.</string>
+
+    <!-- Channels -->
+    <string name="no_channel_created">Et ole luonut kanavaa.
+Aloita nyt luomalla uusi kanava!</string>
+    <string name="create_a_channel">Tee kanava</string>
+    <string name="create_a_channel_item">Tee kanava...</string>
+    <string name="edit_channel">Muokkaa kanavaa</string>
+    <string name="delete_selection">Poistetaanko valinta?</string>
+    <string name="delete_channel">Poistetaanko kanava?</string>
+    <string name="confirm_delete_channel">Haluatko varmasti poistaa tämän kanavan?</string>
+    <string name="channel_deleted">Kanava poistettiin onnistuneesti.</string>
+    <string name="channel_failed_delete">Kanavaa ei voitu poistaa tällä hetkellä. Yritä uudelleen myöhemmin.</string>
+    <string name="description">Kuvaus</string>
+    <string name="yes">Kyllä</string>
+    <string name="no">Ei</string>
+    <string name="show_optional_fields">Näytä valinnaiset kentät</string>
+    <string name="hide_optional_fields">Näytä valinnaiset kentät</string>
+    <string name="save">Tallenna</string>
+    <string name="channel_name">Kanavan nimi</string>
+    <string name="title">Otsikko</string>
+    <string name="at">\@</string>
+    <string name="deposit">Tallettaa</string>
+    <string name="deposit_remains_yours">Tämä LBC on sinun. Nimen varaaminen on talletus, ja sen voi peruuttaa milloin tahansa.</string>
+    <string name="storage_permission_rationale_download">LBRY vaatii pääsyn sisällön lataamiseen laitteellesi.</string>
+    <string name="storage_permission_rationale_images">LBRY vaatii pääsyn kuvien lataamiseen laitteen varastosta.</string>
+    <string name="select_thumbnail">Valitse pikkukuva</string>
+    <string name="select_cover">Valitse kannen kuva</string>
+    <string name="undetermined_image_filepath">Tiedostopolkua ei voitu määrittää valitulle kuvalle. Valitse kuva eri sijainnista.</string>
+    <string name="wait_for_upload">Odota, että nykyinen lataus on valmis.</string>
+    <string name="image_upload_failed">Kuvan lähetyspyyntö epäonnistui. Yritä uudelleen.</string>
+    <string name="uploading">Lataaminen ...</string>
+    <string name="please_enter_channel_name">Anna kanavan nimi.</string>
+    <string name="channel_name_invalid_characters">Kanavasi nimi sisältää virheellisiä merkkejä.</string>
+    <string name="channel_name_already_created">Olet jo luonut kanavan samalla nimellä.</string>
+    <string name="please_enter_valid_deposit">Anna oikea talletussumma.</string>
+    <string name="deposit_more_than_balance">Talletus ei voi olla suurempi kuin saldosi.</string>
+    <string name="channel_save_failed">Kanavan tallennuspyyntö epäonnistui. Yritä uudelleen.</string>
+    <string name="channel_save_successful">Kanava tallennettiin onnistuneesti.</string>
+    <string name="item_pending_blockchain">Vaatimus odottaa julkaisua lohkoketjussa. Voit käyttää vaatimusta tai muokata sitä hetkessä.</string>
+    <string name="pending">vireillä</string>
+    <string name="create">Luo</string>
+    <string name="one_or_more_channels_failed_abandon">Yhtä tai useampaa sisältökohdetta ei voitu poistaa tällä hetkellä. Yritä uudelleen myöhemmin.</string>
+    <plurals name="min_deposit_required">
+        <item quantity="one">Vaaditaan vähintään %1$s luottojen talletus.</item>
+        <item quantity="other">Vaaditaan vähintään %1$s luottojen talletus.</item>
+    </plurals>
+    <plurals name="confirm_delete_channels">
+        <item quantity="one">Haluatko varmasti poistaa valitut kanava?</item>
+        <item quantity="other">Haluatko varmasti poistaa valitut kanavat?</item>
+    </plurals>
+    <plurals name="channels_deleted">
+        <item quantity="one">Kanava poistettiin onnistuneesti.</item>
+        <item quantity="other">Kanava poistettiin onnistuneesti.</item>
+    </plurals>
+
+    <!-- Rewards -->
+    <string name="lbry_credits_allow">LBRY-crediitit antavat sinun julkaista tai ostaa sisältöä.</string>
+    <string name="free_credits_worth">Voit saada ilmaisia hyvityksiä, joiden arvo on %1$s, kun olet antanut sähköpostiosoitteen.</string>
+    <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="get_started">Pääse alkuun</string>
+    <string name="reward_code_placeholder">abc123</string>
+    <string name="claim">vaatimus</string>
+    <string name="please_enter_claim_code">Anna mukautettu palkituskoodi vaatiaksesi.</string>
+    <string name="unclaimed">Lunastamattomat</string>
+    <string name="custom_reward_title">Kustomoitu koodi</string>
+    <string name="up_to">aikeissa</string>
+    <string name="custom_reward_description">Oletko supermalli tai rockstar, joka sai mukautetun palkinnon? Vaadi sitä täältä.</string>
+    <plurals name="claim_reward_message">
+        <item quantity="one">Olet vaatinut %1$s hyvitystä palkkiona.</item>
+        <item quantity="other">Olet vaatinut %1$shyvitystä palkkiona.</item>
+    </plurals>
+    <plurals name="available_credits">
+        <item quantity="one">%1$s käytettävissä olevia krediittejä</item>
+        <item quantity="other">%1$s käytettävissä olevia krediittejä</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">Julkaiseminen vaatii krediittejä.</string>
+    <string name="channel_creation_requires_credits">Kanavien luominen vaatii krediittejä.</string>
+    <string name="earn_rewards_for_inviting">Ansaitse palkkioita ystävien kutsumisesta.</string>
+    <string name="earn_some_credits_to_access">Ansaitse joitakin hyvityksiä tämän sisällön käyttämiseksi.</string>
+    <string name="tap_here_to_get_some">Napauta tätä saadaksesi ilmaiseksi.</string>
+    <string name="free_credits_available">Ilmaisia hyvityksiä palkkioina.</string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="one"> %1$s Ilmaisia hyvityksiä palkkioina.</item>
+        <item quantity="other">%1$s Ilmaisia hyvityksiä palkkioina.</item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="one">Hanki %1$s ilmaisia krediittejä tilin luomisen jälkeen.</item>
+        <item quantity="other">Hanki %1$s ilmaisia krediittejä tilin luomisen jälkeen.</item>
+    </plurals>
+
+    <!-- Invites -->
+    <string name="lbry_invite_program">LBRY-kutsuohjelma</string>
+    <string name="earn_extra_credits_invites">Voit ansaita ylimääräisiä krediittejä jokaisesta henkilöstä, jonka kutsut käyttämään LBRY: tä.</string>
+    <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="invite_link">Kutsu linkki</string>
+    <string name="share_this_link">Jaa tämä linkki ystävien (tai vihollisten) kanssa ja hanki krediittejä liittyessään lbry.tv.</string>
+    <string name="your_invite_link">Kutsu-linkkisi</string>
+    <string name="customize_invite_link">Mukauta kutsulinkki</string>
+    <string name="invite_by_email">Kutsu sähköpostitse</string>
+    <string name="invite_someone">Kutsu tuntemaasi henkilö sähköpostilla ja ansaitse krediittejä liittyessään lbry.tv.</string>
+    <string name="invite_email_placeholder">imaginary@friend.com</string>
+    <string name="invite">Kutsu</string>
+    <string name="invite_history">Kutsu historia</string>
+    <string name="earn_credits_for_inviting">Ansaitse pisteitä ystävän, vihollisen, frenemian tai eneystävän kutsumiseen. Jokainen tarvitsee sisältövapauden.</string>
+    <string name="reward">Palkinto</string>
+    <string name="claimed">noutaa</string>
+    <string name="claimable">lunastettavana</string>
+    <string name="unclaimable">Ei vaadittavissa</string>
+    <string name="invite_link_copied">Kutsu linkki kopioitu.</string>
+    <string name="invite_sent_to">Kutsu lähetetty %1$s</string>
+
+    <!-- Library -->
+    <string name="downloads">Lataukset</string>
+    <string name="purchases">ostos</string>
+    <string name="history">Historia</string>
+    <string name="library_no_downloads">Sinulla ei ole yhtään ladattua sisältöä tälle laitteelle.</string>
+    <string name="library_no_history">Et ole katsellut mitään sisältöä tällä laitteella.</string>
+    <string name="library_no_purchases">Et ole ostanut sisältöä tililtäsi.</string>
+    <string name="hide">Piilota</string>
+    <string name="stats">Tilastot</string>
+    <string name="video">Video</string>
+    <string name="audio">Ääni</string>
+    <string name="images">Kuvat</string>
+    <string name="mb">MB</string>
+    <string name="kb">KB</string>
+    <string name="gb">GB</string>
+    <string name="zero_mb">0MB</string>
+    <plurals name="confirm_delete_files">
+        <item quantity="one">Haluatko varmasti poistaa valitut tiedostot laitteestasi?</item>
+        <item quantity="other">Haluatko varmasti poistaa valitut tiedostot laitteestasi?</item>
+    </plurals>
+    <plurals name="files_deleted">
+        <item quantity="one">Tiedostot poistettiin onnistuneesti.</item>
+        <item quantity="other">Tiedostot poistettiin onnistuneesti.</item>
+    </plurals>
+
+    <!-- About -->
+    <string name="about_lbry">Tietoa LBRY</string>
+    <string name="content_freedom">Sisällönvapaus</string>
+    <string name="about_paragraph">LBRY on ilmainen, avoin ja yhteisömäinen digitaalinen markkinapaikka. Se on hajautettu vertaisverkkosisällön jakelualusta, jonka avulla tekijät voivat ladata ja jakaa sisältöä sekä ansaita LBRY-krediittejä työstään. Käyttäjät voivat löytää laajan valikoiman videoita, musiikkia, e-kirjoja ja muuta kiinnostavaa digitaalista sisältöä.</string>
+    <string name="get_social">Hanki sosiaalinen</string>
+    <string name="social_paragraph">Voit olla tekemisissä LBRY-tiimin ja yhteisön jäsenten kanssa Discordissa, Facebookissa, Instagramissa, Twitterissä tai Redditissä.</string>
+    <string name="app_info">Sovellustiedot</string>
+    <string name="loading">Latautuu...</string>
+    <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;What is LBRY?&lt;/a&gt;</string>
+    <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Basics&lt;/a&gt;</string>
+    <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>
+    <string name="about_link_discord">&lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;Discord&lt;/a&gt;</string>
+    <string name="about_link_facebook">&lt;a href=\"https://www.facebook.com/LBRYio\"&gt;Facebook&lt;/a&gt;</string>
+    <string name="about_link_instagram">&lt;a href=\"https://www.instagram.com/LBRYio\"&gt;Instagram&lt;/a&gt;</string>
+    <string name="about_link_reddit">&lt;a href=\"https://reddit.com/r/lbry\"&gt;Reddit&lt;/a&gt;</string>
+    <string name="about_link_telegram">&lt;a href=\"https://t.me/lbryofficial\"&gt;Telegram&lt;/a&gt;</string>
+    <string name="about_link_twitter">&lt;a href=\"https://twitter.com/LBRYio\"&gt;Twitter&lt;/a&gt;</string>
+    <string name="update_mailing_preferences">Päivitä postitusasetukset</string>
+    <string name="app_version">Sovellus versio</string>
+    <string name="lbry_sdk">LBRY SDK</string>
+    <string name="platform">Alusta</string>
+    <string name="installation_id">Asennustunnus</string>
+    <string name="firebase_token">Firebase-tunnus</string>
+    <string name="logs">Lokit</string>
+    <string name="send_log">Lähetä loki</string>
+    <string name="connected_email">Yhdistetty sähköposti</string>
+    <string name="unknown">Tuntematon</string>
+    <string name="cannot_find_lbrynet_log">Lbrynet.log-tiedostoa ei löytynyt.</string>
+    <string name="cannot_share_lbrynet_log">Lbrynet.log-tiedostoa ei voi jakaa luparajoitusten takia.</string>
+
+    </resources>

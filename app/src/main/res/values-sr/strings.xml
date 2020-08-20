@@ -62,6 +62,7 @@
     <string name="comments">Komentari</string>
     <string name="no_comments">Trenutno nema komentara.</string>
     <string name="sdk_initializing_comments">Komentari će biti prikazani nakon pokretanja pozadinskog servisa.</string>
+    <string name="comment_error">Vaš komentar nije moguće objaviti trenutno. Molimo pokušajte kasnije.</string>
     <string name="share_lbry_content">Podeli LBRY sadržaj</string>
     <string name="view">Pregled</string>
     <string name="play">Reprodukuj</string>
@@ -89,6 +90,11 @@
     <string name="please_select_repost_channel">Molimo odaberite kanal na kojem ćete preporučiti.</string>
     <string name="reply">Odgovori</string>
     <string name="replying_to">Odgovarate korisniku %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">Objavi i tipuj %1$s kredit?</item>
+        <item quantity="few">Objavi i tipuj %1$s kredita?</item>
+        <item quantity="other">Objavi i tipuj %1$s kredita?</item>
+    </plurals>
     <plurals name="post_for_credits">
         <item quantity="one">Objavi za %1$s kredit</item>
         <item quantity="few">Objavi za %1$s kredita</item>
@@ -121,6 +127,8 @@
         <item quantity="other">%1$s pratioca</item>
     </plurals>
 
+    <!-- Publish -->
+    <string name="no_publishes_created">Izgleda da nemate objavljenog sadržaja na LBRY za sada.</string>
     <string name="record">Snimanje</string>
     <string name="take_photo">Slikajte se</string>
     <string name="upload_file">Otpremite datoteku</string>
@@ -192,6 +200,7 @@
     <string name="romanian">Rumunski</string>
     <string name="hindi">Hindi</string>
     <string name="greek">Grčki</string>
+    <string name="catalan">Katalonski</string>
 
     <string name="none">Nijedan</string>
     <string name="public_domain">Javni Domen</string>
@@ -234,6 +243,7 @@
     <!-- Settings -->
     <string name="user_interface">Sadržaj &amp; Korisnički interfejs</string>
     <string name="other">Ostalo</string>
+    <string name="enable_background_playback">Omogući reprodukciju u pozadini</string>
     <string name="enable_dark_mode">Uključi tamnu temu</string>
     <string name="show_mature_content">Sadržaj za odrasle</string>
     <string name="show_url_suggestions">Prikazuj URL sugestije</string>
@@ -330,6 +340,12 @@
     <string name="unlock">Otključaj</string>
     <string name="unlock_tips">Otključaj tipove?</string>
     <string name="confirm_unlock_tips">Da li ste sigurni da želite da otključate sve vaše tipove?</string>
+    <string name="min_spend_required">Molimo vas da unesete veći iznos od 0,0001 kredita.</string>
+
+    <string name="buy_lbc">Kupi LBC</string>
+    <string name="hash_not_supported">Vaš uređjaj ne ispunjava minimalne uslove da bi vaše zahteve za kupovinu održavao bezbednim. </string>
+    <string name="receive_address_not_set">Nemate podešenu adresu novčanika. Molimo vas da napravite novu i da pokušate ponovo.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">Poslali ste %1$s kredit</item>
         <item quantity="few">Poslali ste %1$s kredita</item>
@@ -366,6 +382,12 @@
     <string name="tag_limit_reached">Ne možete dodati više od 5 tagova.</string>
     <string name="send_a_tip">Pošaljite tip</string>
     <string name="send_a_tip_to">Pošalji tip korisniku %1$s</string>
+    <string name="support_this_content">Podržite ovaj sadržaj</string>
+    <string name="support_info">To će povećati ukupni iznos ponude za ovaj sadržaj, što će povećati njegovu sposobnost da bude otkriven dok je aktivan. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Kanal u ime kog pružate podršku</string>
+    <string name="make_this_a_tip">Pretvori ovo u Tip</string>
+    <string name="send_revocable_support">Pošaljite Opozivu Podršku</string>
+    <string name="send_lbc_tip">Pošaljite tip od %1$s LBC</string>
     <string name="send_tip_info_content">Ovaj tip će postati vidljiv na profilu korisnika %1$s, i to će mu pomoći da bude lakše uočljiv dokle god taj tip ne unovči.  &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Ovaj tip će postati vidljiv na kanalu korisnika %1$s, i to će mu pomoći da bude lakše uočljiv dokle god taj tip ne unovči. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Poništi</string>
@@ -382,6 +404,11 @@
         <item quantity="one">Poslali ste %1$s kredit u vidu tipa, bravo!</item>
         <item quantity="few">Poslali ste %1$s kredita u vidu tipa, bravo!</item>
         <item quantity="other">Poslali ste %1$s kredita u vidu tipa, bravo!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">Oročili ste %1$s kredit u vidu podrške. Možete opozvati vašu podršku kada god to želite.</item>
+        <item quantity="few">Oročili ste %1$s kredita u vidu podrške. Možete opozvati vašu podršku kada god to želite.</item>
+        <item quantity="other">Oročili ste %1$s kredita u vidu podrške. Možete opozvati vašu podršku kada god to želite.</item>
     </plurals>
 
     <!-- Verification -->
@@ -406,8 +433,18 @@
     <string name="enter_phone_number">Molimo vas unesite vaš telefonski broj.</string>
     <string name="not_interested">Nisam zainteresovan</string>
     <string name="manual_reward_verification">Ručna Verifikacija za Nagrade</string>
+    <string name="reward_verification">Verifikacija Nagrada</string>
+    <string name="social_media_verification">Verifikacija Društvenih Mreža</string>
+    <string name="skip_the_queue">Preskoči Redosled</string>
+    <string name="skip_queue_button_text">Preskoči za %1$s$</string>
     <string name="account_undergo_review">Vaš nalog mora proći proveru pre nego što budete odobreni za nagradni program. Ovaj proces može trajati od nekoliko minuta do nekoliko dana.</string>
-    <string name="request_to_be_verified">Ukoliko i dalje vidite ovu poruku, molimo vas prijavite se za verifikaciju na &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="get_instantly_verified">Možete se odmah verifikovati čime stičete pravo učestovanja u Nagradnom programu putem vašeg Twitter naloga i time preskočiti red manualne verifikacije.</string>
+    <string name="twitter_verification">Twitter Verifikacija</string>
+    <string name="twitter_verification_desc">Verifikujte se odmah putem vašeg Twitter naloga. Vaša Twitter email adresa mora biti ista kao email adresa koju ste prethodno naveli, i vaš nalog bi potom trebao biti aktivan.</string>
+    <string name="twitter_verify">Verifikujte se putem Twitter-a</string>
+    <string name="skip_queue_verification">Preskoči Redosled</string>
+    <string name="skip_queue_verification_desc">Preskočite red za manuelnu verifikaciju plaćanjem provizije i time odmah steknite pravo za učestvovanje u Nagradnom programu.</string>
+    <string name="request_to_be_verified">Molimo vas da zatražite manuelnu verifikaciju na &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;. Obrada manuelnog zahteva može trajati od nekoliko minuta do nekoliko dana.</string>
     <string name="enjoy_free_content">Uživajte u besplatnim sadržajima u međjuvremenu!</string>
     <string name="verify_phone_number">Potvrdite Broj Telefona</string>
     <string name="enter_phone_verify_code">Unesite verifikacioni kod koji vam je poslat na %1$s</string>
@@ -416,6 +453,12 @@
     <string name="please_enter_valid_phone">Molimo vas da unesete ispravan telefonski broj.</string>
     <string name="please_enter_verification_code">Unesite verifikacioni kod koji smo poslali na vaš broj telefona.</string>
     <string name="fetch_current_user_error">Korisnički nalog ne može biti učitan u ovom trenutku. Molimo pokušajte kasnije.</string>
+    <string name="purchase_request_pending">Vaš zahtev za kupovinu je i dalje u obradi. Molimo vas pošaljite email na support@lbry.com.</string>
+    <string name="purchase_request_failed_error">Vaš zahtev za kupovinu trenutno ne može biti obradjen. Molimo vas pošaljite email na support@lbry.com.</string>
+    <string name="twitter_account_ineligible">Vaš Twitter nalog trenutno nije podoban: %1$s</string>
+    <string name="twitter_verification_not_approved">Vaš nalog nije odobren za Nagradni program. Molimo pokušajte kasnije.</string>
+    <string name="twitter_verification_failed">Twitter verifikacija neuspešna. Molimo pokušajte kasnije.</string>
+    <string name="reward_verification_successful">Sada ste podobni da učestvujete u Nagradnom programu!</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Niste odabrali ni jedan tag. Odaberite tagove kako bi poboljšali vidljivost sadržaja.</string>
@@ -596,27 +639,4 @@
     <string name="cannot_find_lbrynet_log">lbrynet.log datoteka nije pronadjena.</string>
     <string name="cannot_share_lbrynet_log">lbrynet.log datoteka ne može biti podeljena zbog nedostatka dozvola na vašem uredjaju.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

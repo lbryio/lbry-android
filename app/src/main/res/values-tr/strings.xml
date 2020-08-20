@@ -194,6 +194,8 @@
     <string name="romanian">Rumence</string>
     <string name="hindi">Hintçe</string>
     <string name="greek">Yunanca</string>
+    <string name="catalan">Katalan</string>
+
     <string name="none">Hiçbiri</string>
     <string name="public_domain">Kamusal Alan</string>
     <string name="copyrighted">Telif hakkı olan</string>
@@ -332,6 +334,10 @@
     <string name="confirm_unlock_tips">Tüm bahşişlerin kilidini açmak istediğinizden emin misiniz?</string>
     <string name="min_spend_required">Lütfen 0.0001 krediden fazla bir miktar girin.</string>
 
+    <string name="buy_lbc">LBC satın al</string>
+    <string name="hash_not_supported">Cihazınız, satın alma talebinizi sağlamak için minimum gereksinimleri desteklemiyor. </string>
+    <string name="receive_address_not_set">Ayarlanmış bir cüzdan adresiniz yok. Lütfen yeni bir adres oluşturun ve tekrar deneyin.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one"> 1%1$s kredi yolladınız</item>
         <item quantity="other">%1$s kredi yolladınız</item>
@@ -367,6 +373,12 @@
     <string name="tag_limit_reached">5\'ten fazla etiket ekleyemezsiniz.</string>
     <string name="send_a_tip">Bir bahşiş gönder</string>
     <string name="send_a_tip_to">%1$s\'ya bir bahşiş gönder</string>
+    <string name="support_this_content">Bu içeriği destekle</string>
+    <string name="support_info">Bu, bu içerik için toplam teklif tutarını artıracak ve bu da etkin durumdayken keşfedilme yeteneğini artıracaktır. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Desteklenecek kanal</string>
+    <string name="make_this_a_tip">Bunu bir bahşişe çevir</string>
+    <string name="send_revocable_support">Geri Çekilebilir Destek</string>
+    <string name="send_lbc_tip">%1$s LBC bahşiş ver</string>
     <string name="send_tip_info_content">Bu, aktifken keşfedilme şansını artıracak ve %1$s için bir bahşiş olarak görünecektir. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Bu, aktifken kanalın keşfedilme şansını artıracak ve %1$s için bir bahşiş olarak görünecektir. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">İptal Et</string>
@@ -382,6 +394,10 @@
     <plurals name="you_sent_a_tip">
         <item quantity="one">%1$s krediyi bahşiş olarak gönderdin, eyvallah!</item>
         <item quantity="other"> %1$s krediyi bahşiş olarak gönderdin, eyvallah!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one"> %1$skredi destek olarak birikti. Bu destekleri istediğin zaman geri çekebilirsin.</item>
+        <item quantity="other">%1$skredi destek olarak birikti. Bu destekleri istediğin zaman geri çekebilirsin.</item>
     </plurals>
 
     <!-- Verification -->
@@ -407,7 +423,6 @@
     <string name="not_interested">İlgilenmiyorum</string>
     <string name="manual_reward_verification">Otomatik Olmayan Ödül Doğrulaması</string>
     <string name="account_undergo_review">Ödül programına katılmadan önce bu hesabın bir gözden geçirilmesi gerekiyor. Bu süreç birkaç dakikayla birkaç gün arasında değişebilir.</string>
-    <string name="request_to_be_verified">Bu mesajı görmeye devam ederseniz, şuradan, &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;., onaylanmayı isteyebilirsiniz.</string>
     <string name="enjoy_free_content">Bu arada bedava içeriklerin keyfini çıkarın!</string>
     <string name="verify_phone_number">Telefon Numarasını Doğrula</string>
     <string name="enter_phone_verify_code">%1$s\'a gönderilen doğrulama kodunu giriniz.</string>
@@ -416,7 +431,6 @@
     <string name="please_enter_valid_phone">Lütfen geçerli bir telefon numarası giriniz.</string>
     <string name="please_enter_verification_code">Lütfen telefon numaranıza gönderilen doğrulama kodunuz giriniz.</string>
     <string name="fetch_current_user_error">Kullanıcı hesabı şu anda alınamıyor. Lütfen daha sonra tekrar deneyiniz.</string>
-
     <!-- Forms -->
     <string name="no_added_tags">Herhangi bir etiket eklemediniz. Keşfedilmeyi arttırmak için etiket ekleyin.</string>
     <string name="form_no_tag_results">Eklenmemiş yeni bir etiket bulamadık.</string>
@@ -587,27 +601,4 @@
     <string name="cannot_find_lbrynet_log">lbrynet.log dosyası bulunamadı.</string>
     <string name="cannot_share_lbrynet_log">lbrynet.log dosyası izin kısıtlaması sebebiyle paylaşılamıyor.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

@@ -1,0 +1,622 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">LBRY</string>
+    <string name="navigation_drawer_open">Abra a gaveta de navegação</string>
+    <string name="navigation_drawer_close">Fechar gaveta de navegação</string>
+
+    <!-- Nav menu -->
+    <string name="find_content">Procurar Conteúdo</string>
+    <string name="your_content">Seu Conteúdo</string>
+    <string name="wallet">Carteira</string>
+    <string name="following">Seguindo</string>
+    <string name="editors_choice">Escolha dos Editores</string>
+    <string name="your_tags">Suas Tags</string>
+    <string name="all_content">Todo Conteúdo</string>
+    <string name="channels">Canais</string>
+    <string name="library">Biblioteca</string>
+    <string name="publishes">Pubicações</string>
+    <string name="new_publish">Nova Publicação</string>
+    <string name="rewards">Recompensas</string>
+    <string name="invites">Convites</string>
+    <string name="settings">Configurações</string>
+    <string name="about">Sobre</string>
+    <string name="sign_in">Faça Login</string>
+    <string name="startup_failed">Falha na inicialização do aplicativo. Verifique sua conexão de dados e tente novamente. Se o problema persistir, envie um e-mail para hello@lbry.com</string>
+    <string name="no_claim_search_content">Nenhum conteúdo para exibir no momento. Refine sua seleção ou verifique novamente mais tarde.</string>
+
+    <!-- Welcome Page -->
+    <string name="welcome_to_lbry">Bem-vindo ao LBRY.</string>
+    <string name="welcome_paragraph">LBRY é uma plataforma de conteúdo controlada pela comunidade onde você pode encontrar e publicar vídeos, músicas, livros e muito mais.</string>
+    <string name="welcome_tos">Ao continuar, eu concordo com o &lt;a href=\"https://lbry.com/termsofservice%22&gt;Termos de serviço&lt;/a&gt; e confirmo que tenho mais de 13 anos.</string>
+    <string name="welcome_please_wait">Aguarde enquanto preparamos algumas coisas...</string>
+    <string name="use_lbry">Use LBRY »</string>
+
+    <!-- URI bar -->
+    <string name="uri_placeholder">Pesquise vídeos, músicas e muito mais</string>
+
+    <!-- Following page -->
+    <string name="find_channels_to_follow">Encontre canais para seguir</string>
+    <string name="channels_you_follow">Canais que você segue</string>
+    <string name="discover">Descubra</string>
+    <string name="lbry_works_better">LBRY funciona melhor se seguir pelo menos 5 criadores de que gosta. Faça login para mostrar os criadores que você segue se já tiver uma conta.</string>
+    <string name="select_five_subscriptions">Selecione até 5 criadores para continuar.</string>
+    <string name="n_remaining">%1$drestante...</string>
+    <string name="done">Feito</string>
+    <string name="all">Tudo</string>
+    <string name="discover_channels">Descubra novos canais</string>
+
+    <!-- Claim lists -->
+    <string name="anonymous">Anônimo</string>
+
+    <!-- File view -->
+    <string name="tags">Tags</string>
+    <string name="share">Compartilhar</string>
+    <string name="repost">Repostar</string>
+    <string name="tip">Apoiar</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Deletar</string>
+    <string name="download">Download</string>
+    <string name="open">Abrir</string>
+    <string name="report">Reportar</string>
+    <string name="loading_decentralized_data">Carregando dados decentralizados...</string>
+    <string name="related_content">Conteúdo Relacionado</string>
+    <string name="comments">Comentarios</string>
+    <string name="no_comments">Não há comentários para exibir no momento.</string>
+    <string name="sdk_initializing_comments">Os comentários serão exibidos depois que o serviço de segundo plano for inicializado.</string>
+    <string name="comment_error">Seu comentário não pôde ser postado neste momento. Por favor, tente novamente mais tarde.</string>
+    <string name="share_lbry_content">Compartilhe conteúdo LBRY</string>
+    <string name="view">Visualização</string>
+    <string name="play">Play</string>
+    <string name="unsupported_content">Conteúdo Não Suportado</string>
+    <string name="unsupported_content_desc">Desculpe, não podemos exibir este conteúdo no aplicativo. Você pode encontrar o arquivo %1$s na sua pasta de downloads.</string>
+    <string name="nothing_at_this_location">Não há nada aqui.</string>
+    <string name="publish_something_here">Publique algo aqui</string>
+    <string name="cannot_view_claim">Este conteúdo não pode ser acessado no momento. Por favor, tente novamente mais tarde.</string>
+    <string name="zero_duration">0:00</string>
+    <string name="claim_file_not_found">O arquivo em \"%1$s\" não existe.</string>
+    <string name="confirm_purchase">Confirmar Compra</string>
+    <string name="delete_file">Deletar arquivo</string>
+    <string name="confirm_delete_file_message">Tem certeza de que deseja remover este arquivo do seu dispositivo?</string>
+    <string name="unable_to_view_url">Falha ao carregar %1$s.  Por favor, tente novamente mais tarde.</string>
+    <string name="no_cast_session_available">Não existe seleção disponível neste momento.</string>
+    <string name="delete_content">Excluir conteúdo?</string>
+    <string name="confirm_delete_content_message">Tem certeza de que deseja cancelar a publicação deste conteúdo? Nenhum arquivo será removido do seu dispositivo.</string>
+    <string name="content_deleted">O conteúdo foi excluído com sucesso da blockchain.</string>
+    <string name="content_failed_delete">O conteúdo não pôde ser excluído neste momento. Por favor, tente novamente mais tarde.</string>
+    <string name="comment">Comente</string>
+    <string name="comment_as">Comentar como</string>
+    <string name="please_enter_comment">Por favor, insira um comentário.</string>
+    <string name="please_select_channel">Selecione um canal para postar seu comentário.</string>
+    <string name="comment_posted">Seu comentário foi postado com sucesso.</string>
+    <string name="please_select_repost_channel">Selecione um canal para repostar.</string>
+    <string name="reply">Resposta</string>
+    <string name="replying_to">Respondendo a %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">Postar e creditar %1$s?</item>
+        <item quantity="other">Postar e creditar %1$s?</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="one">Postar por %1$scréditos</item>
+        <item quantity="other">Postar por %1$s créditos </item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">Isso postará seu comentário com uma gorjeta de %1$s créditos por %2$s</item>
+        <item quantity="other">Isso postará seu comentário com uma gorjeta de %1$s créditos por %2$s</item>
+    </plurals>
+    <plurals name="view_count">
+        <item quantity="one">%1$svisualizações</item>
+        <item quantity="other">%1$s visualizações</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Isto irá comprar \"%1$s\" por %2$s créditos</item>
+        <item quantity="other">Isto irá comprar \"%1$s\" por %2$s créditos</item>
+    </plurals>
+
+    <!-- Channel view -->
+    <string name="no_channel_info">Não há nada aqui ainda.\nVolte mais tarde.</string>
+    <string name="content">Conteúdo</string>
+    <string name="website">Website</string>
+    <string name="reposted">Repostado</string>
+    <plurals name="follower_count">
+        <item quantity="one">%1$sseguidor</item>
+        <item quantity="other">%1$s seguidores</item>
+    </plurals>
+
+    <!-- Publish -->
+    <string name="no_publishes_created">Parece que você ainda não publicou conteúdo no LBRY.</string>
+    <string name="record">Gravar</string>
+    <string name="take_photo">Tirar uma foto</string>
+    <string name="upload_file">Enviar um arquivo</string>
+    <string name="no_videos_found">Não foi possível encontrar nenhum vídeo em seu dispositivo. Tire uma foto ou grave um vídeo para começar.</string>
+    <string name="loading_videos">Aguarde enquanto carregamos seus vídeos...</string>
+    <string name="storage_permission_rationale_videos">LBRY requer acesso para poder exibir e publicar seus vídeos, imagens e outros arquivos do seu dispositivo.</string>
+    <string name="camera_permission_rationale_record">LBRY requer acesso à sua câmera para gravar vídeos.</string>
+    <string name="camera_permission_rationale_photo">LBRY requer acesso à sua câmera para tirar fotos.</string>
+    <string name="edit_content">Editar conteúdo</string>
+    <string name="mature_tags">Tags adultas</string>
+    <string name="price">Preço</string>
+    <string name="free_publish">Seu conteúdo será gratuito. Pressione o botão para definir um preço.</string>
+    <string name="content_address">Endereço de conteúdo</string>
+    <string name="randomize">Aleatória</string>
+    <string name="address">Endereço</string>
+    <string name="content_address_desc">O endereço onde as pessoas podem encontrar seu conteúdo (por exemplo, lbry://meuvideo)</string>
+    <string name="license">Licença</string>
+    <string name="license_desc">Descrição da licença</string>
+    <string name="additional_options">Opções adicionais </string>
+    <string name="show_extra_fields">Mostrar campos extras</string>
+    <string name="hide_extra_fields">Ocultar campos extras</string>
+    <string name="no_file_found">Nenhum arquivo encontrado para publicar.</string>
+    <string name="publish_invalid_claim_type">Reivindicação inválida especificada para edição.</string>
+    <string name="video_optimization">Otimização de vídeo</string>
+    <string name="thumbnail_creation_failed">Não foi possível criar uma thumbnail automaticamente a partir do seu arquivo de conteúdo.</string>
+    <string name="video_being_optimized">Seu vídeo está sendo otimizado para melhor suporte em uma ampla variedade de dispositivos. Você pode preencher os campos restantes abaixo enquanto isso está em andamento.</string>
+    <string name="video_optimized">Seu vídeo foi otimizado com sucesso para melhor reprodução em tantos dispositivos quanto possível. Prossiga para publicar seu conteúdo.</string>
+    <string name="video_optimize_failed">Seu vídeo não pôde ser otimizado. O arquivo será carregado sem alterações.</string>
+    <string name="completed_video_duration">Duração do vídeo concluído: %1$s</string>
+    <string name="sdk_initializing_publish">Você não pode publicar conteúdo agora porque o serviço de segundo plano ainda está inicializando.</string>
+    <string name="publish_successful">Seu conteúdo foi publicado com sucesso. Pode demorar alguns minutos para aparecer na blockchain.</string>
+    <string name="transcode_in_progress">A otimização do vídeo está em andamento. Se você deseja cancelar, pressione Cancelar na parte inferior da página.</string>
+    <string name="optimization_in_progress">A otimização do vídeo está em andamento.</string>
+    <string name="cannot_capture_video">Não há aplicativo de câmera disponível para gravar vídeos neste dispositivo.</string>
+    <string name="cannot_take_photo">Não há aplicativo de câmera disponível para tirar fotos neste dispositivo.</string>
+
+    <string name="please_provide_title">Forneça um título.</string>
+    <string name="please_specify_address">Especifique um endereço onde as pessoas possam encontrar seu conteúdo.</string>
+    <string name="address_invalid_characters">Seu endereço de conteúdo contém caracteres inválidos.</string>
+    <string name="address_already_used">Você já publicou no endereço de conteúdo especificado. Por favor entre com um novo endereço.</string>
+    <string name="no_file_selected">Nenhum arquivo selecionado. Escolha um vídeo, tire uma foto ou selecione um arquivo antes de publicar.</string>
+    <string name="price_amount_not_set">Insira um preço ou desative o botão para tornar seu conteúdo gratuito.</string>
+    <string name="publish_no_thumbnail">Selecione uma thumbnail para enviar antes de publicar.</string>
+    <string name="publish_thumbnail_in_progress">Aguarde até que a thumbnail termine de enviar antes de publicar.</string>
+
+    <string name="language">Idioma</string>
+    <string name="english">Inglês</string>
+    <string name="chinese">Chinês</string>
+    <string name="french">Francês</string>
+    <string name="german">Alemão</string>
+    <string name="japanese">Japonês</string>
+    <string name="russian">Russo</string>
+    <string name="spanish">Espanhol</string>
+    <string name="indonesian">Indonésio</string>
+    <string name="italian">Italiano</string>
+    <string name="dutch">Holandês</string>
+    <string name="turkish">Turco</string>
+    <string name="polish">Polonês</string>
+    <string name="malay">Malaio</string>
+    <string name="portuguese">Português </string>
+    <string name="vietnamese">Vietnamita</string>
+    <string name="thai">Tailândes</string>
+    <string name="arabic">Árabe</string>
+    <string name="czech">Tcheco</string>
+    <string name="croatian">Croata</string>
+    <string name="cambodian">Cambojano</string>
+    <string name="korean">Coreano</string>
+    <string name="norwegian">Norueguês</string>
+    <string name="romanian">Romeno</string>
+    <string name="hindi">Hindi</string>
+    <string name="greek">Grego</string>
+    <string name="catalan">Catalão</string>
+
+    <string name="none">Nenhum</string>
+    <string name="public_domain">Domínio Público</string>
+    <string name="copyrighted">Protegido por Direitos Autorais</string>
+    <string name="cca_4_0_international">Creative Commons Attribution 4.0 International</string>
+    <string name="cca_sa_4_0_international">Creative Commons Attribution-ShareAlike 4.0 International</string>
+    <string name="cca_nd_4_0_international">Creative Commons Attribution-NoDerivatives 4.0 International</string>
+    <string name="cca_nc_4_0_international">Creative Commons Attribution-NonCommercial 4.0 International</string>
+    <string name="cca_nc_sa_4_0_international">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</string>
+    <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
+
+    <string-array name="publish_currencies">
+        <item>LBC</item>
+        <item>USD</item>
+    </string-array>
+
+    <!-- Publishes -->
+    <string name="one_or_more_publishes_failed_abandon">Um ou mais itens de conteúdo não puderam ser excluídos neste momento. Por favor, tente novamente mais tarde.</string>
+    <plurals name="confirm_delete_publishes">
+        <item quantity="one">Tem certeza de que deseja excluir os itens de conteúdo selecionados?</item>
+        <item quantity="other">Tem certeza de que deseja excluir os itens de conteúdo selecionados?</item>
+    </plurals>
+    <plurals name="publishes_deleted">
+        <item quantity="one">Os itens de conteúdo foram excluídos com sucesso.</item>
+        <item quantity="other">Os itens de conteúdo foram excluídos com sucesso.</item>
+    </plurals>
+
+    <!-- Splash -->
+    <string name="oops_something_went_wrong">Ops! Deu beyblade!</string>
+    <string name="installation_id_loaded">ID de instalação carregado.</string>
+    <string name="known_tags_loaded">Tags locais conhecidas e seguidas carregadas.</string>
+    <string name="exchange_rate_loaded">Taxa de câmbio LBC / USD carregada.</string>
+    <string name="user_authenticated">Usuário autenticado.</string>
+    <string name="installation_registered">Instalação registrada.</string>
+    <string name="subscriptions_loaded">Assinaturas carregadas.</string>
+    <string name="subscriptions_resolved">Assinaturas resolvidas.</string>
+
+    <!-- Settings -->
+    <string name="user_interface">Conteúdo $amp; Interface do Usuário</string>
+    <string name="other">Outro</string>
+    <string name="enable_background_playback">Ativar reprodução em segundo plano</string>
+    <string name="enable_dark_mode">Habilitar Tema Dark</string>
+    <string name="show_mature_content">Mostrar conteúdo adulto</string>
+    <string name="show_url_suggestions">Mostrar sugestões de URL</string>
+    <string name="notifications">Notificações</string>
+    <string name="subscriptions">Inscrições </string>
+    <string name="content_interests">Interesses de Conteúdo</string>
+
+    <string name="keep_sdk_in_background">Mantenha o serviço LBRY em execução em segundo plano para melhorar o desempenho da carteira e da rede</string>
+    <string name="participate_in_data_network">Participar da rede de dados (requer reinicialização do aplicativo e do serviço em segundo plano)</string>
+
+    <!-- URL suggestions -->
+    <string name="search_url_title">%1$s- Pesquisa</string>
+    <string name="tag_url_title">%1$s - Tag</string>
+    <string name="search_url_desc">Procurar por \"%1$s\"</string>
+    <string name="explore_tag_url_desc">Explorar a tag \"%1$s\"</string>
+    <string name="view_file_url_desc">Ver conteúdo em %1$s</string>
+    <string name="view_channel_url_desc">Ver o canal %1$s</string>
+
+    <!-- Search -->
+    <string name="search_no_results">Nenhum resultado encontrado para \'%1$s\' .Insira um termo de pesquisa diferente.</string>
+    <string name="search_no_query">Você pode pesquisar qualquer coisa, incluindo filmes, músicas, e-books, software e muito mais.</string>
+    <string name="no_related_content">Nenhum conteúdo relacionado para exibir no momento.</string>
+
+    <!-- Wallet -->
+    <string name="balance">Saldo</string>
+    <string name="you_currently_have">Você tem atualmente</string>
+    <string name="convert_credits">Você pode converter seus créditos em USD e retirar o valor convertido usando uma exchange. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Saiba mais&lt;/a&gt;.</string>
+    <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Converter creditos para USD no Bittrex&lt;/a&gt;</string>
+    <string name="you_also_have">Você também tem</string>
+    <string name="you_staked">Você investiu</string>
+    <string name="in_tips">em gorjetas</string>
+    <string name="in_your_publishes">nas suas publicções</string>
+    <string name="in_your_supports">Nos seus apoios</string>
+    <string name="earn_more_tips">Ganhe mais gorjetas enviando vídeos legais</string>
+    <string name="sdk_initializing">O serviço de segundo plano está sendo inicializado...</string>
+    <string name="sdk_still_initializing">O serviço de segundo plano ainda está sendo inicializado. Você pode explorar conteúdos incríveis nesse meio tempo.</string>
+    <string name="sdk_initializing_functionality">Você não pode fazer isso agora porque o serviço de segundo plano ainda está sendo inicializado.</string>
+
+    <string name="backup_synced">Um backup de sua carteira é sincronizado com lbry.tv</string>
+    <string name="backup_notsynced">Sua carteira não está sincronizada com lbry.tv. Você é responsável por fazer o backup de sua carteira.</string>
+    <string name="synced_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/account-sync\"&gt;O que isso significa?&lt;/a&gt;</string>
+    <string name="backup_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;O que isso significa?&lt;/a&gt;</string>
+
+    <string name="receive_credits">Receber Créditos</string>
+    <string name="use_this_address_hint">Use este endereço de carteira para receber créditos enviados por outro usuário (ou por você mesmo).</string>
+    <string name="get_new_address">Obter novo endereço</string>
+    <string name="generate_address_hint">Você pode gerar um novo endereço a qualquer momento e todos os endereços anteriores continuarão funcionando. Usar vários endereços pode ser útil para controlar os pagamentos recebidos de várias fontes.</string>
+
+    <string name="send_credits">Enviar Créditos</string>
+    <string name="recipient_address">Endereço do destinatário</string>
+    <string name="recipient_address_placeholder">bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs</string>
+    <string name="amount">Quantia</string>
+    <string name="send">Enviar</string>
+
+    <string name="recent_transactions">Transações Recentes</string>
+    <string name="view_all">Ver Tudo</string>
+    <string name="receive">Receber</string>
+    <string name="spend">Gastar</string>
+    <string name="publish">Publicar</string>
+    <string name="support">Apoio</string>
+    <string name="abandon">Abandonar</string>
+    <string name="channel">Canal</string>
+    <string name="channel_update">Atualização do canal</string>
+    <string name="publish_update">Publicar atualização</string>
+
+    <string name="wallet_sync">Sync da Carteira</string>
+    <string name="sync_status">Status do Sync</string>
+    <string name="on">Ligado</string>
+    <string name="off">Desligado</string>
+    <string name="email">Email</string>
+    <string name="no_connected_email">Sem email atrelado</string>
+    <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
+    <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
+    <string name="zero">0</string>
+    <string name="lbc">LBC</string>
+
+    <string name="account_recommended">Conta Recomendada</string>
+    <string name="wallet_account_desc">Uma conta lbry.tv permite que você ganhe recompensas, faça backup de sua carteira e mantenha tudo sincronizado</string>
+    <string name="wallet_without_account">Sem uma conta, você assume toda a responsabilidade de proteger sua carteira e os dados do LBRY.</string>
+    <string name="skip_account">Pular conta</string>
+    <string name="sign_up">Cadastro</string>
+    <string name="address_copied">Endereço copiado</string>
+
+    <string name="invalid_recipient_address">Por favor, insira um endereço válido para enviar créditos.</string>
+    <string name="insufficient_balance">Saldo insuficiente</string>
+    <string name="invalid_amount">Por valor, insira um valor valído</string>
+    <string name="send_credit_error">Seus créditos não puderam ser enviados neste momento. Por favor, tente novamente mais tarde.</string>
+    <string name="loading_transactions">Carregando transações...</string>
+    <string name="no_recent_transactions">Não há transações recentes para exibir.</string>
+    <string name="no_transactions">Não há transações para exibir neste momento.</string>
+    <string name="tx_list_fee">taxa %1$s</string>
+    <string name="transaction_history">Histórico de Transações</string>
+
+    <string name="unlock">Liberar </string>
+    <string name="unlock_tips">Liberar gorjetas?</string>
+    <string name="confirm_unlock_tips">Tem certeza de que deseja liberar todas as suas gorjetas?</string>
+    <string name="min_spend_required">Insira um valor superior a 0,0001 créditos.</string>
+
+    <string name="buy_lbc">Compre LBC</string>
+    <string name="hash_not_supported">Seu dispositivo não oferece suporte aos requisitos mínimos para proteger sua solicitação de compra.</string>
+    <string name="receive_address_not_set">Você não tem um endereço de carteira definido. Por favor, gere um novo endereço e tente novamente.</string>
+
+    <plurals name="you_sent_credits">
+        <item quantity="one">Você enviou %1$s créditos</item>
+        <item quantity="other">Você enviou %1$scréditos</item>
+    </plurals>
+
+    <!-- Dialogs -->
+    <string name="customize_your_tags">Personalize suas tags</string>
+    <string name="sort_content_by">Classifique o conteúdo por</string>
+    <string name="content_from">Conteúdo de</string>
+    <string name="trending_content">Conteúdo popular</string>
+    <string name="new_content">Novos conteúdos</string>
+    <string name="top_content">Conteúdo principal</string>
+    <string name="trending">Tendência</string>
+    <string name="top">Top</string>
+    <string name="new_text">Novo</string>
+    <string name="past_24_hours">Últimas 24 horas</string>
+    <string name="past_week">Semana passada</string>
+    <string name="past_month">Mês passado</string>
+    <string name="past_year">Ano passado</string>
+    <string name="all_time">Tempo todo</string>
+    <string name="from">de</string>
+    <string name="for_text">para</string>
+    <string name="filter_for">Filtrar por</string>
+    <string name="everyone">Todos</string>
+    <string name="tags_you_follow">Tags que você segue</string>
+    <string name="customize">Personalize</string>
+    <string name="not_yet_implemented">A visualização selecionada não está disponível ainda.</string>
+    <string name="customize_tags_hint">Parece que você ainda não seguiu nenhuma tag.</string>
+    <string name="search_for_more_tags">Pesquise mais tags</string>
+    <string name="no_followed_tags">Você ainda não seguiu nenhuma tag. Comece adicionando tags de seu interesse!</string>
+    <string name="no_tag_results">We could not find new tags that you\'re not following.</string>
+    <string name="tag_already_added">A \'%1$s\' tag já foi adicionada.</string>
+    <string name="tag_limit_reached">Você não pode adicionar mais de 5 tags.</string>
+    <string name="send_a_tip">Enviar Gorjeta</string>
+    <string name="send_a_tip_to">Enviar gorjeta para %1$s</string>
+    <string name="support_this_content">Apoie esse conteúdo</string>
+    <string name="support_info">Isso aumentará o valor geral do lance para este conteúdo, o que aumentará sua capacidade de ser descoberto enquanto estiver ativo. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Saiba mais&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Canal para assinar apoio</string>
+    <string name="make_this_a_tip">Faça disso uma gorjeta</string>
+    <string name="send_revocable_support">Enviar apoio revogável</string>
+    <string name="send_lbc_tip">Enviar %1$s LBC de gorjeta</string>
+    <string name="send_tip_info_content">Isso vai aparecer como uma gorjeta para %1$s, o que aumentará sua capacidade de ser descoberto enquanto estiver ativo. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Saiba mais&lt;/a&gt;.</string>
+    <string name="send_tip_info_channel">Isso vai aparecer como uma gorjeta para %1$s, o que aumentará a capacidade do canal de ser descoberto enquanto estiver ativo.</string>
+    <string name="cancel">Cancelar</string>
+    <string name="repost_title">Repostar %1$s</string>
+    <string name="repost_your_favorite">Reposte seu conteúdo favorito para ajudar mais pessoas a descobri-lo!</string>
+    <string name="channel_to_post_on">Canal para postar</string>
+    <string name="show_advanced">Mostrar avançado</string>
+    <string name="hide_advanced">Esconder avançado</string>
+    <string name="name">Nome</string>
+    <string name="min_deposit">0.001</string>
+    <string name="content_successfully_reposted">O conteúdo foi repostado com sucesso!</string>
+    <string name="repost_name_invalid_characters">O nome de repostagem contém caracteres inválidos.</string>
+    <plurals name="you_sent_a_tip">
+        <item quantity="one">Você enviou %1$s crédito como gorjeta, Mahalo!</item>
+        <item quantity="other">Você enviou %1$s créditos como gorjeta, Mahalo!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">Você investiu %1$scrédito em forma de apoio. Você pode revogar seu apoio a qualquer momento.</item>
+        <item quantity="other">Você investiu %1$s créditos em forma de apoio. Você pode revogar seu apoio a qualquer momento.</item>
+    </plurals>
+
+    <!-- Verification -->
+    <string name="provide_email_address">Forneça um endereço de e-mail.</string>
+    <string name="email_placeholder">voce@exemplo.com.br</string>
+    <string name="email_sent_to">Um e-mail foi enviado para</string>
+    <string name="please_click_link">Clique no link da mensagem para concluir o login.</string>
+    <string name="resend">Reenviar</string>
+    <string name="continue_text">Continue</string>
+    <string name="provide_valid_email">Por favor insira um endereço de e-mail válido</string>
+    <string name="please_follow_instructions">Siga as instruções no e-mail enviado para seu endereço para continuar.</string>
+    <string name="sign_in_successful">Você fez login com sucesso em lbry.tv</string>
+    <string name="retrieving_account_information">Recuperando informações da conta...</string>
+    <string name="apply_wallet_data">Aplicando dados da carteira...</string>
+    <string name="please_enter_your_password">Por favor, digite a senha que você usou para proteger sua carteira.</string>
+    <string name="please_enter_a_password">Insira uma senha para proteger sua carteira.</string>
+    <string name="wallet_security_purposes">Nota: para fins de segurança da carteira, LBRY não consegue redefinir sua senha.</string>
+    <string name="password">Senha</string>
+    <string name="enable_sync">Habilitar sync</string>
+    <string name="wallet_sync_op_failed">A operação de sincronização da carteira não pôde ser concluída neste momento. Por favor, tente novamente mais tarde. Se o problema persistir, envie um e-mail para hello@lbry.com.</string>
+    <string name="phone_number">Número de telefone</string>
+    <string name="enter_phone_number">Por favor, digite seu número de telefone.</string>
+    <string name="not_interested">Não estou interessado</string>
+    <string name="manual_reward_verification">Verificação manual de recompensa</string>
+    <string name="reward_verification">Verificação de recompensa</string>
+    <string name="social_media_verification">Verificação de mídia social</string>
+    <string name="skip_the_queue">Pular a fila</string>
+    <string name="skip_queue_button_text">Pular para $%1$s</string>
+    <string name="account_undergo_review">Esta conta deve ser analisada antes de você participar do programa de recompensas. Isso pode levar de vários minutos a vários dias.</string>
+    <string name="get_instantly_verified">Você pode ser verificado instantaneamente para poder participar do programa de recompensas usando sua conta do Twitter ou pulando a fila de verificação manual.</string>
+    <string name="twitter_verification">Verificação do Twitter</string>
+    <string name="twitter_verification_desc">Seja verificado instantaneamente usando sua conta do Twitter. Seu endereço de e-mail do Twitter deve corresponder ao e-mail que você forneceu e sua conta deve estar ativa.</string>
+    <string name="twitter_verify">Verifique com o Twitter</string>
+    <string name="skip_queue_verification">Pular a fila</string>
+    <string name="skip_queue_verification_desc">Pule a fila de verificação manual pagando uma taxa para começar a participar do programa de recompensas imediatamente.</string>
+    <string name="request_to_be_verified">Solicite para ser verificado no  servidor LBRY Discord &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Server do Discord&lt;/a&gt;. Uma revisão manual pode levar de vários minutos a vários dias.</string>
+    <string name="enjoy_free_content">Por favor, aproveite o conteúdo gratuito enquanto isso!</string>
+    <string name="verify_phone_number">Verifique o número de telefone</string>
+    <string name="enter_phone_verify_code">Digite o código de verificação enviado para %1$s</string>
+    <string name="code_placeholder">0000</string>
+    <string name="verify">Verificar</string>
+    <string name="please_enter_valid_phone">Validação por telefone não está disponível no Brasil. Tente outro métodos de validação.</string>
+    <string name="please_enter_verification_code">Digite o código de verificação enviado para o seu número de telefone.</string>
+    <string name="fetch_current_user_error">A conta do usuário não pôde ser recuperada neste momento. Por favor, tente novamente mais tarde.</string>
+    <string name="purchase_request_pending">Sua solicitação de compra ainda está sendo processada. Envie um e-mail para support@lbry.com.</string>
+    <string name="purchase_request_failed_error">Sua solicitação de compra não pôde ser concluída neste momento. Envie um e-mail para support@lbry.com.</string>
+    <string name="twitter_account_ineligible">Sua conta do Twitter não está qualificada no momento: %1$s</string>
+    <string name="twitter_verification_not_approved">Sua conta não foi aprovada para o programa de recompensas. Por favor, tente novamente mais tarde.</string>
+    <string name="twitter_verification_failed">A verificação do Twitter falhou. Por favor, tente novamente mais tarde.</string>
+    <string name="reward_verification_successful">Agora você está qualificado para participar do programa de recompensas!</string>
+
+    <!-- Forms -->
+    <string name="no_added_tags">Você ainda não adicionou nenhuma tag. Adicione tags para melhorar a descoberta.</string>
+    <string name="form_no_tag_results">Não foi possível encontrar novas tags que ainda não foram adicionadas.</string>
+
+    <!-- Channels -->
+    <string name="no_channel_created">Você não criou um canal. \nComece agora criando um novo canal!</string>
+    <string name="create_a_channel">Crie um canal</string>
+    <string name="create_a_channel_item">Crie um canal...</string>
+    <string name="edit_channel">Editar canal</string>
+    <string name="delete_selection">Deletar seleção?</string>
+    <string name="delete_channel">Deletar canal?</string>
+    <string name="confirm_delete_channel">Tem certeza que deseja excluir esse canal ?</string>
+    <string name="channel_deleted">O canal foi excluído com sucesso.</string>
+    <string name="channel_failed_delete">O canal não pôde ser excluído neste momento. Por favor, tente novamente mais tarde.</string>
+    <string name="description">Descrição</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="show_optional_fields">Mostrar campos opcionais</string>
+    <string name="hide_optional_fields">Esconder campos adicionais</string>
+    <string name="save">Salvar</string>
+    <string name="channel_name">Nome do Canal</string>
+    <string name="title">Título</string>
+    <string name="at">\@</string>
+    <string name="deposit">Depósito</string>
+    <string name="deposit_remains_yours">Este LBC continua sendo seu. É um depósito de reserva de nome e pode ser desfeito a qualquer momento.</string>
+    <string name="storage_permission_rationale_download">LBRY requer acesso para baixar conteúdo para o seu dispositivo.</string>
+    <string name="storage_permission_rationale_images">LBRY requer acesso para carregar imagens do armazenamento do dispositivo.</string>
+    <string name="select_thumbnail">Selecionar thumbnail</string>
+    <string name="select_cover">Selecionar imagem de capa</string>
+    <string name="undetermined_image_filepath">O caminho do arquivo não pôde ser determinado para a imagem selecionada. Selecione uma imagem em um local diferente.</string>
+    <string name="wait_for_upload">Aguarde até que o upload atual termine.</string>
+    <string name="image_upload_failed"> O upload da imagem falhou. Por favor, tente novamente.</string>
+    <string name="uploading">Uploading...</string>
+    <string name="please_enter_channel_name">Insira um nome do canal.</string>
+    <string name="channel_name_invalid_characters">O nome do seu canal contém caracteres inválidos.</string>
+    <string name="channel_name_already_created">Você já criou um canal com o mesmo nome.</string>
+    <string name="please_enter_valid_deposit">Por favor, insira um valor de depósito válido.</string>
+    <string name="deposit_more_than_balance">O depósito não pode ser superior ao seu saldo.</string>
+    <string name="channel_save_failed">Falha ao tentar salvar. Por favor, tente novamente.</string>
+    <string name="channel_save_successful">O canal foi salvo com sucesso.</string>
+    <string name="item_pending_blockchain">A publicação está pendente na blockchain. Você poderá acessar ou editar a reivindicação em alguns momentos</string>
+    <string name="pending">Pendente</string>
+    <string name="create">Criar</string>
+    <string name="one_or_more_channels_failed_abandon">Um ou mais canais não puderam ser excluídos neste momento. Por favor, tente novamente mais tarde.</string>
+    <plurals name="min_deposit_required">
+        <item quantity="one">É necessário um depósito mínimo de %1$s créditos.</item>
+        <item quantity="other">É necessário um depósito mínimo de %1$s créditos.</item>
+    </plurals>
+    <plurals name="confirm_delete_channels">
+        <item quantity="one">Tem certeza de que deseja excluir o canal selecionado?</item>
+        <item quantity="other">Tem certeza de que deseja excluir os canais selecionados?</item>
+    </plurals>
+    <plurals name="channels_deleted">
+        <item quantity="one">O canal foi excluído com sucesso.</item>
+        <item quantity="other">Os canais foram excluídos com sucesso.</item>
+    </plurals>
+
+    <!-- Rewards -->
+    <string name="lbry_credits_allow">Os créditos LBRY permitem que você publique ou compre conteúdo.</string>
+    <string name="free_credits_worth">Você pode obter créditos gratuitos no valor de %1$s após fornecer um endereço de e-mail.</string>
+    <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Saiba mais&lt;/a&gt;.</string>
+    <string name="get_started">Iniciar</string>
+    <string name="reward_code_placeholder">abc123</string>
+    <string name="claim">Reivindicar </string>
+    <string name="please_enter_claim_code">Insira um código de recompensa personalizado para reivindicar.</string>
+    <string name="unclaimed">Não reinvidicado</string>
+    <string name="custom_reward_title">Código Customizado</string>
+    <string name="up_to">até</string>
+    <string name="custom_reward_description">Você é uma supermodelo ou estrela do funk que recebeu um código de recompensa personalizado? Reivindique aqui.</string>
+    <plurals name="claim_reward_message">
+        <item quantity="one">Você reivindicou %1$s de crédito como recompensa.</item>
+        <item quantity="other">Você reivindicou %1$s créditos como recompensa.</item>
+    </plurals>
+    <plurals name="available_credits">
+        <item quantity="one">%1$s crédito disponível</item>
+        <item quantity="other">%1$s créditos disponíveis</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">A publicação requer créditos.</string>
+    <string name="channel_creation_requires_credits">A criação do canal requer créditos.</string>
+    <string name="earn_rewards_for_inviting">Ganhe recompensas por convidar seus amigos.</string>
+    <string name="earn_some_credits_to_access">Ganhe alguns créditos para acessar este conteúdo.</string>
+    <string name="tap_here_to_get_some">Toque aqui para obter alguns gratuitamente.</string>
+    <string name="free_credits_available">Créditos gratuitos disponíveis em recompensas.</string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="one">%1$s crédito gratuitos disponíveis em recompensas.</item>
+        <item quantity="other">%1$s créditos gratuitos disponíveis em recompensas.</item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="one">Obtenha %1$s crédito grátis após criar uma conta.</item>
+        <item quantity="other">Obtenha %1$s créditos grátis após criar uma conta.</item>
+    </plurals>
+
+    <!-- Invites -->
+    <string name="lbry_invite_program">Programa de Convite da LBRY</string>
+    <string name="earn_extra_credits_invites">Você pode ganhar créditos extras para cada pessoa que convidar para usar o LBRY.</string>
+    <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;Saiba mais&lt;/a&gt;.</string>
+    <string name="invite_link">Link de Convite</string>
+    <string name="share_this_link">Compartilhe este link com amigos (ou inimigos) e ganhe créditos quando eles se cadastrarem no lbry.tv.</string>
+    <string name="your_invite_link">Seu link de convite</string>
+    <string name="customize_invite_link">Link de convite personalizado</string>
+    <string name="invite_by_email">Convide por Email</string>
+    <string name="invite_someone">Convide alguém que você conhece por e-mail e ganhe créditos ao se cadastrar no lbry.tv.</string>
+    <string name="invite_email_placeholder">amigo@imaginario.com</string>
+    <string name="invite">Convite</string>
+    <string name="invite_history">Histórico de Convite</string>
+    <string name="earn_credits_for_inviting">Ganhe créditos por convidar um amigo, um inimigo ou um flerte. Todo mundo precisa de liberdade de conteúdo.</string>
+    <string name="reward">Recompensa</string>
+    <string name="claimed">Reivindicado</string>
+    <string name="claimable">Disponível</string>
+    <string name="unclaimable">Indisponível</string>
+    <string name="invite_link_copied">Link de convite copiado.</string>
+    <string name="invite_sent_to">Convite enviado para %1$s</string>
+
+    <!-- Library -->
+    <string name="downloads">Downloads</string>
+    <string name="purchases">Compras</string>
+    <string name="history">Histórico</string>
+    <string name="library_no_downloads">Você não baixou nenhum conteúdo para este dispositivo.</string>
+    <string name="library_no_history">Você não visualizou nenhum conteúdo neste dispositivo.</string>
+    <string name="library_no_purchases">Você não comprou nenhum conteúdo em sua conta.</string>
+    <string name="hide">Ocultar</string>
+    <string name="stats">Status</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="images">Imagens</string>
+    <string name="mb">MB</string>
+    <string name="kb">KB</string>
+    <string name="gb">GB</string>
+    <string name="zero_mb">0MB</string>
+    <plurals name="confirm_delete_files">
+        <item quantity="one">Tem certeza de que deseja remover os arquivos selecionados do seu dispositivo?</item>
+        <item quantity="other">Tem certeza de que deseja remover os arquivos selecionados do seu dispositivo?</item>
+    </plurals>
+    <plurals name="files_deleted">
+        <item quantity="one">O arquivo foi excluído com sucesso</item>
+        <item quantity="other">Os arquivos foram excluídos com sucesso.</item>
+    </plurals>
+
+    <!-- About -->
+    <string name="about_lbry">Sobre LBRY</string>
+    <string name="content_freedom">Liberdade de Conteúdo</string>
+    <string name="about_paragraph">LBRY é um mercado digital gratuito, aberto e administrado pela comunidade. É uma plataforma descentralizada de distribuição de conteúdo P2P para os criadores fazerem upload e compartilharem conteúdo e ganharem créditos LBRY por seu esforço. Os usuários poderão encontrar uma ampla seleção de vídeos, músicas, e-books e outros conteúdos digitais de seu interesse.</string>
+    <string name="get_social">Social</string>
+    <string name="social_paragraph">Você pode interagir com a equipe LBRY e membros da comunidade no Discord, Facebook, Instagram, Twitter ou Reddit.</string>
+    <string name="app_info">Info do App</string>
+    <string name="loading">Carregando...</string>
+    <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;O que é LBRY?&lt;/a&gt;</string>
+    <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Básico&lt;/a&gt;</string>
+    <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>
+    <string name="about_link_discord">&lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;Discord&lt;/a&gt;</string>
+    <string name="about_link_facebook">&lt;a href=\"https://www.facebook.com/LBRYio\"&gt;Facebook&lt;/a&gt;</string>
+    <string name="about_link_instagram">&lt;a href=\"https://www.instagram.com/LBRYio\"&gt;Instagram&lt;/a&gt;</string>
+    <string name="about_link_reddit">&lt;a href=\"https://reddit.com/r/lbry\"&gt;Reddit&lt;/a&gt;</string>
+    <string name="about_link_telegram">&lt;a href=\"https://t.me/lbryofficial\"&gt;Telegram&lt;/a&gt;</string>
+    <string name="about_link_twitter">&lt;a href=\"https://twitter.com/LBRYio\"&gt;Twitter&lt;/a&gt;</string>
+    <string name="update_mailing_preferences">Atualize as preferências do email</string>
+    <string name="app_version">Versão do App</string>
+    <string name="lbry_sdk">LBRY SDK</string>
+    <string name="platform">Plataforma</string>
+    <string name="installation_id">ID de instalação</string>
+    <string name="firebase_token">Firebase Token</string>
+    <string name="logs">Logs</string>
+    <string name="send_log">Enviar log</string>
+    <string name="connected_email">Email conectado</string>
+    <string name="unknown">Desconhecido</string>
+    <string name="cannot_find_lbrynet_log">O arquivo lbrynet.log não foi encontrado.</string>
+    <string name="cannot_share_lbrynet_log">O arquivo lbrynet.log não pode ser compartilhado devido a restrições de permissão.</string>
+
+    </resources>

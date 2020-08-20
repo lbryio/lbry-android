@@ -39,7 +39,7 @@
     <string name="discover">Vind</string>
     <string name="lbry_works_better">LBRY werk beter as u ten minste 5 skeppers volg waarvan u hou. Meld aan om skeppers wat u volg te wys as u reeds \'n account het.</string>
     <string name="select_five_subscriptions">Kies tot 5 skeppers om voort te gaan.</string>
-    <string name="n_remaining">%1$doorblywende...</string>
+    <string name="n_remaining">%1$d oorblywende...</string>
     <string name="done">Gedoen</string>
     <string name="all">Almal</string>
     <string name="discover_channels">Ontdek nuwe kanale</string>
@@ -67,7 +67,7 @@
     <string name="view">Beskou</string>
     <string name="play">Speel</string>
     <string name="unsupported_content">Ongesteunde content</string>
-    <string name="unsupported_content_desc">Jammer, ons kan nie die inhoud in die app vertoon nie. U kan die lêer %1$sin u aflaai-lêergids vind.</string>
+    <string name="unsupported_content_desc">Jammer, ons kan nie die inhoud in die app vertoon nie. U kan die lêer %1$s in u aflaai-lêergids vind.</string>
     <string name="nothing_at_this_location">Daar is niks op hierdie plek nie.</string>
     <string name="publish_something_here">Publiseer iets hier</string>
     <string name="cannot_view_claim">Daar is tans geen toegang tot hierdie inhoud nie. Probeer asseblief weer later.</string>
@@ -127,7 +127,7 @@
     <string name="take_photo">Neem \'n Foto</string>
     <string name="upload_file">Laai \'n lêer op</string>
     <string name="no_videos_found">Ons kon geen video\'s op u toestel vind nie. Neem \'n foto of neem \'n video op om aan die gang te kom.</string>
-    <string name="loading_videos">Wag asseblief terwyl ons jou video\'s laai ...</string>
+    <string name="loading_videos">Wag asseblief terwyl ons u video\'s laai ...</string>
     <string name="storage_permission_rationale_videos">LBRY benodig toegang om u video\'s, beelde en ander lêers vanaf u toestel te kan vertoon en publiseer.</string>
     <string name="camera_permission_rationale_record">LBRY benodig toegang tot u kamera om video\'s op te neem.</string>
     <string name="camera_permission_rationale_photo">LBRY benodig toegang tot u kamera om foto\'s te neem.</string>
@@ -194,6 +194,8 @@
     <string name="romanian">Roemeens</string>
     <string name="hindi">Hindi</string>
     <string name="greek">Griekse</string>
+    <string name="catalan">Katalaans</string>
+
     <string name="none">Geen</string>
     <string name="public_domain">Publieke Domein</string>
     <string name="copyrighted">Kopiereg</string>
@@ -332,6 +334,10 @@
     <string name="confirm_unlock_tips">Is u seker dat u al u wenke wil ontsluit?</string>
     <string name="min_spend_required">Voer \'n bedrag van meer as 0,0001 krediete in.</string>
 
+    <string name="buy_lbc">Koop LBC</string>
+    <string name="hash_not_supported">U toestel ondersteun nie die minimum vereistes vir die beveiliging van u aankoopversoek nie.</string>
+    <string name="receive_address_not_set">U het nie \'n beursie-adres opgestel nie. Genereer \'n nuwe adres en probeer weer.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">U het %1$s krediete gestuur</item>
         <item quantity="other">U het %1$s krediete gestuur</item>
@@ -367,6 +373,12 @@
     <string name="tag_limit_reached">U kan nie meer as 5 merkers byvoeg nie.</string>
     <string name="send_a_tip">Stuur \'n wenk</string>
     <string name="send_a_tip_to">Stuur \'n wenk aan %1$s</string>
+    <string name="support_this_content">Ondersteun hierdie inhoud</string>
+    <string name="support_info">Dit sal die totale bodbedrag vir hierdie inhoud verhoog, wat die vermoë verhoog om ontdek te word terwyl dit aktief is. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Kanaal om ondersteuning te wys as</string>
+    <string name="make_this_a_tip">Maak dit \'n wenk</string>
+    <string name="send_revocable_support">Stuur Herroepbare Ondersteuning</string>
+    <string name="send_lbc_tip">Stuur \'n Wenk van %1$s LBC</string>
     <string name="send_tip_info_content">Dit sal verskyn as \'n wenk vir %1$s, wat die vermoë verhoog om ontdek te word terwyl dit aktief is. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Dit sal verskyn as \'n wenk vir %1$s, wat die vermoë verhoog om ontdek te word terwyl dit aktief is. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Kanselleer</string>
@@ -383,6 +395,10 @@
         <item quantity="one">U het %1$s krediete as \'n fooi gestuur, Mahalo!</item>
         <item quantity="other">U het %1$s krediete as \'n fooi gestuur, Mahalo!</item>
     </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">U het %1$s krediete as steun gebruik. U kan u ondersteuning te eniger tyd herroep.</item>
+        <item quantity="other">U het %1$s krediete as steun gebruik. U kan u ondersteuning te eniger tyd herroep.</item>
+    </plurals>
 
     <!-- Verification -->
     <string name="provide_email_address">Verskaf \'n e-pos adres.</string>
@@ -394,7 +410,7 @@
     <string name="provide_valid_email">Voer \'n geldige e-pos adres in</string>
     <string name="please_follow_instructions">Volg die aanwysings in die e-pos wat na u adres gestuur word om voort te gaan.</string>
     <string name="sign_in_successful">U het suksesvol by lbry.tv aangemeld</string>
-    <string name="retrieving_account_information">Haal rekeninginligting op...</string>
+    <string name="retrieving_account_information">Haal accountinligting op...</string>
     <string name="apply_wallet_data">Pas beursie-data toe...</string>
     <string name="please_enter_your_password">Voer die wagwoord in wat u gebruik het om u beursie te beveilig.</string>
     <string name="please_enter_a_password">Voer \'n wagwoord in om u beursie te beveilig.</string>
@@ -406,8 +422,7 @@
     <string name="enter_phone_number">Voer u telefoonnommer in.</string>
     <string name="not_interested">Stel nie belang nie</string>
     <string name="manual_reward_verification">Handmatige Beloningverifikasie</string>
-    <string name="account_undergo_review">Hierdie rekening moet hersien word voordat u aan die beloningsprogram kan deelneem. Dit kan vanaf \'n paar minute tot \'n paar dae duur.</string>
-    <string name="request_to_be_verified">As u aanhou om hierdie boodskap te sien, versoek u dat dit op die &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="account_undergo_review">Hierdie account moet hersien word voordat u aan die beloningsprogram kan deelneem. Dit kan vanaf \'n paar minute tot \'n paar dae duur.</string>
     <string name="enjoy_free_content">Geniet intussen gratis inhoud!</string>
     <string name="verify_phone_number">Verifieer Telefoonnommer</string>
     <string name="enter_phone_verify_code">Voer die verifikasiekode in wat na %1$s gestuur is</string>
@@ -415,8 +430,7 @@
     <string name="verify">Verifieer</string>
     <string name="please_enter_valid_phone">Voer \'n geldige telefoonnommer in.</string>
     <string name="please_enter_verification_code">Voer die verifikasiekode in wat na u telefoonnommer gestuur is.</string>
-    <string name="fetch_current_user_error">Gebruikersrekening kon op hierdie stadium nie opgespoor word nie. Probeer asseblief weer later.</string>
-
+    <string name="fetch_current_user_error">Gebruikersaccount kon op hierdie stadium nie opgespoor word nie. Probeer asseblief weer later.</string>
     <!-- Forms -->
     <string name="no_added_tags">U het nog geen merkers bygevoeg nie. Voeg etikette by om die ontdekking te verbeter.</string>
     <string name="form_no_tag_results">Ons kon nie nuwe merkers vind wat nog nie bygevoeg is nie.</string>
@@ -441,7 +455,7 @@
     <string name="title">Titel</string>
     <string name="at">\@</string>
     <string name="deposit">Deposito</string>
-    <string name="deposit_remains_yours">Hierdie LBC bly joune. Dit is \'n deposito om die naam te bespreek en kan te eniger tyd ongedaan gemaak word.</string>
+    <string name="deposit_remains_yours">Hierdie LBC bly uwe. Dit is \'n deposito om die naam te bespreek en kan te eniger tyd ongedaan gemaak word.</string>
     <string name="storage_permission_rationale_download">LBRY benodig toegang om inhoud op u toestel af te laai.</string>
     <string name="storage_permission_rationale_images">LBRY benodig toegang om prente vanaf u toestelberging te laai.</string>
     <string name="select_thumbnail">Kies kleinkiekie</string>
@@ -451,7 +465,7 @@
     <string name="image_upload_failed">Die beeldoplaai-versoek het misluk. Probeer asseblief weer.</string>
     <string name="uploading">Oplaai...</string>
     <string name="please_enter_channel_name">Voer \'n kanaalnaam in.</string>
-    <string name="channel_name_invalid_characters">Jou kanaalnaam bevat ongeldige karakters.</string>
+    <string name="channel_name_invalid_characters">U kanaalnaam bevat ongeldige karakters.</string>
     <string name="channel_name_already_created">U het reeds \'n kanaal met dieselfde naam geskep.</string>
     <string name="please_enter_valid_deposit">Voer \'n geldige depositobedrag in.</string>
     <string name="deposit_more_than_balance">Deposito kan nie hoër wees as u saldo nie.</string>
@@ -538,7 +552,7 @@
     <string name="history">Geskiedenis</string>
     <string name="library_no_downloads">U het geen inhoud op hierdie toestel afgelaai nie.</string>
     <string name="library_no_history">U het geen inhoud op hierdie toestel gesien nie.</string>
-    <string name="library_no_purchases">U het geen inhoud op u rekening gekoop nie.</string>
+    <string name="library_no_purchases">U het geen inhoud op u account gekoop nie.</string>
     <string name="hide">Verberg</string>
     <string name="stats">Statistiek</string>
     <string name="video">Video</string>
@@ -587,27 +601,4 @@
     <string name="cannot_find_lbrynet_log">Die lbrynet.log-lêer kon nie gevind word nie.</string>
     <string name="cannot_share_lbrynet_log">Die lbrynet.log-lêer kan nie gedeel word nie weens toestemmingsbeperkings.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

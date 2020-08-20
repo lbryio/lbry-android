@@ -1,0 +1,604 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">LBRY</string>
+    <string name="navigation_drawer_open">નેવિગેશન ડ્રોઅર ખોલો</string>
+    <string name="navigation_drawer_close">નેવિગેશન ડ્રોઅર બંધ કરો</string>
+
+    <!-- Nav menu -->
+    <string name="find_content">સામગ્રી શોધો</string>
+    <string name="your_content">તમારી સામગ્રી</string>
+    <string name="wallet">વૉલેટ</string>
+    <string name="following">અનુસરે છે</string>
+    <string name="editors_choice">સંપાદકની પસંદગી</string>
+    <string name="your_tags">તમારી ટેગ</string>
+    <string name="all_content">બધી સામગ્રી</string>
+    <string name="channels">ચેનલો</string>
+    <string name="library">લાયબ્રેરી</string>
+    <string name="publishes">પુબ્લીષેસ</string>
+    <string name="new_publish">નવું પ્રકાશિત કરો</string>
+    <string name="rewards">ઇનામ</string>
+    <string name="invites">આમંત્રણ</string>
+    <string name="settings">સેટિંગ્સ</string>
+    <string name="about">વિશે</string>
+    <string name="sign_in">સાઇન ઇન</string>
+    <string name="startup_failed">એપ્લિકેશન પ્રારંભ નિષ્ફળ. કૃપા કરીને તમારું ડેટા કનેક્શન તપાસો અને ફરીથી પ્રયાસ કરો. જો આ સમસ્યા યથાવત્ છે, તો કૃપા કરીને hello@lbry.com ને ઇમેઇલ કરો</string>
+    <string name="no_claim_search_content">આ સમયે પ્રદર્શિત કરવા માટે કોઈ સામગ્રી નથી. કૃપા કરીને તમારી પસંદગીને શુદ્ધ કરો અથવા પછીથી તપાસો.</string>
+
+    <!-- Welcome Page -->
+    <string name="welcome_to_lbry">LBRY માં આપનું સ્વાગત છે.</string>
+    <string name="welcome_paragraph">LBRY એ સમુદાય-નિયંત્રિત સામગ્રી પ્લેટફોર્મ છે જ્યાં તમે વિડિઓઝ, સંગીત, પુસ્તકો અને વધુ શોધી અને પ્રકાશિત કરી શકો છો.</string>
+    <string name="welcome_tos">ચાલુ રાખીને, હું &lt; ને સંમત છું. a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; અને પુષ્ટિ કરો કે હું 13 વર્ષથી વધુ વયની છું.</string>
+    <string name="welcome_please_wait">કૃપા કરી રાહ જુઓ જ્યારે અમે કેટલીક વસ્તુઓ તૈયાર કરીએ...</string>
+    <string name="use_lbry">LBRY વાપરો »</string>
+
+    <!-- URI bar -->
+    <string name="uri_placeholder">વિડિઓઝ, સંગીત અને વધુ શોધો</string>
+
+    <!-- Following page -->
+    <string name="find_channels_to_follow">અનુસરવા માટે ચેનલો શોધો</string>
+    <string name="channels_you_follow">તમે અનુસરો છો તે ચેનલો</string>
+    <string name="discover">શોધો</string>
+    <string name="lbry_works_better">જો તમને ગમે તેવા ઓછામાં ઓછા 5 નિર્માતાઓનું પાલન કરો તો LBRY વધુ સારું કાર્ય કરે છે. જો તમારી પાસે પહેલેથી જ એકાઉન્ટ છે તો તમે અનુસરો છો તે સર્જકોને બતાવવા માટે સાઇન ઇન કરો.</string>
+    <string name="select_five_subscriptions">કૃપા કરીને ચાલુ રાખવા માટે 5 નિર્માતાઓ પસંદ કરો.</string>
+    <string name="n_remaining">%1$d બાકી...</string>
+    <string name="done">થઈ ગયું</string>
+    <string name="all">બધા</string>
+    <string name="discover_channels">નવી ચેનલો શોધો</string>
+
+    <!-- Claim lists -->
+    <string name="anonymous">અનામિક</string>
+
+    <!-- File view -->
+    <string name="tags">ટૅગ્સ</string>
+    <string name="share">શેર કરો</string>
+    <string name="repost">ફરી પોસ્ટ કરો</string>
+    <string name="tip">ટીપ</string>
+    <string name="edit">સંપાદિત કરો</string>
+    <string name="delete">કાઢી નાખો</string>
+    <string name="download">ડાઉનલોડ કરો</string>
+    <string name="open">ખોલો</string>
+    <string name="report">જાણ કરો</string>
+    <string name="loading_decentralized_data">વિકેન્દ્રિત ડેટા લોડ કરી રહ્યું છે...</string>
+    <string name="related_content">સંબંધિત સામગ્રી</string>
+    <string name="comments">ટિપ્પણીઓ</string>
+    <string name="no_comments">આ સમયે પ્રદર્શિત કરવા માટે કોઈ ટિપ્પણી નથી.</string>
+    <string name="sdk_initializing_comments">ટિપ્પણીઓ પૃષ્ઠભૂમિ સેવા પ્રારંભ થયા પછી પ્રદર્શિત થશે.</string>
+    <string name="comment_error">તમારી ટિપ્પણી આ સમયે પોસ્ટ કરી શકાતી નથી. પછીથી ફરી પ્રયત્ન કરો.</string>
+    <string name="share_lbry_content">LBRY સામગ્રી શેર કરો</string>
+    <string name="view">જુઓ</string>
+    <string name="play">ચલાવો</string>
+    <string name="unsupported_content">અસમર્થિત સામગ્રી</string>
+    <string name="unsupported_content_desc">માફ કરશો, અમે એપ્લિકેશનમાં આ સામગ્રી પ્રદર્શિત કરવામાં અસમર્થ છીએ. તમે %1$s ફાઇલને તમારા ડાઉનલોડ્સ ફોલ્ડરમાં પાપ કરી શકો છો.</string>
+    <string name="nothing_at_this_location">આ સ્થાન પર કંઈ નથી.</string>
+    <string name="publish_something_here">અહીં કંઈક પ્રકાશિત કરો</string>
+    <string name="cannot_view_claim">આ સામગ્રી આ સમયે જોઈ શકાતી નથી. કૃપા કરીને થોડી વારમાં ફરી પ્રયાસ કરો.</string>
+    <string name="zero_duration">0:00</string>
+    <string name="claim_file_not_found">\"%1$s\" પર ફાઇલ અસ્તિત્વમાં નથી.</string>
+    <string name="confirm_purchase">ખરીદીની પુષ્ટિ કરો</string>
+    <string name="delete_file">ફાઇલ કાઢી નાંખવું </string>
+    <string name="confirm_delete_file_message">શું તમે ખરેખર આ ફાઇલને તમારા ઉપકરણમાંથી દૂર કરવા માંગો છો?</string>
+    <string name="unable_to_view_url">%1$s લોડ કરવામાં નિષ્ફળ. પછીથી ફરી પ્રયત્ન કરો.</string>
+    <string name="no_cast_session_available">આ સમયે કોઈ કાસ્ટ સત્ર ઉપલબ્ધ નથી.</string>
+    <string name="delete_content">સામગ્રી કાઢી નાંખો?</string>
+    <string name="confirm_delete_content_message">શું તમે ખરેખર આ સામગ્રીને પ્રકાશિત કરવા માંગો છો? તમારા ઉપકરણમાંથી કોઈ ફાઇલો દૂર કરવામાં આવશે નહીં.</string>
+    <string name="content_deleted">બ્લોકચેનમાંથી સામગ્રી સફળતાપૂર્વક કા wasી નાખવામાં આવી હતી.</string>
+    <string name="content_failed_delete">સામગ્રી આ સમયે કાઢી શકાઈ નથી. પછીથી ફરી પ્રયત્ન કરો.</string>
+    <string name="comment">ટિપ્પણી</string>
+    <string name="comment_as">તરીકે ટિપ્પણી કરો</string>
+    <string name="please_enter_comment">કૃપા કરીને પોસ્ટ કરવા માટે એક ટિપ્પણી દાખલ કરો.</string>
+    <string name="please_select_channel">કૃપા કરીને તમારી ટિપ્પણી પોસ્ટ કરવા માટે એક ચેનલ પસંદ કરો.</string>
+    <string name="comment_posted">તમારી ટિપ્પણી સફળતાપૂર્વક પોસ્ટ કરવામાં આવી હતી.</string>
+    <string name="please_select_repost_channel">કૃપા કરીને ફરીથી પોસ્ટ કરવા માટે એક ચેનલ પસંદ કરો.</string>
+    <string name="reply">જવાબ</string>
+    <string name="replying_to">%1$s ને જવાબ આપવો</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">પોસ્ટ કરો અને %1$s ક્રેડિટ્સ ટીપ આપો?</item>
+        <item quantity="other">પોસ્ટ કરો અને %1$s ક્રેડિટ્સ ટીપ આપો?</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="one">%1$s ક્રેડિટ માટે પોસ્ટ કરો</item>
+        <item quantity="other">%1$s ક્રેડિટ માટે પોસ્ટ કરો</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">આ તમારી ટિપ્પણી %2$s માટે %1$s ક્રેડિટ્સની મદદ સાથે પોસ્ટ કરશે</item>
+        <item quantity="other">આ તમારી ટિપ્પણી %2$s માટે %1$s ક્રેડિટ્સની મદદ સાથે પોસ્ટ કરશે</item>
+    </plurals>
+    <plurals name="view_count">
+        <item quantity="one">%1$s દૃશ્યો</item>
+        <item quantity="other">%1$s દૃશ્યો</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">આ %2$s ક્રેડિટ માટે \"%1$s\" ખરીદશે</item>
+        <item quantity="other">આ %2$s ક્રેડિટ માટે \"%1$s\" ખરીદશે</item>
+    </plurals>
+
+    <!-- Channel view -->
+    <string name="no_channel_info">અહીં હજી કંઈ નથી.\n કૃપા કરીને પછીથી તપાસો.</string>
+    <string name="content">સામગ્રી</string>
+    <string name="website">વેબસાઇટ</string>
+    <string name="reposted">ફરી પોસ્ટ કર્યું</string>
+    <plurals name="follower_count">
+        <item quantity="one">%1$s અનુયાયીઓ</item>
+        <item quantity="other">%1$s અનુયાયીઓ</item>
+    </plurals>
+
+    <!-- Publish -->
+    <string name="no_publishes_created">એવું લાગે છે કે તમે LBRY પર હજી સુધી સામગ્રી પ્રકાશિત કરી નથી.</string>
+    <string name="record">રેકોર્ડ</string>
+    <string name="take_photo">એક ફોટો લો</string>
+    <string name="upload_file">ફાઇલ અપલોડ કરો</string>
+    <string name="no_videos_found">અમે તમારા ઉપકરણ પર કોઈ વિડિઓઝ શોધી શક્યા નથી. પ્રારંભ કરવા માટે ફોટો લો અથવા વિડિઓ રેકોર્ડ કરો.</string>
+    <string name="loading_videos">કૃપા કરી રાહ જુઓ જ્યારે અમે તમારી વિડિઓઝ લોડ કરીએ ...</string>
+    <string name="storage_permission_rationale_videos">LBRY ને તમારા ઉપકરણમાંથી તમારી વિડિઓઝ, છબીઓ અને અન્ય ફાઇલોને પ્રદર્શિત અને પ્રકાશિત કરવા માટે toક્સેસની જરૂર છે.</string>
+    <string name="camera_permission_rationale_record">વિડિઓઝ રેકોર્ડ કરવા માટે LBRY ને તમારા કૅમેરાને ઍક્સેસ કરવાની જરૂર છે.</string>
+    <string name="camera_permission_rationale_photo">ફોટા લેવા માટે એલબીઆરવાયને તમારા કૅમેરાને ઍક્સેસ કરવાની જરૂર છે.</string>
+    <string name="edit_content">સામગ્રી સંપાદિત કરો</string>
+    <string name="mature_tags">પુખ્ત ટૅગ્સ</string>
+    <string name="price">કિંમત</string>
+    <string name="free_publish">તમારી સામગ્રી મફત હશે. ભાવ સેટ કરવા માટે ટgગલ દબાવો.</string>
+    <string name="content_address">સામગ્રી સરનામું</string>
+    <string name="randomize">રેન્ડમાઇઝ કરો</string>
+    <string name="address">સરનામું</string>
+    <string name="content_address_desc">સરનામું જ્યાં લોકો તમારી સામગ્રી શોધી શકે છે (ઉદા. lbry://myvideo)</string>
+    <string name="license">લાઇસન્સ</string>
+    <string name="license_desc">લાઇસેંસનું વર્ણન</string>
+    <string name="additional_options">વધારાના વિકલ્પો</string>
+    <string name="show_extra_fields">વધારાના ફીલ્ડ્સ બતાવો</string>
+    <string name="hide_extra_fields">વધારાના ફીલ્ડ્સ છુપાવો</string>
+    <string name="no_file_found">પ્રકાશિત કરવા માટે કોઈ ફાઇલ મળી નથી.</string>
+    <string name="publish_invalid_claim_type">સંપાદન માટે અમાન્ય દાવો ઉલ્લેખિત.</string>
+    <string name="video_optimization">વિડિઓ ઓપ્ટિમાઇઝેશન</string>
+    <string name="thumbnail_creation_failed">થંબનેલ તમારી સામગ્રી ફાઇલથી આપમેળે બનાવવામાં આવી શકી નથી.</string>
+    <string name="video_being_optimized">ઉપકરણોની વિશાળ શ્રેણી પર વધુ સારી સપોર્ટ માટે તમારી વિડિઓ ઑપ્ટિમાઇઝ કરવામાં આવી રહી છે. આ પ્રક્રિયા ચાલુ હોય ત્યારે તમે નીચેના બાકીના ક્ષેત્રો ભરી શકો છો.</string>
+    <string name="video_optimized">શક્ય તેટલા ઉપકરણો પર તમારી વિડિઓને વધુ સારી પ્લેબેક માટે સફળતાપૂર્વક ઑપ્ટિમાઇઝ કરવામાં આવી હતી. કૃપા કરી તમારી સામગ્રી પ્રકાશિત કરો.</string>
+    <string name="video_optimize_failed">તમારી વિડિઓ ઑપ્ટિમાઇઝ કરી શકાઈ નથી. ફાઇલ કોઈ ફેરફાર વિના અપલોડ કરવામાં આવશે.</string>
+    <string name="completed_video_duration">પૂર્ણ વિડિઓ અવધિ: %1$s</string>
+    <string name="sdk_initializing_publish">તમે અત્યારે સામગ્રી પ્રકાશિત કરી શકતા નથી કારણ કે પૃષ્ઠભૂમિ સેવા હજી પ્રારંભ થઈ રહી છે.</string>
+    <string name="publish_successful">તમારી સામગ્રી સફળતાપૂર્વક પ્રકાશિત થઈ હતી. બ્લોકચેન પર દેખાવામાં થોડી ક્ષણો લાગી શકે છે.</string>
+    <string name="transcode_in_progress">વિડિઓ ઓપ્ટિમાઇઝેશન પ્રક્રિયા ચાલુ છે. જો તમે રદ કરવા માંગો છો, તો પૃષ્ઠની નીચે રદ કરો દબાવો.</string>
+    <string name="optimization_in_progress">વિડિઓ ઓપ્ટિમાઇઝેશન પ્રક્રિયા ચાલુ છે.</string>
+    <string name="cannot_capture_video">આ ઉપકરણ પર વિડિઓઝ રેકોર્ડ કરવા માટે કોઈ કૅમેરા એપ્લિકેશન ઉપલબ્ધ નથી.</string>
+    <string name="cannot_take_photo">આ ઉપકરણ પર પર ફોટા લેવા માટે કોઈ કૅમેરા એપ્લિકેશન ઉપલબ્ધ નથી.</string>
+
+    <string name="please_provide_title">કૃપા કરીને એક શીર્ષક પ્રદાન કરો.</string>
+    <string name="please_specify_address">કૃપા કરી કોઈ સરનામું સ્પષ્ટ કરો જ્યાં લોકો તમારી સામગ્રી શોધી શકે.</string>
+    <string name="address_invalid_characters">તમારા સામગ્રી સરનામાંમાં અમાન્ય અક્ષરો છે.</string>
+    <string name="address_already_used">તમે ઉલ્લેખિત સામગ્રી સરનામાં પર પહેલાથી પ્રકાશિત કરી દીધું છે. કૃપા કરીને નવું સરનામું દાખલ કરો.</string>
+    <string name="no_file_selected">કોઈ ફાઇલ પસંદ કરેલ નથી. કૃપા કરીને વિડિઓ પસંદ કરો અથવા ફોટો લો અથવા પ્રકાશિત કરતા પહેલા ફાઇલ પસંદ કરો.</string>
+    <string name="price_amount_not_set">કૃપા કરીને કોઈ કિંમત દાખલ કરો અથવા તમારી સામગ્રીને મફત બનાવવા માટે ટૉગલને બંધ કરો.</string>
+    <string name="publish_no_thumbnail">કૃપા કરીને પ્રકાશિત કરતા પહેલા અપલોડ કરવા માટે થંબનેલ પસંદ કરો.</string>
+    <string name="publish_thumbnail_in_progress">કૃપા કરીને પ્રકાશન પહેલાં થંબનેલ અપલોડ કરવાનું સમાપ્ત થાય ત્યાં સુધી રાહ જુઓ.</string>
+
+    <string name="language">ભાષા</string>
+    <string name="english">અંગ્રેજી</string>
+    <string name="chinese">ચાઇનીઝ</string>
+    <string name="french">ફ્રેન્ચ</string>
+    <string name="german">જર્મન</string>
+    <string name="japanese">જાપાની</string>
+    <string name="russian">રશિયન</string>
+    <string name="spanish">સ્પૅનિશ</string>
+    <string name="indonesian">ઇન્ડોનેશિયન</string>
+    <string name="italian">ઇટાલિયન</string>
+    <string name="dutch">ડચ</string>
+    <string name="turkish">ટર્કિશ</string>
+    <string name="polish">પોલિશ</string>
+    <string name="malay">મલય</string>
+    <string name="portuguese">પોર્ટુગીઝ</string>
+    <string name="vietnamese">વિયેતનામીસ</string>
+    <string name="thai">થાઇ</string>
+    <string name="arabic">અરબી</string>
+    <string name="czech">ઝેક</string>
+    <string name="croatian">ક્રોએશિયન</string>
+    <string name="cambodian">કંબોડિયન</string>
+    <string name="korean">કોરિયન</string>
+    <string name="norwegian">નોર્વેજીયન</string>
+    <string name="romanian">રોમાનિયન</string>
+    <string name="hindi">હિન્દી</string>
+    <string name="greek">ગ્રીક</string>
+    <string name="catalan">કતલાન</string>
+
+    <string name="none">કંઈ નહીં</string>
+    <string name="public_domain">સાર્વજનિક ડોમેન</string>
+    <string name="copyrighted">કોપિરાઇટ</string>
+    <string name="cca_4_0_international">ક્રિએટીવ કોમન્સ એટ્રિબ્યુશન 4.0 આંતરરાષ્ટ્રીય</string>
+    <string name="cca_sa_4_0_international">ક્રિએટીવ કોમન્સ એટ્રિબ્યુશન- શેરઅલાઈક 4.0 આંતરરાષ્ટ્રીય</string>
+    <string name="cca_nd_4_0_international">ક્રિએટીવ કોમન્સ એટ્રિબ્યુશન-નો-ડેરિવેટિવ્ઝ 4.0 આંતરરાષ્ટ્રીય</string>
+    <string name="cca_nc_4_0_international">ક્રિએટીવ કોમન્સ એટ્રિબ્યુશન-બિન-વ્યાવસાયિક  4.0 આંતરરાષ્ટ્રીય</string>
+    <string name="cca_nc_sa_4_0_international">ક્રિએટીવ કોમન્સ એટ્રિબ્યુશન-બિન-વ્યાવસાયિક-શેરઅલાઇક 4.0 આંતરરાષ્ટ્રીય</string>
+    <string name="cca_nc_nd_4_0_international">ક્રિએટીવ કોમન્સ એટ્રિબ્યુશન-નોન-કમર્શિયલ-નો-ડેરિવેટિવ્ઝ 4.0 આંતરરાષ્ટ્રીય</string>
+
+    <string-array name="publish_currencies">
+        <item>LBC</item>
+        <item>USD</item>
+    </string-array>
+
+    <!-- Publishes -->
+    <string name="one_or_more_publishes_failed_abandon">એક અથવા વધુ સામગ્રી આઇટમ્સ આ સમયે કાઢી શકાઈ નથી. પછીથી ફરી પ્રયત્ન કરો.</string>
+    <plurals name="confirm_delete_publishes">
+        <item quantity="one">શું તમે ખરેખર પસંદ કરેલી સામગ્રી આઇટમ્સ કાઢી નાખવા માંગો છો?</item>
+        <item quantity="other">શું તમે ખરેખર પસંદ કરેલી સામગ્રી આઇટમ્સ કાઢી નાખવા માંગો છો?</item>
+    </plurals>
+    <plurals name="publishes_deleted">
+        <item quantity="one">સામગ્રી આઇટમ્સ સફળતાપૂર્વક કાઢી નાખવામાં આવી હતી.</item>
+        <item quantity="other">સામગ્રી આઇટમ્સ સફળતાપૂર્વક કાઢી નાખવામાં આવી હતી.</item>
+    </plurals>
+
+    <!-- Splash -->
+    <string name="oops_something_went_wrong">અરેરે! કંઈક ખોટું થયું.</string>
+    <string name="installation_id_loaded">લોડ થયેલ ઇન્સ્ટોલેશન આઈડી.</string>
+    <string name="known_tags_loaded">સ્થાનિક જાણીતા અને અનુસરતા ટૅગ્સ લોડ કર્યા.</string>
+    <string name="exchange_rate_loaded">લોડ કરેલ LBC/USD વિનિમય દર.</string>
+    <string name="user_authenticated">વપરાશકર્તા પ્રમાણિત.</string>
+    <string name="installation_registered">ઇન્સ્ટોલેશન નોંધાયેલ.</string>
+    <string name="subscriptions_loaded">લોડ કરેલા સબ્સ્ક્રિપ્શન્સ.</string>
+    <string name="subscriptions_resolved">ઉકેલી સબ્સ્ક્રિપ્શન્સ.</string>
+
+    <!-- Settings -->
+    <string name="user_interface">સામગ્રી &amp; વપરાશકર્તા ઇન્ટરફેસ</string>
+    <string name="other">અન્ય</string>
+    <string name="enable_background_playback">પૃષ્ઠભૂમિ પ્લેબેક સક્ષમ કરો</string>
+    <string name="enable_dark_mode">શ્યામ થીમ સક્ષમ કરો</string>
+    <string name="show_mature_content">પરિપક્વ સામગ્રી બતાવો</string>
+    <string name="show_url_suggestions">URL સૂચનો બતાવો</string>
+    <string name="notifications">સૂચનાઓ</string>
+    <string name="subscriptions">સબ્સ્ક્રિપ્શન્સ</string>
+    <string name="content_interests">સામગ્રી રુચિઓ</string>
+
+    <string name="keep_sdk_in_background">સુધારેલ વૉલેટ અને નેટવર્ક પ્રદર્શન માટે પૃષ્ઠભૂમિમાં ચાલતી LBRY સેવાને ચાલુ રાખો</string>
+    <string name="participate_in_data_network">ડેટા નેટવર્કમાં ભાગ લેવો (એપ્લિકેશન અને પૃષ્ઠભૂમિ સેવા ફરીથી પ્રારંભ કરવાની જરૂર છે)</string>
+
+    <!-- URL suggestions -->
+    <string name="search_url_title">%1$s - શોધો</string>
+    <string name="tag_url_title">%1$s - ટેગ</string>
+    <string name="search_url_desc">\'%1$s\' માટે શોધો</string>
+    <string name="explore_tag_url_desc">\'%1$s\' ટેગનું અન્વેષણ કરો</string>
+    <string name="view_file_url_desc">%1$s પર સામગ્રી જુઓ</string>
+    <string name="view_channel_url_desc">%1$s ચેનલ જુઓ</string>
+
+    <!-- Search -->
+    <string name="search_no_results">\'%1$s\' માટે કોઈ પરિણામ મળ્યાં નથી. કૃપા કરી કોઈ અલગ શોધ શબ્દ દાખલ કરો.</string>
+    <string name="search_no_query">તમે ફિલ્મો, સંગીત, ઈબુક્સ, સોફ્ટવેર અને વધુ સહિત કંઈપણ શોધી શકો છો.</string>
+    <string name="no_related_content">આ સમયે પ્રદર્શિત કરવા માટે કોઈ સંબંધિત સામગ્રી નથી.</string>
+
+    <!-- Wallet -->
+    <string name="balance">બેલેન્સ</string>
+    <string name="you_currently_have">તમારી પાસે હાલમાં</string>
+    <string name="convert_credits">તમે તમારા ક્રેડિટને USD માં કન્વર્ટ કરી શકો છો અને એક્સચેંજનો ઉપયોગ કરીને રૂપાંતરિત રકમ પાછા ખેંચી શકો છો. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
+    <string name="you_also_have">તમારી પાસે પણ છે</string>
+    <string name="you_staked">તમે સ્ટેક્ડ</string>
+    <string name="in_tips">ટીપ્સમાં</string>
+    <string name="in_your_publishes">તમારા પ્રકાશનોમાં</string>
+    <string name="in_your_supports">તમારા સપોર્ટ</string>
+    <string name="earn_more_tips">કૂલ વિડિઓઝ અપલોડ કરીને વધુ ટીપ્સ કમાઓ</string>
+    <string name="sdk_initializing">પૃષ્ઠભૂમિ સેવા પ્રારંભ થઈ રહી છે...</string>
+    <string name="sdk_still_initializing">પૃષ્ઠભૂમિ સેવા હજી પ્રારંભ થઈ રહી છે. તમે સરેરાશ સમયમાં અન્વેષણ કરી શકો છો અને સામગ્રી જોઈ શકો છો.</string>
+    <string name="sdk_initializing_functionality">તમે હમણાં આ કરી શકતા નથી કારણ કે પૃષ્ઠભૂમિ સેવા હજી પ્રારંભ થઈ રહી છે.</string>
+
+    <string name="backup_synced">તમારા વૉલેટનો બેકઅપ lbry.tv સાથે સમન્વયિત થાય છે</string>
+    <string name="backup_notsynced">તમારું વૉલેટ હાલમાં lbry.tv. સાથે સમન્વયિત નથી. તમે તમારા વૉલેટનો બેકઅપ લેવા માટે જવાબદાર છો.</string>
+    <string name="synced_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/account-sync\"&gt;What does this mean?&lt;/a&gt;</string>
+    <string name="backup_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;What does this mean?&lt;/a&gt;</string>
+
+    <string name="receive_credits">ક્રેડિટ મેળવો</string>
+    <string name="use_this_address_hint">બીજા વપરાશકર્તા (અથવા જાતે) દ્વારા મોકલેલા ક્રેડિટ મેળવવા માટે આ વletલેટ સરનામાંનો ઉપયોગ કરો.</string>
+    <string name="get_new_address">નવું સરનામું મેળવો</string>
+    <string name="generate_address_hint">તમે કોઈપણ સમયે એક નવું સરનામું ઉત્પન્ન કરી શકો છો, અને કોઈપણ પાછલા સરનામાંઓ કાર્ય કરવાનું ચાલુ રાખશે. બહુવિધ સંસાધનોથી ઇનકમિંગ પેમેન્ટનો ટ્રેક રાખવા માટે બહુવિધ સરનામાંઓનો ઉપયોગ કરવો ઉપયોગી થઈ શકે છે.</string>
+
+    <string name="send_credits">ક્રેડિટ મોકલો</string>
+    <string name="recipient_address">પ્રાપ્તકર્તાનું સરનામું</string>
+    <string name="recipient_address_placeholder">bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs</string>
+    <string name="amount">રકમ</string>
+    <string name="send">મોકલો</string>
+
+    <string name="recent_transactions">તાજેતરના વ્યવહારો</string>
+    <string name="view_all">બધુજ જુઓ</string>
+    <string name="receive">પ્રાપ્ત કરો</string>
+    <string name="spend">ખર્ચ કરો</string>
+    <string name="publish">પ્રકાશિત કરો</string>
+    <string name="support">આધાર</string>
+    <string name="abandon">છોડી દેવા</string>
+    <string name="channel">ચેનલ</string>
+    <string name="channel_update">ચેનલ અપડેટ</string>
+    <string name="publish_update">પ્રકાશન અપડેટ</string>
+
+    <string name="wallet_sync">વૉલેટ સિંક</string>
+    <string name="sync_status">સિંક સ્થિતિ</string>
+    <string name="on">ચાલુ</string>
+    <string name="off">બંધ</string>
+    <string name="email">ઇમેઇલ</string>
+    <string name="no_connected_email">કોઈ કનેક્ટેડ ઇમેઇલ નથી</string>
+    <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
+    <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
+    <string name="zero">0</string>
+    <string name="lbc">LBC</string>
+
+    <string name="account_recommended">એકાઉન્ટની ભલામણ</string>
+    <string name="wallet_account_desc">એક lbry.tv એકાઉન્ટ તમને ઇનામો કમાવવા, તમારા વૉલેટનો બેકઅપ લેવાની અને બધું સુમેળમાં રાખવા માટે પરવાનગી આપે છે.</string>
+    <string name="wallet_without_account">ખાતું વિના, તમે તમારા વૉલેટ અને LBRY ડેટાને સુરક્ષિત કરવાની બધી જવાબદારી સ્વીકારો છો</string>
+    <string name="skip_account">ખાતું છોડો</string>
+    <string name="sign_up">સાઇન અપ કરો</string>
+    <string name="address_copied">સરનામું નકલ કર્યું</string>
+
+    <string name="invalid_recipient_address">કૃપા કરીને ક્રેડિટ મોકલવા માટે એક માન્ય સરનામું દાખલ કરો</string>
+    <string name="insufficient_balance">અપૂરતી બેલેન્સ</string>
+    <string name="invalid_amount">કૃપા કરીને માન્ય રકમ દાખલ કરો</string>
+    <string name="send_credit_error">તમારી ક્રેડિટ્સ આ સમયે મોકલી શકાતી નથી. પછીથી ફરી પ્રયત્ન કરો.</string>
+    <string name="loading_transactions">વ્યવહારો લોડ કરી રહ્યું છે ...</string>
+    <string name="no_recent_transactions">પ્રદર્શિત કરવા માટે કોઈ તાજેતરના વ્યવહારો નથી.</string>
+    <string name="no_transactions">આ સમયે પ્રદર્શિત કરવા માટે કોઈ વ્યવહાર નથી.</string>
+    <string name="tx_list_fee">ફી %1$s</string>
+    <string name="transaction_history">વ્યવહાર ઇતિહાસ</string>
+
+    <string name="unlock">અનલૉક</string>
+    <string name="unlock_tips">ટીપ્સ અનલૉક કરો?</string>
+    <string name="confirm_unlock_tips">શું તમે ખરેખર તમારી બધી ટીપ્સને અનલૉક કરવા માંગો છો?</string>
+    <string name="min_spend_required">કૃપા કરી 0.0001 ક્રેડિટથી વધુ રકમ દાખલ કરો.</string>
+
+    <string name="buy_lbc">LBC ખરીદો</string>
+    <string name="hash_not_supported">તમારું ઉપકરણ તમારી ખરીદી વિનંતીને સુરક્ષિત કરવા માટે ન્યૂનતમ આવશ્યકતાઓને ટેકો આપતું નથી.</string>
+    <string name="receive_address_not_set">તમારે વોલેટ સરનામું સેટ નથી. કૃપા કરીને નવું સરનામું બનાવો અને ફરીથી પ્રયાસ કરો.</string>
+
+    <plurals name="you_sent_credits">
+        <item quantity="one">તમે %1$s ક્રેડિટ મોકલી છે</item>
+        <item quantity="other">તમે %1$s ક્રેડિટ મોકલી છે</item>
+    </plurals>
+
+    <!-- Dialogs -->
+    <string name="customize_your_tags">તમારા ટૅગ્સને કસ્ટમાઇઝ કરો</string>
+    <string name="sort_content_by">દ્વારા સામગ્રીને સૉર્ટ કરો</string>
+    <string name="content_from">માંથી સામગ્રી</string>
+    <string name="trending_content">ટ્રેંડિંગ સામગ્રી</string>
+    <string name="new_content">નવી સામગ્રી</string>
+    <string name="top_content">ટોચની સામગ્રી</string>
+    <string name="trending">ટ્રેન્ડિંગ</string>
+    <string name="top">ટોચ</string>
+    <string name="new_text">નવું</string>
+    <string name="past_24_hours">છેલ્લા 24 કલાક</string>
+    <string name="past_week">પાછલું અઠવાડિયું</string>
+    <string name="past_month">પાછલો મહિનો</string>
+    <string name="past_year">પાછલું વર્ષ</string>
+    <string name="all_time">બધા સમયે</string>
+    <string name="from">માંથી</string>
+    <string name="for_text">માટે</string>
+    <string name="filter_for">માટે ફિલ્ટર કરો</string>
+    <string name="everyone">દરેક</string>
+    <string name="tags_you_follow">તમે અનુસરો છો તે ટૅગ્સ</string>
+    <string name="customize">કસ્ટમાઇઝ કરો</string>
+    <string name="not_yet_implemented">પસંદ કરેલું દૃશ્ય હજી ઉપલબ્ધ નથી.</string>
+    <string name="customize_tags_hint">એવું લાગે છે કે તમે હજી સુધી કોઈપણ ટૅગ્સને અનુસર્યા નથી.</string>
+    <string name="search_for_more_tags">વધુ ટૅગ્સ માટે શોધ કરો</string>
+    <string name="no_followed_tags">તમે હજી સુધી કોઈપણ ટૅગ્સને અનુસર્યા નથી. તમને રુચિ છે તે ટૅગ્સ ઉમેરીને પ્રારંભ કરો!</string>
+    <string name="no_tag_results">તમે નવા ટૅગ્સ શોધી શક્યા નહીં કે જે તમે અનુસરતા નથી.</string>
+    <string name="tag_already_added">\'%1$s\' ટેગ પહેલાથી જ ઉમેરવામાં આવ્યો છે.</string>
+    <string name="tag_limit_reached">તમે 5 કરતા વધારે ટૅગ્સ ઉમેરી શકતા નથી.</string>
+    <string name="send_a_tip">ટીપ મોકલો</string>
+    <string name="send_a_tip_to">%1$s પર ટીપ મોકલો</string>
+    <string name="support_this_content">આ સામગ્રીને આધાર આપો</string>
+    <string name="support_info">આનાથી આ સામગ્રી માટે એકંદર બિડ રકમ વધશે, જે સક્રિય હોવા પર શોધવાની તેની ક્ષમતામાં વધારો કરશે. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">ચેનલ તરીકે આધાર બતાવવા</string>
+    <string name="make_this_a_tip">આ એક ટિપ બનાવો</string>
+    <string name="send_revocable_support">રિવોસિએબલ સપોર્ટ મોકલો</string>
+    <string name="send_lbc_tip">%1$s LBC ટીપ મોકલો</string>
+    <string name="send_tip_info_content">આ %1$s માટે મદદ તરીકે દેખાશે, જે સક્રિય હોવા પર શોધવાની તેની ક્ષમતામાં વધારો કરશે. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="send_tip_info_channel">આ %1$s માટે મદદ તરીકે દેખાશે, જે સક્રિય કરતી વખતે શોધવાની ચેનલની ક્ષમતામાં વધારો કરશે. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="cancel">રદ કરો</string>
+    <string name="repost_title">ફરી પોસ્ટ કરો%1$s</string>
+    <string name="repost_your_favorite">વધુ લોકોને તેમની શોધમાં સહાય માટે તમારી મનપસંદ સામગ્રી ફરીથી પોસ્ટ કરો!</string>
+    <string name="channel_to_post_on">પર પોસ્ટ કરવા માટે ચેનલ</string>
+    <string name="show_advanced">અદ્યતન બતાવો</string>
+    <string name="hide_advanced">અદ્યતન છુપાવો</string>
+    <string name="name">નામ</string>
+    <string name="min_deposit">0.001</string>
+    <string name="content_successfully_reposted">સામગ્રી સફળતાપૂર્વક ફરીથી પોસ્ટ કરવામાં આવી હતી!</string>
+    <string name="repost_name_invalid_characters">પોસ્ટમાં અમાન્ય અક્ષરો છે.</string>
+    <plurals name="you_sent_a_tip">
+        <item quantity="one">તમે ટીપ તરીકે %1$s ક્રેડિટ મોકલ્યા, મહાલો!</item>
+        <item quantity="other">તમે ટીપ તરીકે %1$s ક્રેડિટ મોકલ્યા, મહાલો!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">તમે આધાર તરીકે %1$s ક્રેડિટ્સ સ્ટેક કરી છે. તમે કોઈપણ સમયે તમારા સપોર્ટને રદ કરી શકો છો.</item>
+        <item quantity="other">તમે આધાર તરીકે %1$s ક્રેડિટ્સ સ્ટેક કરી છે. તમે કોઈપણ સમયે તમારા સપોર્ટને રદ કરી શકો છો.</item>
+    </plurals>
+
+    <!-- Verification -->
+    <string name="provide_email_address">કૃપા કરીને એક ઇમેઇલ સરનામું પ્રદાન કરો.</string>
+    <string name="email_placeholder">you@example.com</string>
+    <string name="email_sent_to">એક ઇમેઇલ મોકલવામાં આવ્યો છે</string>
+    <string name="please_click_link">સાઇન ઇન પૂર્ણ કરવા માટે કૃપા કરીને સંદેશની લિંકને ક્લિક કરો.</string>
+    <string name="resend">ફરીથી મોકલો</string>
+    <string name="continue_text">ચાલુ રાખો</string>
+    <string name="provide_valid_email">કૃપા કરીને માન્ય ઇમેઇલ સરનામું દાખલ કરો</string>
+    <string name="please_follow_instructions">કૃપા કરીને ચાલુ રાખવા માટે તમારા સરનામાં પર મોકલવામાં આવેલ ઇમેઇલની સૂચનાઓનું અનુસરો.</string>
+    <string name="sign_in_successful">તમે સફળતાપૂર્વક lbry.tv માં સાઇન ઇન કર્યું છે</string>
+    <string name="retrieving_account_information">એકાઉન્ટ માહિતી પ્રાપ્ત કરી રહ્યું છે...</string>
+    <string name="apply_wallet_data"> વૉલેટ ડેટા લાગુ કરી રહ્યું છે ...</string>
+    <string name="please_enter_your_password">કૃપા કરીને તમે તમારો વૉલેટ સુરક્ષિત કરવા માટે ઉપયોગમાં લીધો પાસવર્ડ દાખલ કરો.</string>
+    <string name="please_enter_a_password">કૃપા કરીને તમારું વૉલેટ સુરક્ષિત રાખવા માટે પાસવર્ડ દાખલ કરો.</string>
+    <string name="wallet_security_purposes">નોંધ: વૉલેટ સુરક્ષા હેતુ માટે, એલબીઆરવાય તમારા પાસવર્ડને ફરીથી સેટ કરવામાં અસમર્થ છે.</string>
+    <string name="password">પાસવર્ડ</string>
+    <string name="enable_sync">સમન્વયન સક્ષમ કરો</string>
+    <string name="wallet_sync_op_failed">વોલેટ સિંક ઓપરેશન આ સમયે પૂર્ણ થઈ શક્યું નથી. પછીથી ફરી પ્રયત્ન કરો. જો આ સમસ્યા યથાવત્ છે, તો કૃપા કરીને hello@lbry.com પર ઇમેઇલ મોકલો.</string>
+    <string name="phone_number">ફોન નંબર</string>
+    <string name="enter_phone_number">કૃપા કરીને તમારો ફોન નંબર દાખલ કરો.</string>
+    <string name="not_interested">રસ નથી</string>
+    <string name="manual_reward_verification">મેન્યુઅલ પુરસ્કાર ચકાસણી</string>
+    <string name="account_undergo_review">તમે પુરસ્કાર કાર્યક્રમમાં ભાગ લઈ શકો તે પહેલાં આ એકાઉન્ટની સમીક્ષા કરવી આવશ્યક છે. આ ઘણી મિનિટથી કેટલાક દિવસો સુધી ક્યાંય પણ લઈ શકે છે.</string>
+    <string name="enjoy_free_content">કૃપા કરીને આ દરમિયાન મફત સામગ્રીનો આનંદ માણો!</string>
+    <string name="verify_phone_number">ફોન નંબર ચકાસો</string>
+    <string name="enter_phone_verify_code">કૃપા કરીને %1$s પર મોકલેલો ચકાસણી કોડ દાખલ કરો</string>
+    <string name="code_placeholder">0000</string>
+    <string name="verify">ચકાસો</string>
+    <string name="please_enter_valid_phone">કૃપા કરીને સાચો ફોન નંબર નાખો.</string>
+    <string name="please_enter_verification_code">કૃપા કરીને તમારા ફોન નંબર પર મોકલવામાં આવેલ ચકાસણી કોડ દાખલ કરો.</string>
+    <string name="fetch_current_user_error">વપરાશકર્તા ખાતું આ સમયે પુન .પ્રાપ્ત થઈ શક્યું નથી. પછીથી ફરી પ્રયત્ન કરો.</string>
+    <!-- Forms -->
+    <string name="no_added_tags">તમે હજી સુધી કોઈ ટૅગ્સ ઉમેર્યા નથી. શોધ સુધારવા માટે ટૅગ્સ ઉમેરો.</string>
+    <string name="form_no_tag_results">અમે નવા ટૅગ્સ શોધી શક્યા નથી જે હજી ઉમેર્યા નથી.</string>
+
+    <!-- Channels -->
+    <string name="no_channel_created">તમે કોઈ ચેનલ બનાવી નથી.\n હવે નવી ચેનલ બનાવીને પ્રારંભ કરો!</string>
+    <string name="create_a_channel">એક ચેનલ બનાવો</string>
+    <string name="create_a_channel_item">એક ચેનલ બનાવો...</string>
+    <string name="edit_channel">ચેનલ સંપાદિત કરો</string>
+    <string name="delete_selection">પસંદગી કાઢી નાંખો?</string>
+    <string name="delete_channel">ચેનલ કાઢી નાંખો?</string>
+    <string name="confirm_delete_channel">શું તમે ખરેખર આ ચેનલને કાઢી નાખવા માંગો છો?</string>
+    <string name="channel_deleted">ચેનલ સફળતાપૂર્વક કાઢી નાખવામાં આવી હતી.</string>
+    <string name="channel_failed_delete">ચેનલ આ સમયે કાઢી શકાઈ નથી. પછીથી ફરી પ્રયત્ન કરો.</string>
+    <string name="description">વર્ણન</string>
+    <string name="yes">હા</string>
+    <string name="no">ના</string>
+    <string name="show_optional_fields">વૈકલ્પિક ક્ષેત્રો બતાવો</string>
+    <string name="hide_optional_fields">વૈકલ્પિક ક્ષેત્રો છુપાવો</string>
+    <string name="save">સેવ</string>
+    <string name="channel_name">ચેનલ નામ</string>
+    <string name="title">શીર્ષક</string>
+    <string name="at">\@</string>
+    <string name="deposit">ડિપોઝિટ</string>
+    <string name="deposit_remains_yours">આ LBC તમારું રહે છે. નામ અનામત રાખવા માટે તે ડિપોઝિટ છે અને કોઈપણ સમયે પૂર્વવત્ થઈ શકે છે.</string>
+    <string name="storage_permission_rationale_download">LBRY ને તમારા ઉપકરણ પર ડાઉનલોડ સામગ્રી ઍક્સેસ કરવાની જરૂર છે.</string>
+    <string name="storage_permission_rationale_images">LBRY ને તમારા ડિવાઇસ સ્ટોરેજમાંથી છબીઓને લોડ કરવાની ઍક્સેસની જરૂર છે.</string>
+    <string name="select_thumbnail">થંબનેલ પસંદ કરો</string>
+    <string name="select_cover">કવર છબી પસંદ કરો</string>
+    <string name="undetermined_image_filepath">ફાઇલ પાથ પસંદ કરેલી છબી માટે નક્કી કરી શકાતો નથી. કૃપા કરીને કોઈ અલગ સ્થાન પર એક છબી પસંદ કરો.</string>
+    <string name="wait_for_upload">કૃપા કરીને વર્તમાન અપલોડ સમાપ્ત થાય ત્યાં સુધી રાહ જુઓ.</string>
+    <string name="image_upload_failed">છબી અપલોડ કરવાની વિનંતી નિષ્ફળ થઈ. મેહરબાની કરી ને ફરી થી પ્રયાસ કરો.</string>
+    <string name="uploading">અપલોડ કરી રહ્યું છે...</string>
+    <string name="please_enter_channel_name">કૃપા કરીને એક ચેનલ નામ દાખલ કરો.</string>
+    <string name="channel_name_invalid_characters">તમારી ચેનલના નામમાં અમાન્ય અક્ષરો છે.</string>
+    <string name="channel_name_already_created">તમે સમાન નામવાળી ચેનલ પહેલેથી જ બનાવી લીધી છે.</string>
+    <string name="please_enter_valid_deposit">કૃપા કરીને માન્ય થાપણની રકમ દાખલ કરો.</string>
+    <string name="deposit_more_than_balance">ડિપોઝિટ તમારું બેલેન્સ કરતાં વધારે ન હોઈ શકે.</string>
+    <string name="channel_save_failed">ચેનલ સેવ વિનંતી નિષ્ફળ. મેહરબાની કરી ને ફરી થી પ્રયાસ કરો.</string>
+    <string name="channel_save_successful">ચેનલ સફળતાપૂર્વક સાચવવામાં આવી હતી.</string>
+    <string name="item_pending_blockchain">દાવા બ્લોકચેન પર પ્રકાશિત બાકી છે. તમે થોડી ક્ષણોમાં દાવાને ઍક્સેસ અથવા સંપાદિત કરવામાં સમર્થ હશો.</string>
+    <string name="pending">બાકી</string>
+    <string name="create">બનાવો</string>
+    <string name="one_or_more_channels_failed_abandon">એક અથવા વધુ ચેનલો આ સમયે કાઢી શકાતી નથી. પછીથી ફરી પ્રયત્ન કરો.</string>
+    <plurals name="min_deposit_required">
+        <item quantity="one">%1$s ક્રેડિટ્સની ઓછામાં ઓછી થાપણ આવશ્યક છે.</item>
+        <item quantity="other">%1$s ક્રેડિટ્સની ઓછામાં ઓછી થાપણ આવશ્યક છે.</item>
+    </plurals>
+    <plurals name="confirm_delete_channels">
+        <item quantity="one">શું તમે ખરેખર પસંદ કરેલી ચેનલને કાઢી નાખવા માંગો છો?</item>
+        <item quantity="other">શું તમે ખરેખર પસંદ કરેલી ચેનલને કાઢી નાખવા માંગો છો?</item>
+    </plurals>
+    <plurals name="channels_deleted">
+        <item quantity="one">ચેનલો સફળતાપૂર્વક કાઢી નાખવામાં આવી હતી.</item>
+        <item quantity="other">ચેનલો સફળતાપૂર્વક કાઢી નાખવામાં આવી હતી.</item>
+    </plurals>
+
+    <!-- Rewards -->
+    <string name="lbry_credits_allow">LBRY ક્રેડિટ્સ તમને સામગ્રી પ્રકાશિત અથવા ખરીદવાની મંજૂરી આપે છે.</string>
+    <string name="free_credits_worth">તમે ઇમેઇલ સરનામું પ્રદાન કર્યા પછી તમે %1$s ની મફત ક્રેડિટ મેળવી શકો છો.</string>
+    <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="get_started">શરૂ કરો</string>
+    <string name="reward_code_placeholder">abc123</string>
+    <string name="claim">દાવો કરો</string>
+    <string name="please_enter_claim_code">દાવો કરવા માટે કૃપા કરીને કસ્ટમ રિવાર્ડ કોડ દાખલ કરો.</string>
+    <string name="unclaimed">દાવો ન કરેલ</string>
+    <string name="custom_reward_title">કસ્ટમ કોડ</string>
+    <string name="up_to">સુધી</string>
+    <string name="custom_reward_description">શું તમે કોઈ સુપરમોડેલ અથવા રોકસ્ટાર છો કે જેને કસ્ટમ રિવાર્ડ કોડ મળ્યો છે? અહીં તેનો દાવો કરો.</string>
+    <plurals name="claim_reward_message">
+        <item quantity="one">તમે ઇનામ તરીકે %1$s ક્રેડિટ્સનો દાવો કર્યો છે.</item>
+        <item quantity="other">તમે ઇનામ તરીકે %1$s ક્રેડિટ્સનો દાવો કર્યો છે.</item>
+    </plurals>
+    <plurals name="available_credits">
+        <item quantity="one">%1$s ઉપલબ્ધ ક્રેડિટ્સ</item>
+        <item quantity="other">%1$s ઉપલબ્ધ ક્રેડિટ્સ</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">પ્રકાશન માટે ક્રેડિટની જરૂર હોય છે.</string>
+    <string name="channel_creation_requires_credits">ચેનલ બનાવટ માટે ક્રેડિટની જરૂર હોય છે.</string>
+    <string name="earn_rewards_for_inviting">તમારા મિત્રોને આમંત્રિત કરવા માટે પુરસ્કારો કમાઓ.</string>
+    <string name="earn_some_credits_to_access">આ સામગ્રીને ઍક્સેસ કરવા માટે કેટલાક ક્રેડિટ્સ કમાઓ.</string>
+    <string name="tap_here_to_get_some">અહીં ટેપ મફત માટે અમુક મેળવો.</string>
+    <string name="free_credits_available">પારિતોષિકોમાં મફત ક્રેડિટ્સ ઉપલબ્ધ છે.</string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="one">પુરસ્કારોમાં %1$s નિશુલ્ક ક્રેડિટ્સ.</item>
+        <item quantity="other">પુરસ્કારોમાં %1$s નિશુલ્ક ક્રેડિટ્સ.</item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="one">એકાઉન્ટ બનાવ્યા પછી %1$s ની મફત ક્રેડિટ્સ મેળવો.</item>
+        <item quantity="other">એકાઉન્ટ બનાવ્યા પછી %1$s ની મફત ક્રેડિટ્સ મેળવો.</item>
+    </plurals>
+
+    <!-- Invites -->
+    <string name="lbry_invite_program">LBRY આમંત્રણ કાર્યક્રમ</string>
+    <string name="earn_extra_credits_invites">તમે એલબીઆરવાયનો ઉપયોગ કરવા માટે આમંત્રિત કરો છો તે દરેક વ્યક્તિ માટે વધારાના ક્રેડિટ્સ કમાઇ શકે છે.</string>
+    <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="invite_link">આમંત્રણ લિંક</string>
+    <string name="share_this_link">આ લિંક મિત્રો (અથવા દુશ્મનો) સાથે શેર કરો અને ક્રેડિટ્સ મેળવો જ્યારે તેઓ lbry.tv માં જોડાઓ.</string>
+    <string name="your_invite_link">તમારું આમંત્રણ લિંક</string>
+    <string name="customize_invite_link">આમંત્રણ લિંકને કસ્ટમાઇઝ કરો</string>
+    <string name="invite_by_email">ઇમેઇલ દ્વારા આમંત્રિત કરો</string>
+    <string name="invite_someone">કોઈને તમે ઇમેઇલ દ્વારા આમંત્રિત કરો અને ક્રેડિટ્સ કમાવો જ્યારે તેઓ lbry.tv માં જોડાતા હોય.</string>
+    <string name="invite_email_placeholder">imaginary@friend.com</string>
+    <string name="invite">આમંત્રણ</string>
+    <string name="invite_history">આમંત્રિત ઇતિહાસ </string>
+    <string name="earn_credits_for_inviting">મિત્ર, દુશ્મન, ફ્રીની અથવા કોઈ મિત્રને આમંત્રિત કરવા માટે ક્રેડિટ્સ કમાઓ. દરેકને સામગ્રીની સ્વતંત્રતાની જરૂર હોય છે.</string>
+    <string name="reward">પુરસ્કાર</string>
+    <string name="claimed">દાવો કરેલ</string>
+    <string name="claimable">દાવાપાત્ર</string>
+    <string name="unclaimable">અસ્વીકાર્ય</string>
+    <string name="invite_link_copied">આમંત્રિત લિંકની કૉપિ કરી.</string>
+    <string name="invite_sent_to">%1$s ને આમંત્રણ મોકલ્યું</string>
+
+    <!-- Library -->
+    <string name="downloads">ડાઉનલોડ્સ</string>
+    <string name="purchases">ખરીદીઓ</string>
+    <string name="history">ઇતિહાસ</string>
+    <string name="library_no_downloads">તમે આ ઉપકરણ પર કોઈ સામગ્રી ડાઉનલોડ કરી નથી.</string>
+    <string name="library_no_history">તમે આ ઉપકરણ પર કોઈ સામગ્રી જોઈ નથી.</string>
+    <string name="library_no_purchases">તમે તમારા એકાઉન્ટ પર કોઈ સામગ્રી ખરીદી નથી.</string>
+    <string name="hide">છુપાવો</string>
+    <string name="stats">આંકડા</string>
+    <string name="video">વિડિઓ</string>
+    <string name="audio">ઓડિયો</string>
+    <string name="images">છબીઓ</string>
+    <string name="mb">MB</string>
+    <string name="kb">KB</string>
+    <string name="gb">GB</string>
+    <string name="zero_mb">0MB</string>
+    <plurals name="confirm_delete_files">
+        <item quantity="one">શું તમે ખરેખર તમારા ઉપકરણમાંથી પસંદ કરેલી ફાઇલોને કાઢી નાખવા માંગો છો?</item>
+        <item quantity="other">શું તમે ખરેખર તમારા ઉપકરણમાંથી પસંદ કરેલી ફાઇલોને કાઢી નાખવા માંગો છો?</item>
+    </plurals>
+    <plurals name="files_deleted">
+        <item quantity="one">ફાઇલો સફળતાપૂર્વક કાઢી નાખવામાં આવી હતી.</item>
+        <item quantity="other">ફાઇલો સફળતાપૂર્વક કાઢી નાખવામાં આવી હતી.</item>
+    </plurals>
+
+    <!-- About -->
+    <string name="about_lbry">LBRY વિશે</string>
+    <string name="content_freedom">સામગ્રી સ્વતંત્રતા</string>
+    <string name="about_paragraph">LBRY એ એક મફત, ખુલ્લું અને સમુદાય સંચાલિત ડિજિટલ માર્કેટ પ્લેસ છે. સર્જકોએ સામગ્રી અપલોડ કરવા અને શેર કરવા અને તેમના પ્રયત્નો માટે LBRY ક્રેડિટ્સ કમાવવા માટે તે વિકેન્દ્રિત પીઅર-ટૂ-પીઅર કન્ટેન્ટ વિતરણ પ્લેટફોર્મ છે. વપરાશકર્તાઓ તેમને રુચિ છે તે વિડિઓઝ, સંગીત, ઇબુક્સ અને અન્ય ડિજિટલ સામગ્રીની વિશાળ પસંદગી શોધી શકશે.</string>
+    <string name="get_social">સામાજિક થવું</string>
+    <string name="social_paragraph">તમે ડિસકોર્ડ, ફેસબુક, ઇન્સ્ટાગ્રામ, ટ્વિટર અથવા રેડ્ડિટ પર LBRY ટીમ અને સમુદાયના સભ્યો સાથે સંપર્ક કરી શકો છો.</string>
+    <string name="app_info">એપ્લિકેશન માહિતી</string>
+    <string name="loading">લોડ કરી રહ્યું છે...</string>
+    <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;What is LBRY?&lt;/a&gt;</string>
+    <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Basics&lt;/a&gt;</string>
+    <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>
+    <string name="about_link_discord">&lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;Discord&lt;/a&gt;</string>
+    <string name="about_link_facebook">&lt;a href=\"https://www.facebook.com/LBRYio\"&gt;Facebook&lt;/a&gt;</string>
+    <string name="about_link_instagram">&lt;a href=\"https://www.instagram.com/LBRYio\"&gt;Instagram&lt;/a&gt;</string>
+    <string name="about_link_reddit">&lt;a href=\"https://reddit.com/r/lbry\"&gt;Reddit&lt;/a&gt;</string>
+    <string name="about_link_telegram">&lt;a href=\"https://t.me/lbryofficial\"&gt;Telegram&lt;/a&gt;</string>
+    <string name="about_link_twitter">&lt;a href=\"https://twitter.com/LBRYio\"&gt;Twitter&lt;/a&gt;</string>
+    <string name="update_mailing_preferences">મેઇલિંગ પસંદગીઓને અપડેટ કરો</string>
+    <string name="app_version">એપ્લિકેશન સંસ્કરણ</string>
+    <string name="lbry_sdk">LBRY એસડીકે</string>
+    <string name="platform">પ્લેટફોર્મ</string>
+    <string name="installation_id">ઇન્સ્ટોલેશન આઈડી</string>
+    <string name="firebase_token">ફાયરબેસ ટોકન</string>
+    <string name="logs">લોગ</string>
+    <string name="send_log">લોગ મોકલો</string>
+    <string name="connected_email">કનેક્ટેડ ઇમેઇલ</string>
+    <string name="unknown">અજાણ્યું</string>
+    <string name="cannot_find_lbrynet_log">lbrynet.log ફાઇલ મળી શકી નથી.</string>
+    <string name="cannot_share_lbrynet_log">પરવાનગી પ્રતિબંધોને લીધે lbrynet.log ફાઇલ શેર કરી શકાતી નથી.</string>
+
+    </resources>

@@ -194,6 +194,8 @@
     <string name="romanian">Rumeno</string>
     <string name="hindi">Hindi</string>
     <string name="greek">Greco</string>
+    <string name="catalan">Catalano</string>
+
     <string name="none">Nessuno</string>
     <string name="public_domain">Dominio pubblico</string>
     <string name="copyrighted">Coperto da diritti d\'autore</string>
@@ -332,6 +334,10 @@
     <string name="confirm_unlock_tips">Sei sicuro di voler sbloccare tutti i tuoi donaziones?</string>
     <string name="min_spend_required">Inserire un valore superiore a 0.0001 crediti.</string>
 
+    <string name="buy_lbc">Acquista LBC</string>
+    <string name="hash_not_supported">Il tuo device non supporta i requisiti minimi per garantire un acquisto sicuro.</string>
+    <string name="receive_address_not_set">Non hai impostato un indirizzo del portafoglio. Rigenera un nuovo indirizzo e riprova.</string>
+
     <plurals name="you_sent_credits">
         <item quantity="one">Hai spedito %1$s crediti</item>
         <item quantity="other">Hai spedito %1$s crediti</item>
@@ -367,6 +373,12 @@
     <string name="tag_limit_reached">Non puoi aggiungere più di 5 etichette.</string>
     <string name="send_a_tip">Invia una mancia</string>
     <string name="send_a_tip_to">Invia una mancia a %1$s</string>
+    <string name="support_this_content">Supporta questo contenuto</string>
+    <string name="support_info">Questo aumenterà l\'offerta totale per il contenuto, che migliorerà la possibilità di essere trovato quando attivo. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Canale per mostrare supporto come</string>
+    <string name="make_this_a_tip">Trasforma in mancia</string>
+    <string name="send_revocable_support">Invia un supporto revocabile</string>
+    <string name="send_lbc_tip">Invia una mancia di %1$s LBC</string>
     <string name="send_tip_info_content">Questo apparirà come una mancia per %1$s, che migliorerà la sua abilità di essere trovato quando attivo. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Scopri di più&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Questo apparirà come una mancia per %1$s, che migliorerà la capacità del canale di essere trovanto quando attivo. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Scopri di più&lt;/a&gt;.</string>
     <string name="cancel">Annulla</string>
@@ -382,6 +394,10 @@
     <plurals name="you_sent_a_tip">
         <item quantity="one">Hai inviato %1$s crediti come mancia, Mahalo!</item>
         <item quantity="other">Hai inviato %1$s crediti come mancia, Mahalo!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">Hai impostato %1$s credito come supporto. Puoi annullare il supporto in qualsiasi momento.</item>
+        <item quantity="other">Hai impostato %1$s crediti come supporto. Puoi annullare il supporto in qualsiasi momento.</item>
     </plurals>
 
     <!-- Verification -->
@@ -407,7 +423,6 @@
     <string name="not_interested">Non interessato</string>
     <string name="manual_reward_verification">Verifica manuale ricompense</string>
     <string name="account_undergo_review">Questo account deve essere sottoposto a revisione prima di poter partecipare al programma ricompense. Questo può avvenire in pochi minuti o alcuni giorni.</string>
-    <string name="request_to_be_verified">Se continui a vedere questo messaggio, per favore richiedi di essere verificato sul &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;Server LBRY Discord&lt;/a&gt;.</string>
     <string name="enjoy_free_content">Per favore goditi i contenuti liberi nel frattempo!</string>
     <string name="verify_phone_number">Verifca numero di telefono</string>
     <string name="enter_phone_verify_code">Per favore inserisci il codice di verifica inviato a %1$s</string>
@@ -416,7 +431,6 @@
     <string name="please_enter_valid_phone">Per favore inserire un numero di telefono valido.</string>
     <string name="please_enter_verification_code">Per favore inserisci il codice di verifica inviato al tuo numero di telefono.</string>
     <string name="fetch_current_user_error">L\'account utente non può essere recuperato al momento. Riprova più tardi.</string>
-
     <!-- Forms -->
     <string name="no_added_tags">Non hai ancora aggiunto nessuna etichetta. Aggiungi etichette per migliorare la scoperta.</string>
     <string name="form_no_tag_results">Non troviamo nuove etichette che non sono ancora state aggiunte.</string>
@@ -587,27 +601,4 @@
     <string name="cannot_find_lbrynet_log">Il file lbrynet.log non è stato trovato.</string>
     <string name="cannot_share_lbrynet_log">Il file lbrynet.log non può essere condiviso per restrizione dei permessi.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

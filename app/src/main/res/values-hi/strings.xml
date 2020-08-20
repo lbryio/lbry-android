@@ -373,6 +373,12 @@
     <string name="tag_limit_reached">आप 5 से ज्यादा टैग नहीं जोड़ सकते हैं</string>
     <string name="send_a_tip">एक टिप भेजें</string>
     <string name="send_a_tip_to"> %1$s को एक टिप भेजें</string>
+    <string name="support_this_content">इस सामग्री का समर्थन करें</string>
+    <string name="support_info"> इससे इस सामग्री के लिए समग्र बोली राशि बढ़ जाएगी, जिससे सक्रिय रहते हुए खोजे जाने की क्षमता बढ़ेगी। &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">समर्थन के रूप में दिखाने के लिए चैनल</string>
+    <string name="make_this_a_tip">इसे एक टिप बनाएं</string>
+    <string name="send_revocable_support">भेजने योग्य समर्थन भेजें</string>
+    <string name="send_lbc_tip">भेजें %1$s LBC टिप</string>
     <string name="send_tip_info_content">यह %1$s, के लिए एक टिप के रूप में दिखाई देगा और यह इसके खोजे जाने की क्षमता को बढ़ाएगा। &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">यह %1$s, के लिए एक टिप के रूप में दिखाई देगा और यह चैनल के खोजे जाने की  संभावना को बढ़ाएगा। &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">रद्द करें</string>
@@ -388,6 +394,10 @@
     <plurals name="you_sent_a_tip">
         <item quantity="one">आपने%1$s क्रेडिट टिप के रूप में भेजे हैं, धन्यवाद !</item>
         <item quantity="other">आपने %1$s क्रेडिटस टिप के रूप मेंं भेजे हैं। धन्यवाद !</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">आपने %1$s क्रेडिट स्पोर्ट के रूप मेंं स्टेक किए हैं। आप कभी भी अपनाा समर्थन वापस ले सकते हैैं।</item>
+        <item quantity="other">आपने %1$s  क्रेडिट्स स्पोर्ट के रूप मेंं स्टेक किए हैं। आप किसी भी समय अपने समर्थन को रद्द कर सकते हैं। </item>
     </plurals>
 
     <!-- Verification -->
@@ -413,7 +423,6 @@
     <string name="not_interested">रुचि नहीं है</string>
     <string name="manual_reward_verification">स्वतः इनाम सत्यापन</string>
     <string name="account_undergo_review">इनाम कार्यक्रम में भाग लेने के लिए इस खाते को रिव्यू से गुजरना होगा। इसमें कई मिनट या कई दिन भी लग सकते हैं।</string>
-    <string name="request_to_be_verified">अगर आप निरंतर यह मैसेज देख रहे हैं तो आप सत्यापन के लिए एक निवेदन यहां भेजें  &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
     <string name="enjoy_free_content">इस दौरान निशुल्क सामग्री का आनंद उठाएं</string>
     <string name="verify_phone_number">फोन नंबर को सत्यापित करें</string>
     <string name="enter_phone_verify_code"> %1$s इस पर भेजा हुआ सत्यापन कोड दर्ज करें</string>
@@ -422,7 +431,6 @@
     <string name="please_enter_valid_phone">कृपया एक वैध फोन नंबर दर्ज करें</string>
     <string name="please_enter_verification_code">अपने फोन नंबर पर भेजे गए सत्यापन कोड को दर्ज करें</string>
     <string name="fetch_current_user_error">उपभोक्ता खाता इस समय नहीं खोला जा सका है। कृपया कुछ देर बाद प्रयास करें।</string>
-
     <!-- Forms -->
     <string name="no_added_tags">आपने अभी तक कोई भी टैक्स नहीं जोड़े हैं। खोजे जाने की संभावना बढ़ाने के लिए टैक्स जोड़ें।</string>
     <string name="form_no_tag_results">हम नए टैक्स ढूंढने में असमर्थ रहे हैं जो कि अभी तक नहीं जोड़े गए।</string>
@@ -593,27 +601,4 @@
     <string name="cannot_find_lbrynet_log"> lbrynet.log फाइल नहीं ढूंढी जा सकी।</string>
     <string name="cannot_share_lbrynet_log">lbrynet.log फाइल शेयर नहीं की जा सकती क्योंकि इसकी अनुमति नहीं है।</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

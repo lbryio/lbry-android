@@ -1,0 +1,662 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">LBRY</string>
+    <string name="navigation_drawer_open">Показати навігаційну панель</string>
+    <string name="navigation_drawer_close">Сховати навігаційну панель</string>
+
+    <!-- Nav menu -->
+    <string name="find_content">Шукати контент</string>
+    <string name="your_content">Ваш контент</string>
+    <string name="wallet">Гаманець</string>
+    <string name="following">Підписки </string>
+    <string name="editors_choice">Обране редакцією</string>
+    <string name="your_tags">Ваші теги</string>
+    <string name="all_content">Увесь контент</string>
+    <string name="channels">Канали</string>
+    <string name="library">Бібліотека</string>
+    <string name="publishes">Публікації</string>
+    <string name="new_publish">Нова публікація</string>
+    <string name="rewards">Нагороди</string>
+    <string name="invites">Запрошення</string>
+    <string name="settings">Налаштування</string>
+    <string name="about">Про нас</string>
+    <string name="sign_in">Авторизуватися</string>
+    <string name="startup_failed">Запуск додатку не вдався. Будь ласка, перевірте Ваше підключення до мережі та спробуйте ще раз. Якщо проблема не зникає, напишіть на hello@lbry.com.</string>
+    <string name="no_claim_search_content">Нема що показувати зараз. Перевірте трохи пізніше.</string>
+
+    <!-- Welcome Page -->
+    <string name="welcome_to_lbry">Вітаємо в LBRY.</string>
+    <string name="welcome_paragraph">LBRY - це платформа, керована спільнотою, в якій ви можете знаходити та публікувати відео, музику, книги та ін.</string>
+    <string name="welcome_tos">Продовжуючи, я погоджуюся з  &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; та підтверджую, що мені більше 13 років. </string>
+    <string name="welcome_please_wait">Зачекайте, будь-ласка, доки ми приготуємо деякі речі...</string>
+    <string name="use_lbry">Використовуйте LBRY »</string>
+
+    <!-- URI bar -->
+    <string name="uri_placeholder">Шукати кіно, музику та інше</string>
+
+    <!-- Following page -->
+    <string name="find_channels_to_follow">Знайдіть канали для підписки</string>
+    <string name="channels_you_follow">Підписки</string>
+    <string name="discover">Знайти нове</string>
+    <string name="lbry_works_better">LBRY працює краще, якщо ви стежите за принаймні 5 авторами, які вам подобаються. Увійдіть, щоб підтримати авторів, на яких ви підписані, якщо у вас вже є обліковий запис.</string>
+    <string name="select_five_subscriptions">Будь ласка, оберіть 5 каналів, щоби продовжити. </string>
+    <string name="n_remaining">%1$dзалишилося...</string>
+    <string name="done">Готово</string>
+    <string name="all">Усі</string>
+    <string name="discover_channels">Знайти нові канали</string>
+
+    <!-- Claim lists -->
+    <string name="anonymous">Анонімно</string>
+
+    <!-- File view -->
+    <string name="tags">Теги</string>
+    <string name="share">Поділитися</string>
+    <string name="repost">Репостнути </string>
+    <string name="tip">Чайові</string>
+    <string name="edit">Редагувати</string>
+    <string name="delete">Видалити</string>
+    <string name="download">Завантажити</string>
+    <string name="open">Відкрити </string>
+    <string name="report">Поскаржитися</string>
+    <string name="loading_decentralized_data">Завантаження децентралізованих даних...</string>
+    <string name="related_content">Схожий контент</string>
+    <string name="comments">Коментарі </string>
+    <string name="no_comments">Нема коментарів, щоби показати зараз. </string>
+    <string name="sdk_initializing_comments">Коментарі будуть показані після ініціалізації сервісів. </string>
+    <string name="comment_error">Ваш коментар не може бути опублікованим зараз. Будь ласка, спробуйте ще раз пізніше. </string>
+    <string name="share_lbry_content">Поділитися контентом LBRY</string>
+    <string name="view">Подивитись </string>
+    <string name="play">Відтворити</string>
+    <string name="unsupported_content">Непідтримуваний контент  </string>
+    <string name="unsupported_content_desc">Вибачте, мі не здатні показати цей контент у додатку. Ви можете знайти файл %1$s у папці завантажень.</string>
+    <string name="nothing_at_this_location">Тут нічого немає.</string>
+    <string name="publish_something_here">Опублікуйте що-небудь тут</string>
+    <string name="cannot_view_claim">Немає доступу до цього контенту зараз. Будь ласка, спробуйте трохи пізніше.</string>
+    <string name="zero_duration">0:00</string>
+    <string name="claim_file_not_found">Файл з \"%1$s\" не існує.</string>
+    <string name="confirm_purchase">Підтвердити покупку </string>
+    <string name="delete_file">Видалити файл</string>
+    <string name="confirm_delete_file_message">Ви впевнені, що хочете видали цей файл з пристрою? </string>
+    <string name="unable_to_view_url">Не вдалося завантажити %1$s. Будь ласка, спробуйте пізніше ще раз.</string>
+    <string name="no_cast_session_available">Каст-сесія не доступна зараз</string>
+    <string name="delete_content">Видалити контент?</string>
+    <string name="confirm_delete_content_message">Ви впевнені, що бажаєте прибрати цю публікацію? Жоден файл не буде видалений з вашого пристрою.</string>
+    <string name="content_deleted">Цей контент був успішно видалений з блокчейну.</string>
+    <string name="content_failed_delete">Контент не може бути видалений зараз. Будь ласка, спробуйте пізніше ще раз.</string>
+    <string name="comment">Прокоментувати </string>
+    <string name="comment_as">Прокоментувати як</string>
+    <string name="please_enter_comment">Будь ласка, введіть текст коментарю  </string>
+    <string name="please_select_channel">Будь ласка, оберіть канал, щоби опублікувати коментар з нього.</string>
+    <string name="comment_posted">Ваш коментар був успішно опублікований.</string>
+    <string name="please_select_repost_channel">Будь ласка, оберіть канал на який буде здійснено репост.</string>
+    <string name="reply">Відповісти </string>
+    <string name="replying_to">Відповідаючи %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="one">Опублікувати та пожертвувати %1$s кредит? </item>
+        <item quantity="few">Опублікувати та пожертвувати %1$s кредитів? </item>
+        <item quantity="many">Опублікувати та пожертвувати %1$s кредитів? </item>
+        <item quantity="other">Опублікувати та пожертвувати %1$s кредитів? </item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="one">Запостити за %1$s кредит</item>
+        <item quantity="few">Запостити за %1$s кредитів</item>
+        <item quantity="many">Запостити за %1$s кредитів</item>
+        <item quantity="other">Запостити за %1$s кредитів</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="one">Ваш коментар буде опублікований з пожертвою у %1$s кредит для %2$s</item>
+        <item quantity="few">Ваш коментар буде опублікований з пожертвою у %1$s кредитів для %2$s</item>
+        <item quantity="many">Ваш коментар буде опублікований з пожертвою у %1$s кредитів для %2$s</item>
+        <item quantity="other">Ваш коментар буде опублікований з пожертвою у %1$s кредитів для %2$s</item>
+    </plurals>
+    <plurals name="view_count">
+        <item quantity="one">%1$sперегляд</item>
+        <item quantity="few">%1$sпереглядів</item>
+        <item quantity="many">%1$sпереглядів</item>
+        <item quantity="other">%1$sпереглядів</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Буде здійснене придбання \"%1$s\" за %2$sкредит</item>
+        <item quantity="few">Буде здійснене придбання \"%1$s\" за %2$s кредитів</item>
+        <item quantity="many">Буде здійснене придбання \"%1$s\" за %2$s кредитів</item>
+        <item quantity="other">Буде здійснене придбання \"%1$s\" за %2$sкредитів</item>
+    </plurals>
+
+    <!-- Channel view -->
+    <string name="no_channel_info">Тут нічого немає поки що.\nБудь ласка, перевірте пізніше. </string>
+    <string name="content">Контент</string>
+    <string name="website">Веб-сайт</string>
+    <string name="reposted">репостнув </string>
+    <plurals name="follower_count">
+        <item quantity="one">%1$s підписник </item>
+        <item quantity="few">%1$s підписників</item>
+        <item quantity="many">%1$s підписників</item>
+        <item quantity="other">%1$s підписників  </item>
+    </plurals>
+
+    <!-- Publish -->
+    <string name="no_publishes_created">Схоже, що у Вас немає опублікованого контенту на LBRY поки що. </string>
+    <string name="record">Записати</string>
+    <string name="take_photo">Сфотографувати</string>
+    <string name="upload_file">Завантажити файл</string>
+    <string name="no_videos_found">Ми не змогли знайти ніяких відео на вашому пристрої. Зробіть фото чи запишіть відео для початку.</string>
+    <string name="loading_videos">Будь ласка, зачекайте поки ми завантажуємо Ваші відео...</string>
+    <string name="storage_permission_rationale_videos">LBRY потребує доступ для публікації та відображення Ваших відео, зображень та інших файлів з Вашого пристрою. </string>
+    <string name="camera_permission_rationale_record">LBRY потребує доступ до камери для запису відео.</string>
+    <string name="camera_permission_rationale_photo">LBRY потребує доступ до камери для фотографування.</string>
+    <string name="edit_content">Редагувати </string>
+    <string name="mature_tags">Дорослі теги</string>
+    <string name="price">Ціна</string>
+    <string name="free_publish">Ваш контент буде безкоштовним. Натисніть, щоби вказати ціну.</string>
+    <string name="content_address">Адреса контенту</string>
+    <string name="randomize">Обрати навмання </string>
+    <string name="address">Адреса </string>
+    <string name="content_address_desc">Адреса, за якою люди можуть знайти Ваш контент (наприклад lbry://myvideo)</string>
+    <string name="license">Ліцензія</string>
+    <string name="license_desc">Опис ліцензії</string>
+    <string name="additional_options">Додаткові налаштування</string>
+    <string name="show_extra_fields">Показати додаткові поля</string>
+    <string name="hide_extra_fields">Сховати додаткові поля</string>
+    <string name="no_file_found">Файл для публікації не був знайдений.</string>
+    <string name="publish_invalid_claim_type">Невірний матеріал для редагування. </string>
+    <string name="video_optimization">Оптимізація відео</string>
+    <string name="thumbnail_creation_failed">Не вдалося автоматично створити превью для Вашого файлу. </string>
+    <string name="video_being_optimized">Відео оптимізується для кращого відображення на різних пристроях. Ви можете поки що заповнити поля, що залишилися. </string>
+    <string name="video_optimized">Відео було успішно оптимізоване для кращого відображення на різних пристроях. Будь ласка, продовжіть для публікації Вашого контенту.</string>
+    <string name="video_optimize_failed">Відео не може бути оптимізовано. Файл буде завантажений без змін.</string>
+    <string name="completed_video_duration">Загальна тривалість відео: %1$s</string>
+    <string name="sdk_initializing_publish">Ви не можете публікувати контент прямо зараз, тому що фоновий сервіс все ще ініціалізується.</string>
+    <string name="publish_successful">Ваш контент був успішно опублікований. Його поява у блокчейні може вимагати деякого часу. </string>
+    <string name="transcode_in_progress">Відбувається оптимізація відео. Якщо хочете відмінити, нажміть Відмінити знизу. </string>
+    <string name="optimization_in_progress">Відбувається оптимізація відео.</string>
+    <string name="cannot_capture_video">Немає додатку для взаємодії з камерою для запису відео на пристрої. </string>
+    <string name="cannot_take_photo">Немає додатку для взаємодії з камерою для фотографування на пристрої. </string>
+
+    <string name="please_provide_title">Будь ласка, введіть назву. </string>
+    <string name="please_specify_address">Будь ласка, введіть адресу за якою люди зможуть знайти Ваш контент.</string>
+    <string name="address_invalid_characters">Ваш контент містить неприпустимі символи. </string>
+    <string name="address_already_used">Ви вже публіковали за цією адресою. Будь ласка, введіть нову адресу. </string>
+    <string name="no_file_selected">Файл не був обраний. Будль ласка, зробіть фото оберіть відео чи файл перед публікацією.</string>
+    <string name="price_amount_not_set">Будь ласка, введіть ціну або натисніть, щоби зробити цей контент безкоштовним. </string>
+    <string name="publish_no_thumbnail">Будь ласка, оберіть превью для завантаження перед публікацією. </string>
+    <string name="publish_thumbnail_in_progress">Будь ласка, зачекайте закінчення завантаження превью перед публікацією.</string>
+
+    <string name="language">Мова</string>
+    <string name="english">Англійська</string>
+    <string name="chinese">Китайська</string>
+    <string name="french">Французька</string>
+    <string name="german">Німецька</string>
+    <string name="japanese">Японська </string>
+    <string name="russian">Російська</string>
+    <string name="spanish">Іспанська</string>
+    <string name="indonesian">Індонезійська</string>
+    <string name="italian">Італійська </string>
+    <string name="dutch">Нідерландська</string>
+    <string name="turkish">Турецька</string>
+    <string name="polish">Польська</string>
+    <string name="malay">Малайська</string>
+    <string name="portuguese">Португальська</string>
+    <string name="vietnamese">В\'єтнамська</string>
+    <string name="thai">Тайська</string>
+    <string name="arabic">Арабська</string>
+    <string name="czech">Чешська</string>
+    <string name="croatian">Хорватська</string>
+    <string name="cambodian">Кхмерська</string>
+    <string name="korean">Корейська</string>
+    <string name="norwegian">Норвезька</string>
+    <string name="romanian">Румунська</string>
+    <string name="hindi">Гінді</string>
+    <string name="greek">Грецька</string>
+    <string name="catalan">Каталонська</string>
+
+    <string name="none">Нічого</string>
+    <string name="public_domain">Суспільне надбання</string>
+    <string name="copyrighted">Захищено авторським правом</string>
+    <string name="cca_4_0_international">Creative Commons Attribution 4.0 International</string>
+    <string name="cca_sa_4_0_international">Creative Commons Attribution-ShareAlike 4.0 International</string>
+    <string name="cca_nd_4_0_international">Creative Commons Attribution-NoDerivatives 4.0 International</string>
+    <string name="cca_nc_4_0_international">Creative Commons Attribution-NonCommercial 4.0 International</string>
+    <string name="cca_nc_sa_4_0_international">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</string>
+    <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
+
+    <string-array name="publish_currencies">
+        <item>LBC</item>
+        <item>Долари США </item>
+    </string-array>
+
+    <!-- Publishes -->
+    <string name="one_or_more_publishes_failed_abandon">Один або декілька елементів контенту не можуть бути видалені зараз. Будь ласка, спробуйте ще раз пізніше. </string>
+    <plurals name="confirm_delete_publishes">
+        <item quantity="one">Ви впевнені, що бажаєте видалити обраний елемент?</item>
+        <item quantity="few">Ви впевнені, що бажаєте видалити обрані елементи?</item>
+        <item quantity="many">Ви впевнені, що бажаєте видалити обрані елементи?</item>
+        <item quantity="other">Ви впевнені, що бажаєте видалити обрані елементи? </item>
+    </plurals>
+    <plurals name="publishes_deleted">
+        <item quantity="one">Елемент контенту був успішно видалений.</item>
+        <item quantity="few">Елементи контенту були успішно видалені.</item>
+        <item quantity="many">Елементи контенту були успішно видалені.</item>
+        <item quantity="other">Елементи контенту були успішно видалені.</item>
+    </plurals>
+
+    <!-- Splash -->
+    <string name="oops_something_went_wrong">Ой! Щось пішло не так. </string>
+    <string name="installation_id_loaded">Завантаження ID інсталяції.</string>
+    <string name="known_tags_loaded">Завантаження локальних відомих та популярних тегів.</string>
+    <string name="exchange_rate_loaded">Завантаження обмінного курсу LBC/Долари США.</string>
+    <string name="user_authenticated">Користувач аутентифікований. </string>
+    <string name="installation_registered">Інсталяція зареєстрована. </string>
+    <string name="subscriptions_loaded">Завантаження підписок. </string>
+    <string name="subscriptions_resolved">Підтвердженні підписки</string>
+
+    <!-- Settings -->
+    <string name="user_interface">Контент &amp; Інтерфейс</string>
+    <string name="other">Інші</string>
+    <string name="enable_background_playback">Увімкнути відтворення на тлі </string>
+    <string name="enable_dark_mode">Темна тема </string>
+    <string name="show_mature_content">Показати контент для дорослих</string>
+    <string name="show_url_suggestions">Показати URL пропозиції</string>
+    <string name="notifications">Повідомлення</string>
+    <string name="subscriptions">Підписки</string>
+    <string name="content_interests">Вподобання</string>
+
+    <string name="keep_sdk_in_background">Залишайте сервіс LBRY працювати у фоновому режимі для покращення роботи гаманця та мережі</string>
+    <string name="participate_in_data_network">Приймати участь у мережі даних (потребує перезапуску додатку)</string>
+
+    <!-- URL suggestions -->
+    <string name="search_url_title">%1$s - Пошук</string>
+    <string name="tag_url_title">%1$s - Тег</string>
+    <string name="search_url_desc">Шукати \'%1$s\'</string>
+    <string name="explore_tag_url_desc">Шукати за тегом \'%1$s\'</string>
+    <string name="view_file_url_desc">Подивитися контент %1$s</string>
+    <string name="view_channel_url_desc">Подивитися %1$s канал</string>
+
+    <!-- Search -->
+    <string name="search_no_results">Нічого не було знайдено по запиту \'%1$s\'. Будь ласка, введіть інший запит.</string>
+    <string name="search_no_query">Ви можете шукати будь-що, включаючи кіно, музику, електронні книги, програми та багато іншого.</string>
+    <string name="no_related_content">Нема нічого схожого для показу зараз.</string>
+
+    <!-- Wallet -->
+    <string name="balance">Рахунок </string>
+    <string name="you_currently_have">У Вас зараз є</string>
+    <string name="convert_credits">Ви можете обміняти кредити на долари США та зняти ці гроші за допомогою обміннику. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
+    <string name="you_also_have">У Вас також є</string>
+    <string name="you_staked">Ви стейкнули </string>
+    <string name="in_tips">в чайових</string>
+    <string name="in_your_publishes">у Ваших публікаціях</string>
+    <string name="in_your_supports">у Ваших підтримках</string>
+    <string name="earn_more_tips">Заробляйте більше чайових, завантажуючи класні відео</string>
+    <string name="sdk_initializing">Фоновий сервіс все ще ініціалізується...</string>
+    <string name="sdk_still_initializing">Фоновий сервіс все ще ініціалізується. Ви можете шукати та переглядати у цей час.</string>
+    <string name="sdk_initializing_functionality">Ви не можете публікувати контент прямо зараз, тому що фоновий сервіс все ще ініціалізується.</string>
+
+    <string name="backup_synced">Резервна копія вашого гаманця синхронізується з lbry.tv</string>
+    <string name="backup_notsynced">На даний момент ваш гаманець не синхронізовано з lbry.tv. Ви несете відповідальність за створення резервної копії гаманця.</string>
+    <string name="synced_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/account-sync\"&gt;What does this mean?&lt;/a&gt;</string>
+    <string name="backup_what_does_this_mean">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;What does this mean?&lt;/a&gt;</string>
+
+    <string name="receive_credits">Отримати кредити</string>
+    <string name="use_this_address_hint">Використовувайте цей адрес гаманця задля отримання кредитів від інших користувачів ( або від Вас самих)</string>
+    <string name="get_new_address">Отримати нову адресу </string>
+    <string name="generate_address_hint">Ви можете згенерувати нову адресу у будь-який момент, будь-яка попередня адреса буде існувати і надалі. Використання декількох адрес може бути зручним для отримання платежів з декількох джерел.</string>
+
+    <string name="send_credits">Надіслати кредити</string>
+    <string name="recipient_address">Адреса приймача</string>
+    <string name="recipient_address_placeholder">bbFxRyXXXXXXXXXXXZD8nE7XTLUxYnddTs</string>
+    <string name="amount">Кількість</string>
+    <string name="send">Надіслати</string>
+
+    <string name="recent_transactions">Нещодавні транзакції </string>
+    <string name="view_all">Подивитися всі</string>
+    <string name="receive">Отримати</string>
+    <string name="spend">Витратити</string>
+    <string name="publish">У публікаціях </string>
+    <string name="support">У підтримках</string>
+    <string name="abandon">Залишити</string>
+    <string name="channel">Канал</string>
+    <string name="channel_update">Оновлення каналу</string>
+    <string name="publish_update">Оновлення публікації</string>
+
+    <string name="wallet_sync">Синхронізація гаманця </string>
+    <string name="sync_status">Статус синхронізації </string>
+    <string name="on">Увімкнути</string>
+    <string name="off">Вимкнути</string>
+    <string name="email">Пошта</string>
+    <string name="no_connected_email">Немає підключеної пошти</string>
+    <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
+    <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
+    <string name="zero">0</string>
+    <string name="lbc">LBC</string>
+
+    <string name="account_recommended">Рекомендації</string>
+    <string name="wallet_account_desc">lbry.tv акаунт дає можливість отримувати винагороди, відновити гаманець та синхронізовувати усі дані.</string>
+    <string name="wallet_without_account">Без акаунту Ви приймаєте на себе усю відповідальність за захист Вашого гаманцю та даних LBRY.</string>
+    <string name="skip_account">Пропустити створення акаунту</string>
+    <string name="sign_up">Зареєструватися</string>
+    <string name="address_copied">Адреса скопійована</string>
+
+    <string name="invalid_recipient_address">Будь ласка, введіть дійсний адрес для відправлення кредитів.</string>
+    <string name="insufficient_balance">Недостатньо коштів</string>
+    <string name="invalid_amount">Будь ласка, введіть дійсну кількість </string>
+    <string name="send_credit_error">Ваші кредити не можуть бути відправлені зараз. Будь ласка, спробуйте пізніше.</string>
+    <string name="loading_transactions">Завантаження транзакцій...</string>
+    <string name="no_recent_transactions">Немає нещодавніх транзакцій для показу.</string>
+    <string name="no_transactions">Немає транзакцій для показу зараз.</string>
+    <string name="tx_list_fee">комісія %1$s</string>
+    <string name="transaction_history">Історія транзакцій</string>
+
+    <string name="unlock">Разблокувати</string>
+    <string name="unlock_tips">Дозволити пожертвування?</string>
+    <string name="confirm_unlock_tips">Ви впевнені, що бажаєте розблокувати усі пожертвування? </string>
+    <string name="min_spend_required">Будь ласка, введіть кількість більшу за 0.0001 кредитів.</string>
+
+    <string name="buy_lbc">Придбати LBC</string>
+    <string name="hash_not_supported">Ваш пристрій не підтримує мінімальні вимоги для забезпечення покупки.</string>
+    <string name="receive_address_not_set">Ви не маєте адресу гаманця поки що. Будь ласка, згенеруйте нову адресу та спробуйте ще раз.</string>
+
+    <plurals name="you_sent_credits">
+        <item quantity="one">Ви відправили %1$s кредит</item>
+        <item quantity="few">Ви відправили %1$s кредитів</item>
+        <item quantity="many">Ви відправили %1$s кредитів</item>
+        <item quantity="other">Ви відправили %1$s кредитів</item>
+    </plurals>
+
+    <!-- Dialogs -->
+    <string name="customize_your_tags">Налаштуйте Ваші теги</string>
+    <string name="sort_content_by">Сортувати за</string>
+    <string name="content_from">Контент з</string>
+    <string name="trending_content">Популярне </string>
+    <string name="new_content">Нове</string>
+    <string name="top_content">Краще</string>
+    <string name="trending">Популярне</string>
+    <string name="top">Краще</string>
+    <string name="new_text">Нові</string>
+    <string name="past_24_hours">Останні 24 години</string>
+    <string name="past_week">Попередній тиждень</string>
+    <string name="past_month">Попередній місяць </string>
+    <string name="past_year">Попередній рік</string>
+    <string name="all_time">Увесь час </string>
+    <string name="from">з</string>
+    <string name="for_text">для</string>
+    <string name="filter_for">Сортувати для</string>
+    <string name="everyone">Всіх</string>
+    <string name="tags_you_follow">Підписки</string>
+    <string name="customize">Налаштувати</string>
+    <string name="not_yet_implemented">Обране ще не доступно для перегляду.</string>
+    <string name="customize_tags_hint">Схоже, що Ви поки що не підписані на жоден з тегів.</string>
+    <string name="search_for_more_tags">Знайти більше тегів</string>
+    <string name="no_followed_tags">Схоже, що Ви поки що не підписані на жоден з тегів. Почніть, додавши теги, які Вам цікаві!</string>
+    <string name="no_tag_results">Ми не змогли знайти нових тегів, на які Ви ще не були підписані.</string>
+    <string name="tag_already_added">Тег \'%1$s\' вже був доданий.</string>
+    <string name="tag_limit_reached">Ви не можете додати більше 5 тегів.</string>
+    <string name="send_a_tip">Пожертвувати</string>
+    <string name="send_a_tip_to">Пожертвувати %1$s</string>
+    <string name="support_this_content">Підтримайте цей контент</string>
+    <string name="support_info">Це збільшить загальну кількість вкладу в цей контент, що збільшить його можливіть бути знайденим, доки це активно. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Показати як підтримку від каналу </string>
+    <string name="make_this_a_tip">Зробити це пожертвуванням </string>
+    <string name="send_revocable_support">Надіслати Відкликаєму Підтримку </string>
+    <string name="send_lbc_tip">Надіслати пожертвування  у %1$s LBC </string>
+    <string name="send_tip_info_content">Цей внесок для %1$s збільшить його можливість бути знайденим, доки активний. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="send_tip_info_channel">Цей внесок для %1$s збільшить можливість каналу бути знайденим, доки активний. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="cancel">Відмінити</string>
+    <string name="repost_title">Репост %1$s</string>
+    <string name="repost_your_favorite">Репостніть, що сподобалось Вам, щоб допомогти іншим людям знайти це! </string>
+    <string name="channel_to_post_on">Канал для посту</string>
+    <string name="show_advanced">Показати більше</string>
+    <string name="hide_advanced">Сховати</string>
+    <string name="name">Назва</string>
+    <string name="min_deposit">0.001</string>
+    <string name="content_successfully_reposted">Успішно репостнуто!</string>
+    <string name="repost_name_invalid_characters">Назва репосту містить неприпустимі символи. </string>
+    <plurals name="you_sent_a_tip">
+        <item quantity="one">Ви пожертвували %1$s кредит, дякуємо! </item>
+        <item quantity="few">Ви пожертвували %1$s кредитів, дякуємо! </item>
+        <item quantity="many">Ви пожертвували %1$s кредитів, дякуємо! </item>
+        <item quantity="other">Ви пожертвували %1$s кредитів, дякуємо! </item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">Ви зберігаєте %1$s кредит як підтримку. Ви можете забрати Вашу підтримку у будь-який час. </item>
+        <item quantity="few">Ви зберігаєте %1$s кредитів як підтримку. Ви можете забрати Вашу підтримку у будь-який час. </item>
+        <item quantity="many">Ви зберігаєте %1$s кредитів як підтримку. Ви можете забрати Вашу підтримку у будь-який час. </item>
+        <item quantity="other">Ви зберігаєте %1$s кредитів як підтримку. Ви можете забрати Вашу підтримку у будь-який час. </item>
+    </plurals>
+
+    <!-- Verification -->
+    <string name="provide_email_address">Будь ласка, надайте адресу електронної пошти</string>
+    <string name="email_placeholder">you@example.com</string>
+    <string name="email_sent_to">Лист було надіслано на</string>
+    <string name="please_click_link">Будь ласка, натисніть на посилання у повідомленні для завершення входу. </string>
+    <string name="resend">Надіслати ще раз</string>
+    <string name="continue_text">Продовжити</string>
+    <string name="provide_valid_email">Будь ласка, надайте дійсну адресу електронної пошти</string>
+    <string name="please_follow_instructions">Будь ласка, слідуйте інструкціям у листі, що був надісланий на Вашу пошту.</string>
+    <string name="sign_in_successful">Ви успішно увійшли у lbry.tv</string>
+    <string name="retrieving_account_information">Отримання даних Вашого акаунта...</string>
+    <string name="apply_wallet_data">Застосування даних гаманця...</string>
+    <string name="please_enter_your_password">Будь ласка, введіть пароль Вашого гаманця.</string>
+    <string name="please_enter_a_password">Будь ласка, введіть пароль для захисту Вашого гаманця.</string>
+    <string name="wallet_security_purposes">Зверніть увагу: для захисту гаманця, LBRY не здатен змінити Ваш пароль</string>
+    <string name="password">Пароль</string>
+    <string name="enable_sync">Включити синхронізацію </string>
+    <string name="wallet_sync_op_failed">Синхронізація гаманцю не може бути завершена зараз. Будь ласка, спробуйте ще раз пізніше. Якщо проблема не зникає, напишіть на hello@lbry.com.</string>
+    <string name="phone_number">Номер телефону </string>
+    <string name="enter_phone_number">Будь ласка, введіть номер телефону.</string>
+    <string name="not_interested">Не зацікавлений</string>
+    <string name="manual_reward_verification">Ручна Верифікація Винагород </string>
+    <string name="reward_verification">Підтвердження винагород </string>
+    <string name="social_media_verification">Підтвердження за допомогою соціальних мереж</string>
+    <string name="skip_the_queue">Пропустити Чергу</string>
+    <string name="skip_queue_button_text">Попустити за $%1$s</string>
+    <string name="account_undergo_review">Цей акаунт має пройти перевірку перед прийняттям участі у програмі винагород. Це може зайняти від декількох хвилин до декількох днів.</string>
+    <string name="get_instantly_verified">Ви можете бути підтверджені миттєво для участі у програмі винагород за допомогою акаунту Twitter або пропустіть чергу ручного підтвердження. </string>
+    <string name="twitter_verification">Підтвердження за допомогою Twitter</string>
+    <string name="twitter_verification_desc">Отримайте миттєве підтвердження, використавши акаунт Twitter. Ваша пошта Twitter має збігатися з поштою, яку Ви надали, а ваш акаунт має бути активним.  </string>
+    <string name="twitter_verify">Підтвердіть за допомогою Twitter </string>
+    <string name="skip_queue_verification">Пропустити Чергу</string>
+    <string name="skip_queue_verification_desc">Пропустіть ручну верифікацію сплативши внесок для миттєвого початку участі у програмі винагород. </string>
+    <string name="request_to_be_verified">Будь ласка, зробіть запит верифікації у &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;. Ручне підтвердження може зайняти скільки-завгодно від декількох хвилин до декількох днів. </string>
+    <string name="enjoy_free_content">А поки що насолоджуйтесь безкоштовним контентом! </string>
+    <string name="verify_phone_number">Підтвердіть номер телефону </string>
+    <string name="enter_phone_verify_code">Будь ласка, введіть код підтвердження, надісланий на %1$s </string>
+    <string name="code_placeholder">0000</string>
+    <string name="verify">Підтвердіть</string>
+    <string name="please_enter_valid_phone">Будь ласка, введіть дійсний номер телефону.</string>
+    <string name="please_enter_verification_code">Будь ласка, введіть код підтвердження, надісланий на Ваш номер телефону.</string>
+    <string name="fetch_current_user_error">Акаунт не може бути відновлений зараз. Будь ласка, спробуйте ще раз пізніше.</string>
+    <string name="purchase_request_pending">Ваша запит на придбання оброблюється. Будь ласка, пишіть на support@lbry.com.</string>
+    <string name="purchase_request_failed_error">Ваш запит придбання не може бути оброблений зараз. Будь ласка, пишіть на support@lbry.com.</string>
+    <string name="twitter_account_ineligible">Ваш акаунт Twitter недоступний зараз: %1$s</string>
+    <string name="twitter_verification_not_approved">Ваш акаунт не був підтверджений для участі у програмі винагород. Будь ласка, спробуйте ще раз пізніше. </string>
+    <string name="twitter_verification_failed">Верифікація у Twitter не вдалася. Будь ласка, спробуйте ще раз пізніше.</string>
+    <string name="reward_verification_successful">Тепер Ви можете прийняти участь у програмі нагород! </string>
+
+    <!-- Forms -->
+    <string name="no_added_tags">Ви ще не додали ніяких тегів. Додайте теги для кращого пошуку.</string>
+    <string name="form_no_tag_results">Ми не змогли знайти нових тегів, які ще не були додані.</string>
+
+    <!-- Channels -->
+    <string name="no_channel_created">Ви ще не створили канал. \nПочніть зараз, створивши новий канал!</string>
+    <string name="create_a_channel">Створити канал</string>
+    <string name="create_a_channel_item">Створити канал...</string>
+    <string name="edit_channel">Редагувати канал</string>
+    <string name="delete_selection">Видалити обране?</string>
+    <string name="delete_channel">Видалити канал?</string>
+    <string name="confirm_delete_channel">Ви впевнені, що бажаєте видалити цей канал?</string>
+    <string name="channel_deleted">Канал був успішно видалений</string>
+    <string name="channel_failed_delete">Канал не може бути видалений зараз. Будь ласка, спробуйте пізніше.</string>
+    <string name="description">Опис</string>
+    <string name="yes">Так</string>
+    <string name="no">Ні</string>
+    <string name="show_optional_fields">Показати додаткові поля</string>
+    <string name="hide_optional_fields">Сховати додаткові поля</string>
+    <string name="save">Зберегти</string>
+    <string name="channel_name">Назва каналу</string>
+    <string name="title">Заголовок</string>
+    <string name="at">\@</string>
+    <string name="deposit">Внести</string>
+    <string name="deposit_remains_yours">Ці LBC залишаються Вашими. Це внесок, щоби зарезервувати назву, це може бути відмінено у будь-який час.</string>
+    <string name="storage_permission_rationale_download">LBRY потребує доступ для завантаження контенту на Ваш пристрій.</string>
+    <string name="storage_permission_rationale_images">LBRY потребує доступ для завантаження зображень на Ваш пристрій.</string>
+    <string name="select_thumbnail">Обрати превью</string>
+    <string name="select_cover">Оберіть обкладинку </string>
+    <string name="undetermined_image_filepath">Шлях до файлу не може бути вирішений для обраного зображення. Будь ласка, оберіть зображення в іншому місці.</string>
+    <string name="wait_for_upload">Будь ласка, зачекайте доки теперішнє завантаження завершиться. </string>
+    <string name="image_upload_failed">Запит на завантаження зображення не вдався. Будь ласка, спробуйте ще раз.</string>
+    <string name="uploading">Завантаження...</string>
+    <string name="please_enter_channel_name">Будь ласка, введіть назву каналу. </string>
+    <string name="channel_name_invalid_characters">Назва Вашого каналу містить неприпустимі символи. </string>
+    <string name="channel_name_already_created">Ви вже створили канал з такою же назвою. </string>
+    <string name="please_enter_valid_deposit">Будь ласка, введіть дійсний розмір внеску.</string>
+    <string name="deposit_more_than_balance">Внесок не може бути більшим за Ваш рахунок</string>
+    <string name="channel_save_failed">Запит на збереження каналу не вдався. Будь ласка, спробуйте ще раз.</string>
+    <string name="channel_save_successful">Канал був успішно збережений.</string>
+    <string name="item_pending_blockchain">Відбувається завантаження до блокчейну.  Ви зможете редагувати внесок через деякий час. </string>
+    <string name="pending">Завантаження</string>
+    <string name="create">Створити</string>
+    <string name="one_or_more_channels_failed_abandon">Один або декілька каналів не можуть бути видалені зараз. Будь ласка, спробуйте ще раз пізніше. </string>
+    <plurals name="min_deposit_required">
+        <item quantity="one">Мінімальний внесок у %1$s кредит потребується.</item>
+        <item quantity="few">Мінімальний внесок у %1$s кредитів потребується.</item>
+        <item quantity="many">Мінімальний внесок у %1$s кредитів потребується.</item>
+        <item quantity="other">Мінімальний внесок у %1$s кредитів потребується.</item>
+    </plurals>
+    <plurals name="confirm_delete_channels">
+        <item quantity="one">Ви впевнені, що бажаєте видалити обраний канал?</item>
+        <item quantity="few">Ви впевнені, що бажаєте видалити обрані канали?</item>
+        <item quantity="many">Ви впевнені, що бажаєте видалити обрані канали?</item>
+        <item quantity="other">Ви впевнені, що бажаєте видалити обрані канали?</item>
+    </plurals>
+    <plurals name="channels_deleted">
+        <item quantity="one">Канал був успішно видалений.</item>
+        <item quantity="few">Канали були успішно видалені.</item>
+        <item quantity="many">Канали були успішно видалені.</item>
+        <item quantity="other">Канали були успішно видалені.</item>
+    </plurals>
+
+    <!-- Rewards -->
+    <string name="lbry_credits_allow">Кредити LBRY дозволяють вам публікувати чи купувати контент</string>
+    <string name="free_credits_worth">Ви можете отримати $%1$s безкоштовних кредитів після надання електронної адреси.</string>
+    <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="get_started">Розпочати</string>
+    <string name="reward_code_placeholder">abc123</string>
+    <string name="claim">Внесок</string>
+    <string name="please_enter_claim_code">Будь ласка, введіть спеціальний код винагороди.</string>
+    <string name="unclaimed">Доступні</string>
+    <string name="custom_reward_title">Особливий код</string>
+    <string name="up_to">до</string>
+    <string name="custom_reward_description">Ви супермодель чи рок-зірка, що отримала особливий код винагороди? Вкажіть його тут. </string>
+    <plurals name="claim_reward_message">
+        <item quantity="one">Ви отримали %1$s кредит, як винагороду! </item>
+        <item quantity="few">Ви отримали %1$s кредитів, як винагороду! </item>
+        <item quantity="many">Ви отримали %1$s кредитів, як винагороду! </item>
+        <item quantity="other">Ви отримали %1$s кредитів, як винагороду! </item>
+    </plurals>
+    <plurals name="available_credits">
+        <item quantity="one">%1$s доступний кредит</item>
+        <item quantity="few">%1$s доступних кредитів</item>
+        <item quantity="many">%1$s доступних кредитів</item>
+        <item quantity="other">%1$s доступних кредитів</item>
+    </plurals>
+
+    <!-- Reward drivers -->
+    <string name="publishing_requires_credits">Публікація потребує кредитів.</string>
+    <string name="channel_creation_requires_credits">Створення каналу потребує кредитів.</string>
+    <string name="earn_rewards_for_inviting">Отримайте винагороди за запрошення Ваших друзів.</string>
+    <string name="earn_some_credits_to_access">Отримайте декілька кредитів для отримання доступу до цього контенту. </string>
+    <string name="tap_here_to_get_some">Нажміть тут, щоб отримати декілька безкоштовно.</string>
+    <string name="free_credits_available">Безкоштовні кредити доступні у винагородах. </string>
+    <plurals name="wallet_signed_in_free_credits">
+        <item quantity="one">%1$s безкоштовний кредит доступний у винагородах. </item>
+        <item quantity="few">%1$s безкоштовних кредитів доступно у винагородах. </item>
+        <item quantity="many">%1$s безкоштовних кредитів доступно у винагородах. </item>
+        <item quantity="other">%1$s безкоштовних кредитів доступно у винагородах. </item>
+    </plurals>
+    <plurals name="wallet_get_free_credits">
+        <item quantity="one">Отримайте %1$s безкоштовний кредит після реєстрації.</item>
+        <item quantity="few">Отримайте %1$s безкоштовних кредитів після реєстрації.</item>
+        <item quantity="many">Отримайте %1$s безкоштовних кредитів після реєстрації.</item>
+        <item quantity="other">Отримайте %1$s безкоштовних кредитів після реєстрації.</item>
+    </plurals>
+
+    <!-- Invites -->
+    <string name="lbry_invite_program">Програма запрошень LBRY</string>
+    <string name="earn_extra_credits_invites">Ви можете заробити більше кредитів за запрошення людей використовувати LBRY.  </string>
+    <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="invite_link">Посилання-запрошення </string>
+    <string name="share_this_link">Поділіться цим посиланням з друзями (або ворогами) та отримайте кредити, коли вони приєднаються до LBRY.</string>
+    <string name="your_invite_link">Ваше посилання-запрошення </string>
+    <string name="customize_invite_link">Змінити посилання-запрошення </string>
+    <string name="invite_by_email">Запросити за поштою</string>
+    <string name="invite_someone">Запросіть кого-небудь, кого Ви знаєте за поштою та отримайте кредити, коли вони приєднаються до lbry.tv.</string>
+    <string name="invite_email_placeholder">imaginary@friend.com</string>
+    <string name="invite">Запросити</string>
+    <string name="invite_history">Історія запрошень </string>
+    <string name="earn_credits_for_inviting">Отримайте кредити за запрошення друга, ворога, вородруга чи другорога. Усім потрібна свобода контенту. </string>
+    <string name="reward">Винагорода </string>
+    <string name="claimed">Отримані</string>
+    <string name="claimable">Доступні для отримання </string>
+    <string name="unclaimable">Недоступні</string>
+    <string name="invite_link_copied">Посилання-запрошення скопійовано.</string>
+    <string name="invite_sent_to">Запрошення надіслано до %1$s</string>
+
+    <!-- Library -->
+    <string name="downloads">Завантаження</string>
+    <string name="purchases">Покупки</string>
+    <string name="history">Історія </string>
+    <string name="library_no_downloads">Ви ще нічого не завантажили на цей пристрій. </string>
+    <string name="library_no_history">Ви ще нічого не переглянули на цьому пристрої.</string>
+    <string name="library_no_purchases">Ви ще нічого не купували на цьому акаунті. </string>
+    <string name="hide">Сховати</string>
+    <string name="stats">Статистика</string>
+    <string name="video">Відео</string>
+    <string name="audio">Аудіо</string>
+    <string name="images">Зображення</string>
+    <string name="mb">MB</string>
+    <string name="kb">KB</string>
+    <string name="gb">GB</string>
+    <string name="zero_mb">0MB</string>
+    <plurals name="confirm_delete_files">
+        <item quantity="one">Ви впевнені, що хочете видали обраний файл з пристрою? </item>
+        <item quantity="few">Ви впевнені, що хочете видали обрані файли з пристрою? </item>
+        <item quantity="many">Ви впевнені, що хочете видали обрані файли з пристрою? </item>
+        <item quantity="other">Ви впевнені, що хочете видали обрані файли з пристрою? </item>
+    </plurals>
+    <plurals name="files_deleted">
+        <item quantity="one">Файл був успішно видалений.</item>
+        <item quantity="few">Файли були успішно видалені.</item>
+        <item quantity="many">Файли були успішно видалені.</item>
+        <item quantity="other">Файли були успішно видалені.</item>
+    </plurals>
+
+    <!-- About -->
+    <string name="about_lbry">Про LBRY</string>
+    <string name="content_freedom">Свобода контенту</string>
+    <string name="about_paragraph">LBRY - безкоштовний, вільний та керований спільнотою цифровий ринок. Це децентралізована peer-to-peer платформа, яку творчі люди можуть використовувати задля завантаження та розповсюдження контенту та заробляти за це кредити LBRY. Користувачі зможуть знайти широкий вибір відео, музики, книг та іншого цифрового контенту, який їм цікавий.</string>
+    <string name="get_social">Ми у соціальних мережах</string>
+    <string name="social_paragraph">Ви можете контактувати з командою LBRY та з учасниками спільноти у Discord, Facebook, Instagram, Twitter  або Reddit.</string>
+    <string name="app_info">Інформація о додатку</string>
+    <string name="loading">Завантаження...</string>
+    <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;What is LBRY?&lt;/a&gt;</string>
+    <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Basics&lt;/a&gt;</string>
+    <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>
+    <string name="about_link_discord">&lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;Discord&lt;/a&gt;</string>
+    <string name="about_link_facebook">&lt;a href=\"https://www.facebook.com/LBRYio\"&gt;Facebook&lt;/a&gt;</string>
+    <string name="about_link_instagram">&lt;a href=\"https://www.instagram.com/LBRYio\"&gt;Instagram&lt;/a&gt;</string>
+    <string name="about_link_reddit">&lt;a href=\"https://reddit.com/r/lbry\"&gt;Reddit&lt;/a&gt;</string>
+    <string name="about_link_telegram">&lt;a href=\"https://t.me/lbryofficial\"&gt;Telegram&lt;/a&gt;</string>
+    <string name="about_link_twitter">&lt;a href=\"https://twitter.com/LBRYio\"&gt;Twitter&lt;/a&gt;</string>
+    <string name="update_mailing_preferences">Змінити налаштування надсилання повідомлень на пошту</string>
+    <string name="app_version">Версія додатку</string>
+    <string name="lbry_sdk">LBRY SDK</string>
+    <string name="platform">Платформа</string>
+    <string name="installation_id">ID інсталяції</string>
+    <string name="firebase_token">Firebase Token</string>
+    <string name="logs">Логи</string>
+    <string name="send_log">Надіслати лог</string>
+    <string name="connected_email">Прив\'язана пошта</string>
+    <string name="unknown">Невідомий</string>
+    <string name="cannot_find_lbrynet_log">Файл lbrynet.log не може бути знайдений</string>
+    <string name="cannot_share_lbrynet_log">Файл lbrynet.log не може бути поширений через обмеження дозволів. </string>
+
+    </resources>

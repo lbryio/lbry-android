@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Mở điều hướng</string>
     <string name="navigation_drawer_close">Đóng điều hướng</string>
@@ -60,6 +60,10 @@
     <string name="report">Báo cáo</string>
     <string name="loading_decentralized_data">Đang tải dữ liệu phi tập trung</string>
     <string name="related_content">Nội dung liên quan</string>
+    <string name="comments">Bình luận</string>
+    <string name="no_comments">Không có bình luận để hiển thị tại thời điểm này</string>
+    <string name="sdk_initializing_comments">Nhận xét sẽ hiển thị sau khi dịch vụ nền được khởi tạo.</string>
+    <string name="comment_error">Bình luận của bạn không thể được đăng vào thời điểm này. Vui lòng thử lại sau.</string>
     <string name="share_lbry_content">Chia sẻ nội dung LBRY</string>
     <string name="view">Lượt xem</string>
     <string name="play">Play</string>
@@ -79,6 +83,23 @@
     <string name="confirm_delete_content_message">Bạn có chắc chắn muốn không xuất bản nội dung này? Không có tập tin sẽ bị xóa khỏi thiết bị của bạn.</string>
     <string name="content_deleted">Nội dung đã được xóa thành công khỏi blockchain.</string>
     <string name="content_failed_delete">Nội dung không thể bị xóa tại thời điểm này. Vui lòng thử lại sau.</string>
+    <string name="comment">Bình luận</string>
+    <string name="comment_as">Nhận xét như</string>
+    <string name="please_enter_comment">Vui lòng nhập một bình luận để đăng</string>
+    <string name="please_select_channel">Vui lòng chọn một kênh để gửi bình luận của bạn như</string>
+    <string name="comment_posted">Nhận xét của bạn đã được đăng thành công</string>
+    <string name="please_select_repost_channel">Vui lòng chọn một kênh để đăng lại</string>
+    <string name="reply">Trả lời</string>
+    <string name="replying_to">Đang trả lời %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="other">Đăng và tiền boa %1$s</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="other">Đăng của %1$s</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="other">Điều này sẽ đăng bình luận của bạn với một tiền boa %1$scủa %2$s</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="other">%1$s lượt xem</item>
     </plurals>
@@ -96,6 +117,7 @@
     </plurals>
 
     <!-- Publish -->
+    <string name="no_publishes_created">Có vẻ như bạn chưa xuất bản nội dung lên LBRY.</string>
     <string name="record">Ghi lại</string>
     <string name="take_photo">Chụp ảnh</string>
     <string name="upload_file">Upload một file</string>
@@ -118,6 +140,7 @@
     <string name="show_extra_fields">Hiển thị các trường bổ sung</string>
     <string name="hide_extra_fields">Ẩn các trường bổ sung</string>
     <string name="no_file_found">Không tìm thấy tập tin để xuất bản</string>
+    <string name="publish_invalid_claim_type">Yêu cầu không hợp lệ được chỉ định để chỉnh sửa</string>
     <string name="video_optimization">Tối ưu hóa video</string>
     <string name="thumbnail_creation_failed">Một hình đại diện không thể được tạo tự động từ tệp nội dung của bạn.</string>
     <string name="video_being_optimized">Video của bạn đang được tối ưu hóa để hỗ trợ tốt hơn trên nhiều loại thiết bị. Bạn có thể điền vào các trường còn lại bên dưới trong khi điều này đang diễn ra.</string>
@@ -166,6 +189,7 @@
     <string name="romanian">Romania</string>
     <string name="hindi">Ấn độ</string>
     <string name="greek">Hy lạp</string>
+    <string name="catalan">Catalan</string>
 
     <string name="none">Mặc định</string>
     <string name="public_domain">Phạm vi công cộng</string>
@@ -204,6 +228,7 @@
     <!-- Settings -->
     <string name="user_interface">Giao diện người dùng và nội dung</string>
     <string name="other">Khác</string>
+    <string name="enable_background_playback">Cho phép phát lại nền</string>
     <string name="enable_dark_mode">Bật chủ đề tối</string>
     <string name="show_mature_content">Hiển thị nội dung người lớn</string>
     <string name="show_url_suggestions">Hiển thị đề xuất URL</string>
@@ -300,6 +325,11 @@
     <string name="unlock">Mở khóa</string>
     <string name="unlock_tips">Mở khóa tiên boa?</string>
     <string name="confirm_unlock_tips">Bạn có chắc chắn muốn mở khóa tất cả tiền boa của bạn?</string>
+    <string name="min_spend_required">Vui lòng nhập số tiền nhiều hơn 0.0001</string>
+
+    <string name="buy_lbc">Mua LBC</string>
+    <string name="hash_not_supported">Thiết bị của bạn không hỗ trợ các yêu cầu tối thiểu để đảm bảo yêu cầu mua hàng của bạn.</string>
+    <string name="receive_address_not_set">Bạn không có địa chỉ ví được đặt. Vui lòng tạo một địa chỉ mới và thử lại.</string>
 
     <plurals name="you_sent_credits">
         <item quantity="other">Bạn gửi  %1$s tiền</item>
@@ -335,6 +365,12 @@
     <string name="tag_limit_reached">Bạn không thể thêm nhiều hơn 5 thẻ</string>
     <string name="send_a_tip">Gửi tiền boa</string>
     <string name="send_a_tip_to">Gửi tiền boa  từ %1$s</string>
+    <string name="support_this_content">Hỗ trợ nội dung này</string>
+    <string name="support_info">Điều này sẽ tăng tổng giá thầu cho nội dung này, điều này sẽ tăng khả năng được phát hiện khi hoạt động.  &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Kênh để hiển thị hỗ trợ như</string>
+    <string name="make_this_a_tip">Làm tiền boa</string>
+    <string name="send_revocable_support">Gửi hỗ trợ có thể hủy bỏ</string>
+    <string name="send_lbc_tip">Gửi %1$sLBC tiền boa</string>
     <string name="send_tip_info_content">Điều này sẽ xuất hiện như một mẹo cho %1$s, sẽ tăng khả năng của nó để được phát hiện trong khi hoạt động.&lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Điều này sẽ xuất hiện như một mẹo cho %1$s, sẽ tăng khả năng của nó để được phát hiện trong khi hoạt động.&lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Hủy bỏ</string>
@@ -349,6 +385,9 @@
     <string name="repost_name_invalid_characters">Tên repost chứa các ký tự không hợp lệ</string>
     <plurals name="you_sent_a_tip">
         <item quantity="other">Bạn gửi %1$s tiền . Mahalo!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="other">Bạn đặt cược %1$stín dụng như là một hỗ trợ. Bạn có thể thu hồi hỗ trợ của bạn bất cứ lúc nào.</item>
     </plurals>
 
     <!-- Verification -->
@@ -374,8 +413,18 @@
     <string name="enter_phone_number">Xin vui lòng điền số điện thoại của bạn</string>
     <string name="not_interested">Không quan tâm</string>
     <string name="manual_reward_verification">Xác nhận phần thưởng thủ công</string>
+    <string name="reward_verification">Xác minh phần thưởng</string>
+    <string name="social_media_verification">Xác minh mạng xã hội</string>
+    <string name="skip_the_queue">Bỏ qua</string>
+    <string name="skip_queue_button_text">Bỏ qua cho $%1$s</string>
     <string name="account_undergo_review">Tài khoản này phải trải qua quá trình xem xét trước khi bạn có thể tham gia chương trình phần thưởng. Điều này có thể mất bất cứ nơi nào từ vài phút đến vài ngày.</string>
-    <string name="request_to_be_verified">Nếu bạn tiếp tục thấy thông báo này, vui lòng yêu cầu được xác minh trên &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="get_instantly_verified">Bạn có thể được xác minh ngay lập tức để có thể tham gia vào chương trình phần thưởng bằng tài khoản Twitter của mình hoặc bỏ qua hàng đợi xác minh thủ công.</string>
+    <string name="twitter_verification">Xác minh Twitter</string>
+    <string name="twitter_verification_desc">Được xác minh ngay lập tức bằng tài khoản Twitter của bạn. Địa chỉ email Twitter của bạn phải khớp với email mà bạn đã cung cấp và tài khoản của bạn phải hoạt động.</string>
+    <string name="twitter_verify">Xác minh với Twitter</string>
+    <string name="skip_queue_verification">Bỏ qua</string>
+    <string name="skip_queue_verification_desc">Bỏ qua hàng đợi xác minh thủ công bằng cách trả phí để bắt đầu tham gia chương trình phần thưởng ngay lập tức.</string>
+    <string name="request_to_be_verified">Vui lòng yêu cầu được xác minh trên  &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;. Quá trình xem xét thủ công có thể mất từ ​​vài phút đến vài ngày.</string>
     <string name="enjoy_free_content">Hãy tận hưởng nội dung miễn phí trong khi chờ đợi!</string>
     <string name="verify_phone_number">Xác nhận số điện thoại</string>
     <string name="enter_phone_verify_code">Vui lòng nhập mã xác minh được gửi tới %1$s</string>
@@ -383,6 +432,13 @@
     <string name="verify">Xác nhận</string>
     <string name="please_enter_valid_phone">Xin vui lòng nhập một số điện thoại hợp lệ</string>
     <string name="please_enter_verification_code">Vui lòng nhập mã xác minh được gửi đến số điện thoại của bạn.</string>
+    <string name="fetch_current_user_error">Tài khoản người dùng không thể được lấy tại thời điểm này. Vui lòng thử lại sau.</string>
+    <string name="purchase_request_pending">Yêu cầu mua hàng của bạn vẫn đang được xử lý. Vui lòng gửi email tới  support@lbry.com.</string>
+    <string name="purchase_request_failed_error">Không thể hoàn thành yêu cầu mua hàng của bạn vào lúc này. Vui lòng gửi email tới support@lbry.com.</string>
+    <string name="twitter_account_ineligible">Tài khoản Twitter của bạn không đủ điều kiện tại thời điểm này:%1$s</string>
+    <string name="twitter_verification_not_approved">Tài khoản của bạn không được chấp thuận cho chương trình phần thưởng. Vui lòng thử lại sau.</string>
+    <string name="twitter_verification_failed">Xác minh Twitter không thành công. Vui lòng thử lại sau.</string>
+    <string name="reward_verification_successful">Bây giờ bạn đủ điều kiện để tham gia vào chương trình phần thưởng!</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Bạn chưa thêm bất kỳ thẻ nào. Thêm thẻ để cải thiện khám phá.</string>
@@ -545,27 +601,4 @@
     <string name="cannot_find_lbrynet_log">Không thể tìm thấy tệp lbrynet.log</string>
     <string name="cannot_share_lbrynet_log">Tệp lbrynet.log có thể được chia sẻ do hạn chế quyền.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

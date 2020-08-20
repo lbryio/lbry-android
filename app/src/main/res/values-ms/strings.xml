@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">LBRY</string>
     <string name="navigation_drawer_open">Buka panel navigasi</string>
     <string name="navigation_drawer_close">Tutup panel navigasi</string>
@@ -59,6 +59,10 @@
     <string name="report">Lapor</string>
     <string name="loading_decentralized_data">Memuatkan data terdesentralisasi ...</string>
     <string name="related_content">Kandungan Berkaitan</string>
+    <string name="comments">Komen</string>
+    <string name="no_comments">Tiada komen buat masa ini</string>
+    <string name="sdk_initializing_comments">Komen akan dipaparkan setelah perkhidmatan latar belakang diinisialisasikan.</string>
+    <string name="comment_error">Komen anda tidak dapat diposkan buat masa ini. Sila cuba sebentar lagi.</string>
     <string name="share_lbry_content">Kongsi kandungan LBRY</string>
     <string name="view">Lihat</string>
     <string name="play">Main</string>
@@ -78,6 +82,23 @@
     <string name="confirm_delete_content_message">Adakah anda pasti ingin membatalkan penerbitan kandungan ini? Fail akan masih kekal dalam peranti anda.</string>
     <string name="content_deleted">Kandungan telah dipadamkan daripada blockchain.</string>
     <string name="content_failed_delete">Kandungan tersebut tidak dapat dipadamkan pada masa ini. Sila cuba sebentar lagi.</string>
+    <string name="comment">Komen</string>
+    <string name="comment_as">Komen sebagai</string>
+    <string name="please_enter_comment">Sila masukkan komen untuk diposkan.</string>
+    <string name="please_select_channel">Pilih saluran sebagai sumber komen anda.</string>
+    <string name="comment_posted">Komen anda telah berjaya disiarkan.</string>
+    <string name="please_select_repost_channel">Sila pilih saluran sebagai sumber repost</string>
+    <string name="reply">Balas</string>
+    <string name="replying_to">Balas kepada %1$s</string>
+    <plurals name="post_and_tip">
+        <item quantity="other">Hantar tip sebanyak %1$s?</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="other">Hantar dengan %1$s kredit</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="other">Komen anda dengan tip %1$s kredit akan dihantar dengan %2$s kredit.</item>
+    </plurals>
     <plurals name="view_count">
         <item quantity="other">%1$s tontonan</item>
     </plurals>
@@ -96,6 +117,7 @@ Sila kembali sebentar lagi.</string>
     </plurals>
 
     <!-- Publish -->
+    <string name="no_publishes_created">Nampaknya anda belum menerbitkan sebarang kandungan ke LBRY.</string>
     <string name="record">Rekod</string>
     <string name="take_photo">Ambil Gambar</string>
     <string name="upload_file">Muat-naik file</string>
@@ -118,6 +140,7 @@ Sila kembali sebentar lagi.</string>
     <string name="show_extra_fields">Sembunyikan medan tambahan</string>
     <string name="hide_extra_fields">Sorokkan medan tambahan</string>
     <string name="no_file_found">Tiada fail dijumpai untuk diterbitkan.</string>
+    <string name="publish_invalid_claim_type">Tuntutan tersebut tidak sah.</string>
     <string name="video_optimization">Pengoptimuman video</string>
     <string name="thumbnail_creation_failed">Thumbnail tidak dapat dicipta secara automatik dari fail kandungan anda.</string>
     <string name="video_being_optimized">Video anda sedang dioptimumkan untuk pelbagai peranti lain. Anda boleh mengisi medan-medan lain dibawah semasa ini sedang dijalankan.</string>
@@ -166,6 +189,7 @@ Sila kembali sebentar lagi.</string>
     <string name="romanian">Romania</string>
     <string name="hindi">Hindi</string>
     <string name="greek">Yunani</string>
+    <string name="catalan">Bahasa Catalan</string>
 
     <string name="none">Tiada</string>
     <string name="public_domain">Domain Awam</string>
@@ -204,6 +228,7 @@ Sila kembali sebentar lagi.</string>
     <!-- Settings -->
     <string name="user_interface">Kandungan &amp; Antaramuka Pengguna</string>
     <string name="other">Lain-lain</string>
+    <string name="enable_background_playback">Benarkan media bermain di latar belakang</string>
     <string name="enable_dark_mode">Aktifkan tema gelap</string>
     <string name="show_mature_content">Tunjukkan kandungan matang</string>
     <string name="show_url_suggestions">Tunjukkan cadangan URL</string>
@@ -300,6 +325,11 @@ Sila kembali sebentar lagi.</string>
     <string name="unlock">Buka kunci</string>
     <string name="unlock_tips">Buka tip?</string>
     <string name="confirm_unlock_tips">Adakah anda pasti ingin membuka semua tip anda?</string>
+    <string name="min_spend_required">Sila masukan jumlah yang lebih besar daripada 0.0001 kredit.</string>
+
+    <string name="buy_lbc">Beli LBC</string>
+    <string name="hash_not_supported">Peranti anda tidak menyokong syarat minimum untuk pembelian anda.</string>
+    <string name="receive_address_not_set">Tiada alamat dompet dijumpai. Sila cipta alamat baru dan cuba lagi.</string>
 
     <plurals name="you_sent_credits">
         <item quantity="other">Anda telah menghantar %1$s kredit</item>
@@ -335,6 +365,12 @@ Sila kembali sebentar lagi.</string>
     <string name="tag_limit_reached">Anda tidak boleh menambahkan lebih daripada 5 tag.</string>
     <string name="send_a_tip">Hantar tip</string>
     <string name="send_a_tip_to">Hantar tip ke %1$s</string>
+    <string name="support_this_content">Sokong kandungan ini</string>
+    <string name="support_info">Ini akan mempertingkatkan jumlah tawaran keseluruhan untuk kandungan ini, yang seterusnya akan meningkatkan kemampuannya untuk ditemui semasa aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Ketahui lebih lanjut&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Saluran sebagai sumber sokongan</string>
+    <string name="make_this_a_tip">Jadikan ia sebagai tip</string>
+    <string name="send_revocable_support">Hantar Sokongan Yang Boleh Dibatalkan</string>
+    <string name="send_lbc_tip">Hantar tip sebanyak %1$s LBC</string>
     <string name="send_tip_info_content">Ini akan muncul sebagai tip untuk %1$s. Ia yang akan meningkatkan kemampuannya untuk dijumpai ketika aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Ini akan muncul sebagai tip untuk %1$s. Ia yang akan meningkatkan kemampuan saluran untuk ditemui semasa aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Batalkan</string>
@@ -349,6 +385,9 @@ Sila kembali sebentar lagi.</string>
     <string name="repost_name_invalid_characters">Nama penyiaran-semula mengandungi aksara (huruf) yang tidak sah.</string>
     <plurals name="you_sent_a_tip">
         <item quantity="other">Anda menghantar %1$s kredit sebagai tip, terima kasih</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="other">Anda telah mempertaruhkan %1$s kredit sebagai sokongan. Anda boleh mencabut sokongan anda pada bila-bila masa.</item>
     </plurals>
 
     <!-- Verification -->
@@ -374,7 +413,6 @@ Sila kembali sebentar lagi.</string>
     <string name="not_interested">Tidak berminat</string>
     <string name="manual_reward_verification">Pengesahan Ganjaran Secara Manual</string>
     <string name="account_undergo_review">Akaun ini mesti menjalani semakan sebelum anda dapat mengambil bahagian dalam program ganjaran. Ini boleh mengambil masa dari beberapa minit ke beberapa hari.</string>
-    <string name="request_to_be_verified">Sekiranya anda masih melihat mesej ini, sila minta untuk disahkan di &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
     <string name="enjoy_free_content">Nikmati lah kandungan percuma sementara ini!</string>
     <string name="verify_phone_number">Sahkan Nombor Telefon</string>
     <string name="enter_phone_verify_code">Masukkan kod pengesahan yang dihantar ke %1$s</string>
@@ -382,7 +420,7 @@ Sila kembali sebentar lagi.</string>
     <string name="verify">Sahkan</string>
     <string name="please_enter_valid_phone">Sila masukkan nombor telefon yang sah.</string>
     <string name="please_enter_verification_code">Masukkan kod pengesahan yang dihantar ke nombor telefon anda.</string>
-
+    <string name="fetch_current_user_error">Akaun pengguna tidak dapat dimuat turun buat masa ini. Sila cuba sebentar lagi.</string>
     <!-- Forms -->
     <string name="no_added_tags">Anda belum menambah sebarang tag. Tambahkan tag untuk meningkatkan penemuan.</string>
     <string name="form_no_tag_results">Kami tidak dapat menjumpai tag baru yang belum ditambahkan.</string>
@@ -483,7 +521,7 @@ Sila kembali sebentar lagi.</string>
     <string name="invite_email_placeholder">khayalan@kawan.com</string>
     <string name="invite">Jemput</string>
     <string name="invite_history">Sejarah Jemputan</string>
-    <string name="earn_credits_for_inviting">Dapatkan kredit untuk menjemput rakan atau musuh. Setiap orang memerlukan kebebasan kandungan.</string>
+    <string name="earn_credits_for_inviting">Dapatkan kredit dengan menjemput rakan atau musuh. Setiap orang memerlukan kebebasan kandungan.</string>
     <string name="reward">Ganjaran</string>
     <string name="claimed">Telah dituntut</string>
     <string name="claimable">Boleh dituntut</string>
@@ -544,27 +582,4 @@ Sila kembali sebentar lagi.</string>
     <string name="cannot_find_lbrynet_log">Fail lbrynet.log tidak dapat dijumpai.</string>
     <string name="cannot_share_lbrynet_log">Fail lbrynet.log tidak dapat dikongsi kerana sekatan kebenaran.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>

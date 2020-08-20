@@ -373,6 +373,12 @@
     <string name="tag_limit_reached">Você não pode adicionar mais de 5 tags.</string>
     <string name="send_a_tip">Enviar gorjeta</string>
     <string name="send_a_tip_to">Enviar gorjeta para %1$s</string>
+    <string name="support_this_content">Apoie esse conteúdo</string>
+    <string name="support_info">Isso aumentará o valor atrelado à este conteúdo, o que aumentará sua capacidade de ser descoberto enquanto estiver ativo. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Saiba mais&lt;/a&gt;.</string>
+    <string name="channel_to_show_support_as">Canal para assinar apoio</string>
+    <string name="make_this_a_tip">Envie como Gorjeta</string>
+    <string name="send_revocable_support">Enviar apoio revogável</string>
+    <string name="send_lbc_tip">Enviar %1$s como gorjeta</string>
     <string name="send_tip_info_content">Isso aparecerá como uma gorjeta para %1$s, o que aumentará sua capacidade de ser descoberto enquanto ativo. &lt;a href=\"https://lbry.com/faq/tipping\"&gt; Aprenda mais&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Isso aparecerá como uma gorjeta para %1$s, o que aumentará sua capacidade de ser descoberto enquanto ativo. &lt;a href=\"https://lbry.com/faq/tipping\"&gt; Aprenda mais&lt;/a&gt;.</string>
     <string name="cancel">Cancelar</string>
@@ -388,6 +394,10 @@
     <plurals name="you_sent_a_tip">
         <item quantity="one">Você enviou %1$s créditos como uma dica, Mahalo!</item>
         <item quantity="other">Você enviou %1$s créditos como uma dica, Mahalo!</item>
+    </plurals>
+    <plurals name="you_sent_a_support">
+        <item quantity="one">Você investiu %1$s crédito como apoio. Você pode revogar o apoio a qualquer momento.</item>
+        <item quantity="other">Você investiu %1$s créditos como apoio. Você pode revogar o apoio a qualquer momento.</item>
     </plurals>
 
     <!-- Verification -->
@@ -412,8 +422,18 @@
     <string name="enter_phone_number">Por favor, digite seu número de telefone.</string>
     <string name="not_interested">Não interessado</string>
     <string name="manual_reward_verification">Verificação manual de recompensas</string>
+    <string name="reward_verification">Verificação de Recompensas</string>
+    <string name="social_media_verification">Verificação de Mídia Social</string>
+    <string name="skip_the_queue">Pular a fila</string>
+    <string name="skip_queue_button_text">Pular a fila por $%1$s</string>
     <string name="account_undergo_review">Esta conta deve ser revisada antes de você poder participar do programa de recompensas. Isso pode levar de alguns minutos ou até vários dias.</string>
-    <string name="request_to_be_verified">Se você continuar a ver essa mensagem, por favor peça para ser verificado em &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;.</string>
+    <string name="get_instantly_verified">Você pode ser verificado instantaneamente para poder participar do programa de recompensas usando sua conta do Twitter ou pulando a fila de verificação manual.</string>
+    <string name="twitter_verification">Verificação do Twitter</string>
+    <string name="twitter_verification_desc">Seja verificado instantaneamente usando sua conta do Twitter. Seu endereço de e-mail do Twitter deve corresponder ao e-mail que você forneceu e sua conta deve estar ativa.</string>
+    <string name="twitter_verify">Verificar com o Twitter</string>
+    <string name="skip_queue_verification">Pular a Fila</string>
+    <string name="skip_queue_verification_desc">Pule a fila de verificação manual pagando uma taxa para começar a participar do programa de recompensas imediatamente.</string>
+    <string name="request_to_be_verified">Please request to be verified on the &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;. Uma revisão manual pode levar de vários minutos a vários dias.</string>
     <string name="enjoy_free_content">Enquanto isso, aproveite o conteúdo gratuito!</string>
     <string name="verify_phone_number">Verificar Número de Telefone</string>
     <string name="enter_phone_verify_code">Digite o código de verificação enviado para %1$s</string>
@@ -422,6 +442,12 @@
     <string name="please_enter_valid_phone">Por favor insira um número de telefone válido.</string>
     <string name="please_enter_verification_code">Digite o código de verificação enviado para o seu número de telefone.</string>
     <string name="fetch_current_user_error">Não foi possível recuperar a conta do usuário no momento. Por favor, tente novamente mais tarde.</string>
+    <string name="purchase_request_pending">Sua solicitação de compra ainda está sendo processada. Envie um e-mail para support@lbry.com.</string>
+    <string name="purchase_request_failed_error">Sua solicitação de compra não pôde ser concluída neste momento. Envie um e-mail para support@lbry.com.</string>
+    <string name="twitter_account_ineligible">Sua conta do Twitter não está qualificada no momento: %1$s</string>
+    <string name="twitter_verification_not_approved">Sua conta não foi aprovada para o programa de recompensas. Por favor, tente novamente mais tarde.</string>
+    <string name="twitter_verification_failed">A verificação do Twitter falhou. Por favor, tente novamente mais tarde.</string>
+    <string name="reward_verification_successful">Agora você está qualificado para participar do programa de recompensas!</string>
 
     <!-- Forms -->
     <string name="no_added_tags">Você ainda não adicionou nenhuma tag. Adicione tags para melhorar seu alcance.</string>
@@ -593,27 +619,4 @@
     <string name="cannot_find_lbrynet_log">Não foi possível encontrar o arquivo lbrynet.log.</string>
     <string name="cannot_share_lbrynet_log">O arquivo lbrynet.log não pode ser compartilhado devido a restrições de permissão.</string>
 
-    <!-- Font Awesome -->
-    <string name="fa_gift">&#xf06b;</string>
-    <string name="fa_lock">&#xf023;</string>
-    <string name="fa_coins">&#xf51e;</string>
-    <string name="fa_file">&#xf15b;</string>
-    <string name="fa_hashtag">&#xf292;</string>
-    <string name="fa_search">&#xf002;</string>
-    <string name="fa_at">&#xf1fa;</string>
-
-    <string name="fa_heart">&#xf004;</string>
-    <string name="fa_heart_broken">&#xf7a9;</string>
-    <string name="fa_star">&#xf005;</string>
-    <string name="fa_globe_americas">&#xf57d;</string>
-    <string name="fa_upload">&#xf093;</string>
-    <string name="fa_download">&#xf019;</string>
-    <string name="fa_cloud_upload">&#xf382;</string>
-    <string name="fa_wallet">&#xf555;</string>
-    <string name="fa_award">&#xf559;</string>
-    <string name="fa_user_friends">&#xf500;</string>
-    <string name="fa_cog">&#xf013;</string>
-    <string name="fa_mobile_alt">&#xf3cd;</string>
-    <string name="fa_repost">&#xf079;</string>
-    <string name="fa_folder_open">&#xf07c;</string>
-</resources>
+    </resources>
