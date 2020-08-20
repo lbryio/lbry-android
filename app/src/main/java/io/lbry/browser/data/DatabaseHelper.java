@@ -21,7 +21,7 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "LbryApp.db";
     private static DatabaseHelper instance;
 
@@ -51,6 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE notifications (" +
                     "  id INTEGER PRIMARY KEY NOT NULL" +
                     ", remote_id INTEGER NOT NULL" +
+                    ", author_url TEXT" +
                     ", title TEXT" +
                     ", description TEXT" +
                     ", thumbnail_url TEXT" +
@@ -95,6 +96,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "ALTER TABLE notifications ADD COLUMN rule TEXT",
             "ALTER TABLE notifications ADD COLUMN is_seen TEXT"
     };
+    private static final String[] SQL_V5_V6_UPGRADE = {
+            "ALTER TABLE notifications ADD COLUMN author_url TEXT"
+    };
 
     private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
     private static final String SQL_CLEAR_SUBSCRIPTIONS = "DELETE FROM subscriptions";
@@ -106,10 +110,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_CLEAR_URL_HISTORY_BEFORE_TIME = "DELETE FROM url_history WHERE timestamp < ?";
     private static final String SQL_GET_RECENT_URL_HISTORY = "SELECT value, url, type FROM url_history ORDER BY timestamp DESC LIMIT 10";
 
-    private static final String SQL_INSERT_NOTIFICATION = "REPLACE INTO notifications (remote_id, title, description, rule, target_url, is_read, is_seen, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SQL_GET_NOTIFICATIONS = "SELECT id, title, description, rule, target_url, is_read, is_seen, timestamp FROM notifications ORDER BY timestamp DESC LIMIT 500";
+    private static final String SQL_INSERT_NOTIFICATION = "REPLACE INTO notifications (remote_id, author_url, title, description, rule, target_url, is_read, is_seen, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_GET_NOTIFICATIONS = "SELECT id, remote_id, author_url, title, description, rule, target_url, is_read, is_seen, timestamp FROM notifications ORDER BY timestamp DESC LIMIT 500";
     private static final String SQL_GET_UNREAD_NOTIFICATIONS_COUNT = "SELECT COUNT(id) FROM notifications WHERE is_read <> 1";
     private static final String SQL_MARK_NOTIFICATIONS_READ = "UPDATE notifications SET is_read = 1 WHERE is_read = 0";
+    private static final String SQL_MARK_NOTIFICATION_READ_AND_SEEN = "UPDATE notifications SET is_read = 1, is_seen = 1 WHERE id = ?";
 
     private static final String SQL_INSERT_VIEW_HISTORY =
             "REPLACE INTO view_history (url, claim_id, claim_name, cost, currency, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -161,6 +166,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         if (oldVersion < 5) {
             for (String sql : SQL_V4_V5_UPGRADE) {
+                db.execSQL(sql);
+            }
+        }
+        if (oldVersion < 6) {
+            for (String sql : SQL_V5_V6_UPGRADE) {
                 db.execSQL(sql);
             }
         }
@@ -307,6 +317,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static void createOrUpdateNotification(LbryNotification notification, SQLiteDatabase db) {
         db.execSQL(SQL_INSERT_NOTIFICATION, new Object[] {
                 notification.getRemoteId(),
+                notification.getAuthorUrl(),
                 notification.getTitle(),
                 notification.getDescription(),
                 notification.getRule(),
@@ -325,6 +336,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 LbryNotification notification = new LbryNotification();
                 int columnIndex = 0;
                 notification.setId(cursor.getLong(columnIndex++));
+                notification.setRemoteId(cursor.getLong(columnIndex++));
+                notification.setAuthorUrl(cursor.getString(columnIndex++));
                 notification.setTitle(cursor.getString(columnIndex++));
                 notification.setDescription(cursor.getString(columnIndex++));
                 notification.setRule(cursor.getString(columnIndex++));
@@ -359,5 +372,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public static void markNotificationsRead(SQLiteDatabase db) {
         db.execSQL(SQL_MARK_NOTIFICATIONS_READ);
+    }
+    public static void markNotificationReadAndSeen(long notificationId, SQLiteDatabase db) {
+        db.execSQL(SQL_MARK_NOTIFICATION_READ_AND_SEEN, new Object[] { notificationId });
     }
 }

@@ -201,7 +201,6 @@ public final class Lbryio {
                 throw new LbryioResponseException("Unknown API error signature.", response.code());
             }
         } catch (JSONException | IOException ex) {
-
             throw new LbryioResponseException(String.format("Could not parse response: %s", responseString), ex);
         }
     }

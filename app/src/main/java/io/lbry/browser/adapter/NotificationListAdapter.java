@@ -6,15 +6,20 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import io.lbry.browser.R;
+import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.LbryNotification;
 import io.lbry.browser.ui.controls.SolidIconView;
 import io.lbry.browser.utils.Helper;
@@ -39,17 +44,25 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         this.items = new ArrayList<>(notifications);
     }
 
+    public List<LbryNotification> getItems() {
+        return new ArrayList<>(items);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        protected View layoutView;
         protected TextView titleView;
         protected TextView bodyView;
         protected TextView timeView;
         protected SolidIconView iconView;
+        protected ImageView thumbnailView;
         public ViewHolder(View v) {
             super(v);
+            layoutView = v.findViewById(R.id.notification_layout);
             titleView = v.findViewById(R.id.notification_title);
             bodyView = v.findViewById(R.id.notification_body);
             timeView = v.findViewById(R.id.notification_time);
             iconView = v.findViewById(R.id.notification_icon);
+            thumbnailView = v.findViewById(R.id.notification_author_thumbnail);
         }
     }
 
@@ -71,7 +84,34 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         notifyDataSetChanged();
     }
 
-    public void addTags(List<LbryNotification> notifications) {
+    public List<String> getAuthorUrls() {
+        List<String> urls = new ArrayList<>();
+        for (LbryNotification item : items) {
+            if (!Helper.isNullOrEmpty(item.getAuthorUrl())) {
+                urls.add(item.getAuthorUrl());
+            }
+        }
+        return urls;
+    }
+
+    public void updateAuthorClaims(List<Claim> claims) {
+        for (Claim claim : claims) {
+            if (claim != null && claim.getThumbnailUrl() != null) {
+                updateClaimForAuthorUrl(claim);
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    private void updateClaimForAuthorUrl(Claim claim) {
+        for (LbryNotification item : items) {
+            if (claim.getPermanentUrl().equalsIgnoreCase(item.getAuthorUrl())) {
+                item.setCommentAuthor(claim);
+            }
+        }
+    }
+
+    public void addNotifications(List<LbryNotification> notifications) {
         for (LbryNotification notification : notifications) {
             if (!items.contains(notification)) {
                 items.add(notification);
@@ -109,14 +149,23 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     @Override
     public void onBindViewHolder(NotificationListAdapter.ViewHolder vh, int position) {
         LbryNotification notification = items.get(position);
-        vh.titleView.setText(notification.getTitle());
+
+        vh.layoutView.setBackgroundColor(ContextCompat.getColor(context, notification.isSeen() ? R.color.white : R.color.nextLbryGreenSemiTransparent));
+
         vh.titleView.setVisibility(!Helper.isNullOrEmpty(notification.getTitle()) ? View.VISIBLE : View.GONE);
+        vh.titleView.setText(notification.getTitle());
         vh.bodyView.setText(notification.getDescription());
         vh.timeView.setText(DateUtils.getRelativeTimeSpanString(
                 notification.getTimestamp().getTime(),
                 System.currentTimeMillis(), 0, DateUtils.FORMAT_ABBREV_RELATIVE));
 
+        vh.thumbnailView.setVisibility(notification.getCommentAuthor() == null ? View.INVISIBLE : View.VISIBLE);
+        if (notification.getCommentAuthor() != null) {
+            Glide.with(context.getApplicationContext()).load(
+                    notification.getCommentAuthor().getThumbnailUrl()).apply(RequestOptions.circleCropTransform()).into(vh.thumbnailView);
+        }
 
+        vh.iconView.setVisibility(notification.getCommentAuthor() != null ? View.INVISIBLE : View.VISIBLE);
         vh.iconView.setText(getStringIdForRule(notification.getRule()));
         vh.iconView.setTextColor(getColorForRule(notification.getRule()));
 

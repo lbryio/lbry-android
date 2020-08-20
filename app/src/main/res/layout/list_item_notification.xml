@@ -9,16 +9,26 @@
     android:layout_marginRight="8dp"
     android:layout_marginBottom="8dp">
     <LinearLayout
+        android:id="@+id/notification_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <io.lbry.browser.ui.controls.SolidIconView
-            android:id="@+id/notification_icon"
+        <RelativeLayout
             android:layout_marginLeft="16dp"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:textSize="24dp" />
+            android:layout_gravity="center_vertical">
+            <io.lbry.browser.ui.controls.SolidIconView
+                android:id="@+id/notification_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:textSize="24dp" />
+            <ImageView
+                android:id="@+id/notification_author_thumbnail"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:visibility="invisible" />
+        </RelativeLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"

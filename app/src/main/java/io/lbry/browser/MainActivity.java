@@ -160,6 +160,7 @@ import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.MergeSubscriptionsTask;
 import io.lbry.browser.tasks.claim.ResolveTask;
 import io.lbry.browser.tasks.lbryinc.NotificationListTask;
+import io.lbry.browser.tasks.lbryinc.NotificationUpdateTask;
 import io.lbry.browser.tasks.localdata.FetchRecentUrlHistoryTask;
 import io.lbry.browser.tasks.wallet.DefaultSyncTaskHandler;
 import io.lbry.browser.tasks.wallet.LoadSharedUserStateTask;
@@ -2127,19 +2128,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
             private void handleNotificationReceived(Intent intent) {
                 loadUnreadNotificationsCount();
-
-                if (notificationListAdapter != null) {
-                    LbryNotification lnotification = new LbryNotification();
-                    lnotification.setTitle(intent.getStringExtra("title"));
-                    lnotification.setDescription(intent.getStringExtra("body"));
-                    lnotification.setTargetUrl(intent.getStringExtra("url"));
-                    lnotification.setTimestamp(new Date(intent.getLongExtra("timestamp", System.currentTimeMillis())));
-                    // show at the top
-                    notificationListAdapter.insertNotification(lnotification, 0);
-                    findViewById(R.id.notification_list_empty_container).setVisibility(View.GONE);
-                } else {
-                    loadRemoteNotifications();
-                }
+                loadRemoteNotifications(false);
             }
 
             private void handleAuthTokenGenerated(Intent intent) {
@@ -2188,10 +2177,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         clearWunderbarFocus(findViewById(R.id.wunderbar));
         findViewById(R.id.notifications_container).setVisibility(View.VISIBLE);
         ((ImageView) findViewById(R.id.notifications_toggle_icon)).setColorFilter(ContextCompat.getColor(this, R.color.lbryGreen));
-        if (notificationListAdapter == null) {
-            loadRemoteNotifications();
+        if (notificationListAdapter == null || notificationListAdapter.getItemCount() == 0) {
+            loadRemoteNotifications(true);
+        } else {
+            markNotificationsRead();
         }
-        markNotificationsRead();
     }
 
     public void hideNotifications() {
@@ -2200,6 +2190,21 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     private void markNotificationsRead() {
+        List<LbryNotification> all = notificationListAdapter != null ? notificationListAdapter.getItems() : null;
+        if (all != null) {
+            List<Long> unreadIds = new ArrayList<>();
+            for (LbryNotification notification : all) {
+                if (!notification.isRead() && notification.getRemoteId() > 0) {
+                    unreadIds.add(notification.getRemoteId());
+                }
+            }
+            if (unreadIds.size() > 0) {
+                NotificationUpdateTask task = new NotificationUpdateTask(unreadIds, true);
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        }
+
+
         (new AsyncTask<Void, Void, Void>() {
             protected Void doInBackground(Void... params) {
                 try {
@@ -3224,12 +3229,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void loadRemoteNotifications() {
+    private void loadRemoteNotifications(boolean markRead) {
         findViewById(R.id.notification_list_empty_container).setVisibility(View.GONE);
         NotificationListTask task = new NotificationListTask(this, findViewById(R.id.notifications_progress), new NotificationListTask.ListNotificationsHandler() {
             @Override
             public void onSuccess(List<LbryNotification> notifications) {
                 loadLocalNotifications();
+                loadUnreadNotificationsCount();
+                if (markRead && findViewById(R.id.notifications_container).getVisibility() == View.VISIBLE) {
+                    markNotificationsRead();
+                }
             }
 
             @Override
@@ -3262,10 +3271,26 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             protected void onPostExecute(List<LbryNotification> notifications) {
                 findViewById(R.id.notification_list_empty_container).setVisibility(notifications.size() == 0 ? View.VISIBLE : View.GONE);
                 findViewById(R.id.notifications_progress).setVisibility(View.GONE);
-                notificationListAdapter = new NotificationListAdapter(notifications, MainActivity.this);
+
+                if (notificationListAdapter == null) {
+                    notificationListAdapter = new NotificationListAdapter(notifications, MainActivity.this);
+                } else {
+                    notificationListAdapter.addNotifications(notifications);
+                }
+
+                resolveCommentAuthors(notificationListAdapter.getAuthorUrls());
                 notificationListAdapter.setClickListener(new NotificationListAdapter.NotificationClickListener() {
                     @Override
                     public void onNotificationClicked(LbryNotification notification) {
+                        // set as seen and read
+                        NotificationUpdateTask task = new NotificationUpdateTask(Arrays.asList(notification.getRemoteId()), true, true, true);
+                        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        markNotificationReadAndSeen(notification.getId());
+                        notification.setSeen(true);
+                        if (notificationListAdapter != null) {
+                            notificationListAdapter.notifyDataSetChanged();
+                        }
+
                         LbryUri target = LbryUri.tryParse(notification.getTargetUrl());
                         if (target != null) {
                             if (target.isChannel()) {
@@ -3281,6 +3306,44 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 ((RecyclerView) findViewById(R.id.notifications_list)).setAdapter(notificationListAdapter);
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void markNotificationReadAndSeen(long notificationId) {
+        (new AsyncTask<Void, Void, Void>() {
+            protected Void doInBackground(Void... params) {
+                if (dbHelper != null) {
+                    try {
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+                        DatabaseHelper.markNotificationReadAndSeen(notificationId, db);
+                    } catch (Exception ex) {
+                        // pass
+                    }
+                }
+                return null;
+            }
+            protected void onPostExecute() {
+                loadUnreadNotificationsCount();
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void resolveCommentAuthors(List<String> urls) {
+        if (urls != null && urls.size() > 0) {
+            ResolveTask task = new ResolveTask(urls, Lbry.LBRY_TV_CONNECTION_STRING, null, new ClaimListResultHandler() {
+                @Override
+                public void onSuccess(List<Claim> claims) {
+                    if (notificationListAdapter != null) {
+                        notificationListAdapter.updateAuthorClaims(claims);
+                    }
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    // pass
+                }
+            });
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 
     private void checkSyncedWallet() {
