@@ -58,6 +58,11 @@ public class LbrynetMessagingService extends FirebaseMessagingService {
             String name = payload.get("name"); // notification name
             String hash = payload.get("hash"); // comment hash
 
+            Log.d(TAG, "Received notification message with payload");
+            for (Map.Entry<String, String> entry : payload.entrySet()) {
+                Log.d(TAG, String.format("%s = %s", entry.getKey(), entry.getValue()));
+            }
+
             if (type != null && getEnabledTypes().indexOf(type) > -1 && body != null && body.trim().length() > 0) {
                 // only log the receive event for valid notifications received
                 if (firebaseAnalytics != null) {
