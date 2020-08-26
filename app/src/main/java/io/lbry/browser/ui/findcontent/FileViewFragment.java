@@ -299,7 +299,7 @@ public class FileViewFragment extends BaseFragment implements
                     }
                 } else if (playbackState == Player.STATE_BUFFERING) {
                     Context ctx = getContext();
-                    boolean sendBufferingEvents = false;
+                    boolean sendBufferingEvents = true;
 
                     if (ctx != null) {
                         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
