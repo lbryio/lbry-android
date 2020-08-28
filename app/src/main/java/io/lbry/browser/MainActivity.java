@@ -311,6 +311,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_NOTIFICATION_CREATOR = "io.lbry.browser.preference.notifications.Creator";
     public static final String PREFERENCE_KEY_KEEP_SDK_BACKGROUND = "io.lbry.browser.preference.other.KeepSdkInBackground";
     public static final String PREFERENCE_KEY_PARTICIPATE_DATA_NETWORK = "io.lbry.browser.preference.other.ParticipateInDataNetwork";
+    public static final String PREFERENCE_KEY_SEND_BUFFERING_EVENTS = "io.lbry.browser.preference.other.SendBufferingEvents";
 
     // Internal flags / setting preferences
     public static final String PREFERENCE_KEY_INTERNAL_SKIP_WALLET_ACCOUNT = "io.lbry.browser.preference.internal.WalletSkipAccount";
