@@ -2730,9 +2730,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     try {
                         LbryUri uri = LbryUri.parse(url);
                         if (uri.isChannel()) {
-                            openChannelUrl(uri.toString());
+                            openChannelUrl(url);
                         } else {
-                            openFileUrl(uri.toString());
+                            openFileUrl(url);
                         }
                     } catch (LbryUriException ex) {
                         // pass
