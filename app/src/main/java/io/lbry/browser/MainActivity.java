@@ -98,6 +98,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,6 +109,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
+import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -199,6 +202,7 @@ import io.lbry.lbrysdk.ServiceHelper;
 import io.lbry.lbrysdk.Utils;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements SdkStatusListener {
@@ -240,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Setter
     private BackPressInterceptor backPressInterceptor;
+    private WebSocketClient webSocketClient;
 
     @Getter
     private String firebaseMessagingToken;
@@ -1007,6 +1012,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (receivedStopService || !isServiceRunning(this, LbrynetService.class)) {
             notificationManager.cancelAll();
         }
+        if (webSocketClient != null) {
+            webSocketClient.close();
+        }
         if (dbHelper != null) {
             dbHelper.close();
         }
@@ -1072,10 +1080,41 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+
+
+    @SneakyThrows
+    private void checkWebSocketClient() {
+        if ((webSocketClient == null || webSocketClient.isClosed()) && !Helper.isNullOrEmpty(Lbryio.AUTH_TOKEN)) {
+            webSocketClient = new WebSocketClient(new URI(String.format("%s%s", Lbryio.WS_CONNECTION_BASE_URL, Lbryio.AUTH_TOKEN))) {
+                @Override
+                public void onOpen(ServerHandshake handshakedata) {
+
+                }
+
+                @Override
+                public void onMessage(String message) {
+                    loadRemoteNotifications(false);
+                }
+
+                @Override
+                public void onClose(int code, String reason, boolean remote) {
+
+                }
+
+                @Override
+                public void onError(Exception ex) {
+
+                }
+            };
+            webSocketClient.connect();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         checkPurchases();
+        checkWebSocketClient();
         enteringPIPMode = false;
 
         applyNavbarSigninPadding();
@@ -2649,6 +2688,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 loadRemoteNotifications(false);
 
                 checkUrlIntent(getIntent());
+                checkWebSocketClient();
                 LbryAnalytics.logEvent(LbryAnalytics.EVENT_APP_LAUNCH);
                 appStarted = true;
             }
