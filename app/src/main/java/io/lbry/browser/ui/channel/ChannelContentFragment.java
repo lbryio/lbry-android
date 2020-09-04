@@ -227,6 +227,7 @@ public class ChannelContentFragment extends Fragment implements DownloadActionLi
                 null,
                 getContentSortOrder(),
                 contentReleaseTime,
+                0,
                 currentClaimSearchPage == 0 ? 1 : currentClaimSearchPage,
                 Helper.CONTENT_PAGE_SIZE);
     }

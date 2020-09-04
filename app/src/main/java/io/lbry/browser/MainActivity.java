@@ -182,9 +182,10 @@ import io.lbry.browser.ui.other.AboutFragment;
 import io.lbry.browser.ui.publish.PublishFormFragment;
 import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.ui.publish.PublishesFragment;
-import io.lbry.browser.ui.findcontent.SearchFragment;
-import io.lbry.browser.ui.other.SettingsFragment;
 import io.lbry.browser.ui.findcontent.AllContentFragment;
+import io.lbry.browser.ui.findcontent.SearchFragment;
+import io.lbry.browser.ui.findcontent.SurfModeFragment;
+import io.lbry.browser.ui.other.SettingsFragment;
 import io.lbry.browser.ui.wallet.InvitesFragment;
 import io.lbry.browser.ui.wallet.RewardsFragment;
 import io.lbry.browser.ui.wallet.WalletFragment;
@@ -254,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fragmentClassNavIdMap.put(FollowingFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
         fragmentClassNavIdMap.put(EditorsChoiceFragment.class, NavMenuItem.ID_ITEM_EDITORS_CHOICE);
         fragmentClassNavIdMap.put(AllContentFragment.class, NavMenuItem.ID_ITEM_ALL_CONTENT);
+        fragmentClassNavIdMap.put(SurfModeFragment.class, NavMenuItem.ID_ITEM_SURF_MODE);
 
         fragmentClassNavIdMap.put(PublishFragment.class, NavMenuItem.ID_ITEM_NEW_PUBLISH);
         fragmentClassNavIdMap.put(ChannelManagerFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
@@ -632,6 +634,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         specialRouteFragmentClassMap.put("settings", SettingsFragment.class);
         specialRouteFragmentClassMap.put("subscription", FollowingFragment.class);
         specialRouteFragmentClassMap.put("subscriptions", FollowingFragment.class);
+        specialRouteFragmentClassMap.put("surf", SurfModeFragment.class);
         specialRouteFragmentClassMap.put("wallet", WalletFragment.class);
         specialRouteFragmentClassMap.put("discover", FollowingFragment.class);
     }
@@ -786,6 +789,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 break;
             case NavMenuItem.ID_ITEM_ALL_CONTENT:
                 openFragment(AllContentFragment.class, true, NavMenuItem.ID_ITEM_ALL_CONTENT);
+                break;
+            case NavMenuItem.ID_ITEM_SURF_MODE:
+                openFragment(SurfModeFragment.class, true, NavMenuItem.ID_ITEM_SURF_MODE);
                 break;
 
             case NavMenuItem.ID_ITEM_NEW_PUBLISH:
@@ -2916,7 +2922,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findContentGroup.setItems(Arrays.asList(
                 new NavMenuItem(NavMenuItem.ID_ITEM_FOLLOWING, R.string.fa_heart, R.string.following, "Following", context),
                 new NavMenuItem(NavMenuItem.ID_ITEM_EDITORS_CHOICE, R.string.fa_star, R.string.editors_choice, "EditorsChoice", context),
-                new NavMenuItem(NavMenuItem.ID_ITEM_ALL_CONTENT, R.string.fa_globe_americas, R.string.all_content, "AllContent", context)
+                new NavMenuItem(NavMenuItem.ID_ITEM_ALL_CONTENT, R.string.fa_globe_americas, R.string.all_content, "AllContent", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_SURF_MODE, R.string.fa_broadcast_tower, R.string.surf_mode, "SurfMode",context)
         ));
 
         yourContentGroup.setItems(Arrays.asList(
