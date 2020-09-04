@@ -103,6 +103,11 @@ public final class Helper {
         }
     }
 
+    public static String getDisplayValueForPlaybackSpeed(Double speed) {
+        DecimalFormat formatter = new DecimalFormat("0.##");
+        return String.format("%sx", formatter.format(speed));
+    }
+
     public static String capitalize(String value) {
         StringBuilder sb = new StringBuilder();
         boolean capitalizeNext = true;
