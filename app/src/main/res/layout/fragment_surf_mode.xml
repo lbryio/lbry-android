@@ -13,8 +13,8 @@
             android:id="@+id/surf_mode_exoplayer_container"
             android:background="@android:color/black"
             android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_height="280dp">
+            android:layout_height="match_parent"
+            android:layout_above="@id/surf_mode_content_details">
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/surf_mode_exoplayer_view"
                 android:layout_width="match_parent"
@@ -29,12 +29,14 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/surf_mode_content_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_below="@+id/surf_mode_exoplayer_container">
+            android:layout_marginBottom="8dp"
+            android:layout_alignParentBottom="true">
             <TextView
                 android:id="@+id/surf_mode_content_title"
                 android:layout_width="wrap_content"
@@ -42,6 +44,8 @@
                 android:fontFamily="@font/inter"
                 android:textColor="@color/white"
                 android:textFontWeight="300"
+                android:minLines="2"
+                android:maxLines="3"
                 android:textSize="20sp"
                 />
         </LinearLayout>
