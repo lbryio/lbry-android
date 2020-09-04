@@ -3095,6 +3095,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (appPlayer != null && inPictureInPictureMode && !isBackgroundPlaybackEnabled()) {
             appPlayer.setPlayWhenReady(false);
         }
+        if (inPictureInPictureMode) {
+            MainActivity.playerReassigned = true;
+        }
         super.onStop();
     }
 
