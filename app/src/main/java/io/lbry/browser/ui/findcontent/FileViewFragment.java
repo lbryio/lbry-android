@@ -772,6 +772,7 @@ public class FileViewFragment extends BaseFragment implements
         View root = getView();
         if (root != null) {
             PlayerView view = root.findViewById(R.id.file_view_exoplayer_view);
+            view.setVisibility(View.VISIBLE);
             view.setPlayer(null);
             view.setPlayer(MainActivity.appPlayer);
         }
