@@ -185,7 +185,15 @@ public class SurfModeFragment extends BaseFragment {
 
     public void onResume() {
         super.onResume();
-        loadContent();
+        if (playlist == null) {
+            loadContent();
+        } else {
+            if (current != null) {
+                playbackCurrentClaim();
+            } else {
+                startPlaylist();
+            }
+        }
     }
 
     public void onStop() {
