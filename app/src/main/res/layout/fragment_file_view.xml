@@ -19,7 +19,7 @@
             <ProgressBar
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_gravity="center_vertical" />
             <TextView
                 android:layout_width="wrap_content"
@@ -75,13 +75,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="4dp"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="7dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="7dp"
                     android:visibility="gone">
                     <io.lbry.browser.ui.controls.SolidIconView
                         android:layout_width="12dp"
@@ -95,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="1dp"
+                        android:layout_marginStart="1dp"
                         android:fontFamily="@font/inter"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
@@ -140,7 +140,7 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
                     android:layout_centerVertical="true">
                     <TextView
                         android:layout_width="wrap_content"
@@ -183,15 +183,15 @@
                     android:background="?attr/selectableItemBackground"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="4dp">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="4dp">
                     <LinearLayout
                         android:id="@+id/file_view_title_layout"
                         android:orientation="vertical"
                         android:layout_centerVertical="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="48dp">
+                        android:layout_marginEnd="48dp">
                         <TextView
                             android:id="@+id/file_view_title"
                             android:layout_width="wrap_content"
@@ -208,7 +208,7 @@
                                 android:id="@+id/file_view_view_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="16dp"
+                                android:layout_marginEnd="16dp"
                                 android:fontFamily="@font/inter"
                                 android:textSize="12sp"
                                 android:textFontWeight="300"
@@ -227,7 +227,7 @@
                         android:id="@+id/file_view_desc_toggle_arrow"
                         android:src="@drawable/ic_arrow_dropdown"
                         android:layout_toLeftOf="@+id/file_view_title_layout"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
@@ -482,7 +482,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="12dp"
-                        android:paddingLeft="16dp"
+                        android:paddingStart="16dp"
                         android:paddingBottom="12dp"
                         android:layout_toLeftOf="@id/file_view_icon_follow">
                         <RelativeLayout
@@ -490,7 +490,7 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginRight="16dp"
+                            android:layout_marginEnd="16dp"
                             android:visibility="gone">
                             <RelativeLayout
                                 android:layout_centerHorizontal="true"
@@ -545,12 +545,12 @@
                         android:id="@+id/file_view_icon_follow"
                         android:clickable="true"
                         android:background="?attr/selectableItemBackground"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:text="@string/fa_heart"
                         android:textColor="@color/red"
                         android:textSize="20dp" />
@@ -559,12 +559,12 @@
                         android:id="@+id/file_view_icon_unfollow"
                         android:clickable="true"
                         android:background="?attr/selectableItemBackground"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:text="@string/fa_heart_broken"
                         android:textSize="20dp"
                         android:visibility="invisible" />
@@ -591,8 +591,8 @@
                         android:autoLink="all"
                         android:textColorLink="@color/lbryGreen"
                         android:textFontWeight="300"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp" />
                     <LinearLayout
                         android:id="@+id/file_view_tag_area"
                         android:orientation="horizontal"
@@ -600,8 +600,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="10"
                         android:paddingTop="36dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp">
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp">
                         <TextView
                             android:layout_weight="2"
                             android:layout_width="0dp"
@@ -613,7 +613,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/file_view_tag_list"
                             android:layout_weight="8"
-                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
@@ -635,8 +635,8 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp">
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -657,8 +657,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:fontFamily="@font/inter"
                         android:text="@string/no_related_content"
                         android:textSize="14sp"
@@ -687,8 +687,8 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp">
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp">
                         <ProgressBar
                             android:id="@+id/file_view_comments_progress"
                             android:layout_width="16dp"
@@ -712,8 +712,8 @@
                         android:id="@+id/file_view_no_comments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/inter"
                         android:text="@string/no_comments"

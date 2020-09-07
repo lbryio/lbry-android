@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:visibility="visible">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_arrow_dropdown"
                         android:tint="@color/foreground" />
@@ -66,7 +66,7 @@
                     android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
                     android:layout_toRightOf="@id/channel_content_sort_link"
                     android:visibility="gone">
                     <TextView
@@ -74,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
                         android:fontFamily="@font/inter"
                         android:textFontWeight="300"
                         android:textSize="12sp"
@@ -82,7 +82,7 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_arrow_dropdown"
                         android:tint="@color/foreground" />

@@ -45,7 +45,7 @@
             android:layout_toRightOf="@id/inline_channel_form_layout_deposit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/inter"
             android:text="@string/lbc"
@@ -56,7 +56,7 @@
         <LinearLayout
             android:id="@+id/inline_channel_form_inline_balance_container"
             android:layout_toRightOf="@id/inline_channel_form_inline_currency"
-            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="28dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
                 android:textFontWeight="300"
-                android:layout_marginLeft="2dp" />
+                android:layout_marginStart="2dp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -105,7 +105,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
-            android:layout_marginRight="24dp"
+            android:layout_marginEnd="24dp"
             android:layout_toLeftOf="@id/inline_channel_form_create_button"
             android:visibility="gone" />
 
@@ -113,7 +113,7 @@
             android:id="@+id/inline_channel_form_create_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter"
             android:text="@string/create"/>

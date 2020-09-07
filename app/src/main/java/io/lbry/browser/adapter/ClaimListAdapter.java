@@ -323,7 +323,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         int paddingBottom = position == getItemCount() - 1 ? 16 : 8;
         int paddingTopScaled = Helper.getScaledValue(paddingTop, scale);
         int paddingBottomScaled = Helper.getScaledValue(paddingBottom, scale);
-        vh.itemView.setPadding(vh.itemView.getPaddingLeft(), paddingTopScaled, vh.itemView.getPaddingRight(), paddingBottomScaled);
+        vh.itemView.setPadding(vh.itemView.getPaddingStart(), paddingTopScaled, vh.itemView.getPaddingEnd(), paddingBottomScaled);
 
         Claim original = items.get(position);
         boolean isRepost = Claim.TYPE_REPOST.equalsIgnoreCase(original.getValueType());

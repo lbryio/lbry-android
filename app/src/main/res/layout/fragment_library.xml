@@ -8,8 +8,8 @@
         android:id="@+id/library_filter_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
                 android:layout_toRightOf="@id/library_filter_link_downloads"
                 android:fontFamily="@font/inter"
                 android:text="@string/purchases" />
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
                 android:layout_toRightOf="@id/library_filter_link_purchases"
                 android:fontFamily="@font/inter"
                 android:text="@string/history"
@@ -52,7 +52,7 @@
                 android:id="@+id/library_list_loading"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:visibility="gone" />
             <TextView
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:fontFamily="@font/inter"
                 android:text="@string/stats"
                 android:textColor="@color/lbryGreen"
@@ -75,8 +75,8 @@
         android:layout_below="@id/library_filter_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:visibility="gone">
         <LinearLayout
@@ -105,7 +105,7 @@
                         android:id="@+id/library_storage_stat_unit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
+                        android:layout_marginStart="3dp"
                         android:fontFamily="@font/inter"
                         android:text="@string/mb"
                         android:textColor="@color/lbryGreen"
@@ -119,7 +119,7 @@
                     android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/inter"
                     android:text="@string/hide"
@@ -180,7 +180,7 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/video"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:textFontWeight="300"
                     android:textSize="12sp" />
 
@@ -190,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/zero_mb"
                     android:textFontWeight="300"
@@ -216,7 +216,7 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/audio"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:textFontWeight="300"
                     android:textSize="12sp" />
 
@@ -226,7 +226,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/zero_mb"
                     android:textFontWeight="300"
@@ -252,7 +252,7 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/images"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:textFontWeight="300"
                     android:textSize="12sp" />
 
@@ -262,7 +262,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/zero_mb"
                     android:textFontWeight="300"
@@ -288,7 +288,7 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/other"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:textFontWeight="300"
                     android:textSize="12sp" />
 
@@ -298,7 +298,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/zero_mb"
                     android:textFontWeight="300"

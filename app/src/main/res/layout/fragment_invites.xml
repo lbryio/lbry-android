@@ -80,7 +80,7 @@
             android:layout_alignParentBottom="true">
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/invites_get_started_button"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

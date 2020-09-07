@@ -15,9 +15,9 @@
         android:id="@+id/publishes_list_loading"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:visibility="gone" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/publishes_list"
@@ -66,9 +66,9 @@
         android:id="@+id/publishes_fab_new_publish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_add"
         android:visibility="gone" />

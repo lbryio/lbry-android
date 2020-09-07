@@ -7,7 +7,7 @@
     android:background="@drawable/bg_selected_item"
     android:layout_width="100dp"
     android:layout_height="wrap_content"
-    android:layout_marginRight="2dp">
+    android:layout_marginEnd="2dp">
     <RelativeLayout
         android:id="@+id/channel_filter_media_container"
         android:layout_width="80dp"

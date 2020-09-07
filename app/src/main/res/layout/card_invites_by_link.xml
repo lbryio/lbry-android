@@ -24,7 +24,7 @@
                 android:id="@+id/invites_loading_channels_progress"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:visibility="gone" />
         </RelativeLayout>
@@ -57,8 +57,8 @@
                 android:layout_toLeftOf="@id/invites_copy_invite_link"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp">
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
                 <TextView
                     android:id="@+id/invites_invite_link"
                     android:clickable="true"
@@ -72,14 +72,14 @@
             </LinearLayout>
             <ImageButton
                 android:id="@+id/invites_copy_invite_link"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:src="@drawable/ic_copy"
                 android:tint="@color/lbryGreen"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
         <TextView

@@ -29,16 +29,16 @@
                 <LinearLayout
                     android:id="@+id/publish_form_thumbnail_upload_progress"
                     android:background="@color/channelCoverBackground"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="4dp"
                     android:orientation="horizontal"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
                     android:visibility="gone">
                     <ProgressBar
                         android:layout_width="16dp"
@@ -46,7 +46,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
                         android:fontFamily="@font/inter"
                         android:text="@string/uploading"
                         android:textColor="@color/white"
@@ -58,7 +58,7 @@
                     android:background="@drawable/bg_small_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginBottom="16dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true">
@@ -149,7 +149,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true"
                                 android:fontFamily="@font/inter"
                                 android:textFontWeight="300"
                                 android:textSize="16sp" />
@@ -183,7 +183,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_centerVertical="true"
-                                android:layout_marginRight="16dp"
+                                android:layout_marginEnd="16dp"
                                 android:visibility="gone" />
 
                             <TextView
@@ -243,7 +243,7 @@
                                 android:id="@+id/publish_form_loading_channels"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:visibility="gone" />
                         </RelativeLayout>
@@ -280,7 +280,7 @@
                                 android:id="@+id/publish_form_price_switch"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true" />
                         </RelativeLayout>
 
@@ -319,7 +319,7 @@
                                 android:layout_width="110dp"
                                 android:layout_height="wrap_content"
                                 android:layout_toRightOf="@+id/publish_form_price_layout"
-                                android:layout_marginLeft="4dp"
+                                android:layout_marginStart="4dp"
                                 android:layout_marginTop="24dp" />
                         </RelativeLayout>
                     </LinearLayout>
@@ -349,7 +349,7 @@
                                 android:id="@+id/publish_form_generate_address"
                                 android:background="?attr/selectableItemBackground"
                                 android:clickable="true"
-                                android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -419,7 +419,7 @@
                                 android:layout_toRightOf="@id/publish_form_input_layout_deposit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="8dp"
+                                android:layout_marginStart="8dp"
                                 android:layout_marginTop="30dp"
                                 android:fontFamily="@font/inter"
                                 android:text="@string/lbc"
@@ -430,7 +430,7 @@
                             <LinearLayout
                                 android:id="@+id/publish_form_inline_balance_container"
                                 android:layout_toRightOf="@id/publish_form_input_currency"
-                                android:layout_marginLeft="24dp"
+                                android:layout_marginStart="24dp"
                                 android:layout_marginTop="28dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -446,7 +446,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/inter"
                                     android:textFontWeight="300"
-                                    android:layout_marginLeft="2dp" />
+                                    android:layout_marginStart="2dp" />
                             </LinearLayout>
                         </RelativeLayout>
 
@@ -538,7 +538,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="24dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/inter"
                 android:text="@string/show_extra_fields"
                 android:textFontWeight="300" />
@@ -546,8 +546,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:layout_marginTop="24dp">
                 <TextView
                     android:id="@+id/publish_form_cancel"
@@ -567,14 +567,14 @@
                     android:layout_centerVertical="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_toLeftOf="@id/publish_form_publish_button"
                     android:visibility="gone" />
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/publish_form_publish_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/publish" />
