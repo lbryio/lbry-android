@@ -191,7 +191,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/publish_form_video_opt_progress"
+                                android:layout_toEndOf="@id/publish_form_video_opt_progress"
                                 android:fontFamily="@font/inter"
                                 android:textFontWeight="300"
                                 android:textSize="14sp" />
@@ -318,7 +318,7 @@
                                 android:entries="@array/publish_currencies"
                                 android:layout_width="110dp"
                                 android:layout_height="wrap_content"
-                                android:layout_toRightOf="@+id/publish_form_price_layout"
+                                android:layout_toEndOf="@+id/publish_form_price_layout"
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="24dp" />
                         </RelativeLayout>
@@ -416,7 +416,7 @@
 
                             <TextView
                                 android:id="@+id/publish_form_input_currency"
-                                android:layout_toRightOf="@id/publish_form_input_layout_deposit"
+                                android:layout_toEndOf="@id/publish_form_input_layout_deposit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -429,7 +429,7 @@
 
                             <LinearLayout
                                 android:id="@+id/publish_form_inline_balance_container"
-                                android:layout_toRightOf="@id/publish_form_input_currency"
+                                android:layout_toEndOf="@id/publish_form_input_currency"
                                 android:layout_marginStart="24dp"
                                 android:layout_marginTop="28dp"
                                 android:layout_width="wrap_content"
@@ -568,7 +568,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_toLeftOf="@id/publish_form_publish_button"
+                    android:layout_toStartOf="@id/publish_form_publish_button"
                     android:visibility="gone" />
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/publish_form_publish_button"

@@ -129,7 +129,7 @@
             android:orientation="vertical"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:layout_toRightOf="@id/claim_media_container">
+            android:layout_toEndOf="@id/claim_media_container">
             <TextView
                 android:id="@+id/claim_vanity_url"
                 android:layout_width="wrap_content"

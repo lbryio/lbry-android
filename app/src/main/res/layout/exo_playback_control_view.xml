@@ -14,7 +14,7 @@
         android:layout_centerVertical="true"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:layout_toLeftOf="@id/player_play_pause">
+        android:layout_toStartOf="@id/player_play_pause">
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -66,7 +66,7 @@
         android:layout_centerVertical="true"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:layout_toRightOf="@id/player_play_pause">
+        android:layout_toEndOf="@id/player_play_pause">
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -103,7 +103,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="56dp"
         android:layout_height="48dp"
-        android:layout_toLeftOf="@id/player_toggle_fullscreen">
+        android:layout_toStartOf="@id/player_toggle_fullscreen">
         <TextView
             android:id="@+id/player_playback_speed_label"
             android:layout_alignParentEnd="true"
@@ -140,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/player_playback_speed"
+        android:layout_toStartOf="@id/player_playback_speed"
         android:paddingStart="16dp"
         android:paddingEnd="4dp">
         <TextView
@@ -155,8 +155,8 @@
             android:textSize="14sp" />
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@id/exo_progress"
-            android:layout_toLeftOf="@id/player_duration_total"
-            android:layout_toRightOf="@id/player_duration_elapsed"
+            android:layout_toStartOf="@id/player_duration_total"
+            android:layout_toEndOf="@id/player_duration_elapsed"
             android:layout_width="match_parent"
             android:layout_height="24dp"
             android:layout_marginStart="4dp"

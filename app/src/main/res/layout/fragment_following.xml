@@ -87,7 +87,7 @@
 
             <LinearLayout
                 android:id="@+id/following_time_link"
-                android:layout_toRightOf="@id/following_sort_link"
+                android:layout_toEndOf="@id/following_sort_link"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:layout_width="wrap_content"

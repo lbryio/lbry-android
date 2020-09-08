@@ -49,7 +49,7 @@
                     android:layout_centerVertical="true"/>
                 <TextView
                     android:id="@+id/editors_choice_content_description"
-                    android:layout_toRightOf="@id/editors_choice_content_thumbnail"
+                    android:layout_toEndOf="@id/editors_choice_content_thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

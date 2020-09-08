@@ -36,7 +36,7 @@
                 android:id="@+id/wallet_receive_address"
                 android:clickable="true"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/wallet_copy_receive_address"
+                android:layout_toStartOf="@id/wallet_copy_receive_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"

@@ -85,7 +85,7 @@
                 <TextView
                     android:id="@+id/all_content_for_prefix"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/all_content_sort_link"
+                    android:layout_toEndOf="@id/all_content_sort_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
@@ -96,7 +96,7 @@
                     android:visibility="gone" />
                 <LinearLayout
                     android:id="@+id/all_content_scope_link"
-                    android:layout_toRightOf="@id/all_content_sort_link"
+                    android:layout_toEndOf="@id/all_content_sort_link"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:layout_width="wrap_content"
@@ -126,7 +126,7 @@
                 <TextView
                     android:id="@+id/all_content_from_prefix"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/all_content_sort_link"
+                    android:layout_toEndOf="@id/all_content_sort_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
@@ -143,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
-                    android:layout_toRightOf="@id/all_content_sort_link"
+                    android:layout_toEndOf="@id/all_content_sort_link"
                     android:visibility="gone">
                     <TextView
                         android:id="@+id/all_content_time_link_text"

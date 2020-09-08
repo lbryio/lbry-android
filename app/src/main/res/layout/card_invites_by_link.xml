@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/invites_copy_invite_link"
+                android:layout_toStartOf="@id/invites_copy_invite_link"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:paddingStart="12dp"

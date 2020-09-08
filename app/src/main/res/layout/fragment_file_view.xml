@@ -136,7 +136,7 @@
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content" />
                 <LinearLayout
-                    android:layout_toRightOf="@id/file_view_unsupported_gerbil"
+                    android:layout_toEndOf="@id/file_view_unsupported_gerbil"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
                     <ImageView
                         android:id="@+id/file_view_desc_toggle_arrow"
                         android:src="@drawable/ic_arrow_dropdown"
-                        android:layout_toLeftOf="@+id/file_view_title_layout"
+                        android:layout_toStartOf="@+id/file_view_title_layout"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_width="24dp"
@@ -484,7 +484,7 @@
                         android:paddingTop="12dp"
                         android:paddingStart="16dp"
                         android:paddingBottom="12dp"
-                        android:layout_toLeftOf="@id/file_view_icon_follow">
+                        android:layout_toStartOf="@id/file_view_icon_follow">
                         <RelativeLayout
                             android:id="@+id/file_view_publisher_avatar"
                             android:layout_width="50dp"

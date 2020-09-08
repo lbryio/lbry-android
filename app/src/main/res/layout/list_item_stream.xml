@@ -152,7 +152,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="16dp"
-            android:layout_toRightOf="@id/claim_media_container">
+            android:layout_toEndOf="@id/claim_media_container">
             <LinearLayout
                 android:id="@+id/claim_text_loading_placeholder_1"
                 android:background="@color/lighterGrey"

@@ -136,7 +136,7 @@
                 android:id="@+id/verification_phone_verify_progress"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_toRightOf="@id/verification_phone_verify_button"
+                android:layout_toEndOf="@id/verification_phone_verify_button"
                 android:layout_marginStart="16dp"
                 android:layout_centerVertical="true"
                 android:visibility="gone" />

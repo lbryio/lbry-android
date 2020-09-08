@@ -195,7 +195,7 @@
 
                         <TextView
                             android:id="@+id/channel_form_input_currency"
-                            android:layout_toRightOf="@id/channel_form_input_layout_deposit"
+                            android:layout_toEndOf="@id/channel_form_input_layout_deposit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -208,7 +208,7 @@
 
                         <LinearLayout
                             android:id="@+id/channel_form_inline_balance_container"
-                            android:layout_toRightOf="@id/channel_form_input_currency"
+                            android:layout_toEndOf="@id/channel_form_input_currency"
                             android:layout_marginStart="24dp"
                             android:layout_marginTop="28dp"
                             android:layout_width="wrap_content"
@@ -324,7 +324,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="24dp"
-                            android:layout_toLeftOf="@id/channel_form_save_button"
+                            android:layout_toStartOf="@id/channel_form_save_button"
                             android:fontFamily="@font/inter"
                             android:textSize="14sp"
                             android:text="@string/show_optional_fields" />
@@ -334,7 +334,7 @@
                             android:layout_height="20dp"
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="24dp"
-                            android:layout_toLeftOf="@+id/channel_form_save_button"
+                            android:layout_toStartOf="@+id/channel_form_save_button"
                             android:visibility="gone" />
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/channel_form_save_button"

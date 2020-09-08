@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
-                    android:layout_toRightOf="@id/rewards_filter_link_unclaimed"
+                    android:layout_toEndOf="@id/rewards_filter_link_unclaimed"
                     android:fontFamily="@font/inter"
                     android:text="@string/all"
                     android:textSize="14sp" />

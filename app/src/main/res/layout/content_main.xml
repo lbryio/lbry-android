@@ -133,8 +133,8 @@
                 android:layout_width="160dp"
                 android:layout_height="90dp" />
             <LinearLayout
-                android:layout_toRightOf="@id/global_now_playing_player_view"
-                android:layout_toLeftOf="@id/global_now_playing_close"
+                android:layout_toEndOf="@id/global_now_playing_player_view"
+                android:layout_toStartOf="@id/global_now_playing_close"
                 android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
                 android:orientation="vertical"

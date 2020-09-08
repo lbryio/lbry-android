@@ -83,7 +83,7 @@
 
             <TextView
                 android:id="@+id/create_support_input_currency"
-                android:layout_toRightOf="@id/create_support_input_layout_amount"
+                android:layout_toEndOf="@id/create_support_input_layout_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -96,7 +96,7 @@
 
             <LinearLayout
                 android:id="@+id/create_support_inline_balance_container"
-                android:layout_toRightOf="@id/create_support_input_currency"
+                android:layout_toEndOf="@id/create_support_input_currency"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="28dp"
                 android:layout_width="wrap_content"
@@ -148,7 +148,7 @@
                 android:id="@+id/create_support_progress"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_toLeftOf="@id/create_support_send"
+                android:layout_toStartOf="@id/create_support_send"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="8dp"
                 android:visibility="gone" />

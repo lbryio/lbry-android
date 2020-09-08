@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_toRightOf="@id/channel_content_sort_link"
+                    android:layout_toEndOf="@id/channel_content_sort_link"
                     android:visibility="gone">
                     <TextView
                         android:id="@+id/channel_content_time_link_text"

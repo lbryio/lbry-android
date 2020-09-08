@@ -37,7 +37,7 @@
             android:src="@drawable/ic_trending"
             android:tint="@color/foreground" />
         <TextView
-            android:layout_toRightOf="@+id/sort_by_trending_item_icon"
+            android:layout_toEndOf="@+id/sort_by_trending_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -72,7 +72,7 @@
             android:src="@drawable/ic_new"
             android:tint="@color/foreground" />
         <TextView
-            android:layout_toRightOf="@+id/sort_by_new_item_icon"
+            android:layout_toEndOf="@+id/sort_by_new_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -107,7 +107,7 @@
             android:src="@drawable/ic_top"
             android:tint="@color/foreground" />
         <TextView
-            android:layout_toRightOf="@+id/sort_by_top_item_icon"
+            android:layout_toEndOf="@+id/sort_by_top_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

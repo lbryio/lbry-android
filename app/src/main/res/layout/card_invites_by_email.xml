@@ -48,7 +48,7 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="24dp"
-                android:layout_toLeftOf="@id/invites_email_button"
+                android:layout_toStartOf="@id/invites_email_button"
                 android:visibility="gone" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/invites_email_button"

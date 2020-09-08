@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="24dp"
-                android:layout_toRightOf="@id/library_filter_link_downloads"
+                android:layout_toEndOf="@id/library_filter_link_downloads"
                 android:fontFamily="@font/inter"
                 android:text="@string/purchases" />
             <TextView
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="24dp"
-                android:layout_toRightOf="@id/library_filter_link_purchases"
+                android:layout_toEndOf="@id/library_filter_link_purchases"
                 android:fontFamily="@font/inter"
                 android:text="@string/history"
                 android:textSize="14sp" />
@@ -174,7 +174,7 @@
                     android:layout_height="10dp"
                     android:layout_centerVertical="true" />
                 <TextView
-                    android:layout_toRightOf="@id/library_storage_legend_video_icon"
+                    android:layout_toEndOf="@id/library_storage_legend_video_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -210,7 +210,7 @@
                     android:layout_height="10dp"
                     android:layout_centerVertical="true" />
                 <TextView
-                    android:layout_toRightOf="@id/library_storage_legend_audio_icon"
+                    android:layout_toEndOf="@id/library_storage_legend_audio_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -246,7 +246,7 @@
                     android:layout_height="10dp"
                     android:layout_centerVertical="true" />
                 <TextView
-                    android:layout_toRightOf="@id/library_storage_legend_image_icon"
+                    android:layout_toEndOf="@id/library_storage_legend_image_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -282,7 +282,7 @@
                     android:layout_height="10dp"
                     android:layout_centerVertical="true" />
                 <TextView
-                    android:layout_toRightOf="@id/library_storage_legend_other_icon"
+                    android:layout_toEndOf="@id/library_storage_legend_other_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

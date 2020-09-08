@@ -189,7 +189,7 @@
                             android:layout_centerVertical="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/wallet_in_tips_label"
+                            android:layout_toEndOf="@id/wallet_in_tips_label"
                             android:fontFamily="@font/inter"
                             android:layout_marginStart="24dp"
                             android:text="@string/unlock"
@@ -202,7 +202,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_marginStart="24dp"
-                            android:layout_toRightOf="@id/wallet_in_tips_label"
+                            android:layout_toEndOf="@id/wallet_in_tips_label"
                             android:visibility="gone" />
 
                     </RelativeLayout>
