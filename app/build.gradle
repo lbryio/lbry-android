@@ -117,6 +117,8 @@ dependencies {
 
     implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.3.1.LTS'
 
+    implementation 'org.java-websocket:Java-WebSocket:1.5.1'
+
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
