@@ -212,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final int REMOTE_NOTIFICATION_REFRESH_TTL = 300000; // 5 minutes
     public static final String SKU_SKIP = "lbryskip";
 
+    private boolean shuttingDown;
     private Date remoteNotifcationsLastLoaded;
     private Map<String, Class> specialRouteFragmentClassMap;
     @Getter
@@ -1007,6 +1008,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onDestroy() {
+        shuttingDown = true;
         unregisterReceivers();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         if (receivedStopService || !isServiceRunning(this, LbrynetService.class)) {
@@ -1087,9 +1089,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if ((webSocketClient == null || webSocketClient.isClosed()) && !Helper.isNullOrEmpty(Lbryio.AUTH_TOKEN)) {
             webSocketClient = new WebSocketClient(new URI(String.format("%s%s", Lbryio.WS_CONNECTION_BASE_URL, Lbryio.AUTH_TOKEN))) {
                 @Override
-                public void onOpen(ServerHandshake handshakedata) {
-
-                }
+                public void onOpen(ServerHandshake handshakedata) { }
 
                 @Override
                 public void onMessage(String message) {
@@ -1098,13 +1098,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-
+                    if (!shuttingDown) {
+                        // attempt to re-establish the connection if the app isn't being closed
+                        checkWebSocketClient();
+                    }
                 }
 
                 @Override
-                public void onError(Exception ex) {
-
-                }
+                public void onError(Exception ex) { }
             };
             webSocketClient.connect();
         }
