@@ -863,11 +863,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
     }
 
-    public void openChannelUrl(String url) {
+    public void openChannelUrl(String url, String source) {
         Map<String, Object> params = new HashMap<>();
         params.put("url", url);
         params.put("claim", getCachedClaimForUrl(url));
+        if (!Helper.isNullOrEmpty(source)) {
+            params.put("source", source);
+        }
         openFragment(ChannelFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
+    }
+    public void openChannelUrl(String url) {
+        openChannelUrl(url, null);
     }
 
     private Claim getCachedClaimForUrl(String url) {
@@ -889,21 +895,33 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     public void openFileUrl(String url) {
+        openFileUrl(url, null);
+    }
+    public void openFileUrl(String url, String source) {
         Map<String, Object> params = new HashMap<>();
         params.put("url", url);
+        if (!Helper.isNullOrEmpty(source)) {
+            params.put("source", source);
+        }
         openFragment(FileViewFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
     }
 
-    private void openSpecialUrl(String url) {
+    private void openSpecialUrl(String url, String source) {
         String specialPath = url.substring(8).toLowerCase();
         if (specialRouteFragmentClassMap.containsKey(specialPath)) {
             Class fragmentClass = specialRouteFragmentClassMap.get(specialPath);
             if (fragmentClassNavIdMap.containsKey(fragmentClass)) {
+                Map<String, Object> params = null;
+                if (!Helper.isNullOrEmpty(source)) {
+                    params = new HashMap<>();
+                    params.put("source",  source);
+                }
+
                 openFragment(
                         specialRouteFragmentClassMap.get(specialPath),
                         true,
                         fragmentClassNavIdMap.get(fragmentClass),
-                        null
+                        params
                 );
             }
         }
@@ -2241,6 +2259,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    public void navigateBackToNotifications() {
+        showNotifications();
+    }
+
     @Override
     public void onBackPressed() {
         if (findViewById(R.id.url_suggestions_container).getVisibility() == View.VISIBLE) {
@@ -2251,6 +2273,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             hideNotifications();
             return;
         }
+
         if (backPressInterceptor != null && backPressInterceptor.onBackPressed()) {
             return;
         }
@@ -3321,14 +3344,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                         String targetUrl = notification.getTargetUrl();
                         if (targetUrl.startsWith(SPECIAL_URL_PREFIX)) {
-                            openSpecialUrl(targetUrl);
+                            openSpecialUrl(targetUrl, "notification");
                         } else {
                             LbryUri target = LbryUri.tryParse(notification.getTargetUrl());
                             if (target != null) {
                                 if (target.isChannel()) {
-                                    openChannelUrl(notification.getTargetUrl());
+                                    openChannelUrl(notification.getTargetUrl(), "notification");
                                 } else {
-                                    openFileUrl(notification.getTargetUrl());
+                                    openFileUrl(notification.getTargetUrl(), "notification");
                                 }
                             }
                         }
