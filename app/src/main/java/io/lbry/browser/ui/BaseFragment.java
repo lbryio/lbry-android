@@ -65,6 +65,14 @@ public class BaseFragment extends Fragment {
                 MainActivity.resumeGlobalPlayer(context);
             }
         }
+
+        if (params != null && params.containsKey("source") && "notification".equalsIgnoreCase(params.get("source").toString())) {
+            Context context = getContext();
+            if (context instanceof MainActivity) {
+                ((MainActivity) context).navigateBackToNotifications();
+            }
+        }
+
         rewardDriverClickListenerSet = false;
         super.onStop();
     }
