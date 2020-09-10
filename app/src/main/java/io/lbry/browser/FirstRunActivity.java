@@ -15,12 +15,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 import androidx.preference.PreferenceManager;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import io.lbry.browser.exceptions.AuthTokenInvalidatedException;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.Lbryio;
 import io.lbry.lbrysdk.LbrynetService;
+import io.lbry.lbrysdk.ServiceHelper;
+import io.lbry.lbrysdk.Utils;
 
 public class FirstRunActivity extends AppCompatActivity {
 
@@ -44,12 +54,7 @@ public class FirstRunActivity extends AppCompatActivity {
         });
 
         registerAuthReceiver();
-        if (!Lbry.SDK_READY) {
-            findViewById(R.id.welcome_wait_container).setVisibility(View.VISIBLE);
-        } else {
-            authenticate();
-        }
-
+        findViewById(R.id.welcome_wait_container).setVisibility(View.VISIBLE);
         IntentFilter filter = new IntentFilter();
         filter.addAction(MainActivity.ACTION_SDK_READY);
         filter.addAction(LbrynetService.ACTION_STOP_SERVICE);
@@ -62,10 +67,38 @@ public class FirstRunActivity extends AppCompatActivity {
                     authenticate();
                 } else if (LbrynetService.ACTION_STOP_SERVICE.equals(action)) {
                     finish();
+                    if (MainActivity.instance != null) {
+                        MainActivity.instance.finish();
+                    }
                 }
             }
         };
         registerReceiver(sdkReceiver, filter);
+
+        CheckInstallIdTask task = new CheckInstallIdTask(this, new CheckInstallIdTask.InstallIdHandler() {
+            @Override
+            public void onInstallIdChecked(boolean result) {
+                // start the sdk from FirstRun
+                boolean serviceRunning = MainActivity.isServiceRunning(MainActivity.instance, LbrynetService.class);
+                if (!serviceRunning) {
+                    Lbry.SDK_READY = false;
+                    ServiceHelper.start(MainActivity.instance, "", LbrynetService.class, "lbrynetservice");
+                }
+
+                if (result) {
+                    // install_id generated and validated, authenticate now
+                    authenticate();
+                    return;
+                }
+
+                // we weren't able to generate the install_id ourselves, depend on the sdk for that
+                if (Lbry.SDK_READY) {
+                    authenticate();
+                    return;
+                }
+            }
+        });
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void onResume() {
@@ -132,6 +165,75 @@ public class FirstRunActivity extends AppCompatActivity {
         Helper.unregisterReceiver(authReceiver, this);
         Helper.unregisterReceiver(sdkReceiver, this);
         super.onDestroy();
+    }
+
+    private void generateIdAndAuthenticate() {
+
+    }
+
+    private static class CheckInstallIdTask extends AsyncTask<Void, Void, Boolean> {
+        private Context context;
+        private InstallIdHandler handler;
+        public CheckInstallIdTask(Context context, InstallIdHandler handler) {
+            this.context = context;
+            this.handler = handler;
+        }
+        protected Boolean doInBackground(Void... params) {
+            // Load the installation id from the file system
+            String lbrynetDir = String.format("%s/%s", Utils.getAppInternalStorageDir(context), "lbrynet");
+            File dir = new File(lbrynetDir);
+            boolean dirExists = dir.isDirectory();
+            if (!dirExists) {
+                dirExists = dir.mkdirs();
+            }
+
+            if (!dirExists) {
+                return false;
+            }
+
+            String installIdPath = String.format("%s/install_id", lbrynetDir);
+            File file = new File(installIdPath);
+            String installId  = null;
+            if (!file.exists()) {
+                // generate the install_id
+                installId = Lbry.generateId();
+                BufferedWriter writer = null;
+                try {
+                    writer = new BufferedWriter(new FileWriter(file));
+                    writer.write(installId);
+                    android.util.Log.d("LbryMain", "Generated install ID=" + installId);
+                } catch (IOException ex) {
+                    return false;
+                } finally {
+                    Helper.closeCloseable(writer);
+                }
+            } else {
+                // read the installation id from the file
+                BufferedReader reader = null;
+                try {
+                    reader = new BufferedReader(new InputStreamReader(new FileInputStream(installIdPath)));
+                    installId = reader.readLine();
+                } catch (IOException ex) {
+                    return false;
+                } finally {
+                    Helper.closeCloseable(reader);
+                }
+            }
+
+            if (!Helper.isNullOrEmpty(installId)) {
+                Lbry.INSTALLATION_ID = installId;
+            }
+            return !Helper.isNullOrEmpty(installId);
+        }
+        protected void onPostExecute(Boolean result) {
+            if (handler != null) {
+                handler.onInstallIdChecked(result);
+            }
+        }
+
+        public interface InstallIdHandler {
+            void onInstallIdChecked(boolean result);
+        }
     }
 
     private static class AuthenticateTask extends AsyncTask<Void, Void, Void> {

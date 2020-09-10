@@ -2,12 +2,15 @@ package io.lbry.browser.utils;
 
 import android.util.Log;
 
+import org.bitcoinj.core.Base58;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.KeyStore;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,6 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import io.lbry.browser.exceptions.ApiCallException;
@@ -520,6 +524,22 @@ public final class Lbry {
             if (claimCache.containsKey(key)) {
                 claimCache.get(key).setFile(null);
             }
+        }
+    }
+
+    public static String generateId() {
+        return generateId(64);
+    }
+    public static String generateId(int numBytes) {
+        byte[] arr = new byte[numBytes];
+        new Random().nextBytes(arr);
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-384");
+            byte[] hash = md.digest(arr);
+            return Base58.encode(hash);
+        } catch (NoSuchAlgorithmException e) {
+            // pass
+            return null;
         }
     }
 }

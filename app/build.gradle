@@ -117,6 +117,7 @@ dependencies {
 
     implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.3.1.LTS'
 
+    implementation 'org.bitcoinj:bitcoinj-tools:0.14.7'
     implementation 'org.java-websocket:Java-WebSocket:1.5.1'
 
     compileOnly 'org.projectlombok:lombok:1.18.10'
