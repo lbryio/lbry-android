@@ -81,4 +81,28 @@ public class LbryUriTest {
 
         assertEquals(expected, obtained);
     }
+
+    @Test
+    public void parseLbryProtocolOnlyChannel() {
+        LbryUri expectedForChannel = new LbryUri();
+        expectedForChannel.setChannelName("@UCBerkeley");
+        expectedForChannel.setChannel(true);
+
+        try {
+            LbryUri.UriModifier primaryMod = LbryUri.UriModifier.parse("#", "d");
+            expectedForChannel.setChannelClaimId(primaryMod.getClaimId());
+        } catch (LbryUriException e) {
+            e.printStackTrace();
+        }
+
+        LbryUri obtained = new LbryUri();
+
+        try {
+            obtained = LbryUri.parse("lbry://@UCBerkeley#d",false);
+        } catch (LbryUriException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(expectedForChannel, obtained);
+    }
 }
