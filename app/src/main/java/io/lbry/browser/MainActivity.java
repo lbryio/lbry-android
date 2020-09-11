@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final String SPECIAL_URL_PREFIX = "lbry://?";
     private static final int REMOTE_NOTIFICATION_REFRESH_TTL = 300000; // 5 minutes
     public static final String SKU_SKIP = "lbryskip";
+    public static MainActivity instance;
 
     private boolean shuttingDown;
     private Date remoteNotifcationsLastLoaded;
@@ -393,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        instance = this;
         // workaround to fix dark theme because https://issuetracker.google.com/issues/37124582
         try {
             new WebView(this);
@@ -1140,12 +1142,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         checkFirstRun();
         checkNowPlaying();
 
-        // check (and start) the LBRY SDK service
-        serviceRunning = isServiceRunning(this, LbrynetService.class);
-        if (!serviceRunning) {
-            Lbry.SDK_READY = false;
-            //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
-            ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
+        if (isFirstRunCompleted()) {
+            // check (and start) the LBRY SDK service
+            serviceRunning = isServiceRunning(this, LbrynetService.class);
+            if (!serviceRunning) {
+                Lbry.SDK_READY = false;
+                //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
+                ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
+            }
         }
         checkSdkReady();
         showSignedInUser();
@@ -1154,6 +1158,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         /*if (Lbry.SDK_READY) {
             findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         }*/
+    }
+
+    public boolean isFirstRunCompleted() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        return sp.getBoolean(PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED, false);
     }
 
     private void checkPurchases() {
