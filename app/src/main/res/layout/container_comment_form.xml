@@ -24,7 +24,7 @@
                 android:textFontWeight="300" />
             <ProgressBar
                 android:id="@+id/comment_form_channels_loading"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -57,12 +57,12 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp">
+                android:layout_marginStart="8dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginRight="40dp">
+                    android:layout_marginEnd="40dp">
                     <TextView
                         android:id="@+id/comment_form_replying_to_text"
                         android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
                     android:id="@+id/comment_form_clear_reply_to"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_width="36dp"
                     android:layout_height="36dp">
                     <ImageView
@@ -136,8 +136,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/comment_form_avatar_container"
-                android:layout_marginLeft="16dp">
+                android:layout_toEndOf="@id/comment_form_avatar_container"
+                android:layout_marginStart="16dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/comment_form_body"
                     android:hint="@string/comment"
@@ -179,8 +179,8 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/comment_form_post"
-                android:layout_marginLeft="24dp"
+                android:layout_toEndOf="@id/comment_form_post"
+                android:layout_marginStart="24dp"
                 android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>

@@ -8,8 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
         <androidx.cardview.widget.CardView
             android:id="@+id/rewards_filter_card"
             android:layout_width="match_parent"
@@ -35,8 +35,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@id/rewards_filter_link_unclaimed"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/rewards_filter_link_unclaimed"
                     android:fontFamily="@font/inter"
                     android:text="@string/all"
                     android:textSize="14sp" />
@@ -44,7 +44,7 @@
                     android:id="@+id/rewards_list_loading"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:visibility="gone" />
             </RelativeLayout>
@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:fontFamily="@font/inter"
                     android:textSize="24sp"
                     android:textColor="@color/white" />
@@ -143,7 +143,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/rewards_get_started_button"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
