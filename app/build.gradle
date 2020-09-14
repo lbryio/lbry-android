@@ -24,6 +24,7 @@ android {
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
+        exclude 'lib/x86_64/darwin/libscrypt.dylib'
     }
 
     productFlavors {
