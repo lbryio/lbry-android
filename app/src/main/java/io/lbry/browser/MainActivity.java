@@ -124,6 +124,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.net.ssl.SSLParameters;
+
 import io.lbry.browser.adapter.NavigationMenuAdapter;
 import io.lbry.browser.adapter.NotificationListAdapter;
 import io.lbry.browser.adapter.UrlSuggestionListAdapter;
@@ -1126,6 +1128,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                 @Override
                 public void onError(Exception ex) { }
+
+                protected void onSetSSLParameters(SSLParameters sslParameters) {
+                    // don't call setEndpointIdentificationAlgorithm for API level < 24
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
+                    }
+                }
             };
             webSocketClient.connect();
         }
