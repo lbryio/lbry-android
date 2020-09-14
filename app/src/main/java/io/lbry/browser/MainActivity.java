@@ -76,6 +76,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -207,7 +208,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity implements SdkStatusListener {
+public class MainActivity extends AppCompatActivity implements SdkStatusListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String CHANNEL_ID_PLAYBACK = "io.lbry.browser.LBRY_PLAYBACK_CHANNEL";
     private static final int PLAYBACK_NOTIFICATION_ID = 3;
     private static final String SPECIAL_URL_PREFIX = "lbry://?";
@@ -313,6 +314,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_DARK_MODE = "io.lbry.browser.preference.userinterface.DarkMode";
     public static final String PREFERENCE_KEY_SHOW_MATURE_CONTENT = "io.lbry.browser.preference.userinterface.ShowMatureContent";
     public static final String PREFERENCE_KEY_SHOW_URL_SUGGESTIONS = "io.lbry.browser.preference.userinterface.UrlSuggestions";
+    public static final String PREFERENCE_KEY_MINI_PLAYER_BOTTOM_MARGIN = "io.lbry.browser.preference.userinterface.MiniPlayerBottomMargin";
     public static final String PREFERENCE_KEY_NOTIFICATION_COMMENTS = "io.lbry.browser.preference.notifications.Comments";
     public static final String PREFERENCE_KEY_NOTIFICATION_SUBSCRIPTIONS = "io.lbry.browser.preference.notifications.Subscriptions";
     public static final String PREFERENCE_KEY_NOTIFICATION_REWARDS = "io.lbry.browser.preference.notifications.Rewards";
@@ -393,6 +395,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final int STARTUP_STAGE_NEW_INSTALL_DONE = 5;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_LOADED = 6;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED = 7;
+    private static final int DEFAULT_MINI_PLAYER_MARGIN = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -435,6 +438,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        updateMiniPlayerMargins();
 
         // setup the billing client in main activity (to handle cases where the verification purchase flow may have been interrupted)
         billingClient = BillingClient.newBuilder(this)
@@ -610,6 +615,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 walletSyncSignIn();
             }
         });
+    }
+
+    private void updateMiniPlayerMargins() {
+        // mini-player bottom margin setting
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        int miniPlayerBottomMargin = Helper.parseInt(
+                sp.getString(PREFERENCE_KEY_MINI_PLAYER_BOTTOM_MARGIN, String.valueOf(DEFAULT_MINI_PLAYER_MARGIN)), DEFAULT_MINI_PLAYER_MARGIN);
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) findViewById(R.id.global_now_playing_card).getLayoutParams();
+        int scaledMiniPlayerMargin = getScaledValue(DEFAULT_MINI_PLAYER_MARGIN);
+        int scaledMiniPlayerBottomMargin = getScaledValue(miniPlayerBottomMargin);
+        lp.setMargins(scaledMiniPlayerMargin, 0, scaledMiniPlayerMargin, scaledMiniPlayerBottomMargin);
     }
 
     public boolean isDarkMode() {
@@ -1143,8 +1159,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     @Override
     protected void onResume() {
         super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+
         checkPurchases();
         checkWebSocketClient();
+        updateMiniPlayerMargins();
         enteringPIPMode = false;
 
         applyNavbarSigninPadding();
@@ -1221,6 +1240,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onPause() {
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
         if (!enteringPIPMode && !inPictureInPictureMode && appPlayer != null && !isBackgroundPlaybackEnabled()) {
             appPlayer.setPlayWhenReady(false);
         }
@@ -1830,6 +1850,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             if (mediaSession != null) {
                 playerNotificationManager.setMediaSessionToken(mediaSession.getSessionToken());
             }
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (PREFERENCE_KEY_MINI_PLAYER_BOTTOM_MARGIN.equalsIgnoreCase(key)) {
+            updateMiniPlayerMargins();
         }
     }
 
