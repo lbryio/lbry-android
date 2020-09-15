@@ -373,12 +373,12 @@ public final class Lbry {
 
     // build claim search for surf mode
     public static Map<String, Object> buildClaimSearchOptions(
-            String claimType, List<String> notTags, List<String> orderBy, long maxDuration, int page, int pageSize) {
+            String claimType, List<String> notTags, List<String> channelIds, List<String> orderBy, long maxDuration, int page, int pageSize) {
         return buildClaimSearchOptions(
                 Collections.singletonList(claimType),
                 null,
                 notTags,
-                null,
+                channelIds,
                 null,
                 orderBy,
                 null,

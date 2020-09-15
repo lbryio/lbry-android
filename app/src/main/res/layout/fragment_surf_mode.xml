@@ -30,6 +30,7 @@
 
         <LinearLayout
             android:id="@+id/surf_mode_content_details"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -44,10 +45,20 @@
                 android:fontFamily="@font/inter"
                 android:textColor="@color/white"
                 android:textFontWeight="300"
-                android:minLines="2"
+                android:minLines="1"
                 android:maxLines="3"
                 android:textSize="20sp"
                 />
+            <TextView
+                android:id="@+id/surf_mode_content_publisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textColor="@color/white"
+                android:textFontWeight="300"
+                android:minLines="1"
+                android:maxLines="1"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <ProgressBar

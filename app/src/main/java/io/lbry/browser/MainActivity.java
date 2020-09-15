@@ -208,6 +208,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final String SPECIAL_URL_PREFIX = "lbry://?";
     private static final int REMOTE_NOTIFICATION_REFRESH_TTL = 300000; // 5 minutes
     public static final String SKU_SKIP = "lbryskip";
+    public static final int SOURCE_NOW_PLAYING_FILE = 1;
+    public static final int SOURCE_NOW_PLAYING_SHUFFLE = 2;
 
     private Date remoteNotifcationsLastLoaded;
     private Map<String, Class> specialRouteFragmentClassMap;
@@ -224,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean playerReassigned;
     public CastContext castContext;
     public static CastPlayer castPlayer;
+    public static int nowPlayingSource;
     public static Claim nowPlayingClaim;
     public static String nowPlayingClaimUrl;
     public static boolean startingFilePickerActivity = false;
@@ -255,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fragmentClassNavIdMap.put(FollowingFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
         fragmentClassNavIdMap.put(EditorsChoiceFragment.class, NavMenuItem.ID_ITEM_EDITORS_CHOICE);
         fragmentClassNavIdMap.put(AllContentFragment.class, NavMenuItem.ID_ITEM_ALL_CONTENT);
-        fragmentClassNavIdMap.put(SurfModeFragment.class, NavMenuItem.ID_ITEM_SURF_MODE);
+        fragmentClassNavIdMap.put(SurfModeFragment.class, NavMenuItem.ID_ITEM_SHUFFLE);
 
         fragmentClassNavIdMap.put(PublishFragment.class, NavMenuItem.ID_ITEM_NEW_PUBLISH);
         fragmentClassNavIdMap.put(ChannelManagerFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
@@ -567,7 +570,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onClick(View view) {
                 if (nowPlayingClaim != null && !Helper.isNullOrEmpty(nowPlayingClaimUrl)) {
                     hideNotifications();
-                    openFileUrl(nowPlayingClaimUrl);
+                    if (nowPlayingSource == SOURCE_NOW_PLAYING_SHUFFLE) {
+                        openFragment(SurfModeFragment.class, true, NavMenuItem.ID_ITEM_SHUFFLE);
+                    } else {
+                        openFileUrl(nowPlayingClaimUrl);
+                    }
                 }
             }
         });
@@ -790,8 +797,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             case NavMenuItem.ID_ITEM_ALL_CONTENT:
                 openFragment(AllContentFragment.class, true, NavMenuItem.ID_ITEM_ALL_CONTENT);
                 break;
-            case NavMenuItem.ID_ITEM_SURF_MODE:
-                openFragment(SurfModeFragment.class, true, NavMenuItem.ID_ITEM_SURF_MODE);
+            case NavMenuItem.ID_ITEM_SHUFFLE:
+                openFragment(SurfModeFragment.class, true, NavMenuItem.ID_ITEM_SHUFFLE);
                 break;
 
             case NavMenuItem.ID_ITEM_NEW_PUBLISH:
@@ -989,7 +996,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 fragment instanceof LibraryFragment ||
                 fragment instanceof SearchFragment;
         findViewById(R.id.floating_balance_main_container).setVisibility(!canShowFloatingBalance || inFullscreenMode ? View.INVISIBLE : View.VISIBLE);
-        if (!(fragment instanceof FileViewFragment) && !inFullscreenMode) {
+        if (!(fragment instanceof FileViewFragment) && !(fragment instanceof SurfModeFragment) && !inFullscreenMode) {
             findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
         }
         /*if (!Lbry.SDK_READY && !inFullscreenMode) {
@@ -2923,7 +2930,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 new NavMenuItem(NavMenuItem.ID_ITEM_FOLLOWING, R.string.fa_heart, R.string.following, "Following", context),
                 new NavMenuItem(NavMenuItem.ID_ITEM_EDITORS_CHOICE, R.string.fa_star, R.string.editors_choice, "EditorsChoice", context),
                 new NavMenuItem(NavMenuItem.ID_ITEM_ALL_CONTENT, R.string.fa_globe_americas, R.string.all_content, "AllContent", context),
-                new NavMenuItem(NavMenuItem.ID_ITEM_SURF_MODE, R.string.fa_broadcast_tower, R.string.surf_mode, "SurfMode",context)
+                new NavMenuItem(NavMenuItem.ID_ITEM_SHUFFLE, R.string.fa_random, R.string.shuffle, "Shuffle",context)
         ));
 
         yourContentGroup.setItems(Arrays.asList(

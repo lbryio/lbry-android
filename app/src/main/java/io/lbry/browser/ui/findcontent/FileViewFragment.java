@@ -738,6 +738,13 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
+    public void onPause() {
+        if (MainActivity.appPlayer != null) {
+            MainActivity.nowPlayingSource = MainActivity.SOURCE_NOW_PLAYING_FILE;
+        }
+        super.onPause();
+    }
+
     public void onStop() {
         super.onStop();
         Context context = getContext();
