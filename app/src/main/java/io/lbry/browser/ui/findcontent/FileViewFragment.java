@@ -1010,30 +1010,39 @@ public class FileViewFragment extends BaseFragment implements
                 }
 
                 if (claim != null) {
-                    boolean isOwnClaim = Lbry.ownClaims.contains(claim);
-                    if (isOwnClaim) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
-                                setTitle(R.string.delete_content).
-                                setMessage(R.string.confirm_delete_content_message)
-                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        deleteCurrentClaim();
-                                    }
-                                }).setNegativeButton(R.string.no, null);
-                        builder.show();
-                    } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
-                                setTitle(R.string.delete_file).
-                                setMessage(R.string.confirm_delete_file_message)
-                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        deleteClaimFile();
-                                    }
-                                }).setNegativeButton(R.string.no, null);
-                        builder.show();
-                    }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
+                        setTitle(R.string.delete_file).
+                        setMessage(R.string.confirm_delete_file_message)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deleteClaimFile();
+                            }
+                        }).setNegativeButton(R.string.no, null);
+                    builder.show();
+                }
+            }
+        });
+
+        root.findViewById(R.id.file_view_action_unpublish).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Lbry.SDK_READY) {
+                    Snackbar.make(root.findViewById(R.id.file_view_claim_display_area), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (claim != null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
+                        setTitle(R.string.delete_content).
+                        setMessage(R.string.confirm_delete_content_message)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deleteCurrentClaim();
+                            }
+                        }).setNegativeButton(R.string.no, null);
+                    builder.show();
                 }
             }
         });
@@ -2773,10 +2782,9 @@ public class FileViewFragment extends BaseFragment implements
             boolean isOwnClaim = Lbry.ownClaims.contains(claim);
             View root = getView();
             if (root != null) {
-                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_download), isOwnClaim ? View.GONE : View.VISIBLE);
                 Helper.setViewVisibility(root.findViewById(R.id.file_view_action_report), isOwnClaim ? View.GONE : View.VISIBLE);
                 Helper.setViewVisibility(root.findViewById(R.id.file_view_action_edit), isOwnClaim ? View.VISIBLE : View.GONE);
-                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_delete), isOwnClaim ? View.VISIBLE : View.GONE);
+                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_unpublish), isOwnClaim ? View.VISIBLE : View.GONE);
             }
         }
     }
