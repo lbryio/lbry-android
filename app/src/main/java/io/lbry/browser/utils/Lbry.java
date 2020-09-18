@@ -375,6 +375,23 @@ public final class Lbry {
             "any_tags", "channel_ids", "order_by", "not_tags", "not_channel_ids", "urls"
     };
 
+    // build claim search for surf mode
+    public static Map<String, Object> buildClaimSearchOptions(
+            String claimType, List<String> notTags, List<String> channelIds, List<String> orderBy, long maxDuration, int limitClaimsPerChannel, int page, int pageSize) {
+        return buildClaimSearchOptions(
+                Collections.singletonList(claimType),
+                null,
+                notTags,
+                channelIds,
+                null,
+                orderBy,
+                null,
+                maxDuration,
+                limitClaimsPerChannel,
+                page,
+                pageSize);
+    }
+
     public static Map<String, Object> buildClaimSearchOptions(
             String claimType,
             List<String> anyTags,
@@ -393,6 +410,8 @@ public final class Lbry {
                 notChannelIds,
                 orderBy,
                 releaseTime,
+                0,
+                0,
                 page,
                 pageSize);
     }
@@ -405,6 +424,8 @@ public final class Lbry {
             List<String> notChannelIds,
             List<String> orderBy,
             String releaseTime,
+            long maxDuration,
+            int limitClaimsPerChannel,
             int page,
             int pageSize) {
         Map<String, Object> options = new HashMap<>();
@@ -416,6 +437,12 @@ public final class Lbry {
         options.put("page_size", pageSize);
         if (!Helper.isNullOrEmpty(releaseTime)) {
             options.put("release_time", releaseTime);
+        }
+        if (maxDuration > 0) {
+            options.put("duration", String.format("<%d", maxDuration));
+        }
+        if (limitClaimsPerChannel > 0) {
+            options.put("limit_claims_per_channel", limitClaimsPerChannel);
         }
 
         addClaimSearchListOption("any_tags", anyTags, options);

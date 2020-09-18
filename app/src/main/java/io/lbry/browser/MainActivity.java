@@ -188,9 +188,10 @@ import io.lbry.browser.ui.other.AboutFragment;
 import io.lbry.browser.ui.publish.PublishFormFragment;
 import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.ui.publish.PublishesFragment;
-import io.lbry.browser.ui.findcontent.SearchFragment;
-import io.lbry.browser.ui.other.SettingsFragment;
 import io.lbry.browser.ui.findcontent.AllContentFragment;
+import io.lbry.browser.ui.findcontent.SearchFragment;
+import io.lbry.browser.ui.findcontent.ShuffleFragment;
+import io.lbry.browser.ui.other.SettingsFragment;
 import io.lbry.browser.ui.wallet.InvitesFragment;
 import io.lbry.browser.ui.wallet.RewardsFragment;
 import io.lbry.browser.ui.wallet.WalletFragment;
@@ -214,6 +215,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final String SPECIAL_URL_PREFIX = "lbry://?";
     private static final int REMOTE_NOTIFICATION_REFRESH_TTL = 300000; // 5 minutes
     public static final String SKU_SKIP = "lbryskip";
+
+    public static final int SOURCE_NOW_PLAYING_FILE = 1;
+    public static final int SOURCE_NOW_PLAYING_SHUFFLE = 2;
     public static MainActivity instance;
 
     private boolean shuttingDown;
@@ -232,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean playerReassigned;
     public CastContext castContext;
     public static CastPlayer castPlayer;
+    public static int nowPlayingSource;
     public static Claim nowPlayingClaim;
     public static String nowPlayingClaimUrl;
     public static boolean startingFilePickerActivity = false;
@@ -264,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fragmentClassNavIdMap.put(FollowingFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
         fragmentClassNavIdMap.put(EditorsChoiceFragment.class, NavMenuItem.ID_ITEM_EDITORS_CHOICE);
         fragmentClassNavIdMap.put(AllContentFragment.class, NavMenuItem.ID_ITEM_ALL_CONTENT);
+        fragmentClassNavIdMap.put(ShuffleFragment.class, NavMenuItem.ID_ITEM_SHUFFLE);
 
         fragmentClassNavIdMap.put(PublishFragment.class, NavMenuItem.ID_ITEM_NEW_PUBLISH);
         fragmentClassNavIdMap.put(ChannelManagerFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
@@ -580,7 +586,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onClick(View view) {
                 if (nowPlayingClaim != null && !Helper.isNullOrEmpty(nowPlayingClaimUrl)) {
                     hideNotifications();
-                    openFileUrl(nowPlayingClaimUrl);
+                    if (nowPlayingSource == SOURCE_NOW_PLAYING_SHUFFLE) {
+                        openFragment(ShuffleFragment.class, true, NavMenuItem.ID_ITEM_SHUFFLE);
+                    } else {
+                        openFileUrl(nowPlayingClaimUrl);
+                    }
                 }
             }
         });
@@ -658,6 +668,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         specialRouteFragmentClassMap.put("settings", SettingsFragment.class);
         specialRouteFragmentClassMap.put("subscription", FollowingFragment.class);
         specialRouteFragmentClassMap.put("subscriptions", FollowingFragment.class);
+        specialRouteFragmentClassMap.put("surf", ShuffleFragment.class);
         specialRouteFragmentClassMap.put("wallet", WalletFragment.class);
         specialRouteFragmentClassMap.put("discover", FollowingFragment.class);
     }
@@ -812,6 +823,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 break;
             case NavMenuItem.ID_ITEM_ALL_CONTENT:
                 openFragment(AllContentFragment.class, true, NavMenuItem.ID_ITEM_ALL_CONTENT);
+                break;
+            case NavMenuItem.ID_ITEM_SHUFFLE:
+                openFragment(ShuffleFragment.class, true, NavMenuItem.ID_ITEM_SHUFFLE);
                 break;
 
             case NavMenuItem.ID_ITEM_NEW_PUBLISH:
@@ -1027,7 +1041,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 fragment instanceof LibraryFragment ||
                 fragment instanceof SearchFragment;
         findViewById(R.id.floating_balance_main_container).setVisibility(!canShowFloatingBalance || inFullscreenMode ? View.INVISIBLE : View.VISIBLE);
-        if (!(fragment instanceof FileViewFragment) && !inFullscreenMode) {
+        if (!(fragment instanceof FileViewFragment) && !(fragment instanceof ShuffleFragment) && !inFullscreenMode) {
             findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
         }
         /*if (!Lbry.SDK_READY && !inFullscreenMode) {
@@ -3025,7 +3039,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findContentGroup.setItems(Arrays.asList(
                 new NavMenuItem(NavMenuItem.ID_ITEM_FOLLOWING, R.string.fa_heart, R.string.following, "Following", context),
                 new NavMenuItem(NavMenuItem.ID_ITEM_EDITORS_CHOICE, R.string.fa_star, R.string.editors_choice, "EditorsChoice", context),
-                new NavMenuItem(NavMenuItem.ID_ITEM_ALL_CONTENT, R.string.fa_globe_americas, R.string.all_content, "AllContent", context)
+                new NavMenuItem(NavMenuItem.ID_ITEM_ALL_CONTENT, R.string.fa_globe_americas, R.string.all_content, "AllContent", context),
+                new NavMenuItem(NavMenuItem.ID_ITEM_SHUFFLE, R.string.fa_random, R.string.shuffle, "Shuffle",context)
         ));
 
         yourContentGroup.setItems(Arrays.asList(

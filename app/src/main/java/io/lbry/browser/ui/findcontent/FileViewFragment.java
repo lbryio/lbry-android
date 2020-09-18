@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.Outline;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,7 +36,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -167,7 +165,7 @@ public class FileViewFragment extends BaseFragment implements
         WalletBalanceListener {
     private static final int RELATED_CONTENT_SIZE = 16;
     private static final String DEFAULT_PLAYBACK_SPEED = "1x";
-    private static final String CDN_PREFIX = "https://cdn.lbryplayer.xyz";
+    public static final String CDN_PREFIX = "https://cdn.lbryplayer.xyz";
 
     private PlayerControlView castControlView;
     private Player currentPlayer;
@@ -739,6 +737,13 @@ public class FileViewFragment extends BaseFragment implements
         } else {
             onSdkReady();
         }
+    }
+
+    public void onPause() {
+        if (MainActivity.appPlayer != null) {
+            MainActivity.nowPlayingSource = MainActivity.SOURCE_NOW_PLAYING_FILE;
+        }
+        super.onPause();
     }
 
     public void onStop() {
@@ -2781,7 +2786,7 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
-    private static class StreamLoadErrorPolicy extends DefaultLoadErrorHandlingPolicy {
+    public static class StreamLoadErrorPolicy extends DefaultLoadErrorHandlingPolicy {
         @Override
         public long getRetryDelayMsFor(int dataType, long loadDurationMs, IOException exception, int errorCount) {
             return exception instanceof ParserException

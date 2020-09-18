@@ -20,6 +20,7 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="sign_in">Sign In</string>
+    <string name="shuffle">Shuffle</string>
     <string name="startup_failed">App startup failed. Please check your data connection and try again. If this problem persists, please email hello@lbry.com</string>
     <string name="no_claim_search_content">No content to display at this time. Please refine your selection or check back later.</string>
 
@@ -650,4 +651,6 @@
 
     <string name="fa_asterisk" translatable="false">&#xf069;</string>
     <string name="fa_comment_alt" translatable="false">&#xf27a;</string>
+    <string name="fa_broadcast_tower" translatable="false">&#xf519;</string>
+    <string name="fa_random" translatable="false">&#xf074;</string>
 </resources>
