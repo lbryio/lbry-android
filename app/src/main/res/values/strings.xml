@@ -243,6 +243,7 @@
     <string name="notifications">Notifications</string>
     <string name="subscriptions">Subscriptions</string>
     <string name="content_interests">Content Interests</string>
+    <string name="mini_player_bottom_spacing">Mini-player bottom spacing</string>
 
     <string name="keep_sdk_in_background">Keep the LBRY service running in the background for improved wallet and network performance</string>
     <string name="participate_in_data_network">Participate in the data network (requires app and background service restart)</string>

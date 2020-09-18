@@ -51,7 +51,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:fontFamily="@font/inter"
                     android:text="@string/lbc"
                     android:textColor="@color/white"
@@ -76,8 +76,8 @@
             android:fontFamily="@font/inter"
             android:text="@string/buy_lbc"
             android:layout_marginTop="8dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:textSize="16sp" />
 
         <TextView
@@ -85,8 +85,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/inter"
             android:text="@string/convert_credits"
             android:textColorLink="@color/lbryGreen"
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/inter"
             android:text="@string/convert_credits_bittrex"
             android:textColorLink="@color/lbryGreen"
@@ -115,8 +115,8 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -129,7 +129,7 @@
                     android:textColor="@color/lbryGreen" />
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
@@ -155,7 +155,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
                             android:fontFamily="@font/inter"
                             android:text="@string/lbc"
                             android:textAllCaps="true"
@@ -189,9 +189,9 @@
                             android:layout_centerVertical="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/wallet_in_tips_label"
+                            android:layout_toEndOf="@id/wallet_in_tips_label"
                             android:fontFamily="@font/inter"
-                            android:layout_marginLeft="24dp"
+                            android:layout_marginStart="24dp"
                             android:text="@string/unlock"
                             android:textColor="@color/lbryGreen"
                             android:textSize="14sp"
@@ -201,8 +201,8 @@
                             android:layout_centerVertical="true"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:layout_marginLeft="24dp"
-                            android:layout_toRightOf="@id/wallet_in_tips_label"
+                            android:layout_marginStart="24dp"
+                            android:layout_toEndOf="@id/wallet_in_tips_label"
                             android:visibility="gone" />
 
                     </RelativeLayout>
@@ -232,7 +232,7 @@
                     android:textColor="@color/lbryGreen" />
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
@@ -258,7 +258,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
                             android:fontFamily="@font/inter"
                             android:text="@string/lbc"
                             android:textAllCaps="true"
@@ -288,7 +288,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
                             android:fontFamily="@font/inter"
                             android:text="@string/lbc"
                             android:textAllCaps="true"

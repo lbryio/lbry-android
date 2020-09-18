@@ -23,6 +23,12 @@
             app:title="@string/show_url_suggestions"
             app:defaultValue="true"
             app:iconSpaceReserved="false" />
+        <EditTextPreference
+            android:inputType="numberDecimal|numberSigned"
+            app:key="io.lbry.browser.preference.userinterface.MiniPlayerBottomMargin"
+            app:title="@string/mini_player_bottom_spacing"
+            app:defaultValue="4"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -2,12 +2,15 @@ package io.lbry.browser.utils;
 
 import android.util.Log;
 
+import org.bitcoinj.core.Base58;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.KeyStore;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,6 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import io.lbry.browser.exceptions.ApiCallException;
@@ -373,7 +377,7 @@ public final class Lbry {
 
     // build claim search for surf mode
     public static Map<String, Object> buildClaimSearchOptions(
-            String claimType, List<String> notTags, List<String> channelIds, List<String> orderBy, long maxDuration, int page, int pageSize) {
+            String claimType, List<String> notTags, List<String> channelIds, List<String> orderBy, long maxDuration, int limitClaimsPerChannel, int page, int pageSize) {
         return buildClaimSearchOptions(
                 Collections.singletonList(claimType),
                 null,
@@ -383,6 +387,7 @@ public final class Lbry {
                 orderBy,
                 null,
                 maxDuration,
+                limitClaimsPerChannel,
                 page,
                 pageSize);
     }
@@ -406,6 +411,7 @@ public final class Lbry {
                 orderBy,
                 releaseTime,
                 0,
+                0,
                 page,
                 pageSize);
     }
@@ -419,6 +425,7 @@ public final class Lbry {
             List<String> orderBy,
             String releaseTime,
             long maxDuration,
+            int limitClaimsPerChannel,
             int page,
             int pageSize) {
         Map<String, Object> options = new HashMap<>();
@@ -433,6 +440,9 @@ public final class Lbry {
         }
         if (maxDuration > 0) {
             options.put("duration", String.format("<%d", maxDuration));
+        }
+        if (limitClaimsPerChannel > 0) {
+            options.put("limit_claims_per_channel", limitClaimsPerChannel);
         }
 
         addClaimSearchListOption("any_tags", anyTags, options);
@@ -541,6 +551,22 @@ public final class Lbry {
             if (claimCache.containsKey(key)) {
                 claimCache.get(key).setFile(null);
             }
+        }
+    }
+
+    public static String generateId() {
+        return generateId(64);
+    }
+    public static String generateId(int numBytes) {
+        byte[] arr = new byte[numBytes];
+        new Random().nextBytes(arr);
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-384");
+            byte[] hash = md.digest(arr);
+            return Base58.encode(hash);
+        } catch (NoSuchAlgorithmException e) {
+            // pass
+            return null;
         }
     }
 }

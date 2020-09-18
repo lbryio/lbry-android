@@ -435,6 +435,7 @@ public class FollowingFragment extends BaseFragment implements
                 getContentSortOrder(),
                 contentReleaseTime,
                 0,
+                0,
                 currentClaimSearchPage == 0 ? 1 : currentClaimSearchPage,
                 Helper.CONTENT_PAGE_SIZE);
     }

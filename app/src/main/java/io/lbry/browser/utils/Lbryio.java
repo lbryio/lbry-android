@@ -57,6 +57,7 @@ public final class Lbryio {
 
     public static final String TAG = "Lbryio";
     public static final String CONNECTION_STRING = "https://api.lbry.com";
+    public static final String WS_CONNECTION_BASE_URL = "wss://api.lbry.com/subscribe?auth_token=";
     public static final String AUTH_TOKEN_PARAM = "auth_token";
     public static List<Subscription> subscriptions = new ArrayList<>();
     public static List<Claim> cacheResolvedSubscriptions = new ArrayList<>();

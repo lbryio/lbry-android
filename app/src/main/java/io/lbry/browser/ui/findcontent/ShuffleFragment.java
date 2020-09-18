@@ -1,6 +1,7 @@
 package io.lbry.browser.ui.findcontent;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
@@ -44,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
+import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.Reward;
 import io.lbry.browser.tasks.BufferEventTask;
@@ -56,10 +58,11 @@ import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
+import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
 import io.lbry.browser.utils.Predefined;
 
-public class SurfModeFragment extends BaseFragment {
+public class ShuffleFragment extends BaseFragment {
 
     private static final int PAGE_SIZE = 50;
 
@@ -68,6 +71,7 @@ public class SurfModeFragment extends BaseFragment {
     private Claim current;
     private List<Claim> playlist;
 
+    private long sessionStart;
     private ProgressBar surfModeLoading;
     private TextView textTitle;
     private TextView textPublisher;
@@ -85,11 +89,11 @@ public class SurfModeFragment extends BaseFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_surf_mode, container, false);
+        View root = inflater.inflate(R.layout.fragment_shuffle, container, false);
 
-        surfModeLoading = root.findViewById(R.id.surf_mode_loading);
-        textTitle = root.findViewById(R.id.surf_mode_content_title);
-        textPublisher = root.findViewById(R.id.surf_mode_content_publisher);
+        surfModeLoading = root.findViewById(R.id.shuffle_loading);
+        textTitle = root.findViewById(R.id.shuffle_content_title);
+        textPublisher = root.findViewById(R.id.shuffle_content_publisher);
         playerListener = new Player.EventListener() {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -137,12 +141,36 @@ public class SurfModeFragment extends BaseFragment {
         };
 
         Context context = getContext();
-        PlayerView playerView = root.findViewById(R.id.surf_mode_exoplayer_view);
+        PlayerView playerView = root.findViewById(R.id.shuffle_exoplayer_view);
         playerView.setOnTouchListener(new SwipeListener(playerView, context) {
             @Override
             public void onSwipeLeft() { playNextClaim(); }
             @Override
             public void onSwipeRight() { playPreviousClaim(); }
+        });
+
+        root.findViewById(R.id.shuffle_share_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (current != null) {
+                    try {
+                        String shareUrl = LbryUri.parse(
+                                !Helper.isNullOrEmpty(current.getCanonicalUrl()) ? current.getCanonicalUrl() :
+                                        (!Helper.isNullOrEmpty(current.getShortUrl()) ? current.getShortUrl() : current.getPermanentUrl())).toTvString();
+                        Intent shareIntent = new Intent();
+                        shareIntent.setAction(Intent.ACTION_SEND);
+                        shareIntent.setType("text/plain");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, shareUrl);
+
+                        MainActivity.startingShareActivity = true;
+                        Intent shareUrlIntent = Intent.createChooser(shareIntent, getString(R.string.share_lbry_content));
+                        shareUrlIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(shareUrlIntent);
+                    } catch (LbryUriException ex) {
+                        // pass
+                    }
+                }
+            }
         });
 
 
@@ -171,9 +199,10 @@ public class SurfModeFragment extends BaseFragment {
         return Lbry.buildClaimSearchOptions(
                 Claim.TYPE_STREAM,
                 canShowMatureContent ? null : new ArrayList<>(Predefined.MATURE_TAGS),
-                contentChannelIds,
+                null/*contentChannelIds*/,
                 Arrays.asList(Claim.ORDER_BY_TRENDING_GROUP),
                 121, // 2 minutes or less
+                1,
                 currentClaimSearchPage == 0 ? 1 : currentClaimSearchPage,
                 PAGE_SIZE);
     }
@@ -188,6 +217,11 @@ public class SurfModeFragment extends BaseFragment {
 
     public void onResume() {
         super.onResume();
+        sessionStart = System.currentTimeMillis();
+        MainActivity activity = (MainActivity) getContext();
+        if (activity != null) {
+            LbryAnalytics.setCurrentScreen(activity, "Shuffle", "Shuffle");
+        }
         if (MainActivity.appPlayer != null && MainActivity.nowPlayingSource != MainActivity.SOURCE_NOW_PLAYING_SHUFFLE) {
             MainActivity.appPlayer.setPlayWhenReady(false);
         }
@@ -211,11 +245,23 @@ public class SurfModeFragment extends BaseFragment {
     }
 
     public void onStop() {
-        super.onStop();
+        long sessionDuration = System.currentTimeMillis() - sessionStart;
+        if (sessionStart > 0 && sessionDuration > 0) {
+            Bundle bundle = new Bundle();
+            bundle.putLong("duration_ms", sessionDuration);
+            bundle.putInt("duration", Double.valueOf(Math.ceil(sessionDuration / 1000.0)).intValue());
+            LbryAnalytics.logEvent(LbryAnalytics.EVENT_SHUFFLE_SESSION, bundle);
+        }
+        sessionStart = 0;
+
         MainActivity activity = (MainActivity) getContext();
         if (activity != null) {
             activity.hideFloatingWalletBalance();
+
         }
+
+        super.onStop();
+
     }
 
     private void loadContent() {
@@ -337,7 +383,7 @@ public class SurfModeFragment extends BaseFragment {
 
         View root = getView();
         if (root != null) {
-            PlayerView view = root.findViewById(R.id.surf_mode_exoplayer_view);
+            PlayerView view = root.findViewById(R.id.shuffle_exoplayer_view);
             view.setShutterBackgroundColor(Color.TRANSPARENT);
             view.setPlayer(MainActivity.appPlayer);
             view.setUseController(true);
@@ -430,7 +476,7 @@ public class SurfModeFragment extends BaseFragment {
         if (root != null) {
             root.findViewById(R.id.player_buffering_progress).setVisibility(View.VISIBLE);
 
-            PlayerView playerView = root.findViewById(R.id.surf_mode_exoplayer_view);
+            PlayerView playerView = root.findViewById(R.id.shuffle_exoplayer_view);
             playerView.findViewById(R.id.player_skip_back_10).setVisibility(View.INVISIBLE);
             playerView.findViewById(R.id.player_skip_forward_10).setVisibility(View.INVISIBLE);
         }
@@ -441,7 +487,7 @@ public class SurfModeFragment extends BaseFragment {
         if (root != null) {
             root.findViewById(R.id.player_buffering_progress).setVisibility(View.INVISIBLE);
 
-            PlayerView playerView = root.findViewById(R.id.surf_mode_exoplayer_view);
+            PlayerView playerView = root.findViewById(R.id.shuffle_exoplayer_view);
             playerView.findViewById(R.id.player_skip_back_10).setVisibility(View.VISIBLE);
             playerView.findViewById(R.id.player_skip_forward_10).setVisibility(View.VISIBLE);
         }

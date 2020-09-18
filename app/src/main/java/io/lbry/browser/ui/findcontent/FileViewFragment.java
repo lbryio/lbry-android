@@ -607,7 +607,7 @@ public class FileViewFragment extends BaseFragment implements
                 }
             }
 
-            if (!Helper.isNullOrEmpty(lbryFile.getStreamingUrl()) && !Lbryio.isSignedIn()) {
+            if (!Helper.isNullOrEmpty(lbryFile.getStreamingUrl()) && (!claim.isFree() || !Lbryio.isSignedIn())) {
                 return lbryFile.getStreamingUrl();
             }
         }
@@ -726,6 +726,7 @@ public class FileViewFragment extends BaseFragment implements
                 }
             }
 
+            updatePlaybackSpeedView(root);
             loadAndScheduleDurations();
         }
 
@@ -777,6 +778,7 @@ public class FileViewFragment extends BaseFragment implements
         View root = getView();
         if (root != null) {
             PlayerView view = root.findViewById(R.id.file_view_exoplayer_view);
+            view.setVisibility(View.VISIBLE);
             view.setPlayer(null);
             view.setPlayer(MainActivity.appPlayer);
         }
@@ -1186,6 +1188,16 @@ public class FileViewFragment extends BaseFragment implements
         LinearLayoutManager commentsListLLM = new LinearLayoutManager(getContext());
         relatedContentList.setLayoutManager(relatedContentListLLM);
         commentsList.setLayoutManager(commentsListLLM);
+    }
+
+    private void updatePlaybackSpeedView(View root) {
+        if (root != null) {
+            PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
+            TextView textPlaybackSpeed = playerView.findViewById(R.id.player_playback_speed_label);
+            textPlaybackSpeed.setText(MainActivity.appPlayer != null && MainActivity.appPlayer.getPlaybackParameters() != null ?
+                    Helper.getDisplayValueForPlaybackSpeed((double) MainActivity.appPlayer.getPlaybackParameters().speed) :
+                    DEFAULT_PLAYBACK_SPEED);
+        }
     }
 
     private void deleteCurrentClaim() {
@@ -1867,7 +1879,7 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void handleMainActionForClaim() {
-        if (claim.isPlayable() && Lbryio.isSignedIn())  {
+        if (claim.isPlayable() && claim.isFree() && Lbryio.isSignedIn())  {
             // always use lbry.tv streaming when signed in and playabble
             startTimeMillis = System.currentTimeMillis();
             showExoplayerView();

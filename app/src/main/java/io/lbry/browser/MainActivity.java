@@ -76,6 +76,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -98,6 +99,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,6 +110,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
+import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,6 +124,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.net.ssl.SSLParameters;
 
 import io.lbry.browser.adapter.NavigationMenuAdapter;
 import io.lbry.browser.adapter.NotificationListAdapter;
@@ -184,7 +190,7 @@ import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.ui.publish.PublishesFragment;
 import io.lbry.browser.ui.findcontent.AllContentFragment;
 import io.lbry.browser.ui.findcontent.SearchFragment;
-import io.lbry.browser.ui.findcontent.SurfModeFragment;
+import io.lbry.browser.ui.findcontent.ShuffleFragment;
 import io.lbry.browser.ui.other.SettingsFragment;
 import io.lbry.browser.ui.wallet.InvitesFragment;
 import io.lbry.browser.ui.wallet.RewardsFragment;
@@ -200,17 +206,21 @@ import io.lbry.lbrysdk.ServiceHelper;
 import io.lbry.lbrysdk.Utils;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity implements SdkStatusListener {
+public class MainActivity extends AppCompatActivity implements SdkStatusListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String CHANNEL_ID_PLAYBACK = "io.lbry.browser.LBRY_PLAYBACK_CHANNEL";
     private static final int PLAYBACK_NOTIFICATION_ID = 3;
     private static final String SPECIAL_URL_PREFIX = "lbry://?";
     private static final int REMOTE_NOTIFICATION_REFRESH_TTL = 300000; // 5 minutes
     public static final String SKU_SKIP = "lbryskip";
+
     public static final int SOURCE_NOW_PLAYING_FILE = 1;
     public static final int SOURCE_NOW_PLAYING_SHUFFLE = 2;
+    public static MainActivity instance;
 
+    private boolean shuttingDown;
     private Date remoteNotifcationsLastLoaded;
     private Map<String, Class> specialRouteFragmentClassMap;
     @Getter
@@ -244,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Setter
     private BackPressInterceptor backPressInterceptor;
+    private WebSocketClient webSocketClient;
 
     @Getter
     private String firebaseMessagingToken;
@@ -258,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         fragmentClassNavIdMap.put(FollowingFragment.class, NavMenuItem.ID_ITEM_FOLLOWING);
         fragmentClassNavIdMap.put(EditorsChoiceFragment.class, NavMenuItem.ID_ITEM_EDITORS_CHOICE);
         fragmentClassNavIdMap.put(AllContentFragment.class, NavMenuItem.ID_ITEM_ALL_CONTENT);
-        fragmentClassNavIdMap.put(SurfModeFragment.class, NavMenuItem.ID_ITEM_SHUFFLE);
+        fragmentClassNavIdMap.put(ShuffleFragment.class, NavMenuItem.ID_ITEM_SHUFFLE);
 
         fragmentClassNavIdMap.put(PublishFragment.class, NavMenuItem.ID_ITEM_NEW_PUBLISH);
         fragmentClassNavIdMap.put(ChannelManagerFragment.class, NavMenuItem.ID_ITEM_CHANNELS);
@@ -309,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_DARK_MODE = "io.lbry.browser.preference.userinterface.DarkMode";
     public static final String PREFERENCE_KEY_SHOW_MATURE_CONTENT = "io.lbry.browser.preference.userinterface.ShowMatureContent";
     public static final String PREFERENCE_KEY_SHOW_URL_SUGGESTIONS = "io.lbry.browser.preference.userinterface.UrlSuggestions";
+    public static final String PREFERENCE_KEY_MINI_PLAYER_BOTTOM_MARGIN = "io.lbry.browser.preference.userinterface.MiniPlayerBottomMargin";
     public static final String PREFERENCE_KEY_NOTIFICATION_COMMENTS = "io.lbry.browser.preference.notifications.Comments";
     public static final String PREFERENCE_KEY_NOTIFICATION_SUBSCRIPTIONS = "io.lbry.browser.preference.notifications.Subscriptions";
     public static final String PREFERENCE_KEY_NOTIFICATION_REWARDS = "io.lbry.browser.preference.notifications.Rewards";
@@ -389,9 +401,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final int STARTUP_STAGE_NEW_INSTALL_DONE = 5;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_LOADED = 6;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED = 7;
+    private static final int DEFAULT_MINI_PLAYER_MARGIN = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        instance = this;
         // workaround to fix dark theme because https://issuetracker.google.com/issues/37124582
         try {
             new WebView(this);
@@ -430,6 +444,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        updateMiniPlayerMargins();
 
         // setup the billing client in main activity (to handle cases where the verification purchase flow may have been interrupted)
         billingClient = BillingClient.newBuilder(this)
@@ -571,7 +587,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 if (nowPlayingClaim != null && !Helper.isNullOrEmpty(nowPlayingClaimUrl)) {
                     hideNotifications();
                     if (nowPlayingSource == SOURCE_NOW_PLAYING_SHUFFLE) {
-                        openFragment(SurfModeFragment.class, true, NavMenuItem.ID_ITEM_SHUFFLE);
+                        openFragment(ShuffleFragment.class, true, NavMenuItem.ID_ITEM_SHUFFLE);
                     } else {
                         openFileUrl(nowPlayingClaimUrl);
                     }
@@ -611,6 +627,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         });
     }
 
+    private void updateMiniPlayerMargins() {
+        // mini-player bottom margin setting
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        int miniPlayerBottomMargin = Helper.parseInt(
+                sp.getString(PREFERENCE_KEY_MINI_PLAYER_BOTTOM_MARGIN, String.valueOf(DEFAULT_MINI_PLAYER_MARGIN)), DEFAULT_MINI_PLAYER_MARGIN);
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) findViewById(R.id.global_now_playing_card).getLayoutParams();
+        int scaledMiniPlayerMargin = getScaledValue(DEFAULT_MINI_PLAYER_MARGIN);
+        int scaledMiniPlayerBottomMargin = getScaledValue(miniPlayerBottomMargin);
+        lp.setMargins(scaledMiniPlayerMargin, 0, scaledMiniPlayerMargin, scaledMiniPlayerBottomMargin);
+    }
+
     public boolean isDarkMode() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         return sp.getBoolean(PREFERENCE_KEY_DARK_MODE, false);
@@ -641,7 +668,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         specialRouteFragmentClassMap.put("settings", SettingsFragment.class);
         specialRouteFragmentClassMap.put("subscription", FollowingFragment.class);
         specialRouteFragmentClassMap.put("subscriptions", FollowingFragment.class);
-        specialRouteFragmentClassMap.put("surf", SurfModeFragment.class);
+        specialRouteFragmentClassMap.put("surf", ShuffleFragment.class);
         specialRouteFragmentClassMap.put("wallet", WalletFragment.class);
         specialRouteFragmentClassMap.put("discover", FollowingFragment.class);
     }
@@ -798,7 +825,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 openFragment(AllContentFragment.class, true, NavMenuItem.ID_ITEM_ALL_CONTENT);
                 break;
             case NavMenuItem.ID_ITEM_SHUFFLE:
-                openFragment(SurfModeFragment.class, true, NavMenuItem.ID_ITEM_SHUFFLE);
+                openFragment(ShuffleFragment.class, true, NavMenuItem.ID_ITEM_SHUFFLE);
                 break;
 
             case NavMenuItem.ID_ITEM_NEW_PUBLISH:
@@ -876,11 +903,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         openFragment(PublishFormFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH, params);
     }
 
-    public void openChannelUrl(String url) {
+    public void openChannelUrl(String url, String source) {
         Map<String, Object> params = new HashMap<>();
         params.put("url", url);
         params.put("claim", getCachedClaimForUrl(url));
+        if (!Helper.isNullOrEmpty(source)) {
+            params.put("source", source);
+        }
         openFragment(ChannelFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
+    }
+    public void openChannelUrl(String url) {
+        openChannelUrl(url, null);
     }
 
     private Claim getCachedClaimForUrl(String url) {
@@ -902,21 +935,33 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     public void openFileUrl(String url) {
+        openFileUrl(url, null);
+    }
+    public void openFileUrl(String url, String source) {
         Map<String, Object> params = new HashMap<>();
         params.put("url", url);
+        if (!Helper.isNullOrEmpty(source)) {
+            params.put("source", source);
+        }
         openFragment(FileViewFragment.class, true, NavMenuItem.ID_ITEM_FOLLOWING, params);
     }
 
-    private void openSpecialUrl(String url) {
+    private void openSpecialUrl(String url, String source) {
         String specialPath = url.substring(8).toLowerCase();
         if (specialRouteFragmentClassMap.containsKey(specialPath)) {
             Class fragmentClass = specialRouteFragmentClassMap.get(specialPath);
             if (fragmentClassNavIdMap.containsKey(fragmentClass)) {
+                Map<String, Object> params = null;
+                if (!Helper.isNullOrEmpty(source)) {
+                    params = new HashMap<>();
+                    params.put("source",  source);
+                }
+
                 openFragment(
                         specialRouteFragmentClassMap.get(specialPath),
                         true,
                         fragmentClassNavIdMap.get(fragmentClass),
-                        null
+                        params
                 );
             }
         }
@@ -996,7 +1041,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 fragment instanceof LibraryFragment ||
                 fragment instanceof SearchFragment;
         findViewById(R.id.floating_balance_main_container).setVisibility(!canShowFloatingBalance || inFullscreenMode ? View.INVISIBLE : View.VISIBLE);
-        if (!(fragment instanceof FileViewFragment) && !(fragment instanceof SurfModeFragment) && !inFullscreenMode) {
+        if (!(fragment instanceof FileViewFragment) && !(fragment instanceof ShuffleFragment) && !inFullscreenMode) {
             findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
         }
         /*if (!Lbry.SDK_READY && !inFullscreenMode) {
@@ -1015,10 +1060,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onDestroy() {
+        shuttingDown = true;
         unregisterReceivers();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         if (receivedStopService || !isServiceRunning(this, LbrynetService.class)) {
             notificationManager.cancelAll();
+        }
+        if (webSocketClient != null) {
+            webSocketClient.close();
         }
         if (dbHelper != null) {
             dbHelper.close();
@@ -1085,22 +1134,64 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+
+
+    @SneakyThrows
+    private void checkWebSocketClient() {
+        if ((webSocketClient == null || webSocketClient.isClosed()) && !Helper.isNullOrEmpty(Lbryio.AUTH_TOKEN)) {
+            webSocketClient = new WebSocketClient(new URI(String.format("%s%s", Lbryio.WS_CONNECTION_BASE_URL, Lbryio.AUTH_TOKEN))) {
+                @Override
+                public void onOpen(ServerHandshake handshakedata) { }
+
+                @Override
+                public void onMessage(String message) {
+                    loadRemoteNotifications(false);
+                }
+
+                @Override
+                public void onClose(int code, String reason, boolean remote) {
+                    if (!shuttingDown) {
+                        // attempt to re-establish the connection if the app isn't being closed
+                        checkWebSocketClient();
+                    }
+                }
+
+                @Override
+                public void onError(Exception ex) { }
+
+                protected void onSetSSLParameters(SSLParameters sslParameters) {
+                    // don't call setEndpointIdentificationAlgorithm for API level < 24
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
+                    }
+                }
+            };
+            webSocketClient.connect();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+
         checkPurchases();
+        checkWebSocketClient();
+        updateMiniPlayerMargins();
         enteringPIPMode = false;
 
         applyNavbarSigninPadding();
         checkFirstRun();
         checkNowPlaying();
 
-        // check (and start) the LBRY SDK service
-        serviceRunning = isServiceRunning(this, LbrynetService.class);
-        if (!serviceRunning) {
-            Lbry.SDK_READY = false;
-            //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
-            ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
+        if (isFirstRunCompleted()) {
+            // check (and start) the LBRY SDK service
+            serviceRunning = isServiceRunning(this, LbrynetService.class);
+            if (!serviceRunning) {
+                Lbry.SDK_READY = false;
+                //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.VISIBLE);
+                ServiceHelper.start(this, "", LbrynetService.class, "lbrynetservice");
+            }
         }
         checkSdkReady();
         showSignedInUser();
@@ -1109,6 +1200,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         /*if (Lbry.SDK_READY) {
             findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         }*/
+    }
+
+    public boolean isFirstRunCompleted() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        return sp.getBoolean(PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED, false);
     }
 
     private void checkPurchases() {
@@ -1158,6 +1254,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     @Override
     protected void onPause() {
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
         if (!enteringPIPMode && !inPictureInPictureMode && appPlayer != null && !isBackgroundPlaybackEnabled()) {
             appPlayer.setPlayWhenReady(false);
         }
@@ -1770,6 +1867,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (PREFERENCE_KEY_MINI_PLAYER_BOTTOM_MARGIN.equalsIgnoreCase(key)) {
+            updateMiniPlayerMargins();
+        }
+    }
+
     private class PlayerNotificationDescriptionAdapter implements PlayerNotificationManager.MediaDescriptionAdapter {
 
         @Override
@@ -2254,6 +2358,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    public void navigateBackToNotifications() {
+        showNotifications();
+    }
+
     @Override
     public void onBackPressed() {
         if (findViewById(R.id.url_suggestions_container).getVisibility() == View.VISIBLE) {
@@ -2264,6 +2372,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             hideNotifications();
             return;
         }
+
         if (backPressInterceptor != null && backPressInterceptor.onBackPressed()) {
             return;
         }
@@ -2662,6 +2771,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 loadRemoteNotifications(false);
 
                 checkUrlIntent(getIntent());
+                checkWebSocketClient();
                 LbryAnalytics.logEvent(LbryAnalytics.EVENT_APP_LAUNCH);
                 appStarted = true;
             }
@@ -3109,6 +3219,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (appPlayer != null && inPictureInPictureMode && !isBackgroundPlaybackEnabled()) {
             appPlayer.setPlayWhenReady(false);
         }
+        if (inPictureInPictureMode) {
+            MainActivity.playerReassigned = true;
+        }
         super.onStop();
     }
 
@@ -3332,14 +3445,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                         String targetUrl = notification.getTargetUrl();
                         if (targetUrl.startsWith(SPECIAL_URL_PREFIX)) {
-                            openSpecialUrl(targetUrl);
+                            openSpecialUrl(targetUrl, "notification");
                         } else {
                             LbryUri target = LbryUri.tryParse(notification.getTargetUrl());
                             if (target != null) {
                                 if (target.isChannel()) {
-                                    openChannelUrl(notification.getTargetUrl());
+                                    openChannelUrl(notification.getTargetUrl(), "notification");
                                 } else {
-                                    openFileUrl(notification.getTargetUrl());
+                                    openFileUrl(notification.getTargetUrl(), "notification");
                                 }
                             }
                         }

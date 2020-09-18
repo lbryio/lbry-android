@@ -19,7 +19,7 @@
             <ProgressBar
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_gravity="center_vertical" />
             <TextView
                 android:layout_width="wrap_content"
@@ -53,18 +53,18 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
                 android:layout_above="@+id/channel_view_tabs"
-                android:layout_toRightOf="@id/channel_view_icon_container"
+                android:layout_toEndOf="@id/channel_view_icon_container"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/channel_view_title"
                     android:background="@color/channelCoverBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
                     android:ellipsize="end"
@@ -80,8 +80,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
                     android:fontFamily="@font/inter"
@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:paddingLeft="110dp"
+                android:paddingStart="110dp"
                 app:tabGravity="fill"
                 app:tabMode="scrollable"/>
             <RelativeLayout
@@ -103,7 +103,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginBottom="12dp">
                 <RelativeLayout
                     android:layout_centerHorizontal="true"
@@ -143,7 +143,7 @@
                 android:elevation="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:padding="8dp">
                 <RelativeLayout
                     android:id="@+id/channel_view_edit"
@@ -151,7 +151,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:visibility="gone">
                     <ImageView
                         android:layout_centerInParent="true"
@@ -166,7 +166,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:visibility="gone">
                     <ImageView
                         android:layout_centerInParent="true"
@@ -181,7 +181,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_marginRight="8dp">
+                    android:layout_marginEnd="8dp">
                     <ImageView
                         android:layout_centerInParent="true"
                         android:layout_width="22dp"
@@ -195,7 +195,7 @@
                     android:clickable="true"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_marginRight="8dp">
+                    android:layout_marginEnd="8dp">
                     <io.lbry.browser.ui.controls.SolidIconView
                         android:layout_centerInParent="true"
                         android:layout_width="24dp"

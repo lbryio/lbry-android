@@ -36,7 +36,7 @@
                 android:id="@+id/wallet_receive_address"
                 android:clickable="true"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/wallet_copy_receive_address"
+                android:layout_toStartOf="@id/wallet_copy_receive_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
@@ -45,21 +45,21 @@
                 android:letterSpacing="0.05"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:singleLine="true"
                 android:textAlignment="center"
                 android:ellipsize="middle" />
             <ImageButton
                 android:id="@+id/wallet_copy_receive_address"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:src="@drawable/ic_copy"
                 android:tint="@color/lbryGreen"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
         <com.google.android.material.button.MaterialButton

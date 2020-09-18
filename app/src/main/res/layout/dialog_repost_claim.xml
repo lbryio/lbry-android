@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/repost_name_prefix"
+                android:layout_toEndOf="@id/repost_name_prefix"
                 android:fontFamily="@font/inter"
                 android:singleLine="true"
                 android:textSize="14sp"
@@ -107,10 +107,10 @@
 
                 <TextView
                     android:id="@+id/repost_input_currency"
-                    android:layout_toRightOf="@id/repost_input_layout_amount"
+                    android:layout_toEndOf="@id/repost_input_layout_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="30dp"
                     android:fontFamily="@font/inter"
                     android:text="@string/lbc"
@@ -120,8 +120,8 @@
 
                 <LinearLayout
                     android:id="@+id/repost_inline_balance_container"
-                    android:layout_toRightOf="@id/repost_input_currency"
-                    android:layout_marginLeft="24dp"
+                    android:layout_toEndOf="@id/repost_input_currency"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="28dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter"
                         android:textFontWeight="300"
-                        android:layout_marginLeft="2dp" />
+                        android:layout_marginStart="2dp" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -165,8 +165,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="24dp"
-                android:layout_toLeftOf="@id/repost_button"
+                android:layout_marginEnd="24dp"
+                android:layout_toStartOf="@id/repost_button"
                 android:fontFamily="@font/inter"
                 android:textSize="14sp"
                 android:text="@string/show_advanced" />
@@ -174,9 +174,9 @@
                 android:id="@+id/repost_progress"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_toLeftOf="@id/repost_button"
+                android:layout_toStartOf="@id/repost_button"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:visibility="gone" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/repost_button"
@@ -184,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
                 android:text="@string/repost"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true" />
         </RelativeLayout>
     </LinearLayout>
