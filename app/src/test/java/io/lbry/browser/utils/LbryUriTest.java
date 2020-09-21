@@ -1,5 +1,6 @@
 package io.lbry.browser.utils;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -84,16 +85,7 @@ public class LbryUriTest {
 
     @Test
     public void parseLbryProtocolOnlyChannel() {
-        LbryUri expectedForChannel = new LbryUri();
-        expectedForChannel.setChannelName("@UCBerkeley");
-        expectedForChannel.setChannel(true);
-
-        try {
-            LbryUri.UriModifier primaryMod = LbryUri.UriModifier.parse("#", "d");
-            expectedForChannel.setChannelClaimId(primaryMod.getClaimId());
-        } catch (LbryUriException e) {
-            e.printStackTrace();
-        }
+        LbryUri expectedForChannel = sinthesizeExpected();
 
         LbryUri obtained = new LbryUri();
 
@@ -104,5 +96,35 @@ public class LbryUriTest {
         }
 
         assertEquals(expectedForChannel, obtained);
+    }
+
+    @Test
+    public void parseLbryTvProtocolOnlyChannel() {
+        LbryUri expectedForChannel = sinthesizeExpected();
+
+        LbryUri obtained = new LbryUri();
+
+        try {
+            obtained = LbryUri.parse("https://lbry.tv/@UCBerkeley:d",false);
+        } catch (LbryUriException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(expectedForChannel, obtained);
+    }
+
+    @NotNull
+    private LbryUri sinthesizeExpected() {
+        LbryUri expectedForChannel = new LbryUri();
+        expectedForChannel.setChannelName("@UCBerkeley");
+        expectedForChannel.setChannel(true);
+
+        try {
+            LbryUri.UriModifier primaryMod = LbryUri.UriModifier.parse("#", "d");
+            expectedForChannel.setChannelClaimId(primaryMod.getClaimId());
+        } catch (LbryUriException e) {
+            e.printStackTrace();
+        }
+        return expectedForChannel;
     }
 }
