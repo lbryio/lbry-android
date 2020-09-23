@@ -21,7 +21,7 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "LbryApp.db";
     private static DatabaseHelper instance;
 
@@ -60,6 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", is_read INTEGER DEFAULT 0 NOT NULL" +
                     ", is_seen INTEGER DEFAULT 0 NOT NULL " +
                     ", timestamp TEXT NOT NULL)",
+            "CREATE TABLE shuffle_watched (id INTEGER PRIMARY KEY NOT NULL, claim_id TEXT NOT NULL)"
     };
     private static final String[] SQL_CREATE_INDEXES = {
             "CREATE UNIQUE INDEX idx_subscription_url ON subscriptions (url)",
@@ -69,7 +70,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE UNIQUE INDEX idx_view_history_url_device ON view_history (url, device)",
             "CREATE INDEX idx_view_history_device ON view_history (device)",
             "CREATE UNIQUE INDEX idx_notification_remote_id ON notifications (remote_id)",
-            "CREATE INDEX idx_notification_timestamp ON notifications (timestamp)"
+            "CREATE INDEX idx_notification_timestamp ON notifications (timestamp)",
+            "CREATE UNIQUE INDEX idx_shuffle_watched_claim ON shuffle_watched (claim_id)",
     };
 
     private static final String[] SQL_V1_V2_UPGRADE = {
@@ -99,6 +101,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String[] SQL_V5_V6_UPGRADE = {
             "ALTER TABLE notifications ADD COLUMN author_url TEXT"
     };
+    private static final String[] SQL_V6_V7_UPGRADE = {
+            "CREATE TABLE shuffle_watched (id INTEGER PRIMARY KEY NOT NULL, claim_id TEXT NOT NULL)",
+            "CREATE UNIQUE INDEX idx_shuffle_watched_claim ON shuffle_watched (claim_id)"
+    };
 
     private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
     private static final String SQL_CLEAR_SUBSCRIPTIONS = "DELETE FROM subscriptions";
@@ -115,6 +121,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_GET_UNREAD_NOTIFICATIONS_COUNT = "SELECT COUNT(id) FROM notifications WHERE is_read <> 1";
     private static final String SQL_MARK_NOTIFICATIONS_READ = "UPDATE notifications SET is_read = 1 WHERE is_read = 0";
     private static final String SQL_MARK_NOTIFICATION_READ_AND_SEEN = "UPDATE notifications SET is_read = 1, is_seen = 1 WHERE id = ?";
+
+    private static final String SQL_INSERT_SHUFFLE_WATCHED = "REPLACE INTO shuffle_watched (claim_id) VALUES (?)";
+    private static final String SQL_GET_SHUFFLE_WATCHED_CLAIMS = "SELECT claim_id FROM shuffle_watched";
 
     private static final String SQL_INSERT_VIEW_HISTORY =
             "REPLACE INTO view_history (url, claim_id, claim_name, cost, currency, title, publisher_claim_id, publisher_name, publisher_title, thumbnail_url, device, release_time, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -174,6 +183,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.execSQL(sql);
             }
         }
+        if (oldVersion < 7) {
+            for (String sql : SQL_V6_V7_UPGRADE) {
+                db.execSQL(sql);
+            }
+        }
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
@@ -190,6 +204,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static void clearUrlHistoryBefore(Date date, SQLiteDatabase db) {
         db.execSQL(SQL_CLEAR_URL_HISTORY_BEFORE_TIME, new Object[] { new SimpleDateFormat(Helper.ISO_DATE_FORMAT_PATTERN).format(new Date()) });
     }
+
     // History items are essentially url suggestions
     public static List<UrlSuggestion> getRecentHistory(SQLiteDatabase db) {
         List<UrlSuggestion> suggestions = new ArrayList<>();
@@ -375,5 +390,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public static void markNotificationReadAndSeen(long notificationId, SQLiteDatabase db) {
         db.execSQL(SQL_MARK_NOTIFICATION_READ_AND_SEEN, new Object[] { notificationId });
+    }
+    public static void createOrUpdateShuffleWatched(String claimId, SQLiteDatabase db) {
+        db.execSQL(SQL_INSERT_SHUFFLE_WATCHED, new Object[] { claimId });
+    }
+    public static List<String> getShuffleWatchedClaims(SQLiteDatabase db) {
+        List<String> claimIds = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(SQL_GET_SHUFFLE_WATCHED_CLAIMS, null);
+            while (cursor.moveToNext()) {
+                claimIds.add(cursor.getString(0));
+            }
+        } finally {
+            Helper.closeCursor(cursor);
+        }
+        return claimIds;
     }
 }
