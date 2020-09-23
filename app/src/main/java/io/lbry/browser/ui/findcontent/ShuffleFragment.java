@@ -3,6 +3,7 @@ package io.lbry.browser.ui.findcontent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -45,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
+import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.Reward;
@@ -70,6 +72,7 @@ public class ShuffleFragment extends BaseFragment {
     private int playlistIndex;
     private Claim current;
     private List<Claim> playlist;
+    private List<String> watchedContentClaimIds;
 
     private long sessionStart;
     private ProgressBar surfModeLoading;
@@ -104,6 +107,10 @@ public class ShuffleFragment extends BaseFragment {
                         logPlay(currentUrl, startTimeMillis);
                         playbackStarted = true;
                         isPlaying = true;
+
+                        if (current != null) {
+                            saveWatchedContent(current.getClaimId());
+                        }
                     }
 
                     renderTotalDuration();
@@ -227,13 +234,14 @@ public class ShuffleFragment extends BaseFragment {
         }
 
         if (playlist == null) {
-            loadContent();
+            loadWatchedContentList();
         } else {
             if (current != null) {
                 playbackCurrentClaim();
             } else {
                 startPlaylist();
             }
+            loadAndScheduleDurations();
         }
     }
 
@@ -262,6 +270,46 @@ public class ShuffleFragment extends BaseFragment {
 
         super.onStop();
 
+    }
+
+    private void loadWatchedContentList() {
+        (new AsyncTask<Void, Void, List<String>>() {
+            protected List<String> doInBackground(Void... params) {
+                MainActivity activity = (MainActivity) getContext();
+                if (activity != null) {
+                    try {
+                        SQLiteDatabase db = activity.getDbHelper().getReadableDatabase();
+                        return DatabaseHelper.getShuffleWatchedClaims(db);
+                    } catch (Exception ex) {
+                        // pass
+                    }
+                }
+                return null;
+            }
+            protected void onPostExecute(List<String> claimIds) {
+                watchedContentClaimIds = new ArrayList<>(claimIds);
+                if (playlist == null) {
+                    loadContent();
+                }
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void saveWatchedContent(final String claimId) {
+        (new AsyncTask<Void, Void, Void>() {
+            protected Void doInBackground(Void... params) {
+                MainActivity activity = (MainActivity) getContext();
+                if (activity != null) {
+                    try {
+                        SQLiteDatabase db = activity.getDbHelper().getWritableDatabase();
+                        DatabaseHelper.createOrUpdateShuffleWatched(claimId, db);
+                    } catch (Exception ex) {
+                        // pass
+                    }
+                }
+                return  null;
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void loadContent() {
@@ -301,6 +349,7 @@ public class ShuffleFragment extends BaseFragment {
         playlistIndex = 0;
         current = playlist.get(playlistIndex);
         checkCurrentClaimIsVideo(false);
+        checkCurrentClaimWatched(false);
         playbackCurrentClaim();
     }
 
@@ -311,8 +360,23 @@ public class ShuffleFragment extends BaseFragment {
                 playlistIndex--;
             } else {
                 playlistIndex++;
+                checkPlaylistSize();
             }
             current = playlist.get(playlistIndex);
+        }
+    }
+
+    private void checkCurrentClaimWatched(boolean previous) {
+        if (current != null && watchedContentClaimIds != null) {
+            while (watchedContentClaimIds.contains(current.getClaimId())) {
+                if (previous) {
+                    playlistIndex--;
+                } else {
+                    playlistIndex++;
+                    checkPlaylistSize();
+                }
+                current = playlist.get(playlistIndex);
+            }
         }
     }
 
@@ -325,6 +389,7 @@ public class ShuffleFragment extends BaseFragment {
         }
         current = playlist.get(playlistIndex);
         checkCurrentClaimIsVideo(true);
+        checkCurrentClaimWatched(true);
         playbackCurrentClaim();
     }
     private void playNextClaim() {
@@ -334,13 +399,18 @@ public class ShuffleFragment extends BaseFragment {
         if (playlistIndex < playlist.size() - 1) {
             playlistIndex++;
         }
+        checkPlaylistSize();
+        current = playlist.get(playlistIndex);
+        checkCurrentClaimIsVideo(false);
+        checkCurrentClaimWatched(false);
+        playbackCurrentClaim();
+    }
+
+    private void checkPlaylistSize() {
         if (playlist.size() - playlistIndex < 10) {
             currentClaimSearchPage++;
             loadContent();
         }
-        current = playlist.get(playlistIndex);
-        checkCurrentClaimIsVideo(false);
-        playbackCurrentClaim();
     }
 
     private void playbackCurrentClaim() {
