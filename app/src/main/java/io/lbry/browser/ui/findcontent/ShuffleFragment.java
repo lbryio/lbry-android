@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
@@ -242,6 +243,23 @@ public class ShuffleFragment extends BaseFragment {
                 startPlaylist();
             }
             loadAndScheduleDurations();
+        }
+
+        if (MainActivity.appPlayer != null) {
+            if (MainActivity.playerReassigned) {
+                setPlayerForPlayerView();
+                MainActivity.playerReassigned = false;
+            }
+        }
+    }
+
+    private void setPlayerForPlayerView() {
+        View root = getView();
+        if (root != null) {
+            PlayerView view = root.findViewById(R.id.shuffle_exoplayer_view);
+            view.setVisibility(View.VISIBLE);
+            view.setPlayer(null);
+            view.setPlayer(MainActivity.appPlayer);
         }
     }
 
@@ -502,8 +520,7 @@ public class ShuffleFragment extends BaseFragment {
         playbackStarted = false;
         startTimeMillis = 0;
 
-        /*
-        if (MainActivity.appPlayer != null) {
+        /*if (MainActivity.appPlayer != null) {
             MainActivity.appPlayer.stop(true);
             MainActivity.appPlayer.removeListener(fileViewPlayerListener);
             PlaybackParameters params = new PlaybackParameters(1.0f);
