@@ -1007,7 +1007,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 fragment instanceof LibraryFragment ||
                 fragment instanceof SearchFragment;
         findViewById(R.id.floating_balance_main_container).setVisibility(!canShowFloatingBalance || inFullscreenMode ? View.INVISIBLE : View.VISIBLE);
-        if (!(fragment instanceof FileViewFragment) && !inFullscreenMode) {
+        if (!(fragment instanceof FileViewFragment) && !inFullscreenMode && nowPlayingClaim != null) {
             findViewById(R.id.global_now_playing_card).setVisibility(View.VISIBLE);
         }
         /*if (!Lbry.SDK_READY && !inFullscreenMode) {
@@ -2795,9 +2795,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     try {
                         LbryUri uri = LbryUri.parse(url);
                         if (uri.isChannel()) {
-                            openChannelUrl(url);
+                            openChannelUrl(url.startsWith(LbryUri.PROTO_DEFAULT) ? url : uri.toString());
                         } else {
-                            openFileUrl(url);
+                            openFileUrl(url.startsWith(LbryUri.PROTO_DEFAULT) ? url : uri.toString());
                         }
                     } catch (LbryUriException ex) {
                         // pass
