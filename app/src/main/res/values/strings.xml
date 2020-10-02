@@ -298,6 +298,7 @@
     <string name="receive">Receive</string>
     <string name="spend">Spend</string>
     <string name="publish">Publish</string>
+    <string name="unpublish">Unpublish</string>
     <string name="support">Support</string>
     <string name="abandon">Abandon</string>
     <string name="channel">Channel</string>
