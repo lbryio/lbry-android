@@ -201,7 +201,6 @@ public class FirstRunActivity extends AppCompatActivity {
                 try {
                     writer = new BufferedWriter(new FileWriter(file));
                     writer.write(installId);
-                    android.util.Log.d("LbryMain", "Generated install ID=" + installId);
                 } catch (IOException ex) {
                     return false;
                 } finally {
