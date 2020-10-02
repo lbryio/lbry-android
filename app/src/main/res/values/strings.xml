@@ -20,6 +20,7 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="sign_in">Sign In</string>
+    <string name="shuffle">Shuffle</string>
     <string name="startup_failed">App startup failed. Please check your data connection and try again. If this problem persists, please email hello@lbry.com</string>
     <string name="no_claim_search_content">No content to display at this time. Please refine your selection or check back later.</string>
 
@@ -242,6 +243,7 @@
     <string name="notifications">Notifications</string>
     <string name="subscriptions">Subscriptions</string>
     <string name="content_interests">Content Interests</string>
+    <string name="mini_player_bottom_spacing">Mini-player bottom spacing</string>
 
     <string name="keep_sdk_in_background">Keep the LBRY service running in the background for improved wallet and network performance</string>
     <string name="participate_in_data_network">Participate in the data network (requires app and background service restart)</string>
@@ -296,6 +298,7 @@
     <string name="receive">Receive</string>
     <string name="spend">Spend</string>
     <string name="publish">Publish</string>
+    <string name="unpublish">Unpublish</string>
     <string name="support">Support</string>
     <string name="abandon">Abandon</string>
     <string name="channel">Channel</string>
@@ -649,4 +652,6 @@
 
     <string name="fa_asterisk" translatable="false">&#xf069;</string>
     <string name="fa_comment_alt" translatable="false">&#xf27a;</string>
+    <string name="fa_broadcast_tower" translatable="false">&#xf519;</string>
+    <string name="fa_random" translatable="false">&#xf074;</string>
 </resources>

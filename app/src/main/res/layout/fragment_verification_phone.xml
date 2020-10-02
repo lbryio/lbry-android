@@ -136,8 +136,8 @@
                 android:id="@+id/verification_phone_verify_progress"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_toRightOf="@id/verification_phone_verify_button"
-                android:layout_marginLeft="16dp"
+                android:layout_toEndOf="@id/verification_phone_verify_button"
+                android:layout_marginStart="16dp"
                 android:layout_centerVertical="true"
                 android:visibility="gone" />
 
@@ -149,7 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:fontFamily="@font/inter"
                 android:text="@string/edit"
                 android:textColor="@color/white"

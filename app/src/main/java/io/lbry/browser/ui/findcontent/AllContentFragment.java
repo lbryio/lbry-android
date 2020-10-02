@@ -414,6 +414,8 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
                 null,
                 getContentSortOrder(),
                 contentReleaseTime,
+                0,
+                0,
                 currentClaimSearchPage == 0 ? 1 : currentClaimSearchPage,
                 Helper.CONTENT_PAGE_SIZE);
     }

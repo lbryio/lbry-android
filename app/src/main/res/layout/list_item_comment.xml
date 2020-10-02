@@ -7,8 +7,8 @@
     android:focusable="true"
     android:orientation="vertical"
     android:paddingBottom="8dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     android:paddingTop="8dp">
 
     <RelativeLayout
@@ -46,8 +46,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/comment_avatar_container"
-            android:layout_marginLeft="16dp"
+            android:layout_toEndOf="@id/comment_avatar_container"
+            android:layout_marginStart="16dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -66,7 +66,7 @@
                     android:id="@+id/comment_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
                     android:fontFamily="@font/inter"
                     android:textColor="@color/lightGrey"

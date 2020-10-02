@@ -52,10 +52,10 @@
 
             <TextView
                 android:id="@+id/wallet_input_currency"
-                android:layout_toRightOf="@id/wallet_input_layout_amount"
+                android:layout_toEndOf="@id/wallet_input_layout_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/inter"
                 android:text="@string/lbc"
@@ -65,8 +65,8 @@
 
             <LinearLayout
                 android:id="@+id/wallet_inline_balance_container"
-                android:layout_toRightOf="@id/wallet_input_currency"
-                android:layout_marginLeft="24dp"
+                android:layout_toEndOf="@id/wallet_input_currency"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="28dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,21 +82,21 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
                     android:textFontWeight="300"
-                    android:layout_marginLeft="2dp" />
+                    android:layout_marginStart="2dp" />
             </LinearLayout>
 
             <ProgressBar
                 android:id="@+id/wallet_send_progress"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_toLeftOf="@id/wallet_send"
+                android:layout_toStartOf="@id/wallet_send"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/wallet_send"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -32,6 +32,7 @@ import io.lbry.browser.ui.BaseFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
+import io.lbry.browser.utils.Predefined;
 
 public class EditorsChoiceFragment extends BaseFragment {
 
@@ -72,7 +73,7 @@ public class EditorsChoiceFragment extends BaseFragment {
         return Lbry.buildClaimSearchOptions(
                 Claim.TYPE_REPOST,
                 null,
-                null, /*canShowMatureContent ? null : new ArrayList<>(Predefined.MATURE_TAGS),*/
+                canShowMatureContent ? null : new ArrayList<>(Predefined.MATURE_TAGS),
                 new ArrayList<>(titleChannelIdsMap.values()),
                 null,
                 Arrays.asList(Claim.ORDER_BY_RELEASE_TIME),

@@ -173,9 +173,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         Comment comment = items.get(position);
         holder.itemView.setPadding(
-                nested ? Helper.getScaledValue(56, scale) : holder.itemView.getPaddingLeft(),
+                nested ? Helper.getScaledValue(56, scale) : holder.itemView.getPaddingStart(),
                 holder.itemView.getPaddingTop(),
-                nested ? 0 : holder.itemView.getPaddingRight(),
+                nested ? 0 : holder.itemView.getPaddingEnd(),
                 holder.itemView.getPaddingBottom());
 
         holder.channelName.setText(comment.getChannelName());

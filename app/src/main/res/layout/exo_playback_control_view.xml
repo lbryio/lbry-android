@@ -14,7 +14,7 @@
         android:layout_centerVertical="true"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:layout_toLeftOf="@id/player_play_pause">
+        android:layout_toStartOf="@id/player_play_pause">
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -66,7 +66,7 @@
         android:layout_centerVertical="true"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:layout_toRightOf="@id/player_play_pause">
+        android:layout_toEndOf="@id/player_play_pause">
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -84,7 +84,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:visibility="gone">
         <ImageView
             android:id="@+id/player_image_cast_toggle"
@@ -103,14 +103,14 @@
         android:layout_alignParentBottom="true"
         android:layout_width="56dp"
         android:layout_height="48dp"
-        android:layout_toLeftOf="@id/player_toggle_fullscreen">
+        android:layout_toStartOf="@id/player_toggle_fullscreen">
         <TextView
             android:id="@+id/player_playback_speed_label"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/inter"
             android:letterSpacing="0.05"
             android:singleLine="true"
@@ -126,7 +126,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentEnd="true">
         <ImageView
             android:id="@+id/player_image_full_screen_toggle"
             android:layout_width="24dp"
@@ -140,9 +140,9 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/player_playback_speed"
-        android:paddingLeft="16dp"
-        android:paddingRight="4dp">
+        android:layout_toStartOf="@id/player_playback_speed"
+        android:paddingStart="16dp"
+        android:paddingEnd="4dp">
         <TextView
             android:id="@+id/player_duration_elapsed"
             android:layout_width="64dp"
@@ -155,12 +155,12 @@
             android:textSize="14sp" />
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@id/exo_progress"
-            android:layout_toLeftOf="@id/player_duration_total"
-            android:layout_toRightOf="@id/player_duration_elapsed"
+            android:layout_toStartOf="@id/player_duration_total"
+            android:layout_toEndOf="@id/player_duration_elapsed"
             android:layout_width="match_parent"
             android:layout_height="24dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_centerVertical="true"
             app:scrubber_color="@color/scrubberColor"
             app:played_color="@color/playedColor"
@@ -170,7 +170,7 @@
             android:layout_width="64dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:gravity="end"
             android:fontFamily="@font/inter"
             android:singleLine="true"

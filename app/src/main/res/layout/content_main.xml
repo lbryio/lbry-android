@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:fontFamily="@font/inter"
                 android:text="@string/sdk_initializing"
                 android:textSize="14sp"
@@ -118,8 +118,8 @@
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
         android:visibility="gone"
         app:cardElevation="8dp"
@@ -133,9 +133,9 @@
                 android:layout_width="160dp"
                 android:layout_height="90dp" />
             <LinearLayout
-                android:layout_toRightOf="@id/global_now_playing_player_view"
-                android:layout_toLeftOf="@id/global_now_playing_close"
-                android:layout_marginLeft="8dp"
+                android:layout_toEndOf="@id/global_now_playing_player_view"
+                android:layout_toStartOf="@id/global_now_playing_close"
+                android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -165,7 +165,7 @@
                 android:layout_width="36dp"
                 android:layout_alignParentEnd="true"
                 android:clickable="true"
-                android:layout_marginLeft="8dp">
+                android:layout_marginStart="8dp">
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"

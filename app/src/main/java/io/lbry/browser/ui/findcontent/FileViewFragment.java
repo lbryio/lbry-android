@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.Outline;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +28,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,7 +37,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -167,7 +166,7 @@ public class FileViewFragment extends BaseFragment implements
         WalletBalanceListener {
     private static final int RELATED_CONTENT_SIZE = 16;
     private static final String DEFAULT_PLAYBACK_SPEED = "1x";
-    private static final String CDN_PREFIX = "https://cdn.lbryplayer.xyz";
+    public static final String CDN_PREFIX = "https://cdn.lbryplayer.xyz";
 
     private PlayerControlView castControlView;
     private Player currentPlayer;
@@ -609,7 +608,7 @@ public class FileViewFragment extends BaseFragment implements
                 }
             }
 
-            if (!Helper.isNullOrEmpty(lbryFile.getStreamingUrl()) && !Lbryio.isSignedIn()) {
+            if (!Helper.isNullOrEmpty(lbryFile.getStreamingUrl()) && (!claim.isFree() || !Lbryio.isSignedIn())) {
                 return lbryFile.getStreamingUrl();
             }
         }
@@ -739,6 +738,13 @@ public class FileViewFragment extends BaseFragment implements
         } else {
             onSdkReady();
         }
+    }
+
+    public void onPause() {
+        if (MainActivity.appPlayer != null) {
+            MainActivity.nowPlayingSource = MainActivity.SOURCE_NOW_PLAYING_FILE;
+        }
+        super.onPause();
     }
 
     public void onStop() {
@@ -1010,30 +1016,39 @@ public class FileViewFragment extends BaseFragment implements
                 }
 
                 if (claim != null) {
-                    boolean isOwnClaim = Lbry.ownClaims.contains(claim);
-                    if (isOwnClaim) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
-                                setTitle(R.string.delete_content).
-                                setMessage(R.string.confirm_delete_content_message)
-                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        deleteCurrentClaim();
-                                    }
-                                }).setNegativeButton(R.string.no, null);
-                        builder.show();
-                    } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
-                                setTitle(R.string.delete_file).
-                                setMessage(R.string.confirm_delete_file_message)
-                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        deleteClaimFile();
-                                    }
-                                }).setNegativeButton(R.string.no, null);
-                        builder.show();
-                    }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
+                        setTitle(R.string.delete_file).
+                        setMessage(R.string.confirm_delete_file_message)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deleteClaimFile();
+                            }
+                        }).setNegativeButton(R.string.no, null);
+                    builder.show();
+                }
+            }
+        });
+
+        root.findViewById(R.id.file_view_action_unpublish).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Lbry.SDK_READY) {
+                    Snackbar.make(root.findViewById(R.id.file_view_claim_display_area), R.string.sdk_initializing_functionality, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (claim != null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).
+                        setTitle(R.string.delete_content).
+                        setMessage(R.string.confirm_delete_content_message)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deleteCurrentClaim();
+                            }
+                        }).setNegativeButton(R.string.no, null);
+                    builder.show();
                 }
             }
         });
@@ -1874,7 +1889,7 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void handleMainActionForClaim() {
-        if (claim.isPlayable() && Lbryio.isSignedIn())  {
+        if (claim.isPlayable() && claim.isFree() && Lbryio.isSignedIn())  {
             // always use lbry.tv streaming when signed in and playabble
             startTimeMillis = System.currentTimeMillis();
             showExoplayerView();
@@ -2773,15 +2788,18 @@ public class FileViewFragment extends BaseFragment implements
             boolean isOwnClaim = Lbry.ownClaims.contains(claim);
             View root = getView();
             if (root != null) {
-                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_download), isOwnClaim ? View.GONE : View.VISIBLE);
                 Helper.setViewVisibility(root.findViewById(R.id.file_view_action_report), isOwnClaim ? View.GONE : View.VISIBLE);
                 Helper.setViewVisibility(root.findViewById(R.id.file_view_action_edit), isOwnClaim ? View.VISIBLE : View.GONE);
-                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_delete), isOwnClaim ? View.VISIBLE : View.GONE);
+                Helper.setViewVisibility(root.findViewById(R.id.file_view_action_unpublish), isOwnClaim ? View.VISIBLE : View.GONE);
+
+
+                LinearLayout fileViewActionsArea = root.findViewById(R.id.file_view_actions_area);
+                fileViewActionsArea.setWeightSum(isOwnClaim ? 6 : 5);
             }
         }
     }
 
-    private static class StreamLoadErrorPolicy extends DefaultLoadErrorHandlingPolicy {
+    public static class StreamLoadErrorPolicy extends DefaultLoadErrorHandlingPolicy {
         @Override
         public long getRetryDelayMsFor(int dataType, long loadDurationMs, IOException exception, int errorCount) {
             return exception instanceof ParserException

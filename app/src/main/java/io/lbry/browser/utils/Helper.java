@@ -20,7 +20,6 @@ import android.provider.MediaStore;
 import android.text.method.LinkMovementMethod;
 import android.view.ContextMenu;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -32,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.util.Hex;
 
+import org.bitcoinj.core.Base58;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

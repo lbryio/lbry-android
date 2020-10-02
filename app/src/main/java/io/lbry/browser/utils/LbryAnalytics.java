@@ -28,6 +28,7 @@ public class LbryAnalytics {
     public static final String EVENT_PUBLISH_UPDATE = "publish_update";
     public static final String EVENT_CHANNEL_CREATE = "channel_create";
     public static final String EVENT_SEARCH = "search";
+    public static final String EVENT_SHUFFLE_SESSION = "shuffle_session";
 
     private static FirebaseAnalytics analytics;
 

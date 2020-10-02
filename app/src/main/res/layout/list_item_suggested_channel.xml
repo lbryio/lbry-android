@@ -10,8 +10,8 @@
     android:focusable="true"
     android:paddingTop="12dp"
     android:paddingBottom="12dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
     <RelativeLayout
         android:id="@+id/suggested_media_container"
         android:layout_width="80dp"
@@ -64,6 +64,6 @@
         android:textSize="12sp"
         android:paddingTop="2dp"
         android:paddingBottom="3dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" />
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp" />
 </LinearLayout>

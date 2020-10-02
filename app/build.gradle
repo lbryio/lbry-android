@@ -16,14 +16,15 @@ android {
         applicationId "io.lbry.browser"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1601
-        versionName "0.16.1"
+        versionCode 1606
+        versionName "0.16.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
+        exclude 'lib/x86_64/darwin/libscrypt.dylib'
     }
 
     productFlavors {
@@ -117,6 +118,7 @@ dependencies {
 
     implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.3.1.LTS'
 
+    implementation 'org.bitcoinj:bitcoinj-tools:0.14.7'
     implementation 'org.java-websocket:Java-WebSocket:1.5.1'
 
     compileOnly 'org.projectlombok:lombok:1.18.10'
@@ -127,8 +129,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    __32bitImplementation 'io.lbry:lbrysdk32:0.80.0'
-    __64bitImplementation 'io.lbry:lbrysdk64:0.80.0'
+    __32bitImplementation 'io.lbry:lbrysdk32:0.82.0'
+    __64bitImplementation 'io.lbry:lbrysdk64:0.82.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -25,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
             <TextView
                 android:id="@+id/all_content_page_title"
                 android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -50,8 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:visibility="visible">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_arrow_dropdown"
                         android:tint="@color/foreground" />
@@ -85,10 +85,10 @@
                 <TextView
                     android:id="@+id/all_content_for_prefix"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/all_content_sort_link"
+                    android:layout_toEndOf="@id/all_content_sort_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
                     android:fontFamily="@font/inter"
                     android:textFontWeight="300"
                     android:textSize="12sp"
@@ -96,12 +96,12 @@
                     android:visibility="gone" />
                 <LinearLayout
                     android:id="@+id/all_content_scope_link"
-                    android:layout_toRightOf="@id/all_content_sort_link"
+                    android:layout_toEndOf="@id/all_content_sort_link"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
                     android:layout_centerVertical="true"
                     android:visibility="gone">
                     <TextView
@@ -109,7 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
                         android:fontFamily="@font/inter"
                         android:textFontWeight="300"
                         android:textSize="12sp"
@@ -117,7 +117,7 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_arrow_dropdown"
                         android:tint="@color/foreground" />
@@ -126,10 +126,10 @@
                 <TextView
                     android:id="@+id/all_content_from_prefix"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/all_content_sort_link"
+                    android:layout_toEndOf="@id/all_content_sort_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
                     android:fontFamily="@font/inter"
                     android:textFontWeight="300"
                     android:textSize="12sp"
@@ -142,15 +142,15 @@
                     android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_toRightOf="@id/all_content_sort_link"
+                    android:layout_marginStart="2dp"
+                    android:layout_toEndOf="@id/all_content_sort_link"
                     android:visibility="gone">
                     <TextView
                         android:id="@+id/all_content_time_link_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
                         android:fontFamily="@font/inter"
                         android:textFontWeight="300"
                         android:textSize="12sp"
@@ -158,7 +158,7 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_arrow_dropdown"
                         android:tint="@color/foreground" />
@@ -170,7 +170,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"
                 android:fontFamily="@font/inter"

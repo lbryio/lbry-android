@@ -493,7 +493,28 @@ public final class Predefined {
             "covidcuts",
             "covid-19"
     );
-    public static final List<String> MATURE_TAGS = Arrays.asList("mature", "nsfw", "porn", "xxx");
+    public static final List<String> MATURE_TAGS = Arrays.asList(
+            "porn",
+            "porno",
+            "nsfw",
+            "mature",
+            "xxx",
+            "sex",
+            "creampie",
+            "blowjob",
+            "handjob",
+            "vagina",
+            "boobs",
+            "big boobs",
+            "big dick",
+            "pussy",
+            "cumshot",
+            "anal",
+            "hard fucking",
+            "ass",
+            "fuck",
+            "hentai"
+    );
     public static final List<String> ADJECTIVES = Arrays.asList(
             "aback",
             "abaft",

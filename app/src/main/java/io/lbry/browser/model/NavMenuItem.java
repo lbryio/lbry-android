@@ -20,6 +20,7 @@ public class NavMenuItem {
     public static final int ID_ITEM_FOLLOWING = 101;
     public static final int ID_ITEM_EDITORS_CHOICE = 102;
     public static final int ID_ITEM_ALL_CONTENT = 103;
+    public static final int ID_ITEM_SHUFFLE = 104;
 
     // Your Content
     public static final int ID_ITEM_CHANNELS = 201;
