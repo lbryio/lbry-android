@@ -18,7 +18,7 @@ public class LbryUri {
     public static final int CLAIM_ID_MAX_LENGTH = 40;
 
     private static final String REGEX_PART_PROTOCOL = "^((?:lbry://|https://)?)";
-    private static final String REGEX_PART_HOST = "((?:open.lbry.com/)?)";
+    private static final String REGEX_PART_HOST = "((?:open.lbry.com/|lbry.tv/|lbry.lat/|lbry.fr/|lbry.in/)?)";
     private static final String REGEX_PART_STREAM_OR_CHANNEL_NAME = "([^:$#/]*)";
     private static final String REGEX_PART_MODIFIER_SEPARATOR = "([:$#]?)([^/]*)";
     private static final String QUERY_STRING_BREAKER = "^([\\S]+)([?][\\S]*)";
@@ -128,9 +128,14 @@ public class LbryUri {
         boolean isChannel = includesChannel && Helper.isNullOrEmpty(possibleStreamName);
         String channelName = includesChannel && streamOrChannelName.length() > 1 ? streamOrChannelName.substring(1) : null;
 
-        // It would have thrown already on the RegEx parser if protocol value was incorrect
-        // open.lbry.com uses ':' as ModSeparators while lbry:// expects '#'
-        if (components.get(1).equals("open.lbry.com/")) {
+        /*
+         * It would have thrown already on the RegEx parser if protocol value was incorrect
+         * or HTTPS host was unknown to us.
+         *
+         * [https://] hosts use ':' as ModSeparators while [lbry://] protocol expects '#'
+         */
+
+        if (!components.get(1).isEmpty()) {
             if (primaryModSeparator.equals(":"))
                 primaryModSeparator = "#";
             if (secondaryModSeparator.equals(":"))
