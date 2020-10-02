@@ -435,6 +435,36 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/file_view_action_unpublish"
+                        android:clickable="true"
+                        android:background="?attr/selectableItemBackground"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+                        <RelativeLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_gravity="center_horizontal">
+                            <ImageView
+                                android:tint="@color/foreground"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/ic_unpublish" />
+                        </RelativeLayout>
+                        <TextView
+                            android:fontFamily="@font/inter"
+                            android:textSize="12sp"
+                            android:text="@string/unpublish"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/file_view_action_report"
                         android:clickable="true"
                         android:background="?attr/selectableItemBackground"
@@ -622,13 +652,6 @@
                             android:layout_marginStart="8dp"
                             android:layout_weight="8" />
                     </LinearLayout>
-
-                    <Button
-                        android:id="@+id/file_view_action_unpublish"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/unpublish"
-                        app:icon="@drawable/ic_unpublish" />
 
                     <View
                         android:layout_width="match_parent"

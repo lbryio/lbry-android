@@ -3122,6 +3122,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                     // TODO: Broadcast startup status changes
                     JSONObject startupStatus = status.getJSONObject("startup_status");
+                    android.util.Log.d(TAG, startupStatus.toString(2));
                     sdkReady = startupStatus.getBoolean("file_manager") && startupStatus.getBoolean("wallet");
                 }
             } catch (ConnectException | JSONException ex) {
