@@ -56,13 +56,11 @@
         android:paddingBottom="8dp"
         android:paddingStart="12dp"
         android:paddingEnd="16dp">
-        <io.lbry.browser.ui.controls.SolidIconView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:textSize="10dp"
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/white"
-            android:text="@string/fa_coins" />
+            android:src="@drawable/ic_credits" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

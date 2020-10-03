@@ -101,13 +101,11 @@
                 android:paddingStart="6dp"
                 android:paddingEnd="7dp"
                 android:visibility="gone">
-                <io.lbry.browser.ui.controls.SolidIconView
+                <ImageView
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
-                    android:textSize="8dp"
-                    android:text="@string/fa_coins"
-                    android:textColor="@android:color/black"/>
+                    android:src="@drawable/ic_credits" />
                 <TextView
                     android:id="@+id/claim_fee"
                     android:layout_width="wrap_content"
