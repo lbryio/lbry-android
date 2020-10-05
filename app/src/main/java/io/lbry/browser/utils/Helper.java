@@ -348,6 +348,10 @@ public final class Helper {
         return cs != null ? cs.toString().trim() : "";
     }
 
+    public static String getValue(CharSequence cs, String defaultValue) {
+        return cs != null && !Helper.isNullOrEmpty(cs.toString()) ? cs.toString().trim() : defaultValue;
+    }
+
     public static List<String> buildContentSortOrder(int sortBy) {
         List<String> sortOrder = new ArrayList<>();
         switch (sortBy) {

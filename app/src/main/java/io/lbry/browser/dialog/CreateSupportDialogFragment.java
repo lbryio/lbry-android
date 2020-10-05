@@ -225,9 +225,10 @@ public class CreateSupportDialogFragment extends BottomSheetDialogFragment imple
         if (!isTip) {
             sendButton.setText(R.string.send_revocable_support);
         } else {
-            String amountString = Helper.getValue(inputAmount.getText());
+            String amountString = Helper.getValue(inputAmount.getText(), "0");
             double parsedAmount = Helper.parseDouble(amountString, 0);
-            sendButton.setText(parsedAmount == 0 ? getString(R.string.send_a_tip) : getString(R.string.send_lbc_tip, amountString));
+            String text = getResources().getQuantityString(R.plurals.send_lbc_tip, parsedAmount == 1.0 ? 1 : 2, amountString);
+            sendButton.setText(text);
         }
     }
 

@@ -208,7 +208,7 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>LBRY Credits</item>
         <item>USD</item>
     </string-array>
 
@@ -227,7 +227,7 @@
     <string name="oops_something_went_wrong">Oops! Something went wrong.</string>
     <string name="installation_id_loaded">Loaded Installation ID.</string>
     <string name="known_tags_loaded">Loaded local known and followed tags.</string>
-    <string name="exchange_rate_loaded">Loaded LBC/USD exchange rate.</string>
+    <string name="exchange_rate_loaded">Loaded LBRY Credits/USD exchange rate.</string>
     <string name="user_authenticated">User authenticated.</string>
     <string name="installation_registered">Installation registered.</string>
     <string name="subscriptions_loaded">Loaded subscriptions.</string>
@@ -314,7 +314,7 @@
     <string name="manual_backup">&lt;a href="https://lbry.com/faq/how-to-backup-wallet#android"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href="https://lbry.com/faq/how-to-backup-wallet#sync"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
+    <string name="lbc" translatable="false">Credits</string>
 
     <string name="account_recommended">Account Recommended</string>
     <string name="wallet_account_desc">A lbry.tv account allows you to earn rewards, backup your wallet, and keep everything in sync.</string>
@@ -338,7 +338,7 @@
     <string name="confirm_unlock_tips">Are you sure you want to unlock all your tips?</string>
     <string name="min_spend_required">Please enter an amount more than 0.0001 credits.</string>
 
-    <string name="buy_lbc">Buy LBC</string>
+    <string name="buy_lbc">Buy LBRY Credits</string>
     <string name="hash_not_supported">Your device does not support the minimum requirements for securing your purchase request.</string>
     <string name="receive_address_not_set">You do not have a wallet address set. Please generate a new address and try again.</string>
 
@@ -382,7 +382,10 @@
     <string name="channel_to_show_support_as">Channel to show support as</string>
     <string name="make_this_a_tip">Make this a tip</string>
     <string name="send_revocable_support">Send Revocable Support</string>
-    <string name="send_lbc_tip">Send a %1$s LBC Tip</string>
+    <plurals name="send_lbc_tip">
+        <item quantity="one">Tip %1$s Credit</item>
+        <item quantity="other">Tip %1$s Credits</item>
+    </plurals>
     <string name="send_tip_info_content">This will appear as a tip for %1$s, which will boost its ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">This will appear as a tip for %1$s, which will boost the channel\'s ability to be discovered while active. &lt;a href="https://lbry.com/faq/tipping"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Cancel</string>
@@ -477,7 +480,7 @@
     <string name="title">Title</string>
     <string name="at">\@</string>
     <string name="deposit">Deposit</string>
-    <string name="deposit_remains_yours">This LBC remains yours. It is a deposit to reserve the name and can be undone at any time.</string>
+    <string name="deposit_remains_yours">The credits remains yours. It is a deposit to reserve the name and can be undone at any time.</string>
     <string name="storage_permission_rationale_download">LBRY requires access to download content to your device.</string>
     <string name="storage_permission_rationale_images">LBRY requires access to load images from your device storage.</string>
     <string name="select_thumbnail">Select thumbnail</string>
@@ -511,7 +514,7 @@
     </plurals>
 
     <!-- Rewards -->
-    <string name="lbry_credits_allow">LBRY credits allow you to publish or purchase content.</string>
+    <string name="lbry_credits_allow">LBRY Credits allow you to publish or purchase content.</string>
     <string name="free_credits_worth">You can obtain free credits worth $%1$s after you provide an email address.</string>
     <string name="rewards_learn_more">&lt;a href="https://lbry.com/faq/earn-credits"&gt;Learn more&lt;/a&gt;.</string>
     <string name="get_started">Get started</string>
