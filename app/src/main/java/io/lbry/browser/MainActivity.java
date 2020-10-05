@@ -98,6 +98,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -366,6 +367,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private MediaSessionCompat mediaSession;
     private boolean receivedStopService;
     private ActionBarDrawerToggle toggle;
+    private SwipeRefreshLayout notificationsSwipeContainer;
     private SyncSetTask syncSetTask = null;
     private List<WalletSync> pendingSyncSetQueue;
     @Getter
@@ -578,6 +580,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 } else {
                     hideNotifications();
                 }
+            }
+        });
+
+        notificationsSwipeContainer = findViewById(R.id.notifications_list_swipe_container);
+        notificationsSwipeContainer.setColorSchemeResources(R.color.nextLbryGreen);
+        notificationsSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                notificationsSwipeContainer.setRefreshing(true);
+                loadRemoteNotifications(false);
             }
         });
 
@@ -3390,6 +3402,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 if (markRead && findViewById(R.id.notifications_container).getVisibility() == View.VISIBLE) {
                     markNotificationsRead();
                 }
+
+                if (notificationsSwipeContainer != null) {
+                    notificationsSwipeContainer.setRefreshing(false);
+                }
             }
 
             @Override
@@ -3397,6 +3413,9 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 // pass
                 Log.e(TAG, "error loading remote notifications", exception);
                 loadLocalNotifications();
+                if (notificationsSwipeContainer != null) {
+                    notificationsSwipeContainer.setRefreshing(false);
+                }
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
