@@ -382,6 +382,7 @@
     <string name="channel_to_show_support_as">Channel to show support as</string>
     <string name="make_this_a_tip">Make this a tip</string>
     <string name="send_revocable_support">Send Revocable Support</string>
+    <string name="send_lbc_tip">Tip %1$s</string>
     <plurals name="send_lbc_tip">
         <item quantity="one">Tip %1$s Credit</item>
         <item quantity="other">Tip %1$s Credits</item>
@@ -657,4 +658,7 @@
     <string name="fa_comment_alt" translatable="false">&#xf27a;</string>
     <string name="fa_broadcast_tower" translatable="false">&#xf519;</string>
     <string name="fa_random" translatable="false">&#xf074;</string>
+
+    <string name="fa_bell" translatable="false">&#xf0f3;</string>
+    <string name="fa_bell_slash" translatable="false">&#xf1f6;</string>
 </resources>
