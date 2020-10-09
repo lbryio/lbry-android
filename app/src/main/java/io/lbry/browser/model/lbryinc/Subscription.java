@@ -11,17 +11,21 @@ public class Subscription {
     @Getter
     @Setter
     private String url;
+    @Getter
+    @Setter
+    private boolean isNotificationsDisabled;
 
     public Subscription() {
 
     }
-    public Subscription(String channelName, String url) {
+    public Subscription(String channelName, String url, boolean isNotificationsDisabled) {
         this.channelName = channelName;
         this.url = url;
+        this.isNotificationsDisabled = isNotificationsDisabled;
     }
 
     public static Subscription fromClaim(Claim claim) {
-        return new Subscription(claim.getName(), claim.getPermanentUrl());
+        return new Subscription(claim.getName(), claim.getPermanentUrl(), false);
     }
     public String toString() {
         return url;

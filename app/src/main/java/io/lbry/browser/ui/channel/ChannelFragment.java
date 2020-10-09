@@ -80,6 +80,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private View buttonShare;
     private View buttonTip;
     private View buttonFollowUnfollow;
+    private View buttonBell;
+    private SolidIconView iconBell;
     private int subCount;
     private OutlineIconView iconFollow;
     private SolidIconView iconUnfollow;
@@ -112,6 +114,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         buttonFollowUnfollow = root.findViewById(R.id.channel_view_follow_unfollow);
         iconFollow = root.findViewById(R.id.channel_view_icon_follow);
         iconUnfollow = root.findViewById(R.id.channel_view_icon_unfollow);
+        buttonBell = root.findViewById(R.id.channel_view_subscribe_notify);
+        iconBell = root.findViewById(R.id.channel_view_icon_bell);
 
         tabPager = root.findViewById(R.id.channel_view_pager);
         tabLayout = root.findViewById(R.id.channel_view_tabs);
@@ -202,6 +206,39 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             }
         });
 
+        buttonBell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (claim != null) {
+                    boolean isNotificationsDisabled = Lbryio.isNotificationsDisabled(claim);
+                    final Subscription subscription = Subscription.fromClaim(claim);
+                    subscription.setNotificationsDisabled(!isNotificationsDisabled);
+                    view.setEnabled(false);
+                    Context context = getContext();
+                    new ChannelSubscribeTask(context, claim.getClaimId(), subscription, false, new ChannelSubscribeTask.ChannelSubscribeHandler() {
+                        @Override
+                        public void onSuccess() {
+                            view.setEnabled(true);
+                            Lbryio.updateSubscriptionNotificationsDisabled(subscription);
+
+                            Context context = getContext();
+                            if (context instanceof MainActivity) {
+                                ((MainActivity) context).showMessage(subscription.isNotificationsDisabled() ?
+                                        R.string.receive_no_notifications : R.string.receive_all_notifications);
+                            }
+
+                            checkIsFollowing();
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+                            view.setEnabled(true);
+                        }
+                    }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+            }
+        });
+
         buttonFollowUnfollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -213,7 +250,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                     subscribing = true;
                     boolean isFollowing = Lbryio.isFollowing(claim);
                     Subscription subscription = Subscription.fromClaim(claim);
-                    buttonFollowUnfollow.setEnabled(false);
+                    view.setEnabled(false);
                     new ChannelSubscribeTask(getContext(), claim.getClaimId(), subscription, isFollowing, new ChannelSubscribeTask.ChannelSubscribeHandler() {
                         @Override
                         public void onSuccess() {
@@ -280,8 +317,14 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private void checkIsFollowing() {
         if (claim != null) {
             boolean isFollowing = Lbryio.isFollowing(claim);
+            boolean notificationsDisabled = Lbryio.isNotificationsDisabled(claim);
             Helper.setViewVisibility(iconFollow, !isFollowing ? View.VISIBLE : View.GONE);
             Helper.setViewVisibility(iconUnfollow, isFollowing ? View.VISIBLE : View.GONE);
+            Helper.setViewVisibility(buttonBell, isFollowing ? View.VISIBLE : View.GONE);
+
+            if (iconBell != null) {
+                iconBell.setText(notificationsDisabled ? R.string.fa_bell : R.string.fa_bell_slash);
+            }
         }
     }
 

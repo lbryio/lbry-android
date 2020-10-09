@@ -117,6 +117,8 @@
     <string name="content">Content</string>
     <string name="website">Website</string>
     <string name="reposted">reposted</string>
+    <string name="receive_all_notifications">You will receive all notifications</string>
+    <string name="receive_no_notifications">You will not receive notifications for this channel</string>
     <plurals name="follower_count">
         <item quantity="one">%1$s follower</item>
         <item quantity="other">%1$s followers</item>

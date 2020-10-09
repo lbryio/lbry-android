@@ -333,6 +333,15 @@ public final class Lbryio {
         }
     }
 
+    public static void updateSubscriptionNotificationsDisabled(Subscription subscription) {
+        synchronized (lock) {
+            int index = subscriptions.indexOf(subscription);
+            if (index > -1) {
+                subscriptions.get(index).setNotificationsDisabled(subscription.isNotificationsDisabled());
+            }
+        }
+    }
+
     public static void addSubscription(Subscription subscription) {
         synchronized (lock) {
             if (!subscriptions.contains(subscription)) {
@@ -363,6 +372,15 @@ public final class Lbryio {
     }
     public static boolean isFollowing(Claim claim) {
         return subscriptions.contains(Subscription.fromClaim(claim));
+    }
+    public static boolean isNotificationsDisabled(Claim claim) {
+        Subscription sub = Subscription.fromClaim(claim);
+        int index = subscriptions.indexOf(sub);
+        if (index > -1) {
+            Subscription actual = subscriptions.get(subscriptions.indexOf(sub));
+            return actual.isNotificationsDisabled();
+        }
+        return false;
     }
 
     public static void updateRewardsLists(List<Reward> rewards) {

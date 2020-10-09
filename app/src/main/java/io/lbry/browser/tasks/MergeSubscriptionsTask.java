@@ -76,13 +76,15 @@ public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                 // check for any remote subs that may have been removed, and unsubscribe from them
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject item = array.getJSONObject(i);
+                    // TODO: Refactor by creating static Subscription.fromJSON method
                     String claimId = item.getString("claim_id");
                     String channelName = item.getString("channel_name");
+                    boolean isNotificationsDisabled  = item.getBoolean("is_notifications_disabled");
 
                     LbryUri url = new LbryUri();
                     url.setChannelName(channelName);
                     url.setClaimId(claimId);
-                    Subscription subscription = new Subscription(channelName, url.toString());
+                    Subscription subscription = new Subscription(channelName, url.toString(), isNotificationsDisabled);
                     remoteSubs.add(subscription);
                 }
             }

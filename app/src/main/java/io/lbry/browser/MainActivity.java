@@ -2713,11 +2713,12 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                                 JSONObject item = array.getJSONObject(i);
                                 String claimId = item.getString("claim_id");
                                 String channelName = item.getString("channel_name");
+                                boolean isNotificationsDisabled = item.getBoolean("is_notifications_disabled");
 
                                 LbryUri url = new LbryUri();
                                 url.setChannelName(channelName);
                                 url.setClaimId(claimId);
-                                subscriptions.add(new Subscription(channelName, url.toString()));
+                                subscriptions.add(new Subscription(channelName, url.toString(), isNotificationsDisabled));
                                 subUrls.add(url.toString());
                             }
                             Lbryio.subscriptions = subscriptions;
