@@ -16,8 +16,8 @@ android {
         applicationId "io.lbry.browser"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1606
-        versionName "0.16.6"
+        versionCode 1607
+        versionName "0.16.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
