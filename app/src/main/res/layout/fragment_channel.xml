@@ -224,8 +224,26 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:text="@string/fa_heart_broken"
+                        android:textColor="@color/foreground"
                         android:textSize="20dp"
                         android:visibility="invisible"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/channel_view_subscribe_notify"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:visibility="gone">
+                    <io.lbry.browser.ui.controls.SolidIconView
+                        android:id="@+id/channel_view_icon_bell"
+                        android:layout_centerInParent="true"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:text="@string/fa_bell_slash"
+                        android:textColor="@color/foreground"
+                        android:textSize="20dp"/>
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>

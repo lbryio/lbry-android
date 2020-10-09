@@ -51,11 +51,11 @@ public class ChannelSubscribeTask extends AsyncTask<Void, Void, Boolean> {
             options.put("claim_id", channelClaimId);
             if (!isUnsubscribing) {
                 options.put("channel_name", subscription.getChannelName());
+                options.put("notifications_disabled", String.valueOf(subscription.isNotificationsDisabled()).toLowerCase());
             }
 
             String action = isUnsubscribing ? "delete" : "new";
-            Lbryio.call("subscription", action, options, context);
-
+            Object response = Lbryio.parseResponse(Lbryio.call("subscription", action, options, context));
             if (!isUnsubscribing) {
                 Lbryio.addSubscription(subscription);
             } else {

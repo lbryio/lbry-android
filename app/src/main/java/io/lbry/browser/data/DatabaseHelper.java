@@ -21,13 +21,13 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.LbryUri;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = "LbryApp.db";
     private static DatabaseHelper instance;
 
     private static final String[] SQL_CREATE_TABLES = {
             // local subscription store
-            "CREATE TABLE subscriptions (url TEXT PRIMARY KEY NOT NULL, channel_name TEXT NOT NULL)",
+            "CREATE TABLE subscriptions (url TEXT PRIMARY KEY NOT NULL, channel_name TEXT NOT NULL, is_notifications_disabled INTEGER DEFAULT 0 NOT NULL)",
             // url entry / suggestion history
             "CREATE TABLE url_history (id INTEGER PRIMARY KEY NOT NULL, value TEXT NOT NULL, url TEXT, type INTEGER NOT NULL, timestamp TEXT NOT NULL)",
             // tags (known and followed)
@@ -105,11 +105,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE shuffle_watched (id INTEGER PRIMARY KEY NOT NULL, claim_id TEXT NOT NULL)",
             "CREATE UNIQUE INDEX idx_shuffle_watched_claim ON shuffle_watched (claim_id)"
     };
+    private static final String[] SQL_V7_V8_UPGRADE = {
+            "AlTER TABLE subscriptions ADD COLUMN is_notifications_disabled INTEGER DEFAULT 0 NOT NULL"
+    };
 
-    private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url) VALUES (?, ?)";
+    private static final String SQL_INSERT_SUBSCRIPTION = "REPLACE INTO subscriptions (channel_name, url, is_notifications_disabled) VALUES (?, ?, ?)";
+    private static final String SQL_UPDATE_SUBSCRIPTION_NOTIFICATION = "UPDATE subscriptions SET is_notification_disabled = ? WHERE url = ?";
     private static final String SQL_CLEAR_SUBSCRIPTIONS = "DELETE FROM subscriptions";
     private static final String SQL_DELETE_SUBSCRIPTION = "DELETE FROM subscriptions WHERE url = ?";
-    private static final String SQL_GET_SUBSCRIPTIONS = "SELECT channel_name, url FROM subscriptions";
+    private static final String SQL_GET_SUBSCRIPTIONS = "SELECT channel_name, url, is_notifications_disabled FROM subscriptions";
 
     private static final String SQL_INSERT_URL_HISTORY = "REPLACE INTO url_history (value, url, type, timestamp) VALUES (?, ?, ?, ?)";
     private static final String SQL_CLEAR_URL_HISTORY = "DELETE FROM url_history";
@@ -185,6 +189,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         if (oldVersion < 7) {
             for (String sql : SQL_V6_V7_UPGRADE) {
+                db.execSQL(sql);
+            }
+        }
+        if (oldVersion < 8) {
+            for (String sql : SQL_V7_V8_UPGRADE) {
                 db.execSQL(sql);
             }
         }
@@ -304,7 +313,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static void createOrUpdateSubscription(Subscription subscription, SQLiteDatabase db) {
-        db.execSQL(SQL_INSERT_SUBSCRIPTION, new Object[] { subscription.getChannelName(), subscription.getUrl() });
+        db.execSQL(SQL_INSERT_SUBSCRIPTION, new Object[] {
+                subscription.getChannelName(),
+                subscription.getUrl(),
+                subscription.isNotificationsDisabled() ? 1 : 0
+        });
+    }
+    public static void setSubscriptionNotificationDisabled(boolean flag, String url, SQLiteDatabase db) {
+        db.execSQL(SQL_UPDATE_SUBSCRIPTION_NOTIFICATION, new Object[] { flag ? 1 : 0, url });
     }
     public static void deleteSubscription(Subscription subscription, SQLiteDatabase db) {
         db.execSQL(SQL_DELETE_SUBSCRIPTION, new Object[] { subscription.getUrl() });
@@ -321,6 +337,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Subscription subscription = new Subscription();
                 subscription.setChannelName(cursor.getString(0));
                 subscription.setUrl(cursor.getString(1));
+                subscription.setNotificationsDisabled(cursor.getInt(2) == 1);
                 subscriptions.add(subscription);
             }
         } finally {

@@ -49,11 +49,12 @@ public class FetchSubscriptionsTask extends AsyncTask<Void, Void, List<Subscript
                     JSONObject item = array.getJSONObject(i);
                     String claimId = item.getString("claim_id");
                     String channelName = item.getString("channel_name");
+                    boolean isNotificationsDisabled = item.getBoolean("is_notifications_disabled");
 
                     LbryUri url = new LbryUri();
                     url.setChannelName(channelName);
                     url.setClaimId(claimId);
-                    Subscription subscription = new Subscription(channelName, url.toString());
+                    Subscription subscription = new Subscription(channelName, url.toString(), isNotificationsDisabled);
                     subscriptions.add(subscription);
                     // Persist the subscription locally if it doesn't exist
                     if (db != null) {

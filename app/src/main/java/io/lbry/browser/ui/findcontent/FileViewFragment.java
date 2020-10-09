@@ -785,6 +785,38 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
+    private View.OnClickListener bellIconListener = new View.OnClickListener()  {
+        @Override
+        public void onClick(View view) {
+            if (claim != null && claim.getSigningChannel() != null) {
+                Claim publisher = claim.getSigningChannel();
+                boolean isNotificationsDisabled = Lbryio.isNotificationsDisabled(publisher);
+                final Subscription subscription = Subscription.fromClaim(publisher);
+                subscription.setNotificationsDisabled(!isNotificationsDisabled);
+                view.setEnabled(false);
+                Context context = getContext();
+                new ChannelSubscribeTask(context, publisher.getClaimId(), subscription, false, new ChannelSubscribeTask.ChannelSubscribeHandler() {
+                    @Override
+                    public void onSuccess() {
+                        view.setEnabled(true);
+                        Lbryio.updateSubscriptionNotificationsDisabled(subscription);
+                        Context context = getContext();
+                        if (context instanceof MainActivity) {
+                            ((MainActivity) context).showMessage(subscription.isNotificationsDisabled() ?
+                                    R.string.receive_no_notifications : R.string.receive_all_notifications);
+                        }
+                        checkIsFollowing();
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        view.setEnabled(true);
+                    }
+                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        }
+    };
+
     private View.OnClickListener followUnfollowListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -1170,8 +1202,10 @@ public class FileViewFragment extends BaseFragment implements
 
         View buttonFollow = root.findViewById(R.id.file_view_icon_follow);
         View buttonUnfollow = root.findViewById(R.id.file_view_icon_unfollow);
+        View buttonBell = root.findViewById(R.id.file_view_icon_bell);
         buttonFollow.setOnClickListener(followUnfollowListener);
         buttonUnfollow.setOnClickListener(followUnfollowListener);
+        buttonBell.setOnClickListener(bellIconListener);
 
         commentChannelSpinnerAdapter = new InlineChannelSpinnerAdapter(getContext(), R.layout.spinner_item_channel, new ArrayList<>());
         commentChannelSpinnerAdapter.addPlaceholder(false);
@@ -2524,13 +2558,18 @@ public class FileViewFragment extends BaseFragment implements
     private void checkIsFollowing() {
         if (claim != null && claim.getSigningChannel() != null) {
             boolean isFollowing = Lbryio.isFollowing(claim.getSigningChannel());
+            boolean notificationsDisabled = Lbryio.isNotificationsDisabled(claim.getSigningChannel());
             Context context = getContext();
             View root = getView();
             if (context != null && root != null) {
                 OutlineIconView iconFollow = root.findViewById(R.id.file_view_icon_follow);
                 SolidIconView iconUnfollow = root.findViewById(R.id.file_view_icon_unfollow);
-                Helper.setViewVisibility(iconFollow, !isFollowing ? View.VISIBLE: View.INVISIBLE);
-                Helper.setViewVisibility(iconUnfollow, isFollowing ? View.VISIBLE : View.INVISIBLE);
+                SolidIconView iconBell = root.findViewById(R.id.file_view_icon_bell);
+                Helper.setViewVisibility(iconFollow, !isFollowing ? View.VISIBLE: View.GONE);
+                Helper.setViewVisibility(iconUnfollow, isFollowing ? View.VISIBLE : View.GONE);
+                Helper.setViewVisibility(iconBell, isFollowing ? View.VISIBLE : View.GONE);
+
+                iconBell.setText(notificationsDisabled ? R.string.fa_bell : R.string.fa_bell_slash);
             }
         }
     }

@@ -503,7 +503,6 @@
                     android:id="@+id/file_view_publisher_area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <LinearLayout
                         android:id="@+id/file_view_publisher_info_area"
                         android:background="?attr/selectableItemBackground"
@@ -513,7 +512,7 @@
                         android:paddingTop="12dp"
                         android:paddingStart="16dp"
                         android:paddingBottom="12dp"
-                        android:layout_toStartOf="@id/file_view_icon_follow">
+                        android:layout_toStartOf="@id/file_view_publisher_area_actions">
                         <RelativeLayout
                             android:id="@+id/file_view_publisher_avatar"
                             android:layout_width="50dp"
@@ -570,33 +569,50 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <io.lbry.browser.ui.controls.OutlineIconView
-                        android:id="@+id/file_view_icon_follow"
-                        android:clickable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:layout_alignParentEnd="true"
+                    <LinearLayout
+                        android:id="@+id/file_view_publisher_area_actions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
                         android:layout_centerVertical="true"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:text="@string/fa_heart"
-                        android:textColor="@color/red"
-                        android:textSize="20dp" />
+                        android:layout_alignParentEnd="true">
+                        <io.lbry.browser.ui.controls.OutlineIconView
+                            android:id="@+id/file_view_icon_follow"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:text="@string/fa_heart"
+                            android:textColor="@color/red"
+                            android:textSize="20dp" />
 
-                    <io.lbry.browser.ui.controls.SolidIconView
-                        android:id="@+id/file_view_icon_unfollow"
-                        android:clickable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:text="@string/fa_heart_broken"
-                        android:textSize="20dp"
-                        android:visibility="invisible" />
+                        <io.lbry.browser.ui.controls.SolidIconView
+                            android:id="@+id/file_view_icon_unfollow"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:text="@string/fa_heart_broken"
+                            android:textColor="@color/foreground"
+                            android:textSize="20dp"
+                            android:visibility="gone" />
+
+                        <io.lbry.browser.ui.controls.SolidIconView
+                            android:id="@+id/file_view_icon_bell"
+                            android:clickable="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:text="@string/fa_bell_slash"
+                            android:textColor="@color/foreground"
+                            android:textSize="20dp"
+                            android:visibility="gone"/>
+                    </LinearLayout>
                 </RelativeLayout>
 
                 <View
