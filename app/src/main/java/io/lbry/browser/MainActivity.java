@@ -11,6 +11,7 @@ import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -36,6 +37,7 @@ import android.text.style.TypefaceSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.WindowManager;
@@ -75,7 +77,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.view.ActionMode;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -143,6 +147,7 @@ import io.lbry.browser.listener.FilePickerListener;
 import io.lbry.browser.listener.PIPModeListener;
 import io.lbry.browser.listener.ScreenOrientationListener;
 import io.lbry.browser.listener.SdkStatusListener;
+import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.listener.StoragePermissionListener;
 import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
@@ -166,6 +171,7 @@ import io.lbry.browser.tasks.lbryinc.FetchRewardsTask;
 import io.lbry.browser.tasks.LighthouseAutoCompleteTask;
 import io.lbry.browser.tasks.MergeSubscriptionsTask;
 import io.lbry.browser.tasks.claim.ResolveTask;
+import io.lbry.browser.tasks.lbryinc.NotificationDeleteTask;
 import io.lbry.browser.tasks.lbryinc.NotificationListTask;
 import io.lbry.browser.tasks.lbryinc.NotificationUpdateTask;
 import io.lbry.browser.tasks.localdata.FetchRecentUrlHistoryTask;
@@ -210,7 +216,9 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity implements SdkStatusListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements SdkStatusListener,
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        ActionMode.Callback, SelectionModeListener {
     private static final String CHANNEL_ID_PLAYBACK = "io.lbry.browser.LBRY_PLAYBACK_CHANNEL";
     private static final int PLAYBACK_NOTIFICATION_ID = 3;
     private static final String SPECIAL_URL_PREFIX = "lbry://?";
@@ -245,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean startingPermissionRequest = false;
     public static boolean startingSignInFlowActivity = false;
 
+    private ActionMode actionMode;
     private BillingClient billingClient;
     @Getter
     private boolean enteringPIPMode = false;
@@ -1886,6 +1895,103 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
     }
 
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        this.actionMode = mode;
+        if (isDarkMode()) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        }
+
+        actionMode.getMenuInflater().inflate(R.menu.menu_notification, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return true;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        if (R.id.action_delete == item.getItemId()) {
+            if (notificationListAdapter != null && notificationListAdapter.getSelectedCount() > 0) {
+
+                final List<LbryNotification> selectedNotifications = new ArrayList<>(notificationListAdapter.getSelectedItems());
+                String message = getResources().getQuantityString(R.plurals.confirm_delete_notifications, selectedNotifications.size());
+                AlertDialog.Builder builder = new AlertDialog.Builder(this).
+                        setTitle(R.string.delete_selection).
+                        setMessage(message)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                handleDeleteSelectedNotifications(selectedNotifications);
+                            }
+                        }).setNegativeButton(R.string.no, null);
+                builder.show();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        if (notificationListAdapter != null) {
+            notificationListAdapter.clearSelectedItems();
+            notificationListAdapter.setInSelectionMode(false);
+            notificationListAdapter.notifyDataSetChanged();
+        }
+        if (isDarkMode()) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        this.actionMode = null;
+    }
+
+    @Override
+    public void onEnterSelectionMode() {
+        startSupportActionMode(this);
+    }
+
+    @Override
+    public void onExitSelectionMode() {
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+    }
+
+    @Override
+    public void onItemSelectionToggled() {
+        if (actionMode != null) {
+            actionMode.setTitle(notificationListAdapter != null ? String.valueOf(notificationListAdapter.getSelectedCount()) : "");
+            actionMode.invalidate();
+        }
+    }
+
+    private void handleDeleteSelectedNotifications(List<LbryNotification> notifications) {
+        List<Long> remoteIds = new ArrayList<>();
+        for (LbryNotification notification : notifications) {
+            remoteIds.add(notification.getRemoteId());
+        }
+        (new AsyncTask<Void, Void, Void>() {
+            protected Void doInBackground(Void... params) {
+                try {
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    DatabaseHelper.deleteNotifications(notifications, db);
+                } catch (Exception ex) {
+                    // pass
+                }
+                return null;
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new NotificationDeleteTask(remoteIds).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (notificationListAdapter != null) {
+            notificationListAdapter.removeNotifications(notifications);
+        }
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+    }
+
     private class PlayerNotificationDescriptionAdapter implements PlayerNotificationManager.MediaDescriptionAdapter {
 
         @Override
@@ -3445,6 +3551,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                 if (notificationListAdapter == null) {
                     notificationListAdapter = new NotificationListAdapter(notifications, MainActivity.this);
+                    notificationListAdapter.setSelectionModeListener(MainActivity.this);
                     ((RecyclerView) findViewById(R.id.notifications_list)).setAdapter(notificationListAdapter);
                 } else {
                     notificationListAdapter.addNotifications(notifications);

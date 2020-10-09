@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.math.BigDecimal;
+import java.sql.SQLInput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -371,6 +372,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Helper.closeCursor(cursor);
         }
         return notifications;
+    }
+    public static void deleteNotifications(List<LbryNotification> notifications, SQLiteDatabase db) {
+        StringBuilder sb = new StringBuilder("DELETE FROM notifications WHERE remote_id IN (");
+        List<Object> remoteIds = new ArrayList<>();
+        String delim = "";
+        for (int i = 0; i < notifications.size(); i++) {
+            remoteIds.add(String.valueOf(notifications.get(i).getRemoteId()));
+            sb.append(delim).append("?");
+            delim = ",";
+        }
+        sb.append(")");
+
+        String sql = sb.toString();
+        db.execSQL(sql, remoteIds.toArray());
     }
     public static int getUnreadNotificationsCount(SQLiteDatabase db) {
         int count = 0;

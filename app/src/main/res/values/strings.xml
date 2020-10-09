@@ -628,6 +628,10 @@
 
     <!-- Notifications -->
     <string name="no_notifications">It\'s quiet here! New notifications will be displayed when you receive them.</string>
+    <plurals name="confirm_delete_notifications">
+        <item quantity="one">Are you sure you want to remove the selected notification?</item>
+        <item quantity="other">Are you sure you want to remove the selected notifications?</item>
+    </plurals>
 
     <!-- Font Awesome -->
     <string name="fa_gift" translatable="false">&#xf06b;</string>

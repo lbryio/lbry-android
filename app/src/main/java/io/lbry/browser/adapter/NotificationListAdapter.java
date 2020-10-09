@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import io.lbry.browser.R;
+import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.lbryinc.LbryNotification;
 import io.lbry.browser.ui.controls.SolidIconView;
@@ -43,15 +45,19 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     private Context context;
     private List<LbryNotification> items;
+    private List<LbryNotification> selectedItems;
     @Setter
     private NotificationClickListener clickListener;
     @Getter
     @Setter
-    private int customizeMode;
+    private boolean inSelectionMode;
+    @Setter
+    private SelectionModeListener selectionModeListener;
 
     public NotificationListAdapter(List<LbryNotification> notifications, Context context) {
         this.context = context;
         this.items = new ArrayList<>(notifications);
+        this.selectedItems = new ArrayList<>();
         Collections.sort(items, Collections.reverseOrder(new LbryNotification()));
     }
 
@@ -62,6 +68,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         protected TextView timeView;
         protected SolidIconView iconView;
         protected ImageView thumbnailView;
+        protected View selectedOverlayView;
         public ViewHolder(View v) {
             super(v);
             layoutView = v.findViewById(R.id.notification_layout);
@@ -70,11 +77,24 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             timeView = v.findViewById(R.id.notification_time);
             iconView = v.findViewById(R.id.notification_icon);
             thumbnailView = v.findViewById(R.id.notification_author_thumbnail);
+            selectedOverlayView = v.findViewById(R.id.notification_selected_overlay);
         }
     }
 
     public int getItemCount() {
         return items != null ? items.size() : 0;
+    }
+    public List<LbryNotification> getSelectedItems() {
+        return this.selectedItems;
+    }
+    public int getSelectedCount() {
+        return selectedItems != null ? selectedItems.size() : 0;
+    }
+    public void clearSelectedItems() {
+        this.selectedItems.clear();
+    }
+    public boolean isNotificationSelected(LbryNotification notification) {
+        return selectedItems.contains(notification);
     }
 
     public void insertNotification(LbryNotification notification, int index) {
@@ -87,6 +107,12 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     public void addNotification(LbryNotification notification) {
         if (!items.contains(notification)) {
             items.add(notification);
+        }
+        notifyDataSetChanged();
+    }
+    public void removeNotifications(List<LbryNotification> notifications) {
+        for (LbryNotification notification : notifications) {
+            items.remove(notification);
         }
         notifyDataSetChanged();
     }
@@ -158,9 +184,8 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     @Override
     public void onBindViewHolder(NotificationListAdapter.ViewHolder vh, int position) {
         LbryNotification notification = items.get(position);
-
-
         vh.layoutView.setBackgroundColor(ContextCompat.getColor(context, notification.isSeen() ? android.R.color.transparent : R.color.nextLbryGreenSemiTransparent));
+        vh.selectedOverlayView.setVisibility(isNotificationSelected(notification) ? View.VISIBLE : View.GONE);
 
         vh.titleView.setVisibility(!Helper.isNullOrEmpty(notification.getTitle()) ? View.VISIBLE : View.GONE);
         vh.titleView.setText(notification.getTitle());
@@ -181,11 +206,49 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (clickListener != null) {
-                    clickListener.onNotificationClicked(notification);
+                if (inSelectionMode) {
+                    toggleSelectedNotification(notification);
+                } else {
+                    if (clickListener != null) {
+                        clickListener.onNotificationClicked(notification);
+                    }
                 }
             }
         });
+        vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (!inSelectionMode) {
+                    inSelectionMode = true;
+                    if (selectionModeListener != null) {
+                        selectionModeListener.onEnterSelectionMode();
+                    }
+                }
+                toggleSelectedNotification(notification);
+                return true;
+            }
+        });
+    }
+
+    private void toggleSelectedNotification(LbryNotification notification) {
+        if (selectedItems.contains(notification)) {
+            selectedItems.remove(notification);
+        } else {
+            selectedItems.add(notification);
+        }
+
+        if (selectionModeListener != null) {
+            selectionModeListener.onItemSelectionToggled();
+        }
+
+        if (selectedItems.size() == 0) {
+            inSelectionMode = false;
+            if (selectionModeListener != null) {
+                selectionModeListener.onExitSelectionMode();
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     private long getLocalNotificationTime(LbryNotification notification) {
