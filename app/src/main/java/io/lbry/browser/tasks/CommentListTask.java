@@ -52,7 +52,6 @@ public class CommentListTask extends AsyncTask<Void, Void, List<Comment>> {
             options.put("visible", true);
 
             JSONObject result = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_COMMENT_LIST, options);
-            android.util.Log.d("LbryMain", result.toString(2));
             JSONArray items = result.getJSONArray("items");
 
             List<Comment> children = new ArrayList<>();
@@ -78,7 +77,6 @@ public class CommentListTask extends AsyncTask<Void, Void, List<Comment>> {
             }
         } catch (Exception ex) {
             error = ex;
-            android.util.Log.d("LbryMain", ex.toString(), ex);
         }
         return comments;
     }
