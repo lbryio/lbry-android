@@ -316,7 +316,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/publish_form_currency_spinner"
                                 android:entries="@array/publish_currencies"
-                                android:layout_width="110dp"
+                                android:layout_width="160dp"
                                 android:layout_height="wrap_content"
                                 android:layout_toEndOf="@+id/publish_form_price_layout"
                                 android:layout_marginStart="4dp"
