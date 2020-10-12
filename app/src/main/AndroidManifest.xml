@@ -68,10 +68,18 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="https" android:host="open.lbry.com"/>
-                <data android:scheme="https" android:host="lbry.tv"/>
-                <data android:scheme="https" android:host="lbry.lat"/>
-                <data android:scheme="https" android:host="lbry.fr"/>
-                <data android:scheme="https" android:host="lbry.in"/>
+                <data android:scheme="https" android:host="lbry.tv" android:pathPattern="/..*/*" />
+                <data android:scheme="https" android:host="lbry.tv" android:pathPattern="/.*:.*" />
+                <data android:scheme="https" android:host="lbry.tv" android:pathPattern="/.*#.*" />
+                <data android:scheme="https" android:host="lbry.lat" android:pathPattern="/..*/*" />
+                <data android:scheme="https" android:host="lbry.lat" android:pathPattern="/.*:.*" />
+                <data android:scheme="https" android:host="lbry.lat" android:pathPattern="/.*#.*" />
+                <data android:scheme="https" android:host="lbry.fr" android:pathPattern="/..*/*" />
+                <data android:scheme="https" android:host="lbry.fr" android:pathPattern="/.*:.*" />
+                <data android:scheme="https" android:host="lbry.fr" android:pathPattern="/.*#.*" />
+                <data android:scheme="https" android:host="lbry.in" android:pathPattern="/..*/*" />
+                <data android:scheme="https" android:host="lbry.in" android:pathPattern="/.*:.*" />
+                <data android:scheme="https" android:host="lbry.in" android:pathPattern="/.*#.*" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
