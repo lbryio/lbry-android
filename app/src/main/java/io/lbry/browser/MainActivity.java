@@ -92,6 +92,7 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -1032,6 +1033,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         findViewById(R.id.app_bar_main_container).setFitsSystemWindows(true);
         hideActionBar();
+        dismissActiveDialogs();
 
         for (PIPModeListener listener : pipModeListeners) {
             listener.onEnterPIPMode();
@@ -1044,6 +1046,15 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         pipPlayerContainer.setVisibility(View.VISIBLE);
         playerReassigned = true;
     }
+
+    private void dismissActiveDialogs() {
+        for( Fragment fragment: getSupportFragmentManager().getFragments() ){
+            if (fragment instanceof DialogFragment){
+                ((DialogFragment) fragment).dismiss();
+            }
+        }
+    }
+
     private void renderFullMode() {
         if (!inFullscreenMode) {
             showActionBar();
