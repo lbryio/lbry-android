@@ -428,9 +428,9 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         Helper.setViewVisibility(vh.loadingImagePlaceholder, item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
         Helper.setViewVisibility(vh.loadingTextPlaceholder1, item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
         Helper.setViewVisibility(vh.loadingTextPlaceholder2, item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
-        Helper.setViewVisibility(vh.titleView, !item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
+        Helper.setViewVisibility(vh.titleView, c!item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
         Helper.setViewVisibility(vh.publisherView, !item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
-        Helper.setViewVisibility(vh.publishTimeView, !item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
+        Helper.setViewVisibility(vh.publishTimeView, !item.isLoadingPlaceholder() && !isPending ? View.VISIBLE : View.GONE);
 
         if (type == VIEW_TYPE_FEATURED && item.isUnresolved()) {
             vh.durationView.setVisibility(View.GONE);
