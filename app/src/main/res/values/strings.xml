@@ -316,7 +316,7 @@
     <string name="manual_backup">&lt;a href="https://lbry.com/faq/how-to-backup-wallet#android"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href="https://lbry.com/faq/how-to-backup-wallet#sync"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc" translatable="false">Credits</string>
+    <string name="lbc">Credits</string>
 
     <string name="account_recommended">Account Recommended</string>
     <string name="wallet_account_desc">A lbry.tv account allows you to earn rewards, backup your wallet, and keep everything in sync.</string>
