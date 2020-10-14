@@ -38,6 +38,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_above="@id/wallet_balance_usd_value">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_credits" />
                 <TextView
                     android:id="@+id/wallet_balance_value"
                     android:layout_width="wrap_content"
@@ -48,15 +54,6 @@
                     android:textSize="36sp"
                     android:textFontWeight="300"
                     />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/lbc"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textFontWeight="300" />
             </LinearLayout>
             <TextView
                 android:id="@+id/wallet_balance_usd_value"
@@ -145,6 +142,12 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_credits"
+                            android:layout_marginEnd="4dp" />
                         <TextView
                             android:id="@+id/wallet_balance_tips"
                             android:layout_width="wrap_content"
@@ -152,15 +155,6 @@
                             android:fontFamily="@font/inter"
                             android:text="0"
                             android:textSize="24sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:fontFamily="@font/inter"
-                            android:text="@string/lbc"
-                            android:textAllCaps="true"
-                            android:textSize="10sp"
-                            android:textFontWeight="300"  />
                     </LinearLayout>
 
                     <TextView
@@ -248,6 +242,12 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_credits"
+                            android:layout_marginEnd="4dp" />
                         <TextView
                             android:id="@+id/wallet_balance_staked_publishes"
                             android:layout_width="wrap_content"
@@ -255,15 +255,6 @@
                             android:fontFamily="@font/inter"
                             android:text="0"
                             android:textSize="24sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:fontFamily="@font/inter"
-                            android:text="@string/lbc"
-                            android:textAllCaps="true"
-                            android:textSize="10sp"
-                            android:textFontWeight="300"  />
                     </LinearLayout>
 
                     <TextView
@@ -278,6 +269,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp">
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_credits"
+                            android:layout_marginEnd="4dp" />
                         <TextView
                             android:id="@+id/wallet_balance_staked_supports"
                             android:layout_width="wrap_content"
@@ -285,15 +282,6 @@
                             android:fontFamily="@font/inter"
                             android:text="0"
                             android:textSize="24sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:fontFamily="@font/inter"
-                            android:text="@string/lbc"
-                            android:textAllCaps="true"
-                            android:textSize="10sp"
-                            android:textFontWeight="300"  />
                     </LinearLayout>
 
                     <TextView
