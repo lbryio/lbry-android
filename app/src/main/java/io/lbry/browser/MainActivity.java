@@ -1033,6 +1033,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         findViewById(R.id.app_bar_main_container).setFitsSystemWindows(true);
         hideActionBar();
+        hideNotifications();
         dismissActiveDialogs();
 
         for (PIPModeListener listener : pipModeListeners) {
