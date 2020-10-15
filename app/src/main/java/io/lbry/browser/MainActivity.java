@@ -1032,6 +1032,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.global_now_playing_card).setVisibility(View.GONE);
         //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         findViewById(R.id.app_bar_main_container).setFitsSystemWindows(true);
+        hideNotifications();
         hideActionBar();
         dismissActiveDialogs();
 
