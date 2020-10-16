@@ -474,6 +474,7 @@
     <string name="channel_deleted">The channel was successfully deleted.</string>
     <string name="channel_failed_delete">The channel could not be deleted at this time. Please try again later.</string>
     <string name="description">Description</string>
+    <string name="follow">Follow</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="show_optional_fields">Show optional fields</string>

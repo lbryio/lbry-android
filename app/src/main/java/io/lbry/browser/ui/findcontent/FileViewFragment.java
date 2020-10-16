@@ -143,7 +143,6 @@ import io.lbry.browser.tasks.lbryinc.ClaimRewardTask;
 import io.lbry.browser.tasks.lbryinc.FetchStatCountTask;
 import io.lbry.browser.tasks.lbryinc.LogFileViewTask;
 import io.lbry.browser.ui.BaseFragment;
-import io.lbry.browser.ui.controls.OutlineIconView;
 import io.lbry.browser.ui.controls.SolidIconView;
 import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.utils.Helper;
@@ -2562,7 +2561,7 @@ public class FileViewFragment extends BaseFragment implements
             Context context = getContext();
             View root = getView();
             if (context != null && root != null) {
-                OutlineIconView iconFollow = root.findViewById(R.id.file_view_icon_follow);
+                View iconFollow = root.findViewById(R.id.file_view_icon_follow);
                 SolidIconView iconUnfollow = root.findViewById(R.id.file_view_icon_unfollow);
                 SolidIconView iconBell = root.findViewById(R.id.file_view_icon_bell);
                 Helper.setViewVisibility(iconFollow, !isFollowing ? View.VISIBLE: View.GONE);

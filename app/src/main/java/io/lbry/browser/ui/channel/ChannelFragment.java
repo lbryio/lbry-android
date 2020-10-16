@@ -83,6 +83,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private View buttonBell;
     private SolidIconView iconBell;
     private int subCount;
+    private TextView textFollow;
     private OutlineIconView iconFollow;
     private SolidIconView iconUnfollow;
     private View layoutNothingAtLocation;
@@ -112,6 +113,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         buttonShare = root.findViewById(R.id.channel_view_share);
         buttonTip = root.findViewById(R.id.channel_view_tip);
         buttonFollowUnfollow = root.findViewById(R.id.channel_view_follow_unfollow);
+        textFollow = root.findViewById(R.id.channel_view_text_follow);
         iconFollow = root.findViewById(R.id.channel_view_icon_follow);
         iconUnfollow = root.findViewById(R.id.channel_view_icon_unfollow);
         buttonBell = root.findViewById(R.id.channel_view_subscribe_notify);
@@ -319,6 +321,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             boolean isFollowing = Lbryio.isFollowing(claim);
             boolean notificationsDisabled = Lbryio.isNotificationsDisabled(claim);
             Helper.setViewVisibility(iconFollow, !isFollowing ? View.VISIBLE : View.GONE);
+            Helper.setViewVisibility(textFollow, !isFollowing ? View.VISIBLE : View.GONE);
             Helper.setViewVisibility(iconUnfollow, isFollowing ? View.VISIBLE : View.GONE);
             Helper.setViewVisibility(buttonBell, isFollowing ? View.VISIBLE : View.GONE);
 

@@ -576,17 +576,35 @@
                         android:orientation="horizontal"
                         android:layout_centerVertical="true"
                         android:layout_alignParentEnd="true">
-                        <io.lbry.browser.ui.controls.OutlineIconView
+                        <LinearLayout
                             android:id="@+id/file_view_icon_follow"
-                            android:clickable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:text="@string/fa_heart"
-                            android:textColor="@color/red"
-                            android:textSize="20dp" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:orientation="horizontal"
+                            android:clickable="true">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="16dp"
+                                android:fontFamily="@font/inter"
+                                android:text="@string/follow"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textAllCaps="true" />
+
+                            <io.lbry.browser.ui.controls.OutlineIconView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:text="@string/fa_heart"
+                                android:textColor="@color/red"
+                                android:textSize="20dp" />
+                        </LinearLayout>
 
                         <io.lbry.browser.ui.controls.SolidIconView
                             android:id="@+id/file_view_icon_unfollow"
