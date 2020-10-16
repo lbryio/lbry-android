@@ -28,7 +28,7 @@
     <string name="welcome_to_lbry">Welcome to LBRY.</string>
     <string name="welcome_paragraph">LBRY is a community-controlled content platform where you can find and publish videos, music, books, and more.</string>
     <string name="welcome_tos">By continuing, I agree to the &lt;a href="https://lbry.com/termsofservice"&gt;Terms of Service&lt;/a&gt; and confirm I am over the age of 13.</string>
-    <string name="welcome_please_wait">Please wait while we get some things ready...</string>
+    <string name="welcome_please_wait">Please wait while we get some things ready…</string>
     <string name="use_lbry">Use LBRY »</string>
 
     <!-- URI bar -->
@@ -40,7 +40,7 @@
     <string name="discover">Discover</string>
     <string name="lbry_works_better">LBRY works better if you follow at least 5 creators you like. Sign in to show creators you follow if you already have an account.</string>
     <string name="select_five_subscriptions">Please select up to 5 creators to continue.</string>
-    <string name="n_remaining">%1$d remaining...</string>
+    <string name="n_remaining">%1$d remaining…</string>
     <string name="done">Done</string>
     <string name="all">All</string>
     <string name="discover_channels">Discover new channels</string>
@@ -58,7 +58,7 @@
     <string name="download">Download</string>
     <string name="open">Open</string>
     <string name="report">Report</string>
-    <string name="loading_decentralized_data">Loading decentralized data...</string>
+    <string name="loading_decentralized_data">Loading decentralized data…</string>
     <string name="related_content">Related Content</string>
     <string name="comments">Comments</string>
     <string name="no_comments">No comments to display at this time.</string>
@@ -130,7 +130,7 @@
     <string name="take_photo">Take a Photo</string>
     <string name="upload_file">Upload a file</string>
     <string name="no_videos_found">We could not find any videos on your device. Take a photo or record a video to get started.</string>
-    <string name="loading_videos">Please wait while we load your videos...</string>
+    <string name="loading_videos">Please wait while we load your videos…</string>
     <string name="storage_permission_rationale_videos">LBRY requires access to be able to display and publish your videos, images and other files from your device.</string>
     <string name="camera_permission_rationale_record">LBRY requires access to your camera to record videos.</string>
     <string name="camera_permission_rationale_photo">LBRY requires access to your camera to take photos.</string>
@@ -275,7 +275,7 @@
     <string name="in_your_publishes">in your publishes</string>
     <string name="in_your_supports">in your supports</string>
     <string name="earn_more_tips">Earn more tips by uploading cool videos</string>
-    <string name="sdk_initializing">The background service is initializing...</string>
+    <string name="sdk_initializing">The background service is initializing…</string>
     <string name="sdk_still_initializing">The background service is still initializing. You can explore and watch content in the mean time.</string>
     <string name="sdk_initializing_functionality">You cannot do this right now because the background service is still initializing.</string>
 
@@ -329,7 +329,7 @@
     <string name="insufficient_balance">Insufficient balance</string>
     <string name="invalid_amount">Please enter a valid amount</string>
     <string name="send_credit_error">Your credits could not be sent at this time. Please try again later.</string>
-    <string name="loading_transactions">Loading transactions...</string>
+    <string name="loading_transactions">Loading transactions…</string>
     <string name="no_recent_transactions">There are no recent transactions to display.</string>
     <string name="no_transactions">There are no transactions to display at this time.</string>
     <string name="tx_list_fee">fee %1$s</string>
@@ -420,8 +420,8 @@
     <string name="provide_valid_email">Please enter a valid email address</string>
     <string name="please_follow_instructions">Please follow the instructions in the email sent to your address to continue.</string>
     <string name="sign_in_successful">You have successfully signed in to lbry.tv</string>
-    <string name="retrieving_account_information">Retrieving account information...</string>
-    <string name="apply_wallet_data">Applying wallet data...</string>
+    <string name="retrieving_account_information">Retrieving account information…</string>
+    <string name="apply_wallet_data">Applying wallet data…</string>
     <string name="please_enter_your_password">Please enter the password you used to secure your wallet.</string>
     <string name="please_enter_a_password">Please enter a password to secure your wallet.</string>
     <string name="wallet_security_purposes">Note: for wallet security purposes, LBRY is unable to reset your password.</string>
@@ -466,7 +466,7 @@
     <!-- Channels -->
     <string name="no_channel_created">You have not created a channel.\nStart now by creating a new channel!</string>
     <string name="create_a_channel">Create a channel</string>
-    <string name="create_a_channel_item">Create a channel...</string>
+    <string name="create_a_channel_item">Create a channel…</string>
     <string name="edit_channel">Edit channel</string>
     <string name="delete_selection">Delete selection?</string>
     <string name="delete_channel">Delete channel?</string>
@@ -492,7 +492,8 @@
     <string name="undetermined_image_filepath">The file path could not be determined for the selected image. Please select an image in a different location.</string>
     <string name="wait_for_upload">Please wait for the current upload to finish.</string>
     <string name="image_upload_failed">The image upload request failed. Please try again.</string>
-    <string name="uploading">Uploading...</string>
+    <string name="uploading">Uploading…</string>
+    <string name="uploading_thumbnail">Uploading thumbnail…</string>
     <string name="please_enter_channel_name">Please enter a channel name.</string>
     <string name="channel_name_invalid_characters">Your channel name contains invalid characters.</string>
     <string name="channel_name_already_created">You have already created a channel with the same name.</string>
@@ -607,7 +608,7 @@
     <string name="get_social">Get Social</string>
     <string name="social_paragraph">You can interact with the LBRY team and members of the community on Discord, Facebook, Instagram, Twitter or Reddit.</string>
     <string name="app_info">App info</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="about_link_what_is_lbry">&lt;a href="https://lbry.com/faq/what-is-lbry"&gt;What is LBRY?&lt;/a&gt;</string>
     <string name="about_link_android_basics">&lt;a href="https://lbry.com/faq/android-basics"&gt;Android Basics&lt;/a&gt;</string>
     <string name="about_link_faq">&lt;a href="https://lbry.com/faq"&gt;FAQ&lt;/a&gt;</string>

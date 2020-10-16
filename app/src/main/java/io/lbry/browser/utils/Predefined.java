@@ -515,6 +515,13 @@ public final class Predefined {
             "fuck",
             "hentai"
     );
+    // Subset of mature tags to be displayed on the publish page
+    public static final List<String> PUBLISH_MATURE_TAGS = Arrays.asList(
+            "porn",
+            "nsfw",
+            "mature",
+            "xxx"
+    );
     public static final List<String> ADJECTIVES = Arrays.asList(
             "aback",
             "abaft",

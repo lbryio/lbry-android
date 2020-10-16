@@ -257,7 +257,7 @@ public class PublishFormFragment extends BaseFragment implements
         suggestedTagsAdapter.setClickListener(this);
         suggestedTagsList.setAdapter(suggestedTagsAdapter);
 
-        matureTagsAdapter = new TagListAdapter(Helper.getTagObjectsForTags(Predefined.MATURE_TAGS), context);
+        matureTagsAdapter = new TagListAdapter(Helper.getTagObjectsForTags(Predefined.PUBLISH_MATURE_TAGS), context);
         matureTagsAdapter.setCustomizeMode(TagListAdapter.CUSTOMIZE_MODE_ADD);
         matureTagsAdapter.setClickListener(this);
         matureTagsList.setAdapter(matureTagsAdapter);

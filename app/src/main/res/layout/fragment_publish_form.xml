@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:fontFamily="@font/inter"
-                        android:text="@string/uploading"
+                        android:text="@string/uploading_thumbnail"
                         android:textColor="@color/white"
                         android:textFontWeight="300"
                         android:textSize="12sp" />
