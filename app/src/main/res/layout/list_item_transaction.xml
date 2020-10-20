@@ -34,7 +34,9 @@
             android:fontFamily="@font/inter"
             android:singleLine="true"
             android:textSize="14sp"
-            android:textFontWeight="300" />
+            android:textFontWeight="300"
+            android:textAlignment="viewEnd"
+            android:textDirection="ltr"/>
     </LinearLayout>
 
     <LinearLayout
