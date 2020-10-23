@@ -92,6 +92,8 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
@@ -2105,7 +2107,17 @@ public class FileViewFragment extends BaseFragment implements
             @Override
             public void onSuccess(String text) {
                 String html = buildMarkdownHtml(text);
+
                 if (webView != null) {
+                    // Due to a change to Chrome, WebView only displays '#' -and everything after it-
+                    // if it is '%23' instead. Problem appears in text like '#2' or #hashtags.
+                    Pattern pattern = Pattern.compile("#(\\S+)");
+                    Matcher matcher = pattern.matcher(html);
+
+                    if (matcher.find()) {
+                        html = html.replaceAll(pattern.toString(), "&%2335;" + matcher.group(1));
+                    }
+
                     webView.loadData(html, "text/html", "utf-8");
                 }
             }
