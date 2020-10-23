@@ -8,7 +8,7 @@
     android:layout_marginBottom="8dp"
     android:layout_marginEnd="8dp"
     android:elevation="4dp"
-    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toBottomOf="parent">
     <LinearLayout
         android:id="@+id/floating_reward_container"
@@ -50,7 +50,7 @@
         android:foreground="?attr/selectableItemBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/floating_reward_container"
+        android:layout_toEndOf="@id/floating_reward_container"
         android:layout_marginStart="-36dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
