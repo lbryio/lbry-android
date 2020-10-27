@@ -1522,6 +1522,12 @@ public class FileViewFragment extends BaseFragment implements
                     onMainActionButtonClicked();
                 }
             });
+            root.findViewById(R.id.file_view_open_external_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openClaimExternally(claim, claim.getMediaType());
+                }
+            });
 
             if (metadata instanceof Claim.StreamMetadata) {
                 Claim.StreamMetadata streamMetadata = (Claim.StreamMetadata) metadata;
@@ -2069,6 +2075,8 @@ public class FileViewFragment extends BaseFragment implements
                     }
                     handled = true;
                 }
+            } else {
+                openClaimExternally(claim, mediaType);
             }
         }
 
@@ -2153,6 +2161,18 @@ public class FileViewFragment extends BaseFragment implements
                 "            </div>\n" +
                 "          </body>\n" +
                 "        </html>";
+    }
+
+    private void openClaimExternally(Claim claim, String mediaType) {
+        File file = new File(claim.getFile().getDownloadPath());
+        Uri fileUri = Uri.parse(claim.getFile().getDownloadPath());
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(fileUri, mediaType.toLowerCase());
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        Intent chooser = Intent.createChooser(intent, getString(R.string.choose_app));
+        startActivityForResult(chooser, 419);
     }
 
     public void showError(String message) {
