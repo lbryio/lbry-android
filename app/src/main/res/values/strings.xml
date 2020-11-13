@@ -91,6 +91,7 @@
     <string name="please_select_repost_channel">Please select a channel to repost on.</string>
     <string name="reply">Reply</string>
     <string name="replying_to">Replying to %1$s</string>
+    <string name="choose_app">Choose app</string>
     <plurals name="post_and_tip">
         <item quantity="one">Post and tip %1$s credit?</item>
         <item quantity="other">Post and tip %1$s credits?</item>

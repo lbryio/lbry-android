@@ -157,6 +157,13 @@
                         android:textFontWeight="300"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/file_view_open_external_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter"
+                        android:textSize="14sp"
+                        android:text="@string/open" />
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
