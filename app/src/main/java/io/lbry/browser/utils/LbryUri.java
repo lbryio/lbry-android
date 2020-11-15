@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 public class LbryUri {
-    public static final String LBRY_TV_BASE_URL = "https://lbry.tv";
+    public static final String LBRY_TV_BASE_URL = "https://lbry.tv/";
     public static final String PROTO_DEFAULT = "lbry://";
     public static final String REGEX_INVALID_URI = "[ =&#:$@%?;/\\\\\"<>%\\{\\}|^~\\[\\]`\u0000-\u0008\u000b-\u000c\u000e-\u001F\uD800-\uDFFF\uFFFE-\uFFFF]";
     public static final String REGEX_ADDRESS = "^(b)(?=[^0OIl]{32,33})[0-9A-Za-z]{32,33}$";
@@ -183,7 +183,7 @@ public class LbryUri {
         return uri;
     }
 
-    public String build(boolean includeProto, String protoDefault, boolean vanity) {
+    public String build(boolean includeProto, String protocol, boolean vanity) {
         String formattedChannelName = null;
         if (channelName != null) {
             formattedChannelName = channelName.startsWith("@") ? channelName : String.format("@%s", channelName);
@@ -206,7 +206,7 @@ public class LbryUri {
 
         StringBuilder sb = new StringBuilder();
         if (includeProto) {
-            sb.append(protoDefault);
+            sb.append(protocol);
         }
         sb.append(primaryClaimName);
         if (vanity) {
@@ -224,72 +224,24 @@ public class LbryUri {
 
         if (!Helper.isNullOrEmpty(primaryClaimId)) {
             sb.append('#').append(primaryClaimId);
-        }
-        if (primaryClaimSequence > 0) {
+        } else if (primaryClaimSequence > 0) {
             sb.append(':').append(primaryClaimSequence);
-        }
-        if (primaryBidPosition > 0) {
+        } else if (primaryBidPosition > 0) {
             sb.append('$').append(primaryBidPosition);
         }
+
         if (!Helper.isNullOrEmpty(secondaryClaimName)) {
             sb.append('/').append(secondaryClaimName);
         }
+
         if (!Helper.isNullOrEmpty(secondaryClaimId)) {
             sb.append('#').append(secondaryClaimId);
-        }
-        if (secondaryClaimSequence > 0) {
+        } else if (secondaryClaimSequence > 0) {
             sb.append(':').append(secondaryClaimSequence);
-        }
-        if (secondaryBidPosition > 0) {
+        } else  if (secondaryBidPosition > 0) {
             sb.append('$').append(secondaryBidPosition);
         }
 
-        return sb.toString();
-    }
-
-    public String toTvString() {
-        String formattedChannelName = null;
-        if (channelName != null) {
-            formattedChannelName = channelName.startsWith("@") ? channelName : String.format("@%s", channelName);
-        }
-        String primaryClaimName = claimName;
-        if (Helper.isNullOrEmpty(primaryClaimName)) {
-            primaryClaimName = contentName;
-        }
-        if (Helper.isNullOrEmpty(primaryClaimName)) {
-            primaryClaimName = formattedChannelName;
-        }
-        if (Helper.isNullOrEmpty(primaryClaimName)) {
-            primaryClaimName = streamName;
-        }
-
-        String primaryClaimId = claimId;
-        if (Helper.isNullOrEmpty(primaryClaimId)) {
-            primaryClaimId = !Helper.isNullOrEmpty(formattedChannelName) ? channelClaimId : streamClaimId;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(LBRY_TV_BASE_URL).append('/');
-        sb.append(primaryClaimName);
-
-        String secondaryClaimName = null;
-        if (Helper.isNullOrEmpty(claimName) && !Helper.isNullOrEmpty(contentName)) {
-            secondaryClaimName = contentName;
-        }
-        if (Helper.isNullOrEmpty(secondaryClaimName)) {
-            secondaryClaimName = !Helper.isNullOrEmpty(formattedChannelName) ? streamName : null;
-        }
-        String secondaryClaimId = !Helper.isNullOrEmpty(secondaryClaimName) ? streamClaimId : null;
-
-        if (!Helper.isNullOrEmpty(primaryClaimId)) {
-            sb.append(':').append(primaryClaimId);
-        }
-        if (!Helper.isNullOrEmpty(secondaryClaimName)) {
-            sb.append('/').append(secondaryClaimName);
-        }
-        if (!Helper.isNullOrEmpty(secondaryClaimId)) {
-            sb.append(':').append(secondaryClaimId);
-        }
         return sb.toString();
     }
 
@@ -297,6 +249,9 @@ public class LbryUri {
         return parse(url).toString();
     }
 
+    public String toTvString() {
+        return build(true, LBRY_TV_BASE_URL, false);
+    }
     public String toVanityString() {
         return build(true, PROTO_DEFAULT, true);
     }
