@@ -72,6 +72,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -114,7 +115,9 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.ConnectException;
 import java.net.URI;
 import java.text.DecimalFormat;
@@ -340,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static final String PREFERENCE_KEY_KEEP_SDK_BACKGROUND = "io.lbry.browser.preference.other.KeepSdkInBackground";
     public static final String PREFERENCE_KEY_PARTICIPATE_DATA_NETWORK = "io.lbry.browser.preference.other.ParticipateInDataNetwork";
     public static final String PREFERENCE_KEY_SEND_BUFFERING_EVENTS = "io.lbry.browser.preference.other.SendBufferingEvents";
+    public static final String PREFERENCE_KEY_SHARE_USAGE_DATA = "io.lbry.browser.preference.other.ShareUsageData";
 
     // Internal flags / setting preferences
     public static final String PREFERENCE_KEY_INTERNAL_SKIP_WALLET_ACCOUNT = "io.lbry.browser.preference.internal.WalletSkipAccount";
@@ -436,14 +440,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         LbryAnalytics.init(this);
         try {
-            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
                 @Override
-                public void onComplete(Task<InstanceIdResult> task) {
+                public void onComplete(@NonNull Task<String> task) {
                     if (!task.isSuccessful()) {
                         return;
                     }
-                    // Get new Instance ID token
-                    firebaseMessagingToken = task.getResult().getToken();
+                    firebaseMessagingToken = task.getResult();
                 }
             });
         } catch (IllegalStateException ex) {
@@ -1823,7 +1826,21 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             checkSyncedWallet();
         }
 
+        (new Thread() {
+            public void run() {
+                Map<String, Object> params = new HashMap<>();
+                try {
+                    Log.d(TAG, "Calling settings_get");
+                    Log.d(TAG, ((JSONObject) Lbry.parseResponse(Lbry.apiCall("settings_get", params, Lbry.SDK_CONNECTION_STRING))).toString(2));
+                } catch (Exception ex) {
+                    // pass
+                    Log.d(TAG, ex.getMessage(), ex);
+                }
+            }
+        }).start();
+
         //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
+        checkAndEnableShareUsageData();
 
         scheduleWalletBalanceUpdate();
         scheduleWalletSyncTask();
@@ -3728,6 +3745,51 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
+    }
+
+    private void checkAndEnableShareUsageData() {
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean shareUsageData = sp.getBoolean(PREFERENCE_KEY_SHARE_USAGE_DATA, false);
+        if (shareUsageData) {
+            return;
+        }
+
+        (new AsyncTask<Void, Void, Void>() {
+            protected Void doInBackground(Void... params) {
+                PrintStream out = null;
+                try {
+                    String fileContent = "true";
+                    String path = String.format("%s/sud", Utils.getAppInternalStorageDir(MainActivity.this));
+                    out = new PrintStream(new FileOutputStream(path));
+                    out.print(fileContent);
+                } catch (Exception ex) {
+                    // pass
+                } finally {
+                    Helper.closeCloseable(out);
+                }
+                return null;
+            }
+
+            protected void onPostExecute(Void result) {
+                updateSdkSetting("share_usage_data", true);
+                sp.edit().putBoolean(PREFERENCE_KEY_SHARE_USAGE_DATA, true).apply();
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void updateSdkSetting(String key, Object value) {
+        (new Thread() {
+            public void run() {
+                Map<String, Object> params = new HashMap<>();
+                params.put(key, value);
+                try {
+                    Lbry.parseResponse(Lbry.apiCall("settings_set", params, Lbry.SDK_CONNECTION_STRING));
+                } catch (Exception ex) {
+                    // pass
+                    Log.d(TAG, ex.getMessage(), ex);
+                }
+            }
+        }).start();
     }
 
     public interface BackPressInterceptor {
