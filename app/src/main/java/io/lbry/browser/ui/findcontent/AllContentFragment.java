@@ -210,7 +210,7 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
             String tagName = params.get("singleTag").toString();
             singleTagView = true;
             tags = Arrays.asList(tagName);
-            titleView.setText(Helper.capitalize(tagName));
+            titleView.setText(tagName.toUpperCase());
             Helper.setViewVisibility(customizeLink, View.GONE);
         } else {
             singleTagView = false;

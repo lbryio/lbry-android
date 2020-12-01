@@ -108,25 +108,6 @@ public final class Helper {
         return String.format("%sx", formatter.format(speed));
     }
 
-    public static String capitalize(String value) {
-        StringBuilder sb = new StringBuilder();
-        boolean capitalizeNext = true;
-        for (char c : value.toCharArray()) {
-            if (c == ' ') {
-                capitalizeNext = true;
-                sb.append(c);
-            } else {
-                if (capitalizeNext) {
-                    sb.append(String.valueOf(c).toUpperCase());
-                } else {
-                    sb.append(c);
-                }
-                capitalizeNext = false;
-            }
-        }
-        return sb.toString();
-    }
-
     public static String join(List<String> list, String delimiter) {
         StringBuilder sb = new StringBuilder();
         String delim = "";
