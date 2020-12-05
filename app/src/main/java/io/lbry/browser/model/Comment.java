@@ -11,7 +11,7 @@ import io.lbry.browser.utils.Helper;
 import lombok.Data;
 
 @Data
-public class Comment {
+public class Comment implements Comparable<Comment> {
     public static final double LBC_COST = 1;
     public static final int MAX_LENGTH = 2000;
 
@@ -65,5 +65,10 @@ public class Comment {
         } catch (JSONException ex) {
             return null;
         }
+    }
+
+    @Override
+    public int compareTo(Comment comment) {
+        return (int)(this.getTimestamp() - comment.getTimestamp());
     }
 }
