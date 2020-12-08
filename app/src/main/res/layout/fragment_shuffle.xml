@@ -80,8 +80,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerInParent="true"
-                android:tint="@color/white"
-                android:src="@drawable/ic_share" />
+                android:src="@drawable/ic_share"
+                app:tint="@color/white" />
         </RelativeLayout>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

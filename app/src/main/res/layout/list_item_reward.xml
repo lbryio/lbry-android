@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
     android:layout_width="match_parent"
@@ -23,9 +24,9 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_centerInParent="true"
-                android:tint="@color/lbryGreen"
                 android:src="@drawable/ic_check_circle"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                app:tint="@color/lbryGreen" />
             <ProgressBar
                 android:id="@+id/reward_item_loading"
                 android:layout_centerInParent="true"

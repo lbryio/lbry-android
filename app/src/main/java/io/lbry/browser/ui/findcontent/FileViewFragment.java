@@ -2168,7 +2168,6 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private void openClaimExternally(Claim claim, String mediaType) {
-        File file = new File(claim.getFile().getDownloadPath());
         Uri fileUri = Uri.parse(claim.getFile().getDownloadPath());
 
         Intent intent = new Intent();

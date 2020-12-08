@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/comment_form_card"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -99,7 +100,7 @@
                         android:layout_height="24dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/ic_close"
-                        android:tint="@color/foreground" />
+                        app:tint="@color/foreground" />
                 </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
