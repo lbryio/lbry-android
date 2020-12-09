@@ -33,6 +33,7 @@ public class WalletSendTask extends AsyncTask<Void, Void, Boolean> {
             Map<String, Object> options = new HashMap<>();
             options.put("addresses", Arrays.asList(recipientAddress));
             options.put("amount", amount);
+            options.put("blocking", true);
             Lbry.genericApiCall(Lbry.METHOD_WALLET_SEND, options);
         } catch (ApiCallException ex) {
             error = ex;

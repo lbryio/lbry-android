@@ -124,7 +124,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_INSERT_NOTIFICATION = "REPLACE INTO notifications (remote_id, author_url, title, description, rule, target_url, is_read, is_seen, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_GET_NOTIFICATIONS = "SELECT id, remote_id, author_url, title, description, rule, target_url, is_read, is_seen, timestamp FROM notifications ORDER BY timestamp DESC LIMIT 500";
     private static final String SQL_GET_UNREAD_NOTIFICATIONS_COUNT = "SELECT COUNT(id) FROM notifications WHERE is_read <> 1";
+    private static final String SQL_GET_UNSEEN_NOTIFICATIONS_COUNT = "SELECT COUNT(id) FROM notifications WHERE is_seen <> 1";
     private static final String SQL_MARK_NOTIFICATIONS_READ = "UPDATE notifications SET is_read = 1 WHERE is_read = 0";
+    private static final String SQL_MARK_NOTIFICATIONS_SEEN = "UPDATE notifications SET is_seen = 1 WHERE is_seen = 0";
     private static final String SQL_MARK_NOTIFICATION_READ_AND_SEEN = "UPDATE notifications SET is_read = 1, is_seen = 1 WHERE id = ?";
 
     private static final String SQL_INSERT_SHUFFLE_WATCHED = "REPLACE INTO shuffle_watched (claim_id) VALUES (?)";
@@ -416,6 +418,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Helper.closeCursor(cursor);
         }
         return count;
+    }
+    public static int getUnseenNotificationsCount(SQLiteDatabase db) {
+        int count = 0;
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(SQL_GET_UNSEEN_NOTIFICATIONS_COUNT, null);
+            if (cursor.moveToNext()) {
+                count = cursor.getInt(0);
+            }
+        } finally {
+            Helper.closeCursor(cursor);
+        }
+        return count;
+    }
+    public static void markNotificationsSeen(SQLiteDatabase db) {
+        db.execSQL(SQL_MARK_NOTIFICATIONS_SEEN);
     }
     public static void markNotificationsRead(SQLiteDatabase db) {
         db.execSQL(SQL_MARK_NOTIFICATIONS_READ);

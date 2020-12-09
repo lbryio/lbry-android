@@ -70,8 +70,6 @@ import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import androidx.annotation.NonNull;
@@ -518,7 +516,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         // setup uri bar
         setupUriBar();
         initNotificationsPage();
-        loadUnreadNotificationsCount();
+        loadUnseenNotificationsCount();
 
         // other
         pendingSyncSetQueue = new ArrayList<>();
@@ -1826,19 +1824,6 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             checkSyncedWallet();
         }
 
-        (new Thread() {
-            public void run() {
-                Map<String, Object> params = new HashMap<>();
-                try {
-                    Log.d(TAG, "Calling settings_get");
-                    Log.d(TAG, ((JSONObject) Lbry.parseResponse(Lbry.apiCall("settings_get", params, Lbry.SDK_CONNECTION_STRING))).toString(2));
-                } catch (Exception ex) {
-                    // pass
-                    Log.d(TAG, ex.getMessage(), ex);
-                }
-            }
-        }).start();
-
         //findViewById(R.id.global_sdk_initializing_status).setVisibility(View.GONE);
         checkAndEnableShareUsageData();
 
@@ -2464,7 +2449,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         }
 
         if (notificationListAdapter != null) {
-            markNotificationsRead();
+            markNotificationsSeen();
         }
     }
 
@@ -2473,17 +2458,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         findViewById(R.id.notifications_container).setVisibility(View.GONE);
     }
 
-    private void markNotificationsRead() {
+    private void markNotificationsSeen() {
         List<LbryNotification> all = notificationListAdapter != null ? notificationListAdapter.getItems() : null;
         if (all != null) {
-            List<Long> unreadIds = new ArrayList<>();
+            List<Long> unseenIds = new ArrayList<>();
             for (LbryNotification notification : all) {
-                if (!notification.isRead() && notification.getRemoteId() > 0) {
-                    unreadIds.add(notification.getRemoteId());
+                if (!notification.isSeen() && notification.getRemoteId() > 0) {
+                    unseenIds.add(notification.getRemoteId());
                 }
             }
-            if (unreadIds.size() > 0) {
-                NotificationUpdateTask task = new NotificationUpdateTask(unreadIds, true);
+            if (unseenIds.size() > 0) {
+                NotificationUpdateTask task = new NotificationUpdateTask(unseenIds, true);
                 task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
@@ -2493,14 +2478,14 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             protected Void doInBackground(Void... params) {
                 try {
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
-                    DatabaseHelper.markNotificationsRead(db);
+                    DatabaseHelper.markNotificationsSeen(db);
                 } catch (Exception ex) {
                     // pass
                 }
                 return null;
             }
             protected void onPostExecute(Void result) {
-                loadUnreadNotificationsCount();
+                loadUnseenNotificationsCount();
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -3500,7 +3485,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void displayUnreadNotificationCount(int count) {
+    private void displayUnseenNotificationCount(int count) {
         String text = count > 99 ? "99+" : String.valueOf(count);
 
         TextView badge = findViewById(R.id.notifications_badge_count);
@@ -3508,19 +3493,19 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         badge.setText(text);
     }
 
-    private void loadUnreadNotificationsCount() {
+    private void loadUnseenNotificationsCount() {
         (new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... params) {
                 try {
                     SQLiteDatabase db = dbHelper.getReadableDatabase();
-                    return DatabaseHelper.getUnreadNotificationsCount(db);
+                    return DatabaseHelper.getUnseenNotificationsCount(db);
                 } catch (Exception ex) {
                     return 0;
                 }
             }
             protected void onPostExecute(Integer count) {
-                displayUnreadNotificationCount(count);
+                displayUnseenNotificationCount(count);
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -3532,10 +3517,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             public void onSuccess(List<LbryNotification> notifications) {
                 remoteNotifcationsLastLoaded = new Date();
 
-                loadUnreadNotificationsCount();
+                loadUnseenNotificationsCount();
                 loadLocalNotifications();
                 if (markRead && findViewById(R.id.notifications_container).getVisibility() == View.VISIBLE) {
-                    markNotificationsRead();
+                    markNotificationsSeen();
                 }
 
                 if (notificationsSwipeContainer != null) {
@@ -3576,7 +3561,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             protected void onPostExecute(List<LbryNotification> notifications) {
                 findViewById(R.id.notification_list_empty_container).setVisibility(notifications.size() == 0 ? View.VISIBLE : View.GONE);
                 findViewById(R.id.notifications_progress).setVisibility(View.GONE);
-                loadUnreadNotificationsCount();
+                loadUnseenNotificationsCount();
 
                 if (notificationListAdapter == null) {
                     notificationListAdapter = new NotificationListAdapter(notifications, MainActivity.this);
@@ -3633,7 +3618,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 return null;
             }
             protected void onPostExecute() {
-                loadUnreadNotificationsCount();
+                loadUnseenNotificationsCount();
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

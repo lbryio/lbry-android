@@ -15,25 +15,25 @@ public class NotificationUpdateTask extends AsyncTask<Void, Void, Boolean> {
     private List<Long> ids;
     private boolean seen;
     private boolean read;
-    private boolean updateSeen;
+    private boolean updateRead;
 
-    public NotificationUpdateTask(List<Long> ids, boolean read) {
-        this(ids, read, false, false);
+    public NotificationUpdateTask(List<Long> ids, boolean seen) {
+        this(ids, false, true, false);
     }
 
-    public NotificationUpdateTask(List<Long> ids, boolean read, boolean seen, boolean updateSeen) {
+    public NotificationUpdateTask(List<Long> ids, boolean read, boolean seen, boolean updateRead) {
         this.ids = ids;
         this.read = read;
         this.seen = seen;
-        this.updateSeen = updateSeen;
+        this.updateRead = updateRead;
     }
 
     protected Boolean doInBackground(Void... params) {
         Map<String, String> options = new HashMap<>();
         options.put("notification_ids", Helper.joinL(ids, ","));
-        options.put("is_read", String.valueOf(read));
-        if (updateSeen) {
-            options.put("is_seen", String.valueOf(seen));
+        options.put("is_seen", String.valueOf(seen));
+        if (updateRead) {
+            options.put("is_read", String.valueOf(read));
         }
 
         try {

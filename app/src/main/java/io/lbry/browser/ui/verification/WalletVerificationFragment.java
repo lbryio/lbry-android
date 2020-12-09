@@ -21,6 +21,8 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
+import io.lbry.browser.VerificationActivity;
+import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.WalletSyncListener;
 import io.lbry.browser.model.WalletSync;
 import io.lbry.browser.tasks.wallet.DefaultSyncTaskHandler;
@@ -33,7 +35,7 @@ import io.lbry.browser.utils.Lbryio;
 import io.lbry.lbrysdk.Utils;
 import lombok.Setter;
 
-public class WalletVerificationFragment extends Fragment {
+public class WalletVerificationFragment extends Fragment implements SdkStatusListener {
 
     @Setter
     private WalletSyncListener listener = null;
@@ -86,6 +88,30 @@ public class WalletVerificationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (!Lbry.SDK_READY) {
+            Context context = getContext();
+            if (context instanceof VerificationActivity) {
+                VerificationActivity activity = (VerificationActivity) context;
+                activity.addSdkStatusListener(this);
+            }
+            Helper.setViewVisibility(loading, View.VISIBLE);
+            Helper.setViewVisibility(textLoading, View.VISIBLE);
+        } else {
+            onSdkReady();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        Context context = getContext();
+        if (context instanceof VerificationActivity) {
+            VerificationActivity activity = (VerificationActivity) context;
+            activity.removeSdkStatusListener(this);
+        }
+        super.onStop();
+    }
+
+    public void onSdkReady() {
         start();
     }
 
