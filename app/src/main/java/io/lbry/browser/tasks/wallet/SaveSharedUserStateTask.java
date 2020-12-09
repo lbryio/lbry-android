@@ -2,6 +2,7 @@ package io.lbry.browser.tasks.wallet;
 
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,9 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 import io.lbry.browser.exceptions.ApiCallException;
+import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.lbryinc.Subscription;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
+import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
 
 /*
@@ -40,9 +43,16 @@ public class SaveSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
         // data to save
         // current subscriptions
+        List<Subscription> subs = new ArrayList<>(Lbryio.subscriptions);
         List<String> subscriptionUrls = new ArrayList<>();
-        for (Subscription subscription : Lbryio.subscriptions) {
-            subscriptionUrls.add(subscription.getUrl());
+        try {
+            for (Subscription subscription : subs) {
+                LbryUri uri = LbryUri.parse(LbryUri.normalize(subscription.getUrl()));
+                subscriptionUrls.add(uri.toString());
+            }
+        } catch (LbryUriException ex) {
+            error = ex;
+            return false;
         }
 
         // followed tags
@@ -62,6 +72,7 @@ public class SaveSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
                     JSONObject value = shared.getJSONObject("value");
                     value.put("subscriptions", Helper.jsonArrayFromList(subscriptionUrls));
                     value.put("tags", Helper.jsonArrayFromList(followedTags));
+                    value.put("following", buildUpdatedNotificationsDisabledStates(subs));
                     sharedObject = shared;
                 }
             }
@@ -71,6 +82,7 @@ public class SaveSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
                 JSONObject value = new JSONObject();
                 value.put("subscriptions", Helper.jsonArrayFromList(subscriptionUrls));
                 value.put("tags", Helper.jsonArrayFromList(followedTags));
+                value.put("following", buildUpdatedNotificationsDisabledStates(subs));
 
                 sharedObject = new JSONObject();
                 sharedObject.put("type", "object");
@@ -89,6 +101,26 @@ public class SaveSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
             error = ex;
         }
         return false;
+    }
+
+    private static JSONArray buildUpdatedNotificationsDisabledStates(List<Subscription> subscriptions) {
+        JSONArray states = new JSONArray();
+        for (Subscription subscription : subscriptions) {
+            if (!Helper.isNullOrEmpty(subscription.getUrl())) {
+                try {
+                    JSONObject item = new JSONObject();
+                    LbryUri uri = LbryUri.parse(LbryUri.normalize(subscription.getUrl()));
+                    item.put("uri", uri.toString());
+                    item.put("notificationsDisabled", subscription.isNotificationsDisabled());
+                    states.put(item);
+                } catch (JSONException | LbryUriException ex) {
+                    // pass
+
+                }
+            }
+        }
+
+        return states;
     }
 
     protected void onPostExecute(Boolean result) {

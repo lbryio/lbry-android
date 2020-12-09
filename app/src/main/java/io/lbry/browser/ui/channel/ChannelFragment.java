@@ -228,8 +228,11 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                                 ((MainActivity) context).showMessage(subscription.isNotificationsDisabled() ?
                                         R.string.receive_no_notifications : R.string.receive_all_notifications);
                             }
-
                             checkIsFollowing();
+
+                            if (context != null) {
+                                context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
+                            }
                         }
 
                         @Override
@@ -268,11 +271,9 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                             checkIsFollowing();
                             FollowingFragment.resetClaimSearchContent = true;
 
-                            if (Lbry.SDK_READY) {
-                                Context context = getContext();
-                                if (context instanceof MainActivity) {
-                                    ((MainActivity) context).saveSharedUserState();
-                                }
+                            Context context = getContext();
+                            if (context != null) {
+                                context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
                             }
                         }
 

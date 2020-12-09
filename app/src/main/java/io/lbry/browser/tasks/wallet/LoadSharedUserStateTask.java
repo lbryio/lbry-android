@@ -18,6 +18,7 @@ import io.lbry.browser.exceptions.ApiCallException;
 import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.lbryinc.Subscription;
+import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryUri;
 
@@ -69,6 +70,8 @@ public class LoadSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
                             value.has("subscriptions") && !value.isNull("subscriptions") ? value.getJSONArray("subscriptions") : null;
                     JSONArray tags =
                             value.has("tags") && !value.isNull("tags") ? value.getJSONArray("tags") : null;
+                    JSONArray following =
+                            value.has("following") && !value.isNull("following") ? value.getJSONArray("following") : null;
 
                     if (subscriptionUrls != null) {
                         subscriptions = new ArrayList<>();
@@ -78,7 +81,8 @@ public class LoadSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
                                 LbryUri uri = LbryUri.parse(LbryUri.normalize(url));
                                 Subscription subscription = new Subscription();
                                 subscription.setChannelName(uri.getChannelName());
-                                subscription.setUrl(url);
+                                subscription.setUrl(uri.toString());
+                                subscription.setNotificationsDisabled(isNotificationsDisabledForSubUrl(uri.toString(), following));
                                 subscriptions.add(subscription);
                                 if (db != null) {
                                     DatabaseHelper.createOrUpdateSubscription(subscription, db);
@@ -123,6 +127,24 @@ public class LoadSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
             error = ex;
         }
         return false;
+    }
+
+    protected boolean isNotificationsDisabledForSubUrl(String url, JSONArray following) {
+        try {
+            for (int i = 0; i < following.length(); i++) {
+                JSONObject item = following.getJSONObject(i);
+                String itemUrl = Helper.getJSONString("url", null, item);
+                boolean notificationsDisabled = Helper.getJSONBoolean("notificationsDisabled", true, item);
+                if (url.equalsIgnoreCase(itemUrl)) {
+                    return notificationsDisabled;
+                }
+            }
+        } catch (JSONException ex) {
+            // pass
+        }
+
+        // always default notifications disabled to true
+        return true;
     }
 
     protected void onPostExecute(Boolean result) {

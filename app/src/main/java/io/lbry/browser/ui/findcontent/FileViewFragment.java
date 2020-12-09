@@ -807,6 +807,10 @@ public class FileViewFragment extends BaseFragment implements
                                     R.string.receive_no_notifications : R.string.receive_all_notifications);
                         }
                         checkIsFollowing();
+
+                        if (context != null) {
+                            context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
+                        }
                     }
 
                     @Override
