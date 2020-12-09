@@ -46,6 +46,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -136,6 +137,7 @@ import javax.net.ssl.SSLParameters;
 
 import io.lbry.browser.adapter.NavigationMenuAdapter;
 import io.lbry.browser.adapter.NotificationListAdapter;
+import io.lbry.browser.adapter.StartupStageAdapter;
 import io.lbry.browser.adapter.UrlSuggestionListAdapter;
 import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.dialog.ContentScopeDialogFragment;
@@ -155,6 +157,7 @@ import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.ClaimCacheKey;
 import io.lbry.browser.model.NavMenuItem;
+import io.lbry.browser.model.StartupStage;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.WalletBalance;
@@ -2742,22 +2745,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             actionBar.show();
         }
     }
-    private void renderStartupFailed(Map<Integer, Boolean> startupStages) {
-        Map<Integer, Integer> startupStageIconIds = new HashMap<>();
-        startupStageIconIds.put(STARTUP_STAGE_INSTALL_ID_LOADED, R.id.startup_stage_icon_install_id);
-        startupStageIconIds.put(STARTUP_STAGE_KNOWN_TAGS_LOADED, R.id.startup_stage_icon_known_tags);
-        startupStageIconIds.put(STARTUP_STAGE_EXCHANGE_RATE_LOADED, R.id.startup_stage_icon_exchange_rate);
-        startupStageIconIds.put(STARTUP_STAGE_USER_AUTHENTICATED, R.id.startup_stage_icon_user_authenticated);
-        startupStageIconIds.put(STARTUP_STAGE_NEW_INSTALL_DONE, R.id.startup_stage_icon_install_new);
-        startupStageIconIds.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, R.id.startup_stage_icon_subscriptions_loaded);
-        startupStageIconIds.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, R.id.startup_stage_icon_subscriptions_resolved);
-
-        for (Integer key : startupStages.keySet()) {
-            boolean stageDone = startupStages.get(key);
-            ImageView icon = findViewById(startupStageIconIds.get(key));
-            icon.setImageResource(stageDone ? R.drawable.ic_check : R.drawable.ic_close);
-            icon.setColorFilter(stageDone ? Color.WHITE : Color.RED);
-        }
+    private void renderStartupFailed(List<StartupStage> startupStages) {
+        ListView listView = findViewById(R.id.startup_stage_error_listview);
+        StartupStageAdapter adapter = new StartupStageAdapter(this, startupStages);
+        listView.setAdapter(adapter);
 
         findViewById(R.id.splash_view_loading_container).setVisibility(View.GONE);
         findViewById(R.id.splash_view_error_container).setVisibility(View.VISIBLE);
@@ -2770,16 +2761,16 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
         // perform some tasks before launching
         (new AsyncTask<Void, Void, Boolean>() {
-            private Map<Integer, Boolean> startupStages = new HashMap<>();
+            private final List<StartupStage> startupStages = new ArrayList<>(7);
 
             private void initStartupStages() {
-                startupStages.put(STARTUP_STAGE_INSTALL_ID_LOADED, false);
-                startupStages.put(STARTUP_STAGE_KNOWN_TAGS_LOADED, false);
-                startupStages.put(STARTUP_STAGE_EXCHANGE_RATE_LOADED, false);
-                startupStages.put(STARTUP_STAGE_USER_AUTHENTICATED, false);
-                startupStages.put(STARTUP_STAGE_NEW_INSTALL_DONE, false);
-                startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, false);
-                startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, false);
+                startupStages.add(new StartupStage(STARTUP_STAGE_INSTALL_ID_LOADED, false));
+                startupStages.add(new StartupStage(STARTUP_STAGE_KNOWN_TAGS_LOADED, false));
+                startupStages.add(new StartupStage(STARTUP_STAGE_EXCHANGE_RATE_LOADED, false));
+                startupStages.add(new StartupStage(STARTUP_STAGE_USER_AUTHENTICATED, false));
+                startupStages.add(new StartupStage(STARTUP_STAGE_NEW_INSTALL_DONE, false));
+                startupStages.add(new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, false));
+                startupStages.add(new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, false));
             }
             protected void onPreExecute() {
                 hideActionBar();
@@ -2799,26 +2790,26 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     String installId = reader.readLine();
                     if (Helper.isNullOrEmpty(installId)) {
                         // no install_id found (first run didn't start the sdk successfully?)
-                        startupStages.put(STARTUP_STAGE_INSTALL_ID_LOADED, false);
+                        startupStages.set(STARTUP_STAGE_INSTALL_ID_LOADED - 1, new StartupStage(STARTUP_STAGE_INSTALL_ID_LOADED, false));
                         return false;
                     }
 
                     Lbry.INSTALLATION_ID = installId;
-                    startupStages.put(STARTUP_STAGE_INSTALL_ID_LOADED, true);
+                    startupStages.set(STARTUP_STAGE_INSTALL_ID_LOADED - 1, new StartupStage(STARTUP_STAGE_INSTALL_ID_LOADED, true));
 
                     SQLiteDatabase db = dbHelper.getReadableDatabase();
                     List<Tag> fetchedTags = DatabaseHelper.getTags(db);
                     Lbry.knownTags = Helper.mergeKnownTags(fetchedTags);
                     Collections.sort(Lbry.knownTags, new Tag());
                     Lbry.followedTags = Helper.filterFollowedTags(Lbry.knownTags);
-                    startupStages.put(STARTUP_STAGE_KNOWN_TAGS_LOADED, true);
+                    startupStages.set(STARTUP_STAGE_KNOWN_TAGS_LOADED - 1, new StartupStage(STARTUP_STAGE_KNOWN_TAGS_LOADED, true));
 
                     // load the exchange rate
                     Lbryio.loadExchangeRate();
                     if (Lbryio.LBCUSDRate == 0) {
                         return false;
                     }
-                    startupStages.put(STARTUP_STAGE_EXCHANGE_RATE_LOADED, true);
+                    startupStages.set(STARTUP_STAGE_EXCHANGE_RATE_LOADED - 1, new StartupStage(STARTUP_STAGE_EXCHANGE_RATE_LOADED, true));
 
                     try {
                         Lbryio.authenticate(context);
@@ -2830,10 +2821,10 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     if (Lbryio.currentUser == null) {
                         throw new Exception("Did not retrieve authenticated user.");
                     }
-                    startupStages.put(STARTUP_STAGE_USER_AUTHENTICATED, true);
+                    startupStages.set(STARTUP_STAGE_USER_AUTHENTICATED - 1, new StartupStage(STARTUP_STAGE_USER_AUTHENTICATED, true));
 
                     Lbryio.newInstall(context);
-                    startupStages.put(STARTUP_STAGE_NEW_INSTALL_DONE, true);
+                    startupStages.set(STARTUP_STAGE_NEW_INSTALL_DONE - 1, new StartupStage(STARTUP_STAGE_NEW_INSTALL_DONE, true));
 
                     // (light) fetch subscriptions
                     if (Lbryio.subscriptions.size() == 0) {
@@ -2854,7 +2845,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                                 subUrls.add(url.toString());
                             }
                             Lbryio.subscriptions = subscriptions;
-                            startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true);
+                            startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_LOADED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true));
 
                             // resolve subscriptions
                             if (subUrls.size() > 0 && Lbryio.cacheResolvedSubscriptions.size() != Lbryio.subscriptions.size()) {
@@ -2862,15 +2853,15 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                                 Lbryio.cacheResolvedSubscriptions = resolvedSubs;
                             }
                             // if no exceptions occurred here, subscriptions have been loaded and resolved
-                            startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true);
+                            startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true));
                         } else {
                             // user has not subscribed to anything
-                            startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true);
-                            startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true);
+                            startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_LOADED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true));
+                            startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true));
                         }
                     } else {
-                        startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true);
-                        startupStages.put(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true);
+                        startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_LOADED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true));
+                        startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true));
                     }
                 } catch (Exception ex) {
                     // nopecd
