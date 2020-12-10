@@ -101,7 +101,7 @@ public class ChannelFilterListAdapter extends RecyclerView.Adapter<ChannelFilter
         }
         vh.alphaContainer.setVisibility(claim.isPlaceholder() || Helper.isNullOrEmpty(thumbnailUrl) ? View.VISIBLE : View.GONE);
         vh.thumbnailView.setVisibility(claim.isPlaceholder() || Helper.isNullOrEmpty(thumbnailUrl) ? View.GONE : View.VISIBLE);
-        vh.alphaView.setText(claim.isPlaceholder() ? null : claim.getName() != null ? claim.getName().substring(1, 2) : "");
+        vh.alphaView.setText(claim.isPlaceholder() ? null : claim.getName() != null ? claim.getName().substring(1, 2).toUpperCase() : "");
 
         int bgColor = Helper.generateRandomColorForValue(claim.getClaimId());
         Helper.setIconViewBackgroundColor(vh.alphaContainer, bgColor, claim.isPlaceholder(), context);
