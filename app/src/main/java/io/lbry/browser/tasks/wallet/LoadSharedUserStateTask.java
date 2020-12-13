@@ -130,6 +130,10 @@ public class LoadSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
     }
 
     protected boolean isNotificationsDisabledForSubUrl(String url, JSONArray following) {
+        if (following == null) {
+            return true;
+        }
+
         try {
             for (int i = 0; i < following.length(); i++) {
                 JSONObject item = following.getJSONObject(i);
