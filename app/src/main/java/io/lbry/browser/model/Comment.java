@@ -12,7 +12,6 @@ import lombok.Data;
 
 @Data
 public class Comment implements Comparable<Comment> {
-    public static final double LBC_COST = 1;
     public static final int MAX_LENGTH = 2000;
 
     private Claim poster;

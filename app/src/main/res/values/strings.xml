@@ -87,23 +87,14 @@
     <string name="comment_as">Comment as</string>
     <string name="please_enter_comment">Please enter a comment to post.</string>
     <string name="please_select_channel">Please select a channel to post your comment as.</string>
+    <string name="comment_form_post">Post</string>
+    <string name="comment_confirm_post">Confirm your comment</string>
+    <string name="confirm_post_comment">This will post your comment</string>
     <string name="comment_posted">Your comment was successfully posted.</string>
     <string name="please_select_repost_channel">Please select a channel to repost on.</string>
     <string name="reply">Reply</string>
     <string name="replying_to">Replying to %1$s</string>
     <string name="choose_app">Choose app</string>
-    <plurals name="post_and_tip">
-        <item quantity="one">Post and tip %1$s credit?</item>
-        <item quantity="other">Post and tip %1$s credits?</item>
-    </plurals>
-    <plurals name="post_for_credits">
-        <item quantity="one">Post for %1$s credit</item>
-        <item quantity="other">Post for %1$s credits</item>
-    </plurals>
-    <plurals name="confirm_post_comment">
-        <item quantity="one">This will post your comment with a tip of %1$s credit for %2$s</item>
-        <item quantity="other">This will post your comment with a tip of %1$s credits for %2$s</item>
-    </plurals>
     <plurals name="view_count">
         <item quantity="one">%1$s view</item>
         <item quantity="other">%1$s views</item>

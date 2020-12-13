@@ -24,18 +24,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class CommentCreateWithTipTask extends AsyncTask<Void, Void, Comment> {
+public class CommentCreateTask extends AsyncTask<Void, Void, Comment> {
     private static final String STATUS_ENDPOINT = "https://comments.lbry.com";
 
     private Comment comment;
-    private BigDecimal amount;
     private View progressView;
     private CommentCreateWithTipHandler handler;
     private Exception error;
 
-    public CommentCreateWithTipTask(Comment comment, BigDecimal amount, View progressView, CommentCreateWithTipHandler handler) {
+    public CommentCreateTask(Comment comment, View progressView, CommentCreateWithTipHandler handler) {
         this.comment = comment;
-        this.amount = amount;
         this.progressView = progressView;
         this.handler = handler;
     }
@@ -62,13 +60,6 @@ public class CommentCreateWithTipTask extends AsyncTask<Void, Void, Comment> {
             }
 
             Map<String, Object> options = new HashMap<>();
-            options.put("blocking", true);
-            options.put("claim_id", comment.getClaimId());
-            options.put("amount", new DecimalFormat(Helper.SDK_AMOUNT_FORMAT, new DecimalFormatSymbols(Locale.US)).format(amount.doubleValue()));
-            options.put("tip", true);
-            Lbry.genericApiCall(Lbry.METHOD_SUPPORT_CREATE, options);
-
-            options = new HashMap<>();
             options.put("comment", comment.getText());
             options.put("claim_id", comment.getClaimId());
             options.put("channel_id", comment.getChannelId());
