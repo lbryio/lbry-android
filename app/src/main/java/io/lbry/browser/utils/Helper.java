@@ -29,9 +29,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.util.Hex;
+import org.apache.commons.codec.binary.Hex;
 
-import org.bitcoinj.core.Base58;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +38,7 @@ import org.json.JSONObject;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -795,9 +794,9 @@ public final class Helper {
     public static String SHA256(String value) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(value.getBytes("UTF-8"));
-            return Hex.bytesToStringLowercase(hash);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            byte[] hash = digest.digest(value.getBytes(StandardCharsets.UTF_8));
+            return Hex.encodeHexString(hash, true);
+        } catch (NoSuchAlgorithmException ex) {
             return null;
         }
     }
