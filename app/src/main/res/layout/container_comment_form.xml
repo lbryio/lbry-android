@@ -47,22 +47,25 @@
             android:layout_marginBottom="8dp"
             android:orientation="horizontal"
             android:visibility="gone">
+
             <View
                 android:id="@+id/comment_form_reply_to_vertical_bar"
                 android:layout_width="3dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@color/nextLbryGreen" />
+                android:background="@color/nextLbryGreen"
+                android:orientation="vertical" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginEnd="40dp">
+                    android:layout_marginEnd="40dp"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/comment_form_replying_to_text"
                         android:layout_width="wrap_content"
@@ -77,19 +80,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:lineSpacingMultiplier="1.05"
                         android:fontFamily="@font/inter"
+                        android:lineSpacingMultiplier="1.05"
                         android:textFontWeight="300"
                         android:textSize="14sp" />
                 </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/comment_form_clear_reply_to"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:layout_alignParentEnd="true"
                     android:layout_width="36dp"
-                    android:layout_height="36dp">
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true">
+
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
@@ -168,12 +172,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp">
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/comment_form_post"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter" />
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter"
+                android:text="@string/comment_form_post" />
             <ProgressBar
                 android:id="@+id/comment_form_post_progress"
                 android:layout_width="20dp"

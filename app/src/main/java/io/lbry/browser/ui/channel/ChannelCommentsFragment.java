@@ -30,7 +30,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +44,7 @@ import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.Comment;
 import io.lbry.browser.model.WalletBalance;
-import io.lbry.browser.tasks.CommentCreateWithTipTask;
+import io.lbry.browser.tasks.CommentCreateTask;
 import io.lbry.browser.tasks.CommentListHandler;
 import io.lbry.browser.tasks.CommentListTask;
 import io.lbry.browser.tasks.claim.ChannelCreateUpdateTask;
@@ -58,7 +57,6 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
-import io.lbry.browser.utils.Lbryio;
 import lombok.Setter;
 
 public class ChannelCommentsFragment extends Fragment implements SdkStatusListener, WalletBalanceListener {
@@ -367,9 +365,6 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
     }
 
     private void initCommentForm(View root) {
-        double amount = Comment.LBC_COST;
-        String buttonText = getResources().getQuantityString(R.plurals.post_for_credits, amount == 1 ? 1 : 2, Helper.LBC_CURRENCY_FORMAT.format(amount));
-        buttonPostComment.setText(buttonText);
         textCommentLimit.setText(String.format("%d / %d", Helper.getValue(inputComment.getText()).length(), Comment.MAX_LENGTH));
 
         buttonClearReplyToComment.setOnClickListener(new View.OnClickListener() {
@@ -387,7 +382,7 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
                     return;
                 }
 
-                validateAndCheckPostComment(amount);
+                validateAndCheckPostComment();
             }
         });
 
@@ -433,7 +428,7 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
         });
     }
 
-    private void validateAndCheckPostComment(double amount) {
+    private void validateAndCheckPostComment() {
         String comment = Helper.getValue(inputComment.getText());
         Claim channel = (Claim) commentChannelSpinner.getSelectedItem();
 
@@ -445,29 +440,18 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
             showError(getString(R.string.please_select_channel));
             return;
         }
-        if (Lbry.walletBalance == null || amount > Lbry.walletBalance.getAvailable().doubleValue()) {
-            showError(getString(R.string.insufficient_balance));
-            return;
-        }
 
         Context context = getContext();
         if (context != null) {
-            String titleText = getResources().getQuantityString(
-                    R.plurals.post_and_tip,
-                    amount == 1 ? 1 : 2,
-                    Helper.LBC_CURRENCY_FORMAT.format(amount));
-            String confirmText = getResources().getQuantityString(
-                    R.plurals.confirm_post_comment,
-                    amount == 1 ? 1 : 2,
-                    Helper.LBC_CURRENCY_FORMAT.format(amount),
-                    claim.getTitleOrName());
+            String titleText = getResources().getString(R.string.comment_confirm_post);
+            String confirmText = getResources().getString(R.string.confirm_post_comment);
             AlertDialog.Builder builder = new AlertDialog.Builder(context).
                     setTitle(titleText).
                     setMessage(confirmText)
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            postComment(amount);
+                            postComment();
                         }
                     }).setNegativeButton(R.string.no, null);
             builder.show();
@@ -545,17 +529,15 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
         replyToComment = null;
     }
 
-    private void postComment(double tipAmount) {
+    private void postComment() {
         if (postingComment) {
             return;
         }
 
         Comment comment = buildPostComment();
-        // only use 2 decimal places
-        BigDecimal amount = new BigDecimal(String.valueOf(tipAmount));
 
         beforePostComment();
-        CommentCreateWithTipTask task = new CommentCreateWithTipTask(comment, amount, progressPostComment, new CommentCreateWithTipTask.CommentCreateWithTipHandler() {
+        CommentCreateTask task = new CommentCreateTask(comment, progressPostComment, new CommentCreateTask.CommentCreateWithTipHandler() {
             @Override
             public void onSuccess(Comment createdComment) {
                 inputComment.setText(null);
@@ -573,7 +555,6 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
                 checkNoComments();
 
                 Bundle bundle = new Bundle();
-                bundle.putDouble("amount", amount.doubleValue());
                 bundle.putString("claim_id", claim != null ? claim.getClaimId() : null);
                 bundle.putString("claim_name", claim != null ? claim.getName() : null);
                 LbryAnalytics.logEvent(LbryAnalytics.EVENT_COMMENT_CREATE, bundle);
