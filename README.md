@@ -18,7 +18,17 @@ The minimum supported Android version is 5.0 Lollipop. There are two ways to ins
 The app can be launched by opening **LBRY** from the device's app drawer or via the shortcut on the home screen if that was created upon installation.
 
 ## Running from Source
-Clone the repository and open the project in Android Studio. Android Studio will automatically run the initial build process. Click the Run button to launch the app on your simulator or connected debugging device after the build process is complete.
+Clone the repository and open the project in Android Studio. Android Studio will automatically run the initial build process.
+
+Create file 'twitter.properties' in app/ folder with the following content:
+
+```
+twitterConsumerKey=XXXXXX
+
+twitterConsumerSecret=XXXXXX
+```
+
+Click the Sync button and when process finishes, the Run button to launch the app on your simulator or connected debugging device after the build process is complete.
 
 ## Contributing
 Contributions to this project are welcome, encouraged, and compensated. For more details, see https://lbry.io/faq/contributing
