@@ -107,6 +107,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -220,6 +221,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
+
+import static android.os.Build.VERSION_CODES.M;
 
 public class MainActivity extends AppCompatActivity implements SdkStatusListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
@@ -434,7 +437,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         initKeyStore();
         loadAuthToken();
 
-        if (!isDarkMode()) {
+        if (Build.VERSION.SDK_INT >= M && !isDarkMode()) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         initSpecialRouteMap();
@@ -1315,7 +1318,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private void toggleUrlSuggestions(boolean visible) {
         View container = findViewById(R.id.url_suggestions_container);
         View closeIcon = findViewById(R.id.wunderbar_close);
-        EditText wunderbar = findViewById(R.id.wunderbar);
+        //EditText wunderbar = findViewById(R.id.wunderbar);
         //wunderbar.setPadding(0, 0, visible ? getScaledValue(36) : 0, 0);
 
         container.setVisibility(visible ? View.VISIBLE : View.GONE);
@@ -1863,17 +1866,13 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                                 new DecimalFormat(Helper.LBC_CURRENCY_FORMAT_PATTERN).format(amountClaimed));
                     }
                     Snackbar.make(findViewById(R.id.content_main), message, Snackbar.LENGTH_LONG).show();
-                    if (sp != null) {
-                        sp.edit().putBoolean(PREFERENCE_KEY_INTERNAL_NEW_ANDROID_REWARD_CLAIMED, true).apply();
-                    }
+                    sp.edit().putBoolean(PREFERENCE_KEY_INTERNAL_NEW_ANDROID_REWARD_CLAIMED, true).apply();
                 }
 
                 @Override
                 public void onError(Exception error) {
                     // pass. fail silently
-                    if (sp != null) {
-                        sp.edit().putBoolean(PREFERENCE_KEY_INTERNAL_NEW_ANDROID_REWARD_CLAIMED, true).apply();
-                    }
+                    sp.edit().putBoolean(PREFERENCE_KEY_INTERNAL_NEW_ANDROID_REWARD_CLAIMED, true).apply();
                 }
             });
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -1958,7 +1957,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             notificationListAdapter.setInSelectionMode(false);
             notificationListAdapter.notifyDataSetChanged();
         }
-        if (isDarkMode()) {
+        if (Build.VERSION.SDK_INT >= M && isDarkMode()) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         this.actionMode = null;
@@ -2022,8 +2021,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             if (nowPlayingClaimUrl != null) {
                 Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(nowPlayingClaimUrl));
                 launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                PendingIntent intent = PendingIntent.getActivity(MainActivity.this, 0, launchIntent, 0);
-                return intent;
+                return PendingIntent.getActivity(MainActivity.this, 0, launchIntent, 0);
             }
             return null;
         }
@@ -2236,8 +2234,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 @Override
                 public void onSyncSetSuccess(String hash) {
                     Lbryio.lastRemoteHash = hash;
-                    WalletSync walletSync = new WalletSync(hash, data);
-                    Lbryio.lastWalletSync = walletSync;
+                    Lbryio.lastWalletSync = new WalletSync(hash, data);
 
                     if (pendingSyncSetQueue.size() > 0) {
                         fullSyncInProgress = true;
@@ -2417,8 +2414,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 pendingFollowingReload = true;
             }
             private void handleOpenChannelUrl(Intent intent) {
-                String url = intent.getStringExtra("url");
-                pendingChannelUrl = url;
+                pendingChannelUrl = intent.getStringExtra("url");
             }
         };
         registerReceiver(requestsReceiver, intentFilter);
@@ -2578,7 +2574,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_STORAGE_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -2613,7 +2609,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_FILE_PICKER) {
             startingFilePickerActivity = false;
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK && data != null) {
                 Uri fileUri = data.getData();
                 String filePath = Helper.getRealPathFromURI_API19(this, fileUri);
                 for (FilePickerListener listener : filePickerListeners) {
@@ -2724,8 +2720,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         int backCount = getSupportFragmentManager().getBackStackEntryCount();
         if (backCount > 0) {
             try {
-                Fragment fragment = getSupportFragmentManager().getFragments().get(backCount - 1);
-                return fragment;
+                return getSupportFragmentManager().getFragments().get(backCount - 1);
             } catch (IndexOutOfBoundsException ex) {
                 return null;
             }
@@ -2849,8 +2844,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
                             // resolve subscriptions
                             if (subUrls.size() > 0 && Lbryio.cacheResolvedSubscriptions.size() != Lbryio.subscriptions.size()) {
-                                List<Claim> resolvedSubs = Lbry.resolve(subUrls, Lbry.LBRY_TV_CONNECTION_STRING);
-                                Lbryio.cacheResolvedSubscriptions = resolvedSubs;
+                                Lbryio.cacheResolvedSubscriptions = Lbry.resolve(subUrls, Lbry.LBRY_TV_CONNECTION_STRING);
                             }
                             // if no exceptions occurred here, subscriptions have been loaded and resolved
                             startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true));

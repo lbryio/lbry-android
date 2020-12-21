@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -35,7 +36,7 @@
             android:layout_height="18dp"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_trending"
-            android:tint="@color/foreground" />
+            app:tint="@color/foreground" />
         <TextView
             android:layout_toEndOf="@+id/sort_by_trending_item_icon"
             android:layout_width="wrap_content"
@@ -53,8 +54,8 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check"
-            android:tint="@color/lbryGreen"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:tint="@color/lbryGreen" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -70,7 +71,7 @@
             android:layout_height="18dp"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_new"
-            android:tint="@color/foreground" />
+            app:tint="@color/foreground" />
         <TextView
             android:layout_toEndOf="@+id/sort_by_new_item_icon"
             android:layout_width="wrap_content"
@@ -88,8 +89,8 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check"
-            android:tint="@color/lbryGreen"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:tint="@color/lbryGreen" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -105,7 +106,7 @@
             android:layout_height="18dp"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_top"
-            android:tint="@color/foreground" />
+            app:tint="@color/foreground" />
         <TextView
             android:layout_toEndOf="@+id/sort_by_top_item_icon"
             android:layout_width="wrap_content"
@@ -123,7 +124,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check"
-            android:tint="@color/lbryGreen"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:tint="@color/lbryGreen" />
     </RelativeLayout>
 </LinearLayout>

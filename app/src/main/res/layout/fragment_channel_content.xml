@@ -56,7 +56,7 @@
                         android:layout_marginStart="2dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_arrow_dropdown"
-                        android:tint="@color/foreground" />
+                        app:tint="@color/foreground" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -85,7 +85,7 @@
                         android:layout_marginStart="2dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_arrow_dropdown"
-                        android:tint="@color/foreground" />
+                        app:tint="@color/foreground" />
                 </LinearLayout>
             </LinearLayout>
 

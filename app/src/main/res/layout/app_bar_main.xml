@@ -62,7 +62,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_close"
-                        android:tint="@color/actionBarForeground" />
+                        app:tint="@color/actionBarForeground" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -79,7 +79,7 @@
                         android:layout_height="24dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/ic_notifications"
-                        android:tint="@color/actionBarForeground" />
+                        app:tint="@color/actionBarForeground" />
                     <TextView
                         android:id="@+id/notifications_badge_count"
                         android:layout_width="wrap_content"

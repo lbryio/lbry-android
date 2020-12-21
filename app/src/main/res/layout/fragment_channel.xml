@@ -157,8 +157,8 @@
                         android:layout_centerInParent="true"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:tint="@color/foreground"
-                        android:src="@drawable/ic_edit" />
+                        android:src="@drawable/ic_edit"
+                        app:tint="@color/foreground" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/channel_view_delete"
@@ -172,8 +172,8 @@
                         android:layout_centerInParent="true"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:tint="@color/foreground"
-                        android:src="@drawable/ic_delete" />
+                        android:src="@drawable/ic_delete"
+                        app:tint="@color/foreground" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/channel_view_share"
@@ -186,8 +186,8 @@
                         android:layout_centerInParent="true"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:tint="@color/foreground"
-                        android:src="@drawable/ic_share" />
+                        android:src="@drawable/ic_share"
+                        app:tint="@color/foreground" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/channel_view_tip"
