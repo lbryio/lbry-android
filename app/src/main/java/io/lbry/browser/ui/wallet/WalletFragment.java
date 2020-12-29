@@ -463,7 +463,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
                 double sentAmount = actualSendAmount;
                 String message = getResources().getQuantityString(
                         R.plurals.you_sent_credits, sentAmount == 1.0 ? 1 : 2,
-                        new DecimalFormat("#,###.##").format(sentAmount));
+                        new DecimalFormat("#,###.####").format(sentAmount));
                 Helper.setViewText(inputSendAddress, null);
                 Helper.setViewText(inputSendAmount, null);
                 if (view != null) {
