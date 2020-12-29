@@ -441,21 +441,7 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
             return;
         }
 
-        Context context = getContext();
-        if (context != null) {
-            String titleText = getResources().getString(R.string.comment_confirm_post);
-            String confirmText = getResources().getString(R.string.confirm_post_comment);
-            AlertDialog.Builder builder = new AlertDialog.Builder(context).
-                    setTitle(titleText).
-                    setMessage(confirmText)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            postComment();
-                        }
-                    }).setNegativeButton(R.string.no, null);
-            builder.show();
-        }
+        postComment();
     }
 
     private void updatePostAsChannel(Claim channel) {
