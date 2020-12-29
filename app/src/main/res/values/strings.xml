@@ -101,6 +101,10 @@
         <item quantity="one">This will purchase "%1$s" for %2$s credit</item>
         <item quantity="other">This will purchase "%1$s" for %2$s credits</item>
     </plurals>
+    <plurals name="post_and_tip">
+        <item quantity="one">Post and tip %1$s credit?</item>
+        <item quantity="other">Post and tip %1$s credits?</item>
+    </plurals>
     <plurals name="post_for_credits">
         <item quantity="one">Post for %1$s credit</item>
         <item quantity="other">Post for %1$s credits</item>
