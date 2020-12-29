@@ -824,41 +824,63 @@ public class FileViewFragment extends BaseFragment implements
 
     private View.OnClickListener followUnfollowListener = new View.OnClickListener() {
         @Override
-        public void onClick(View view) {
+        public void onClick(final View view) {
             if (claim != null && claim.getSigningChannel() != null) {
                 Claim publisher = claim.getSigningChannel();
                 boolean isFollowing = Lbryio.isFollowing(publisher);
-                Subscription subscription = Subscription.fromClaim(publisher);
-                view.setEnabled(false);
-                Context context = getContext();
-                new ChannelSubscribeTask(context, publisher.getClaimId(), subscription, isFollowing, new ChannelSubscribeTask.ChannelSubscribeHandler() {
-                    @Override
-                    public void onSuccess() {
-                        if (isFollowing) {
-                            Lbryio.removeSubscription(subscription);
-                            Lbryio.removeCachedResolvedSubscription(publisher);
-                        } else {
-                            Lbryio.addSubscription(subscription);
-                            Lbryio.addCachedResolvedSubscription(publisher);
-                        }
-                        view.setEnabled(true);
-                        checkIsFollowing();
-                        FollowingFragment.resetClaimSearchContent = true;
-
-                        // Save shared user state
-                        if (context != null) {
-                            context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
-                        }
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
-                        view.setEnabled(true);
-                    }
-                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                if (isFollowing) {
+                    // show unfollow confirmation
+                    Context context = getContext();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context).
+                            setTitle(R.string.confirm_unfollow).
+                            setMessage(R.string.confirm_unfollow_message)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    doFollowUnfollow(isFollowing, view);
+                                }
+                            }).setNegativeButton(R.string.no, null);
+                    builder.show();
+                } else {
+                    doFollowUnfollow(isFollowing, view);
+                }
             }
         }
     };
+
+    private void doFollowUnfollow(boolean isFollowing, View view) {
+        if (claim != null && claim.getSigningChannel() != null) {
+            Claim publisher = claim.getSigningChannel();
+            Subscription subscription = Subscription.fromClaim(publisher);
+            view.setEnabled(false);
+            Context context = getContext();
+            new ChannelSubscribeTask(context, publisher.getClaimId(), subscription, isFollowing, new ChannelSubscribeTask.ChannelSubscribeHandler() {
+                @Override
+                public void onSuccess() {
+                    if (isFollowing) {
+                        Lbryio.removeSubscription(subscription);
+                        Lbryio.removeCachedResolvedSubscription(publisher);
+                    } else {
+                        Lbryio.addSubscription(subscription);
+                        Lbryio.addCachedResolvedSubscription(publisher);
+                    }
+                    view.setEnabled(true);
+                    checkIsFollowing();
+                    FollowingFragment.resetClaimSearchContent = true;
+
+                    // Save shared user state
+                    if (context != null) {
+                        context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
+                    }
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    view.setEnabled(true);
+                }
+            }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
 
     private void resolveUrl(String url) {
         resolving = true;

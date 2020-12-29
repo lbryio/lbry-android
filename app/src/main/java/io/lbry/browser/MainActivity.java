@@ -3091,6 +3091,17 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 String action = intent.getAction();
                 if (LbrynetService.ACTION_STOP_SERVICE.equals(action)) {
                     MainActivity.this.receivedStopService = true;
+
+                    // STOP is meant to close everything,
+                    // So destroy the player at this point (even with background play enabled)
+                    if (appPlayer != null) {
+                        playerNotificationManager.setPlayer(null);
+                        stopExoplayer();
+                        nowPlayingClaim = null;
+                        nowPlayingClaimUrl = null;
+                        nowPlayingClaimBitmap = null;
+                    }
+
                     MainActivity.this.finish();
                 } else if (LbrynetService.LBRY_SDK_SERVICE_STARTED.equals(action)) {
                     // Rebuild the service notification

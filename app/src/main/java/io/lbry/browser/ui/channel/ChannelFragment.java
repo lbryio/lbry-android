@@ -252,42 +252,60 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                         return;
                     }
 
-                    subscribing = true;
                     boolean isFollowing = Lbryio.isFollowing(claim);
-                    Subscription subscription = Subscription.fromClaim(claim);
-                    view.setEnabled(false);
-                    new ChannelSubscribeTask(getContext(), claim.getClaimId(), subscription, isFollowing, new ChannelSubscribeTask.ChannelSubscribeHandler() {
-                        @Override
-                        public void onSuccess() {
-                            if (isFollowing) {
-                                Lbryio.removeSubscription(subscription);
-                                Lbryio.removeCachedResolvedSubscription(claim);
-                            } else {
-                                Lbryio.addSubscription(subscription);
-                                Lbryio.addCachedResolvedSubscription(claim);
-                            }
-                            buttonFollowUnfollow.setEnabled(true);
-                            subscribing = false;
-                            checkIsFollowing();
-                            FollowingFragment.resetClaimSearchContent = true;
-
-                            Context context = getContext();
-                            if (context != null) {
-                                context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
-                            }
-                        }
-
-                        @Override
-                        public void onError(Exception exception) {
-                            buttonFollowUnfollow.setEnabled(true);
-                            subscribing = false;
-                        }
-                    }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    if (isFollowing) {
+                        Context context = getContext();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context).
+                                setTitle(R.string.confirm_unfollow).
+                                setMessage(R.string.confirm_unfollow_message)
+                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        doFollowUnfollow(isFollowing, view);
+                                    }
+                                }).setNegativeButton(R.string.no, null);
+                        builder.show();
+                    } else {
+                        doFollowUnfollow(isFollowing, view);
+                    }
                 }
             }
         });
 
         return root;
+    }
+
+    private void doFollowUnfollow(boolean isFollowing, View view) {
+        subscribing = true;
+        Subscription subscription = Subscription.fromClaim(claim);
+        view.setEnabled(false);
+        new ChannelSubscribeTask(getContext(), claim.getClaimId(), subscription, isFollowing, new ChannelSubscribeTask.ChannelSubscribeHandler() {
+            @Override
+            public void onSuccess() {
+                if (isFollowing) {
+                    Lbryio.removeSubscription(subscription);
+                    Lbryio.removeCachedResolvedSubscription(claim);
+                } else {
+                    Lbryio.addSubscription(subscription);
+                    Lbryio.addCachedResolvedSubscription(claim);
+                }
+                buttonFollowUnfollow.setEnabled(true);
+                subscribing = false;
+                checkIsFollowing();
+                FollowingFragment.resetClaimSearchContent = true;
+
+                Context context = getContext();
+                if (context != null) {
+                    context.sendBroadcast(new Intent(MainActivity.ACTION_SAVE_SHARED_USER_STATE));
+                }
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                buttonFollowUnfollow.setEnabled(true);
+                subscribing = false;
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void deleteCurrentClaim() {
