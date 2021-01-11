@@ -448,6 +448,7 @@ public class ShuffleFragment extends BaseFragment {
                     .build();
 
             MainActivity.appPlayer = new SimpleExoPlayer.Builder(context).build();
+            MainActivity.appPlayer.setWakeMode(C.WAKE_MODE_NETWORK);
             MainActivity.appPlayer.setAudioAttributes(audioAttributes, true);
             MainActivity.playerCache =
                     new SimpleCache(context.getCacheDir(),
