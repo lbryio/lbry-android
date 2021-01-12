@@ -795,7 +795,11 @@ public final class Helper {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(value.getBytes(StandardCharsets.UTF_8));
-            return Hex.encodeHexString(hash, true);
+
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1)
+                return Hex.encodeHexString(hash, true);
+            else
+                return new String(Hex.encodeHex(hash)).toLowerCase();
         } catch (NoSuchAlgorithmException ex) {
             return null;
         }
