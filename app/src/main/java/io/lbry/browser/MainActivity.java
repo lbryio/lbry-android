@@ -818,9 +818,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void removeNavFragment(Class fragmentClass, int navItemId) {
         String key = buildNavFragmentKey(fragmentClass, navItemId, null);
-        if (openNavFragments.containsKey(key)) {
-            openNavFragments.remove(key);
-        }
+        openNavFragments.remove(key);
     }
 
     public void addFetchChannelsListener(FetchChannelsListener listener) {
