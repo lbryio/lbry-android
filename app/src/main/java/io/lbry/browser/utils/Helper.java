@@ -782,7 +782,7 @@ public final class Helper {
 
         rv.setAdapter(null);
         rv.setAdapter(adapter);
-        rv.scrollToPosition(prevScrollPosition > 0 ? prevScrollPosition : 0);
+        rv.scrollToPosition(Math.max(prevScrollPosition, 0));
     }
 
     public static String makeid(int length) {
