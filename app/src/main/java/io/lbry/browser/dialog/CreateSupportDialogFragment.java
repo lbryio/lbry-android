@@ -61,13 +61,17 @@ public class CreateSupportDialogFragment extends BottomSheetDialogFragment imple
     private ProgressBar progressLoadingChannels;
 
 
-    @Setter
-    private CreateSupportListener listener;
-    @Setter
-    private Claim claim;
+    private final CreateSupportListener listener;
+    private final Claim claim;
 
-    public static CreateSupportDialogFragment newInstance() {
-        return new CreateSupportDialogFragment();
+    private CreateSupportDialogFragment(Claim claim, CreateSupportListener listener) {
+        super();
+        this.claim = claim;
+        this.listener = listener;
+    }
+
+    public static CreateSupportDialogFragment newInstance(Claim claim, CreateSupportListener listener) {
+        return new CreateSupportDialogFragment(claim, listener);
     }
 
     private void disableControls() {

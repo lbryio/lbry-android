@@ -185,19 +185,14 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                 }
 
                 if (claim != null) {
-                    CreateSupportDialogFragment dialog = CreateSupportDialogFragment.newInstance();
-                    dialog.setClaim(claim);
-                    dialog.setListener(new CreateSupportDialogFragment.CreateSupportListener() {
-                        @Override
-                        public void onSupportCreated(BigDecimal amount, boolean isTip) {
-                            double sentAmount = amount.doubleValue();
-                            View view = getView();
-                            if (view != null) {
-                                String message = getResources().getQuantityString(
-                                        isTip ? R.plurals.you_sent_a_tip : R.plurals.you_sent_a_support, sentAmount == 1.0 ? 1 : 2,
-                                        new DecimalFormat("#,###.##").format(sentAmount));
-                                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
-                            }
+                    CreateSupportDialogFragment dialog = CreateSupportDialogFragment.newInstance(claim, (amount, isTip) -> {
+                        double sentAmount = amount.doubleValue();
+                        View view1 = getView();
+                        if (view1 != null) {
+                            String message = getResources().getQuantityString(
+                                    isTip ? R.plurals.you_sent_a_tip : R.plurals.you_sent_a_support, sentAmount == 1.0 ? 1 : 2,
+                                    new DecimalFormat("#,###.##").format(sentAmount));
+                            Snackbar.make(view1, message, Snackbar.LENGTH_LONG).show();
                         }
                     });
                     Context context = getContext();

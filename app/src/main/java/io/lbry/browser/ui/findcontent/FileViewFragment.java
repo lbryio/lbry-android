@@ -1007,17 +1007,12 @@ public class FileViewFragment extends BaseFragment implements
                 }
 
                 if (claim != null) {
-                    CreateSupportDialogFragment dialog = CreateSupportDialogFragment.newInstance();
-                    dialog.setClaim(claim);
-                    dialog.setListener(new CreateSupportDialogFragment.CreateSupportListener() {
-                        @Override
-                        public void onSupportCreated(BigDecimal amount, boolean isTip) {
-                            double sentAmount = amount.doubleValue();
-                            String message = getResources().getQuantityString(
-                                    isTip ? R.plurals.you_sent_a_tip : R.plurals.you_sent_a_support, sentAmount == 1.0 ? 1 : 2,
-                                    new DecimalFormat("#,###.##").format(sentAmount));
-                            Snackbar.make(root.findViewById(R.id.file_view_claim_display_area), message, Snackbar.LENGTH_LONG).show();
-                        }
+                    CreateSupportDialogFragment dialog = CreateSupportDialogFragment.newInstance(claim, (amount, isTip) -> {
+                        double sentAmount = amount.doubleValue();
+                        String message = getResources().getQuantityString(
+                                isTip ? R.plurals.you_sent_a_tip : R.plurals.you_sent_a_support, sentAmount == 1.0 ? 1 : 2,
+                                new DecimalFormat("#,###.##").format(sentAmount));
+                        Snackbar.make(root.findViewById(R.id.file_view_claim_display_area), message, Snackbar.LENGTH_LONG).show();
                     });
                     Context context = getContext();
                     if (context instanceof MainActivity) {
@@ -1036,15 +1031,10 @@ public class FileViewFragment extends BaseFragment implements
                 }
 
                 if (claim != null) {
-                    RepostClaimDialogFragment dialog = RepostClaimDialogFragment.newInstance();
-                    dialog.setClaim(claim);
-                    dialog.setListener(new RepostClaimDialogFragment.RepostClaimListener() {
-                        @Override
-                        public void onClaimReposted(Claim claim) {
-                            Context context = getContext();
-                            if (context instanceof MainActivity) {
-                                ((MainActivity) context).showMessage(R.string.content_successfully_reposted);
-                            }
+                    RepostClaimDialogFragment dialog = RepostClaimDialogFragment.newInstance(claim, claim -> {
+                        Context context = getContext();
+                        if (context instanceof MainActivity) {
+                            ((MainActivity) context).showMessage(R.string.content_successfully_reposted);
                         }
                     });
                     Context context = getContext();

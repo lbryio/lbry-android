@@ -57,13 +57,17 @@ public class RepostClaimDialogFragment extends BottomSheetDialogFragment impleme
     private TextView linkToggleAdvanced;
     private View advancedContainer;
 
-    @Setter
-    private RepostClaimListener listener;
-    @Setter
-    private Claim claim;
+    private final RepostClaimListener listener;
+    private final Claim claim;
 
-    public static RepostClaimDialogFragment newInstance() {
-        return new RepostClaimDialogFragment();
+    private RepostClaimDialogFragment(Claim claim, RepostClaimListener listener) {
+        super();
+        this.listener = listener;
+        this.claim = claim;
+    }
+
+    public static RepostClaimDialogFragment newInstance(Claim claim, RepostClaimListener listener) {
+        return new RepostClaimDialogFragment(claim, listener);
     }
 
     @Override
