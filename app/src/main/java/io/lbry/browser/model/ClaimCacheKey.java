@@ -40,7 +40,7 @@ public class ClaimCacheKey {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj == null || !(obj instanceof ClaimCacheKey)) {
+        if (!(obj instanceof ClaimCacheKey)) {
             return false;
         }
         ClaimCacheKey key = (ClaimCacheKey) obj;
