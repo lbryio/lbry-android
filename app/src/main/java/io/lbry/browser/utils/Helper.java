@@ -758,11 +758,12 @@ public final class Helper {
 
     public static String generateUrl() {
         Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-        sb.append(Predefined.ADJECTIVES.get(random.nextInt(Predefined.ADJECTIVES.size()))).append("-").
-            append(Predefined.ADJECTIVES.get(random.nextInt(Predefined.ADJECTIVES.size()))).append("-").
-                append(Predefined.ANIMALS.get(random.nextInt(Predefined.ANIMALS.size())));
-        return sb.toString().toLowerCase();
+
+        String sb = "";
+        sb += Predefined.ADJECTIVES.get(random.nextInt(Predefined.ADJECTIVES.size())) + "-";
+        sb += Predefined.ADJECTIVES.get(random.nextInt(Predefined.ADJECTIVES.size())) + "-";
+        sb += Predefined.ANIMALS.get(random.nextInt(Predefined.ANIMALS.size()));
+        return sb.toLowerCase();
     }
 
     public static void refreshRecyclerView(RecyclerView rv) {
