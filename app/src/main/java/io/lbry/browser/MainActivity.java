@@ -3402,6 +3402,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         return String.format("%s-%d", fragmentClass.getName(), navItemId);
     }
 
+    public void popFragment(Class fragmentClass, int navItemId, Map<String, Object> params) {
+        String key = buildNavFragmentKey(fragmentClass, navItemId, params);
+        openNavFragments.remove(key);
+    }
+
     public void openFragment(Class fragmentClass, boolean allowNavigateBack, int navItemId, Map<String, Object> params) {
         try {
             String key = buildNavFragmentKey(fragmentClass, navItemId, params);

@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateUtils;
@@ -310,8 +311,7 @@ public class FileViewFragment extends BaseFragment implements
                         String mediaSourceUrl = getStreamingUrl();
                         long duration = MainActivity.appPlayer.getDuration();
                         long position = MainActivity.appPlayer.getCurrentPosition();
-                        // TODO: Determine a hash for the userId
-                        String userIdHash = Helper.SHA256(Lbryio.currentUser != null ? String.valueOf(Lbryio.currentUser.getId()) : "0");
+                        String userIdHash = Lbryio.currentUser != null ? String.valueOf(Lbryio.currentUser.getId()) : "0";
                         if (mediaSourceUrl.startsWith(CDN_PREFIX)) {
                             BufferEventTask bufferEvent = new BufferEventTask(claim.getPermanentUrl(), duration, position, 1, userIdHash);
                             bufferEvent.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -429,8 +429,11 @@ public class FileViewFragment extends BaseFragment implements
                             renderNothingAtLocation();
                         } else if (claim.getName().startsWith("@")) {
                             // this is a reposted channel, so launch the channel url
-                            if (context instanceof  MainActivity) {
-                                ((MainActivity) context).openChannelUrl(!Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
+                            if (context instanceof MainActivity) {
+                                MainActivity activity = (MainActivity) context;
+                                //activity.onBackPressed(); // remove the reposted url page from the back stack
+                                activity.getSupportFragmentManager().popBackStack();
+                                activity.openChannelUrl(!Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
                             }
                             return;
                         }
@@ -899,7 +902,9 @@ public class FileViewFragment extends BaseFragment implements
                             // this is a reposted channel, so finish this activity and launch the channel url
                             Context context = getContext();
                             if (context instanceof  MainActivity) {
-                                ((MainActivity) context).openChannelUrl(!Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
+                                MainActivity activity = (MainActivity) context;
+                                activity.getSupportFragmentManager().popBackStack();
+                                activity.openChannelUrl(!Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl());
                             }
                             return;
                         }

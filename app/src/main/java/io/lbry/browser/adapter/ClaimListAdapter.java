@@ -404,7 +404,7 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         vh.publishTimeView.setVisibility(!isPending ? View.VISIBLE : View.GONE);
         vh.pendingTextView.setVisibility(isPending && !item.isLoadingPlaceholder() ? View.VISIBLE : View.GONE);
         vh.repostInfoView.setVisibility(isRepost && type != VIEW_TYPE_FEATURED ? View.VISIBLE : View.GONE);
-        vh.repostChannelView.setText(isRepost ? original.getSigningChannel().getName() : null);
+        vh.repostChannelView.setText(isRepost && original.getSigningChannel() != null ? original.getSigningChannel().getName() : null);
         vh.repostChannelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -131,8 +131,7 @@ public class ShuffleFragment extends BaseFragment {
                         String mediaSourceUrl = getStreamingUrl();
                         long duration = MainActivity.appPlayer.getDuration();
                         long position = MainActivity.appPlayer.getCurrentPosition();
-                        // TODO: Determine a hash for the userId
-                        String userIdHash = Helper.SHA256(Lbryio.currentUser != null ? String.valueOf(Lbryio.currentUser.getId()) : "0");
+                        String userIdHash = Lbryio.currentUser != null ? String.valueOf(Lbryio.currentUser.getId()) : "0";
                         if (mediaSourceUrl.startsWith(FileViewFragment.CDN_PREFIX)) {
                             BufferEventTask bufferEvent = new BufferEventTask(current.getPermanentUrl(), duration, position, 1, userIdHash);
                             bufferEvent.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
