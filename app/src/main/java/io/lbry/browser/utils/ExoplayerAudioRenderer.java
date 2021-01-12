@@ -6,9 +6,13 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Renderer;
+import com.google.android.exoplayer2.audio.AudioCapabilities;
 import com.google.android.exoplayer2.audio.AudioProcessor;
 import com.google.android.exoplayer2.audio.AudioRendererEventListener;
+import com.google.android.exoplayer2.audio.AudioSink;
+import com.google.android.exoplayer2.audio.DefaultAudioSink;
 import com.google.android.exoplayer2.audio.TeeAudioProcessor;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
@@ -30,22 +34,18 @@ public class ExoplayerAudioRenderer extends DefaultRenderersFactory {
             Context context,
             int extensionRendererMode,
             MediaCodecSelector mediaCodecSelector,
-            @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
-            boolean playClearSamplesWithoutKeys,
             boolean enableDecoderFallback,
-            AudioProcessor[] audioProcessors,
+            AudioSink audioSink,
             Handler eventHandler,
             AudioRendererEventListener eventListener,
             ArrayList<Renderer> out) {
-        AudioProcessor[] audioProcessorList = { new TeeAudioProcessor(audioBufferSink) };
+
         super.buildAudioRenderers(
                 context,
                 extensionRendererMode,
                 mediaCodecSelector,
-                drmSessionManager,
-                playClearSamplesWithoutKeys,
                 enableDecoderFallback,
-                audioProcessorList,
+                audioSink,
                 eventHandler,
                 eventListener,
                 out);

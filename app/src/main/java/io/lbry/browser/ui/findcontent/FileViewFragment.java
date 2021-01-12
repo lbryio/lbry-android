@@ -1675,6 +1675,8 @@ public class FileViewFragment extends BaseFragment implements
                     .build();
 
             MainActivity.appPlayer = new SimpleExoPlayer.Builder(context).build();
+            MainActivity.appPlayer.setWakeMode(C.WAKE_MODE_NETWORK);
+
             MainActivity.appPlayer.setAudioAttributes(audioAttributes, true);
             MainActivity.playerCache =
                     new SimpleCache(context.getCacheDir(),
