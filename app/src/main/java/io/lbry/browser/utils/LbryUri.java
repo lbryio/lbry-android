@@ -262,7 +262,7 @@ public class LbryUri {
         return toString().hashCode();
     }
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof LbryUri)) {
+        if (!(o instanceof LbryUri)) {
             return false;
         }
         return toString().equalsIgnoreCase(o.toString());
