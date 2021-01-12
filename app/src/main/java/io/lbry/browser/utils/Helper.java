@@ -691,10 +691,14 @@ public final class Helper {
             LbryFile file = files.get(i);
             // remove own claims as well
             if (Lbry.ownClaims != null && Lbry.ownClaims.size() > 0) {
+                boolean hasClaim = false;
                 for (Claim own : Lbry.ownClaims) {
                     if (own.getClaimId().equalsIgnoreCase(file.getClaimId())) {
-                        continue;
+                        hasClaim = true;
                     }
+                }
+                if (hasClaim) {
+                    continue;
                 }
             }
             if (!Helper.isNullOrEmpty(file.getDownloadPath())) {
