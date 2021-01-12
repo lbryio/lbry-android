@@ -22,10 +22,10 @@ import okhttp3.Response;
 public class TwitterRequestTokenTask extends AsyncTask<Void, Void, String> {
     private static final String ENDPOINT = "https://api.twitter.com/oauth/request_token";
 
-    private String consumerKey;
-    private String consumerSecret;
+    private final String consumerKey;
+    private final String consumerSecret;
     private Exception error;
-    private TwitterOauthHandler handler;
+    private final TwitterOauthHandler handler;
 
     public TwitterRequestTokenTask(String consumerKey, String consumerSecret, TwitterOauthHandler handler) {
         this.consumerKey = consumerKey;

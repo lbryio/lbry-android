@@ -289,7 +289,7 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
         }
     }
 
-    private FollowUnfollowTagTask.FollowUnfollowTagHandler followUnfollowHandler = new FollowUnfollowTagTask.FollowUnfollowTagHandler() {
+    private final FollowUnfollowTagTask.FollowUnfollowTagHandler followUnfollowHandler = new FollowUnfollowTagTask.FollowUnfollowTagHandler() {
         @Override
         public void onSuccess(Tag tag, boolean unfollowing) {
             if (tags != null) {

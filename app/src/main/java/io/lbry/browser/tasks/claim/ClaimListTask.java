@@ -19,9 +19,9 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class ClaimListTask extends AsyncTask<Void, Void, List<Claim>> {
-    private List<String> types;
-    private View progressView;
-    private ClaimListResultHandler handler;
+    private final List<String> types;
+    private final View progressView;
+    private final ClaimListResultHandler handler;
     private Exception error;
 
     public ClaimListTask(String type, View progressView, ClaimListResultHandler handler) {

@@ -23,9 +23,9 @@ import io.lbry.browser.utils.Helper;
 
 public class LoadGalleryItemsTask extends AsyncTask<Void, GalleryItem, List<GalleryItem>> {
     private static final String TAG = "LoadGalleryItemsTask";
-    private LoadGalleryHandler handler;
-    private View progressView;
-    private Context context;
+    private final LoadGalleryHandler handler;
+    private final View progressView;
+    private final Context context;
 
     public LoadGalleryItemsTask(View progressView, Context context, LoadGalleryHandler handler) {
         this.progressView = progressView;

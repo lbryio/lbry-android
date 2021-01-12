@@ -21,8 +21,8 @@ import io.lbry.browser.utils.LbryUri;
 import lombok.Setter;
 
 public class UrlSuggestionListAdapter extends RecyclerView.Adapter<UrlSuggestionListAdapter.ViewHolder> {
-    private Context context;
-    private List<UrlSuggestion> items;
+    private final Context context;
+    private final List<UrlSuggestion> items;
     @Setter
     private UrlSuggestionClickListener listener;
 
@@ -130,9 +130,9 @@ public class UrlSuggestionListAdapter extends RecyclerView.Adapter<UrlSuggestion
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected SolidIconView iconView;
-        protected TextView titleView;
-        protected TextView descView;
+        protected final SolidIconView iconView;
+        protected final TextView titleView;
+        protected final TextView descView;
         public ViewHolder(View v) {
             super(v);
             iconView = v.findViewById(R.id.url_suggestion_icon);

@@ -172,8 +172,8 @@ public class FirstRunActivity extends AppCompatActivity {
     }
 
     private static class CheckInstallIdTask extends AsyncTask<Void, Void, Boolean> {
-        private Context context;
-        private InstallIdHandler handler;
+        private final Context context;
+        private final InstallIdHandler handler;
         public CheckInstallIdTask(Context context, InstallIdHandler handler) {
             this.context = context;
             this.handler = handler;
@@ -236,7 +236,7 @@ public class FirstRunActivity extends AppCompatActivity {
     }
 
     private static class AuthenticateTask extends AsyncTask<Void, Void, Void> {
-        private Context context;
+        private final Context context;
         public AuthenticateTask(Context context) {
             this.context = context;
         }

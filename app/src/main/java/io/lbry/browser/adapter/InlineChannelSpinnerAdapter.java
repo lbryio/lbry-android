@@ -18,9 +18,9 @@ import io.lbry.browser.model.Claim;
 
 public class InlineChannelSpinnerAdapter extends ArrayAdapter<Claim> {
 
-    private List<Claim> channels;
-    private int layoutResourceId;
-    private LayoutInflater inflater;
+    private final List<Claim> channels;
+    private final int layoutResourceId;
+    private final LayoutInflater inflater;
 
     public InlineChannelSpinnerAdapter(Context context, int resource, List<Claim> channels) {
         super(context, resource, 0, channels);

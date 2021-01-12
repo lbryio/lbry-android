@@ -12,7 +12,7 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class NotificationDeleteTask extends AsyncTask<Void, Void, Boolean> {
-    private List<Long> ids;
+    private final List<Long> ids;
 
     public NotificationDeleteTask(List<Long> ids) {
         this.ids = ids;

@@ -30,9 +30,9 @@ import io.lbry.browser.utils.Lbryio;
 public class NotificationListTask extends AsyncTask<Void, Void, List<LbryNotification>> {
     private static final String TAG = "Notifications";
 
-    private Context context;
-    private ListNotificationsHandler handler;
-    private ProgressBar progressBar;
+    private final Context context;
+    private final ListNotificationsHandler handler;
+    private final ProgressBar progressBar;
     private Exception error;
 
     public NotificationListTask(Context context, ProgressBar progressBar, ListNotificationsHandler handler) {

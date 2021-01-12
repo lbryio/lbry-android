@@ -17,12 +17,12 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class ChannelSubscribeTask extends AsyncTask<Void, Void, Boolean> {
-    private Context context;
-    private String channelClaimId;
-    private Subscription subscription;
-    private ChannelSubscribeHandler handler;
+    private final Context context;
+    private final String channelClaimId;
+    private final Subscription subscription;
+    private final ChannelSubscribeHandler handler;
     private Exception error;
-    private boolean isUnsubscribing;
+    private final boolean isUnsubscribing;
 
     public ChannelSubscribeTask(Context context, String channelClaimId, Subscription subscription, boolean isUnsubscribing, ChannelSubscribeHandler handler) {
         this.context = context;

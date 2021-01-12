@@ -13,7 +13,7 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class WalletAddressUnusedTask extends AsyncTask<Void, Void, String> {
-    private WalletAddressUnusedHandler handler;
+    private final WalletAddressUnusedHandler handler;
     private Exception error;
 
     public WalletAddressUnusedTask(WalletAddressUnusedHandler handler) {

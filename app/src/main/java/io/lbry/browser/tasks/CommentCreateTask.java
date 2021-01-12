@@ -27,9 +27,9 @@ import okhttp3.Response;
 public class CommentCreateTask extends AsyncTask<Void, Void, Comment> {
     private static final String STATUS_ENDPOINT = "https://comments.lbry.com";
 
-    private Comment comment;
-    private View progressView;
-    private CommentCreateWithTipHandler handler;
+    private final Comment comment;
+    private final View progressView;
+    private final CommentCreateWithTipHandler handler;
     private Exception error;
 
     public CommentCreateTask(Comment comment, View progressView, CommentCreateWithTipHandler handler) {

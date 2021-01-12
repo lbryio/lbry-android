@@ -23,8 +23,8 @@ public class EditorsChoiceItemAdapter extends RecyclerView.Adapter<EditorsChoice
     private static final int VIEW_TYPE_HEADER = 1;
     private static final int VIEW_TYPE_CONTENT = 2;
 
-    private Context context;
-    private List<EditorsChoiceItem> items;
+    private final Context context;
+    private final List<EditorsChoiceItem> items;
     @Setter
     private EditorsChoiceItemListener listener;
 
@@ -48,11 +48,11 @@ public class EditorsChoiceItemAdapter extends RecyclerView.Adapter<EditorsChoice
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected ImageView thumbnailView;
-        protected TextView descriptionView;
-        protected TextView headerView;
-        protected TextView titleView;
-        protected View cardView;
+        protected final ImageView thumbnailView;
+        protected final TextView descriptionView;
+        protected final TextView headerView;
+        protected final TextView titleView;
+        protected final View cardView;
 
         public ViewHolder(View v) {
             super(v);

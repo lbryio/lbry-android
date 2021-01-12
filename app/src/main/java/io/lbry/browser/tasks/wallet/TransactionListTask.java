@@ -11,10 +11,10 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class TransactionListTask extends AsyncTask<Void, Void, List<Transaction>> {
-    private int page;
-    private int pageSize;
-    private View progressView;
-    private TransactionListHandler handler;
+    private final int page;
+    private final int pageSize;
+    private final View progressView;
+    private final TransactionListHandler handler;
     private Exception error;
 
     public TransactionListTask(int page, int pageSize, View progressView, TransactionListHandler handler) {

@@ -9,9 +9,9 @@ import io.lbry.browser.exceptions.ApiCallException;
 import io.lbry.browser.utils.Lbry;
 
 public class SetSdkSettingTask extends AsyncTask<Void, Void, Boolean> {
-    private String key;
-    private String value;
-    private GenericTaskHandler handler;
+    private final String key;
+    private final String value;
+    private final GenericTaskHandler handler;
     private Exception error;
     public SetSdkSettingTask(String key, String value, GenericTaskHandler handler) {
         this.key = key;

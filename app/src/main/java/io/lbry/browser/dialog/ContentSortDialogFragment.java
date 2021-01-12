@@ -57,8 +57,8 @@ public class ContentSortDialogFragment extends BottomSheetDialogFragment {
         private final int[] checkViewIds = {
                 R.id.sort_by_trending_item_selected, R.id.sort_by_new_item_selected, R.id.sort_by_top_item_selected
         };
-        private BottomSheetDialogFragment dialog;
-        private SortByListener listener;
+        private final BottomSheetDialogFragment dialog;
+        private final SortByListener listener;
 
         public SortByItemClickListener(BottomSheetDialogFragment dialog, SortByListener listener) {
             this.dialog = dialog;

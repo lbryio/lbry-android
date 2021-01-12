@@ -21,8 +21,8 @@ import okhttp3.Response;
 
 public class Lighthouse {
     public static final String CONNECTION_STRING = "https://lighthouse.lbry.com";
-    public static Map<String, List<UrlSuggestion>> autocompleteCache = new HashMap<>();
-    public static Map<Map<String, Object>, List<Claim>> searchCache = new HashMap<>();
+    public static final Map<String, List<UrlSuggestion>> autocompleteCache = new HashMap<>();
+    public static final Map<Map<String, Object>, List<Claim>> searchCache = new HashMap<>();
 
     private static Map<String, Object> buildSearchOptionsKey(String rawQuery, int size, int from, boolean nsfw, String relatedTo) {
         Map<String, Object> options = new HashMap<>();

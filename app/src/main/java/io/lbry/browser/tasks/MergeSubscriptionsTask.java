@@ -29,12 +29,12 @@ import okhttp3.Response;
 // background task to create a diff of local and remote subscriptions and try to merge
 public class MergeSubscriptionsTask extends AsyncTask<Void, Void, List<Subscription>> {
     private static final String TAG = "MergeSubscriptionsTask";
-    private Context context;
-    private List<Subscription> base;
+    private final Context context;
+    private final List<Subscription> base;
     private List<Subscription> diff;
-    private MergeSubscriptionsHandler handler;
+    private final MergeSubscriptionsHandler handler;
     private Exception error;
-    private boolean replaceLocal;
+    private final boolean replaceLocal;
 
     public MergeSubscriptionsTask(List<Subscription> base, boolean replaceLocal, Context context, MergeSubscriptionsHandler handler) {
         this.base = base;

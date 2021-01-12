@@ -25,12 +25,12 @@ import io.lbry.browser.utils.Lbryio;
 
 public class ClaimRewardTask extends AsyncTask<Void, Void, String> {
 
-    private Context context;
-    private String type;
-    private String rewardCode;
-    private View progressView;
+    private final Context context;
+    private final String type;
+    private final String rewardCode;
+    private final View progressView;
     private double amountClaimed;
-    private ClaimRewardHandler handler;
+    private final ClaimRewardHandler handler;
     private Exception error;
 
     public ClaimRewardTask(String type, String rewardCode, View progressView, Context context, ClaimRewardHandler handler) {

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class ExoplayerAudioRenderer extends DefaultRenderersFactory {
 
-    private TeeAudioProcessor.AudioBufferSink audioBufferSink;
+    private final TeeAudioProcessor.AudioBufferSink audioBufferSink;
 
     public ExoplayerAudioRenderer(Context context, TeeAudioProcessor.AudioBufferSink audioBufferSink) {
         super(context);

@@ -12,8 +12,8 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class FetchReferralCodeTask extends AsyncTask<Void, Void, String> {
-    private FetchReferralCodeHandler handler;
-    private View progressView;
+    private final FetchReferralCodeHandler handler;
+    private final View progressView;
     private Exception error;
 
     public FetchReferralCodeTask(View progressView, FetchReferralCodeHandler handler) {

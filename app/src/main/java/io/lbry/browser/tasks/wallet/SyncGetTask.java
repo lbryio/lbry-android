@@ -19,13 +19,13 @@ import io.lbry.browser.utils.Lbryio;
 
 public class SyncGetTask extends AsyncTask<Void, Void, WalletSync> {
 
-    private boolean applySyncChanges;
+    private final boolean applySyncChanges;
     private boolean applySyncSuccessful;
     private Exception error;
     private Exception syncApplyError;
     private String password;
-    private SyncTaskHandler handler;
-    private View progressView;
+    private final SyncTaskHandler handler;
+    private final View progressView;
 
     private String syncHash;
     private String syncData;

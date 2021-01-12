@@ -21,10 +21,10 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class PublishClaimTask extends AsyncTask<Void, Void, Claim> {
-    private Claim claim;
-    private String filePath;
-    private View progressView;
-    private ClaimResultHandler handler;
+    private final Claim claim;
+    private final String filePath;
+    private final View progressView;
+    private final ClaimResultHandler handler;
     private Exception error;
     public PublishClaimTask(Claim claim, String filePath, View progressView, ClaimResultHandler handler) {
         this.claim = claim;

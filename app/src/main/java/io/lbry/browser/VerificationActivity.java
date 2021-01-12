@@ -56,7 +56,7 @@ public class VerificationActivity extends FragmentActivity implements SignInList
     private boolean signedIn;
     private int flow;
 
-    private PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
+    private final PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
         @Override
         public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
             int responseCode = billingResult.getResponseCode();

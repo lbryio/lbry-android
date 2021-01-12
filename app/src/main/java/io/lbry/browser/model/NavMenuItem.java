@@ -37,8 +37,8 @@ public class NavMenuItem {
     public static final int ID_ITEM_SETTINGS = 401;
     public static final int ID_ITEM_ABOUT = 402;
 
-    private Context context;
-    private int id;
+    private final Context context;
+    private final int id;
     private boolean group;
     private int icon;
     private String title;

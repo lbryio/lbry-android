@@ -21,8 +21,8 @@ public class CommentListTask extends AsyncTask<Void, Void, List<Comment>> {
     private final int page;
     private final int pageSize;
     private final String claim;
-    private ProgressBar progressBar;
-    private CommentListHandler handler;
+    private final ProgressBar progressBar;
+    private final CommentListHandler handler;
     private Exception error;
 
     public CommentListTask(int page, int pageSize, String claim, ProgressBar progressBar, CommentListHandler handler) {

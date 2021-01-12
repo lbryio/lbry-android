@@ -23,7 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class ChannelFilterListAdapter extends RecyclerView.Adapter<ChannelFilterListAdapter.ViewHolder> {
-    private Context context;
+    private final Context context;
     private List<Claim> items;
     @Getter
     @Setter
@@ -42,12 +42,12 @@ public class ChannelFilterListAdapter extends RecyclerView.Adapter<ChannelFilter
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected View mediaContainer;
-        protected View alphaContainer;
-        protected View allView;
-        protected ImageView thumbnailView;
-        protected TextView alphaView;
-        protected TextView titleView;
+        protected final View mediaContainer;
+        protected final View alphaContainer;
+        protected final View allView;
+        protected final ImageView thumbnailView;
+        protected final TextView alphaView;
+        protected final TextView titleView;
         public ViewHolder(View v) {
             super(v);
             mediaContainer = v.findViewById(R.id.channel_filter_media_container);

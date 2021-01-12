@@ -77,7 +77,7 @@ public class ChannelManagerFragment extends BaseFragment implements ActionMode.C
         return root;
     }
 
-    private View.OnClickListener newChannelClickListener = new View.OnClickListener() {
+    private final View.OnClickListener newChannelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Context context = getContext();

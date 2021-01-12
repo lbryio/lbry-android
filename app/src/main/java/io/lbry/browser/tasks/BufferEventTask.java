@@ -17,11 +17,11 @@ public class BufferEventTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "LbryBufferEvent";
     private static final String ENDPOINT = "https://collector-service.api.lbry.tv/api/v1/events/video";
 
-    private String streamUrl;
-    private String userIdHash;
-    private long streamDuration;
-    private long streamPosition;
-    private long bufferDuration;
+    private final String streamUrl;
+    private final String userIdHash;
+    private final long streamDuration;
+    private final long streamPosition;
+    private final long bufferDuration;
 
     public BufferEventTask(String streamUrl, long streamDuration, long streamPosition, long bufferDuration, String userIdHash) {
         this.streamUrl = streamUrl;

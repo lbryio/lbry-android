@@ -13,7 +13,7 @@ import io.lbry.browser.utils.Lbryio;
 import okhttp3.Response;
 
 public class LogPublishTask extends AsyncTask<Void, Void, Void> {
-    private Claim claimResult;
+    private final Claim claimResult;
     public LogPublishTask(Claim claimResult) {
         this.claimResult = claimResult;
     }

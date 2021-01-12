@@ -15,11 +15,11 @@ import io.lbry.browser.utils.Lbryio;
 import okhttp3.Response;
 
 public class LogFileViewTask extends AsyncTask<Void, Void, Boolean> {
-    private String uri;
-    private Claim claim;
+    private final String uri;
+    private final Claim claim;
     private Exception error;
-    private GenericTaskHandler handler;
-    private long timeToStart;
+    private final GenericTaskHandler handler;
+    private final long timeToStart;
 
     public LogFileViewTask(String uri, Claim claim, long timeToStart, GenericTaskHandler handler) {
         this.uri = uri;

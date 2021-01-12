@@ -65,8 +65,8 @@ public final class Lbryio {
     public static String AUTH_TOKEN;
     private static boolean generatingAuthToken = false;
 
-    public static List<Reward> allRewards = new ArrayList<>();
-    public static List<Reward> unclaimedRewards = new ArrayList<>();
+    public static final List<Reward> allRewards = new ArrayList<>();
+    public static final List<Reward> unclaimedRewards = new ArrayList<>();
     public static double totalUnclaimedRewardAmount = 0;
 
     public static Response call(String resource, String action, Context context) throws LbryioRequestException, LbryioResponseException {

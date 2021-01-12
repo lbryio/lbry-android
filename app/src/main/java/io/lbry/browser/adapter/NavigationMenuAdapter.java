@@ -24,8 +24,8 @@ public class NavigationMenuAdapter extends RecyclerView.Adapter<NavigationMenuAd
     private static final int TYPE_GROUP = 1;
     private static final int TYPE_ITEM = 2;
 
-    private Context context;
-    private List<NavMenuItem> menuItems;
+    private final Context context;
+    private final List<NavMenuItem> menuItems;
     private NavMenuItem currentItem;
     @Setter
     private NavigationMenuItemClickListener listener;
@@ -65,8 +65,8 @@ public class NavigationMenuAdapter extends RecyclerView.Adapter<NavigationMenuAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected SolidIconView iconView;
-        protected TextView titleView;
+        protected final SolidIconView iconView;
+        protected final TextView titleView;
         public ViewHolder(View v) {
             super(v);
             titleView = v.findViewById(R.id.nav_menu_title);

@@ -640,7 +640,7 @@ public class ShuffleFragment extends BaseFragment {
         dailyViewTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private ClaimRewardTask.ClaimRewardHandler eligibleRewardHandler = new ClaimRewardTask.ClaimRewardHandler() {
+    private final ClaimRewardTask.ClaimRewardHandler eligibleRewardHandler = new ClaimRewardTask.ClaimRewardHandler() {
         @Override
         public void onSuccess(double amountClaimed, String message) {
             if (Helper.isNullOrEmpty(message)) {

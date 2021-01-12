@@ -18,8 +18,8 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class FetchRewardsTask extends AsyncTask<Void, Void, List<Reward>> {
-    private FetchRewardsHandler handler;
-    private View progressView;
+    private final FetchRewardsHandler handler;
+    private final View progressView;
     private Exception error;
 
     public FetchRewardsTask(View progressView, FetchRewardsHandler handler) {

@@ -15,8 +15,8 @@ import io.lbry.browser.model.Language;
 import io.lbry.browser.utils.Predefined;
 
 public class LanguageSpinnerAdapter extends ArrayAdapter<Language> {
-    private int layoutResourceId;
-    private LayoutInflater inflater;
+    private final int layoutResourceId;
+    private final LayoutInflater inflater;
 
     public LanguageSpinnerAdapter(Context context, int resource) {
         super(context, resource, 0, Predefined.PUBLISH_LANGUAGES);

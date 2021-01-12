@@ -44,8 +44,8 @@ import okhttp3.Response;
 
 public final class Lbry {
     private static final Object lock = new Object();
-    public static LinkedHashMap<ClaimCacheKey, Claim> claimCache = new LinkedHashMap<>();
-    public static LinkedHashMap<Map<String, Object>, ClaimSearchCacheValue> claimSearchCache = new LinkedHashMap<>();
+    public static final LinkedHashMap<ClaimCacheKey, Claim> claimCache = new LinkedHashMap<>();
+    public static final LinkedHashMap<Map<String, Object>, ClaimSearchCacheValue> claimSearchCache = new LinkedHashMap<>();
     public static WalletBalance walletBalance = new WalletBalance();
     public static List<Tag> knownTags = new ArrayList<>();
     public static List<Tag> followedTags = new ArrayList<>();

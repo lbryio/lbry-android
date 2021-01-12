@@ -1351,8 +1351,8 @@ public class PublishFormFragment extends BaseFragment implements
     }
 
     private static class VideoProbeTask extends AsyncTask<Void, Void, VideoInformation> {
-        private String filePath;
-        private VideoProbeHandler handler;
+        private final String filePath;
+        private final VideoProbeHandler handler;
         public VideoProbeTask(String filePath, VideoProbeHandler handler) {
             this.filePath = filePath;
             this.handler = handler;
@@ -1390,11 +1390,11 @@ public class PublishFormFragment extends BaseFragment implements
 
     private static class VideoTranscodeTask extends AsyncTask<Void, Integer, Boolean> {
 
-        private String filePath;
-        private String scaleFlag;
-        private String outputFilePath;
-        private boolean transcodeRequired;
-        private VideoTranscodeHandler handler;
+        private final String filePath;
+        private final String scaleFlag;
+        private final String outputFilePath;
+        private final boolean transcodeRequired;
+        private final VideoTranscodeHandler handler;
 
         public VideoTranscodeTask(String filePath, String outputFilePath, String scaleFlag, boolean transcodeRequired, VideoTranscodeHandler handler) {
             this.handler = handler;
@@ -1504,10 +1504,10 @@ public class PublishFormFragment extends BaseFragment implements
     }
 
     private static class CreateThumbnailTask extends AsyncTask<Void, Void, String> {
-        private Context context;
-        private String filePath;
-        private String type;
-        private CreateThumbnailHandler handler;
+        private final Context context;
+        private final String filePath;
+        private final String type;
+        private final CreateThumbnailHandler handler;
         private Exception error;
         public CreateThumbnailTask(String filePath, String type, Context context, CreateThumbnailHandler handler) {
             this.context = context;

@@ -18,8 +18,8 @@ import io.lbry.browser.model.Tag;
 import io.lbry.browser.utils.Helper;
 
 public class LoadTagsTask extends AsyncTask<Void, Void, List<Tag>> {
-    private Context context;
-    private LoadTagsHandler handler;
+    private final Context context;
+    private final LoadTagsHandler handler;
     private Exception error;
 
     public LoadTagsTask(Context context, LoadTagsHandler handler) {

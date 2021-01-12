@@ -24,8 +24,8 @@ import lombok.Setter;
 
 public class InviteeListAdapter extends RecyclerView.Adapter<InviteeListAdapter.ViewHolder> {
 
-    private Context context;
-    private List<Invitee> items;
+    private final Context context;
+    private final List<Invitee> items;
 
     public InviteeListAdapter(List<Invitee> invitees, Context context) {
         this.context = context;
@@ -80,8 +80,8 @@ public class InviteeListAdapter extends RecyclerView.Adapter<InviteeListAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected TextView emailView;
-        protected TextView rewardView;
+        protected final TextView emailView;
+        protected final TextView rewardView;
 
         public ViewHolder(View v) {
             super(v);

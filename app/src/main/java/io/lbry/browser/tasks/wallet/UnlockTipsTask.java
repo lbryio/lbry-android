@@ -19,7 +19,7 @@ import io.lbry.browser.utils.Lbry;
 
 public class UnlockTipsTask extends AsyncTask<Void, Void, Boolean> {
 
-    private GenericTaskHandler handler;
+    private final GenericTaskHandler handler;
     private Exception error;
 
     public UnlockTipsTask(GenericTaskHandler handler) {

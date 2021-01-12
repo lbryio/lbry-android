@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class Language {
-    private String code;
-    private String name;
-    private int stringResourceId;
+    private final String code;
+    private final String name;
+    private final int stringResourceId;
 
     public Language(String code, String name, int stringResourceId) {
         this.code = code;

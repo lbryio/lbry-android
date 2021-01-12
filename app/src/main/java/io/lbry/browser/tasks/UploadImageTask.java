@@ -21,9 +21,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class UploadImageTask extends AsyncTask<Void, Void, String> {
-    private String filePath;
-    private View progressView;
-    private UploadThumbnailHandler handler;
+    private final String filePath;
+    private final View progressView;
+    private final UploadThumbnailHandler handler;
     private Exception error;
 
     public UploadImageTask(String filePath, View progressView, UploadThumbnailHandler handler) {

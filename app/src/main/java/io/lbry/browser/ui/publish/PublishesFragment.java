@@ -79,7 +79,7 @@ public class PublishesFragment extends BaseFragment implements ActionMode.Callba
         return root;
     }
 
-    private View.OnClickListener newPublishClickListener = new View.OnClickListener() {
+    private final View.OnClickListener newPublishClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Context context = getContext();

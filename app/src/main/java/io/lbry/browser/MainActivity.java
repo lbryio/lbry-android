@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     public static boolean startingFilePickerActivity = false;
     public static boolean startingShareActivity = false;
     public static boolean startingPermissionRequest = false;
-    public static boolean startingSignInFlowActivity = false;
+    public static final boolean startingSignInFlowActivity = false;
 
     private ActionMode actionMode;
     private BillingClient billingClient;
@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private List<FetchClaimsListener> fetchClaimsListeners;
     private List<FetchChannelsListener> fetchChannelsListeners;
     @Getter
-    private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private boolean walletBalanceUpdateScheduled;
     private boolean shouldOpenUserSelectedMenuItem;
     private boolean walletSyncScheduled;
@@ -1012,7 +1012,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         openFragment(RewardsFragment.class, true, NavMenuItem.ID_ITEM_REWARDS);
     }
 
-    private FragmentManager.OnBackStackChangedListener backStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
+    private final FragmentManager.OnBackStackChangedListener backStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
         @Override
         public void onBackStackChanged() {
             FragmentManager manager = getSupportFragmentManager();
@@ -3246,8 +3246,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     private static class CheckSdkReadyTask extends AsyncTask<Void, Void, Boolean> {
-        private Context context;
-        private List<SdkStatusListener> listeners;
+        private final Context context;
+        private final List<SdkStatusListener> listeners;
 
         public CheckSdkReadyTask(Context context, List<SdkStatusListener> listeners) {
             this.context = context;

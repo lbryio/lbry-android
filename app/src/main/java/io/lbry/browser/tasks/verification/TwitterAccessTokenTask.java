@@ -20,8 +20,8 @@ public class TwitterAccessTokenTask extends AsyncTask<Void, Void, String> {
     private static final String ENDPOINT = "https://api.twitter.com/oauth/access_token";
 
     private Exception error;
-    private String oauthParams;
-    private TwitterOauthHandler handler;
+    private final String oauthParams;
+    private final TwitterOauthHandler handler;
 
     public TwitterAccessTokenTask(String oauthParams, TwitterOauthHandler handler) {
         this.oauthParams = oauthParams;

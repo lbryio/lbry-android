@@ -25,7 +25,7 @@ public class VerificationPagerAdapter extends FragmentStateAdapter {
     public static final int PAGE_VERIFICATION_WALLET = 2;
     public static final int PAGE_VERIFICATION_MANUAL = 3;
 
-    private FragmentActivity activity;
+    private final FragmentActivity activity;
 
     public VerificationPagerAdapter(FragmentActivity activity) {
         super(activity);

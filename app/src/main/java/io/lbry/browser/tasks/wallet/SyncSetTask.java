@@ -14,10 +14,10 @@ import io.lbry.browser.utils.Lbryio;
 
 public class SyncSetTask extends AsyncTask<Void, Void, String> {
     private Exception error;
-    private String oldHash;
-    private String newHash;
-    private String data;
-    private SyncTaskHandler handler;
+    private final String oldHash;
+    private final String newHash;
+    private final String data;
+    private final SyncTaskHandler handler;
 
     public SyncSetTask(String oldHash, String newHash, String data, SyncTaskHandler handler) {
         this.oldHash = oldHash;

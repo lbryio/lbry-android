@@ -16,12 +16,12 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class SupportCreateTask extends AsyncTask<Void, Void, Boolean> {
-    private String claimId;
-    private String channelId;
-    private BigDecimal amount;
-    private boolean tip;
-    private View progressView;
-    private GenericTaskHandler handler;
+    private final String claimId;
+    private final String channelId;
+    private final BigDecimal amount;
+    private final boolean tip;
+    private final View progressView;
+    private final GenericTaskHandler handler;
     private Exception error;
 
     public SupportCreateTask(String claimId, String channelId, BigDecimal amount, boolean tip, View progressView, GenericTaskHandler handler) {

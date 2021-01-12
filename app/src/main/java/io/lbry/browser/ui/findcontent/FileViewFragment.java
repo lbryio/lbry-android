@@ -788,7 +788,7 @@ public class FileViewFragment extends BaseFragment implements
         }
     }
 
-    private View.OnClickListener bellIconListener = new View.OnClickListener()  {
+    private final View.OnClickListener bellIconListener = new View.OnClickListener()  {
         @Override
         public void onClick(View view) {
             if (claim != null && claim.getSigningChannel() != null) {
@@ -824,7 +824,7 @@ public class FileViewFragment extends BaseFragment implements
         }
     };
 
-    private View.OnClickListener followUnfollowListener = new View.OnClickListener() {
+    private final View.OnClickListener followUnfollowListener = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
             if (claim != null && claim.getSigningChannel() != null) {
@@ -2635,7 +2635,7 @@ public class FileViewFragment extends BaseFragment implements
         dailyViewTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private ClaimRewardTask.ClaimRewardHandler eligibleRewardHandler = new ClaimRewardTask.ClaimRewardHandler() {
+    private final ClaimRewardTask.ClaimRewardHandler eligibleRewardHandler = new ClaimRewardTask.ClaimRewardHandler() {
         @Override
         public void onSuccess(double amountClaimed, String message) {
             if (Helper.isNullOrEmpty(message)) {
@@ -2817,7 +2817,7 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     private static class LbryWebViewClient extends WebViewClient {
-        private Context context;
+        private final Context context;
         public LbryWebViewClient(Context context) {
             this.context = context;
         }

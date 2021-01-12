@@ -23,10 +23,10 @@ import io.lbry.browser.utils.Lbryio;
 import okhttp3.Response;
 
 public class AndroidPurchaseTask extends AsyncTask<Void, Void, RewardVerified> {
-    private Context context;
-    private View progressView;
-    private String purchaseToken;
-    private RewardVerifiedHandler handler;
+    private final Context context;
+    private final View progressView;
+    private final String purchaseToken;
+    private final RewardVerifiedHandler handler;
     private Exception error;
 
     public AndroidPurchaseTask(String purchaseToken, View progressView, Context context, RewardVerifiedHandler handler) {

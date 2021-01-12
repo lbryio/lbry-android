@@ -585,8 +585,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     }
 
     private static class ChannelPagerAdapter extends FragmentStateAdapter {
-        private Claim channelClaim;
-        private String commentHash;
+        private final Claim channelClaim;
+        private final String commentHash;
         public ChannelPagerAdapter(Claim channelClaim, String commentHash, FragmentActivity activity) {
             super(activity);
             this.channelClaim = channelClaim;

@@ -12,7 +12,7 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class WalletBalanceTask extends AsyncTask<Void, Void, WalletBalance> {
-    private WalletBalanceHandler handler;
+    private final WalletBalanceHandler handler;
     private Exception error;
 
     public WalletBalanceTask(WalletBalanceHandler handler) {

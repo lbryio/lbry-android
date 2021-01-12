@@ -21,8 +21,8 @@ import io.lbry.browser.utils.Helper;
 import lombok.Setter;
 
 public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.ViewHolder> {
-    private Context context;
-    private List<GalleryItem> items;
+    private final Context context;
+    private final List<GalleryItem> items;
     @Setter
     private GalleryItemClickListener listener;
 
@@ -32,8 +32,8 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected ImageView thumbnailView;
-        protected TextView durationView;
+        protected final ImageView thumbnailView;
+        protected final TextView durationView;
         public ViewHolder(View v) {
             super(v);
             thumbnailView = v.findViewById(R.id.gallery_item_thumbnail);
@@ -96,8 +96,8 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
 
     public static  class GalleryGridItemDecoration extends RecyclerView.ItemDecoration {
 
-        private int spanCount;
-        private int spacing;
+        private final int spanCount;
+        private final int spacing;
 
         public GalleryGridItemDecoration(int spanCount, int spacing) {
             this.spanCount = spanCount;

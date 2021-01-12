@@ -8,7 +8,7 @@ import android.view.Gravity;
 import androidx.appcompat.widget.AppCompatTextView;
 
 public class OutlineIconView extends AppCompatTextView {
-    private Context context;
+    private final Context context;
 
     public OutlineIconView(Context context) {
         super(context);
