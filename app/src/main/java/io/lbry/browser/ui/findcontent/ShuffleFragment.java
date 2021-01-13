@@ -684,10 +684,7 @@ public class ShuffleFragment extends BaseFragment {
 
             @Override
             public boolean onDown(MotionEvent e) {
-                if (control instanceof PlayerView) {
-                    return false;
-                }
-                return true;
+                return control instanceof PlayerView;
             }
 
             @Override
