@@ -2988,10 +2988,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 } else {
                     try {
                         LbryUri uri = LbryUri.parse(url);
+                        String checkedURL = url.startsWith(LbryUri.PROTO_DEFAULT) ? url : uri.toString();
                         if (uri.isChannel()) {
-                            openChannelUrl(url.startsWith(LbryUri.PROTO_DEFAULT) ? url : uri.toString());
+                            openChannelUrl(checkedURL);
                         } else {
-                            openFileUrl(url.startsWith(LbryUri.PROTO_DEFAULT) ? url : uri.toString());
+                            openFileUrl(checkedURL);
                         }
                     } catch (LbryUriException ex) {
                         // pass
