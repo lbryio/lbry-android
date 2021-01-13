@@ -2347,7 +2347,7 @@ public class FileViewFragment extends BaseFragment implements
 
     private void resolveCommentPosters() {
         if (commentListAdapter != null) {
-            long st = System.currentTimeMillis();;
+            long st = System.currentTimeMillis();
             List<String> urlsToResolve = new ArrayList<>(commentListAdapter.getClaimUrlsToResolve());
             if (urlsToResolve.size() > 0) {
                 ResolveTask task = new ResolveTask(urlsToResolve, Lbry.LBRY_TV_CONNECTION_STRING, null, new ClaimListResultHandler() {

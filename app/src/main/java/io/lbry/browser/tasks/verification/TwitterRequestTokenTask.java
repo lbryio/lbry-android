@@ -43,7 +43,7 @@ public class TwitterRequestTokenTask extends AsyncTask<Void, Void, String> {
             OAuthParameters oauthParams = new OAuthParameters();
             oauthParams.callback = "https://lbry.tv";
             oauthParams.consumerKey = new String(
-                    Base64.decode(consumerKey, Base64.NO_WRAP), StandardCharsets.UTF_8.name());;
+                    Base64.decode(consumerKey, Base64.NO_WRAP), StandardCharsets.UTF_8.name());
             oauthParams.signatureMethod = "HMAC-SHA-1";
             oauthParams.signer = signer;
             oauthParams.computeNonce();

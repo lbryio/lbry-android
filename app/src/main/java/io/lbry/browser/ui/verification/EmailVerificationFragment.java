@@ -147,7 +147,7 @@ public class EmailVerificationFragment extends Fragment {
                 if (view != null && error != null) {
                     Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).
                             setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
-                };
+                }
                 Helper.setViewVisibility(buttonContinue, View.VISIBLE);
             }
         });
