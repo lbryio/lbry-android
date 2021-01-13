@@ -623,6 +623,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                     return commentsFragment;
             }
 
+            // TODO: createFragment is defined as a @NonNull and should never be able to return null.
             return null;
         }
 
