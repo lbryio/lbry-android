@@ -634,8 +634,8 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
                     showError(getString(R.string.please_enter_valid_deposit));
                     return;
                 }
-                if (depositAmount == 0) {
-                    String error = getResources().getQuantityString(R.plurals.min_deposit_required, depositAmount == 1 ? 1 : 2, String.valueOf(Helper.MIN_DEPOSIT));
+                if (depositAmount <= 0.000001) {
+                    String error = getResources().getQuantityString(R.plurals.min_deposit_required, Math.abs(depositAmount-1.0) <= 0.000001 ? 1 : 2, String.valueOf(Helper.MIN_DEPOSIT));
                     showError(error);
                     return;
                 }
