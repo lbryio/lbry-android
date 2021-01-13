@@ -123,7 +123,7 @@ public class PublishFragment extends BaseFragment implements
 
     private void displayPreviewWithCameraX() {
         Context context = getContext();
-        if (context != null && MainActivity.hasPermission(Manifest.permission.CAMERA, context)) {
+        if (MainActivity.hasPermission(Manifest.permission.CAMERA, context)) {
             cameraProviderFuture = ProcessCameraProvider.getInstance(context);
             cameraProviderFuture.addListener(new Runnable() {
                 @Override
