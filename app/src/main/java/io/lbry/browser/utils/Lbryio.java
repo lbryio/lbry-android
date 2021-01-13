@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -304,7 +305,7 @@ public final class Lbryio {
     private static void broadcastAuthTokenGenerated(Context context) {
         try {
             if (context != null) {
-                String encryptedAuthToken = Utils.encrypt(AUTH_TOKEN.getBytes("UTF8"), context, Lbry.KEYSTORE);
+                String encryptedAuthToken = Utils.encrypt(AUTH_TOKEN.getBytes(StandardCharsets.UTF_8), context, Lbry.KEYSTORE);
                 Intent intent = new Intent(MainActivity.ACTION_AUTH_TOKEN_GENERATED);
                 intent.putExtra("authToken", encryptedAuthToken);
                 context.sendBroadcast(intent);

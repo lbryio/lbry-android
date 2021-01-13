@@ -121,6 +121,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ConnectException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1799,7 +1800,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         if (!Helper.isNullOrEmpty(encryptedAuthToken)) {
             try {
                 Lbryio.AUTH_TOKEN = new String(Utils.decrypt(
-                        Base64.decode(encryptedAuthToken, Base64.NO_WRAP), this, Lbry.KEYSTORE), "UTF8");
+                        Base64.decode(encryptedAuthToken, Base64.NO_WRAP), this, Lbry.KEYSTORE), StandardCharsets.UTF_8);
             } catch (Exception ex) {
                 // pass. A new auth token would have to be generated if the old one cannot be decrypted
                 Log.e(TAG, "Could not decrypt existing auth token.", ex);
