@@ -1171,7 +1171,7 @@ public class PublishFormFragment extends BaseFragment implements
         Helper.setViewEnabled(inputTitle, true);
         Helper.setViewEnabled(inputDescription, true);
         Helper.setViewEnabled(inputTagFilter, false);
-        Helper.setViewEnabled(inputAddress, editMode ? false : true);
+        Helper.setViewEnabled(inputAddress, !editMode);
         Helper.setViewEnabled(inputDeposit, true);
         Helper.setViewEnabled(inputPrice, true);
         Helper.setViewEnabled(inputOtherLicenseDescription, true);
