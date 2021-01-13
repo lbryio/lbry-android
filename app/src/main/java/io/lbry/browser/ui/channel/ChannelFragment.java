@@ -393,7 +393,12 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                 }
             }
             if (params.containsKey("url")) {
-                LbryUri newLbryUri = LbryUri.tryParse(params.get("url").toString());
+                Object o = params.get("url");
+                String urlString = "";
+                if (o != null) {
+                    urlString = o.toString();
+                }
+                LbryUri newLbryUri = LbryUri.tryParse(urlString);
                 if (newLbryUri != null) {
                     newUrl = newLbryUri.toString();
                     String qs = newLbryUri.getQueryString();
