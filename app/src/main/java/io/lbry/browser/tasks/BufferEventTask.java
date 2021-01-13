@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class BufferEventTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "LbryBufferEvent";
@@ -53,7 +54,11 @@ public class BufferEventTask extends AsyncTask<Void, Void, Void> {
                     build();
 
             Response response = client.newCall(request).execute();
-            String responseString = response.body().string();
+            ResponseBody resBody = response.body();
+            String responseString = "";
+            if (resBody != null) {
+                responseString = response.body().string();
+            }
             Log.d(TAG, String.format("buffer event sent: %s", responseString));
         } catch (Exception ex) {
             // we don't want to fail if a buffer event fails to register
