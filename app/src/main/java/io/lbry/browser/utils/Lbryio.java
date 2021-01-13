@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.exceptions.AuthTokenInvalidatedException;
 import io.lbry.browser.exceptions.LbryioRequestException;

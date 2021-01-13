@@ -3,8 +3,6 @@ package io.lbry.browser.tasks.verification;
 import android.os.AsyncTask;
 import android.view.View;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,11 +1,9 @@
 package io.lbry.browser.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;
-import lombok.Setter;
 
 public class ClaimSearchCacheValue {
     @Getter

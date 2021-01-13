@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.lbry.browser.exceptions.ApiCallException;
-import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;

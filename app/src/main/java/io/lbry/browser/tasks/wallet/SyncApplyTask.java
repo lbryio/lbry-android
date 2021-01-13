@@ -3,7 +3,6 @@ package io.lbry.browser.tasks.wallet;
 import android.os.AsyncTask;
 import android.view.View;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;

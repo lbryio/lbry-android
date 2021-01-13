@@ -2,17 +2,14 @@ package io.lbry.browser.tasks.lbryinc;
 
 import android.os.AsyncTask;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
 
 import io.lbry.browser.exceptions.LbryioRequestException;
 import io.lbry.browser.exceptions.LbryioResponseException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.utils.Lbryio;
-import okhttp3.Response;
 
 public class LogFileViewTask extends AsyncTask<Void, Void, Boolean> {
     private final String uri;

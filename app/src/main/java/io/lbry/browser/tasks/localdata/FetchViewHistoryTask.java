@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 import io.lbry.browser.data.DatabaseHelper;
-import io.lbry.browser.model.UrlSuggestion;
 import io.lbry.browser.model.ViewHistory;
 import io.lbry.browser.utils.Helper;
 

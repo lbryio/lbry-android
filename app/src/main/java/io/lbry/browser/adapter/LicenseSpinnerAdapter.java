@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import io.lbry.browser.R;
-import io.lbry.browser.model.Language;
 import io.lbry.browser.model.License;
 import io.lbry.browser.utils.Predefined;
 

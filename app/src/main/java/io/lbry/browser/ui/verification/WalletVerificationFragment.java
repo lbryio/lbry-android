@@ -23,7 +23,6 @@ import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.VerificationActivity;
 import io.lbry.browser.listener.SdkStatusListener;
-import io.lbry.browser.listener.SignInListener;
 import io.lbry.browser.listener.WalletSyncListener;
 import io.lbry.browser.model.WalletSync;
 import io.lbry.browser.tasks.wallet.DefaultSyncTaskHandler;

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatSpinner;
@@ -41,7 +40,6 @@ import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.tasks.wallet.SupportCreateTask;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
-import lombok.Setter;
 
 public class CreateSupportDialogFragment extends BottomSheetDialogFragment implements WalletBalanceListener {
     public static final String TAG = "CreateSupportDialog";

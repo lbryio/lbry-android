@@ -4,18 +4,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import java.util.List;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.data.DatabaseHelper;
-import io.lbry.browser.exceptions.LbryRequestException;
-import io.lbry.browser.exceptions.LbryResponseException;
-import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.Tag;
-import io.lbry.browser.utils.Helper;
 
 public class LoadTagsTask extends AsyncTask<Void, Void, List<Tag>> {
     private final Context context;

@@ -15,12 +15,10 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.lbry.browser.MainActivity;
 import io.lbry.browser.model.lbryinc.RewardVerified;
 import io.lbry.browser.tasks.RewardVerifiedHandler;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
-import okhttp3.Response;
 
 public class AndroidPurchaseTask extends AsyncTask<Void, Void, RewardVerified> {
     private final Context context;

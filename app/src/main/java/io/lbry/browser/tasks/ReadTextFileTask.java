@@ -4,11 +4,8 @@ import android.os.AsyncTask;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.Buffer;
 
 import io.lbry.browser.utils.Helper;
 

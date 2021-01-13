@@ -1,6 +1,5 @@
 package io.lbry.browser.tasks.verification;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Base64;
 
@@ -10,7 +9,6 @@ import com.google.api.client.http.GenericUrl;
 
 import java.nio.charset.StandardCharsets;
 
-import io.lbry.browser.VerificationActivity;
 import io.lbry.browser.model.TwitterOauth;
 import io.lbry.browser.tasks.TwitterOauthHandler;
 import io.lbry.browser.utils.Helper;

@@ -13,7 +13,6 @@ import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.exceptions.LbryioRequestException;
 import io.lbry.browser.exceptions.LbryioResponseException;
 import io.lbry.browser.model.lbryinc.Subscription;
-import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class ChannelSubscribeTask extends AsyncTask<Void, Void, Boolean> {

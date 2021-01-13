@@ -2,15 +2,9 @@ package io.lbry.browser.tasks.verification;
 
 import android.os.AsyncTask;
 
-import com.google.api.client.auth.oauth.OAuthHmacSigner;
-import com.google.api.client.auth.oauth.OAuthParameters;
-import com.google.api.client.http.GenericUrl;
-
-import io.lbry.browser.VerificationActivity;
 import io.lbry.browser.model.TwitterOauth;
 import io.lbry.browser.tasks.TwitterOauthHandler;
 import io.lbry.browser.utils.Helper;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;

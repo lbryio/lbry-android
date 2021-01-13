@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.lbry.browser.exceptions.ApiCallException;
-import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.utils.Lbry;
 
 // Just run delete on the specified claim IDs (no need for a handler)

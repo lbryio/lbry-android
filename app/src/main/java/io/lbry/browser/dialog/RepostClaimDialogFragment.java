@@ -37,7 +37,6 @@ import io.lbry.browser.tasks.claim.StreamRepostTask;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryUri;
-import lombok.Setter;
 
 public class RepostClaimDialogFragment extends BottomSheetDialogFragment implements WalletBalanceListener {
     public static final String TAG = "RepostClaimDialog";

@@ -7,11 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +15,6 @@ import io.lbry.browser.exceptions.ApiCallException;
 import io.lbry.browser.model.Comment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
-import io.lbry.browser.utils.Lbryio;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

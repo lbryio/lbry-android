@@ -2,10 +2,8 @@ package io.lbry.browser.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +15,6 @@ import io.lbry.browser.R;
 import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.ui.controls.SolidIconView;
 import io.lbry.browser.utils.Helper;
-import lombok.Getter;
 import lombok.Setter;
 
 public class NavigationMenuAdapter extends RecyclerView.Adapter<NavigationMenuAdapter.ViewHolder> {

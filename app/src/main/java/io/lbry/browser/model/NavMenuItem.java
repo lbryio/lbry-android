@@ -2,8 +2,6 @@ package io.lbry.browser.model;
 
 import android.content.Context;
 
-import androidx.core.content.res.ResourcesCompat;
-
 import java.util.ArrayList;
 import java.util.List;
 
