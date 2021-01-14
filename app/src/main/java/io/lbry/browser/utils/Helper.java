@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.apache.commons.codec.binary.Hex;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,9 +37,6 @@ import org.json.JSONObject;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -791,17 +787,4 @@ public final class Helper {
         return id.toString();
     }
 
-    public static String SHA256(String value) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(value.getBytes(StandardCharsets.UTF_8));
-
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1)
-                return Hex.encodeHexString(hash, true);
-            else
-                return new String(Hex.encodeHex(hash)).toLowerCase();
-        } catch (NoSuchAlgorithmException ex) {
-            return null;
-        }
-    }
 }
