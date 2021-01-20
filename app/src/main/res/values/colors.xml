@@ -58,4 +58,7 @@
 
     <color name="caption">#CAEDB9</color>
     <color name="overlay">#CC333333</color>
+
+    <color name="codeTagText">#2E3439</color>
+    <color name="codeTagBackground">#D0E8FF</color>
 </resources>
