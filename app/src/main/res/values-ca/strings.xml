@@ -20,6 +20,7 @@
     <string name="settings">Configuració</string>
     <string name="about">Quant a</string>
     <string name="sign_in">Inicia sessió</string>
+    <string name="shuffle">Mescla</string>
     <string name="startup_failed">Error en iniciar l\'aplicació. Sisplau, comprova la teva connexió i torna a intentar-ho. Si el problema persisteix, sisplau envia un correu a hello@lbry.com</string>
     <string name="no_claim_search_content">No hi ha contingut per mostrar en aquest moment. Sisplau, canvia la teva selecció o comprova-ho més tard.</string>
 
@@ -39,7 +40,7 @@
     <string name="discover">Descobreix</string>
     <string name="lbry_works_better">LBRY funciona millor si segueixes almenys 5 creadors que t\'agradin. Inicia la sessió per mostrar els creadors que segueixes si ja tens un compte.</string>
     <string name="select_five_subscriptions">Sisplau, selecciona fins a 5 creadors per continuar.</string>
-    <string name="n_remaining">%1$d restant...</string>
+    <string name="n_remaining">Falten %1$d...</string>
     <string name="done">Fet</string>
     <string name="all">Tot</string>
     <string name="discover_channels">Descobreix canals nous</string>
@@ -90,6 +91,14 @@
     <string name="please_select_repost_channel">Sisplau, selecciona un canal on republicar.</string>
     <string name="reply">Respon</string>
     <string name="replying_to">Responent a %1$s</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s visualització</item>
+        <item quantity="other">%1$s visualitzacions</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Així es comprarà \"%1$s\" per %2$s crèdit</item>
+        <item quantity="other">Així es comprarà \"%1$s\" per %2$s crèdits</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="one">Publicar i donar %1$s crèdit en propina?</item>
         <item quantity="other">Publicar i donar %1$s crèdits en propina?</item>
@@ -102,20 +111,14 @@
         <item quantity="one">Així es publicarà el teu comentari amb una propina de %1$s crèdits per %2$s</item>
         <item quantity="other">Així es publicarà el teu comentari amb una propina de %1$s crèdits per %2$s</item>
     </plurals>
-    <plurals name="view_count">
-        <item quantity="one">%1$s visualització</item>
-        <item quantity="other">%1$s visualitzacions</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="one">Així es comprarà \"%1$s\" per %2$s crèdit</item>
-        <item quantity="other">Així es comprarà \"%1$s\" per %2$s crèdits</item>
-    </plurals>
 
     <!-- Channel view -->
     <string name="no_channel_info">Encara no hi ha res aquí.\nSisplau, mira-ho més tard.</string>
     <string name="content">Contingut</string>
     <string name="website">Lloc web</string>
     <string name="reposted">republicat</string>
+    <string name="receive_all_notifications">Rebràs totes les notificacions</string>
+    <string name="receive_no_notifications">No rebràs notificacions per aquest canal</string>
     <plurals name="follower_count">
         <item quantity="one">%1$s seguidor</item>
         <item quantity="other">%1$s seguidors</item>
@@ -207,7 +210,7 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>Crèdits de LBRY</item>
         <item>USD</item>
     </string-array>
 
@@ -226,12 +229,11 @@
     <string name="oops_something_went_wrong">Ups! Alguna cosa ha anat malament.</string>
     <string name="installation_id_loaded">ID d\'instal·lació carregada.</string>
     <string name="known_tags_loaded">S\'han carregat les etiquetes conegudes i seguides.</string>
-    <string name="exchange_rate_loaded">S\'ha carregat la taxa d\'intercanvi LBC/USD.</string>
+    <string name="exchange_rate_loaded">S\'ha carregat la taxa d\'intercanvi crèdits de LBRY/USD.</string>
     <string name="user_authenticated">Usuari autenticat.</string>
     <string name="installation_registered">Instal·lació registrada.</string>
     <string name="subscriptions_loaded">Subscripcions carregades.</string>
     <string name="subscriptions_resolved">Subscripcions resoltes.</string>
-
     <!-- Settings -->
     <string name="user_interface">Contingut i interfície d\'usuari</string>
     <string name="other">Altres</string>
@@ -242,9 +244,11 @@
     <string name="notifications">Notificacions</string>
     <string name="subscriptions">Subscripcions</string>
     <string name="content_interests">Contingut interessant</string>
+    <string name="mini_player_bottom_spacing">Marge pel mini-reproductor inferior</string>
 
     <string name="keep_sdk_in_background">Deixa el servei de LBRY executant-se en segon pla per millorar el rendiment de la cartera i de la xarxa</string>
     <string name="participate_in_data_network">Participa en la xarxa de dades (requereix reiniciar l\'aplicació i el servei en segon pla)</string>
+    <string name="send_buffering_events">Envia esdeveniments de \"buffering\" als servidors de LBRY</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Cercar</string>
@@ -295,6 +299,7 @@
     <string name="receive">Rep</string>
     <string name="spend">Gasta</string>
     <string name="publish">Publica</string>
+    <string name="unpublish">Retira publicació</string>
     <string name="support">Suport</string>
     <string name="abandon">Abandona</string>
     <string name="channel">Canal</string>
@@ -310,7 +315,7 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Còpia manual&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;FAQs de sincronització&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
+    <string name="lbc">Crèdits</string>
 
     <string name="account_recommended">Quantitat recomanada</string>
     <string name="wallet_account_desc">Un compte de lbry.tv et permet obtenir recompenses, fer còpies de seguretat de la teva cartera, i tenir-ho tot sincronitzat.</string>
@@ -334,7 +339,7 @@
     <string name="confirm_unlock_tips">Segur que vols desblocar totes les teves propines?</string>
     <string name="min_spend_required">Sisplau, introdueix una quantitat mínima de 0.0001 crèdits.</string>
 
-    <string name="buy_lbc">Compra LBC</string>
+    <string name="buy_lbc">Compra crèdits de LBRY</string>
     <string name="hash_not_supported">El teu dispositiu no té suport pels requeriments mínims per assegurar la teva petició de compra.</string>
     <string name="receive_address_not_set">No has especificat cap adreça de cartera. Sisplau, genera\'n una de nova i torna a intentar-ho.</string>
 
@@ -378,7 +383,11 @@
     <string name="channel_to_show_support_as">Canal des del qual dones suport</string>
     <string name="make_this_a_tip">Fes-ne una propina</string>
     <string name="send_revocable_support">Envia suport revocable</string>
-    <string name="send_lbc_tip">Envia una propina de %1$s LBC</string>
+    <string name="send_lbc_tip">Envia propina de %1$s</string>
+    <plurals name="send_lbc_tip">
+        <item quantity="one">Envia propina de %1$s Crèdits</item>
+        <item quantity="other">Envia propina d\'%1$s Crèdit</item>
+    </plurals>
     <string name="send_tip_info_content">Això apareixerà com una propina per %1$s, i n\'augmentarà l\'habilitat de ser descobert mentre estigui activa. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Aprèn-ne més&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Això apareixerà com una propina per %1$s, i augmentarà l\'habilitat del canal de ser descobert mentre estigui activa. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Aprèn-ne més&lt;/a&gt;.</string>
     <string name="cancel">Cancel·la</string>
@@ -410,7 +419,7 @@
     <string name="provide_valid_email">Sisplau, introdueix una direcció de correu electrònic vàlida</string>
     <string name="please_follow_instructions">Sisplau, segueix les instruccions al correu que hem enviat a la teva direcció per continuar.</string>
     <string name="sign_in_successful">Has iniciat sessió a lbry.tv correctament</string>
-    <string name="retrieving_account_information">Obtenint la informació del teu compte...</string>
+    <string name="retrieving_account_information">Obtenint la informació del compte...</string>
     <string name="apply_wallet_data">Aplicant dades de la cartera...</string>
     <string name="please_enter_your_password">Sisplau, introdueix la contrasenya que has emprat per protegir la teva cartera.</string>
     <string name="please_enter_a_password">Sisplau, introdueix una contrasenya per protegir la teva cartera.</string>
@@ -464,6 +473,7 @@
     <string name="channel_deleted">El canal s\'ha eliminat correctament.</string>
     <string name="channel_failed_delete">No s\'ha pogut eliminar el canal en aquest moment. Sisplau, torna a intentar-ho més tard.</string>
     <string name="description">Descripció</string>
+    <string name="follow">Segueix</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="show_optional_fields">Mostra camps opcionals</string>
@@ -473,7 +483,7 @@
     <string name="title">Títol</string>
     <string name="at">\@</string>
     <string name="deposit">Dipòsit</string>
-    <string name="deposit_remains_yours">Aquests LBC seguiran sent teus. Això és un dipòsit per reservar el nom i pots revertir-lo en qualsevol moment.</string>
+    <string name="deposit_remains_yours">Aquests crèdits seguiran sent teus. Això és un dipòsit per reservar el nom i pots revertir-lo en qualsevol moment.</string>
     <string name="storage_permission_rationale_download">LBRY necessita accés per descarregar contingut al teu dispositiu.</string>
     <string name="storage_permission_rationale_images">LBRY necessita accés per carregar imatges des de l\'emmagatzemament del teu dispositiu.</string>
     <string name="select_thumbnail">Selecciona miniatura</string>
@@ -482,6 +492,7 @@
     <string name="wait_for_upload">Sisplau, espera que la pujada actual acabi.</string>
     <string name="image_upload_failed">La petició per pujar la imatge ha fallat. Sisplau, torna a intentar-ho.</string>
     <string name="uploading">Pujant...</string>
+    <string name="uploading_thumbnail">Pujant miniatura...</string>
     <string name="please_enter_channel_name">Sisplau, introdueix un nom de canal.</string>
     <string name="channel_name_invalid_characters">El nom del teu canal conté caràcters invàlids.</string>
     <string name="channel_name_already_created">Ja has creat un canal amb el mateix nom.</string>
@@ -618,5 +629,12 @@
     <string name="unknown">Desconegut</string>
     <string name="cannot_find_lbrynet_log">No s\'ha pogut trobar el fitxer lbrynet.log.</string>
     <string name="cannot_share_lbrynet_log">El fitxer lbrynet.log no s\'ha pogut compartir per manca de permisos.</string>
+
+    <!-- Notifications -->
+    <string name="no_notifications">Tot tranquil per aquí! Les noves notificacions es mostraran quan les rebis.</string>
+    <plurals name="confirm_delete_notifications">
+        <item quantity="one">Segur que vols eliminar la notificació seleccionada?</item>
+        <item quantity="other">Segur que vols eliminar les notificacions seleccionades?</item>
+    </plurals>
 
     </resources>

@@ -13,13 +13,14 @@
     <string name="all_content">Todo Conteúdo</string>
     <string name="channels">Canais</string>
     <string name="library">Biblioteca</string>
-    <string name="publishes">Pubicações</string>
+    <string name="publishes">Publicações</string>
     <string name="new_publish">Nova Publicação</string>
     <string name="rewards">Recompensas</string>
     <string name="invites">Convites</string>
     <string name="settings">Configurações</string>
     <string name="about">Sobre</string>
     <string name="sign_in">Faça Login</string>
+    <string name="shuffle">Shuffle</string>
     <string name="startup_failed">Falha na inicialização do aplicativo. Verifique sua conexão de dados e tente novamente. Se o problema persistir, envie um e-mail para hello@lbry.com</string>
     <string name="no_claim_search_content">Nenhum conteúdo para exibir no momento. Refine sua seleção ou verifique novamente mais tarde.</string>
 
@@ -90,6 +91,14 @@
     <string name="please_select_repost_channel">Selecione um canal para repostar.</string>
     <string name="reply">Resposta</string>
     <string name="replying_to">Respondendo a %1$s</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$svisualizações</item>
+        <item quantity="other">%1$s visualizações</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Isto irá comprar \"%1$s\" por %2$s créditos</item>
+        <item quantity="other">Isto irá comprar \"%1$s\" por %2$s créditos</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="one">Postar e creditar %1$s?</item>
         <item quantity="other">Postar e creditar %1$s?</item>
@@ -102,20 +111,14 @@
         <item quantity="one">Isso postará seu comentário com uma gorjeta de %1$s créditos por %2$s</item>
         <item quantity="other">Isso postará seu comentário com uma gorjeta de %1$s créditos por %2$s</item>
     </plurals>
-    <plurals name="view_count">
-        <item quantity="one">%1$svisualizações</item>
-        <item quantity="other">%1$s visualizações</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="one">Isto irá comprar \"%1$s\" por %2$s créditos</item>
-        <item quantity="other">Isto irá comprar \"%1$s\" por %2$s créditos</item>
-    </plurals>
 
     <!-- Channel view -->
     <string name="no_channel_info">Não há nada aqui ainda.\nVolte mais tarde.</string>
     <string name="content">Conteúdo</string>
     <string name="website">Website</string>
     <string name="reposted">Repostado</string>
+    <string name="receive_all_notifications">Você receberá todas as notificações</string>
+    <string name="receive_no_notifications">Você não receberá notificações para este canal</string>
     <plurals name="follower_count">
         <item quantity="one">%1$sseguidor</item>
         <item quantity="other">%1$s seguidores</item>
@@ -207,7 +210,7 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>LBRY Credits</item>
         <item>USD</item>
     </string-array>
 
@@ -231,7 +234,6 @@
     <string name="installation_registered">Instalação registrada.</string>
     <string name="subscriptions_loaded">Assinaturas carregadas.</string>
     <string name="subscriptions_resolved">Assinaturas resolvidas.</string>
-
     <!-- Settings -->
     <string name="user_interface">Conteúdo $amp; Interface do Usuário</string>
     <string name="other">Outro</string>
@@ -242,9 +244,11 @@
     <string name="notifications">Notificações</string>
     <string name="subscriptions">Inscrições </string>
     <string name="content_interests">Interesses de Conteúdo</string>
+    <string name="mini_player_bottom_spacing">Espaçamento inferior do mini player</string>
 
     <string name="keep_sdk_in_background">Mantenha o serviço LBRY em execução em segundo plano para melhorar o desempenho da carteira e da rede</string>
     <string name="participate_in_data_network">Participar da rede de dados (requer reinicialização do aplicativo e do serviço em segundo plano)</string>
+    <string name="send_buffering_events">Envie eventos de buffer para servidores LBRY</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s- Pesquisa</string>
@@ -270,7 +274,7 @@
     <string name="in_your_publishes">nas suas publicções</string>
     <string name="in_your_supports">Nos seus apoios</string>
     <string name="earn_more_tips">Ganhe mais gorjetas enviando vídeos legais</string>
-    <string name="sdk_initializing">O serviço de segundo plano está sendo inicializado...</string>
+    <string name="sdk_initializing">O serviço de segundo plano está sendo inicializado....</string>
     <string name="sdk_still_initializing">O serviço de segundo plano ainda está sendo inicializado. Você pode explorar conteúdos incríveis nesse meio tempo.</string>
     <string name="sdk_initializing_functionality">Você não pode fazer isso agora porque o serviço de segundo plano ainda está sendo inicializado.</string>
 
@@ -295,6 +299,7 @@
     <string name="receive">Receber</string>
     <string name="spend">Gastar</string>
     <string name="publish">Publicar</string>
+    <string name="unpublish">Cancelar publicação</string>
     <string name="support">Apoio</string>
     <string name="abandon">Abandonar</string>
     <string name="channel">Canal</string>
@@ -310,7 +315,7 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
+    <string name="lbc">Créditos</string>
 
     <string name="account_recommended">Conta Recomendada</string>
     <string name="wallet_account_desc">Uma conta lbry.tv permite que você ganhe recompensas, faça backup de sua carteira e mantenha tudo sincronizado</string>
@@ -323,7 +328,7 @@
     <string name="insufficient_balance">Saldo insuficiente</string>
     <string name="invalid_amount">Por valor, insira um valor valído</string>
     <string name="send_credit_error">Seus créditos não puderam ser enviados neste momento. Por favor, tente novamente mais tarde.</string>
-    <string name="loading_transactions">Carregando transações...</string>
+    <string name="loading_transactions">Carregar Transações...</string>
     <string name="no_recent_transactions">Não há transações recentes para exibir.</string>
     <string name="no_transactions">Não há transações para exibir neste momento.</string>
     <string name="tx_list_fee">taxa %1$s</string>
@@ -334,7 +339,7 @@
     <string name="confirm_unlock_tips">Tem certeza de que deseja liberar todas as suas gorjetas?</string>
     <string name="min_spend_required">Insira um valor superior a 0,0001 créditos.</string>
 
-    <string name="buy_lbc">Compre LBC</string>
+    <string name="buy_lbc">Comprar LBC</string>
     <string name="hash_not_supported">Seu dispositivo não oferece suporte aos requisitos mínimos para proteger sua solicitação de compra.</string>
     <string name="receive_address_not_set">Você não tem um endereço de carteira definido. Por favor, gere um novo endereço e tente novamente.</string>
 
@@ -378,7 +383,11 @@
     <string name="channel_to_show_support_as">Canal para assinar apoio</string>
     <string name="make_this_a_tip">Faça disso uma gorjeta</string>
     <string name="send_revocable_support">Enviar apoio revogável</string>
-    <string name="send_lbc_tip">Enviar %1$s LBC de gorjeta</string>
+    <string name="send_lbc_tip">Fortalecer %1$s</string>
+    <plurals name="send_lbc_tip">
+        <item quantity="one">Enviar %1$s Crédito</item>
+        <item quantity="other">Enviar %1$sCréditos</item>
+    </plurals>
     <string name="send_tip_info_content">Isso vai aparecer como uma gorjeta para %1$s, o que aumentará sua capacidade de ser descoberto enquanto estiver ativo. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Saiba mais&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Isso vai aparecer como uma gorjeta para %1$s, o que aumentará a capacidade do canal de ser descoberto enquanto estiver ativo.</string>
     <string name="cancel">Cancelar</string>
@@ -464,6 +473,7 @@
     <string name="channel_deleted">O canal foi excluído com sucesso.</string>
     <string name="channel_failed_delete">O canal não pôde ser excluído neste momento. Por favor, tente novamente mais tarde.</string>
     <string name="description">Descrição</string>
+    <string name="follow">Seguir</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="show_optional_fields">Mostrar campos opcionais</string>
@@ -473,7 +483,7 @@
     <string name="title">Título</string>
     <string name="at">\@</string>
     <string name="deposit">Depósito</string>
-    <string name="deposit_remains_yours">Este LBC continua sendo seu. É um depósito de reserva de nome e pode ser desfeito a qualquer momento.</string>
+    <string name="deposit_remains_yours">Os créditos permanecem seus. É um depósito de reserva de nome e pode ser desfeito a qualquer momento.</string>
     <string name="storage_permission_rationale_download">LBRY requer acesso para baixar conteúdo para o seu dispositivo.</string>
     <string name="storage_permission_rationale_images">LBRY requer acesso para carregar imagens do armazenamento do dispositivo.</string>
     <string name="select_thumbnail">Selecionar thumbnail</string>
@@ -481,7 +491,8 @@
     <string name="undetermined_image_filepath">O caminho do arquivo não pôde ser determinado para a imagem selecionada. Selecione uma imagem em um local diferente.</string>
     <string name="wait_for_upload">Aguarde até que o upload atual termine.</string>
     <string name="image_upload_failed"> O upload da imagem falhou. Por favor, tente novamente.</string>
-    <string name="uploading">Uploading...</string>
+    <string name="uploading">Uploading…</string>
+    <string name="uploading_thumbnail">Uploading thumbnail…</string>
     <string name="please_enter_channel_name">Insira um nome do canal.</string>
     <string name="channel_name_invalid_characters">O nome do seu canal contém caracteres inválidos.</string>
     <string name="channel_name_already_created">Você já criou um canal com o mesmo nome.</string>
@@ -618,5 +629,12 @@
     <string name="unknown">Desconhecido</string>
     <string name="cannot_find_lbrynet_log">O arquivo lbrynet.log não foi encontrado.</string>
     <string name="cannot_share_lbrynet_log">O arquivo lbrynet.log não pode ser compartilhado devido a restrições de permissão.</string>
+
+    <!-- Notifications -->
+    <string name="no_notifications">Está quieto aqui! Novas notificações serão exibidas quando você as receber.</string>
+    <plurals name="confirm_delete_notifications">
+        <item quantity="one">Tem certeza de que deseja remover a notificação selecionada?</item>
+        <item quantity="other">Tem certeza de que deseja remover as notificações selecionadas?</item>
+    </plurals>
 
     </resources>

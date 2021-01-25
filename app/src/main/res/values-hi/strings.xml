@@ -20,6 +20,7 @@
     <string name="settings">समायोजन ,  सेटिंग्स</string>
     <string name="about">के बारे में</string>
     <string name="sign_in">साइन इन</string>
+    <string name="shuffle">मिश्रण</string>
     <string name="startup_failed">आप शुरू नहीं हो पाया है। कृपया अपना डाटा कनेक्शन चेक करें और पुनः प्रयास करें ।अगर यह समस्या निरंतर बनी रहती है तो कृपया hello@lbry.com पर ईमेल करें</string>
     <string name="no_claim_search_content">इस समय प्रदर्शन के लिए कोई सामग्री नहीं है। कृपया अपने चयन को और स्पष्ट करें अथवा कुछ देर बाद प्रयास करें</string>
 
@@ -27,7 +28,7 @@
     <string name="welcome_to_lbry">लाइब्रेरी में आपका स्वागत है</string>
     <string name="welcome_paragraph">लाइब्रेरी एक सामुदायिक नियंत्रित सामग्री मंच है।यहां आप ना केवल वीडियोस संगीत किताबें और अन्य सामग्री का आनंद ले सकते हैं बल्कि खुद भी उन्हें बनाकर प्रदर्शित कर सकते हैं।</string>
     <string name="welcome_tos">आगे बढ़ने से पहले मैं इनसे सहमत हूं &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt;  और मैं पुष्टि करता हूं कि मैं 13 साल की उम्र से अधिक हूं।</string>
-    <string name="welcome_please_wait">कृपया प्रतीक्षा करें हम कुछ चीजें तैयार कर रहे हैं</string>
+    <string name="welcome_please_wait">कृपया प्रतीक्षा करें जबकि हम कुछ चीजें तैयार करते हैं ...</string>
     <string name="use_lbry">लाइब्रेरी का उपयोग करें</string>
 
     <!-- URI bar -->
@@ -39,7 +40,7 @@
     <string name="discover">खोजना</string>
     <string name="lbry_works_better">लाइब्रेरी का पूर्ण आनंद लेने के लिए कम से कम 5 क्रिएटर्स को फॉलो करें। अगर आपके पास पहले से ही लाइब्रेरी अकाउंट है तो फॉलो किए हुए क्रिएटर्स को देखने के लिए साइन इन करें।</string>
     <string name="select_five_subscriptions">आगे बढ़ने के लिए कृपया 5 रचनाकारों को चुने</string>
-    <string name="n_remaining">%1$d शेष</string>
+    <string name="n_remaining">%1$d शेष…</string>
     <string name="done">पूर्ण</string>
     <string name="all">सब</string>
     <string name="discover_channels">नए चैनल्स को खोजें</string>
@@ -57,7 +58,7 @@
     <string name="download">डाउनलोड</string>
     <string name="open">खोलें</string>
     <string name="report">रिपोर्ट</string>
-    <string name="loading_decentralized_data">लोडिंग विकेंद्रीकृत डाटा</string>
+    <string name="loading_decentralized_data">विकेन्द्रीकृत डेटा लोड हो रहा है ...</string>
     <string name="related_content">संबंधित सामग्री</string>
     <string name="comments">टिप्पणियां</string>
     <string name="no_comments">इस समय प्रदर्शित करने के लिए कोई कमेंट्स नहीं हैं।</string>
@@ -90,6 +91,14 @@
     <string name="please_select_repost_channel">रीपोस्ट करने हेतु कृपया एक चैनल चुने</string>
     <string name="reply">जवाब</string>
     <string name="replying_to">%1$s को जवाब</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s व्यूज़</item>
+        <item quantity="other">%1$s व्यूज़</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">यह खरीदेगा \"%1$s\" इतने %2$s क्रेडिट में।</item>
+        <item quantity="other">यह खरीदेगा \"%1$s\" इतने%2$s क्रेडिटस में।</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="one">पोस्ट और टिप %1$s क्रेडिट?</item>
         <item quantity="other">पोस्ट और टिप %1$s क्रेडिट्स?</item>
@@ -102,20 +111,14 @@
         <item quantity="one">यह आपके कमेंट को पोस्ट करेगा इस टिप %1$s क्रेडिट के साथ इसके लिए %2$s</item>
         <item quantity="other">यह आपके कमेंट को पोस्ट करेगा इस टिप %1$s क्रेडिटस के साथ इसके लिए  %2$s</item>
     </plurals>
-    <plurals name="view_count">
-        <item quantity="one">%1$s व्यूज़</item>
-        <item quantity="other">%1$s व्यूज़</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="one">यह खरीदेगा \"%1$s\" इतने %2$s क्रेडिट में।</item>
-        <item quantity="other">यह खरीदेगा \"%1$s\" इतने%2$s क्रेडिटस में।</item>
-    </plurals>
 
     <!-- Channel view -->
     <string name="no_channel_info">यहां फिलहाल कुछ नहीं है। \n कृपया कुछ देर बाद प्रयास करें</string>
     <string name="content">सामग्री</string>
     <string name="website">वेबसाइट</string>
     <string name="reposted">रीपोस्टेड</string>
+    <string name="receive_all_notifications">आपको सभी सूचनाएं प्राप्त होंगी</string>
+    <string name="receive_no_notifications">आपको इस चैनल के लिए सूचनाएं प्राप्त नहीं होंगी</string>
     <plurals name="follower_count">
         <item quantity="one">%1$s अनुयायी</item>
         <item quantity="other">%1$s फॉलोअर्स।</item>
@@ -127,7 +130,7 @@
     <string name="take_photo">एक तस्वीर खींचे</string>
     <string name="upload_file">एक फाइल अपलोड करें</string>
     <string name="no_videos_found">हमें आपकी डिवाइस पर कोई वीडियो नहीं मिला। कृपया एक फोटो खींचे या एक वीडियो रिकॉर्ड करें शुरू करने के लिए</string>
-    <string name="loading_videos">कृपया प्रतीक्षा करें जब तक हम आपके वीडियो को लोड करते हैं</string>
+    <string name="loading_videos">कृपया प्रतीक्षा करें जब हम आपके वीडियो लोड करते हैं ...</string>
     <string name="storage_permission_rationale_videos">आपकी इमेजेस वीडियोस तथा अन्य फाइल्स को दिखाने और पब्लिश करने हेतु लाइब्रेरी को आपकी आज्ञा की आवश्यकता है।</string>
     <string name="camera_permission_rationale_record">वीडियोस रिकॉर्ड करने हेतु लाइब्रेरी को आपके कैमरा को इस्तेमाल करने की आज्ञा चाहिए</string>
     <string name="camera_permission_rationale_photo">फोटोस लेने हेतु लाइब्रेरी को आपके कैमरा को इस्तेमाल करने की आज्ञा चाहिए</string>
@@ -207,7 +210,7 @@
     <string name="cca_nc_nd_4_0_international">क्रिएटिव कॉमनस अटरीब्यूशन - नॉन कमर्शियल-नो डेरिवेटिव्स 4.0 इंटरनेशनल</string>
 
     <string-array name="publish_currencies">
-        <item>एल बी सी</item>
+        <item>LBRY क्रेडिट</item>
         <item>यू एस डी</item>
     </string-array>
 
@@ -226,12 +229,11 @@
     <string name="oops_something_went_wrong">उफ़! कुछ गलत हो गया।</string>
     <string name="installation_id_loaded">लोडेड इंस्टॉलेशन आईडी</string>
     <string name="known_tags_loaded">लोडेड लोकल नोन और फौलोड टैग्स</string>
-    <string name="exchange_rate_loaded">लोडेड एलबीसी/युएसडी विनिमय मूल्य</string>
+    <string name="exchange_rate_loaded">भरी हुई LBRY क्रेडिट / USD विनिमय दर।</string>
     <string name="user_authenticated">प्रमाणिकृत उपभोक्ता</string>
     <string name="installation_registered">स्थापन पंजीकृत</string>
     <string name="subscriptions_loaded">लोडेड प्रमाणीकरण</string>
     <string name="subscriptions_resolved">समाधित प्रमाणीकरण</string>
-
     <!-- Settings -->
     <string name="user_interface">सामग्री &amp; उपभोक्ता इंटरफ़ेस</string>
     <string name="other">अन्य</string>
@@ -242,9 +244,11 @@
     <string name="notifications">अधिसूचना</string>
     <string name="subscriptions">सदस्यता</string>
     <string name="content_interests">सामग्री रुचियां</string>
+    <string name="mini_player_bottom_spacing">मिनी खिलाड़ी नीचे रिक्ति</string>
 
     <string name="keep_sdk_in_background">बेहतर वॉलेट और नेटवर्क प्रदर्शन के लिए लाइब्रेरी सेवाओं को पृष्ठभूमि में चलने दें</string>
     <string name="participate_in_data_network">डाटा नेटवर्क में भाग लें (इसके लिए ऐप एवं पृष्ठभूमि सेवाओं का पुनः शुरू होना आवश्यक है)</string>
+    <string name="send_buffering_events">LBRY सर्वर पर बफ़रिंग ईवेंट भेजें</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - खोजें</string>
@@ -270,7 +274,7 @@
     <string name="in_your_publishes">आपकी पब्लिशिस में हैं</string>
     <string name="in_your_supports">आपके सपोर्ट्स में हैं</string>
     <string name="earn_more_tips">मनोरंजक वीडियोस अपलोड करके और अधिक टिप्स कमाए</string>
-    <string name="sdk_initializing">पृष्ठभूमि सेवाएं शुरू हो रही है</string>
+    <string name="sdk_initializing">पृष्ठभूमि सेवा प्रारंभ कर रहा है ...</string>
     <string name="sdk_still_initializing">पृष्ठभूमि सेवाएं अभी भी शुरू हो रही है। इस दौरान आप अन्य सामग्री को खोज एवं देख सकते हैं।</string>
     <string name="sdk_initializing_functionality">आप यह अभी नहीं कर सकते हैं क्योंकि पृष्ठभूमि सेवाएं अभी भी शुरू हो रही है</string>
 
@@ -295,6 +299,7 @@
     <string name="receive">प्राप्त करना</string>
     <string name="spend">व्यय , खर्च</string>
     <string name="publish">प्रकाशित करना</string>
+    <string name="unpublish">अप्रकाशित</string>
     <string name="support">समर्थन</string>
     <string name="abandon">त्याग देना</string>
     <string name="channel">चैनल</string>
@@ -310,7 +315,7 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">एलबीसी</string>
+    <string name="lbc">क्रेडिटस</string>
 
     <string name="account_recommended">खाता अनुशंसनीय है</string>
     <string name="wallet_account_desc">एक lbry.tv खाता आपको इनाम अर्जित करने, अपने वॉलेट का बैकअप लेने और सब कुछ सिंक में रखने की अनुमति देता है</string>
@@ -323,7 +328,7 @@
     <string name="insufficient_balance">अपर्याप्त बैलेंस</string>
     <string name="invalid_amount">कृपया वैध मूल्य दर्ज करें</string>
     <string name="send_credit_error">आपके क्रेडिट इस समय नहीं भेजे जा सके हैं। कृपया कुछ देर बाद फिर प्रयास करें।</string>
-    <string name="loading_transactions">लेन-देन लोड हो रहे हैं ...</string>
+    <string name="loading_transactions">लेन-देन लोड हो रहा है ...</string>
     <string name="no_recent_transactions">दिखाने के लिए हाल के कोई भी लेनदेन नहीं है</string>
     <string name="no_transactions">दिखाने के लिए इस समय कोई भी लेनदेन नहीं है</string>
     <string name="tx_list_fee">फी %1$s</string>
@@ -334,7 +339,7 @@
     <string name="confirm_unlock_tips">क्या आप निश्चित रूप से अपनी सारी टिप्स खोलना चाहते हैं?</string>
     <string name="min_spend_required"> 0.0001 क्रेडिटस से अधिक मूल्य को दर्ज करें।</string>
 
-    <string name="buy_lbc">LBC खरीदें</string>
+    <string name="buy_lbc">LBRY क्रेडिट खरीदें</string>
     <string name="hash_not_supported">आपका डिवाइस आपके खरीदारी अनुरोध को हासिल करने के लिए न्यूनतम आवश्यकताओं का समर्थन नहीं करता है।</string>
     <string name="receive_address_not_set">आपके पास एक वॉलेट पता सेट नहीं है। कृपया एक नया पता जेनरेट करें और पुनः प्रयास करें।</string>
 
@@ -378,7 +383,11 @@
     <string name="channel_to_show_support_as">समर्थन के रूप में दिखाने के लिए चैनल</string>
     <string name="make_this_a_tip">इसे एक टिप बनाएं</string>
     <string name="send_revocable_support">भेजने योग्य समर्थन भेजें</string>
-    <string name="send_lbc_tip">भेजें %1$s LBC टिप</string>
+    <string name="send_lbc_tip">टिप %1$s</string>
+    <plurals name="send_lbc_tip">
+        <item quantity="one">टिप %1$s क्रेडिट</item>
+        <item quantity="other">टिप %1$s क्रेडिट्स</item>
+    </plurals>
     <string name="send_tip_info_content">यह %1$s, के लिए एक टिप के रूप में दिखाई देगा और यह इसके खोजे जाने की क्षमता को बढ़ाएगा। &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">यह %1$s, के लिए एक टिप के रूप में दिखाई देगा और यह चैनल के खोजे जाने की  संभावना को बढ़ाएगा। &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">रद्द करें</string>
@@ -410,8 +419,8 @@
     <string name="provide_valid_email">कृपया एक वैध ईमेल एड्रेस दर्ज करें</string>
     <string name="please_follow_instructions">जारी रखने के लिए कृपया अपने पते पर भेजे गए ईमेल के निर्देशों का पालन करें</string>
     <string name="sign_in_successful">लाइब्रेरी टीवी में आपने सफलतापूर्वक साइन इन कर लिया है</string>
-    <string name="retrieving_account_information">आपके खाते की जानकारी पुनः प्राप्त की जा रही है</string>
-    <string name="apply_wallet_data">वॉलेट डेटा संप्रायोजित हो रहा है ...</string>
+    <string name="retrieving_account_information">खाता जानकारी पुनर्प्राप्त कर रहा है…</string>
+    <string name="apply_wallet_data">वॉलेट डेटा लागू करना ...</string>
     <string name="please_enter_your_password">कृपया वह पासवर्ड डालें जो आपने अपने वॉलेट को सुरक्षित करने के लिए उपयोग किया था</string>
     <string name="please_enter_a_password">कृपया अपना खाता सुरक्षित करने के लिए एक पासवर्ड दर्ज करें</string>
     <string name="wallet_security_purposes">नोट: वॉलेट सुरक्षा उद्देश्यों के लिए, LBRY आपका पासवर्ड रीसेट करने में असमर्थ है</string>
@@ -422,7 +431,18 @@
     <string name="enter_phone_number">कृपया अपना फोन नंबर दर्ज करें</string>
     <string name="not_interested">रुचि नहीं है</string>
     <string name="manual_reward_verification">स्वतः इनाम सत्यापन</string>
+    <string name="reward_verification">इनाम का सत्यापन</string>
+    <string name="social_media_verification">सोशल मीडिया सत्यापन</string>
+    <string name="skip_the_queue">कतार छोड़ें</string>
+    <string name="skip_queue_button_text">%1$s$ के लिए छोड़ें</string>
     <string name="account_undergo_review">इनाम कार्यक्रम में भाग लेने के लिए इस खाते को रिव्यू से गुजरना होगा। इसमें कई मिनट या कई दिन भी लग सकते हैं।</string>
+    <string name="get_instantly_verified">आप अपने ट्विटर खाते का उपयोग करके या मैन्युअल सत्यापन कतार को छोड़ कर पुरस्कार कार्यक्रम में भाग लेने में सक्षम होने के लिए तुरंत सत्यापित हो सकते हैं।</string>
+    <string name="twitter_verification">ट्विटर सत्यापन</string>
+    <string name="twitter_verification_desc">अपने ट्विटर खाते का उपयोग करके तुरंत सत्यापित करें। आपके ट्विटर ईमेल पते को आपके द्वारा प्रदत्त ईमेल से मेल खाना चाहिए और आपका खाता सक्रिय होना चाहिए।</string>
+    <string name="twitter_verify">ट्विटर से सत्यापित करें</string>
+    <string name="skip_queue_verification">कतार छोड़ें</string>
+    <string name="skip_queue_verification_desc">पुरस्कार कार्यक्रम में तुरंत भाग लेने के लिए शुल्क का भुगतान करके मैन्युअल सत्यापन कतार छोड़ें।</string>
+    <string name="request_to_be_verified">कृपया &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt; सत्यापित होने का अनुरोध करें। एक मैनुअल समीक्षा कई मिनटों से लेकर कई दिनों तक कहीं भी हो सकती है।</string>
     <string name="enjoy_free_content">इस दौरान निशुल्क सामग्री का आनंद उठाएं</string>
     <string name="verify_phone_number">फोन नंबर को सत्यापित करें</string>
     <string name="enter_phone_verify_code"> %1$s इस पर भेजा हुआ सत्यापन कोड दर्ज करें</string>
@@ -431,6 +451,13 @@
     <string name="please_enter_valid_phone">कृपया एक वैध फोन नंबर दर्ज करें</string>
     <string name="please_enter_verification_code">अपने फोन नंबर पर भेजे गए सत्यापन कोड को दर्ज करें</string>
     <string name="fetch_current_user_error">उपभोक्ता खाता इस समय नहीं खोला जा सका है। कृपया कुछ देर बाद प्रयास करें।</string>
+    <string name="purchase_request_pending">आपका खरीदारी अनुरोध अभी भी संसाधित किया जा रहा है। कृपया support@lbry.com पर एक ईमेल भेजें।</string>
+    <string name="purchase_request_failed_error">आपका खरीदारी अनुरोध इस समय पूरा नहीं हो सका। कृपया support@lbry.com पर एक ईमेल भेजें।</string>
+    <string name="twitter_account_ineligible">आपका ट्विटर खाता इस समय योग्य नहीं है: %1$s</string>
+    <string name="twitter_verification_not_approved">आपका खाता पुरस्कार कार्यक्रम के लिए स्वीकृत नहीं था। बाद में पुन: प्रयास करें।</string>
+    <string name="twitter_verification_failed">ट्विटर सत्यापन विफल रहा। बाद में पुन: प्रयास करें।</string>
+    <string name="reward_verification_successful">अब आप पुरस्कार कार्यक्रम में भाग लेने के योग्य हैं!</string>
+
     <!-- Forms -->
     <string name="no_added_tags">आपने अभी तक कोई भी टैक्स नहीं जोड़े हैं। खोजे जाने की संभावना बढ़ाने के लिए टैक्स जोड़ें।</string>
     <string name="form_no_tag_results">हम नए टैक्स ढूंढने में असमर्थ रहे हैं जो कि अभी तक नहीं जोड़े गए।</string>
@@ -438,7 +465,7 @@
     <!-- Channels -->
     <string name="no_channel_created">आपने कोई चैनल नहीं बनाया है। \n अब नया चैनल बनाकर शुरुआत करें!</string>
     <string name="create_a_channel">एक चैनल बनाएं</string>
-    <string name="create_a_channel_item">एक चैनल बनाएं...</string>
+    <string name="create_a_channel_item">एक चैनल बनाएं ...</string>
     <string name="edit_channel">चैनल को संपादित करें</string>
     <string name="delete_selection">चुनी हुई चीज को हटाए?</string>
     <string name="delete_channel">चैनल को हटाएं ?</string>
@@ -446,6 +473,7 @@
     <string name="channel_deleted">चैनल सफलतापूर्वक हटा दिया गया है</string>
     <string name="channel_failed_delete">यह चैनल इस समय नहीं हटाया जा सका है। कृपया कुछ देर बाद फिर प्रयास करें।</string>
     <string name="description">विवरण</string>
+    <string name="follow">का पालन करें</string>
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
     <string name="show_optional_fields">वैकल्पिक क्षेत्र दिखाएं </string>
@@ -455,7 +483,7 @@
     <string name="title">शीर्षक</string>
     <string name="at">\@</string>
     <string name="deposit">जमा करो</string>
-    <string name="deposit_remains_yours">यह LBC आपकी ही रहेगी। यह नाम आरक्षित करने के लिए जमा है और किसी भी समय पूर्ववत किया जा सकता है</string>
+    <string name="deposit_remains_yours">श्रेय तुम्हारा है। यह नाम आरक्षित करने के लिए जमा है और किसी भी समय पूर्ववत किया जा सकता है।</string>
     <string name="storage_permission_rationale_download">आपकी डिवाइस पर सामग्री डाउनलोड करने हेतु लाइब्रेरी को आपकी आज्ञा की आवश्यकता है</string>
     <string name="storage_permission_rationale_images">आपकी डिवाइस स्टोरेज से इमेज को लोड करने के लिए लाइब्रेरी को आपकी आज्ञा की आवश्यकता है</string>
     <string name="select_thumbnail">थंबनेल चुने</string>
@@ -463,7 +491,8 @@
     <string name="undetermined_image_filepath">चुनी हुई इमेज का फाइल पथ निर्धारित नहीं हो पा रहा है। किसी अन्य स्थान से इमेज को चुने।</string>
     <string name="wait_for_upload">वर्तमान अपलोड के समाप्त होने तक प्रतीक्षा करें</string>
     <string name="image_upload_failed">इमेज अपलोड निवेदन विफल रहा। कृपया फिर प्रयास करें।</string>
-    <string name="uploading">अपलोडिंग...</string>
+    <string name="uploading">अपलोड हो रहा है ...</string>
+    <string name="uploading_thumbnail">थंबनेल अपलोड कर रहा है…</string>
     <string name="please_enter_channel_name">कृपया एक चैनल का नाम दर्ज करें</string>
     <string name="channel_name_invalid_characters">आपके चैनल के नाम में अमान्य वर्ण हैं</string>
     <string name="channel_name_already_created">आपने इसी नाम से पहले ही एक चैनल बना लिया है</string>
@@ -489,7 +518,7 @@
     </plurals>
 
     <!-- Rewards -->
-    <string name="lbry_credits_allow">लाइब्रेरी क्रेडिटस आपको कंटेंट खरीदने एवं पब्लिश करने का अधिकार देते हैं</string>
+    <string name="lbry_credits_allow">LBRY क्रेडिट आपको सामग्री प्रकाशित करने या खरीदने की अनुमति देता है।</string>
     <string name="free_credits_worth">ईमेल एड्रेस देने के बाद आप $%1$s तक का मुफ्त क्रेडिटस पा सकते हैं।</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="get_started">शुरू हो जाइए</string>
@@ -578,7 +607,7 @@
     <string name="get_social">सामाजिक बनें</string>
     <string name="social_paragraph">आप LBRY टीम और समुदाय के सदस्यों के साथ Discord, Facebook, Instagram, Twitter या Reddit पर बातचीत कर सकते हैं</string>
     <string name="app_info">एप्लिकेशन की जानकारी</string>
-    <string name="loading">लोडिंग...</string>
+    <string name="loading">लोड हो रहा है…</string>
     <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;What is LBRY?&lt;/a&gt;</string>
     <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Basics&lt;/a&gt;</string>
     <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>
@@ -600,5 +629,12 @@
     <string name="unknown">अज्ञात</string>
     <string name="cannot_find_lbrynet_log"> lbrynet.log फाइल नहीं ढूंढी जा सकी।</string>
     <string name="cannot_share_lbrynet_log">lbrynet.log फाइल शेयर नहीं की जा सकती क्योंकि इसकी अनुमति नहीं है।</string>
+
+    <!-- Notifications -->
+    <string name="no_notifications">यह यहाँ शांत है! जब आप उन्हें प्राप्त करेंगे तो नई सूचनाएं प्रदर्शित होंगी।</string>
+    <plurals name="confirm_delete_notifications">
+        <item quantity="one">क्या आप वाकई चयनित सूचना को हटाना चाहते हैं?</item>
+        <item quantity="other">क्या आप वाकई चयनित सूचनाओं को हटाना चाहते हैं?</item>
+    </plurals>
 
     </resources>

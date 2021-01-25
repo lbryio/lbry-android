@@ -23,7 +23,7 @@ public class StartupStageAdapter extends BaseAdapter {
         this.list = rows;
         this.inflater = LayoutInflater.from(ctx);
 
-        stagesString = new String[7];
+        stagesString = new String[9];
 
         stagesString[0] = ctx.getResources().getString(R.string.installation_id_loaded);
         stagesString[1] = ctx.getResources().getString(R.string.known_tags_loaded);
@@ -32,6 +32,8 @@ public class StartupStageAdapter extends BaseAdapter {
         stagesString[4] = ctx.getResources().getString(R.string.installation_registered);
         stagesString[5] = ctx.getResources().getString(R.string.subscriptions_loaded);
         stagesString[6] = ctx.getResources().getString(R.string.subscriptions_resolved);
+        stagesString[7] = ctx.getResources().getString(R.string.block_list_loaded);
+        stagesString[8] = ctx.getResources().getString(R.string.filter_list_loaded);
     }
     @Override
     public int getCount() {

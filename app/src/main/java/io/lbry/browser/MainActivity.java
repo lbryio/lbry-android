@@ -422,6 +422,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final int STARTUP_STAGE_NEW_INSTALL_DONE = 5;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_LOADED = 6;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED = 7;
+    private static final int STARTUP_STAGE_BLOCK_LIST_LOADED = 8;
+    private static final int STARTUP_STAGE_FILTER_LIST_LOADED = 9;
     private static final int DEFAULT_MINI_PLAYER_MARGIN = 4;
 
     @Override
@@ -2784,6 +2786,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 startupStages.add(new StartupStage(STARTUP_STAGE_NEW_INSTALL_DONE, false));
                 startupStages.add(new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, false));
                 startupStages.add(new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, false));
+                startupStages.add(new StartupStage(STARTUP_STAGE_BLOCK_LIST_LOADED, false));
+                startupStages.add(new StartupStage(STARTUP_STAGE_FILTER_LIST_LOADED, false));
             }
             protected void onPreExecute() {
                 hideActionBar();
@@ -2875,8 +2879,18 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_LOADED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true));
                         startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true));
                     }
+
+                    JSONObject blockedObject = (JSONObject) Lbryio.parseResponse(Lbryio.call("file", "list_blocked", context));
+                    JSONArray blockedArray = blockedObject.getJSONArray("outpoints");
+                    Lbryio.populateOutpointList(Lbryio.blockedOutpoints, blockedArray);
+                    startupStages.set(STARTUP_STAGE_BLOCK_LIST_LOADED - 1, new StartupStage(STARTUP_STAGE_BLOCK_LIST_LOADED, true));
+
+                    JSONObject filteredObject = (JSONObject) Lbryio.parseResponse(Lbryio.call("file", "list_filtered", context));
+                    JSONArray filteredArray = filteredObject.getJSONArray("outpoints");
+                    Lbryio.populateOutpointList(Lbryio.filteredOutpoints, filteredArray);
+                    startupStages.set(STARTUP_STAGE_FILTER_LIST_LOADED - 1, new StartupStage(STARTUP_STAGE_FILTER_LIST_LOADED, true));
                 } catch (Exception ex) {
-                    // nopecd
+                    // nope
                     Log.e(TAG, String.format("App startup failed: %s", ex.getMessage()), ex);
                     return false;
                 } finally {

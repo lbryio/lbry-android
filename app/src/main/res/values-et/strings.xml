@@ -27,7 +27,6 @@
     <string name="welcome_to_lbry">Tere tulemast LBRY -sse.</string>
     <string name="welcome_paragraph">LBRY on kasutajate kontrolli all olev avaldamisplatvorm, kust võib leida ja kus saab ise avaldada videoid, muusikat, raamatuid ja palju muud.</string>
     <string name="welcome_tos">Jätkates nõustute &lt;a href=\"https://lbry.com/termsofservice\"&gt;kasutustingimustega&lt;/a&gt; ja kinnitate, et olete vanem kui 13.</string>
-    <string name="welcome_please_wait">Palun oota, seame esiteks mõned asjad joonde...</string>
     <string name="use_lbry">LBRYt kasutama</string>
 
     <!-- URI bar -->
@@ -39,7 +38,6 @@
     <string name="discover">Avasta</string>
     <string name="lbry_works_better">LBRY töötab paremini, kui sul on jälgimises vähemalt 5 kanalit. Sisse logides näed kanaleid mis sul juba on jälgimisel.</string>
     <string name="select_five_subscriptions">Jätkamiseks vali kuni 5 autorit.</string>
-    <string name="n_remaining">%1$d jäänud...</string>
     <string name="done">Tehtud</string>
     <string name="all">Kõik</string>
     <string name="discover_channels">Avasta uusi kanaleid</string>
@@ -57,7 +55,6 @@
     <string name="download">Lae alla</string>
     <string name="open">Ava</string>
     <string name="report">Raporteeri</string>
-    <string name="loading_decentralized_data">Laen detsentraliseeritud andmeid...</string>
     <string name="related_content">Seotud materjalid</string>
     <string name="share_lbry_content">Jaga LBRY materjale</string>
     <string name="view">Kuva</string>
@@ -86,7 +83,6 @@
         <item quantity="one">Sellega ostad \"%1$s\" hinnaga %2$s LBC</item>
         <item quantity="other">Sellega ostad \"%1$s\" hinnaga %2$s LBC</item>
     </plurals>
-
     <!-- Channel view -->
     <string name="no_channel_info">Siin pole praegu midagi.\nPalun proovi hiljem uuesti.</string>
     <string name="content">Sisu</string>
@@ -101,7 +97,6 @@
     <string name="take_photo">Tee foto</string>
     <string name="upload_file">Lae fail üles</string>
     <string name="no_videos_found">Sinu seadmes ei leidunud videosid. Alustamiseks tee foto või salvesta video.</string>
-    <string name="loading_videos">Laen sinu videosid...</string>
     <string name="storage_permission_rationale_videos">Failide postitamiseks ja näitamiseks vajab LBRY ligipääsu sinu failidele.</string>
     <string name="camera_permission_rationale_record">Videosalvestuse võimaldamiseks vajab LBRY ligipääsu kaamerale.</string>
     <string name="camera_permission_rationale_photo">Fotode tegemiseks vajab LBRY ligipääsu sinu kaamerale.</string>
@@ -178,7 +173,6 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Autorile viitamine, mitteäriline eesmärk, tuletatud teoste keeld 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
         <item>USD</item>
     </string-array>
 
@@ -197,12 +191,10 @@
     <string name="oops_something_went_wrong">Vabandust, midagi läks valesti.</string>
     <string name="installation_id_loaded">Installi ID laetud.</string>
     <string name="known_tags_loaded">Laadisin kasutuselolevad sildid.</string>
-    <string name="exchange_rate_loaded">Laadisin LBC/USD vahetuskursi.</string>
     <string name="user_authenticated">Kasutaja autenditud.</string>
     <string name="installation_registered">Install registreeritud.</string>
     <string name="subscriptions_loaded">Tellimused laetud.</string>
     <string name="subscriptions_resolved">Tellimusaadressid lahendatud.</string>
-
     <!-- Settings -->
     <string name="user_interface">Sisu &amp; Kasutajaliides</string>
     <string name="other">Muud</string>
@@ -212,10 +204,8 @@
     <string name="notifications">Teavitused</string>
     <string name="subscriptions">Tellimused</string>
     <string name="content_interests">Sisuhuvid</string>
-
     <string name="keep_sdk_in_background">Hoia LBRY taustateenus käimas peale rakenduse sulgemist, abistamaks parandada LBRY võrgu jõudlust.</string>
     <string name="participate_in_data_network">Osale LBRY andmeside võrgus (vajab rakenduse ja taustateenuste restarti)</string>
-
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - otsing</string>
     <string name="tag_url_title">%1$s - silt</string>
@@ -240,7 +230,6 @@
     <string name="in_your_publishes">sinu postitustes</string>
     <string name="in_your_supports">sinu toetustes</string>
     <string name="earn_more_tips">Teeni lisapreemiaid laadides üles huvitavaid videosid</string>
-    <string name="sdk_initializing">Taustateenus käivitub...</string>
     <string name="sdk_still_initializing">Taustateenus veel stardib. Võid seniks postitusi sirvida.</string>
     <string name="sdk_initializing_functionality">Seda ei saa hetkel teha, kuna taustateenus pole veel käivitunud.</string>
 
@@ -280,8 +269,6 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Käsitsi varukoopia&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync KKK&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
-
     <string name="account_recommended">Soovitame konto loomist</string>
     <string name="wallet_account_desc">Konto lbry.tv saidil võimaldab sul teenida preemiaid, teha varukoopiat oma rahakotist ja rakenduse seadeid sünkroniseerida.</string>
     <string name="wallet_without_account">Ilma kontota jääb sinu vastutusele rahakoti varukoopia tegemine.</string>
@@ -293,7 +280,6 @@
     <string name="insufficient_balance">Ebapiisav saldo</string>
     <string name="invalid_amount">Palun sisesta summa</string>
     <string name="send_credit_error">Raha ei õnnestunud hetkel saata. Palun proovi hiljem uuesti.</string>
-    <string name="loading_transactions">Laen tehinguid...</string>
     <string name="no_recent_transactions">Viimatiseid kandeid pole.</string>
     <string name="no_transactions">Kandeid pole.</string>
     <string name="tx_list_fee">teenustasu %1$s</string>
@@ -363,8 +349,6 @@
     <string name="provide_valid_email">Sisesta kehtiv emailiaadress</string>
     <string name="please_follow_instructions">Jätkamiseks järgi juhiseid, mis me sinu emailile saatsime.</string>
     <string name="sign_in_successful">Oled edukalt lbry.tv saidile sisse loginud.</string>
-    <string name="retrieving_account_information">Laen konto infot...</string>
-    <string name="apply_wallet_data">Töötlen rahakoti andmeid...</string>
     <string name="please_enter_your_password">Sisesta salasõna oma rahakoti dekrüptimiseks.</string>
     <string name="please_enter_a_password">Sisesta salasõna oma rahakoti enkrüptimiseks.</string>
     <string name="wallet_security_purposes">Infoks: rahakoti turvalisuse huvides ei saa LBRY sinu salasõna muuta ega tühistada.</string>
@@ -390,7 +374,6 @@
     <!-- Channels -->
     <string name="no_channel_created">Sa pole veel kanalit loonud.\nAlustuseks tekita uus kanal.</string>
     <string name="create_a_channel">Tekita kanal</string>
-    <string name="create_a_channel_item">Tekita kanal...</string>
     <string name="edit_channel">Muuda kanalit</string>
     <string name="delete_selection">Kustutan valitud?</string>
     <string name="delete_channel">Kustutan kanali?</string>
@@ -407,7 +390,6 @@
     <string name="title">Pealkiri</string>
     <string name="at">\@</string>
     <string name="deposit">Deposiit</string>
-    <string name="deposit_remains_yours">LBC jääb sinu omaks. See on hoiustatud nime reserveerimiseks ja seda saab igal ajal tühistada.</string>
     <string name="storage_permission_rationale_download">Failide allalaadimiseks vajab LBRY ligipääsu sinu failidele.</string>
     <string name="storage_permission_rationale_images">Piltide laadimiseks vajab LBRY rakendus ligipääsu salvestusseadmele.</string>
     <string name="select_thumbnail">Vali pisipilt</string>
@@ -415,7 +397,6 @@
     <string name="undetermined_image_filepath">Valitud pildi teekonda ei suudetud tuvastada. Palun vali pilt mõnes muus asukohas.</string>
     <string name="wait_for_upload">Palun oota kuni käimasolev üleslaadimine lõpetab.</string>
     <string name="image_upload_failed">Pildi üleslaadimine ebaõnnestus. Palun proovi uuesti.</string>
-    <string name="uploading">Laen üles...</string>
     <string name="please_enter_channel_name">Sisesta kanalinimi.</string>
     <string name="channel_name_invalid_characters">Kanalinimi sisaldab ebasobivaid tähemärke.</string>
     <string name="channel_name_already_created">Oled sellenimelise kanali juba tekitanud.</string>
@@ -440,8 +421,6 @@
         <item quantity="other">Kanalid edukalt kustutatud.</item>
     </plurals>
 
-    <!-- Rewards -->
-    <string name="lbry_credits_allow">LBRY raha LBC võimaldab sul avaldada või osta avaldatud materjale.</string>
     <string name="free_credits_worth">Pakume sulle %1$s LBC kui registreerid oma emailiaadressi.</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Loe lisa&lt;/a&gt;.</string>
     <string name="get_started">Alusta siit</string>
@@ -529,7 +508,6 @@
     <string name="get_social">Sotsiaalmeedia</string>
     <string name="social_paragraph">LBRY meeskonna ja LBRY kasutajatega saab suhelda Discordis, Facebookis, Instagramis, Twitteris või Redditis.</string>
     <string name="app_info">Rakenduse info</string>
-    <string name="loading">Laadin...</string>
     <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;Mis on LBRY?&lt;/a&gt;</string>
     <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Androidi põhiteadmised&lt;/a&gt;</string>
     <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;KKK&lt;/a&gt;</string>

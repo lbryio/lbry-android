@@ -70,6 +70,8 @@
     <string name="unsupported_content">Unsupported Content</string>
     <string name="unsupported_content_desc">Sorry, we are unable to display this content in the app. You can find the file %1$sin your downloads folder.</string>
     <string name="nothing_at_this_location">There\'s nothing at this location.</string>
+    <string name="dmca_complaint_blocked">In response to a complaint we received under the US Digital Millennium Copyright Act, we have blocked access to this content from our applications. &lt;a href="https://lbry.com/faq/dmca"&gt;Read more&lt;/a&gt;</string>
+    <string name="dmca_complaint_channel_blocked">In response to a complaint we received under the US Digital Millennium Copyright Act, we have blocked access to this channel from our applications. &lt;a href="https://lbry.com/faq/dmca"&gt;Read more&lt;/a&gt;</string>
     <string name="publish_something_here">Publish something here</string>
     <string name="cannot_view_claim">This content cannot be accessed at this time. Please try again later.</string>
     <string name="zero_duration">0:00</string>
@@ -238,6 +240,8 @@
     <string name="installation_registered">Installation registered.</string>
     <string name="subscriptions_loaded">Loaded subscriptions.</string>
     <string name="subscriptions_resolved">Resolved subscriptions.</string>
+    <string name="block_list_loaded">Loaded blocked outpoints.</string>
+    <string name="filter_list_loaded">Loaded filtered outpoints.</string>
 
     <!-- Settings -->
     <string name="user_interface">Content &amp; User interface</string>

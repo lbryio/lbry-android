@@ -787,4 +787,38 @@ public final class Helper {
         return id.toString();
     }
 
+    public static List<Claim> filterClaimsByOutpoint(List<Claim> claims) {
+        List<Claim> filtered = new ArrayList<>();
+        for (Claim claim : claims) {
+            String outpoint = String.format("%s:%d", claim.getTxid(), claim.getNout());
+            if (Lbryio.blockedOutpoints.contains(outpoint) || Lbryio.filteredOutpoints.contains(outpoint)) {
+                continue;
+            }
+
+            if (claim.getSigningChannel() != null) {
+                Claim signingChannel = claim.getSigningChannel();
+                String channelOutpoint = String.format("%s:%d", signingChannel.getTxid(), signingChannel.getNout());
+                if (Lbryio.blockedOutpoints.contains(channelOutpoint) || Lbryio.filteredOutpoints.contains(channelOutpoint)) {
+                    continue;
+                }
+            }
+
+            filtered.add(claim);
+        }
+
+        return filtered;
+    }
+
+    public static boolean isClaimBlocked(Claim claim) {
+        if (claim.getSigningChannel() != null) {
+            Claim signingChannel = claim.getSigningChannel();
+            String channelOutpoint = String.format("%s:%d", signingChannel.getTxid(), signingChannel.getNout());
+            if (Lbryio.blockedOutpoints.contains(channelOutpoint)) {
+                return true;
+            }
+        }
+
+        String outpoint = String.format("%s:%d", claim.getTxid(), claim.getNout());
+        return Lbryio.blockedOutpoints.contains(outpoint);
+    }
 }

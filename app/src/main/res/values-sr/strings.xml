@@ -20,6 +20,7 @@
     <string name="settings">Podešavanja</string>
     <string name="about">O Nama</string>
     <string name="sign_in">Prijavi Se</string>
+    <string name="shuffle">Izmiksuj</string>
     <string name="startup_failed">Aplikacija je naišla na problem. Molimo vas da proverite vašu vezu sa internetom i probate ponovo. Ukoliko problem i dalje postoji, kontaktirajte nas na hello@lbry.com</string>
     <string name="no_claim_search_content">Trenutno nemamo sadržaja za vas. Preciznije definišite ono šta tražite ili pokušajte ponovo kasnije.</string>
 
@@ -90,6 +91,16 @@
     <string name="please_select_repost_channel">Molimo odaberite kanal na kojem ćete preporučiti.</string>
     <string name="reply">Odgovori</string>
     <string name="replying_to">Odgovarate korisniku %1$s</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s pregled</item>
+        <item quantity="few">%1$s pregleda</item>
+        <item quantity="other">%1$s pregleda</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Ovo će platiti \"%1$s\" u vrednosti od %2$s kredit</item>
+        <item quantity="few">Ovo će platiti \"%1$s\" u vrednosti od %2$s kredita</item>
+        <item quantity="other">Ovo će platiti \"%1$s\" u vrednosti od %2$s kredita</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="one">Objavi i tipuj %1$s kredit?</item>
         <item quantity="few">Objavi i tipuj %1$s kredita?</item>
@@ -105,22 +116,14 @@
         <item quantity="few">Ovo će objaviti vaš komentar uz tip od %1$s kredita namenjena %2$s</item>
         <item quantity="other">Ovo će objaviti vaš komentar uz tip od %1$s kredita namenjena %2$s</item>
     </plurals>
-    <plurals name="view_count">
-        <item quantity="one">%1$s pregled</item>
-        <item quantity="few">%1$s pregleda</item>
-        <item quantity="other">%1$s pregleda</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="one">Ovo će platiti \"%1$s\" u vrednosti od %2$s kredit</item>
-        <item quantity="few">Ovo će platiti \"%1$s\" u vrednosti od %2$s kredita</item>
-        <item quantity="other">Ovo će platiti \"%1$s\" u vrednosti od %2$s kredita</item>
-    </plurals>
 
     <!-- Channel view -->
     <string name="no_channel_info">Trenutno ovde nema ničega. Molimo Vas pokušajte ponovo kasnije.</string>
     <string name="content">Sadržaj</string>
     <string name="website">Vebsajt</string>
     <string name="reposted">preporučeno</string>
+    <string name="receive_all_notifications">Primićete sva obaveštenja</string>
+    <string name="receive_no_notifications">Nećete primati obaveštenja u vezi ovog kanala</string>
     <plurals name="follower_count">
         <item quantity="one">%1$s pratilac</item>
         <item quantity="few">%1$s pratioca</item>
@@ -213,7 +216,7 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>LBRY krediti</item>
         <item>USD</item>
     </string-array>
 
@@ -234,12 +237,11 @@
     <string name="oops_something_went_wrong">Oops! Nešto je pošlo po zlu.</string>
     <string name="installation_id_loaded">Učitan ID Instalacije</string>
     <string name="known_tags_loaded">Učitali smo poznate lokalne i praćene tagovi.</string>
-    <string name="exchange_rate_loaded">Kurs zamene LBC/USD je osvežen.</string>
+    <string name="exchange_rate_loaded">Kurs zamene LBRY Krediti/USD je osvežen.</string>
     <string name="user_authenticated">Korisnik je autorizovan.</string>
     <string name="installation_registered">Instalacija je registrovana.</string>
     <string name="subscriptions_loaded">Pretplate su učitane.</string>
     <string name="subscriptions_resolved">Razrešene pretplate.</string>
-
     <!-- Settings -->
     <string name="user_interface">Sadržaj &amp; Korisnički interfejs</string>
     <string name="other">Ostalo</string>
@@ -250,9 +252,11 @@
     <string name="notifications">Obaveštenja</string>
     <string name="subscriptions">Vaše pretplate</string>
     <string name="content_interests">Zanimljivi sadržaji</string>
+    <string name="mini_player_bottom_spacing">Razmak Mini-plejera</string>
 
     <string name="keep_sdk_in_background">Dozvoli LBRY servisu da radi u pozadini i time povećaj funkcionalnost novčanika i same mreže</string>
     <string name="participate_in_data_network">Budi deo mreže podataka (ovo zahteva restart aplikacije i pozadinskog servisa)</string>
+    <string name="send_buffering_events">Šalji podatke o učitavanju na LBRY servere</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Pretraži</string>
@@ -303,6 +307,7 @@
     <string name="receive">Primite</string>
     <string name="spend">Potroši</string>
     <string name="publish">Objavite</string>
+    <string name="unpublish">Obriši</string>
     <string name="support">Pomoć</string>
     <string name="abandon">Odustani</string>
     <string name="channel">Kanal</string>
@@ -318,7 +323,7 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
+    <string name="lbc">Krediti</string>
 
     <string name="account_recommended">Nalog Preporučen</string>
     <string name="wallet_account_desc">lbry.tv račun omogućava vam da zaradite nagrade, napravite rezervnu kopiju vašeg novčanika i sve sinhronizujete.</string>
@@ -342,7 +347,7 @@
     <string name="confirm_unlock_tips">Da li ste sigurni da želite da otključate sve vaše tipove?</string>
     <string name="min_spend_required">Molimo vas da unesete veći iznos od 0,0001 kredita.</string>
 
-    <string name="buy_lbc">Kupi LBC</string>
+    <string name="buy_lbc">Kupi LBRY kredite</string>
     <string name="hash_not_supported">Vaš uređjaj ne ispunjava minimalne uslove da bi vaše zahteve za kupovinu održavao bezbednim. </string>
     <string name="receive_address_not_set">Nemate podešenu adresu novčanika. Molimo vas da napravite novu i da pokušate ponovo.</string>
 
@@ -387,7 +392,12 @@
     <string name="channel_to_show_support_as">Kanal u ime kog pružate podršku</string>
     <string name="make_this_a_tip">Pretvori ovo u Tip</string>
     <string name="send_revocable_support">Pošaljite Opozivu Podršku</string>
-    <string name="send_lbc_tip">Pošaljite tip od %1$s LBC</string>
+    <string name="send_lbc_tip">Tipuj %1$s</string>
+    <plurals name="send_lbc_tip">
+        <item quantity="one">Tipuj %1$s kredit</item>
+        <item quantity="few">Tipuj %1$s kredita</item>
+        <item quantity="other">Tipuj %1$s kredita</item>
+    </plurals>
     <string name="send_tip_info_content">Ovaj tip će postati vidljiv na profilu korisnika %1$s, i to će mu pomoći da bude lakše uočljiv dokle god taj tip ne unovči.  &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Ovaj tip će postati vidljiv na kanalu korisnika %1$s, i to će mu pomoći da bude lakše uočljiv dokle god taj tip ne unovči. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Poništi</string>
@@ -475,6 +485,7 @@
     <string name="channel_deleted">Kanal je uspešno obrisan.</string>
     <string name="channel_failed_delete">Nismo uspeli da obrišemo vaš kanal. Molimo vas pokušajte kasnije.</string>
     <string name="description">Opis</string>
+    <string name="follow">Zaprati</string>
     <string name="yes">Da</string>
     <string name="no">Ne</string>
     <string name="show_optional_fields">Prikaži neobavezna polja</string>
@@ -484,7 +495,7 @@
     <string name="title">Naziv</string>
     <string name="at">\@</string>
     <string name="deposit">Depozit</string>
-    <string name="deposit_remains_yours">Ovaj LBC ostaje vaš. To je depozit koji vam vrši rezervaciju imena i može se poništiti u bilo kojem trenutku.</string>
+    <string name="deposit_remains_yours">Ovaj kredit ostaje vaš. To je depozit koji vam vrši rezervaciju imena i može se poništiti u bilo kojem trenutku.</string>
     <string name="storage_permission_rationale_download">LBRY zahteva pristup vašem uređaju kako bi mogao da preuzima sadržaje.</string>
     <string name="storage_permission_rationale_images">LBRY zahteva pristup memoriji vašeg uredjaja kako bi mogao da učita fotografije.</string>
     <string name="select_thumbnail">Odaberi sličicu</string>
@@ -493,6 +504,7 @@
     <string name="wait_for_upload">Molimo budite strpljivi dok se trenutno otpremanje ne završi.</string>
     <string name="image_upload_failed">Otpremanje fotografije nije uspelo. Molimo pokušajte ponovo.</string>
     <string name="uploading">Otpremanje...</string>
+    <string name="uploading_thumbnail">Otpremanje sličice...</string>
     <string name="please_enter_channel_name">Molimo vas unesite naziv kanala.</string>
     <string name="channel_name_invalid_characters">Naziv vašeg kanala sadrži nedozvoljene znake.</string>
     <string name="channel_name_already_created">Već ste napravili kanal koristeći isti naziv.</string>
@@ -638,5 +650,13 @@
     <string name="unknown">Nepoznato</string>
     <string name="cannot_find_lbrynet_log">lbrynet.log datoteka nije pronadjena.</string>
     <string name="cannot_share_lbrynet_log">lbrynet.log datoteka ne može biti podeljena zbog nedostatka dozvola na vašem uredjaju.</string>
+
+    <!-- Notifications -->
+    <string name="no_notifications">Ovde je baš tiho! Nova obaveštenja će biti vidljiva ovde čim ih budete dobili.</string>
+    <plurals name="confirm_delete_notifications">
+        <item quantity="one">Da li ste sigurni da želite da otklonite odabrano obaveštenje?</item>
+        <item quantity="few">Da li ste sigurni da želite da otklonite odabrana obaveštenja?</item>
+        <item quantity="other">Da li ste sigurni da želite da otklonite odabrana obaveštenja?</item>
+    </plurals>
 
     </resources>

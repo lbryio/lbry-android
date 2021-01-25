@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.text.HtmlCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -211,6 +213,7 @@ public class FileViewFragment extends BaseFragment implements
     private TextView textReplyingTo;
     private TextView textReplyToBody;
     private View buttonClearReplyToComment;
+    private TextView textNothingAtLocation;
 
     private boolean postingComment;
     private boolean fetchingChannels;
@@ -261,6 +264,7 @@ public class FileViewFragment extends BaseFragment implements
         commentPostAsThumbnail = root.findViewById(R.id.comment_form_thumbnail);
         commentPostAsNoThumbnail = root.findViewById(R.id.comment_form_no_thumbnail);
         commentPostAsAlpha = root.findViewById(R.id.comment_form_thumbnail_alpha);
+        textNothingAtLocation = root.findViewById(R.id.nothing_at_location_text);
 
         inlineChannelCreator = root.findViewById(R.id.container_inline_channel_form_create);
         inlineChannelCreatorInputName = root.findViewById(R.id.inline_channel_form_input_name);
@@ -455,13 +459,17 @@ public class FileViewFragment extends BaseFragment implements
 
         if (claim != null && !invalidRepost) {
             Helper.saveViewHistory(currentUrl, claim);
-            checkAndLoadRelatedContent();
-            checkAndLoadComments();
-            renderClaim();
-            if (claim.getFile() == null) {
-                loadFile();
+            if (Helper.isClaimBlocked(claim)) {
+                renderClaimBlocked();
             } else {
-                initialFileLoadDone = true;
+                checkAndLoadRelatedContent();
+                checkAndLoadComments();
+                renderClaim();
+                if (claim.getFile() == null) {
+                    loadFile();
+                } else {
+                    initialFileLoadDone = true;
+                }
             }
         }
 
@@ -474,6 +482,21 @@ public class FileViewFragment extends BaseFragment implements
         Helper.setViewVisibility(buttonPublishSomething, View.VISIBLE);
         Helper.setViewVisibility(layoutResolving, View.GONE);
         Helper.setViewVisibility(layoutDisplayArea, View.INVISIBLE);
+        if (textNothingAtLocation != null) {
+            textNothingAtLocation.setText(R.string.nothing_at_this_location);
+        }
+    }
+
+    private void renderClaimBlocked() {
+        Helper.setViewVisibility(layoutLoadingState, View.VISIBLE);
+        Helper.setViewVisibility(layoutNothingAtLocation, View.VISIBLE);
+        Helper.setViewVisibility(buttonPublishSomething, View.INVISIBLE);
+        Helper.setViewVisibility(layoutResolving, View.GONE);
+        Helper.setViewVisibility(layoutDisplayArea, View.INVISIBLE);
+        if (textNothingAtLocation != null) {
+            textNothingAtLocation.setMovementMethod(LinkMovementMethod.getInstance());
+            textNothingAtLocation.setText(HtmlCompat.fromHtml(getString(R.string.dmca_complaint_blocked), HtmlCompat.FROM_HTML_MODE_LEGACY));
+        }
     }
 
     private void checkNewClaimAndUrl(Claim newClaim, String newUrl) {
@@ -683,9 +706,13 @@ public class FileViewFragment extends BaseFragment implements
 
         if (claim != null) {
             Helper.saveViewHistory(url, claim);
-            checkAndLoadRelatedContent();
-            checkAndLoadComments();
-            renderClaim();
+            if (Helper.isClaimBlocked(claim)) {
+                renderClaimBlocked();
+            } else {
+                checkAndLoadRelatedContent();
+                checkAndLoadComments();
+                renderClaim();
+            }
         }
     }
 
@@ -918,11 +945,15 @@ public class FileViewFragment extends BaseFragment implements
                     Helper.saveViewHistory(url, claim);
 
                     checkAndResetNowPlayingClaim();
-                    loadFile();
 
-                    checkAndLoadRelatedContent();
-                    checkAndLoadComments();
-                    renderClaim();
+                    if (Helper.isClaimBlocked(claim)) {
+                        renderClaimBlocked();
+                    } else {
+                        loadFile();
+                        checkAndLoadRelatedContent();
+                        checkAndLoadComments();
+                        renderClaim();
+                    }
                 } else {
                     // render nothing at location
                     renderNothingAtLocation();
