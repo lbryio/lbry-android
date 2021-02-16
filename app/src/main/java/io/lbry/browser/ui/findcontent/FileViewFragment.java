@@ -40,6 +40,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
@@ -76,8 +77,12 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.commonmark.node.Code;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.AttributeProvider;
+import org.commonmark.renderer.html.AttributeProviderContext;
+import org.commonmark.renderer.html.AttributeProviderFactory;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -2194,7 +2199,14 @@ public class FileViewFragment extends BaseFragment implements
     private String buildMarkdownHtml(String markdown) {
         Parser parser = Parser.builder().build();
         Node document = parser.parse(markdown);
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder()
+                .attributeProviderFactory(new AttributeProviderFactory() {
+                    @Override
+                    public AttributeProvider create(AttributeProviderContext context) {
+                        return new CodeAttributeProvider();
+                    }
+                })
+                .build();
         String markdownHtml = renderer.render(document);
 
         return "<!doctype html>\n" +
@@ -3234,5 +3246,21 @@ public class FileViewFragment extends BaseFragment implements
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    class CodeAttributeProvider implements AttributeProvider {
+
+        @Override
+        public void setAttributes(Node node, String tagName, Map<String, String> attributes) {
+            if (node instanceof Code) {
+                Context context = getContext();
+                String colorCodeText = "#".concat(Integer.toHexString(ContextCompat.getColor(context, R.color.codeTagText) & 0x00ffffff));
+                String colorCodeBg = "#".concat(Integer.toHexString(ContextCompat.getColor(context, R.color.codeTagBackground) & 0x00ffffff));
+                String codeStyle = "display: inline-block; border-radius: 0.2rem" +
+                        "; color: " + colorCodeText + "; background-color: " + colorCodeBg +
+                        "; font-size: 0.8571rem; padding: calc(2rem/5 - 4px) calc(2rem/5) calc(2rem/5 - 5px);";
+                attributes.put("style", codeStyle);
+            }
+        }
     }
 }
