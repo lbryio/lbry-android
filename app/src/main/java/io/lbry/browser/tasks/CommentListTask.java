@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.lbry.browser.model.Comment;
+import io.lbry.browser.utils.Comments;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
@@ -21,8 +22,8 @@ public class CommentListTask extends AsyncTask<Void, Void, List<Comment>> {
     private final int page;
     private final int pageSize;
     private final String claim;
-    private ProgressBar progressBar;
-    private CommentListHandler handler;
+    private final ProgressBar progressBar;
+    private final CommentListHandler handler;
     private Exception error;
 
     public CommentListTask(int page, int pageSize, String claim, ProgressBar progressBar, CommentListHandler handler) {
@@ -52,7 +53,7 @@ public class CommentListTask extends AsyncTask<Void, Void, List<Comment>> {
             options.put("skip_validation", true);
             options.put("visible", true);
 
-            JSONObject result = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_COMMENT_LIST, options);
+            JSONObject result = (JSONObject) Lbry.parseResponse(Comments.performRequest(Lbry.buildJsonParams(options), "comment.List"));
             JSONArray items = result.getJSONArray("items");
 
             List<Comment> children = new ArrayList<>();
