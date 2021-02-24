@@ -65,7 +65,7 @@ public class Comments {
 
         Map<String, Object> requestParams = new HashMap<>(4);
         requestParams.put("jsonrpc", "2.0");
-        requestParams.put("id",1);
+        requestParams.put("id", TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
         requestParams.put("method", method);
         requestParams.put("params", params);
 
