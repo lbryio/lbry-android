@@ -187,9 +187,21 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
     private void checkAndLoadComments() {
         View root = getView();
         if (root != null) {
+            View commentsDisabledText = root.findViewById(R.id.channel_disabled_comments);
+            View commentForm = root.findViewById(R.id.container_comment_form);
             RecyclerView commentsList = root.findViewById(R.id.channel_comments_list);
-            if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
-                loadComments();
+
+            if (claim.getTags().contains("disable-comments")) {
+                Helper.setViewVisibility(commentsDisabledText, View.VISIBLE);
+                Helper.setViewVisibility(commentForm, View.GONE);
+                Helper.setViewVisibility(commentsList, View.GONE);
+            } else {
+                Helper.setViewVisibility(commentsDisabledText, View.GONE);
+                Helper.setViewVisibility(commentForm, View.VISIBLE);
+                Helper.setViewVisibility(commentsList, View.VISIBLE);
+                if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
+                    loadComments();
+                }
             }
         }
     }
