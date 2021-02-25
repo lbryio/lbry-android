@@ -291,7 +291,6 @@ public class FileViewFragment extends BaseFragment implements
                     if (!playbackStarted) {
                         logPlay(currentUrl, startTimeMillis);
                         playbackStarted = true;
-                        isPlaying = true;
 
                         long lastPosition = loadLastPlaybackPosition();
                         if (lastPosition > -1) {
@@ -339,6 +338,11 @@ public class FileViewFragment extends BaseFragment implements
                 } else {
                     hideBuffering();
                 }
+            }
+
+            @Override
+            public void onIsPlayingChanged(boolean isPlayng) {
+                isPlaying = isPlayng;
             }
         };
 
