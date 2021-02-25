@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateUtils;
@@ -98,6 +97,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -284,7 +284,7 @@ public class FileViewFragment extends BaseFragment implements
 
         fileViewPlayerListener = new Player.EventListener() {
             @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            public void onPlaybackStateChanged(@Player.State int playbackState) {
                 if (playbackState == Player.STATE_READY) {
                     elapsedDuration = MainActivity.appPlayer.getCurrentPosition();
                     totalDuration = MainActivity.appPlayer.getDuration() < 0 ? 0 : MainActivity.appPlayer.getDuration();
@@ -303,7 +303,7 @@ public class FileViewFragment extends BaseFragment implements
                     hideBuffering();
 
                     if (loadingNewClaim) {
-                        MainActivity.appPlayer.setPlayWhenReady(true);
+                        MainActivity.appPlayer.setPlayWhenReady(Objects.requireNonNull((MainActivity) (getActivity())).isMediaAutoplayEnabled());
                         loadingNewClaim = false;
                     }
                 } else if (playbackState == Player.STATE_BUFFERING) {
@@ -1762,7 +1762,7 @@ public class FileViewFragment extends BaseFragment implements
                     ((MainActivity) context).setNowPlayingClaim(claim, currentUrl);
                 }
 
-                MainActivity.appPlayer.setPlayWhenReady(true);
+                MainActivity.appPlayer.setPlayWhenReady(Objects.requireNonNull((MainActivity) (getActivity())).isMediaAutoplayEnabled());
                 String userAgent = Util.getUserAgent(context, getString(R.string.app_name));
                 String mediaSourceUrl = getStreamingUrl();
                 MediaSource mediaSource = new ProgressiveMediaSource.Factory(
@@ -1770,7 +1770,8 @@ public class FileViewFragment extends BaseFragment implements
                         new DefaultExtractorsFactory()
                 ).setLoadErrorHandlingPolicy(new StreamLoadErrorPolicy()).createMediaSource(Uri.parse(mediaSourceUrl));
 
-                MainActivity.appPlayer.prepare(mediaSource, true, true);
+                MainActivity.appPlayer.setMediaSource(mediaSource, true);
+                MainActivity.appPlayer.prepare();
             }
         }
     }
