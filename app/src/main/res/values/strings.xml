@@ -64,6 +64,8 @@
     <string name="no_comments">No comments to display at this time.</string>
     <string name="sdk_initializing_comments">Comments will display after the background service is initialized.</string>
     <string name="comment_error">Your comment could not be posted at this time. Please try again later.</string>
+    <string name="channel_disabled_comments">This channel has disabled comments on their page.</string>
+    <string name="creator_disabled_comments">The creator of this content has disabled comments.</string>
     <string name="share_lbry_content">Share LBRY content</string>
     <string name="view">View</string>
     <string name="play">Play</string>

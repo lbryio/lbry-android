@@ -210,6 +210,8 @@ public class FileViewFragment extends BaseFragment implements
     private View layoutResolving;
     private int lastPositionSaved;
 
+    private View tipButton;
+
     private WebView webView;
     private boolean webViewAdded;
 
@@ -254,6 +256,8 @@ public class FileViewFragment extends BaseFragment implements
         layoutResolving = root.findViewById(R.id.file_view_loading_container);
         layoutDisplayArea = root.findViewById(R.id.file_view_claim_display_area);
         buttonPublishSomething = root.findViewById(R.id.nothing_at_location_publish_button);
+
+        tipButton = root.findViewById(R.id.file_view_action_tip);
 
         containerReplyToComment = root.findViewById(R.id.comment_form_reply_to_container);
         textReplyingTo = root.findViewById(R.id.comment_form_replying_to_text);
@@ -1497,6 +1501,11 @@ public class FileViewFragment extends BaseFragment implements
         Helper.setViewVisibility(layoutLoadingState, View.GONE);
         Helper.setViewVisibility(layoutNothingAtLocation, View.GONE);
 
+        if (claim.getTags().contains("disable-support") || claim.getSigningChannel().getTags().contains("disable-support"))
+            Helper.setViewVisibility(tipButton, View.GONE);
+        else
+            Helper.setViewVisibility(tipButton, View.VISIBLE);
+
         loadViewCount();
         checkIsFollowing();
         
@@ -1679,9 +1688,20 @@ public class FileViewFragment extends BaseFragment implements
     private void checkAndLoadComments() {
         View root = getView();
         if (root != null) {
+            View commentsDisabledText = root.findViewById(R.id.file_view_disabled_comments);
+            View commentForm = root.findViewById(R.id.container_comment_form);
             RecyclerView commentsList = root.findViewById(R.id.file_view_comments_list);
-            if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
-                loadComments();
+            if (claim.getTags().contains("disable-comments") || claim.getSigningChannel().getTags().contains("disable-comments")) {
+                Helper.setViewVisibility(commentsDisabledText, View.VISIBLE);
+                Helper.setViewVisibility(commentForm, View.GONE);
+                Helper.setViewVisibility(commentsList, View.GONE);
+            } else {
+                Helper.setViewVisibility(commentsDisabledText, View.GONE);
+                Helper.setViewVisibility(commentForm, View.VISIBLE);
+                Helper.setViewVisibility(commentsList, View.VISIBLE);
+                if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
+                    loadComments();
+                }
             }
         }
     }
