@@ -1498,7 +1498,7 @@ public class FileViewFragment extends BaseFragment implements
         Helper.setViewVisibility(layoutNothingAtLocation, View.GONE);
 
         if (claim.getTags().contains("disable-support") || claim.getSigningChannel().getTags().contains("disable-support"))
-            Helper.setViewVisibility(tipButton, View.INVISIBLE);
+            Helper.setViewVisibility(tipButton, View.GONE);
         else
             Helper.setViewVisibility(tipButton, View.VISIBLE);
 
