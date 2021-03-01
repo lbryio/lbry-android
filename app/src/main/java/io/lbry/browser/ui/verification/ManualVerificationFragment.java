@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
+import io.lbry.browser.VerificationActivity;
 import io.lbry.browser.listener.SignInListener;
 import io.lbry.browser.model.TwitterOauth;
 import io.lbry.browser.model.lbryinc.RewardVerified;
@@ -95,6 +96,13 @@ public class ManualVerificationFragment extends Fragment {
                         }
                     });
                 }
+            }
+        });
+
+        root.findViewById(R.id.verification_manual_phone_number_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((VerificationActivity) getContext()).showPhoneVerification();
             }
         });
 

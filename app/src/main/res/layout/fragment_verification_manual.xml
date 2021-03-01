@@ -68,6 +68,33 @@
                 android:fontFamily="@font/inter"
                 android:text="@string/twitter_verify" />
 
+
+            <TextView
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/phone_number_verification"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/phone_number_verification_desc"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verification_manual_phone_number_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/phone_number_verify" />
+
             <TextView
                 android:textSize="20sp"
                 android:layout_width="match_parent"
