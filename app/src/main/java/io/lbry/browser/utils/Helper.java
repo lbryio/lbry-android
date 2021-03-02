@@ -77,6 +77,7 @@ public final class Helper {
     public static final String FILE_SIZE_FORMAT_PATTERN = "#,###.#";
     public static final DecimalFormat LBC_CURRENCY_FORMAT = new DecimalFormat(LBC_CURRENCY_FORMAT_PATTERN);
     public static final DecimalFormat FULL_LBC_CURRENCY_FORMAT = new DecimalFormat("#,###.########");
+    public static final DecimalFormat REDUCED_LBC_CURRENCY_FORMAT = new DecimalFormat("#,###.####");
     public static final DecimalFormat SIMPLE_CURRENCY_FORMAT = new DecimalFormat("#,##0.00");
     public static final SimpleDateFormat FILESTAMP_FORMAT =  new SimpleDateFormat("yyyyMMdd_HHmmss");
     public static final String EXPLORER_TX_PREFIX = "https://explorer.lbry.com/tx";

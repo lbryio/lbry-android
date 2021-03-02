@@ -252,15 +252,8 @@
 
     <!-- Wallet -->
     <string name="balance">Balans</string>
-    <string name="you_currently_have">U het tans</string>
     <string name="convert_credits">U kan u krediete in USD omskakel en die omgeskakelde bedrag met \'n uitruil onttrek. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Skakel krediete na USD op Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">Jy het ook</string>
-    <string name="you_staked">Jy het vasgehou</string>
-    <string name="in_tips">in wenke</string>
-    <string name="in_your_publishes">in u publikasies</string>
-    <string name="in_your_supports">in u steun</string>
-    <string name="earn_more_tips">Verdien meer wenke deur cool video\'s op te laai</string>
     <string name="sdk_still_initializing">Die agtergronddiens word steeds geïnitialiseer. U kan die inhoud intussen verken en kyk.</string>
     <string name="sdk_initializing_functionality">U kan dit nie nou doen nie, want die agtergronddiens is nog besig om te initialiseer.</string>
 

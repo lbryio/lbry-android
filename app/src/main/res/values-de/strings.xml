@@ -256,15 +256,8 @@ Bitte versuche es später erneut.</string>
 
     <!-- Wallet -->
     <string name="balance">Kontostand</string>
-    <string name="you_currently_have">Sie haben derzeit</string>
     <string name="convert_credits">Sie können Ihr Guthaben in USD umrechnen und den umgerechneten Betrag über einen Umtausch abheben. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">Sie haben auch</string>
-    <string name="you_staked">Sie haben gesteckt</string>
-    <string name="in_tips">in Trinkgeldern</string>
-    <string name="in_your_publishes">in Deinen Veröffentlichungen</string>
-    <string name="in_your_supports">in Deinen Unterstützungen</string>
-    <string name="earn_more_tips">Verdienen Sie weitere Tipps, indem Sie coole Videos hochladen</string>
     <string name="sdk_still_initializing">Der Hintergrunddienst wird noch initialisiert. In der Zwischenzeit können Sie Inhalte erkunden und ansehen.</string>
     <string name="sdk_initializing_functionality">Sie können dies derzeit nicht tun, da der Hintergrunddienst noch initialisiert wird.</string>
 

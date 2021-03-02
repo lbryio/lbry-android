@@ -265,15 +265,8 @@
 
     <!-- Wallet -->
     <string name="balance">Saldo</string>
-    <string name="you_currently_have">Hai attualmente</string>
     <string name="convert_credits">Puoi convertire i tuoi crediti in USD e trasferire il valore convertito utilizzando un cambio. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Vedi altro&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Converti crediti in USD su Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">Hai anche</string>
-    <string name="you_staked">Hai accumulato</string>
-    <string name="in_tips">in donaziones</string>
-    <string name="in_your_publishes">nelle tue pubblicazioni</string>
-    <string name="in_your_supports">nei tuoi supporti</string>
-    <string name="earn_more_tips">Guadagna altre donazioni caricando video interessanti</string>
     <string name="sdk_initializing">Avvio servizio in background...</string>
     <string name="sdk_still_initializing">Il servizio in background è ancora in avvio. Puoi esplorare e visualizzare contenuti nel frattempo.</string>
     <string name="sdk_initializing_functionality">Non puoi fare questo al momento perché il servizio in background è ancora in avviamento.</string>

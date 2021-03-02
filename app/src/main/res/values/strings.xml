@@ -277,15 +277,19 @@
 
     <!-- Wallet -->
     <string name="balance">Balance</string>
-    <string name="you_currently_have">You currently have</string>
+    <string name="your_total_balance">Your total balance.</string>
+    <string name="all_of_this_is_yours">Your total balance. All of this is yours, but some credits are in use on channels and content right now.</string>
     <string name="convert_credits">You can convert your credits to USD and withdraw the converted amount using an exchange. &lt;a href="https://lbry.com/faq/exchanges"&gt;Learn more&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href="https://bittrex.com/Account/Register?referralCode=4M1-P30-BON"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">You also have</string>
-    <string name="you_staked">You staked</string>
-    <string name="in_tips">in tips</string>
-    <string name="in_your_publishes">in your publishes</string>
-    <string name="in_your_supports">in your supports</string>
-    <string name="earn_more_tips">Earn more tips by uploading cool videos</string>
+    <string name="immediately_spendable">immediately spendable</string>
+    <string name="boosting_content">boosting content</string>
+    <string name="view_more">View more</string>
+    <string name="earned_from_others">…earned from others</string>
+    <string name="on_initial_publishes">…on initial publishes</string>
+    <string name="supporting_content">…supporting content</string>
+    <string name="unlock_to_spend">(Unlock to spend)</string>
+    <string name="delete_or_edit_past_content">(Delete or edit past content to spend)</string>
+    <string name="delete_supports_to_spend">(Delete supports to spend)</string>
     <string name="sdk_initializing">The background service is initializing…</string>
     <string name="sdk_still_initializing">The background service is still initializing. You can explore and watch content in the mean time.</string>
     <string name="sdk_initializing_functionality">You cannot do this right now because the background service is still initializing.</string>

@@ -257,15 +257,8 @@
 
     <!-- Wallet -->
     <string name="balance">Saldo</string>
-    <string name="you_currently_have">Anda sekarang punya</string>
     <string name="convert_credits">Anda dapat mengonversi kredit Anda ke USD dan menarik jumlah yang dikonversi menggunakan pertukaran. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">Kamu juga punya</string>
-    <string name="you_staked">Anda mempertaruhkan</string>
-    <string name="in_tips">dalam tips</string>
-    <string name="in_your_publishes">di publikasi Anda</string>
-    <string name="in_your_supports">dalam dukungan Anda</string>
-    <string name="earn_more_tips">Hasilkan lebih banyak tips dengan mengunggah video keren</string>
     <string name="sdk_initializing">Layanan latar belakang sedang menginisialisasi...</string>
     <string name="sdk_still_initializing">Layanan latar belakang masih diinisialisasi. Anda dapat menjelajahi dan menonton konten dalam waktu yang bersamaan.</string>
     <string name="sdk_initializing_functionality">Anda tidak dapat melakukan ini sekarang karena layanan latar belakang masih diinisialisasi.</string>

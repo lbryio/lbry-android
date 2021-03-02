@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lbry="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="4dp">
@@ -8,63 +9,122 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <RelativeLayout
+        <LinearLayout
             android:background="@drawable/stripe_2x"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:padding="16dp">
-            <TextView
-                android:id="@+id/wallet_balance_title"
-                android:text="@string/balance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/wallet_balance_title"
-                android:layout_marginTop="4dp"
-                android:text="@string/you_currently_have"
-                android:fontFamily="@font/inter"
-                android:textFontWeight="600"
-                android:textColor="@color/caption"
-                android:textSize="16sp" />
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <io.lbry.browser.views.CreditsBalanceView
+                android:id="@+id/wallet_total_balance"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_above="@id/wallet_balance_usd_value">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/ic_credits" />
-                <TextView
-                    android:id="@+id/wallet_balance_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/zero"
-                    android:textColor="@color/white"
-                    android:textSize="36sp"
-                    android:textFontWeight="300"
-                    />
-            </LinearLayout>
+                lbry:textSize="@dimen/wallet_total_balance_font_size"
+                lbry:iconSize="24dp"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+
             <TextView
                 android:id="@+id/wallet_balance_usd_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:fontFamily="@font/inter"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textFontWeight="300" />
-        </RelativeLayout>
+
+            <TextView
+                android:id="@+id/total_balance_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/inter"
+                android:textColor="@color/white"
+                android:textFontWeight="300"
+                android:textSize="@dimen/wallet_detail_balance_desc_font_size" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/lightDivider" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <io.lbry.browser.views.CreditsBalanceView
+                    android:id="@+id/wallet_spendable_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    lbry:textSize="@dimen/wallet_detail_balance_font_size"
+                    lbry:iconSize="14dp"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:fontFamily="@font/inter"
+                    android:paddingStart="8dp"
+                    android:text="@string/immediately_spendable"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300"
+                    android:textSize="@dimen/wallet_detail_balance_desc_font_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+                <io.lbry.browser.views.CreditsBalanceView
+                    android:id="@+id/wallet_supporting_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    lbry:textSize="@dimen/wallet_detail_balance_font_size"
+                    lbry:iconSize="14dp"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:paddingStart="8dp"
+                    android:text="@string/boosting_content"
+                    android:textColor="@color/white"
+                    android:textFontWeight="300"
+                    android:textSize="@dimen/wallet_detail_balance_desc_font_size" />
+
+                <TextView
+                    android:id="@+id/view_more_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:drawableEnd="@drawable/ic_arrow_dropdown"
+                    android:gravity="end"
+                    android:text="@string/view_more"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/wallet_detail_balance_font_size" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/balance_detail_listview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone">
+
+            </ListView>
+
+
+
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/wallet_buy_lbc_button"
@@ -107,192 +167,6 @@
             android:layout_marginBottom="16dp"
             android:background="@color/lightDivider" />
 
-        <LinearLayout
-            android:weightSum="2"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <io.lbry.browser.ui.controls.SolidIconView
-                    android:text="@string/fa_gift"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:textColor="@color/lbryGreen" />
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginStart="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:text="@string/you_also_have"
-                        android:textSize="14sp"
-                        android:textFontWeight="600"
-                        />
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_credits"
-                            android:layout_marginEnd="4dp" />
-                        <TextView
-                            android:id="@+id/wallet_balance_tips"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter"
-                            android:text="0"
-                            android:textSize="24sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/wallet_balance_tips_usd_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:textFontWeight="300"
-                        android:textSize="14sp" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="16dp">
-                        <TextView
-                            android:id="@+id/wallet_in_tips_label"
-                            android:layout_centerVertical="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter"
-                            android:text="@string/in_tips"
-                            android:textSize="14sp" />
-                        <TextView
-                            android:id="@+id/wallet_unlock_tips_link"
-                            android:background="?attr/selectableItemBackground"
-                            android:clickable="true"
-                            android:layout_centerVertical="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/wallet_in_tips_label"
-                            android:fontFamily="@font/inter"
-                            android:layout_marginStart="24dp"
-                            android:text="@string/unlock"
-                            android:textColor="@color/lbryGreen"
-                            android:textSize="14sp"
-                            android:visibility="gone" />
-                        <ProgressBar
-                            android:id="@+id/wallet_unlock_tips_progress"
-                            android:layout_centerVertical="true"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_marginStart="24dp"
-                            android:layout_toEndOf="@id/wallet_in_tips_label"
-                            android:visibility="gone" />
-
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/wallet_hint_earn_more_tips"
-                        android:clickable="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/inter"
-                        android:text="@string/earn_more_tips"
-                        android:textColor="@color/lbryGreen"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <io.lbry.browser.ui.controls.SolidIconView
-                    android:text="@string/fa_lock"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:textColor="@color/lbryGreen" />
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginStart="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:text="@string/you_staked"
-                        android:textSize="14sp"
-                        android:textFontWeight="600"
-                        />
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_credits"
-                            android:layout_marginEnd="4dp" />
-                        <TextView
-                            android:id="@+id/wallet_balance_staked_publishes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter"
-                            android:text="0"
-                            android:textSize="24sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:text="@string/in_your_publishes"
-                        android:textSize="14sp" />
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp">
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_credits"
-                            android:layout_marginEnd="4dp" />
-                        <TextView
-                            android:id="@+id/wallet_balance_staked_supports"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter"
-                            android:text="0"
-                            android:textSize="24sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:text="@string/in_your_supports"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
 
         <LinearLayout
             android:background="@color/lbryGreen"
