@@ -638,17 +638,20 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     }
 
     public void onWalletBalanceUpdated(WalletBalance walletBalance) {
-        double balance = walletBalance.getAvailable().doubleValue();
-        double usdBalance = balance * Lbryio.LBCUSDRate;
+        double totalBalance = walletBalance.getTotal().doubleValue();
+        double spendableBalance = walletBalance.getAvailable().doubleValue();
+        double usdBalance = spendableBalance * Lbryio.LBCUSDRate;
         double tipsBalance = walletBalance.getTips().doubleValue();
         double tipsUsdBalance = tipsBalance * Lbryio.LBCUSDRate;
 
-        String formattedBalance = Helper.SIMPLE_CURRENCY_FORMAT.format(balance);
-        Helper.setViewText(textWalletBalance, balance > 0 && formattedBalance.equals("0") ? Helper.FULL_LBC_CURRENCY_FORMAT.format(balance) : formattedBalance);
+        String formattedTotalBalance = Helper.SIMPLE_CURRENCY_FORMAT.format(spendableBalance);
+        String formattedSpendableBalance = Helper.SIMPLE_CURRENCY_FORMAT.format(spendableBalance);
+        Helper.setViewText(textWalletBalance, totalBalance > 0 && formattedTotalBalance.equals("0") ? Helper.FULL_LBC_CURRENCY_FORMAT.format(totalBalance) : formattedTotalBalance);
+        Helper.setViewText(textWalletBalance, spendableBalance > 0 && formattedSpendableBalance.equals("0") ? Helper.FULL_LBC_CURRENCY_FORMAT.format(spendableBalance) : formattedSpendableBalance);
         Helper.setViewText(textTipsBalance, Helper.shortCurrencyFormat(tipsBalance));
         Helper.setViewText(textClaimsBalance, Helper.shortCurrencyFormat(walletBalance.getClaims().doubleValue()));
         Helper.setViewText(textSupportsBalance, Helper.shortCurrencyFormat(walletBalance.getSupports().doubleValue()));
-        Helper.setViewText(textWalletInlineBalance, Helper.shortCurrencyFormat(balance));
+        Helper.setViewText(textWalletInlineBalance, Helper.shortCurrencyFormat(spendableBalance));
         if (Lbryio.LBCUSDRate > 0) {
             // only update display usd values if the rate is loaded
             Helper.setViewText(textWalletBalanceUSD, String.format("≈$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(usdBalance)));
