@@ -1,5 +1,6 @@
 package io.lbry.browser;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -822,6 +823,20 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void removeWalletBalanceListener(WalletBalanceListener listener) {
         walletBalanceListeners.remove(listener);
+    }
+
+    public void restoreWalletContainerPosition() {
+        View floatingBalance = findViewById(R.id.floating_balance_main_container);
+
+        ObjectAnimator animation = ObjectAnimator.ofFloat(floatingBalance, "translationY", 0f);
+        animation.setDuration(250).start();
+    }
+
+    public void translateFloatingWallet(float initialY) {
+        if (findViewById(R.id.floating_balance_main_container).getY() == initialY) {
+            ObjectAnimator animation = ObjectAnimator.ofFloat(findViewById(R.id.floating_balance_main_container), "translationY", 2 * findViewById(R.id.floating_balance_main_container).getHeight());
+            animation.setDuration(300).start();
+        }
     }
 
     public void removeNavFragment(Class fragmentClass, int navItemId) {

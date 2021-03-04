@@ -247,6 +247,8 @@ public class FileViewFragment extends BaseFragment implements
     // if this is set, scroll to the specific comment on load
     private String commentHash;
 
+    private float floatingWalletPositionY;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_file_view, container, false);
@@ -802,6 +804,7 @@ public class FileViewFragment extends BaseFragment implements
             activity.removeSdkStatusListener(this);
             activity.removeStoragePermissionListener(this);
             activity.removeWalletBalanceListener(this);
+            activity.restoreWalletContainerPosition();
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
@@ -1281,6 +1284,27 @@ public class FileViewFragment extends BaseFragment implements
         buttonFollow.setOnClickListener(followUnfollowListener);
         buttonUnfollow.setOnClickListener(followUnfollowListener);
         buttonBell.setOnClickListener(bellIconListener);
+
+        NestedScrollView scrollView = root.findViewById(R.id.file_view_scroll_view);
+
+        // Store floating wallet balance vertical position when fragment was created
+        // This is used for animate it when user scrolls to the bottom of the screen
+        View floatingBalance = getActivity().findViewById(R.id.floating_balance_main_container);
+        floatingWalletPositionY = floatingBalance.getY();
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                Context ctx = getContext();
+                if (scrollY < oldScrollY && ctx instanceof MainActivity) {
+                    // User has scrolled upwards
+                    ((MainActivity) ctx).restoreWalletContainerPosition();
+                } else if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) && ctx instanceof MainActivity) {
+                    // User is at the bottom of the screen
+                    ((MainActivity) ctx).translateFloatingWallet(floatingWalletPositionY);
+                }
+            }
+        });
 
         commentChannelSpinnerAdapter = new InlineChannelSpinnerAdapter(getContext(), R.layout.spinner_item_channel, new ArrayList<>());
         commentChannelSpinnerAdapter.addPlaceholder(false);
