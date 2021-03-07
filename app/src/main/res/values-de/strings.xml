@@ -26,7 +26,7 @@
 
     <!-- Welcome Page -->
     <string name="welcome_to_lbry">Willkommen zu LBRY.</string>
-    <string name="welcome_paragraph">LBRY ist eine von der Community kontrollierte Plattform, bei welcher Sie Videos, Musik, Bücher und weiteres finden und veröffentlichen können.</string>
+    <string name="welcome_paragraph">LBRY ist eine von der Community kontrollierte Plattform, bei welcher Du Videos, Musik, Bücher und weiteres finden und veröffentlichen kannst.</string>
     <string name="welcome_tos">Indem ich fortfahre, stimme ich den &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; zu und bestätige, dass ich über 13 Jahre alt bin.</string>
     <string name="use_lbry">Verwende LBRY »</string>
 
