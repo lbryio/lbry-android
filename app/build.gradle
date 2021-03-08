@@ -3,7 +3,7 @@ import com.google.gms.googleservices.GoogleServicesPlugin
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 29
     buildToolsVersion "29.0.2"
     flavorDimensions "default"
 
