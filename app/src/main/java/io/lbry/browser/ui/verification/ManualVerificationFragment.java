@@ -19,10 +19,12 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.listener.SignInListener;
 import io.lbry.browser.model.TwitterOauth;
 import io.lbry.browser.model.lbryinc.RewardVerified;
+import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.tasks.RewardVerifiedHandler;
 import io.lbry.browser.tasks.TwitterOauthHandler;
 import io.lbry.browser.tasks.lbryinc.TwitterVerifyTask;
@@ -65,6 +67,33 @@ public class ManualVerificationFragment extends Fragment {
                 } else {
                     // show twitter sign-in flow
                     twitterVerificationFlow();
+                }
+            }
+        });
+
+        root.findViewById(R.id.verification_manual_skip_queue_verify).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showLoading();
+                if (MainActivity.instance != null) {
+                    MainActivity.instance.checkPurchases(new GenericTaskHandler() {
+                        @Override
+                        public void beforeStart() {
+
+                        }
+
+                        @Override
+                        public void onSuccess() {
+                            hideLoading();
+                            listener.onManualVerifyContinue();
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            hideLoading();
+                            showError(error.getMessage());
+                        }
+                    });
                 }
             }
         });
@@ -265,6 +294,16 @@ public class ManualVerificationFragment extends Fragment {
             listener.onManualProgress(twitterOauthInProgress);
         }
         showFlowError(extra);
+    }
+
+    private void showError(String message) {
+        Context context = getContext();
+        View root = getView();
+        if (context != null && root != null) {
+            Snackbar.make(root, message, Snackbar.LENGTH_LONG).
+                    setTextColor(Color.WHITE).
+                    setBackgroundTint(Color.RED).show();
+        }
     }
 
     private void showFlowError(String extra) {

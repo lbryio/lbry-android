@@ -225,6 +225,7 @@ import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 
 import static android.os.Build.VERSION_CODES.M;
+import static android.os.Build.VERSION_CODES.P;
 
 public class MainActivity extends AppCompatActivity implements SdkStatusListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
@@ -1271,7 +1272,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         return sp.getBoolean(PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED, false);
     }
 
-    private void checkPurchases() {
+    public void checkPurchases() {
         if (billingClient != null) {
             Purchase.PurchasesResult result = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
             if (result.getPurchasesList() != null) {
@@ -1279,6 +1280,24 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     handlePurchase(purchase);
                 }
             }
+        }
+    }
+
+    public void checkPurchases(GenericTaskHandler handler) {
+        boolean purchaseFound = false;
+        if (billingClient != null) {
+            Purchase.PurchasesResult result = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
+            if (result.getPurchasesList() != null) {
+                for (Purchase purchase : result.getPurchasesList()) {
+                    handlePurchase(purchase, handler);
+                    purchaseFound = true;
+                    return;
+                }
+            }
+        }
+
+        if (!purchaseFound) {
+            handler.onError(new Exception(getString(R.string.skip_queue_purchase_not_found)));
         }
     }
 
@@ -1294,6 +1313,28 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onError(Exception error) {
                 // pass
+            }
+        });
+    }
+
+    private void handlePurchase(Purchase purchase, GenericTaskHandler handler) {
+        handleBillingPurchase(purchase, billingClient, MainActivity.this, null, new RewardVerifiedHandler() {
+            @Override
+            public void onSuccess(RewardVerified rewardVerified) {
+                if (Lbryio.currentUser != null) {
+                    Lbryio.currentUser.setRewardApproved(rewardVerified.isRewardApproved());
+                }
+
+                if (handler != null) {
+                    handler.onSuccess();
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (handler != null) {
+                    handler.onError(error);
+                }
             }
         });
     }
