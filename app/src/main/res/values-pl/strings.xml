@@ -20,6 +20,7 @@
     <string name="settings">Ustawienia</string>
     <string name="about">O aplikacji</string>
     <string name="sign_in">Zaloguj się</string>
+    <string name="shuffle">Wymieszaj</string>
     <string name="startup_failed">Uruchomienie aplikacji nie powiodło się. Sprawdź stan podłącznia do sieci danych i spróbuj ponownie. Jeśli to nie pomoże usunąć usterki, wyślij e-mail na adres hello@lbry.com</string>
     <string name="no_claim_search_content">Brak zawartości do wyświetlenia w tej chwili. Spróbuj zawęzić swój wybór lub sprawdź później. </string>
 
@@ -90,6 +91,18 @@
     <string name="please_select_repost_channel">Wybierz kanał do ponownego opublikowania.</string>
     <string name="reply">Odpowiedz</string>
     <string name="replying_to">Odpowiadanie do %1$s</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s wyświetlenie</item>
+        <item quantity="few">%1$swyświetleń</item>
+        <item quantity="many">%1$s wyświetleń</item>
+        <item quantity="other">%1$swyświetleń</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">To kupi \"%1$s\" za %2$skredyt</item>
+        <item quantity="few">To kupi \"%1$s\" za %2$skredytów</item>
+        <item quantity="many">To kupi \"%1$s\" za %2$skredytów</item>
+        <item quantity="other">To kupi \"%1$s\" za %2$skredytów</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="one">Opublikować i wysłać napiwek %1$s kredytów?</item>
         <item quantity="few">Opublikować i wysłać napiwek %1$s kredytów?</item>
@@ -108,24 +121,14 @@
         <item quantity="many">To opublikuje komentarz z napiwkiem %1$s kredytów dla %2$s</item>
         <item quantity="other">To opublikuje komentarz z napiwkiem %1$s kredytów dla %2$s</item>
     </plurals>
-    <plurals name="view_count">
-        <item quantity="one">%1$s wyświetlenie</item>
-        <item quantity="few">%1$swyświetleń</item>
-        <item quantity="many">%1$s wyświetleń</item>
-        <item quantity="other">%1$swyświetleń</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="one">To kupi \"%1$s\" za %2$skredyt</item>
-        <item quantity="few">To kupi \"%1$s\" za %2$skredytów</item>
-        <item quantity="many">To kupi \"%1$s\" za %2$skredytów</item>
-        <item quantity="other">To kupi \"%1$s\" za %2$skredytów</item>
-    </plurals>
 
     <!-- Channel view -->
     <string name="no_channel_info">Jeszcze nic tu nie ma.\nSprawdź później.</string>
     <string name="content">Zawartość</string>
     <string name="website">Strona</string>
     <string name="reposted">repostowane</string>
+    <string name="receive_all_notifications">Będziesz otrzymywał wszystkie powiadomienia</string>
+    <string name="receive_no_notifications">Nie będziesz otrzymywał notyfikacji od tego kanału.</string>
     <plurals name="follower_count">
         <item quantity="one">%1$ssubskrybujących</item>
         <item quantity="few">%1$ssubskrybujących</item>
@@ -139,7 +142,7 @@
     <string name="take_photo">Zrób zdjęcie</string>
     <string name="upload_file">Wyślij plik</string>
     <string name="no_videos_found">Nie mogliśmy znaleźć żadnych filmów na twoim urządzeniu. Zrób zdjęcie lub nagraj wideo, aby zacząć.</string>
-    <string name="loading_videos">Proszę czekać, ładujemy Twoje filmy wideo ...</string>
+    <string name="loading_videos">Proszę poczekać, aż załadujemy twoje filmy....</string>
     <string name="storage_permission_rationale_videos">LBRY wymaga dostępu, aby móc wyświetlać i publikować Twoje filmy, obrazy i inne pliki z Twojego urządzenia.</string>
     <string name="camera_permission_rationale_record">LBRY wymaga dostępu do aparatu, aby nagrywać filmy.</string>
     <string name="camera_permission_rationale_photo">LBRY wymaga dostępu do aparatu, aby robić zdjęcia.</string>
@@ -219,7 +222,7 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>Kredyty LBRY</item>
         <item>USD</item>
     </string-array>
 
@@ -247,7 +250,6 @@
     <string name="installation_registered">Instalacja zarejestrowana.</string>
     <string name="subscriptions_loaded">Wczytane subskrypcje.</string>
     <string name="subscriptions_resolved">Rozwiązane subskrypcje.</string>
-
     <!-- Settings -->
     <string name="user_interface">Zawartość &amp; Interfejs użytkownika</string>
     <string name="other">Pozostałe</string>
@@ -258,9 +260,11 @@
     <string name="notifications">Powiadomienia</string>
     <string name="subscriptions">Subskrypcje</string>
     <string name="content_interests">Zainteresowania treścią</string>
+    <string name="mini_player_bottom_spacing"> Dolny odstęp między mini-playerem</string>
 
     <string name="keep_sdk_in_background">Utrzymuj usługę LBRY w tle, aby poprawić wydajność portfela i sieci</string>
     <string name="participate_in_data_network">Uczestnicz w sieci danych (wymaga ponownego uruchomienia aplikacji i usługi w tle)</string>
+    <string name="send_buffering_events"> Wysyłaj zdarzenia buforowania na serwery LBRY</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s- Szukaj</string>
@@ -311,6 +315,7 @@
     <string name="receive">Otrzymane</string>
     <string name="spend">Wydane</string>
     <string name="publish">Publikacje</string>
+    <string name="unpublish">Cofnij Publikacje</string>
     <string name="support">Wsparcie</string>
     <string name="abandon">Porzucone</string>
     <string name="channel">Kanał</string>
@@ -326,7 +331,7 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
+    <string name="lbc">Kredyty</string>
 
     <string name="account_recommended">Konto zalecane</string>
     <string name="wallet_account_desc">Konto lbry.tv umożliwia zdobywanie nagród, tworzenie kopii zapasowych portfela i synchronizowanie wszystkiego.</string>
@@ -350,7 +355,7 @@
     <string name="confirm_unlock_tips">Czy na pewno chcesz odblokować wszystkie napiwki?</string>
     <string name="min_spend_required">Podaj kwotę większą niż 0.0001 kredytów.</string>
 
-    <string name="buy_lbc">Kup LBC</string>
+    <string name="buy_lbc">Kup Kredyty LBC</string>
     <string name="hash_not_supported">Twoje urządzenie nie spełnia minimalnych wymagań dotyczących zabezpieczenia Twojego żądania zakupu.</string>
     <string name="receive_address_not_set">Nie masz ustawionego adresu portfela. Wygeneruj nowy adres i spróbuj ponownie.</string>
 
@@ -396,7 +401,7 @@
     <string name="channel_to_show_support_as">Kanał do okazywania wsparcia jako</string>
     <string name="make_this_a_tip">Uczyń to napiwkiem</string>
     <string name="send_revocable_support">Wyślij odwołalne wsparcie</string>
-    <string name="send_lbc_tip">Wyślij %1$s LBC napiwku</string>
+    <string name="send_lbc_tip">Daj %1$s napiwku</string>
     <string name="send_tip_info_content">To pojawi się jako napiwek dla %1$s,  co zwiększy jego zdolność do wykrywania podczas aktywności. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">To pojawi się jako napiwek dla %1$s,  co zwiększy jego zdolność do wykrywania podczas aktywności. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Anuluj</string>
@@ -444,7 +449,18 @@
     <string name="enter_phone_number">Proszę podać swój numer telefonu.</string>
     <string name="not_interested">Nie jestem zainteresowany</string>
     <string name="manual_reward_verification">Ręczna weryfikacja nagrody</string>
+    <string name="reward_verification">Weryfikacja nagród</string>
+    <string name="social_media_verification">Weryfikacja mediów społecznościowych</string>
+    <string name="skip_the_queue">Pomiń kolejkę</string>
+    <string name="skip_queue_button_text">Pomiń kolejkę za $%1$s</string>
     <string name="account_undergo_review">To konto musi zostać sprawdzone, zanim będziesz mógł uczestniczyć w programie nagród. Może to zająć od kilku minut do kilku dni.</string>
+    <string name="get_instantly_verified"> Możesz uzyskać natychmiastową weryfikację, aby móc uczestniczyć w programie nagród za pomocą konta na Twitterze lub pominąć kolejkę ręcznej weryfikacji.</string>
+    <string name="twitter_verification">Weryfikacja Twittera</string>
+    <string name="twitter_verification_desc">Uzyskaj natychmiastową weryfikację za pomocą konta na Twitterze. Twój adres e-mail na Twitterze musi zgadzać się z podanym przez Ciebie adresem e-mail, a Twoje konto powinno być aktywne.</string>
+    <string name="twitter_verify">Zweryfikuj za pomocą Twittera</string>
+    <string name="skip_queue_verification">Pomiń kolejkę</string>
+    <string name="skip_queue_verification_desc"> Pomiń kolejkę do ręcznej weryfikacji płacąc, aby natychmiast rozpocząć udział w programie nagród.</string>
+    <string name="request_to_be_verified">Poproś o weryfikację na &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;. Ręczna weryfikacja może zająć od kilku minut do kilku dni.</string>
     <string name="enjoy_free_content">W międzyczasie korzystaj z bezpłatnych treści!</string>
     <string name="verify_phone_number">Zweryfikuj numer telefonu</string>
     <string name="enter_phone_verify_code">Wprowadź kod weryfikacyjny wysłany na %1$s</string>
@@ -453,6 +469,13 @@
     <string name="please_enter_valid_phone">Proszę wpisać poprawny numer telefonu.</string>
     <string name="please_enter_verification_code">Wprowadź kod weryfikacyjny wysłany na Twój numer telefonu.</string>
     <string name="fetch_current_user_error">W tej chwili nie można pobrać konta użytkownika. Spróbuj ponownie później.</string>
+    <string name="purchase_request_pending"> Twoje żądanie zakupu jest nadal przetwarzane. Wyślij wiadomość e-mail na adres support@lbry.com.</string>
+    <string name="purchase_request_failed_error">W tej chwili nie można zrealizować Twojego żądania zakupu. Wyślij wiadomość e-mail na adres support@lbry.com.</string>
+    <string name="twitter_account_ineligible">Twoje konto na Twitterze nie kwalifikuje się w tej chwili: %1$s</string>
+    <string name="twitter_verification_not_approved"> Twoje konto nie zostało zatwierdzone do programu nagród. Spróbuj ponownie później.</string>
+    <string name="twitter_verification_failed">Weryfikacja na Twitterze nie powiodła się. Spróbuj ponownie później.</string>
+    <string name="reward_verification_successful">Możesz teraz uczestniczyć w programie nagród!</string>
+
     <!-- Forms -->
     <string name="no_added_tags">Nie dodałeś jeszcze żadnych tagów. Dodaj tagi, aby poprawić wykrywanie.</string>
     <string name="form_no_tag_results">Nie mogliśmy znaleźć nowych tagów, które nie zostały jeszcze dodane.</string>
@@ -468,6 +491,7 @@
     <string name="channel_deleted">Kanał został pomyślnie usunięty.</string>
     <string name="channel_failed_delete">W tej chwili nie można usunąć kanału. Spróbuj ponownie później.</string>
     <string name="description">Opis</string>
+    <string name="follow">Śledź</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="show_optional_fields">Pokaż dodatkowe pola</string>
@@ -486,6 +510,7 @@
     <string name="wait_for_upload">Poczekaj na zakończenie bieżącego przesyłania.</string>
     <string name="image_upload_failed">Żądanie przesłania obrazu nie powiodło się. Proszę spróbuj ponownie.</string>
     <string name="uploading">Przesyłanie...</string>
+    <string name="uploading_thumbnail">Przesłanie miniatury...</string>
     <string name="please_enter_channel_name">Wpisz nazwę kanału.</string>
     <string name="channel_name_invalid_characters">Nazwa Twojego kanału zawiera nieprawidłowe znaki.</string>
     <string name="channel_name_already_created">Masz już kanał o tej samej nazwie.</string>
@@ -641,4 +666,6 @@
     <string name="cannot_find_lbrynet_log">Nie można znaleźć pliku lbrynet.log.</string>
     <string name="cannot_share_lbrynet_log">Pliku lbrynet.log nie można udostępnić z powodu ograniczeń uprawnień.</string>
 
+    <!-- Notifications -->
+    <string name="no_notifications">Tu jest cicho! Nowe powiadomienia będą wyświetlane, gdy je otrzymasz.</string>
     </resources>

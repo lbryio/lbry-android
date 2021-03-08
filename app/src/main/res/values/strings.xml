@@ -64,12 +64,16 @@
     <string name="no_comments">No comments to display at this time.</string>
     <string name="sdk_initializing_comments">Comments will display after the background service is initialized.</string>
     <string name="comment_error">Your comment could not be posted at this time. Please try again later.</string>
+    <string name="channel_disabled_comments">This channel has disabled comments on their page.</string>
+    <string name="creator_disabled_comments">The creator of this content has disabled comments.</string>
     <string name="share_lbry_content">Share LBRY content</string>
     <string name="view">View</string>
     <string name="play">Play</string>
     <string name="unsupported_content">Unsupported Content</string>
     <string name="unsupported_content_desc">Sorry, we are unable to display this content in the app. You can find the file %1$sin your downloads folder.</string>
     <string name="nothing_at_this_location">There\'s nothing at this location.</string>
+    <string name="dmca_complaint_blocked">In response to a complaint we received under the US Digital Millennium Copyright Act, we have blocked access to this content from our applications. &lt;a href="https://lbry.com/faq/dmca"&gt;Read more&lt;/a&gt;</string>
+    <string name="dmca_complaint_channel_blocked">In response to a complaint we received under the US Digital Millennium Copyright Act, we have blocked access to this channel from our applications. &lt;a href="https://lbry.com/faq/dmca"&gt;Read more&lt;/a&gt;</string>
     <string name="publish_something_here">Publish something here</string>
     <string name="cannot_view_claim">This content cannot be accessed at this time. Please try again later.</string>
     <string name="zero_duration">0:00</string>
@@ -238,11 +242,14 @@
     <string name="installation_registered">Installation registered.</string>
     <string name="subscriptions_loaded">Loaded subscriptions.</string>
     <string name="subscriptions_resolved">Resolved subscriptions.</string>
+    <string name="block_list_loaded">Loaded blocked outpoints.</string>
+    <string name="filter_list_loaded">Loaded filtered outpoints.</string>
 
     <!-- Settings -->
     <string name="user_interface">Content &amp; User interface</string>
     <string name="other">Other</string>
     <string name="enable_background_playback">Enable background playback</string>
+    <string name="enable_autoplay">Autoplay media files</string>
     <string name="enable_dark_mode">Enable dark theme</string>
     <string name="show_mature_content">Show mature content</string>
     <string name="show_url_suggestions">Show URL suggestions</string>
@@ -447,6 +454,9 @@
     <string name="twitter_verify">Verify with Twitter</string>
     <string name="skip_queue_verification">Skip the Queue</string>
     <string name="skip_queue_verification_desc">Skip the manual verification queue by paying a fee in order to start participating in the rewards program immediately.</string>
+    <string name="skip_queue_manual_check">If you previously completed a purchase successfully and you still see this screen, please tap the verify purchase button below.</string>
+    <string name="skip_queue_purchase_not_found">No purchase was found for this account.</string>
+    <string name="verify_purchase">Verify Purchase</string>
     <string name="request_to_be_verified">Please request to be verified on the &lt;a href="https://discordapp.com/invite/Z3bERWA"&gt;LBRY Discord server&lt;/a&gt;. A manual review can take anywhere from several minutes to several days.</string>
     <string name="enjoy_free_content">Please enjoy free content in the meantime!</string>
     <string name="verify_phone_number">Verify Phone Number</string>

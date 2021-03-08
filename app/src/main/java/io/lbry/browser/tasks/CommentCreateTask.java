@@ -7,21 +7,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
 import io.lbry.browser.exceptions.ApiCallException;
 import io.lbry.browser.model.Comment;
+import io.lbry.browser.utils.Comments;
 import io.lbry.browser.utils.Helper;
-import io.lbry.browser.utils.Lbry;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 
 public class CommentCreateTask extends AsyncTask<Void, Void, Comment> {
-    private static final String STATUS_ENDPOINT = "https://comments.lbry.com";
-
     private final Comment comment;
     private final View progressView;
     private final CommentCreateWithTipHandler handler;
@@ -41,29 +35,31 @@ public class CommentCreateTask extends AsyncTask<Void, Void, Comment> {
         Comment createdComment = null;
         try {
             // check comments status endpoint
-            Request request = new Request.Builder().url(STATUS_ENDPOINT).build();
-            OkHttpClient client = new OkHttpClient.Builder().
-                    writeTimeout(30, TimeUnit.SECONDS).
-                    readTimeout(30, TimeUnit.SECONDS).
-                    build();
-            Response response = client.newCall(request).execute();
-            JSONObject status = new JSONObject(response.body().string());
-            String statusText = Helper.getJSONString("text", null, status);
-            boolean isRunning = Helper.getJSONBoolean("is_running", false, status);
-            if (!"ok".equalsIgnoreCase(statusText) || !isRunning) {
-                throw new ApiCallException("The comment server is not available at this time. Please try again later.");
+            Comments.checkCommentsEndpointStatus();
+
+            JSONObject comment_body = new JSONObject();
+            comment_body.put("comment", comment.getText());
+            comment_body.put("claim_id", comment.getClaimId());
+            if (!Helper.isNullOrEmpty(comment.getParentId())) {
+                comment_body.put("parent_id", comment.getParentId());
+            }
+            comment_body.put("channel_id", comment.getChannelId());
+            comment_body.put("channel_name", comment.getChannelName());
+
+            JSONObject jsonChannelSign = Comments.channelSign(comment_body, comment.getChannelId(), comment.getChannelName());
+
+            if (jsonChannelSign.has("signature") && jsonChannelSign.has("signing_ts")) {
+                comment_body.put("signature", jsonChannelSign.getString("signature"));
+                comment_body.put("signing_ts", jsonChannelSign.getString("signing_ts"));
             }
 
-            Map<String, Object> options = new HashMap<>();
-            options.put("comment", comment.getText());
-            options.put("claim_id", comment.getClaimId());
-            options.put("channel_id", comment.getChannelId());
-            options.put("channel_name", comment.getChannelName());
-            if (!Helper.isNullOrEmpty(comment.getParentId())) {
-                options.put("parent_id", comment.getParentId());
-            }
-            JSONObject jsonObject = (JSONObject) Lbry.genericApiCall(Lbry.METHOD_COMMENT_CREATE, options);
-            createdComment = Comment.fromJSONObject(jsonObject);
+            Response resp = Comments.performRequest(comment_body, "comment.Create");
+            String responseString = Objects.requireNonNull(resp.body()).string();
+            resp.close();
+            JSONObject jsonResponse = new JSONObject(responseString);
+
+            if (jsonResponse.has("result"))
+                createdComment = Comment.fromJSONObject(jsonResponse.getJSONObject("result"));
         } catch (ApiCallException | ClassCastException | IOException | JSONException ex) {
             error = ex;
         }

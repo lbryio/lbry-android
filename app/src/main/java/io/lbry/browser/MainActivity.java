@@ -1,5 +1,6 @@
 package io.lbry.browser;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -225,6 +226,7 @@ import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 
 import static android.os.Build.VERSION_CODES.M;
+import static android.os.Build.VERSION_CODES.P;
 
 public class MainActivity extends AppCompatActivity implements SdkStatusListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
@@ -337,6 +339,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     // preference keys
     public static final String PREFERENCE_KEY_BACKGROUND_PLAYBACK = "io.lbry.browser.preference.userinterface.BackgroundPlayback";
+    public static final String PREFERENCE_KEY_MEDIA_AUTOPLAY = "io.lbry.browser.preference.userinterface.MediaAutoplay";
     public static final String PREFERENCE_KEY_DARK_MODE = "io.lbry.browser.preference.userinterface.DarkMode";
     public static final String PREFERENCE_KEY_SHOW_MATURE_CONTENT = "io.lbry.browser.preference.userinterface.ShowMatureContent";
     public static final String PREFERENCE_KEY_SHOW_URL_SUGGESTIONS = "io.lbry.browser.preference.userinterface.UrlSuggestions";
@@ -423,6 +426,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     private static final int STARTUP_STAGE_NEW_INSTALL_DONE = 5;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_LOADED = 6;
     private static final int STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED = 7;
+    private static final int STARTUP_STAGE_BLOCK_LIST_LOADED = 8;
+    private static final int STARTUP_STAGE_FILTER_LIST_LOADED = 9;
     private static final int DEFAULT_MINI_PLAYER_MARGIN = 4;
 
     @Override
@@ -679,6 +684,11 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         return sp.getBoolean(PREFERENCE_KEY_BACKGROUND_PLAYBACK, true);
     }
 
+    public boolean isMediaAutoplayEnabled() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        return sp.getBoolean(PREFERENCE_KEY_MEDIA_AUTOPLAY, true);
+    }
+
     public boolean initialSubscriptionMergeDone() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         return sp.getBoolean(PREFERENCE_KEY_INTERNAL_INITIAL_SUBSCRIPTION_MERGE_DONE, false);
@@ -815,6 +825,20 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
 
     public void removeWalletBalanceListener(WalletBalanceListener listener) {
         walletBalanceListeners.remove(listener);
+    }
+
+    public void restoreWalletContainerPosition() {
+        View floatingBalance = findViewById(R.id.floating_balance_main_container);
+
+        ObjectAnimator animation = ObjectAnimator.ofFloat(floatingBalance, "translationY", 0f);
+        animation.setDuration(250).start();
+    }
+
+    public void translateFloatingWallet(float initialY) {
+        if (findViewById(R.id.floating_balance_main_container).getY() == initialY) {
+            ObjectAnimator animation = ObjectAnimator.ofFloat(findViewById(R.id.floating_balance_main_container), "translationY", 2 * findViewById(R.id.floating_balance_main_container).getHeight());
+            animation.setDuration(300).start();
+        }
     }
 
     public void removeNavFragment(Class fragmentClass, int navItemId) {
@@ -1247,7 +1271,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
         return sp.getBoolean(PREFERENCE_KEY_INTERNAL_FIRST_RUN_COMPLETED, false);
     }
 
-    private void checkPurchases() {
+    public void checkPurchases() {
         if (billingClient != null) {
             Purchase.PurchasesResult result = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
             if (result.getPurchasesList() != null) {
@@ -1255,6 +1279,24 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                     handlePurchase(purchase);
                 }
             }
+        }
+    }
+
+    public void checkPurchases(GenericTaskHandler handler) {
+        boolean purchaseFound = false;
+        if (billingClient != null) {
+            Purchase.PurchasesResult result = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
+            if (result.getPurchasesList() != null) {
+                for (Purchase purchase : result.getPurchasesList()) {
+                    handlePurchase(purchase, handler);
+                    purchaseFound = true;
+                    return;
+                }
+            }
+        }
+
+        if (!purchaseFound) {
+            handler.onError(new Exception(getString(R.string.skip_queue_purchase_not_found)));
         }
     }
 
@@ -1270,6 +1312,28 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             @Override
             public void onError(Exception error) {
                 // pass
+            }
+        });
+    }
+
+    private void handlePurchase(Purchase purchase, GenericTaskHandler handler) {
+        handleBillingPurchase(purchase, billingClient, MainActivity.this, null, new RewardVerifiedHandler() {
+            @Override
+            public void onSuccess(RewardVerified rewardVerified) {
+                if (Lbryio.currentUser != null) {
+                    Lbryio.currentUser.setRewardApproved(rewardVerified.isRewardApproved());
+                }
+
+                if (handler != null) {
+                    handler.onSuccess();
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (handler != null) {
+                    handler.onError(error);
+                }
             }
         });
     }
@@ -2783,6 +2847,8 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                 startupStages.add(new StartupStage(STARTUP_STAGE_NEW_INSTALL_DONE, false));
                 startupStages.add(new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, false));
                 startupStages.add(new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, false));
+                startupStages.add(new StartupStage(STARTUP_STAGE_BLOCK_LIST_LOADED, false));
+                startupStages.add(new StartupStage(STARTUP_STAGE_FILTER_LIST_LOADED, false));
             }
             protected void onPreExecute() {
                 hideActionBar();
@@ -2874,8 +2940,18 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
                         startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_LOADED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_LOADED, true));
                         startupStages.set(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED - 1, new StartupStage(STARTUP_STAGE_SUBSCRIPTIONS_RESOLVED, true));
                     }
+
+                    JSONObject blockedObject = (JSONObject) Lbryio.parseResponse(Lbryio.call("file", "list_blocked", context));
+                    JSONArray blockedArray = blockedObject.getJSONArray("outpoints");
+                    Lbryio.populateOutpointList(Lbryio.blockedOutpoints, blockedArray);
+                    startupStages.set(STARTUP_STAGE_BLOCK_LIST_LOADED - 1, new StartupStage(STARTUP_STAGE_BLOCK_LIST_LOADED, true));
+
+                    JSONObject filteredObject = (JSONObject) Lbryio.parseResponse(Lbryio.call("file", "list_filtered", context));
+                    JSONArray filteredArray = filteredObject.getJSONArray("outpoints");
+                    Lbryio.populateOutpointList(Lbryio.filteredOutpoints, filteredArray);
+                    startupStages.set(STARTUP_STAGE_FILTER_LIST_LOADED - 1, new StartupStage(STARTUP_STAGE_FILTER_LIST_LOADED, true));
                 } catch (Exception ex) {
-                    // nopecd
+                    // nope
                     Log.e(TAG, String.format("App startup failed: %s", ex.getMessage()), ex);
                     return false;
                 } finally {

@@ -20,6 +20,7 @@
     <string name="settings">Setelane</string>
     <string name="about">Babagan</string>
     <string name="sign_in">Mlebu</string>
+    <string name="shuffle">Ngacak</string>
     <string name="startup_failed">Wiwiti app gagal. Mangga priksa sambungan data lan coba maneh. Yen masalah iki terus-terusan, kirim email menyang hello@lbry.com</string>
     <string name="no_claim_search_content">Ora ana konten sing ditampilake ing wektu iki. Mangga dirampungake pilihan utawa mriksa maneh mengko.</string>
 
@@ -90,6 +91,12 @@
     <string name="please_select_repost_channel">Pilih-pilih saluran kanggo repost.</string>
     <string name="reply">Bales</string>
     <string name="replying_to">Mbales menyang %1$s</string>
+    <plurals name="view_count">
+        <item quantity="other">%1$s di delok</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="other">Iki bakal tuku \"%1$s\" kanggo %2$s kredit</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="other">Pos lan tip %1$s kredit?</item>
     </plurals>
@@ -99,18 +106,14 @@
     <plurals name="confirm_post_comment">
         <item quantity="other">Iki bakal ngirim komentar sampeyan kanthi tip %1$s kredit kanggo %2$s</item>
     </plurals>
-    <plurals name="view_count">
-        <item quantity="other">%1$s di delok</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="other">Iki bakal tuku \"%1$s\" kanggo %2$s kredit</item>
-    </plurals>
 
     <!-- Channel view -->
     <string name="no_channel_info">Ora ana ing kene. \nCoba mriksa maneh mengko.</string>
     <string name="content">Konten</string>
     <string name="website">Website</string>
     <string name="reposted">dipos ulangake</string>
+    <string name="receive_all_notifications">Sampeyan bakal nampa kabeh kabar</string>
+    <string name="receive_no_notifications">Sampeyan ora bakal nampa kabar babagan saluran iki</string>
     <plurals name="follower_count">
         <item quantity="other">%1$s pengikut</item>
     </plurals>
@@ -201,7 +204,7 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>LBRY Credits</item>
         <item>USD</item>
     </string-array>
 
@@ -218,12 +221,11 @@
     <string name="oops_something_went_wrong">Dhuh! Ana prekara sing salah.</string>
     <string name="installation_id_loaded">ID Instalasi sing wis Disedhiyakake</string>
     <string name="known_tags_loaded">Disedhiyakake tag sing dikenal lan dituruti.</string>
-    <string name="exchange_rate_loaded">Disedhiyakake Kurs rega pasar LBC/USD</string>
+    <string name="exchange_rate_loaded">Disedhiyakake Kurs rega pasar LBRY Credits/USD</string>
     <string name="user_authenticated">Pangguna asli.</string>
     <string name="installation_registered">instalasine Kadhaptar .</string>
     <string name="subscriptions_loaded">Langganan sing wis dirilis.</string>
     <string name="subscriptions_resolved">Langganan sing wis dirampungake.</string>
-
     <!-- Settings -->
     <string name="user_interface">Content &amp; Antarmuka pangguna</string>
     <string name="other">Liyane</string>
@@ -234,9 +236,11 @@
     <string name="notifications">Kabar</string>
     <string name="subscriptions">Langganan</string>
     <string name="content_interests">Minat konten</string>
+    <string name="mini_player_bottom_spacing">Jarak ngisor pamuter mini</string>
 
     <string name="keep_sdk_in_background">Tindakake layanan LBRY ing latar mburi supaya dompet lan kinerja jaringan luwih apik</string>
     <string name="participate_in_data_network">Melok jaringan data (mbutuhake layanan app lan latar mburi maneh)</string>
+    <string name="send_buffering_events">Kirimake acara buffer menyang server LBRY</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Goleki</string>
@@ -287,6 +291,7 @@
     <string name="receive">Nampa</string>
     <string name="spend">Nglampahi</string>
     <string name="publish">Terbitake</string>
+    <string name="unpublish">Unpublikasi</string>
     <string name="support">Dhukungan</string>
     <string name="abandon">Nolak</string>
     <string name="channel">Saluran</string>
@@ -302,7 +307,7 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
+    <string name="lbc">Kredit</string>
 
     <string name="account_recommended">Rekomendasine Akun</string>
     <string name="wallet_account_desc">Akun lbry.tv ngidini sampeyan entuk hadiah, serep dompet lan tetep diselarasake.</string>
@@ -326,7 +331,7 @@
     <string name="confirm_unlock_tips">Apa sampeyan pengin mbukak kunci kabeh tips?</string>
     <string name="min_spend_required">Ketik jumlah luwih saka 0.0001 kridit.</string>
 
-    <string name="buy_lbc">Tuku LBC</string>
+    <string name="buy_lbc">Tuku LBRY Credits</string>
     <string name="hash_not_supported">Piranti sampeyan ora ndhukung syarat minimal kanggo njamin panjalukan sampeyan.</string>
     <string name="receive_address_not_set">Sampeyan ora duwe alamat dompet. Mangga ngasilake alamat anyar lan coba maneh.</string>
 
@@ -369,7 +374,10 @@
     <string name="channel_to_show_support_as">Saluran kanggo nuduhake dhukungan minangka</string>
     <string name="make_this_a_tip">Gawe iki tip </string>
     <string name="send_revocable_support">Kirim Dhukungan seng iso di jupuk maneh</string>
-    <string name="send_lbc_tip">Ngirim %1$s LBC Tip</string>
+    <string name="send_lbc_tip">Tip %1$s</string>
+    <plurals name="send_lbc_tip">
+        <item quantity="other">Tip %1$s Kredit</item>
+    </plurals>
     <string name="send_tip_info_content">Iki bakal katon minangka tip kanggo %1$s, sing bakal nambah kemampuan kanggo ditemokake nalika aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Iki bakal katon minangka tip kanggo %1$s, sing bakal ningkatake kemampuan saluran kasebut ditemokake nalika aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Batalke</string>
@@ -445,7 +453,7 @@
     <!-- Channels -->
     <string name="no_channel_created">Sampeyan durung nggawe saluran. \nStart saiki kanthi nggawe saluran anyar!</string>
     <string name="create_a_channel">Gawe saluran</string>
-    <string name="create_a_channel_item">Gawe saluran...</string>
+    <string name="create_a_channel_item">Gawe saluran</string>
     <string name="edit_channel">Edit saluran</string>
     <string name="delete_selection">Mbusak pilihan?</string>
     <string name="delete_channel">Mbusak saluran?</string>
@@ -453,6 +461,7 @@
     <string name="channel_deleted">Saluran sukses dibusak.</string>
     <string name="channel_failed_delete">Saluran iki ora bisa dibusak ing wektu iki. Coba maneh mengko.</string>
     <string name="description">Katrangan</string>
+    <string name="follow">Melok</string>
     <string name="yes">Ya</string>
     <string name="no">Ora</string>
     <string name="show_optional_fields">Tampilake kolom opsional</string>
@@ -462,7 +471,7 @@
     <string name="title">Judule</string>
     <string name="at">\@</string>
     <string name="deposit">Deposit</string>
-    <string name="deposit_remains_yours">LBC iki tetep dadi gone sampeyan. Iki minangka simpenan kanggo cadangan jeneng kasebut lan bisa dibatalake kapan wae.</string>
+    <string name="deposit_remains_yours">Kredit tetep dadi milik sampeyan. Iki minangka celengan kanggo cadangan jeneng lan bisa dibatalake kapan wae.</string>
     <string name="storage_permission_rationale_download">LBRY mbutuhake akses kanggo ndownload konten menyang piranti sampeyan.</string>
     <string name="storage_permission_rationale_images">LBRY mbutuhake akses kanggo mbukak gambar saka piranti piranti.</string>
     <string name="select_thumbnail">Pilih gambar cilik</string>
@@ -471,6 +480,7 @@
     <string name="wait_for_upload">Mangga ngenteni rampung sek upload saiki.</string>
     <string name="image_upload_failed">Panjaluk upload gambar gagal. Coba maneh.</string>
     <string name="uploading">Ngunggah...</string>
+    <string name="uploading_thumbnail">Ngunggah gambar cilik...</string>
     <string name="please_enter_channel_name">Mangga ketik jeneng saluran.</string>
     <string name="channel_name_invalid_characters">Jeneng saluran sampeyan ngemot karakter sing ora bener.</string>
     <string name="channel_name_already_created">Sampeyan wis nggawe saluran kanthi jeneng sing padha.</string>
@@ -493,7 +503,7 @@
     </plurals>
 
     <!-- Rewards -->
-    <string name="lbry_credits_allow">Kridit LBRY ngidini sampeyan nerbitake utawa tuku konten.</string>
+    <string name="lbry_credits_allow">LBRY Credits ngidini sampeyan nerbitake utawa tuku konten.</string>
     <string name="free_credits_worth">Sampeyan bisa entuk biaya kridit gratis $%1$s sawise sampeyan nyedhiyani alamat email.</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="get_started">Miwiti</string>
@@ -598,5 +608,11 @@
     <string name="unknown">Ora dingerteni</string>
     <string name="cannot_find_lbrynet_log">File lbrynet.log ora bisa ditemokake.</string>
     <string name="cannot_share_lbrynet_log">File lbrynet.log ora bisa dienggo bareng amarga watesan ijin.</string>
+
+    <!-- Notifications -->
+    <string name="no_notifications">Iki meneng wae! Kabar anyar bakal ditampilake nalika sampeyan nampa.</string>
+    <plurals name="confirm_delete_notifications">
+        <item quantity="other">Sampeyan yakin pengin mbusak kabar sing dipilih?</item>
+    </plurals>
 
     </resources>

@@ -337,6 +337,8 @@ public class ShuffleFragment extends BaseFragment {
         ClaimSearchTask task = new ClaimSearchTask(claimSearchOptions, Lbry.LBRY_TV_CONNECTION_STRING, null, new ClaimSearchResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
+                claims = Helper.filterClaimsByOutpoint(claims);
+
                 if (playlist == null) {
                     playlist = new ArrayList<>(claims);
                     startPlaylist();

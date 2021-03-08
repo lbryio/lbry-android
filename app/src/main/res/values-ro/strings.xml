@@ -27,7 +27,6 @@
     <string name="welcome_to_lbry">Bine ai venit în LBRY.</string>
     <string name="welcome_paragraph">LBRY este o platformă de conţinut controlată de comunitate unde poţi găsi sau publica videoclipuri, muzică, cărţi şi altele.</string>
     <string name="welcome_tos">Continuând, sunt de acord cu &lt;a href=\"https://lbry.com/termsofservice\"&gt;Termenii serviciului&lt;/a&gt; şi confirm că am vârsta peste 13 ani.</string>
-    <string name="welcome_please_wait">Aşteaptă puţin până pregătim lucrurile...</string>
     <string name="use_lbry">Pornire LBRY »</string>
 
     <!-- URI bar -->
@@ -39,7 +38,6 @@
     <string name="discover">Descoperire</string>
     <string name="lbry_works_better">LBRY funcţionează mai bine dacă te abonezi la cel puţin 5 creatori de care îţi place. Dacă deja ai un cont, conectează-te pentru a vedea creatorii la care eşti abonat.</string>
     <string name="select_five_subscriptions">Selectează până la 5 creatori pentru a continua. Caută canalul „@lbryro” cu știri în română.</string>
-    <string name="n_remaining">Mai alege încă %1$d...</string>
     <string name="done">Gata</string>
     <string name="all">Toate</string>
     <string name="discover_channels">Descoperă canale noi</string>
@@ -57,7 +55,6 @@
     <string name="download">Descarcă</string>
     <string name="open">Deschide</string>
     <string name="report">Raportare</string>
-    <string name="loading_decentralized_data">Se încarcă datele descentralizate...</string>
     <string name="related_content">Conţinut asemănător</string>
     <string name="comments">Comentarii</string>
     <string name="no_comments">Nu sunt comentarii de afișat.</string>
@@ -90,6 +87,16 @@
     <string name="please_select_repost_channel">Selectează un canal în care vei republica.</string>
     <string name="reply">Răspuns</string>
     <string name="replying_to">Răspuns la %1$s</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s afişare</item>
+        <item quantity="few">%1$s afişări</item>
+        <item quantity="other">%1$s de afişări</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Cumperi „%1$s” cu %2$s credit?</item>
+        <item quantity="few">Cumperi „%1$s” cu %2$s credite.</item>
+        <item quantity="other">Cumperi „%1$s” cu %2$s de credite?</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="one">Publici și oferi bacșiș %1$s credit?</item>
         <item quantity="few">Publici și oferi bacșiș %1$s credite?</item>
@@ -104,16 +111,6 @@
         <item quantity="one">Comentariul tău va fi publicat și vei oferi un bacșiș de %1$s credit pentru %2$s</item>
         <item quantity="few">Comentariul tău va fi publicat și vei oferi un bacșiș de %1$s credite pentru %2$s</item>
         <item quantity="other">Comentariul tău va fi publicat și vei oferi un bacșiș de %1$s de credite pentru %2$s</item>
-    </plurals>
-    <plurals name="view_count">
-        <item quantity="one">%1$s afişare</item>
-        <item quantity="few">%1$s afişări</item>
-        <item quantity="other">%1$s de afişări</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="one">Cumperi „%1$s” cu %2$s credit?</item>
-        <item quantity="few">Cumperi „%1$s” cu %2$s credite.</item>
-        <item quantity="other">Cumperi „%1$s” cu %2$s de credite?</item>
     </plurals>
 
     <!-- Channel view -->
@@ -133,7 +130,6 @@
     <string name="take_photo">Fac o poză</string>
     <string name="upload_file">Încarc un fișier</string>
     <string name="no_videos_found">Nu există videoclipuri în dispozitiv. Fă o poză sau înregistrează un videoclip.</string>
-    <string name="loading_videos">Așteaptă până se încarcă videoclipurile...</string>
     <string name="storage_permission_rationale_videos">LBRY necesită dreptul de a putea afișa și publica videoclipuri, imagini și alte fișiere din dispozitiv.</string>
     <string name="camera_permission_rationale_record">LBRY necesită accesul la camera foto pentru a înregistra videoclipuri.</string>
     <string name="camera_permission_rationale_photo">LBRY necesită accesul la camera foto pentru a face poze.</string>
@@ -213,7 +209,6 @@
     <string name="cca_nc_nd_4_0_international">Atribuire bunuri creative-Necomercial-Fără derivate 4.0 Internațional</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
         <item>USD</item>
     </string-array>
 
@@ -234,12 +229,10 @@
     <string name="oops_something_went_wrong">Ups! Ceva nu a funcţionat bine.</string>
     <string name="installation_id_loaded">ID de instalare încărcat.</string>
     <string name="known_tags_loaded">Etichete locale selectate şi cunoscute încărcate.</string>
-    <string name="exchange_rate_loaded">Rată de schimb LBC/USD încărcată.</string>
     <string name="user_authenticated">Utilizator autentificat.</string>
     <string name="installation_registered">Înstalare înregistrată.</string>
     <string name="subscriptions_loaded">Abonări încărcate.</string>
     <string name="subscriptions_resolved">Abonări prelucrate.</string>
-
     <!-- Settings -->
     <string name="user_interface">Conţinut şi interfaţă</string>
     <string name="other">Altele</string>
@@ -250,10 +243,8 @@
     <string name="notifications">Notificări</string>
     <string name="subscriptions">Abonări</string>
     <string name="content_interests">Conţinut preferat</string>
-
     <string name="keep_sdk_in_background">Păstrează serviciul LBRY activ în fundal pentru o performanţă a portofelului şi reţelei  mai bună</string>
     <string name="participate_in_data_network">Participă la rețeaua de date (aplicația și serviciul din fundal trebuie repornite).</string>
-
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Căutare</string>
     <string name="tag_url_title">%1$s - Etichetă</string>
@@ -278,7 +269,6 @@
     <string name="in_your_publishes">în publicările tale</string>
     <string name="in_your_supports">în susţinerile tale</string>
     <string name="earn_more_tips">Câştigă mai multe bacşişuri publicând conţinut</string>
-    <string name="sdk_initializing">Serviciul din fundal se iniţializează...</string>
     <string name="sdk_still_initializing">Serviciul din fundal încă se iniţializează. Poţi explora şi vedea conţinut între timp.</string>
     <string name="sdk_initializing_functionality">Nu poţi face asta acum deoarce serviciul din fundal încă se iniţializează.</string>
 
@@ -318,8 +308,6 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Conservare manuală?&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Despre sincronizare?&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
-
     <string name="account_recommended">Cont recomandat</string>
     <string name="wallet_account_desc">Un cont lbry.tv îți permite să câștigi recompense, să-și conservi portofelul și să ai totul sincronizat.</string>
     <string name="wallet_without_account">Fără un cont îți asumi toată responsabilitatea pentru securizarea portofelului și a datelor LBRY.</string>
@@ -331,7 +319,6 @@
     <string name="insufficient_balance">Sold insuficient</string>
     <string name="invalid_amount">Introdu o sumă validă</string>
     <string name="send_credit_error">Creditele nu au putut fi trimise acum. Reîncearcă mai târziu.</string>
-    <string name="loading_transactions">Se încarcă tranzacţiile...</string>
     <string name="no_recent_transactions">Nu există tranzacţii recente de afişat.</string>
     <string name="no_transactions">Nu există tranzacţii de afişat momentan.</string>
     <string name="tx_list_fee">taxă %1$s</string>
@@ -342,7 +329,6 @@
     <string name="confirm_unlock_tips">Sigur deblochezi toate bacşişurile?</string>
     <string name="min_spend_required">Trebuie introdusă o sumă mai mare de 0,0001 credite.</string>
 
-    <string name="buy_lbc">Cumpărare LBC</string>
     <string name="hash_not_supported">Dispozitivul nu suportă cerințele minime pentru a asigura solicitarea de cumpărare.</string>
     <string name="receive_address_not_set">Nu ai setat un portofel. Generează o adresă nouă și reîncearcă.</string>
 
@@ -387,7 +373,6 @@
     <string name="channel_to_show_support_as">Canalul susținător</string>
     <string name="make_this_a_tip">Trimite ca bacşiş</string>
     <string name="send_revocable_support">Trimite susţinere revocabilă</string>
-    <string name="send_lbc_tip">Trimite %1$s LBC bacşiş</string>
     <string name="send_tip_info_content">Aceasta sumă va apărea ca bacșiș pentru %1$s, mărindu-i șansele de a fi descoperit cât timp este activ.  &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Detalii&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Aceasta sumă va apărea ca bacșiș pentru %1$s, mărind șansele canalului de a fi descoperit cât timp este activ. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Detalii&lt;/a&gt;.</string>
     <string name="cancel">Anulare</string>
@@ -421,8 +406,6 @@
     <string name="provide_valid_email">Introdu o adresă de e-mail validă.</string>
     <string name="please_follow_instructions">Urmează instrucţiunile din mesajul trimis la adresa ta de e-mail pentru a continua.</string>
     <string name="sign_in_successful">Te-ai conectat cu succes în lbry.tv</string>
-    <string name="retrieving_account_information">Preluare informaţii cont...</string>
-    <string name="apply_wallet_data">Aplicare date din portofel...</string>
     <string name="please_enter_your_password">Introdu parola pe care ai folosit-o la securizarea portofelului.</string>
     <string name="please_enter_a_password">Introdu o parolă pentru a-ți securiza portofelul.</string>
     <string name="wallet_security_purposes">Notă: din motive de securitate a portofelului, LBRY nu îţi poate reseta parola.</string>
@@ -449,7 +432,6 @@
     <!-- Channels -->
     <string name="no_channel_created">Încă nu ţi-ai creat un canal.\nÎncepe acum să-ţi creezi un canal!</string>
     <string name="create_a_channel">Creare canal</string>
-    <string name="create_a_channel_item">Crează un canal...</string>
     <string name="edit_channel">Editare canal</string>
     <string name="delete_selection">Ştergi selecţia?</string>
     <string name="delete_channel">Ștergi canalul?</string>
@@ -466,7 +448,6 @@
     <string name="title">Titlu</string>
     <string name="at">\@</string>
     <string name="deposit">Depozit</string>
-    <string name="deposit_remains_yours">Acești LBC rămân ai tăi. Este o depunere pentru a rezerva numele și poate fi anulată în orice moment.</string>
     <string name="storage_permission_rationale_download">LBRY necesită acces pentru a descărca conținut pe dispozitiv.</string>
     <string name="storage_permission_rationale_images">LBRY necesită dreptul de a putea încărca imagini din dispozitiv.</string>
     <string name="select_thumbnail">Selectare miniatură</string>
@@ -474,7 +455,6 @@
     <string name="undetermined_image_filepath">Calea fişierului nu a putut fi determinată pentru imaginea selectată. Selectează o imagine din alt loc.</string>
     <string name="wait_for_upload">Așteaptă puțin până se termină încarcarea.</string>
     <string name="image_upload_failed">Solicitarea de încărcare a imaginii a eşuat. Reîncearcă mai târziu.</string>
-    <string name="uploading">Se încarcă...</string>
     <string name="please_enter_channel_name">Introdu un nume de canal.</string>
     <string name="channel_name_invalid_characters">Numele canalului conţine caractere nevalide.</string>
     <string name="channel_name_already_created">Deja ai creat un canal cu acelaşi nume.</string>
@@ -502,8 +482,6 @@
         <item quantity="other">Canalele au fost șterse cu succes.</item>
     </plurals>
 
-    <!-- Rewards -->
-    <string name="lbry_credits_allow">Creditele LBRY permit publicarea și cumpărarea de conținut.</string>
     <string name="free_credits_worth">Poți obține credite gratuite în valoare de %1$s $ după ce-ți furnizezi adresa de e-mail.</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Detalii&lt;/a&gt;.</string>
     <string name="get_started">Să începem</string>
@@ -598,7 +576,6 @@
     <string name="get_social">Socializare</string>
     <string name="social_paragraph">Poți interacționa cu echipa LBRY și cu membrii comunității pe Discord, Facebook, Instagram, Twitter sau Reddit.</string>
     <string name="app_info">Informații aplicaţie</string>
-    <string name="loading">Se încarcă...</string>
     <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;Ce este LBRY?&lt;/a&gt;</string>
     <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Bazele Androidului&lt;/a&gt;</string>
     <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;Informaţii&lt;/a&gt;</string>

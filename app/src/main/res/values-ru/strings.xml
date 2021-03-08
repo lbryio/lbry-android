@@ -20,8 +20,9 @@
     <string name="settings">Настройки</string>
     <string name="about">О</string>
     <string name="sign_in">Войти</string>
+    <string name="shuffle">Перемешать</string>
     <string name="startup_failed">Приложение не смогло запуститься. Пожалуйста, проверьте ваше соединение и попробуйте снова. Если проблема остаётся, пожалуйста, напишите сообщение на hello@lbry.com</string>
-    <string name="no_claim_search_content">Нет контента, чтобы отобразить, сейчас. Пожалуйста, измените запрос или попробуйте позже. </string>
+    <string name="no_claim_search_content">Не найден контент для отображения. Пожалуйста, измените запрос или попробуйте позже. </string>
 
     <!-- Welcome Page -->
     <string name="welcome_to_lbry">Добро пожаловать в LBRY</string>
@@ -39,7 +40,7 @@
     <string name="discover">Найти новые</string>
     <string name="lbry_works_better">LBRY работает лучше, если Вы следуете как минимум 5 каналам, которые Вам нравятся. Войдите в аккаунт, чтобы показать творцам, что Вы подписаны на них, если Вы уже имеете аккаунт. </string>
     <string name="select_five_subscriptions">Пожалуйста, выберите 5 каналов, чтобы продолжить.</string>
-    <string name="n_remaining">%1$d осталось... </string>
+    <string name="n_remaining">%1$d осталось....</string>
     <string name="done">Готово</string>
     <string name="all">Все</string>
     <string name="discover_channels">Найдите новые каналы</string>
@@ -90,6 +91,18 @@
     <string name="please_select_repost_channel">Пожалуйста, выберите канал, на который отправить репост.</string>
     <string name="reply">Ответить</string>
     <string name="replying_to">Ответ %1$s</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s просмотр </item>
+        <item quantity="few">%1$s просмотров</item>
+        <item quantity="many">%1$s просмотров </item>
+        <item quantity="other">%1$s просмотров </item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Произойдёт покупка \"%1$s\" за %2$s кредитов. </item>
+        <item quantity="few">Произойдёт покупка \"%1$s\" за %2$s кредитов. </item>
+        <item quantity="many">Произойдёт покупка \"%1$s\" за %2$s кредитов. </item>
+        <item quantity="other">Произойдёт покупка \"%1$s\" за %2$s кредитов. </item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="one">Отправить чаевые и запостить за %1$s кредит?</item>
         <item quantity="few">Отправить чаевые и запостить за %1$s кредитов?</item>
@@ -108,24 +121,14 @@
         <item quantity="many">Это отправит ваш комментарий с чаевыми в кол-ве %1$s кредитов для %2$s</item>
         <item quantity="other">Это отправит ваш комментарий с чаевыми в кол-ве %1$s кредитов для %2$s</item>
     </plurals>
-    <plurals name="view_count">
-        <item quantity="one">%1$s просмотр </item>
-        <item quantity="few">%1$s просмотров</item>
-        <item quantity="many">%1$s просмотров </item>
-        <item quantity="other">%1$s просмотров </item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="one">Произойдёт покупка \"%1$s\" за %2$s кредитов. </item>
-        <item quantity="few">Произойдёт покупка \"%1$s\" за %2$s кредитов. </item>
-        <item quantity="many">Произойдёт покупка \"%1$s\" за %2$s кредитов. </item>
-        <item quantity="other">Произойдёт покупка \"%1$s\" за %2$s кредитов. </item>
-    </plurals>
 
     <!-- Channel view -->
     <string name="no_channel_info">Здесь пока ничего нет. \nПожалуйста, проверьте позже.</string>
     <string name="content">Контент </string>
     <string name="website">Веб-сайт </string>
     <string name="reposted">сделан репост</string>
+    <string name="receive_all_notifications">Вы будете получать все уведомления</string>
+    <string name="receive_no_notifications">Вы не будете получать уведомления от этого канала</string>
     <plurals name="follower_count">
         <item quantity="one">%1$s подписчик </item>
         <item quantity="few">%1$s подписчиков</item>
@@ -219,7 +222,7 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>LBRY кредиты</item>
         <item>USD</item>
     </string-array>
 
@@ -242,12 +245,11 @@
     <string name="oops_something_went_wrong">Ой! Что-то пошло не так.</string>
     <string name="installation_id_loaded">Загружен установочный ID. </string>
     <string name="known_tags_loaded">Загружены локальные известные и популярные теги. </string>
-    <string name="exchange_rate_loaded">Загружен курс LBC/USD</string>
+    <string name="exchange_rate_loaded">Загружен курс кредитов LBC/USD</string>
     <string name="user_authenticated">Пользователь подтвержден. </string>
     <string name="installation_registered">Установка зарегистрирована.</string>
     <string name="subscriptions_loaded">Загружены подписки.</string>
     <string name="subscriptions_resolved">Решены подписки. </string>
-
     <!-- Settings -->
     <string name="user_interface">Контент &amp; Пользовательский интерфейс</string>
     <string name="other">Другое</string>
@@ -258,9 +260,11 @@
     <string name="notifications">Уведомления</string>
     <string name="subscriptions">Подписки</string>
     <string name="content_interests">Предпочтения</string>
+    <string name="mini_player_bottom_spacing">Расположение мини-проигрывателя</string>
 
     <string name="keep_sdk_in_background">Оставляйте сервис LBRY работать на фоне, чтобы улучшить производительность кошелька и сети. </string>
     <string name="participate_in_data_network">Принять участие в сети данных (требуется перезагрузка приложения и фонового процесса)</string>
+    <string name="send_buffering_events">Посылать запросы на буферизацию серверам LBRY</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Искать </string>
@@ -308,25 +312,26 @@
 
     <string name="recent_transactions">Недавние транзакции</string>
     <string name="view_all">Показать все</string>
-    <string name="receive">Получить</string>
+    <string name="receive">Получено</string>
     <string name="spend">Потратить </string>
-    <string name="publish">Опубликовать</string>
-    <string name="support">Поддержать</string>
+    <string name="publish">Публикация</string>
+    <string name="unpublish">Отмена публикации</string>
+    <string name="support">Поддержка</string>
     <string name="abandon">Оставить </string>
     <string name="channel">Канал</string>
     <string name="channel_update">Обновления Канала</string>
-    <string name="publish_update">Опубликовать Обновление </string>
+    <string name="publish_update">Обновление публикации</string>
 
     <string name="wallet_sync">Синхронизация кошелька</string>
-    <string name="sync_status">Статус синхронизации</string>
+    <string name="sync_status">Синхронизация</string>
     <string name="on">ВКЛ</string>
     <string name="off">ВЫКЛ</string>
-    <string name="email">Почтовый адрес</string>
+    <string name="email">Эл. почта</string>
     <string name="no_connected_email">Нет привязанной почты</string>
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
+    <string name="lbc">Кред.</string>
 
     <string name="account_recommended">Аккаунт рекомендован</string>
     <string name="wallet_account_desc">Аккаунт lbry.tv позволяет зарабатывать награды, восстанавливать кошелек и сохранять всё синхронизированным. </string>
@@ -345,12 +350,12 @@
     <string name="tx_list_fee">комиссия %1$s </string>
     <string name="transaction_history">История транзакций</string>
 
-    <string name="unlock">Разблокировать</string>
+    <string name="unlock">Разблокировка поддержки/чаевых</string>
     <string name="unlock_tips">Разблокировать чаевые?</string>
     <string name="confirm_unlock_tips">Вы уверены, что хотите разблокировать все Ваши чаевые?</string>
     <string name="min_spend_required">Пожалуйста, введите количество кредитов больше 0.0001.</string>
 
-    <string name="buy_lbc">Купить LBC</string>
+    <string name="buy_lbc">Купить кредиты LBRY</string>
     <string name="hash_not_supported">Ваше устройство не отвечает минимальным требованиям для обеспечения защиты Вашего запроса на покупку.</string>
     <string name="receive_address_not_set">У Вас не настроен адрес кошелька. Пожалуйста, сгенерируйте новый адрес и попробуйте ещё раз.</string>
 
@@ -396,7 +401,13 @@
     <string name="channel_to_show_support_as">От лица какого канала отображать поддержку</string>
     <string name="make_this_a_tip">Отправить как чаевые</string>
     <string name="send_revocable_support">Отправить временную поддержку</string>
-    <string name="send_lbc_tip">Отправить чаевые в кол-ве %1$s</string>
+    <string name="send_lbc_tip">Пожертвовать %1$s</string>
+    <plurals name="send_lbc_tip">
+        <item quantity="one">Пожертвовать %1$s кредит</item>
+        <item quantity="few">Пожертвовать %1$s кредита</item>
+        <item quantity="many">Пожертвовать %1$s кредитов</item>
+        <item quantity="other">Пожертвовать %1$s кредитов</item>
+    </plurals>
     <string name="send_tip_info_content">Это пожертвование для %1$s увеличит его возможность быть найденным. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Это пожертвование для %1$s увеличит возможность  канала быть найденным. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Отмена</string>
@@ -486,6 +497,7 @@
     <string name="channel_deleted">Канал был успешно удалён.</string>
     <string name="channel_failed_delete">Удаление канала временно невозможно. Пожалуйста, попробуйте позже.</string>
     <string name="description">Описание</string>
+    <string name="follow">Подписаться</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="show_optional_fields">Показать дополнительные поля</string>
@@ -495,7 +507,7 @@
     <string name="title">Заголовок</string>
     <string name="at">\@</string>
     <string name="deposit">Взнос </string>
-    <string name="deposit_remains_yours">Эти LBC остаются Вашими. Это вложение для бронирования имени и может быть отменено в любой время.</string>
+    <string name="deposit_remains_yours">Эти LBC остаются Вашими. Это вложение для бронирования имени и оно может быть отменено в любой момент. </string>
     <string name="storage_permission_rationale_download">LBRY требуется доступ к загрузке контента на Ваше устройство.</string>
     <string name="storage_permission_rationale_images">LBRY требуется доступ к загрузке изображений с памяти устройства. </string>
     <string name="select_thumbnail">Выберите миниатюру </string>
@@ -504,6 +516,7 @@
     <string name="wait_for_upload">Пожалуйста, подождите пока текущая загрузка закончится. </string>
     <string name="image_upload_failed">Загрузка изображения не удалась. Пожалуйста, попробуйте ещё раз. </string>
     <string name="uploading">Загрузка...</string>
+    <string name="uploading_thumbnail">Загружаем миниатюру...</string>
     <string name="please_enter_channel_name">Пожалуйста, введите название канала. </string>
     <string name="channel_name_invalid_characters">Название канала имеет неправильные символы.  </string>
     <string name="channel_name_already_created">Вы уже создали канал с таким же названием.</string>
@@ -535,7 +548,7 @@
     </plurals>
 
     <!-- Rewards -->
-    <string name="lbry_credits_allow">LBRY кредиты позволяют Вам публиковать или покупать контент.</string>
+    <string name="lbry_credits_allow">Кредиты LBRY позволяют вам публиковаться и покупать разнообразные медиа файлы.</string>
     <string name="free_credits_worth">Вы можете получить бесплатных кредитов на $%1$s после того, как Вы предоставите Вашу почту.</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="get_started">Начать</string>
@@ -658,5 +671,14 @@
     <string name="unknown">Неизвестный </string>
     <string name="cannot_find_lbrynet_log">Файл lbrynet.log не может быть найден.</string>
     <string name="cannot_share_lbrynet_log">Файлом lbrynet.log  нельзя поделиться из-за ограничений разрешений. </string>
+
+    <!-- Notifications -->
+    <string name="no_notifications">Здесь тихо! Новые уведомления будут появляться здесь по мере их поступления.</string>
+    <plurals name="confirm_delete_notifications">
+        <item quantity="one">Вы уверены, что хотите очистить выбранное уведомление?</item>
+        <item quantity="few">Вы уверены, что хотите очистить выбранные уведомления?</item>
+        <item quantity="many">Вы уверены, что хотите очистить выбранные уведомления?</item>
+        <item quantity="other">Вы уверены, что хотите очистить выбранные уведомления?</item>
+    </plurals>
 
     </resources>

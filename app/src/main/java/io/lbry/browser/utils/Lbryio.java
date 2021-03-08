@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,6 +62,8 @@ public final class Lbryio {
     public static final String AUTH_TOKEN_PARAM = "auth_token";
     public static List<Subscription> subscriptions = new ArrayList<>();
     public static List<Claim> cacheResolvedSubscriptions = new ArrayList<>();
+    public static List<String> blockedOutpoints = new ArrayList<>();
+    public static List<String> filteredOutpoints = new ArrayList<>();
     public static double LBCUSDRate = 0;
     public static String AUTH_TOKEN;
     private static boolean generatingAuthToken = false;
@@ -203,6 +206,15 @@ public final class Lbryio {
             }
         } catch (JSONException | IOException ex) {
             throw new LbryioResponseException(String.format("Could not parse response: %s", responseString), ex);
+        }
+    }
+
+    public static void populateOutpointList(List<String> outpoints, JSONArray source) throws JSONException {
+        outpoints.clear();
+        if (source != null) {
+            for (int i = 0; i < source.length(); i++) {
+                outpoints.add(source.getString(i));
+            }
         }
     }
 

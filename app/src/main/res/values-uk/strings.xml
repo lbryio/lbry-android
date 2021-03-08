@@ -27,7 +27,6 @@
     <string name="welcome_to_lbry">Вітаємо в LBRY.</string>
     <string name="welcome_paragraph">LBRY - це платформа, керована спільнотою, в якій ви можете знаходити та публікувати відео, музику, книги та ін.</string>
     <string name="welcome_tos">Продовжуючи, я погоджуюся з  &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; та підтверджую, що мені більше 13 років. </string>
-    <string name="welcome_please_wait">Зачекайте, будь-ласка, доки ми приготуємо деякі речі...</string>
     <string name="use_lbry">Використовуйте LBRY »</string>
 
     <!-- URI bar -->
@@ -39,7 +38,6 @@
     <string name="discover">Знайти нове</string>
     <string name="lbry_works_better">LBRY працює краще, якщо ви стежите за принаймні 5 авторами, які вам подобаються. Увійдіть, щоб підтримати авторів, на яких ви підписані, якщо у вас вже є обліковий запис.</string>
     <string name="select_five_subscriptions">Будь ласка, оберіть 5 каналів, щоби продовжити. </string>
-    <string name="n_remaining">%1$dзалишилося...</string>
     <string name="done">Готово</string>
     <string name="all">Усі</string>
     <string name="discover_channels">Знайти нові канали</string>
@@ -57,7 +55,6 @@
     <string name="download">Завантажити</string>
     <string name="open">Відкрити </string>
     <string name="report">Поскаржитися</string>
-    <string name="loading_decentralized_data">Завантаження децентралізованих даних...</string>
     <string name="related_content">Схожий контент</string>
     <string name="comments">Коментарі </string>
     <string name="no_comments">Нема коментарів, щоби показати зараз. </string>
@@ -90,6 +87,18 @@
     <string name="please_select_repost_channel">Будь ласка, оберіть канал на який буде здійснено репост.</string>
     <string name="reply">Відповісти </string>
     <string name="replying_to">Відповідаючи %1$s</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$sперегляд</item>
+        <item quantity="few">%1$sпереглядів</item>
+        <item quantity="many">%1$sпереглядів</item>
+        <item quantity="other">%1$sпереглядів</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Буде здійснене придбання \"%1$s\" за %2$sкредит</item>
+        <item quantity="few">Буде здійснене придбання \"%1$s\" за %2$s кредитів</item>
+        <item quantity="many">Буде здійснене придбання \"%1$s\" за %2$s кредитів</item>
+        <item quantity="other">Буде здійснене придбання \"%1$s\" за %2$sкредитів</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="one">Опублікувати та пожертвувати %1$s кредит? </item>
         <item quantity="few">Опублікувати та пожертвувати %1$s кредитів? </item>
@@ -107,18 +116,6 @@
         <item quantity="few">Ваш коментар буде опублікований з пожертвою у %1$s кредитів для %2$s</item>
         <item quantity="many">Ваш коментар буде опублікований з пожертвою у %1$s кредитів для %2$s</item>
         <item quantity="other">Ваш коментар буде опублікований з пожертвою у %1$s кредитів для %2$s</item>
-    </plurals>
-    <plurals name="view_count">
-        <item quantity="one">%1$sперегляд</item>
-        <item quantity="few">%1$sпереглядів</item>
-        <item quantity="many">%1$sпереглядів</item>
-        <item quantity="other">%1$sпереглядів</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="one">Буде здійснене придбання \"%1$s\" за %2$sкредит</item>
-        <item quantity="few">Буде здійснене придбання \"%1$s\" за %2$s кредитів</item>
-        <item quantity="many">Буде здійснене придбання \"%1$s\" за %2$s кредитів</item>
-        <item quantity="other">Буде здійснене придбання \"%1$s\" за %2$sкредитів</item>
     </plurals>
 
     <!-- Channel view -->
@@ -139,7 +136,6 @@
     <string name="take_photo">Сфотографувати</string>
     <string name="upload_file">Завантажити файл</string>
     <string name="no_videos_found">Ми не змогли знайти ніяких відео на вашому пристрої. Зробіть фото чи запишіть відео для початку.</string>
-    <string name="loading_videos">Будь ласка, зачекайте поки ми завантажуємо Ваші відео...</string>
     <string name="storage_permission_rationale_videos">LBRY потребує доступ для публікації та відображення Ваших відео, зображень та інших файлів з Вашого пристрою. </string>
     <string name="camera_permission_rationale_record">LBRY потребує доступ до камери для запису відео.</string>
     <string name="camera_permission_rationale_photo">LBRY потребує доступ до камери для фотографування.</string>
@@ -219,7 +215,6 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
         <item>Долари США </item>
     </string-array>
 
@@ -242,12 +237,10 @@
     <string name="oops_something_went_wrong">Ой! Щось пішло не так. </string>
     <string name="installation_id_loaded">Завантаження ID інсталяції.</string>
     <string name="known_tags_loaded">Завантаження локальних відомих та популярних тегів.</string>
-    <string name="exchange_rate_loaded">Завантаження обмінного курсу LBC/Долари США.</string>
     <string name="user_authenticated">Користувач аутентифікований. </string>
     <string name="installation_registered">Інсталяція зареєстрована. </string>
     <string name="subscriptions_loaded">Завантаження підписок. </string>
     <string name="subscriptions_resolved">Підтвердженні підписки</string>
-
     <!-- Settings -->
     <string name="user_interface">Контент &amp; Інтерфейс</string>
     <string name="other">Інші</string>
@@ -258,10 +251,8 @@
     <string name="notifications">Повідомлення</string>
     <string name="subscriptions">Підписки</string>
     <string name="content_interests">Вподобання</string>
-
     <string name="keep_sdk_in_background">Залишайте сервіс LBRY працювати у фоновому режимі для покращення роботи гаманця та мережі</string>
     <string name="participate_in_data_network">Приймати участь у мережі даних (потребує перезапуску додатку)</string>
-
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Пошук</string>
     <string name="tag_url_title">%1$s - Тег</string>
@@ -286,7 +277,6 @@
     <string name="in_your_publishes">у Ваших публікаціях</string>
     <string name="in_your_supports">у Ваших підтримках</string>
     <string name="earn_more_tips">Заробляйте більше чайових, завантажуючи класні відео</string>
-    <string name="sdk_initializing">Фоновий сервіс все ще ініціалізується...</string>
     <string name="sdk_still_initializing">Фоновий сервіс все ще ініціалізується. Ви можете шукати та переглядати у цей час.</string>
     <string name="sdk_initializing_functionality">Ви не можете публікувати контент прямо зараз, тому що фоновий сервіс все ще ініціалізується.</string>
 
@@ -326,8 +316,6 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
-
     <string name="account_recommended">Рекомендації</string>
     <string name="wallet_account_desc">lbry.tv акаунт дає можливість отримувати винагороди, відновити гаманець та синхронізовувати усі дані.</string>
     <string name="wallet_without_account">Без акаунту Ви приймаєте на себе усю відповідальність за захист Вашого гаманцю та даних LBRY.</string>
@@ -339,7 +327,6 @@
     <string name="insufficient_balance">Недостатньо коштів</string>
     <string name="invalid_amount">Будь ласка, введіть дійсну кількість </string>
     <string name="send_credit_error">Ваші кредити не можуть бути відправлені зараз. Будь ласка, спробуйте пізніше.</string>
-    <string name="loading_transactions">Завантаження транзакцій...</string>
     <string name="no_recent_transactions">Немає нещодавніх транзакцій для показу.</string>
     <string name="no_transactions">Немає транзакцій для показу зараз.</string>
     <string name="tx_list_fee">комісія %1$s</string>
@@ -350,7 +337,6 @@
     <string name="confirm_unlock_tips">Ви впевнені, що бажаєте розблокувати усі пожертвування? </string>
     <string name="min_spend_required">Будь ласка, введіть кількість більшу за 0.0001 кредитів.</string>
 
-    <string name="buy_lbc">Придбати LBC</string>
     <string name="hash_not_supported">Ваш пристрій не підтримує мінімальні вимоги для забезпечення покупки.</string>
     <string name="receive_address_not_set">Ви не маєте адресу гаманця поки що. Будь ласка, згенеруйте нову адресу та спробуйте ще раз.</string>
 
@@ -396,7 +382,6 @@
     <string name="channel_to_show_support_as">Показати як підтримку від каналу </string>
     <string name="make_this_a_tip">Зробити це пожертвуванням </string>
     <string name="send_revocable_support">Надіслати Відкликаєму Підтримку </string>
-    <string name="send_lbc_tip">Надіслати пожертвування  у %1$s LBC </string>
     <string name="send_tip_info_content">Цей внесок для %1$s збільшить його можливість бути знайденим, доки активний. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Цей внесок для %1$s збільшить можливість каналу бути знайденим, доки активний. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Відмінити</string>
@@ -432,8 +417,6 @@
     <string name="provide_valid_email">Будь ласка, надайте дійсну адресу електронної пошти</string>
     <string name="please_follow_instructions">Будь ласка, слідуйте інструкціям у листі, що був надісланий на Вашу пошту.</string>
     <string name="sign_in_successful">Ви успішно увійшли у lbry.tv</string>
-    <string name="retrieving_account_information">Отримання даних Вашого акаунта...</string>
-    <string name="apply_wallet_data">Застосування даних гаманця...</string>
     <string name="please_enter_your_password">Будь ласка, введіть пароль Вашого гаманця.</string>
     <string name="please_enter_a_password">Будь ласка, введіть пароль для захисту Вашого гаманця.</string>
     <string name="wallet_security_purposes">Зверніть увагу: для захисту гаманця, LBRY не здатен змінити Ваш пароль</string>
@@ -478,7 +461,6 @@
     <!-- Channels -->
     <string name="no_channel_created">Ви ще не створили канал. \nПочніть зараз, створивши новий канал!</string>
     <string name="create_a_channel">Створити канал</string>
-    <string name="create_a_channel_item">Створити канал...</string>
     <string name="edit_channel">Редагувати канал</string>
     <string name="delete_selection">Видалити обране?</string>
     <string name="delete_channel">Видалити канал?</string>
@@ -495,7 +477,6 @@
     <string name="title">Заголовок</string>
     <string name="at">\@</string>
     <string name="deposit">Внести</string>
-    <string name="deposit_remains_yours">Ці LBC залишаються Вашими. Це внесок, щоби зарезервувати назву, це може бути відмінено у будь-який час.</string>
     <string name="storage_permission_rationale_download">LBRY потребує доступ для завантаження контенту на Ваш пристрій.</string>
     <string name="storage_permission_rationale_images">LBRY потребує доступ для завантаження зображень на Ваш пристрій.</string>
     <string name="select_thumbnail">Обрати превью</string>
@@ -503,7 +484,6 @@
     <string name="undetermined_image_filepath">Шлях до файлу не може бути вирішений для обраного зображення. Будь ласка, оберіть зображення в іншому місці.</string>
     <string name="wait_for_upload">Будь ласка, зачекайте доки теперішнє завантаження завершиться. </string>
     <string name="image_upload_failed">Запит на завантаження зображення не вдався. Будь ласка, спробуйте ще раз.</string>
-    <string name="uploading">Завантаження...</string>
     <string name="please_enter_channel_name">Будь ласка, введіть назву каналу. </string>
     <string name="channel_name_invalid_characters">Назва Вашого каналу містить неприпустимі символи. </string>
     <string name="channel_name_already_created">Ви вже створили канал з такою же назвою. </string>
@@ -534,8 +514,6 @@
         <item quantity="other">Канали були успішно видалені.</item>
     </plurals>
 
-    <!-- Rewards -->
-    <string name="lbry_credits_allow">Кредити LBRY дозволяють вам публікувати чи купувати контент</string>
     <string name="free_credits_worth">Ви можете отримати $%1$s безкоштовних кредитів після надання електронної адреси.</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="get_started">Розпочати</string>
@@ -636,7 +614,6 @@
     <string name="get_social">Ми у соціальних мережах</string>
     <string name="social_paragraph">Ви можете контактувати з командою LBRY та з учасниками спільноти у Discord, Facebook, Instagram, Twitter  або Reddit.</string>
     <string name="app_info">Інформація о додатку</string>
-    <string name="loading">Завантаження...</string>
     <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;What is LBRY?&lt;/a&gt;</string>
     <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Basics&lt;/a&gt;</string>
     <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>

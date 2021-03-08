@@ -27,7 +27,6 @@
     <string name="welcome_to_lbry">Chào mừng đến với LBRY</string>
     <string name="welcome_paragraph">LBRY là một nền tảng nội dung do cộng đồng kiểm soát, nơi bạn có thể tìm và xuất bản video, nhạc, sách và hơn thế nữa.</string>
     <string name="welcome_tos">Bằng cách tiếp tục, tôi đồng ý với &lt;a href=\"https://lbry.com/termsofservice\"&gt; Điều khoản dịch vụ &lt;/a&gt; và xác nhận tôi đã trên 13 tuổi.</string>
-    <string name="welcome_please_wait">Xin vui lòng chờ trong khi chúng tôi có một số thứ đã sẵn sàng</string>
     <string name="use_lbry">Sử dụng LBRY »</string>
 
     <!-- URI bar -->
@@ -40,7 +39,6 @@
     <string name="discover">Khám phá</string>
     <string name="lbry_works_better">LBRY hoạt động tốt hơn nếu bạn theo dõi ít ​​nhất 5 người sáng tạo mà bạn thích. Đăng nhập để hiển thị người tạo bạn theo dõi nếu bạn đã có tài khoản.</string>
     <string name="select_five_subscriptions">Vui lòng chọn tối đa 5 người sáng tạo nội dung để tiếp tục</string>
-    <string name="n_remaining">%1$dcòn lại</string>
     <string name="done">Làm xong</string>
     <string name="all">Tất cả</string>
     <string name="discover_channels">Khám phá các kênh mới</string>
@@ -58,7 +56,6 @@
     <string name="download">Download</string>
     <string name="open">Mở</string>
     <string name="report">Báo cáo</string>
-    <string name="loading_decentralized_data">Đang tải dữ liệu phi tập trung</string>
     <string name="related_content">Nội dung liên quan</string>
     <string name="comments">Bình luận</string>
     <string name="no_comments">Không có bình luận để hiển thị tại thời điểm này</string>
@@ -91,6 +88,12 @@
     <string name="please_select_repost_channel">Vui lòng chọn một kênh để đăng lại</string>
     <string name="reply">Trả lời</string>
     <string name="replying_to">Đang trả lời %1$s</string>
+    <plurals name="view_count">
+        <item quantity="other">%1$s lượt xem</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="other">Cái này sẽ mua \"%1$s\"cho %2$s tiền</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="other">Đăng và tiền boa %1$s</item>
     </plurals>
@@ -99,12 +102,6 @@
     </plurals>
     <plurals name="confirm_post_comment">
         <item quantity="other">Điều này sẽ đăng bình luận của bạn với một tiền boa %1$scủa %2$s</item>
-    </plurals>
-    <plurals name="view_count">
-        <item quantity="other">%1$s lượt xem</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="other">Cái này sẽ mua \"%1$s\"cho %2$s tiền</item>
     </plurals>
 
     <!-- Channel view -->
@@ -122,7 +119,6 @@
     <string name="take_photo">Chụp ảnh</string>
     <string name="upload_file">Upload một file</string>
     <string name="no_videos_found">Chúng tôi không thể tìm thấy bất kỳ video trên thiết bị của bạn. Chụp ảnh hoặc quay video để bắt đầu một file mới</string>
-    <string name="loading_videos">Vui lòng đợi trong khi chúng tôi tải video của bạn</string>
     <string name="storage_permission_rationale_videos">LBRY yêu cầu quyền truy cập để có thể hiển thị và xuất bản video, hình ảnh và các tệp khác từ thiết bị của bạn.</string>
     <string name="camera_permission_rationale_record">LBRY yêu cầu quyền truy cập vào máy ảnh của bạn để quay video.</string>
     <string name="camera_permission_rationale_photo">LBRY yêu cầu quyền truy cập vào máy ảnh của bạn để chụp ảnh.</string>
@@ -202,7 +198,6 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
         <item>USD</item>
     </string-array>
 
@@ -219,12 +214,10 @@
     <string name="oops_something_went_wrong">Ồ! có gì đó không ổn</string>
     <string name="installation_id_loaded">Đã tải ID cài đặt</string>
     <string name="known_tags_loaded">Đã tải các thẻ đã biết và theo dõi cục bộ</string>
-    <string name="exchange_rate_loaded">Đã tải tỷ giá LBC / USD</string>
     <string name="user_authenticated">Người dùng xác thực</string>
     <string name="installation_registered">Đăng ký cài đặt</string>
     <string name="subscriptions_loaded">Đăng ký đã tải</string>
     <string name="subscriptions_resolved">Đã giải quyết đăng ký</string>
-
     <!-- Settings -->
     <string name="user_interface">Giao diện người dùng và nội dung</string>
     <string name="other">Khác</string>
@@ -235,10 +228,8 @@
     <string name="notifications">Thông báo</string>
     <string name="subscriptions">Đăng ký</string>
     <string name="content_interests">Sở thích nội dung</string>
-
     <string name="keep_sdk_in_background">Giữ dịch vụ LBRY chạy trong nền để cải thiện hiệu suất của ví và mạng</string>
     <string name="participate_in_data_network">Tham gia vào mạng dữ liệu (yêu cầu khởi động lại ứng dụng và dịch vụ nền)</string>
-
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Tìm</string>
     <string name="tag_url_title">%1$s  - Thẻ</string>
@@ -263,7 +254,6 @@
     <string name="in_your_publishes">trong nội dung của bạn</string>
     <string name="in_your_supports">trong sự hỗ trợ của bạn</string>
     <string name="earn_more_tips">Kiếm thêm tiền bằng cách tải lên các video thú vị</string>
-    <string name="sdk_initializing">Dịch vụ nền đang khởi tạo...</string>
     <string name="sdk_still_initializing">Dịch vụ nền vẫn đang khởi tạo. Bạn có thể khám phá và xem nội dung trong thời gian trung bình.</string>
     <string name="sdk_initializing_functionality">Bạn không thể làm điều này ngay bây giờ vì dịch vụ nền vẫn đang khởi tạo.</string>
 
@@ -303,8 +293,6 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
-
     <string name="account_recommended">Tài khoản được đề xuất</string>
     <string name="wallet_account_desc">Tài khoản lbry.tv cho phép bạn kiếm phần thưởng, sao lưu ví của mình và giữ mọi thứ đồng bộ.</string>
     <string name="wallet_without_account">Nếu không có tài khoản, bạn chịu mọi trách nhiệm trong việc bảo mật dữ liệu ví và LBRY của mình.</string>
@@ -316,7 +304,6 @@
     <string name="insufficient_balance">Thiếu số dư</string>
     <string name="invalid_amount">Vui lòng nhập số tiền hợp lệ</string>
     <string name="send_credit_error">Tín dụng của bạn không thể được gửi tại thời điểm này. Vui lòng thử lại sau.</string>
-    <string name="loading_transactions">Đang tải giao dịch...</string>
     <string name="no_recent_transactions">Không có giao dịch gần đây để hiển thị</string>
     <string name="no_transactions">Không có giao dịch để hiển thị tại thời điểm này</string>
     <string name="tx_list_fee">phí %1$s</string>
@@ -327,7 +314,6 @@
     <string name="confirm_unlock_tips">Bạn có chắc chắn muốn mở khóa tất cả tiền boa của bạn?</string>
     <string name="min_spend_required">Vui lòng nhập số tiền nhiều hơn 0.0001</string>
 
-    <string name="buy_lbc">Mua LBC</string>
     <string name="hash_not_supported">Thiết bị của bạn không hỗ trợ các yêu cầu tối thiểu để đảm bảo yêu cầu mua hàng của bạn.</string>
     <string name="receive_address_not_set">Bạn không có địa chỉ ví được đặt. Vui lòng tạo một địa chỉ mới và thử lại.</string>
 
@@ -370,7 +356,6 @@
     <string name="channel_to_show_support_as">Kênh để hiển thị hỗ trợ như</string>
     <string name="make_this_a_tip">Làm tiền boa</string>
     <string name="send_revocable_support">Gửi hỗ trợ có thể hủy bỏ</string>
-    <string name="send_lbc_tip">Gửi %1$sLBC tiền boa</string>
     <string name="send_tip_info_content">Điều này sẽ xuất hiện như một mẹo cho %1$s, sẽ tăng khả năng của nó để được phát hiện trong khi hoạt động.&lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Điều này sẽ xuất hiện như một mẹo cho %1$s, sẽ tăng khả năng của nó để được phát hiện trong khi hoạt động.&lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Hủy bỏ</string>
@@ -400,9 +385,6 @@
     <string name="provide_valid_email">Vui lòng nhập một địa chỉ email hợp lệ</string>
     <string name="please_follow_instructions">Vui lòng làm theo các hướng dẫn trong email được gửi đến địa chỉ của bạn để tiếp tục.</string>
     <string name="sign_in_successful">Bạn đã đăng nhập thành công vào lbry.tv</string>
-    <string name="retrieving_account_information">Lấy thông tin tài khoản
- </string>
-    <string name="apply_wallet_data">Áp dụng dữ liệu ví..</string>
     <string name="please_enter_your_password">Vui lòng nhập mật khẩu bạn đã sử dụng để bảo mật ví của bạn.</string>
     <string name="please_enter_a_password">Vui lòng nhập mật khẩu để bảo mật ví của bạn</string>
     <string name="wallet_security_purposes">Lưu ý: vì mục đích bảo mật ví, LBRY không thể đặt lại mật khẩu của bạn.</string>
@@ -447,7 +429,6 @@
     <!-- Channels -->
     <string name="no_channel_created">Bạn chưa tạo kênh.\ n Bắt đầu ngay bây giờ bằng cách tạo kênh mới!</string>
     <string name="create_a_channel">Tạo một kênh</string>
-    <string name="create_a_channel_item">Tạo một kênh</string>
     <string name="edit_channel">Chỉnh sửa kênh</string>
     <string name="delete_selection">Xóa lựa chọn?</string>
     <string name="delete_channel">Xóa kênh?</string>
@@ -464,7 +445,6 @@
     <string name="title">Tiêu đề</string>
     <string name="at">\@</string>
     <string name="deposit">Nạp tiền</string>
-    <string name="deposit_remains_yours">LBC này vẫn là của bạn. Đó là một khoản tiền gửi để bảo lưu tên và có thể được hoàn tác bất cứ lúc nào.</string>
     <string name="storage_permission_rationale_download">LBRY yêu cầu quyền truy cập để tải nội dung xuống thiết bị của bạn.</string>
     <string name="storage_permission_rationale_images">LBRY yêu cầu quyền truy cập để tải hình ảnh từ bộ lưu trữ thiết bị của bạn.</string>
     <string name="select_thumbnail">Chọn hình thu nhỏ</string>
@@ -472,7 +452,6 @@
     <string name="undetermined_image_filepath">Đường dẫn tệp không thể được xác định cho hình ảnh được chọn. Vui lòng chọn một hình ảnh ở một vị trí khác nhau.</string>
     <string name="wait_for_upload">Vui lòng đợi quá trình tải lên hiện tại kết thúc</string>
     <string name="image_upload_failed">Yêu cầu tải lên hình ảnh không thành công. Vui lòng thử lại.</string>
-    <string name="uploading">Đang tải lên...</string>
     <string name="please_enter_channel_name">Vui lòng nhập tên kênh</string>
     <string name="channel_name_invalid_characters">Tên kênh của bạn chứa các ký tự không hợp lệ</string>
     <string name="channel_name_already_created">Bạn đã tạo một kênh có cùng tên.</string>
@@ -494,8 +473,6 @@
         <item quantity="other">Các kênh đã được xóa thành công</item>
     </plurals>
 
-    <!-- Rewards -->
-    <string name="lbry_credits_allow">Tín dụng LBRY cho phép bạn xuất bản hoặc mua nội dung.</string>
     <string name="free_credits_worth">Bạn có thể nhận được các khoản tín dụng miễn phí trị giá $ %1$s sau khi bạn cung cấp một địa chỉ email</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="get_started">Bắt đầu</string>
@@ -578,7 +555,6 @@
     <string name="get_social">Get Social</string>
     <string name="social_paragraph">Bạn có thể tương tác với nhóm LBRY và các thành viên của cộng đồng trên Discord, Facebook, Instagram, Twitter hoặc Reddit.</string>
     <string name="app_info">Thông tin ứng dụng</string>
-    <string name="loading">Đang tải...</string>
     <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;What is LBRY?&lt;/a&gt;</string>
     <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Basics&lt;/a&gt;</string>
     <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>

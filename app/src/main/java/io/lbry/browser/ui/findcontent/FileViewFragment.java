@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -38,6 +39,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -73,8 +76,12 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.commonmark.node.Code;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.AttributeProvider;
+import org.commonmark.renderer.html.AttributeProviderContext;
+import org.commonmark.renderer.html.AttributeProviderFactory;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,6 +96,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -201,6 +209,8 @@ public class FileViewFragment extends BaseFragment implements
     private View layoutResolving;
     private int lastPositionSaved;
 
+    private View tipButton;
+
     private WebView webView;
     private boolean webViewAdded;
 
@@ -209,6 +219,7 @@ public class FileViewFragment extends BaseFragment implements
     private TextView textReplyingTo;
     private TextView textReplyToBody;
     private View buttonClearReplyToComment;
+    private TextView textNothingAtLocation;
 
     private boolean postingComment;
     private boolean fetchingChannels;
@@ -235,6 +246,8 @@ public class FileViewFragment extends BaseFragment implements
     // if this is set, scroll to the specific comment on load
     private String commentHash;
 
+    private float floatingWalletPositionY;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_file_view, container, false);
@@ -244,6 +257,8 @@ public class FileViewFragment extends BaseFragment implements
         layoutResolving = root.findViewById(R.id.file_view_loading_container);
         layoutDisplayArea = root.findViewById(R.id.file_view_claim_display_area);
         buttonPublishSomething = root.findViewById(R.id.nothing_at_location_publish_button);
+
+        tipButton = root.findViewById(R.id.file_view_action_tip);
 
         containerReplyToComment = root.findViewById(R.id.comment_form_reply_to_container);
         textReplyingTo = root.findViewById(R.id.comment_form_replying_to_text);
@@ -259,6 +274,7 @@ public class FileViewFragment extends BaseFragment implements
         commentPostAsThumbnail = root.findViewById(R.id.comment_form_thumbnail);
         commentPostAsNoThumbnail = root.findViewById(R.id.comment_form_no_thumbnail);
         commentPostAsAlpha = root.findViewById(R.id.comment_form_thumbnail_alpha);
+        textNothingAtLocation = root.findViewById(R.id.nothing_at_location_text);
 
         inlineChannelCreator = root.findViewById(R.id.container_inline_channel_form_create);
         inlineChannelCreatorInputName = root.findViewById(R.id.inline_channel_form_input_name);
@@ -273,14 +289,13 @@ public class FileViewFragment extends BaseFragment implements
 
         fileViewPlayerListener = new Player.EventListener() {
             @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            public void onPlaybackStateChanged(@Player.State int playbackState) {
                 if (playbackState == Player.STATE_READY) {
                     elapsedDuration = MainActivity.appPlayer.getCurrentPosition();
                     totalDuration = MainActivity.appPlayer.getDuration() < 0 ? 0 : MainActivity.appPlayer.getDuration();
                     if (!playbackStarted) {
                         logPlay(currentUrl, startTimeMillis);
                         playbackStarted = true;
-                        isPlaying = true;
 
                         long lastPosition = loadLastPlaybackPosition();
                         if (lastPosition > -1) {
@@ -292,7 +307,7 @@ public class FileViewFragment extends BaseFragment implements
                     hideBuffering();
 
                     if (loadingNewClaim) {
-                        MainActivity.appPlayer.setPlayWhenReady(true);
+                        MainActivity.appPlayer.setPlayWhenReady(Objects.requireNonNull((MainActivity) (getActivity())).isMediaAutoplayEnabled());
                         loadingNewClaim = false;
                     }
                 } else if (playbackState == Player.STATE_BUFFERING) {
@@ -328,6 +343,11 @@ public class FileViewFragment extends BaseFragment implements
                 } else {
                     hideBuffering();
                 }
+            }
+
+            @Override
+            public void onIsPlayingChanged(boolean isPlayng) {
+                isPlaying = isPlayng;
             }
         };
 
@@ -453,13 +473,17 @@ public class FileViewFragment extends BaseFragment implements
 
         if (claim != null && !invalidRepost) {
             Helper.saveViewHistory(currentUrl, claim);
-            checkAndLoadRelatedContent();
-            checkAndLoadComments();
-            renderClaim();
-            if (claim.getFile() == null) {
-                loadFile();
+            if (Helper.isClaimBlocked(claim)) {
+                renderClaimBlocked();
             } else {
-                initialFileLoadDone = true;
+                checkAndLoadRelatedContent();
+                checkAndLoadComments();
+                renderClaim();
+                if (claim.getFile() == null) {
+                    loadFile();
+                } else {
+                    initialFileLoadDone = true;
+                }
             }
         }
 
@@ -472,6 +496,21 @@ public class FileViewFragment extends BaseFragment implements
         Helper.setViewVisibility(buttonPublishSomething, View.VISIBLE);
         Helper.setViewVisibility(layoutResolving, View.GONE);
         Helper.setViewVisibility(layoutDisplayArea, View.INVISIBLE);
+        if (textNothingAtLocation != null) {
+            textNothingAtLocation.setText(R.string.nothing_at_this_location);
+        }
+    }
+
+    private void renderClaimBlocked() {
+        Helper.setViewVisibility(layoutLoadingState, View.VISIBLE);
+        Helper.setViewVisibility(layoutNothingAtLocation, View.VISIBLE);
+        Helper.setViewVisibility(buttonPublishSomething, View.INVISIBLE);
+        Helper.setViewVisibility(layoutResolving, View.GONE);
+        Helper.setViewVisibility(layoutDisplayArea, View.INVISIBLE);
+        if (textNothingAtLocation != null) {
+            textNothingAtLocation.setMovementMethod(LinkMovementMethod.getInstance());
+            textNothingAtLocation.setText(HtmlCompat.fromHtml(getString(R.string.dmca_complaint_blocked), HtmlCompat.FROM_HTML_MODE_LEGACY));
+        }
     }
 
     private void checkNewClaimAndUrl(Claim newClaim, String newUrl) {
@@ -681,9 +720,13 @@ public class FileViewFragment extends BaseFragment implements
 
         if (claim != null) {
             Helper.saveViewHistory(url, claim);
-            checkAndLoadRelatedContent();
-            checkAndLoadComments();
-            renderClaim();
+            if (Helper.isClaimBlocked(claim)) {
+                renderClaimBlocked();
+            } else {
+                checkAndLoadRelatedContent();
+                checkAndLoadComments();
+                renderClaim();
+            }
         }
     }
 
@@ -760,6 +803,7 @@ public class FileViewFragment extends BaseFragment implements
             activity.removeSdkStatusListener(this);
             activity.removeStoragePermissionListener(this);
             activity.removeWalletBalanceListener(this);
+            activity.restoreWalletContainerPosition();
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
@@ -916,11 +960,15 @@ public class FileViewFragment extends BaseFragment implements
                     Helper.saveViewHistory(url, claim);
 
                     checkAndResetNowPlayingClaim();
-                    loadFile();
 
-                    checkAndLoadRelatedContent();
-                    checkAndLoadComments();
-                    renderClaim();
+                    if (Helper.isClaimBlocked(claim)) {
+                        renderClaimBlocked();
+                    } else {
+                        loadFile();
+                        checkAndLoadRelatedContent();
+                        checkAndLoadComments();
+                        renderClaim();
+                    }
                 } else {
                     // render nothing at location
                     renderNothingAtLocation();
@@ -1226,6 +1274,27 @@ public class FileViewFragment extends BaseFragment implements
         buttonUnfollow.setOnClickListener(followUnfollowListener);
         buttonBell.setOnClickListener(bellIconListener);
 
+        NestedScrollView scrollView = root.findViewById(R.id.file_view_scroll_view);
+
+        // Store floating wallet balance vertical position when fragment was created
+        // This is used for animate it when user scrolls to the bottom of the screen
+        View floatingBalance = getActivity().findViewById(R.id.floating_balance_main_container);
+        floatingWalletPositionY = floatingBalance.getY();
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                Context ctx = getContext();
+                if (scrollY < oldScrollY && ctx instanceof MainActivity) {
+                    // User has scrolled upwards
+                    ((MainActivity) ctx).restoreWalletContainerPosition();
+                } else if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) && ctx instanceof MainActivity) {
+                    // User is at the bottom of the screen
+                    ((MainActivity) ctx).translateFloatingWallet(floatingWalletPositionY);
+                }
+            }
+        });
+
         commentChannelSpinnerAdapter = new InlineChannelSpinnerAdapter(getContext(), R.layout.spinner_item_channel, new ArrayList<>());
         commentChannelSpinnerAdapter.addPlaceholder(false);
 
@@ -1445,6 +1514,11 @@ public class FileViewFragment extends BaseFragment implements
         Helper.setViewVisibility(layoutLoadingState, View.GONE);
         Helper.setViewVisibility(layoutNothingAtLocation, View.GONE);
 
+        if (claim.getTags().contains("disable-support") || claim.getSigningChannel().getTags().contains("disable-support"))
+            Helper.setViewVisibility(tipButton, View.GONE);
+        else
+            Helper.setViewVisibility(tipButton, View.VISIBLE);
+
         loadViewCount();
         checkIsFollowing();
         
@@ -1627,9 +1701,20 @@ public class FileViewFragment extends BaseFragment implements
     private void checkAndLoadComments() {
         View root = getView();
         if (root != null) {
+            View commentsDisabledText = root.findViewById(R.id.file_view_disabled_comments);
+            View commentForm = root.findViewById(R.id.container_comment_form);
             RecyclerView commentsList = root.findViewById(R.id.file_view_comments_list);
-            if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
-                loadComments();
+            if (claim.getTags().contains("disable-comments") || claim.getSigningChannel().getTags().contains("disable-comments")) {
+                Helper.setViewVisibility(commentsDisabledText, View.VISIBLE);
+                Helper.setViewVisibility(commentForm, View.GONE);
+                Helper.setViewVisibility(commentsList, View.GONE);
+            } else {
+                Helper.setViewVisibility(commentsDisabledText, View.GONE);
+                Helper.setViewVisibility(commentForm, View.VISIBLE);
+                Helper.setViewVisibility(commentsList, View.VISIBLE);
+                if (commentsList == null || commentsList.getAdapter() == null || commentsList.getAdapter().getItemCount() == 0) {
+                    loadComments();
+                }
             }
         }
     }
@@ -1714,7 +1799,7 @@ public class FileViewFragment extends BaseFragment implements
                     ((MainActivity) context).setNowPlayingClaim(claim, currentUrl);
                 }
 
-                MainActivity.appPlayer.setPlayWhenReady(true);
+                MainActivity.appPlayer.setPlayWhenReady(Objects.requireNonNull((MainActivity) (getActivity())).isMediaAutoplayEnabled());
                 String userAgent = Util.getUserAgent(context, getString(R.string.app_name));
                 String mediaSourceUrl = getStreamingUrl();
                 MediaSource mediaSource = new ProgressiveMediaSource.Factory(
@@ -1722,7 +1807,8 @@ public class FileViewFragment extends BaseFragment implements
                         new DefaultExtractorsFactory()
                 ).setLoadErrorHandlingPolicy(new StreamLoadErrorPolicy()).createMediaSource(Uri.parse(mediaSourceUrl));
 
-                MainActivity.appPlayer.prepare(mediaSource, true, true);
+                MainActivity.appPlayer.setMediaSource(mediaSource, true);
+                MainActivity.appPlayer.prepare();
             }
         }
     }
@@ -2151,7 +2237,14 @@ public class FileViewFragment extends BaseFragment implements
     private String buildMarkdownHtml(String markdown) {
         Parser parser = Parser.builder().build();
         Node document = parser.parse(markdown);
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder()
+                .attributeProviderFactory(new AttributeProviderFactory() {
+                    @Override
+                    public AttributeProvider create(AttributeProviderContext context) {
+                        return new CodeAttributeProvider();
+                    }
+                })
+                .build();
         String markdownHtml = renderer.render(document);
 
         return "<!doctype html>\n" +
@@ -3191,5 +3284,21 @@ public class FileViewFragment extends BaseFragment implements
             }
         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    class CodeAttributeProvider implements AttributeProvider {
+
+        @Override
+        public void setAttributes(Node node, String tagName, Map<String, String> attributes) {
+            if (node instanceof Code) {
+                Context context = getContext();
+                String colorCodeText = "#".concat(Integer.toHexString(ContextCompat.getColor(context, R.color.codeTagText) & 0x00ffffff));
+                String colorCodeBg = "#".concat(Integer.toHexString(ContextCompat.getColor(context, R.color.codeTagBackground) & 0x00ffffff));
+                String codeStyle = "display: inline-block; border-radius: 0.2rem" +
+                        "; color: " + colorCodeText + "; background-color: " + colorCodeBg +
+                        "; font-size: 0.8571rem; padding: calc(2rem/5 - 4px) calc(2rem/5) calc(2rem/5 - 5px);";
+                attributes.put("style", codeStyle);
+            }
+        }
     }
 }

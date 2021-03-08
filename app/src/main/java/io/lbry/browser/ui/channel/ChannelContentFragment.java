@@ -260,6 +260,8 @@ public class ChannelContentFragment extends Fragment implements DownloadActionLi
         contentClaimSearchTask = new ClaimSearchTask(claimSearchOptions, Lbry.LBRY_TV_CONNECTION_STRING, getLoadingView(), new ClaimSearchResultHandler() {
             @Override
             public void onSuccess(List<Claim> claims, boolean hasReachedEnd) {
+                claims = Helper.filterClaimsByOutpoint(claims);
+
                 if (contentListAdapter == null) {
                     Context context = getContext();
                     if (context != null) {

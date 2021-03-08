@@ -20,6 +20,7 @@
     <string name="settings">Pengaturan</string>
     <string name="about">Tentang</string>
     <string name="sign_in">Masuk</string>
+    <string name="shuffle">Acak</string>
     <string name="startup_failed">Gagal Memulai aplikasi. Silakan periksa koneksi data Anda dan coba lagi. Jika masalah ini terus berlanjut, silakan kirim email ke hello@lbry.com</string>
     <string name="no_claim_search_content">Tidak ada konten untuk ditampilkan saat ini. Harap perbaiki pilihan Anda atau periksa kembali nanti.</string>
 
@@ -27,7 +28,7 @@
     <string name="welcome_to_lbry">Selamat datang di LBRY.</string>
     <string name="welcome_paragraph">LBRY adalah platform konten yang dikontrol komunitas tempat Anda dapat menemukan dan mempublikasikan video, musik, buku, dan lainnya.</string>
     <string name="welcome_tos">By continuing, I agree to the &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; and confirm I am over the age of 13.</string>
-    <string name="welcome_please_wait">Harap tunggu sementara kami menyiapkan beberapa hal ...</string>
+    <string name="welcome_please_wait">Harap tunggu sementara kami menyiapkan beberapa hal...</string>
     <string name="use_lbry">Gunakan LBRY »</string>
 
     <!-- URI bar -->
@@ -90,6 +91,12 @@
     <string name="please_select_repost_channel">Silakan pilih saluran yang akan dikirimi ulang.</string>
     <string name="reply">Balas</string>
     <string name="replying_to">Membalas ke %1$s</string>
+    <plurals name="view_count">
+        <item quantity="other">%1$s dilihat</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="other">Ini akan dibeli \"%1$s\" untuk %2$s kredit</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="other">Pos dan tip %1$s credits?</item>
     </plurals>
@@ -99,18 +106,14 @@
     <plurals name="confirm_post_comment">
         <item quantity="other">Ini akan memposting komentar Anda dengan tip%1$s kredit untuk%2$s</item>
     </plurals>
-    <plurals name="view_count">
-        <item quantity="other">%1$s dilihat</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="other">Ini akan dibeli \"%1$s\" untuk %2$s kredit</item>
-    </plurals>
 
     <!-- Channel view -->
     <string name="no_channel_info">Belum ada apa-apa di sini..\nSilakan periksa kembali nanti.</string>
     <string name="content">Konten</string>
     <string name="website">Website</string>
     <string name="reposted">mem-posting ulang</string>
+    <string name="receive_all_notifications">Anda akan menerima semua notifikasi</string>
+    <string name="receive_no_notifications">Anda tidak akan menerima notifikasi untuk saluran ini</string>
     <plurals name="follower_count">
         <item quantity="other">%1$s pengikut</item>
     </plurals>
@@ -201,7 +204,7 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>LBRY Credits</item>
         <item>USD</item>
     </string-array>
 
@@ -218,12 +221,11 @@
     <string name="oops_something_went_wrong">Ups! Ada yang salah.</string>
     <string name="installation_id_loaded">ID Instalasi yang dimuat.</string>
     <string name="known_tags_loaded">Memuat tag dikenal dan diikuti lokal.</string>
-    <string name="exchange_rate_loaded">Nilai tukar LBC/USD yang dimuat.</string>
+    <string name="exchange_rate_loaded">Nilai tukar LBRY Credits/USD yang dimuat.</string>
     <string name="user_authenticated">Pengguna diautentikasi.</string>
     <string name="installation_registered">Instalasi terdaftar.</string>
     <string name="subscriptions_loaded">Langganan yang dimuat.</string>
     <string name="subscriptions_resolved">Langganan yang diselesaikan.</string>
-
     <!-- Settings -->
     <string name="user_interface">Content &amp; User interface</string>
     <string name="other">Lain-lain</string>
@@ -234,9 +236,11 @@
     <string name="notifications">Notifikasi</string>
     <string name="subscriptions">Berlangganan</string>
     <string name="content_interests">Minat Konten</string>
+    <string name="mini_player_bottom_spacing">Jarak bawah pemutar mini</string>
 
     <string name="keep_sdk_in_background">Tetap menjalankan layanan LBRY di latar belakang untuk meningkatkan kinerja dompet dan jaringan</string>
     <string name="participate_in_data_network">Berpartisipasi dalam jaringan data (membutuhkan restart aplikasi dan layanan latar belakang)</string>
+    <string name="send_buffering_events">Kirim peristiwa buffering ke server LBRY</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Cari</string>
@@ -287,6 +291,7 @@
     <string name="receive">Menerima</string>
     <string name="spend">Menghabiskan</string>
     <string name="publish">Menerbitkan</string>
+    <string name="unpublish">Batalkan penerbitan</string>
     <string name="support">Dukung</string>
     <string name="abandon">Mengabaikan</string>
     <string name="channel">Saluran</string>
@@ -302,7 +307,7 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
+    <string name="lbc">Kredit</string>
 
     <string name="account_recommended">Akun Disarankan</string>
     <string name="wallet_account_desc">Akun lbry.tv memungkinkan Anda mendapatkan hadiah, mencadangkan dompet Anda, dan menjaga semuanya tetap sinkron.</string>
@@ -326,7 +331,7 @@
     <string name="confirm_unlock_tips">Yakin ingin membuka kunci semua tips Anda?</string>
     <string name="min_spend_required">Silakan masukkan jumlah lebih dari 0,0001 kredit.</string>
 
-    <string name="buy_lbc">Beli LBC</string>
+    <string name="buy_lbc">Beli LBRY Credits</string>
     <string name="hash_not_supported">Perangkat Anda tidak mendukung persyaratan minimum untuk mengamankan permintaan pembelian Anda.</string>
     <string name="receive_address_not_set">Anda tidak memiliki set alamat dompet. Harap buat alamat baru dan coba lagi.</string>
 
@@ -369,7 +374,10 @@
     <string name="channel_to_show_support_as">Saluran untuk menunjukkan dukungan sebagai</string>
     <string name="make_this_a_tip">Jadikan ini tip</string>
     <string name="send_revocable_support">Kirim Dukungan yang dapat ditarik</string>
-    <string name="send_lbc_tip">Kirim Sejumlah %1$s LBC Tip</string>
+    <string name="send_lbc_tip">Tip %1$s</string>
+    <plurals name="send_lbc_tip">
+        <item quantity="other">Tip %1$s Kredit</item>
+    </plurals>
     <string name="send_tip_info_content">Ini akan muncul sebagai tip untuk %1$s, ang akan meningkatkan kemampuannya untuk ditemukan saat diaktifkan. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Ini akan muncul sebagai tip untuk %1$s, yang akan meningkatkan kemampuan saluran untuk ditemukan saat aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Batalkan</string>
@@ -453,6 +461,7 @@
     <string name="channel_deleted">Saluran berhasil dihapus.</string>
     <string name="channel_failed_delete">Saluran tidak dapat dihapus saat ini. Silakan coba lagi nanti.</string>
     <string name="description">Deskripsi</string>
+    <string name="follow">Ikuti</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="show_optional_fields">Tampilkan bidang opsional</string>
@@ -462,7 +471,7 @@
     <string name="title">Judul</string>
     <string name="at">\@</string>
     <string name="deposit">Deposit</string>
-    <string name="deposit_remains_yours">LBC ini tetap milik Anda. Ini adalah sebuah deposit untuk mencadangkan nama dan dapat dibatalkan kapan saja.</string>
+    <string name="deposit_remains_yours">Kredit tetap menjadi milik Anda. Ini adalah deposit untuk menyimpan nama dan dapat dibatalkan kapan saja.</string>
     <string name="storage_permission_rationale_download">LBRY membutuhkan akses untuk mengunduh konten ke perangkat Anda.</string>
     <string name="storage_permission_rationale_images">LBRY membutuhkan akses untuk memuat gambar dari penyimpanan perangkat Anda.</string>
     <string name="select_thumbnail">Pilih thumbnail</string>
@@ -471,6 +480,7 @@
     <string name="wait_for_upload">Harap tunggu unggahan saat ini selesai.</string>
     <string name="image_upload_failed">Permintaan unggah gambar gagal. Silakan coba lagi.</string>
     <string name="uploading">Mengunggah...</string>
+    <string name="uploading_thumbnail">Mengunggah Thumbnail</string>
     <string name="please_enter_channel_name">Silakan masukkan nama saluran.</string>
     <string name="channel_name_invalid_characters">Nama saluran Anda mengandung karakter yang tidak valid.</string>
     <string name="channel_name_already_created">Anda telah membuat saluran dengan nama yang sama.</string>
@@ -493,7 +503,7 @@
     </plurals>
 
     <!-- Rewards -->
-    <string name="lbry_credits_allow">Kredit LBRY memungkinkan Anda untuk menerbitkan atau membeli konten.</string>
+    <string name="lbry_credits_allow">LBRY Credits memungkinkan Anda untuk menerbitkan atau membeli konten.</string>
     <string name="free_credits_worth">Anda dapat memperoleh kredit gratis senilai $ %1$s setelah Anda memberikan alamat email.</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="get_started">Memulai</string>
@@ -598,5 +608,11 @@
     <string name="unknown">Tidak dikenal</string>
     <string name="cannot_find_lbrynet_log">File lbrynet.log tidak dapat ditemukan.</string>
     <string name="cannot_share_lbrynet_log">File lbrynet.log tidak dapat dibagikan karena pembatasan izin.</string>
+
+    <!-- Notifications -->
+    <string name="no_notifications">Di sini tenang! Pemberitahuan baru akan ditampilkan saat Anda menerimanya.</string>
+    <plurals name="confirm_delete_notifications">
+        <item quantity="other">Apakah Anda yakin ingin menghapus pemberitahuan yang dipilih?</item>
+    </plurals>
 
     </resources>

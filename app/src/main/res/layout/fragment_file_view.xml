@@ -845,7 +845,21 @@
                             android:textSize="16sp" />
                     </RelativeLayout>
 
-                    <include layout="@layout/container_comment_form" />
+                    <include layout="@layout/container_comment_form"
+                        android:id="@+id/container_comment_form"/>
+
+                    <TextView
+                        android:id="@+id/file_view_disabled_comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/creator_disabled_comments"
+                        android:textFontWeight="300"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/file_view_no_comments"

@@ -20,15 +20,16 @@
     <string name="settings">設定</string>
     <string name="about">關於</string>
     <string name="sign_in">登入</string>
-    <string name="startup_failed">程式啟動失敗。請檢查網絡連線，然後再次嘗試。\n如此問題持續發生，請電郵至hello@lbry.com。</string>
+    <string name="shuffle">隨機播放</string>
+    <string name="startup_failed">程式啟動失敗。請檢查網絡連線，然後再次嘗試。\n如此問題持續發生，請發送電子郵件至 hello@lbry.com。</string>
     <string name="no_claim_search_content">目前沒有可顯示的內容。請重新選擇或稍後再回來。</string>
 
     <!-- Welcome Page -->
-    <string name="welcome_to_lbry">歡迎使用LBRY。</string>
+    <string name="welcome_to_lbry">歡迎使用 LBRY。</string>
     <string name="welcome_paragraph">LBRY 是一個由社群主導的內容平台，你能夠找到和發佈影片、音樂、書籍及更多內容。</string>
     <string name="welcome_tos">在繼續的同時，我已同意 &lt;a href=\"https://lbry.com/termsofservice\"&gt;服務條款&lt;/a&gt; 並確保自己已年滿十三歲或以上。</string>
     <string name="welcome_please_wait">在準備就緒前請稍候片刻……</string>
-    <string name="use_lbry">使用LBRY »</string>
+    <string name="use_lbry">使用 LBRY »</string>
 
     <!-- URI bar -->
     <string name="uri_placeholder">搜尋影片、音樂以及更多</string>
@@ -67,17 +68,20 @@
     <string name="view">檢視</string>
     <string name="play">播放</string>
     <string name="unsupported_content">不支援的內容</string>
+    <string name="unsupported_content_desc">對不起，這內容未能在本程式播放。你可以在下載資料夾 %1$s 內找到該檔案。</string>
     <string name="nothing_at_this_location">此位置沒有任何內容。</string>
     <string name="publish_something_here">在這發佈任何內容</string>
     <string name="cannot_view_claim">現在無法存取該內容，請稍後再試。</string>
     <string name="zero_duration">0:00</string>
-    <string name="claim_file_not_found">位於 \"%1$s\" 的檔案不存在。</string>
+    <string name="claim_file_not_found">位於「%1$s」的檔案不存在。</string>
     <string name="confirm_purchase">確認購買</string>
     <string name="delete_file">刪除檔案</string>
     <string name="confirm_delete_file_message">你確定要移除裝置上的這個檔案嗎？</string>
     <string name="unable_to_view_url">載入 %1$s 失敗。請稍後再試。</string>
+    <string name="no_cast_session_available"> 目前不支援cast session。</string>
     <string name="delete_content">刪除內容？</string>
     <string name="confirm_delete_content_message">你確定要取消發佈這內容嗎？這不會移除裝置上的檔案。</string>
+    <string name="content_deleted">該內容已成功自區塊鏈移除。</string>
     <string name="content_failed_delete">現在未能刪除指定內容。請稍後再試。</string>
     <string name="comment">留言</string>
     <string name="comment_as">用以下身分留言：</string>
@@ -91,7 +95,16 @@
         <item quantity="other">觀看次數：%1$s</item>
     </plurals>
     <plurals name="confirm_purchase_message">
-        <item quantity="other">This will purchase \"%1$s\" for %2$s credits</item>
+        <item quantity="other">你將以 %2$s 信用額購買「%1$s」</item>
+    </plurals>
+    <plurals name="post_and_tip">
+        <item quantity="other">發表並給予 %1$s 信用額的小費？</item>
+    </plurals>
+    <plurals name="post_for_credits">
+        <item quantity="other">用 %1$s 信用額發表</item>
+    </plurals>
+    <plurals name="confirm_post_comment">
+        <item quantity="other">你將於 %2$s 發表並給予 %1$s 信用額的小費</item>
     </plurals>
 
     <!-- Channel view -->
@@ -99,6 +112,8 @@
     <string name="content">內容</string>
     <string name="website">網站</string>
     <string name="reposted">已轉載</string>
+    <string name="receive_all_notifications">你會收到所有通知。</string>
+    <string name="receive_no_notifications">你不會收到來自這頻道的通知。</string>
     <plurals name="follower_count">
         <item quantity="other">%1$s 位跟隨者</item>
     </plurals>
@@ -127,12 +142,15 @@
     <string name="show_extra_fields">顯示額外選項</string>
     <string name="hide_extra_fields">隱藏額外選項</string>
     <string name="no_file_found">找不到可以發佈的檔案。</string>
+    <string name="publish_invalid_claim_type">無效的認領位址編輯。</string>
     <string name="video_optimization">影片最佳化</string>
-    <string name="thumbnail_creation_failed">縮圖不能由你的內容檔案自動產生。</string>
+    <string name="thumbnail_creation_failed">縮圖未能由你的內容檔案自動產生。</string>
     <string name="video_being_optimized">你的影片正在進行最佳化處理以支援各種裝置。在等候的同時你可以填寫以下欄位。</string>
+    <string name="video_optimized">你的影片已完成最佳化處理，以盡可能地在各種裝置播放。請繼續發佈你的內容。</string>
     <string name="video_optimize_failed">你的影片未能最佳化。檔案將會上傳無變更版本。</string>
     <string name="completed_video_duration">已完成片長：%1$s</string>
     <string name="sdk_initializing_publish">你目前還不能發佈內容，因為背景程式仍在初始化。</string>
+    <string name="publish_successful">你的內容已發佈成功。不過可能需要等一會才出現於區塊鏈上。</string>
     <string name="transcode_in_progress">影片正在進行最佳化。如你想取消，請按頁底的取消按鈕。</string>
     <string name="optimization_in_progress">影片最佳化進行中。</string>
     <string name="cannot_capture_video">這裝置上沒有可錄影的相機應用程式。</string>
@@ -141,6 +159,7 @@
     <string name="please_provide_title">請提供標題。</string>
     <string name="please_specify_address">請指定網址好令他人找到你的內容。</string>
     <string name="address_invalid_characters">你的內容網址內含無效字元。</string>
+    <string name="address_already_used">你已在指定網址發佈內容。請輸入新網址。</string>
     <string name="no_file_selected">沒有選擇任何檔案。在發佈前請先拍照或選擇影音檔案。</string>
     <string name="price_amount_not_set">請輪入價錢或關閉選項以設為免費內容。</string>
     <string name="publish_no_thumbnail">發佈前請先選擇想上傳的縮圖。</string>
@@ -178,14 +197,14 @@
     <string name="public_domain">公有領域</string>
     <string name="copyrighted">受著作權保護</string>
     <string name="cca_4_0_international">創用 CC 授權 姓名標示 4.0 國際</string>
-    <string name="cca_sa_4_0_international">創用 CC 授權 姓名標示-—相同方式分享 4.0 國際</string>
+    <string name="cca_sa_4_0_international">創用 CC 授權 姓名標示—相同方式分享 4.0 國際</string>
     <string name="cca_nd_4_0_international">創用 CC 授權 姓名標示—禁止改作 4.0 國際</string>
     <string name="cca_nc_4_0_international">創用 CC 授權 姓名標示—非商業性 4.0 國際</string>
     <string name="cca_nc_sa_4_0_international">創用 CC 授權 姓名標示—非商業性—相同方式分享 4.0 國際</string>
     <string name="cca_nc_nd_4_0_international">創用 CC 授權 姓名標示—非商業性—禁止改作 4.0 國際</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>LBRY 信用額</item>
         <item>美元</item>
     </string-array>
 
@@ -202,41 +221,42 @@
     <string name="oops_something_went_wrong">哎喲！出錯了。</string>
     <string name="installation_id_loaded">載入裝置識別碼</string>
     <string name="known_tags_loaded">載入已知及跟隨中的標籤</string>
-    <string name="exchange_rate_loaded">載入LBC兌美元匯率</string>
+    <string name="exchange_rate_loaded">載入 LBRY 信用額兌美元匯率</string>
     <string name="user_authenticated">驗證用戶</string>
     <string name="installation_registered">登錄裝置</string>
     <string name="subscriptions_loaded">載入訂閱</string>
     <string name="subscriptions_resolved">顯示訂閱</string>
-
     <!-- Settings -->
     <string name="user_interface">內容及使用者界面</string>
     <string name="other">其他</string>
     <string name="enable_background_playback">允許背景播放</string>
-    <string name="enable_dark_mode">使用灰暗主題</string>
+    <string name="enable_dark_mode">使用深色主題</string>
     <string name="show_mature_content">顯示成人內容</string>
     <string name="show_url_suggestions">顯示建議網址</string>
     <string name="notifications">通知</string>
     <string name="subscriptions">訂閱</string>
     <string name="content_interests">感興趣的內容</string>
+    <string name="mini_player_bottom_spacing">迷你影片播放器的底部間距</string>
 
     <string name="keep_sdk_in_background">將 LBRY 維持背景執行狀態以改善錢包及網路效能。</string>
     <string name="participate_in_data_network">參與數據網路（需重啟程式及背景服務）</string>
+    <string name="send_buffering_events">發送緩衝事件到 LBRY 伺服器</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s — 搜尋</string>
     <string name="tag_url_title">%1$s — 標籤</string>
-    <string name="search_url_desc">搜尋 \'%1$s\'</string>
-    <string name="explore_tag_url_desc">探索 \'%1$s\' 標籤</string>
+    <string name="search_url_desc">搜尋「%1$s」</string>
+    <string name="explore_tag_url_desc">探索「%1$s」標籤</string>
     <string name="view_file_url_desc">檢視 %1$s 的內容</string>
     <string name="view_channel_url_desc">檢視 %1$s 頻道</string>
 
     <!-- Search -->
-    <string name="search_no_results">沒有 \'%1$s\' 的搜尋結果。請嘗試其他關鍵字。</string>
+    <string name="search_no_results">沒有「%1$s」的搜尋結果。請嘗試其他關鍵字。</string>
     <string name="search_no_query">你可以搜尋電影、音樂、電子書、軟體以及更多。</string>
     <string name="no_related_content">目前沒有可顯示的相關內容。</string>
 
     <!-- Wallet -->
-    <string name="balance">結餘</string>
+    <string name="balance">餘額</string>
     <string name="you_currently_have">你目前有</string>
     <string name="convert_credits">你可以把信用額兌換為美元然後到交易所提取。&lt;a href=\"https://lbry.com/faq/exchanges\"&gt;了解更多&lt;/a&gt;。</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;在Bittrex上轉換美元&lt;/a&gt;</string>
@@ -269,8 +289,11 @@
     <string name="recent_transactions">最近交易</string>
     <string name="view_all">檢視全部</string>
     <string name="receive">獲得</string>
+    <string name="spend">花費</string>
     <string name="publish">發佈</string>
+    <string name="unpublish">未發佈</string>
     <string name="support">支持</string>
+    <string name="abandon">捨棄</string>
     <string name="channel">頻道</string>
     <string name="channel_update">頻道更新</string>
     <string name="publish_update">發佈更新</string>
@@ -279,12 +302,12 @@
     <string name="sync_status">同步狀態</string>
     <string name="on">開啟</string>
     <string name="off">關閉</string>
-    <string name="email">電郵地址</string>
-    <string name="no_connected_email">沒有已連結的電郵地址</string>
+    <string name="email">電子郵件地址</string>
+    <string name="no_connected_email">沒有已連結的電子郵件地址</string>
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;手動備份&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;同步常見問題&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
+    <string name="lbc">信用額</string>
 
     <string name="account_recommended">推薦使用帳號</string>
     <string name="wallet_account_desc">lbry.tv 的帳號可以令你獲得獎賞、備份你的錢包，以及所有事物保持同步。</string>
@@ -300,7 +323,7 @@
     <string name="loading_transactions">正在載入交易……</string>
     <string name="no_recent_transactions">沒有可顯示的最近交易。</string>
     <string name="no_transactions">目前沒有可顯示的交易。</string>
-    <string name="tx_list_fee">費用 %1$s</string>
+    <string name="tx_list_fee">手續費 %1$s</string>
     <string name="transaction_history">交易記錄</string>
 
     <string name="unlock">解鎖</string>
@@ -308,7 +331,10 @@
     <string name="confirm_unlock_tips">你確定要解鎖所有小費嗎？</string>
     <string name="min_spend_required"> 信用額的價位請輸入高於 0.0001。</string>
 
-    <string name="buy_lbc">購買 LBC</string>
+    <string name="buy_lbc">購買 LBRY 信用額</string>
+    <string name="hash_not_supported">你的裝置並未符合執行加密購買請求的最低配備需求。</string>
+    <string name="receive_address_not_set">你沒有設定錢包位址。請建立新位址之後再次嘗試。</string>
+
     <plurals name="you_sent_credits">
         <item quantity="other">你已發送 %1$s 信用額</item>
     </plurals>
@@ -316,6 +342,7 @@
     <!-- Dialogs -->
     <string name="customize_your_tags">整理你的標籤</string>
     <string name="sort_content_by">內容分類</string>
+    <string name="content_from">內容來自</string>
     <string name="trending_content">發燒內容</string>
     <string name="new_content">最新內容</string>
     <string name="top_content">最受歡迎內容</string>
@@ -327,59 +354,83 @@
     <string name="past_month">過去一個月</string>
     <string name="past_year">過去一年</string>
     <string name="all_time">不限時間</string>
+    <string name="from">來自</string>
     <string name="for_text">範圍</string>
     <string name="filter_for">篩選器範圍</string>
     <string name="everyone">所有人</string>
     <string name="tags_you_follow">跟隨中的標籤</string>
+    <string name="customize">自訂</string>
+    <string name="not_yet_implemented">暫時未能提供選擇的項目。</string>
     <string name="customize_tags_hint">你好像沒有設定跟隨中標籤的樣子。</string>
     <string name="search_for_more_tags">搜尋更多標籤</string>
     <string name="no_followed_tags">你目前沒有跟隨任何標籤。現在開始新增你感興趣的標籤吧！</string>
     <string name="no_tag_results">我們找不到你未跟隨的新標籤。</string>
-    <string name="tag_already_added">已新增 \'%1$s\' 標籤。</string>
+    <string name="tag_already_added">已新增「%1$s」標籤。</string>
     <string name="tag_limit_reached">可用的標籤上限是五個。</string>
     <string name="send_a_tip">發送小費</string>
     <string name="send_a_tip_to">發送小費給 %1$s</string>
     <string name="support_this_content">支持這內容</string>
+    <string name="support_info">這將會提升內容的綜合出價價位，在有效期內能作出加成從而提升內容被發現的機會。&lt;a href=\"https://lbry.com/faq/tipping\"&gt;了解更多&lt;/a&gt;。</string>
+    <string name="channel_to_show_support_as">用以下頻道名義支持</string>
     <string name="make_this_a_tip">這是小費</string>
     <string name="send_revocable_support">發送可收回的支持</string>
-    <string name="send_lbc_tip">發送 %1$s LBC 小費</string>
+    <string name="send_lbc_tip">發送 %1$s 小費</string>
+    <plurals name="send_lbc_tip">
+        <item quantity="other">發送  %1$s 信用額的小費</item>
+    </plurals>
+    <string name="send_tip_info_content">這將會於 %1$s 顯示為小費，在有效期內能作出加成從而提升內容被發現的機會。&lt;a href=\"https://lbry.com/faq/tipping\"&gt;了解更多&lt;/a&gt;。</string>
+    <string name="send_tip_info_channel">這將會於 %1$s 顯示為小費，在有效期內能作出加成從而提升頻道被發現的機會。&lt;a href=\"https://lbry.com/faq/tipping\"&gt;了解更多&lt;/a&gt;。</string>
     <string name="cancel">取消</string>
     <string name="repost_title">轉載 %1$s</string>
     <string name="repost_your_favorite">轉載你喜歡的內容從而令更多人發現它們吧！</string>
+    <string name="channel_to_post_on">發表到以下頻道</string>
     <string name="show_advanced">顯示進階</string>
     <string name="hide_advanced">隱藏進階</string>
     <string name="name">名稱</string>
     <string name="min_deposit">0.001</string>
     <string name="content_successfully_reposted">內容成功轉載！</string>
     <string name="repost_name_invalid_characters">轉載名稱內含無效字元。</string>
+    <plurals name="you_sent_a_tip">
+        <item quantity="other">你發送了 %1$s 信用額作為小費，感恩！</item>
+    </plurals>
     <plurals name="you_sent_a_support">
         <item quantity="other">累計用作支持其他內容的信用額有 %1$s。這些金額是可以隨時撤回的。</item>
     </plurals>
 
     <!-- Verification -->
-    <string name="provide_email_address">請填寫電郵地址。</string>
+    <string name="provide_email_address">請填寫電子郵件地址。</string>
     <string name="email_placeholder">you@example.com</string>
     <string name="email_sent_to">電子郵件已發送到：</string>
     <string name="please_click_link">請點擊訊息內的連結以完成登入手續。</string>
     <string name="resend">重新發送</string>
     <string name="continue_text">繼續</string>
-    <string name="provide_valid_email">請填寫有效的電郵地址</string>
+    <string name="provide_valid_email">請填寫有效的電子郵件地址</string>
+    <string name="please_follow_instructions">請遵照已寄出電子郵件內的指示以繼續。</string>
     <string name="sign_in_successful">你已成功登入 lbry.tv</string>
     <string name="retrieving_account_information">帳號資料檢索中……</string>
     <string name="apply_wallet_data">正在請求錢包數據……</string>
+    <string name="please_enter_your_password">請輸入你的錢包密碼。</string>
+    <string name="please_enter_a_password">請輸入密碼以加密你的錢包。</string>
+    <string name="wallet_security_purposes">註：基由於錢包保安理由，LBRY 無法重置你的密碼。</string>
     <string name="password">密碼</string>
-    <string name="enable_sync">開啟同步</string>
+    <string name="enable_sync">允許同步</string>
+    <string name="wallet_sync_op_failed">錢包的同步操作目前無法完成。請稍後再次嘗試。如此問題持續發生，請發送電子郵件至 hello@lbry.com。</string>
     <string name="phone_number">手機號碼</string>
     <string name="enter_phone_number">請輸入你的手機號碼。</string>
     <string name="not_interested">不感興趣</string>
     <string name="manual_reward_verification">手動認證獎賞</string>
     <string name="reward_verification">認證獎賞</string>
     <string name="social_media_verification">社交網路認證</string>
-    <string name="skip_the_queue">跳過等待</string>
-    <string name="account_undergo_review">這帳號必須通過手動批核才能參與獎賞計劃。\n這可能需時數分鐘至數天不等。</string>
+    <string name="skip_the_queue">跳過輪候</string>
+    <string name="skip_queue_button_text">花費 $%1$s 跳過</string>
+    <string name="account_undergo_review">這帳號必須通過手動批核才能參與獎賞計畫。\n這可能需時數分鐘至數天不等。</string>
+    <string name="get_instantly_verified">你可以用自己的 Twitter 帳號來立即認證參與獎賞計畫，或跳過手動認證的輪候隊伍。</string>
     <string name="twitter_verification">Twitter 認證</string>
+    <string name="twitter_verification_desc">使用你的 Twitter 帳號以立即認證吧。你在 Twitter 上用的電子郵件地址必須與你提供的電郵地址相同，另外你的帳號必須活躍。</string>
     <string name="twitter_verify">使用 Twitter 認證</string>
-    <string name="skip_queue_verification">跳過等待</string>
+    <string name="skip_queue_verification">跳過輪候</string>
+    <string name="skip_queue_verification_desc">付出手續費跳過手動認證的輪候隊伍以立即參與獎賞計畫。</string>
+    <string name="request_to_be_verified">請在&lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY 的 Discord伺服器&lt;/a&gt;.提出認證申請。手動批核需時數分鐘到數天不等。</string>
     <string name="enjoy_free_content">在等候的同時請享受免費的內容！</string>
     <string name="verify_phone_number">使用手機號碼認證</string>
     <string name="enter_phone_verify_code">請輸入發送到 %1$s 的認證碼</string>
@@ -387,10 +438,13 @@
     <string name="verify">認證</string>
     <string name="please_enter_valid_phone">請輸入有效的手機號碼。</string>
     <string name="please_enter_verification_code">請輸入發送到你手機號碼的認證碼。</string>
+    <string name="fetch_current_user_error">目前未能恢復使用者帳號。請稍後再試。</string>
+    <string name="purchase_request_pending">你的購買請求仍在處理中。請發送電子郵件至 support@lbry.com。</string>
+    <string name="purchase_request_failed_error">你的購買請求目前無法完成。請發送電子郵件至  support@lbry.com。</string>
     <string name="twitter_account_ineligible">你的 Twitter 帳號目前不符合資格：%1$s</string>
-    <string name="twitter_verification_not_approved">你的帳號未能通過獎賞認證。請稍後再試。</string>
+    <string name="twitter_verification_not_approved">你的帳號未能通過獎賞認證計畫。請稍後再試。</string>
     <string name="twitter_verification_failed">Twitter 認證失敗。請稍後再試。</string>
-    <string name="reward_verification_successful">你現在已有資格參與獎賞計劃！</string>
+    <string name="reward_verification_successful">你現在已有資格參與獎賞計畫！</string>
 
     <!-- Forms -->
     <string name="no_added_tags">你目前沒有跟隨任何標籤。新增標籤以改善發掘功能。</string>
@@ -407,6 +461,7 @@
     <string name="channel_deleted">頻道已成功刪除。</string>
     <string name="channel_failed_delete">現在未能刪除指定頻道。請稍後再試。</string>
     <string name="description">說明</string>
+    <string name="follow">跟隨</string>
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="show_optional_fields">顯示選填項目</string>
@@ -416,19 +471,24 @@
     <string name="title">標題</string>
     <string name="at">\@</string>
     <string name="deposit">押金</string>
-    <string name="deposit_remains_yours">這些 LBC 仍是屬於你的。這只是用來保留名稱用的押金，可以隨時領回。</string>
+    <string name="deposit_remains_yours">這些信用額仍是屬於你的。這只是用來保留名稱用的押金，可以隨時領回。</string>
     <string name="storage_permission_rationale_download">LBRY 需要授予相機權限才能下載內容到你的裝置上。</string>
     <string name="storage_permission_rationale_images">LBRY 需要授予相機權限才能載入你裝置上的圖像。</string>
     <string name="select_thumbnail">選擇縮圖</string>
     <string name="select_cover">選擇封面圖</string>
+    <string name="undetermined_image_filepath">檔案路徑未能確定指定圖像。請選擇位於其他路徑的圖像。</string>
     <string name="wait_for_upload">檔案上傳完成前請稍候。</string>
     <string name="image_upload_failed">上傳圖像請求失敗。請再次嘗試。</string>
     <string name="uploading">上傳中……</string>
+    <string name="uploading_thumbnail">上傳縮圖中……</string>
     <string name="please_enter_channel_name">請輸入頻道名稱。</string>
     <string name="channel_name_invalid_characters">你的頻道名稱內含無效字元。</string>
+    <string name="channel_name_already_created">你已建立名稱相同的頻道。</string>
     <string name="please_enter_valid_deposit">請填寫有效的押金面額。</string>
-    <string name="deposit_more_than_balance">押金不能高於你的結餘。</string>
+    <string name="deposit_more_than_balance">押金不能高於你的餘額。</string>
     <string name="channel_save_failed">頻道儲存請求失敗。請再次嘗試。</string>
+    <string name="channel_save_successful">頻道儲存成功。</string>
+    <string name="item_pending_blockchain">該認領位址目前輪候發佈於區塊鏈中。想要存取或編輯的話需要等待數分鐘。</string>
     <string name="pending">待定</string>
     <string name="create">建立</string>
     <string name="one_or_more_channels_failed_abandon">現在未能刪除部分或指定頻道。請稍後再試。</string>
@@ -444,7 +504,7 @@
 
     <!-- Rewards -->
     <string name="lbry_credits_allow">你可以用 LBRY 信用額發佈或購買內容。</string>
-    <string name="free_credits_worth">當你提供電郵地址後可以獲取價值約 $%1$s 美元的免費信用額。</string>
+    <string name="free_credits_worth">當你提供電子郵件地址後可以獲取價值約 $%1$s 美元的免費信用額。</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;了解更多&lt;/a&gt;。</string>
     <string name="get_started">開始使用</string>
     <string name="reward_code_placeholder">abc123</string>
@@ -452,6 +512,7 @@
     <string name="please_enter_claim_code">請輸入優惠碼以領取獎賞。</string>
     <string name="unclaimed">未領取</string>
     <string name="custom_reward_title">特製優惠碼</string>
+    <string name="up_to">高達</string>
     <string name="custom_reward_description">你是收到特製優惠碼的超級名模或搖滾巨星嗎？在這邊領取獎賞吧！</string>
     <plurals name="claim_reward_message">
         <item quantity="other">你已領取 %1$s 信用額作為獎賞。</item>
@@ -464,6 +525,8 @@
     <string name="publishing_requires_credits">發佈內容需要押金。</string>
     <string name="channel_creation_requires_credits">建立頻道需要押金。</string>
     <string name="earn_rewards_for_inviting">邀請朋友以獲得獎賞。</string>
+    <string name="earn_some_credits_to_access">獲取信用額以存取這內容吧。</string>
+    <string name="tap_here_to_get_some">點擊這裡以獲取一些吧，免費的喔。</string>
     <string name="free_credits_available">在獎賞中有可用的免費信用額。</string>
     <plurals name="wallet_signed_in_free_credits">
         <item quantity="other">在獎賞中有 %1$s 可用的免費信用額。</item>
@@ -473,15 +536,15 @@
     </plurals>
 
     <!-- Invites -->
-    <string name="lbry_invite_program">LBRY邀請計劃</string>
+    <string name="lbry_invite_program">LBRY 邀請計畫</string>
     <string name="earn_extra_credits_invites">當你邀請每一位朋友使用 LBRY 都可以獲得獎賞。</string>
     <string name="invites_learn_more">&lt;a href=\"https://lbry.com/faq/invites\"&gt;了解更多&lt;/a&gt;。</string>
     <string name="invite_link">邀請連結</string>
     <string name="share_this_link">把這連結分享給朋友（或死對頭）然後當他們加入 lbry.tv 時即可獲取 LBC。</string>
     <string name="your_invite_link">邀請連結</string>
     <string name="customize_invite_link">自訂邀請連結</string>
-    <string name="invite_by_email">經電郵邀請</string>
-    <string name="invite_someone">用電郵邀請你認識的人然後然後當他們加入 lbry.tv 時即可獲取 LBC。</string>
+    <string name="invite_by_email">經電子郵件邀請</string>
+    <string name="invite_someone">用電子郵件邀請你認識的人然後然後當他們加入 lbry.tv 時即可獲取 LBC。</string>
     <string name="invite_email_placeholder">imaginary@friend.com</string>
     <string name="invite">邀請</string>
     <string name="invite_history">邀請記錄</string>
@@ -523,7 +586,7 @@
     <string name="get_social">社交網路</string>
     <string name="social_paragraph">你可以在 Discord、Facebook、Instagram、Twitter 或 Reddit 上與 LBRY 團隊及社群互動。</string>
     <string name="app_info">程式資訊</string>
-    <string name="loading">載入中...…</string>
+    <string name="loading">載入中……</string>
     <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;甚麼是LBRY？&lt;/a&gt;</string>
     <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android 基礎介紹&lt;/a&gt;</string>
     <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;常見問題&lt;/a&gt;</string>
@@ -541,7 +604,15 @@
     <string name="firebase_token">Firebase 憑證</string>
     <string name="logs">紀錄</string>
     <string name="send_log">發送紀錄</string>
-    <string name="connected_email">已連結的電郵地址</string>
+    <string name="connected_email">已連結的電子郵件地址</string>
     <string name="unknown">不明</string>
     <string name="cannot_find_lbrynet_log">找不到 lbrynet.log 檔案。</string>
+    <string name="cannot_share_lbrynet_log">基於許可限制，lbrynet.log 檔案無法分享。</string>
+
+    <!-- Notifications -->
+    <string name="no_notifications">這邊很靜呢！當你收到新通知時將會顯示。</string>
+    <plurals name="confirm_delete_notifications">
+        <item quantity="other">你確定要移除指定的通知嗎？</item>
+    </plurals>
+
     </resources>

@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.apache.commons.codec.binary.Hex;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,9 +37,6 @@ import org.json.JSONObject;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -796,17 +792,38 @@ public final class Helper {
         return id.toString();
     }
 
-    public static String SHA256(String value) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(value.getBytes(StandardCharsets.UTF_8));
+    public static List<Claim> filterClaimsByOutpoint(List<Claim> claims) {
+        List<Claim> filtered = new ArrayList<>();
+        for (Claim claim : claims) {
+            String outpoint = String.format("%s:%d", claim.getTxid(), claim.getNout());
+            if (Lbryio.blockedOutpoints.contains(outpoint) || Lbryio.filteredOutpoints.contains(outpoint)) {
+                continue;
+            }
 
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1)
-                return Hex.encodeHexString(hash, true);
-            else
-                return new String(Hex.encodeHex(hash)).toLowerCase();
-        } catch (NoSuchAlgorithmException ex) {
-            return null;
+            if (claim.getSigningChannel() != null) {
+                Claim signingChannel = claim.getSigningChannel();
+                String channelOutpoint = String.format("%s:%d", signingChannel.getTxid(), signingChannel.getNout());
+                if (Lbryio.blockedOutpoints.contains(channelOutpoint) || Lbryio.filteredOutpoints.contains(channelOutpoint)) {
+                    continue;
+                }
+            }
+
+            filtered.add(claim);
         }
+
+        return filtered;
+    }
+
+    public static boolean isClaimBlocked(Claim claim) {
+        if (claim.getSigningChannel() != null) {
+            Claim signingChannel = claim.getSigningChannel();
+            String channelOutpoint = String.format("%s:%d", signingChannel.getTxid(), signingChannel.getNout());
+            if (Lbryio.blockedOutpoints.contains(channelOutpoint)) {
+                return true;
+            }
+        }
+
+        String outpoint = String.format("%s:%d", claim.getTxid(), claim.getNout());
+        return Lbryio.blockedOutpoints.contains(outpoint);
     }
 }

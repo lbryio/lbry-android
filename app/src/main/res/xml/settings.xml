@@ -11,6 +11,11 @@
             app:title="@string/enable_background_playback"
             app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
+            app:key="io.lbry.browser.preference.userinterface.MediaAutoplay"
+            app:defaultValue="true"
+            app:title="@string/enable_autoplay"
+            app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
             app:key="io.lbry.browser.preference.userinterface.DarkMode"
             app:title="@string/enable_dark_mode"
             app:iconSpaceReserved="false" />

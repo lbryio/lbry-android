@@ -20,6 +20,7 @@
     <string name="settings">Tetapan</string>
     <string name="about">Perihal</string>
     <string name="sign_in">Masuk</string>
+    <string name="shuffle">Rombak</string>
     <string name="startup_failed">Aplikasi gagal dimulakan. Periksa sambungan data anda dan cuba lagi. Sekiranya masalah ini berlanjutan, hantarkan e-mel ke hello@lbry.com</string>
     <string name="no_claim_search_content">Tiada kandungan untuk dipaparkan pada masa ini. Halusi pilihan anda atau periksa semula kemudian.</string>
 
@@ -27,7 +28,7 @@
     <string name="welcome_to_lbry">Selamat datang ke LBRY.</string>
     <string name="welcome_paragraph">LBRY adalah platform yang kandungannya dikendalikan oleh komuniti di mana anda boleh mencari dan menerbitkan video, muzik, buku, dan banyak lagi.</string>
     <string name="welcome_tos">Dengan meneruskan, saya bersetuju dengan &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; dan mengesahkan saya berusia di atas 13 tahun.</string>
-    <string name="welcome_please_wait">Sila tunggu sementara kami menyiapkan beberapa perkara ...</string>
+    <string name="welcome_please_wait">Sila tunggu sementara kami menyiapkan beberapa perkara...</string>
     <string name="use_lbry">Gunakan LBRY »</string>
 
     <!-- URI bar -->
@@ -90,6 +91,12 @@
     <string name="please_select_repost_channel">Sila pilih saluran sebagai sumber repost</string>
     <string name="reply">Balas</string>
     <string name="replying_to">Balas kepada %1$s</string>
+    <plurals name="view_count">
+        <item quantity="other">%1$s tontonan</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="other">Ini akan membeli \"%1$s\" untuk %2$s kredit.</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="other">Hantar tip sebanyak %1$s?</item>
     </plurals>
@@ -99,12 +106,6 @@
     <plurals name="confirm_post_comment">
         <item quantity="other">Komen anda dengan tip %1$s kredit akan dihantar dengan %2$s kredit.</item>
     </plurals>
-    <plurals name="view_count">
-        <item quantity="other">%1$s tontonan</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="other">Ini akan membeli \"%1$s\" untuk %2$s kredit.</item>
-    </plurals>
 
     <!-- Channel view -->
     <string name="no_channel_info">Belum ada apa-apa di sini.
@@ -112,6 +113,8 @@ Sila kembali sebentar lagi.</string>
     <string name="content">Kandungan</string>
     <string name="website">Laman-web</string>
     <string name="reposted">telah disiar-semula</string>
+    <string name="receive_all_notifications">Anda akan menerima semua notifikasi</string>
+    <string name="receive_no_notifications">Anda tidak akan menerima notifikasi untuk saluran ini</string>
     <plurals name="follower_count">
         <item quantity="other">%1$s pengikut</item>
     </plurals>
@@ -202,7 +205,7 @@ Sila kembali sebentar lagi.</string>
     <string name="cca_nc_nd_4_0_international">Creative Commons Atribusi-BukanKomersial-TiadaTerbitan 4.0 Antarabangsa</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>Kredit LBRY</item>
         <item>USD</item>
     </string-array>
 
@@ -219,12 +222,11 @@ Sila kembali sebentar lagi.</string>
     <string name="oops_something_went_wrong">Alamak! Ada sesuate yang tak kena.</string>
     <string name="installation_id_loaded">ID pemasangan telah dimuatkan.</string>
     <string name="known_tags_loaded">Lokal and tag yang diikuti telah dimuatkan.</string>
-    <string name="exchange_rate_loaded">Kadar pertukaran LBC/USD telah dimuatkan.</string>
+    <string name="exchange_rate_loaded">Kadar pertukaran Kredit LBRY/USD telah dimuatkan.</string>
     <string name="user_authenticated">Pengguna telah disahkan.</string>
     <string name="installation_registered">Pemasangan telah didaftarkan.</string>
     <string name="subscriptions_loaded">Langgannan the dimuatkan.</string>
     <string name="subscriptions_resolved">Langgangan telah diselesaikan.</string>
-
     <!-- Settings -->
     <string name="user_interface">Kandungan &amp; Antaramuka Pengguna</string>
     <string name="other">Lain-lain</string>
@@ -235,9 +237,11 @@ Sila kembali sebentar lagi.</string>
     <string name="notifications">Notifikasi</string>
     <string name="subscriptions">Langganan</string>
     <string name="content_interests">Minat Kandungan</string>
+    <string name="mini_player_bottom_spacing">Jarak bawah pemain mini</string>
 
     <string name="keep_sdk_in_background">Biarkan servis LBRY beroperasi di later belakang untuk prestasi dompet dan rangkaian yang lebih baik.</string>
     <string name="participate_in_data_network">Ikut serta dalam rangkaian data (perkhidmatan aplikasi dan latar belakang perlu dimulakan semula)</string>
+    <string name="send_buffering_events">Hantar acara penyangga ke server LBRY</string>
 
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Carian</string>
@@ -288,6 +292,7 @@ Sila kembali sebentar lagi.</string>
     <string name="receive">Terima</string>
     <string name="spend">Berbelanja</string>
     <string name="publish">Terbitkan</string>
+    <string name="unpublish">Nyah-terbitkan</string>
     <string name="support">Sokong</string>
     <string name="abandon">Abaikan</string>
     <string name="channel">Saluran</string>
@@ -303,7 +308,7 @@ Sila kembali sebentar lagi.</string>
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Sandaran manual&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Soalan Lazim Penyegerakan&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
+    <string name="lbc">Kredit</string>
 
     <string name="account_recommended">Akaun Disyorkan</string>
     <string name="wallet_account_desc">Akaun lbry.tv membolehkan anda memperoleh ganjaran, membuat sandaran dompet, dan memastikan semuanya selaras.</string>
@@ -327,7 +332,7 @@ Sila kembali sebentar lagi.</string>
     <string name="confirm_unlock_tips">Adakah anda pasti ingin membuka semua tip anda?</string>
     <string name="min_spend_required">Sila masukan jumlah yang lebih besar daripada 0.0001 kredit.</string>
 
-    <string name="buy_lbc">Beli LBC</string>
+    <string name="buy_lbc">Beli Kredit LBRY</string>
     <string name="hash_not_supported">Peranti anda tidak menyokong syarat minimum untuk pembelian anda.</string>
     <string name="receive_address_not_set">Tiada alamat dompet dijumpai. Sila cipta alamat baru dan cuba lagi.</string>
 
@@ -370,7 +375,10 @@ Sila kembali sebentar lagi.</string>
     <string name="channel_to_show_support_as">Saluran sebagai sumber sokongan</string>
     <string name="make_this_a_tip">Jadikan ia sebagai tip</string>
     <string name="send_revocable_support">Hantar Sokongan Yang Boleh Dibatalkan</string>
-    <string name="send_lbc_tip">Hantar tip sebanyak %1$s LBC</string>
+    <string name="send_lbc_tip">Tip %1$s</string>
+    <plurals name="send_lbc_tip">
+        <item quantity="other">Tip %1$s Kredit</item>
+    </plurals>
     <string name="send_tip_info_content">Ini akan muncul sebagai tip untuk %1$s. Ia yang akan meningkatkan kemampuannya untuk dijumpai ketika aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Ini akan muncul sebagai tip untuk %1$s. Ia yang akan meningkatkan kemampuan saluran untuk ditemui semasa aktif. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Batalkan</string>
@@ -401,7 +409,7 @@ Sila kembali sebentar lagi.</string>
     <string name="please_follow_instructions">Ikuti arahan dalam e-mel yang dihantar ke alamat anda untuk mara.</string>
     <string name="sign_in_successful">Anda berjaya log masuk ke lbry.tv</string>
     <string name="retrieving_account_information">Sedang mendapatkan maklumat akaun ...</string>
-    <string name="apply_wallet_data">Menggunakan data dompet ...</string>
+    <string name="apply_wallet_data">Sedang menggunakan data dompet...</string>
     <string name="please_enter_your_password">Sila masukkan kata laluan yang anda gunakan untuk melindungi dompet anda.</string>
     <string name="please_enter_a_password">Sila masukkan kata laluan untuk melindungi dompet anda.</string>
     <string name="wallet_security_purposes">Catatan: untuk tujuan keselamatan dompet, LBRY tidak dapat menetapkan semula kata laluan anda.</string>
@@ -412,7 +420,18 @@ Sila kembali sebentar lagi.</string>
     <string name="enter_phone_number">Sila masukkan nombor telefon anda.</string>
     <string name="not_interested">Tidak berminat</string>
     <string name="manual_reward_verification">Pengesahan Ganjaran Secara Manual</string>
+    <string name="reward_verification">Pengesahkan Ganjaran</string>
+    <string name="social_media_verification">Pengesahkan Sosial Media</string>
+    <string name="skip_the_queue">Langkau Barisan</string>
+    <string name="skip_queue_button_text">Langkau for $%1$s</string>
     <string name="account_undergo_review">Akaun ini mesti menjalani semakan sebelum anda dapat mengambil bahagian dalam program ganjaran. Ini boleh mengambil masa dari beberapa minit ke beberapa hari.</string>
+    <string name="get_instantly_verified">Anda boleh disahkan serta-merta untuk menyertai program ganjaran dengan akaun Twitter anda.</string>
+    <string name="twitter_verification">Pengesahan Twitter</string>
+    <string name="twitter_verification_desc">Dapatkan pengesahan serta-merta dengan akaun Twitter anda. Alamat e-mel Twitter anda mesti sepadan dengan e-mel yang anda berikan dan akaun anda harus aktif.</string>
+    <string name="twitter_verify">Kesahkan dengan Twitter</string>
+    <string name="skip_queue_verification">Langkau Barisan</string>
+    <string name="skip_queue_verification_desc">Langkau pengesahan manual dengan membayar yuran untuk menyertai program ganjaran dengan segera.</string>
+    <string name="request_to_be_verified">Sila hantarkan permohonan untuk dikesah ke &lt;a href=\"https://discordapp.com/invite/Z3bERWA\"&gt;LBRY Discord server&lt;/a&gt;. Permohonan boleh mengambil masa sehingga beberapa hari.</string>
     <string name="enjoy_free_content">Nikmati lah kandungan percuma sementara ini!</string>
     <string name="verify_phone_number">Sahkan Nombor Telefon</string>
     <string name="enter_phone_verify_code">Masukkan kod pengesahan yang dihantar ke %1$s</string>
@@ -421,6 +440,13 @@ Sila kembali sebentar lagi.</string>
     <string name="please_enter_valid_phone">Sila masukkan nombor telefon yang sah.</string>
     <string name="please_enter_verification_code">Masukkan kod pengesahan yang dihantar ke nombor telefon anda.</string>
     <string name="fetch_current_user_error">Akaun pengguna tidak dapat dimuat turun buat masa ini. Sila cuba sebentar lagi.</string>
+    <string name="purchase_request_pending">Pembelian anda masih diproses. Sila hantarkan e-mel ke support@lbry.com.</string>
+    <string name="purchase_request_failed_error">Pembelian anda tidak dapat diselesaikan pada masa ini. Sila hantarkan e-mel ke support@lbry.com.</string>
+    <string name="twitter_account_ineligible">Akaun Twitter anda tidak layak pada masa ini: %1$s</string>
+    <string name="twitter_verification_not_approved">Akaun anda tidak diluluskan untuk program ganjaran.</string>
+    <string name="twitter_verification_failed">Pengesahan Twitter telah gagal. Sila cuba sebentar lagi.</string>
+    <string name="reward_verification_successful">Anda kini layak untuk menyertai program ganjaran!</string>
+
     <!-- Forms -->
     <string name="no_added_tags">Anda belum menambah sebarang tag. Tambahkan tag untuk meningkatkan penemuan.</string>
     <string name="form_no_tag_results">Kami tidak dapat menjumpai tag baru yang belum ditambahkan.</string>
@@ -436,6 +462,7 @@ Sila kembali sebentar lagi.</string>
     <string name="channel_deleted">Saluran tersebut telah berjaya dipadamkan.</string>
     <string name="channel_failed_delete">Saluran tidak dapat dipadamkan pada masa ini. Sila cuba sebentar lagi.</string>
     <string name="description">Deskripsi</string>
+    <string name="follow">Ikuti</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="show_optional_fields">Tunjukkan medan pilihan</string>
@@ -454,6 +481,7 @@ Sila kembali sebentar lagi.</string>
     <string name="wait_for_upload">Sila tunggu sehingga muat-naik semasa selesai.</string>
     <string name="image_upload_failed">Permintaan muat-naik gambar telah gagal. Sila cuba lagi.</string>
     <string name="uploading">Sedang muat-naik...</string>
+    <string name="uploading_thumbnail">Sedang memuat-naik thumbnail</string>
     <string name="please_enter_channel_name">Sila masukkan nama saluran.</string>
     <string name="channel_name_invalid_characters">Nama saluran anda mengandungi aksara (huruf) yang tidak sah.</string>
     <string name="channel_name_already_created">Anda sudah membina saluran dengan nama yang sama.</string>
@@ -581,5 +609,11 @@ Sila kembali sebentar lagi.</string>
     <string name="unknown">Tidak diketahui</string>
     <string name="cannot_find_lbrynet_log">Fail lbrynet.log tidak dapat dijumpai.</string>
     <string name="cannot_share_lbrynet_log">Fail lbrynet.log tidak dapat dikongsi kerana sekatan kebenaran.</string>
+
+    <!-- Notifications -->
+    <string name="no_notifications">Sunyi di sini! Notifikasi baru akan dipaparkan serta-merta apabila diterima.</string>
+    <plurals name="confirm_delete_notifications">
+        <item quantity="other">Adakah anda pasti ingin membuang notifikasi yang telah dipilih?</item>
+    </plurals>
 
     </resources>

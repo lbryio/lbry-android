@@ -20,6 +20,7 @@
     <string name="settings">Einstellungen</string>
     <string name="about">Über</string>
     <string name="sign_in">Anmelden</string>
+    <string name="shuffle">Zufällig</string>
     <string name="startup_failed">App-Start fehlgeschlagen. Bitte überprüfe Deine Datenverbindung und versuche es erneut. Wenn dieses Problem weiterhin bestehen sollte, sende bitte einen E-Mail an hello@lbry.com</string>
     <string name="no_claim_search_content">Derzeit sind keine Inhalte verfügbar. Bitte verfeinere Deine Auswahl oder versuche es später erneut.</string>
 
@@ -27,7 +28,6 @@
     <string name="welcome_to_lbry">Willkommen zu LBRY.</string>
     <string name="welcome_paragraph">LBRY ist eine von der Community kontrollierte Plattform, bei welcher Sie Videos, Musik, Bücher und weiteres finden und veröffentlichen kannst.</string>
     <string name="welcome_tos">Indem ich fortfahre, stimme ich den &lt;a href=\"https://lbry.com/termsofservice\"&gt;Terms of Service&lt;/a&gt; zu und bestätige, dass ich über 13 Jahre alt bin.</string>
-    <string name="welcome_please_wait">Bitte warte, während wir noch ein paar Sachen einrichten...</string>
     <string name="use_lbry">Verwende LBRY »</string>
 
     <!-- URI bar -->
@@ -39,7 +39,6 @@
     <string name="discover">Entdecke</string>
     <string name="lbry_works_better">LBRY funktioniert besser, wenn Sie mindestens 5 Erstellern folgen, die Sie mögen. Melden Sie sich an, um den Erstellern zu zeigen, denen Sie folgen, wenn Sie bereits ein Account haben.</string>
     <string name="select_five_subscriptions">Bitte wähle bis zu 5 Kanäle aus, um fortzufahren.</string>
-    <string name="n_remaining">%1$d verbleibend...</string>
     <string name="done">Fertig</string>
     <string name="all">Alle</string>
     <string name="discover_channels">Entdecke neue Kanäle</string>
@@ -90,6 +89,14 @@
     <string name="please_select_repost_channel">Bitte wählen Sie einen Kanal aus, auf dem Sie erneut posten möchten.</string>
     <string name="reply">Antworten</string>
     <string name="replying_to">Antworten auf %1$s</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$sAnsichten</item>
+        <item quantity="other">%1$sAnsichten</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Dies wird \"%1$s\" gegen %2$s Gutschrift kaufen</item>
+        <item quantity="other">Dies wird \"%1$s\" für %2$s Credits kaufen</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="one">Posten und %1$s Credits Trinkgeld geben?</item>
         <item quantity="other">Posten und %1$s Credits Trinkgeld geben?</item>
@@ -101,14 +108,6 @@
     <plurals name="confirm_post_comment">
         <item quantity="one">Dies wird Ihren Kommentar mit einem Tipp von %1$s Credits für %2$s posten</item>
         <item quantity="other">Dies wird Deinen Kommentar mit einem Trinkgeld von %1$s Credits für %2$s posten</item>
-    </plurals>
-    <plurals name="view_count">
-        <item quantity="one">%1$sAnsichten</item>
-        <item quantity="other">%1$sAnsichten</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="one">Dies wird \"%1$s\" gegen %2$s Gutschrift kaufen</item>
-        <item quantity="other">Dies wird \"%1$s\" für %2$s Credits kaufen</item>
     </plurals>
 
     <!-- Channel view -->
@@ -128,7 +127,6 @@ Bitte versuche es später erneut.</string>
     <string name="take_photo">Mach ein Foto</string>
     <string name="upload_file">Datei hochladen</string>
     <string name="no_videos_found">Wir konnten keine Videos auf Deinem Gerät finden. Mache ein Foto oder nimm ein Video auf, um loszulegen.</string>
-    <string name="loading_videos">Bitte warte während Deine Videos laden...</string>
     <string name="storage_permission_rationale_videos">LBRY benötigt Zugriff, um Deine Videos, Bilder und anderen Dateien von Deinem Gerät aus anzeigen und veröffentlichen zu können.</string>
     <string name="camera_permission_rationale_record">LBRY benötigt Zugriff auf Deine Kamera, um Videos aufzunehmen.</string>
     <string name="camera_permission_rationale_photo">LBRY benötigt Zugriff auf Deine Kamera, um Fotos aufzunehmen.</string>
@@ -208,7 +206,7 @@ Bitte versuche es später erneut.</string>
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
+        <item>LBRY-Guthaben</item>
         <item>USD</item>
     </string-array>
 
@@ -227,12 +225,10 @@ Bitte versuche es später erneut.</string>
     <string name="oops_something_went_wrong">Hoppla! Etwas ist schief gelaufen.</string>
     <string name="installation_id_loaded">Geladene Installations-ID.</string>
     <string name="known_tags_loaded">Geladene lokale bekannte und verfolgte Themen.</string>
-    <string name="exchange_rate_loaded">Geladener LBC/USD Wechselkurs.</string>
     <string name="user_authenticated">Benutzer authentifiziert.</string>
     <string name="installation_registered">Installation registriert.</string>
     <string name="subscriptions_loaded">Geladene Abonnements.</string>
     <string name="subscriptions_resolved">Abgelöste Abonnements.</string>
-
     <!-- Settings -->
     <string name="user_interface">Inhalt &amp; Benutzeroberfläche</string>
     <string name="other">Andere</string>
@@ -243,10 +239,8 @@ Bitte versuche es später erneut.</string>
     <string name="notifications">Benachrichtigungen</string>
     <string name="subscriptions">Abonnements</string>
     <string name="content_interests">Inhaltsinteressen</string>
-
     <string name="keep_sdk_in_background">Lasse den LBRY-Dienst im Hintergrund laufen, um die Leistung des Portemonnaie und des Netzwerks zu verbessern</string>
     <string name="participate_in_data_network">Teilnahme am Datennetzwerk (Neustart der App und des Hintergrunddienstes erforderlich)</string>
-
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Suchen</string>
     <string name="tag_url_title">%1$s - Schlagwort</string>
@@ -271,7 +265,6 @@ Bitte versuche es später erneut.</string>
     <string name="in_your_publishes">in Deinen Veröffentlichungen</string>
     <string name="in_your_supports">in Deinen Unterstützungen</string>
     <string name="earn_more_tips">Verdienen Sie weitere Tipps, indem Sie coole Videos hochladen</string>
-    <string name="sdk_initializing">Der Hintergrunddienst wird initialisiert...</string>
     <string name="sdk_still_initializing">Der Hintergrunddienst wird noch initialisiert. In der Zwischenzeit können Sie Inhalte erkunden und ansehen.</string>
     <string name="sdk_initializing_functionality">Sie können dies derzeit nicht tun, da der Hintergrunddienst noch initialisiert wird.</string>
 
@@ -311,8 +304,6 @@ Bitte versuche es später erneut.</string>
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Manual backup&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sync FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
-
     <string name="account_recommended">Account vorgeschlagen</string>
     <string name="wallet_account_desc">Mit einem lbry.tv-Konto können Sie Belohnungen verdienen, Ihre Portemonnaie sichern und alles synchron halten.</string>
     <string name="wallet_without_account">Ohne Account übernimmst Sie die gesamte Verantwortung für die Sicherung Ihrer Portemonnaie- und LBRY-Daten.</string>
@@ -324,7 +315,6 @@ Bitte versuche es später erneut.</string>
     <string name="insufficient_balance">Mangelhaftes Gleichgewicht</string>
     <string name="invalid_amount">Bitte gib einen gültigen Betrag ein</string>
     <string name="send_credit_error">Deine Credits konnten zu diesem Zeitpunkt nicht gesendet werden. Bitte versuche es später erneut.</string>
-    <string name="loading_transactions">Lade Transaktionen...</string>
     <string name="no_recent_transactions">Es gibt keine aktuellen anzuzeigenden Transaktionen.</string>
     <string name="no_transactions">Derzeit sind keine Transaktionen anzuzeigen.</string>
     <string name="tx_list_fee">Gebühr %1$s</string>
@@ -335,7 +325,6 @@ Bitte versuche es später erneut.</string>
     <string name="confirm_unlock_tips">Möchten Sie wirklich alle Ihre Trinkgelder freischalten?</string>
     <string name="min_spend_required">Bitte geben Sie einen Betrag von mehr als 0,0001 Credits ein.</string>
 
-    <string name="buy_lbc">Kaufen Sie LBC</string>
     <string name="hash_not_supported">Ihr Gerät unterstützt nicht die Mindestanforderungen zum Sichern Ihrer Kaufanfrage.</string>
     <string name="receive_address_not_set">Sie haben keine Portemonnaie Adresse festgelegt. Bitte generieren Sie eine neue Adresse und versuchen Sie es erneut.</string>
 
@@ -379,7 +368,6 @@ Bitte versuche es später erneut.</string>
     <string name="channel_to_show_support_as">Kanal, um Unterstützung als anzuzeigen</string>
     <string name="make_this_a_tip">Machen Sie dies zu einem Tipp</string>
     <string name="send_revocable_support">Widerruflichen Support Senden</string>
-    <string name="send_lbc_tip">Spendieren Sie ein %1$s LBC Trinkgeld</string>
     <string name="send_tip_info_content">Dies wird als Trinkgeld für %1$s\' angezeigt, wodurch die Fähigkeit erhöht wird, im aktiven Zustand entdeckt zu werden. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Dies wird als Tipp für %1$s\' angezeigt, wodurch die Fähigkeit erhöht wird, im aktiven Zustand entdeckt zu werden . &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Abbrechen</string>
@@ -411,8 +399,6 @@ Bitte versuche es später erneut.</string>
     <string name="provide_valid_email">Bitte gib eine gültige E-Mail-Adresse ein</string>
     <string name="please_follow_instructions">Bitte folge den Anweisungen in der E-Mail an, die Dir geschickt wurde, um fortzufahren.</string>
     <string name="sign_in_successful">Sie haben sich erfolgreich bei lbry.tv angemeldet</string>
-    <string name="retrieving_account_information">Kontoinformationen abrufen...</string>
-    <string name="apply_wallet_data">Portemonnaiedaten anwenden...</string>
     <string name="please_enter_your_password">Bitte geben Sie Ihr Passwort ein, mit dem sie Ihren Portemonnaie gesichert haben.</string>
     <string name="please_enter_a_password">Bitte geben Sie Ihr Passwort ein, um Ihren Portemonnaie
   zu sichern.</string>
@@ -443,7 +429,6 @@ Bitte versuche es später erneut.</string>
     <!-- Channels -->
     <string name="no_channel_created">Sie haben keinen Kanal erstellt.\nStarten Sie jetzt, indem Sie einen neuen Kanal erstellen!</string>
     <string name="create_a_channel">Kanal erstellen</string>
-    <string name="create_a_channel_item">Kanal erstellen...</string>
     <string name="edit_channel">Kanal bearbeiten</string>
     <string name="delete_selection">Auswahl löschen?</string>
     <string name="delete_channel">Kanal löschen?</string>
@@ -451,6 +436,7 @@ Bitte versuche es später erneut.</string>
     <string name="channel_deleted">Der Kanal wurde erfolgreich gelöscht.</string>
     <string name="channel_failed_delete">Der Kanal konnte zu diesem Zeitpunkt nicht gelöscht werden. Bitte versuche es später erneut.</string>
     <string name="description">Beschreibung</string>
+    <string name="follow">Folgen</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="show_optional_fields">Zeige optionale Felder</string>
@@ -460,7 +446,6 @@ Bitte versuche es später erneut.</string>
     <string name="title">Titel</string>
     <string name="at">\@</string>
     <string name="deposit">Einzahlen</string>
-    <string name="deposit_remains_yours">Die LBC bleiben Deine. Sie dienen lediglich als Pfand für die Reservierung Deines Namens und können zu jederzeit zurückgeholt werden.</string>
     <string name="storage_permission_rationale_download">LBRY benötigt Zugriff, um Inhalte auf Dein Gerät herunterzuladen.</string>
     <string name="storage_permission_rationale_images">LBRY benötigt Zugriff zum Laden von Bildern aus Deinem Gerätespeicher.</string>
     <string name="select_thumbnail">Wähle ein Thumbnail</string>
@@ -468,7 +453,6 @@ Bitte versuche es später erneut.</string>
     <string name="undetermined_image_filepath">Der Dateipfad konnte für das ausgewählte Bild nicht ermittelt werden. Bitte wähle ein Bild an einem anderen Ort.</string>
     <string name="wait_for_upload">Bitte warte, bis der aktuelle Upload abgeschlossen ist.</string>
     <string name="image_upload_failed">Die Aufforderung zum hochladen von Bildern ist fehlgeschlagen. Bitte versuche es erneut.</string>
-    <string name="uploading">Hochladen...</string>
     <string name="please_enter_channel_name">Bitte gib einen Kanalnamen ein.</string>
     <string name="channel_name_invalid_characters">Dein Kanalname enthält ungültige Zeichen.</string>
     <string name="channel_name_already_created">Sie haben bereits einen Kanal mit demselben Namen erstellt.</string>
@@ -493,8 +477,6 @@ Bitte versuche es später erneut.</string>
         <item quantity="other">Die Kanäle wurden erfolgreich gelöscht.</item>
     </plurals>
 
-    <!-- Rewards -->
-    <string name="lbry_credits_allow">Mit LBRY Credits können Sie Inhalte veröffentlichen oder kaufen.</string>
     <string name="free_credits_worth">Sie können kostenlose Credits im Wert von $%1$s erhalten, nachdem Sie eine E-Mail-Adresse angegeben haben.</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="get_started">Jetzt starten</string>
@@ -583,7 +565,6 @@ Bitte versuche es später erneut.</string>
     <string name="get_social">Vernetze Dich</string>
     <string name="social_paragraph">Sie können mit dem LBRY Team und anderen Nutzern über Discord, Facebook, Instagram, Twitter oder Reddit kontakt aufnehmen.</string>
     <string name="app_info">Anwendungsinformation</string>
-    <string name="loading">Lade...</string>
     <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;What is LBRY?&lt;/a&gt;</string>
     <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Grundlagen&lt;/a&gt;</string>
     <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>
@@ -606,4 +587,6 @@ Bitte versuche es später erneut.</string>
     <string name="cannot_find_lbrynet_log">Die Datei lbrynet.log wurde nicht gefunden.</string>
     <string name="cannot_share_lbrynet_log">Die Datei lbrynet.log kann aufgrund von Berechtigungsbeschränkungen nicht freigegeben werden.</string>
 
+    <!-- Notifications -->
+    <string name="no_notifications">So ruhig hier! Benachrichtigungen werden hier angezeigt, sobald du neue erhalten hast.</string>
     </resources>

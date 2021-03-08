@@ -93,7 +93,22 @@
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/inter"
                 android:text="@string/skip_queue_button_text" />
-
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/skip_queue_manual_check"
+                android:textColor="@color/white"
+                android:textFontWeight="300" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verification_manual_skip_queue_verify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/verify_purchase" />
 
             <TextView
                 android:textSize="20sp"

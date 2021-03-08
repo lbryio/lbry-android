@@ -502,6 +502,11 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         layoutLoadingState.setVisibility(View.GONE);
         layoutDisplayArea.setVisibility(View.VISIBLE);
 
+        if (claim.getTags().contains("disable-support"))
+            buttonTip.setVisibility(View.GONE);
+        else
+            buttonTip.setVisibility(View.VISIBLE);
+
         String thumbnailUrl = claim.getThumbnailUrl();
         String coverUrl = claim.getCoverUrl();
         textTitle.setText(Helper.isNullOrEmpty(claim.getTitle()) ? claim.getName() : claim.getTitle());

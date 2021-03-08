@@ -113,6 +113,19 @@ public class LbryUriTest {
         assertEquals(expectedForChannel, obtained);
     }
 
+    @Test
+    public void lbryToTvString() {
+        LbryUri obtained = new LbryUri();
+
+        try {
+            obtained = LbryUri.parse("lbry://@lbry#3f/lbryturns4#6",false);
+        } catch (LbryUriException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("https://lbry.tv/@lbry:3f/lbryturns4:6", obtained.toTvString());
+    }
+
     @NotNull
     private LbryUri sinthesizeExpected() {
         LbryUri expectedForChannel = new LbryUri();

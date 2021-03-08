@@ -27,7 +27,6 @@
     <string name="welcome_to_lbry">Welkom tot LBRY.</string>
     <string name="welcome_paragraph">LBRY is \'n gemeenskapsgebaseerde contentsplatform waar je video\'s, musiek, boeke en meer kan vind en publiseer</string>
     <string name="welcome_tos">Deur voort te gaan, stem ek in tot die &lt;a href=\"https://lbry.com/termsofservice\"&gt;TDiensvoorwaardes&lt;/a&gt; en bevestig dat ek ouer as 13 is.</string>
-    <string name="welcome_please_wait">Wag asseblief terwyl ons \'n paar dinge gereed maak...</string>
     <string name="use_lbry">Gebruik LBRY »</string>
 
     <!-- URI bar -->
@@ -39,7 +38,6 @@
     <string name="discover">Vind</string>
     <string name="lbry_works_better">LBRY werk beter as u ten minste 5 skeppers volg waarvan u hou. Meld aan om skeppers wat u volg te wys as u reeds \'n account het.</string>
     <string name="select_five_subscriptions">Kies tot 5 skeppers om voort te gaan.</string>
-    <string name="n_remaining">%1$d oorblywende...</string>
     <string name="done">Gedoen</string>
     <string name="all">Almal</string>
     <string name="discover_channels">Ontdek nuwe kanale</string>
@@ -57,7 +55,6 @@
     <string name="download">Aflaai</string>
     <string name="open">Oop</string>
     <string name="report">Rapporteer</string>
-    <string name="loading_decentralized_data">Laai gedesentraliseerde data...</string>
     <string name="related_content">Verwante Content</string>
     <string name="comments">Kommentaar</string>
     <string name="no_comments">Op die oomblik is daar geen kommentaar om te vertoon nie.</string>
@@ -90,6 +87,14 @@
     <string name="please_select_repost_channel">Kies \'n kanaal om weer op te plaas.</string>
     <string name="reply">Antwoord</string>
     <string name="replying_to">Antwoord op %1$s</string>
+    <plurals name="view_count">
+        <item quantity="one">%1$s uitsig</item>
+        <item quantity="other">%1$s uitsig</item>
+    </plurals>
+    <plurals name="confirm_purchase_message">
+        <item quantity="one">Dit sal \"%1$s\" vir %2$s krediete koop</item>
+        <item quantity="other">Dit sal \"%1$s\" vir %2$s krediete koop</item>
+    </plurals>
     <plurals name="post_and_tip">
         <item quantity="one">Post en fooi %1$s krediete?</item>
         <item quantity="other">Post en fooi %1$s krediete?</item>
@@ -101,14 +106,6 @@
     <plurals name="confirm_post_comment">
         <item quantity="one">Dit lewer u kommentaar met \'n fooi van %1$s krediete vir %2$s</item>
         <item quantity="other">Dit lewer u kommentaar met \'n fooi van %1$s krediete vir %2$s</item>
-    </plurals>
-    <plurals name="view_count">
-        <item quantity="one">%1$s uitsig</item>
-        <item quantity="other">%1$s uitsig</item>
-    </plurals>
-    <plurals name="confirm_purchase_message">
-        <item quantity="one">Dit sal \"%1$s\" vir %2$s krediete koop</item>
-        <item quantity="other">Dit sal \"%1$s\" vir %2$s krediete koop</item>
     </plurals>
 
     <!-- Channel view -->
@@ -127,7 +124,6 @@
     <string name="take_photo">Neem \'n Foto</string>
     <string name="upload_file">Laai \'n lêer op</string>
     <string name="no_videos_found">Ons kon geen video\'s op u toestel vind nie. Neem \'n foto of neem \'n video op om aan die gang te kom.</string>
-    <string name="loading_videos">Wag asseblief terwyl ons u video\'s laai ...</string>
     <string name="storage_permission_rationale_videos">LBRY benodig toegang om u video\'s, beelde en ander lêers vanaf u toestel te kan vertoon en publiseer.</string>
     <string name="camera_permission_rationale_record">LBRY benodig toegang tot u kamera om video\'s op te neem.</string>
     <string name="camera_permission_rationale_photo">LBRY benodig toegang tot u kamera om foto\'s te neem.</string>
@@ -207,7 +203,6 @@
     <string name="cca_nc_nd_4_0_international">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</string>
 
     <string-array name="publish_currencies">
-        <item>LBC</item>
         <item>USD</item>
     </string-array>
 
@@ -226,12 +221,10 @@
     <string name="oops_something_went_wrong">Oeps! Iets het verkeerd geloop.</string>
     <string name="installation_id_loaded">Laai installasie-ID.</string>
     <string name="known_tags_loaded">Laai plaaslike bekende en volg merkers.</string>
-    <string name="exchange_rate_loaded">Laai LBC/USD wisselkoers.</string>
     <string name="user_authenticated">Gebruiker geverifieer.</string>
     <string name="installation_registered">Installasie geregistreer.</string>
     <string name="subscriptions_loaded">Gelaaide intekeninge.</string>
     <string name="subscriptions_resolved">Ontbinde intekeninge.</string>
-
     <!-- Settings -->
     <string name="user_interface">Inhoud &amp; Gebruikerskoppelvlak</string>
     <string name="other">Ander</string>
@@ -242,10 +235,8 @@
     <string name="notifications">Kennisgewings</string>
     <string name="subscriptions">Abonnementen</string>
     <string name="content_interests">Contentsbelangstellings</string>
-
     <string name="keep_sdk_in_background">Hou die LBRY-diens op die agtergrond vir verbeterde beursie- en netwerkprestasie</string>
     <string name="participate_in_data_network">Neem deel aan die datanetwerk (benodig weer app en agtergronddiens)</string>
-
     <!-- URL suggestions -->
     <string name="search_url_title">%1$s - Soek</string>
     <string name="tag_url_title">%1$s - Etikette</string>
@@ -270,7 +261,6 @@
     <string name="in_your_publishes">in u publikasies</string>
     <string name="in_your_supports">in u steun</string>
     <string name="earn_more_tips">Verdien meer wenke deur cool video\'s op te laai</string>
-    <string name="sdk_initializing">Die agtergronddiens initialiseer...</string>
     <string name="sdk_still_initializing">Die agtergronddiens word steeds geïnitialiseer. U kan die inhoud intussen verken en kyk.</string>
     <string name="sdk_initializing_functionality">U kan dit nie nou doen nie, want die agtergronddiens is nog besig om te initialiseer.</string>
 
@@ -310,8 +300,6 @@
     <string name="manual_backup">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#android\"&gt;Handmatige rugsteun&lt;/a&gt;</string>
     <string name="sync_faq">&lt;a href=\"https://lbry.com/faq/how-to-backup-wallet#sync\"&gt;Sinkroniseer FAQ&lt;/a&gt;</string>
     <string name="zero">0</string>
-    <string name="lbc">LBC</string>
-
     <string name="account_recommended">Account Aanbeveel</string>
     <string name="wallet_account_desc">Met \'n lbry.tv-account kan je belonings verdien, je beursie rugsteun en alles sinchroniseer.</string>
     <string name="wallet_without_account">Sonder u account aanvaar u alle verantwoordelikheid om u beursie- en LBRY-data te beveilig.</string>
@@ -323,7 +311,6 @@
     <string name="insufficient_balance">Onvoldoende balans</string>
     <string name="invalid_amount">Voer \'n geldige bedrag in</string>
     <string name="send_credit_error">U krediete kon tans nie gestuur word nie. Probeer asseblief weer later.</string>
-    <string name="loading_transactions">Laai tans transaksies...</string>
     <string name="no_recent_transactions">Daar is geen onlangse transaksies wat vertoon kan word nie.</string>
     <string name="no_transactions">Daar is tans geen transaksies wat vertoon kan word nie.</string>
     <string name="tx_list_fee">belasting %1$s</string>
@@ -334,7 +321,6 @@
     <string name="confirm_unlock_tips">Is u seker dat u al u wenke wil ontsluit?</string>
     <string name="min_spend_required">Voer \'n bedrag van meer as 0,0001 krediete in.</string>
 
-    <string name="buy_lbc">Koop LBC</string>
     <string name="hash_not_supported">U toestel ondersteun nie die minimum vereistes vir die beveiliging van u aankoopversoek nie.</string>
     <string name="receive_address_not_set">U het nie \'n beursie-adres opgestel nie. Genereer \'n nuwe adres en probeer weer.</string>
 
@@ -378,7 +364,6 @@
     <string name="channel_to_show_support_as">Kanaal om ondersteuning te wys as</string>
     <string name="make_this_a_tip">Maak dit \'n wenk</string>
     <string name="send_revocable_support">Stuur Herroepbare Ondersteuning</string>
-    <string name="send_lbc_tip">Stuur \'n Wenk van %1$s LBC</string>
     <string name="send_tip_info_content">Dit sal verskyn as \'n wenk vir %1$s, wat die vermoë verhoog om ontdek te word terwyl dit aktief is. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="send_tip_info_channel">Dit sal verskyn as \'n wenk vir %1$s, wat die vermoë verhoog om ontdek te word terwyl dit aktief is. &lt;a href=\"https://lbry.com/faq/tipping\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="cancel">Kanselleer</string>
@@ -410,8 +395,6 @@
     <string name="provide_valid_email">Voer \'n geldige e-pos adres in</string>
     <string name="please_follow_instructions">Volg die aanwysings in die e-pos wat na u adres gestuur word om voort te gaan.</string>
     <string name="sign_in_successful">U het suksesvol by lbry.tv aangemeld</string>
-    <string name="retrieving_account_information">Haal accountinligting op...</string>
-    <string name="apply_wallet_data">Pas beursie-data toe...</string>
     <string name="please_enter_your_password">Voer die wagwoord in wat u gebruik het om u beursie te beveilig.</string>
     <string name="please_enter_a_password">Voer \'n wagwoord in om u beursie te beveilig.</string>
     <string name="wallet_security_purposes">Opmerking: vir beursie-beveiligingsdoeleindes kan LBRY nie u wagwoord terugstel nie.</string>
@@ -438,7 +421,6 @@
     <!-- Channels -->
     <string name="no_channel_created">U het nie \'n kanaal geskep nie.\nBegin nou deur \'n nuwe kanaal te skep!</string>
     <string name="create_a_channel">Skep \'n kanaal</string>
-    <string name="create_a_channel_item">Skep \'n kanaal...</string>
     <string name="edit_channel">Wysig kanaal</string>
     <string name="delete_selection">Vee seleksie uit?</string>
     <string name="delete_channel">Vee kanaal uit?</string>
@@ -455,7 +437,6 @@
     <string name="title">Titel</string>
     <string name="at">\@</string>
     <string name="deposit">Deposito</string>
-    <string name="deposit_remains_yours">Hierdie LBC bly uwe. Dit is \'n deposito om die naam te bespreek en kan te eniger tyd ongedaan gemaak word.</string>
     <string name="storage_permission_rationale_download">LBRY benodig toegang om inhoud op u toestel af te laai.</string>
     <string name="storage_permission_rationale_images">LBRY benodig toegang om prente vanaf u toestelberging te laai.</string>
     <string name="select_thumbnail">Kies kleinkiekie</string>
@@ -463,7 +444,6 @@
     <string name="undetermined_image_filepath">Die lêerpad kon nie vir die geselekteerde prent bepaal word nie. Kies \'n prent op \'n ander plek.</string>
     <string name="wait_for_upload">Wag tot die huidige oplaai voltooi is.</string>
     <string name="image_upload_failed">Die beeldoplaai-versoek het misluk. Probeer asseblief weer.</string>
-    <string name="uploading">Oplaai...</string>
     <string name="please_enter_channel_name">Voer \'n kanaalnaam in.</string>
     <string name="channel_name_invalid_characters">U kanaalnaam bevat ongeldige karakters.</string>
     <string name="channel_name_already_created">U het reeds \'n kanaal met dieselfde naam geskep.</string>
@@ -488,8 +468,6 @@
         <item quantity="other">Die kanale is suksesvol uitgevee.</item>
     </plurals>
 
-    <!-- Rewards -->
-    <string name="lbry_credits_allow">Met LBRY-krediete kan u inhoud publiseer of koop.</string>
     <string name="free_credits_worth">U kan gratis krediete ter waarde van $%1$s verwerf nadat u \'n e-posadres verstrek het.</string>
     <string name="rewards_learn_more">&lt;a href=\"https://lbry.com/faq/earn-credits\"&gt;Leer meer&lt;/a&gt;.</string>
     <string name="get_started">Begin</string>
@@ -578,7 +556,6 @@
     <string name="get_social">Word Sosiaal</string>
     <string name="social_paragraph">U kan interaksie met die LBRY-span en lede van die gemeenskap op Discord, Facebook, Instagram, Twitter of Reddit.</string>
     <string name="app_info">Programinligting</string>
-    <string name="loading">Laai...</string>
     <string name="about_link_what_is_lbry">&lt;a href=\"https://lbry.com/faq/what-is-lbry\"&gt;Wat is LBRY?&lt;/a&gt;</string>
     <string name="about_link_android_basics">&lt;a href=\"https://lbry.com/faq/android-basics\"&gt;Android Basics&lt;/a&gt;</string>
     <string name="about_link_faq">&lt;a href=\"https://lbry.com/faq\"&gt;FAQ&lt;/a&gt;</string>
