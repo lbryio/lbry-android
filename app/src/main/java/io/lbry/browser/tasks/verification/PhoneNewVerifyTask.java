@@ -13,11 +13,11 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class PhoneNewVerifyTask extends AsyncTask<Void, Void, Boolean> {
-    private String countryCode;
-    private String phoneNumber;
-    private String verificationCode;
-    private View progressView;
-    private GenericTaskHandler handler;
+    private final String countryCode;
+    private final String phoneNumber;
+    private final String verificationCode;
+    private final View progressView;
+    private final GenericTaskHandler handler;
     private Exception error;
 
     public PhoneNewVerifyTask(String countryCode, String phoneNumber, String verificationCode, View progressView, GenericTaskHandler handler) {

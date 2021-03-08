@@ -7,9 +7,9 @@ import io.lbry.browser.model.lbryinc.User;
 import io.lbry.browser.utils.Lbryio;
 
 public class FetchCurrentUserTask extends AsyncTask<Void, Void, User> {
-    private Context context;
+    private final Context context;
     private Exception error;
-    private FetchUserTaskHandler handler;
+    private final FetchUserTaskHandler handler;
 
     public FetchCurrentUserTask(Context context, FetchUserTaskHandler handler) {
         this.context = context;

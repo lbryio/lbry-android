@@ -67,8 +67,8 @@ public class ContentFromDialogFragment extends BottomSheetDialogFragment {
                 R.id.content_from_past_year_item,
                 R.id.content_from_all_time_item
         };
-        private BottomSheetDialogFragment dialog;
-        private ContentFromListener listener;
+        private final BottomSheetDialogFragment dialog;
+        private final ContentFromListener listener;
 
         public ContentFromItemClickListener(BottomSheetDialogFragment dialog, ContentFromListener listener) {
             this.dialog = dialog;

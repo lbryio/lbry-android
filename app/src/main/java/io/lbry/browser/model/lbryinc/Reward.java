@@ -9,7 +9,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 
-import io.lbry.browser.model.Claim;
 import io.lbry.browser.utils.Helper;
 import lombok.Data;
 

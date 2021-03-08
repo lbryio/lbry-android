@@ -21,8 +21,8 @@ public class PurchaseListTask extends AsyncTask<Void, Void, List<Claim>> {
     private String claimId;
     private int page;
     private int pageSize;
-    private ClaimSearchResultHandler handler;
-    private View progressView;
+    private final ClaimSearchResultHandler handler;
+    private final View progressView;
     private Exception error;
 
     public PurchaseListTask(String claimId, View progressView, ClaimSearchResultHandler handler) {

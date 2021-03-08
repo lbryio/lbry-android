@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -23,9 +22,9 @@ import io.lbry.browser.utils.Helper;
 
 public class LoadGalleryItemsTask extends AsyncTask<Void, GalleryItem, List<GalleryItem>> {
     private static final String TAG = "LoadGalleryItemsTask";
-    private LoadGalleryHandler handler;
-    private View progressView;
-    private Context context;
+    private final LoadGalleryHandler handler;
+    private final View progressView;
+    private final Context context;
 
     public LoadGalleryItemsTask(View progressView, Context context, LoadGalleryHandler handler) {
         this.progressView = progressView;
@@ -44,6 +43,7 @@ public class LoadGalleryItemsTask extends AsyncTask<Void, GalleryItem, List<Gall
         if (context != null) {
             ContentResolver resolver = context.getContentResolver();
             try {
+                // TODO: MediaStore.Video.Media.DURATION requires API level 29
                 String[] projection = {
                         MediaStore.MediaColumns._ID,
                         MediaStore.MediaColumns.DATA,
@@ -61,6 +61,7 @@ public class LoadGalleryItemsTask extends AsyncTask<Void, GalleryItem, List<Gall
                         int nameColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
                         int typeColumn = cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE);
                         int pathColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
+                        // TODO: MediaStore.Video.Media.DURATION requires API level 29
                         int durationColumn = cursor.getColumnIndex(MediaStore.Video.Media.DURATION);
 
                         GalleryItem item = new GalleryItem();

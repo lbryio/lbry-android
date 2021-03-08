@@ -20,12 +20,12 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class StreamRepostTask extends AsyncTask<Void, Void, Claim> {
-    private String name;
-    private BigDecimal bid;
-    private String claimId;
-    private String channelId;
-    private View progressView;
-    private ClaimResultHandler handler;
+    private final String name;
+    private final BigDecimal bid;
+    private final String claimId;
+    private final String channelId;
+    private final View progressView;
+    private final ClaimResultHandler handler;
     private Exception error;
 
     public StreamRepostTask(String name, BigDecimal bid, String claimId, String channelId, View progressView, ClaimResultHandler handler) {

@@ -27,9 +27,9 @@ import io.lbry.browser.utils.LbryUri;
 import lombok.Setter;
 
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder> {
-    private List<Comment> items;
-    private Context context;
-    private boolean nested;
+    private final List<Comment> items;
+    private final Context context;
+    private final boolean nested;
     private float scale;
     @Setter
     private ClaimListAdapter.ClaimListItemListener listener;
@@ -102,14 +102,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected TextView channelName;
-        protected TextView commentText;
-        protected ImageView thumbnailView;
-        protected View noThumbnailView;
-        protected TextView alphaView;
-        protected TextView commentTimeView;
-        protected View replyLink;
-        protected RecyclerView repliesList;
+        protected final TextView channelName;
+        protected final TextView commentText;
+        protected final ImageView thumbnailView;
+        protected final View noThumbnailView;
+        protected final TextView alphaView;
+        protected final TextView commentTimeView;
+        protected final View replyLink;
+        protected final RecyclerView repliesList;
 
         public ViewHolder (View v) {
             super(v);

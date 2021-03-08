@@ -2,18 +2,12 @@ package io.lbry.browser.tasks.wallet;
 
 import android.os.AsyncTask;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.math.BigDecimal;
-
 import io.lbry.browser.exceptions.ApiCallException;
-import io.lbry.browser.model.WalletBalance;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class WalletAddressUnusedTask extends AsyncTask<Void, Void, String> {
-    private WalletAddressUnusedHandler handler;
+    private final WalletAddressUnusedHandler handler;
     private Exception error;
 
     public WalletAddressUnusedTask(WalletAddressUnusedHandler handler) {

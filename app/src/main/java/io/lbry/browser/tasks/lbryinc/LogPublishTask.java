@@ -2,7 +2,6 @@ package io.lbry.browser.tasks.lbryinc;
 
 import android.os.AsyncTask;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,10 +9,9 @@ import io.lbry.browser.exceptions.LbryioRequestException;
 import io.lbry.browser.exceptions.LbryioResponseException;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.utils.Lbryio;
-import okhttp3.Response;
 
 public class LogPublishTask extends AsyncTask<Void, Void, Void> {
-    private Claim claimResult;
+    private final Claim claimResult;
     public LogPublishTask(Claim claimResult) {
         this.claimResult = claimResult;
     }

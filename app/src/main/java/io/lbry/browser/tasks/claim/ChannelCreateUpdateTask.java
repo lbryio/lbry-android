@@ -21,12 +21,12 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class ChannelCreateUpdateTask extends AsyncTask<Void, Void, Claim> {
-    private Claim claim;
-    private BigDecimal deposit;
-    private boolean update;
+    private final Claim claim;
+    private final BigDecimal deposit;
+    private final boolean update;
     private Exception error;
-    private ClaimResultHandler handler;
-    private View progressView;
+    private final ClaimResultHandler handler;
+    private final View progressView;
 
     public ChannelCreateUpdateTask(Claim claim, BigDecimal deposit, boolean update, View progressView, ClaimResultHandler handler) {
         this.claim = claim;

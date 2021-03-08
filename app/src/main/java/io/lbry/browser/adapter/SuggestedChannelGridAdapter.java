@@ -22,9 +22,9 @@ import io.lbry.browser.utils.Helper;
 import lombok.Setter;
 
 public class SuggestedChannelGridAdapter extends RecyclerView.Adapter<SuggestedChannelGridAdapter.ViewHolder> {
-    private Context context;
-    private List<Claim> items;
-    private List<Claim> selectedItems;
+    private final Context context;
+    private final List<Claim> items;
+    private final List<Claim> selectedItems;
     @Setter
     private ChannelItemSelectionListener listener;
 
@@ -35,11 +35,11 @@ public class SuggestedChannelGridAdapter extends RecyclerView.Adapter<SuggestedC
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected View noThumbnailView;
-        protected ImageView thumbnailView;
-        protected TextView alphaView;
-        protected TextView titleView;
-        protected TextView tagView;
+        protected final View noThumbnailView;
+        protected final ImageView thumbnailView;
+        protected final TextView alphaView;
+        protected final TextView titleView;
+        protected final TextView tagView;
         public ViewHolder(View v) {
             super(v);
             noThumbnailView = v.findViewById(R.id.suggested_channel_no_thumbnail);

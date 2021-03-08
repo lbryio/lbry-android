@@ -14,12 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -34,7 +32,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -43,9 +40,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     private static final String RULE_CREATOR_SUBSCRIBER = "creator_subscriber";
     private static final String RULE_COMMENT = "comment";
 
-    private Context context;
-    private List<LbryNotification> items;
-    private List<LbryNotification> selectedItems;
+    private final Context context;
+    private final List<LbryNotification> items;
+    private final List<LbryNotification> selectedItems;
     @Setter
     private NotificationClickListener clickListener;
     @Getter
@@ -62,13 +59,13 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected View layoutView;
-        protected TextView titleView;
-        protected TextView bodyView;
-        protected TextView timeView;
-        protected SolidIconView iconView;
-        protected ImageView thumbnailView;
-        protected View selectedOverlayView;
+        protected final View layoutView;
+        protected final TextView titleView;
+        protected final TextView bodyView;
+        protected final TextView timeView;
+        protected final SolidIconView iconView;
+        protected final ImageView thumbnailView;
+        protected final View selectedOverlayView;
         public ViewHolder(View v) {
             super(v);
             layoutView = v.findViewById(R.id.notification_layout);

@@ -26,7 +26,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -185,19 +184,14 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                 }
 
                 if (claim != null) {
-                    CreateSupportDialogFragment dialog = CreateSupportDialogFragment.newInstance();
-                    dialog.setClaim(claim);
-                    dialog.setListener(new CreateSupportDialogFragment.CreateSupportListener() {
-                        @Override
-                        public void onSupportCreated(BigDecimal amount, boolean isTip) {
-                            double sentAmount = amount.doubleValue();
-                            View view = getView();
-                            if (view != null) {
-                                String message = getResources().getQuantityString(
-                                        isTip ? R.plurals.you_sent_a_tip : R.plurals.you_sent_a_support, sentAmount == 1.0 ? 1 : 2,
-                                        new DecimalFormat("#,###.##").format(sentAmount));
-                                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
-                            }
+                    CreateSupportDialogFragment dialog = CreateSupportDialogFragment.newInstance(claim, (amount, isTip) -> {
+                        double sentAmount = amount.doubleValue();
+                        View view1 = getView();
+                        if (view1 != null) {
+                            String message = getResources().getQuantityString(
+                                    isTip ? R.plurals.you_sent_a_tip : R.plurals.you_sent_a_support, sentAmount == 1.0 ? 1 : 2,
+                                    new DecimalFormat("#,###.##").format(sentAmount));
+                            Snackbar.make(view1, message, Snackbar.LENGTH_LONG).show();
                         }
                     });
                     Context context = getContext();
@@ -399,7 +393,12 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                 }
             }
             if (params.containsKey("url")) {
-                LbryUri newLbryUri = LbryUri.tryParse(params.get("url").toString());
+                Object o = params.get("url");
+                String urlString = "";
+                if (o != null) {
+                    urlString = o.toString();
+                }
+                LbryUri newLbryUri = LbryUri.tryParse(urlString);
                 if (newLbryUri != null) {
                     newUrl = newLbryUri.toString();
                     String qs = newLbryUri.getQueryString();
@@ -590,8 +589,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     }
 
     private static class ChannelPagerAdapter extends FragmentStateAdapter {
-        private Claim channelClaim;
-        private String commentHash;
+        private final Claim channelClaim;
+        private final String commentHash;
         public ChannelPagerAdapter(Claim channelClaim, String commentHash, FragmentActivity activity) {
             super(activity);
             this.channelClaim = channelClaim;
@@ -634,6 +633,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                     return commentsFragment;
             }
 
+            // TODO: createFragment is defined as a @NonNull and should never be able to return null.
             return null;
         }
 

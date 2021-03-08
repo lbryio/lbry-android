@@ -6,14 +6,28 @@ import java.math.BigDecimal;
 
 import io.lbry.browser.utils.Helper;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 public class WalletBalance {
+    @Setter
+    @Getter
     private BigDecimal available;
+    @Setter
+    @Getter
     private BigDecimal reserved;
+    @Setter
+    @Getter
     private BigDecimal claims;
+    @Setter
+    @Getter
     private BigDecimal supports;
+    @Setter
+    @Getter
     private BigDecimal tips;
+    @Setter
+    @Getter
     private BigDecimal total;
 
     public WalletBalance() {

@@ -23,12 +23,13 @@ public class TagListAdapter extends RecyclerView.Adapter<TagListAdapter.ViewHold
     public static final int CUSTOMIZE_MODE_ADD = 1;
     public static final int CUSTOMIZE_MODE_REMOVE = 2;
 
-    private Context context;
+    private final Context context;
     private List<Tag> items;
     @Setter
     private TagClickListener clickListener;
-    @Getter
+
     @Setter
+    @Getter
     private int customizeMode;
 
     public TagListAdapter(List<Tag> tags, Context context) {
@@ -38,8 +39,8 @@ public class TagListAdapter extends RecyclerView.Adapter<TagListAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected ImageView iconView;
-        protected TextView nameView;
+        protected final ImageView iconView;
+        protected final TextView nameView;
         public ViewHolder(View v) {
             super(v);
             iconView = v.findViewById(R.id.tag_action);

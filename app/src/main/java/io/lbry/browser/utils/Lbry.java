@@ -14,7 +14,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -34,9 +33,6 @@ import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.Transaction;
 import io.lbry.browser.model.WalletBalance;
 import io.lbry.lbrysdk.Utils;
-import kotlin.Pair;
-import okhttp3.CacheControl;
-import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -44,8 +40,8 @@ import okhttp3.Response;
 
 public final class Lbry {
     private static final Object lock = new Object();
-    public static LinkedHashMap<ClaimCacheKey, Claim> claimCache = new LinkedHashMap<>();
-    public static LinkedHashMap<Map<String, Object>, ClaimSearchCacheValue> claimSearchCache = new LinkedHashMap<>();
+    public static final LinkedHashMap<ClaimCacheKey, Claim> claimCache = new LinkedHashMap<>();
+    public static final LinkedHashMap<Map<String, Object>, ClaimSearchCacheValue> claimSearchCache = new LinkedHashMap<>();
     public static WalletBalance walletBalance = new WalletBalance();
     public static List<Tag> knownTags = new ArrayList<>();
     public static List<Tag> followedTags = new ArrayList<>();

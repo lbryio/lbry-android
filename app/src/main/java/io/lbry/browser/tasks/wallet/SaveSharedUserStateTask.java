@@ -33,7 +33,7 @@ import io.lbry.browser.utils.Lbryio;
 public class SaveSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
     private static final String KEY = "shared";
     private static final String VERSION = "0.1";
-    private SaveSharedUserStateHandler handler;
+    private final SaveSharedUserStateHandler handler;
     private Exception error;
 
     public SaveSharedUserStateTask(SaveSharedUserStateHandler handler) {

@@ -2,7 +2,6 @@ package io.lbry.browser.utils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import io.lbry.browser.R;
 import io.lbry.browser.model.Language;

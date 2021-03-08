@@ -11,8 +11,8 @@ import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.model.UrlSuggestion;
 
 public class FetchRecentUrlHistoryTask extends AsyncTask<Void, Void, List<UrlSuggestion>> {
-    private DatabaseHelper dbHelper;
-    private FetchRecentUrlHistoryHandler handler;
+    private final DatabaseHelper dbHelper;
+    private final FetchRecentUrlHistoryHandler handler;
     public FetchRecentUrlHistoryTask(DatabaseHelper dbHelper, FetchRecentUrlHistoryHandler handler) {
         this.dbHelper = dbHelper;
         this.handler = handler;

@@ -1,11 +1,15 @@
 package io.lbry.browser.model;
 
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class WalletSync {
-    private String hash;
-    private String data;
+    @Getter
+    private final String hash;
+    @Getter
+    private final String data;
+    @Getter
     private boolean changed;
 
     public WalletSync(String hash, String data) {
@@ -17,4 +21,5 @@ public class WalletSync {
         this(hash, data);
         this.changed = changed;
     }
+
 }

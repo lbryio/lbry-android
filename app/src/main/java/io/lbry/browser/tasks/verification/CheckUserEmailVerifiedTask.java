@@ -8,8 +8,8 @@ import io.lbry.browser.model.lbryinc.User;
 import io.lbry.browser.utils.Lbryio;
 
 public class CheckUserEmailVerifiedTask extends AsyncTask<Void, Void, Boolean> {
-    private Context context;
-    private CheckUserEmailVerifiedHandler handler;
+    private final Context context;
+    private final CheckUserEmailVerifiedHandler handler;
 
     public CheckUserEmailVerifiedTask(Context context, CheckUserEmailVerifiedHandler handler) {
         this.context = context;

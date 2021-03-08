@@ -1,18 +1,15 @@
 package io.lbry.browser.tasks.localdata;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 
-import io.lbry.browser.MainActivity;
 import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.model.UrlSuggestion;
-import io.lbry.browser.tasks.GenericTaskHandler;
 
 public class SaveUrlHistoryTask extends AsyncTask<Void, Void, Boolean> {
-    private DatabaseHelper dbHelper;
-    private UrlSuggestion suggestion;
-    private SaveUrlHistoryHandler handler;
+    private final DatabaseHelper dbHelper;
+    private final UrlSuggestion suggestion;
+    private final SaveUrlHistoryHandler handler;
     private Exception error;
 
     public SaveUrlHistoryTask(UrlSuggestion suggestion, DatabaseHelper dbHelper, SaveUrlHistoryHandler handler) {

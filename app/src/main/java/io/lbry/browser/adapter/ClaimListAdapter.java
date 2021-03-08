@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
@@ -37,18 +36,18 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     private static final int VIEW_TYPE_CHANNEL = 2;
     private static final int VIEW_TYPE_FEATURED = 3; // featured search result
 
-    private Map<String, Claim> quickClaimIdMap;
-    private Map<String, Claim> quickClaimUrlMap;
-    private Map<String, Boolean> notFoundClaimIdMap;
-    private Map<String, Boolean> notFoundClaimUrlMap;
+    private final Map<String, Claim> quickClaimIdMap;
+    private final Map<String, Claim> quickClaimUrlMap;
+    private final Map<String, Boolean> notFoundClaimIdMap;
+    private final Map<String, Boolean> notFoundClaimUrlMap;
 
     @Setter
     private boolean hideFee;
     @Setter
     private boolean canEnterSelectionMode;
-    private Context context;
+    private final Context context;
     private List<Claim> items;
-    private List<Claim> selectedItems;
+    private final List<Claim> selectedItems;
     @Setter
     private ClaimListItemListener listener;
     @Getter
@@ -176,27 +175,27 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected View feeContainer;
-        protected TextView feeView;
-        protected ImageView thumbnailView;
-        protected View noThumbnailView;
-        protected TextView alphaView;
-        protected TextView vanityUrlView;
-        protected TextView durationView;
-        protected TextView titleView;
-        protected TextView publisherView;
-        protected TextView publishTimeView;
-        protected TextView pendingTextView;
-        protected View repostInfoView;
-        protected TextView repostChannelView;
-        protected View selectedOverlayView;
-        protected TextView fileSizeView;
-        protected ProgressBar downloadProgressView;
-        protected TextView deviceView;
+        protected final View feeContainer;
+        protected final TextView feeView;
+        protected final ImageView thumbnailView;
+        protected final View noThumbnailView;
+        protected final TextView alphaView;
+        protected final TextView vanityUrlView;
+        protected final TextView durationView;
+        protected final TextView titleView;
+        protected final TextView publisherView;
+        protected final TextView publishTimeView;
+        protected final TextView pendingTextView;
+        protected final View repostInfoView;
+        protected final TextView repostChannelView;
+        protected final View selectedOverlayView;
+        protected final TextView fileSizeView;
+        protected final ProgressBar downloadProgressView;
+        protected final TextView deviceView;
 
-        protected View loadingImagePlaceholder;
-        protected View loadingTextPlaceholder1;
-        protected View loadingTextPlaceholder2;
+        protected final View loadingImagePlaceholder;
+        protected final View loadingTextPlaceholder1;
+        protected final View loadingTextPlaceholder2;
         public ViewHolder(View v) {
             super(v);
             feeContainer = v.findViewById(R.id.claim_fee_container);

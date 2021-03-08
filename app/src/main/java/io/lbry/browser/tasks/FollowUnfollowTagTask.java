@@ -10,10 +10,10 @@ import io.lbry.browser.model.Tag;
 import io.lbry.browser.utils.Lbry;
 
 public class FollowUnfollowTagTask extends AsyncTask<Void, Void, Boolean> {
-    private Tag tag;
-    private boolean unfollowing;
-    private Context context;
-    private FollowUnfollowTagHandler handler;
+    private final Tag tag;
+    private final boolean unfollowing;
+    private final Context context;
+    private final FollowUnfollowTagHandler handler;
     private Exception error;
 
     public FollowUnfollowTagTask(Tag tag, boolean unfollowing, Context context, FollowUnfollowTagHandler handler) {

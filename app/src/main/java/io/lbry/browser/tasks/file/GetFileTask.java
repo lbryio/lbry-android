@@ -14,10 +14,10 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class GetFileTask extends AsyncTask<Void, Void, LbryFile> {
-    private String uri;
-    private boolean saveFile;
-    private View progressView;
-    private GetFileHandler handler;
+    private final String uri;
+    private final boolean saveFile;
+    private final View progressView;
+    private final GetFileHandler handler;
     private Exception error;
 
     public GetFileTask(String uri, boolean saveFile, View progressView, GetFileHandler handler) {

@@ -14,13 +14,13 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lighthouse;
 
 public class LighthouseSearchTask extends AsyncTask<Void, Void, List<Claim>> {
-    private String rawQuery;
-    private int size;
-    private int from;
-    private boolean nsfw;
-    private String relatedTo;
-    private ClaimSearchResultHandler handler;
-    private ProgressBar progressBar;
+    private final String rawQuery;
+    private final int size;
+    private final int from;
+    private final boolean nsfw;
+    private final String relatedTo;
+    private final ClaimSearchResultHandler handler;
+    private final ProgressBar progressBar;
     private Exception error;
 
     public LighthouseSearchTask(String rawQuery, int size, int from, boolean nsfw, String relatedTo, ProgressBar progressBar, ClaimSearchResultHandler handler) {

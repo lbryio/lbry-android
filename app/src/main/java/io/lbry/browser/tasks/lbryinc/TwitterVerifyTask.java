@@ -22,10 +22,10 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class TwitterVerifyTask extends AsyncTask<Void, Void, RewardVerified> {
-    private Context context;
-    private View progressView;
-    private TwitterOauth twitterOauth;
-    private RewardVerifiedHandler handler;
+    private final Context context;
+    private final View progressView;
+    private final TwitterOauth twitterOauth;
+    private final RewardVerifiedHandler handler;
     private Exception error;
 
     public TwitterVerifyTask(TwitterOauth twitterOauth, View progressView, Context context, RewardVerifiedHandler handler) {

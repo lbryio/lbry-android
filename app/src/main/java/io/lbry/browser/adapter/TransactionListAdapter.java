@@ -26,8 +26,8 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
     private static final DecimalFormat TX_LIST_AMOUNT_FORMAT = new DecimalFormat("#,##0.0000");
     private static final SimpleDateFormat TX_LIST_DATE_FORMAT = new SimpleDateFormat("MMM d");
 
-    private Context context;
-    private List<Transaction> items;
+    private final Context context;
+    private final List<Transaction> items;
     @Setter
     private TransactionClickListener listener;
 
@@ -107,14 +107,14 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected TextView descView;
-        protected TextView amountView;
-        protected TextView claimView;
-        protected TextView feeView;
-        protected TextView txidLinkView;
-        protected TextView dateView;
-        protected TextView pendingView;
-        protected View infoFeeContainer;
+        protected final TextView descView;
+        protected final TextView amountView;
+        protected final TextView claimView;
+        protected final TextView feeView;
+        protected final TextView txidLinkView;
+        protected final TextView dateView;
+        protected final TextView pendingView;
+        protected final View infoFeeContainer;
 
         public ViewHolder(View v) {
             super(v);

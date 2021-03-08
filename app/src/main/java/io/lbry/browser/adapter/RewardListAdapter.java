@@ -32,7 +32,7 @@ public class RewardListAdapter extends RecyclerView.Adapter<RewardListAdapter.Vi
     public static final int DISPLAY_MODE_ALL = 1;
     public static final int DISPLAY_MODE_UNCLAIMED = 2;
 
-    private Context context;
+    private final Context context;
     @Setter
     private List<Reward> all;
     private List<Reward> items;
@@ -85,16 +85,16 @@ public class RewardListAdapter extends RecyclerView.Adapter<RewardListAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected View iconClaimed;
-        protected View loading;
-        protected View upTo;
-        protected TextView textTitle;
-        protected TextView textDescription;
-        protected TextView textLbcValue;
-        protected TextView textUsdValue;
-        protected TextView textLinkTransaction;
-        protected EditText inputCustomCode;
-        protected MaterialButton buttonClaimCustom;
+        protected final View iconClaimed;
+        protected final View loading;
+        protected final View upTo;
+        protected final TextView textTitle;
+        protected final TextView textDescription;
+        protected final TextView textLbcValue;
+        protected final TextView textUsdValue;
+        protected final TextView textLinkTransaction;
+        protected final EditText inputCustomCode;
+        protected final MaterialButton buttonClaimCustom;
         public ViewHolder(View v) {
             super(v);
             iconClaimed = v.findViewById(R.id.reward_item_claimed_icon);

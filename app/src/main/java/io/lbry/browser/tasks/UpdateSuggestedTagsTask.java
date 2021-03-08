@@ -13,13 +13,13 @@ import io.lbry.browser.utils.Lbry;
 
 public class UpdateSuggestedTagsTask extends AsyncTask<Void, Void, List<Tag>> {
 
-    private boolean clearPrevious;
-    private boolean excludeMature;
-    private int limit;
-    private String filter;
-    private TagListAdapter addedTagsAdapter;
-    private TagListAdapter suggestedTagsAdapter;
-    private KnownTagsHandler handler;
+    private final boolean clearPrevious;
+    private final boolean excludeMature;
+    private final int limit;
+    private final String filter;
+    private final TagListAdapter addedTagsAdapter;
+    private final TagListAdapter suggestedTagsAdapter;
+    private final KnownTagsHandler handler;
 
     public UpdateSuggestedTagsTask(
             String filter,

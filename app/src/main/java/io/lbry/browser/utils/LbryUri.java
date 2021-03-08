@@ -262,7 +262,7 @@ public class LbryUri {
         return toString().hashCode();
     }
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof LbryUri)) {
+        if (!(o instanceof LbryUri)) {
             return false;
         }
         return toString().equalsIgnoreCase(o.toString());
@@ -270,9 +270,9 @@ public class LbryUri {
 
     @Data
     public static class UriModifier {
-        private String claimId;
-        private int claimSequence;
-        private int bidPosition;
+        private final String claimId;
+        private final int claimSequence;
+        private final int bidPosition;
 
         public UriModifier(String claimId, int claimSequence, int bidPosition) {
             this.claimId = claimId;

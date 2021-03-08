@@ -1,6 +1,5 @@
 package io.lbry.browser.tasks.verification;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Base64;
 
@@ -10,7 +9,6 @@ import com.google.api.client.http.GenericUrl;
 
 import java.nio.charset.StandardCharsets;
 
-import io.lbry.browser.VerificationActivity;
 import io.lbry.browser.model.TwitterOauth;
 import io.lbry.browser.tasks.TwitterOauthHandler;
 import io.lbry.browser.utils.Helper;
@@ -22,10 +20,10 @@ import okhttp3.Response;
 public class TwitterRequestTokenTask extends AsyncTask<Void, Void, String> {
     private static final String ENDPOINT = "https://api.twitter.com/oauth/request_token";
 
-    private String consumerKey;
-    private String consumerSecret;
+    private final String consumerKey;
+    private final String consumerSecret;
     private Exception error;
-    private TwitterOauthHandler handler;
+    private final TwitterOauthHandler handler;
 
     public TwitterRequestTokenTask(String consumerKey, String consumerSecret, TwitterOauthHandler handler) {
         this.consumerKey = consumerKey;
@@ -43,7 +41,7 @@ public class TwitterRequestTokenTask extends AsyncTask<Void, Void, String> {
             OAuthParameters oauthParams = new OAuthParameters();
             oauthParams.callback = "https://lbry.tv";
             oauthParams.consumerKey = new String(
-                    Base64.decode(consumerKey, Base64.NO_WRAP), StandardCharsets.UTF_8.name());;
+                    Base64.decode(consumerKey, Base64.NO_WRAP), StandardCharsets.UTF_8.name());
             oauthParams.signatureMethod = "HMAC-SHA-1";
             oauthParams.signer = signer;
             oauthParams.computeNonce();

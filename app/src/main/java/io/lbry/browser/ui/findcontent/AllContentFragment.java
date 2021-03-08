@@ -207,7 +207,11 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
     private void checkParams(boolean reload) {
         Map<String, Object> params = getParams();
         if (params != null && params.containsKey("singleTag")) {
-            String tagName = params.get("singleTag").toString();
+            String tagName = "";
+            Object o = params.get("singleTag");
+            if (o != null) {
+                tagName = o.toString();
+            }
             singleTagView = true;
             tags = Arrays.asList(tagName);
             titleView.setText(Helper.capitalize(tagName));
@@ -289,7 +293,7 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
         }
     }
 
-    private FollowUnfollowTagTask.FollowUnfollowTagHandler followUnfollowHandler = new FollowUnfollowTagTask.FollowUnfollowTagHandler() {
+    private final FollowUnfollowTagTask.FollowUnfollowTagHandler followUnfollowHandler = new FollowUnfollowTagTask.FollowUnfollowTagHandler() {
         @Override
         public void onSuccess(Tag tag, boolean unfollowing) {
             if (tags != null) {

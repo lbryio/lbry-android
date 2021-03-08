@@ -14,9 +14,9 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class InviteByEmailTask extends AsyncTask<Void, Void, Boolean> {
-    private String email;
-    private View progressView;
-    private GenericTaskHandler handler;
+    private final String email;
+    private final View progressView;
+    private final GenericTaskHandler handler;
     private Exception error;
 
     public InviteByEmailTask(String email, View progressView, GenericTaskHandler handler) {

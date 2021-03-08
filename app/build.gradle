@@ -4,7 +4,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.1"
+    buildToolsVersion "29.0.2"
     flavorDimensions "default"
 
     compileOptions {
@@ -18,7 +18,6 @@ android {
         targetSdkVersion 29
         versionCode 1614
         versionName "0.16.14"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

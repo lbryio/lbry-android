@@ -1,7 +1,6 @@
 package io.lbry.browser.ui.channel;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
@@ -648,8 +646,8 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
                     showError(getString(R.string.please_enter_valid_deposit));
                     return;
                 }
-                if (depositAmount == 0) {
-                    String error = getResources().getQuantityString(R.plurals.min_deposit_required, depositAmount == 1 ? 1 : 2, String.valueOf(Helper.MIN_DEPOSIT));
+                if (depositAmount <= 0.000001) {
+                    String error = getResources().getQuantityString(R.plurals.min_deposit_required, Math.abs(depositAmount-1.0) <= 0.000001 ? 1 : 2, String.valueOf(Helper.MIN_DEPOSIT));
                     showError(error);
                     return;
                 }

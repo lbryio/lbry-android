@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -25,9 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
@@ -79,7 +76,7 @@ public class PublishesFragment extends BaseFragment implements ActionMode.Callba
         return root;
     }
 
-    private View.OnClickListener newPublishClickListener = new View.OnClickListener() {
+    private final View.OnClickListener newPublishClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Context context = getContext();
