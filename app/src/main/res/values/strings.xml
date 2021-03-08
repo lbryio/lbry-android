@@ -454,6 +454,9 @@
     <string name="twitter_verify">Verify with Twitter</string>
     <string name="skip_queue_verification">Skip the Queue</string>
     <string name="skip_queue_verification_desc">Skip the manual verification queue by paying a fee in order to start participating in the rewards program immediately.</string>
+    <string name="skip_queue_manual_check">If you previously completed a purchase successfully and you still see this screen, please tap the verify purchase button below.</string>
+    <string name="skip_queue_purchase_not_found">No purchase was found for this account.</string>
+    <string name="verify_purchase">Verify Purchase</string>
     <string name="request_to_be_verified">Please request to be verified on the &lt;a href="https://discordapp.com/invite/Z3bERWA"&gt;LBRY Discord server&lt;/a&gt;. A manual review can take anywhere from several minutes to several days.</string>
     <string name="enjoy_free_content">Please enjoy free content in the meantime!</string>
     <string name="verify_phone_number">Verify Phone Number</string>
