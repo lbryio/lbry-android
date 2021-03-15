@@ -64,7 +64,7 @@ public class BaseFragment extends Fragment {
             }
         }
 
-        if (params != null && params.containsKey("source") && "notification".equalsIgnoreCase(params.get("source").toString())) {
+        if (params != null && params.containsKey("source") && params.get("source") != null && "notification".equalsIgnoreCase(params.get("source").toString())) {
             Context context = getContext();
             if (context instanceof MainActivity) {
                 ((MainActivity) context).navigateBackToNotifications();
