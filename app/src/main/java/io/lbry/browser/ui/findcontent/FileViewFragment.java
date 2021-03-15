@@ -565,7 +565,7 @@ public class FileViewFragment extends BaseFragment implements
                 webView.setWebViewClient(new LbryWebViewClient(ctx));
                 WebSettings webSettings = webView.getSettings();
                 webSettings.setAllowFileAccess(true);
-                webSettings.setJavaScriptEnabled(true);
+                webSettings.setJavaScriptEnabled(false);
             }
 
             if (!webViewAdded && root != null) {
