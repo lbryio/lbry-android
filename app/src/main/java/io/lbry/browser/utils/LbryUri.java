@@ -223,7 +223,10 @@ public class LbryUri {
         String secondaryClaimId = !Helper.isNullOrEmpty(secondaryClaimName) ? streamClaimId : null;
 
         if (!Helper.isNullOrEmpty(primaryClaimId)) {
-            sb.append('#').append(primaryClaimId);
+            if (protocol.equals(LBRY_TV_BASE_URL))
+                sb.append(':').append(primaryClaimId);
+            else
+                sb.append('#').append(primaryClaimId);
         } else if (primaryClaimSequence > 0) {
             sb.append(':').append(primaryClaimSequence);
         } else if (primaryBidPosition > 0) {
@@ -235,7 +238,10 @@ public class LbryUri {
         }
 
         if (!Helper.isNullOrEmpty(secondaryClaimId)) {
-            sb.append('#').append(secondaryClaimId);
+            if (protocol.equals(LBRY_TV_BASE_URL))
+                sb.append(':').append(secondaryClaimId);
+            else
+                sb.append('#').append(secondaryClaimId);
         } else if (secondaryClaimSequence > 0) {
             sb.append(':').append(secondaryClaimSequence);
         } else  if (secondaryBidPosition > 0) {
