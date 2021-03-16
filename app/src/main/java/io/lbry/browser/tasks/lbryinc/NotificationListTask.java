@@ -16,8 +16,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.data.DatabaseHelper;
@@ -47,7 +49,9 @@ public class NotificationListTask extends AsyncTask<Void, Void, List<LbryNotific
         List<LbryNotification> notifications = new ArrayList<>();
         SQLiteDatabase db = null;
         try {
-            JSONArray array = (JSONArray) Lbryio.parseResponse(Lbryio.call("notification", "list", context));
+            Map<String, String> parameters = new HashMap<>(1);
+            parameters.put("is_app_readable", "true");
+            JSONArray array = (JSONArray) Lbryio.parseResponse(Lbryio.call("notification", "list", parameters, context));
             if (array != null) {
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject item = array.getJSONObject(i);
