@@ -257,15 +257,8 @@
 
     <!-- Wallet -->
     <string name="balance">Duwitmu</string>
-    <string name="you_currently_have">Sampeyan saiki duwe</string>
     <string name="convert_credits">Sampeyan bisa ngowahi kridit sampeyan menyang USD lan mbatalake jumlah sing diowahi nggunakake ijol-ijolan. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">Sampeyan yo duwe</string>
-    <string name="you_staked">Sampeyan naruhno</string>
-    <string name="in_tips">ing tips</string>
-    <string name="in_your_publishes">ing nerbitake sampeyan</string>
-    <string name="in_your_supports">ing dhukungan sampeyan</string>
-    <string name="earn_more_tips">Entuk tips liyane kanthi ngunggah video sing viral</string>
     <string name="sdk_initializing">Miwiti Layanan latar mburi...</string>
     <string name="sdk_still_initializing">Layanan latar mburi isih miwiti. Sampeyan bisa njelajah lan nonton konten ing wektu tegese.</string>
     <string name="sdk_initializing_functionality">Sampeyan ora bisa nindakake iki saiki amarga layanan latar mburi isih miwiti.</string>

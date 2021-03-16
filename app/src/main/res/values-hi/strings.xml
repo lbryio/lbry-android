@@ -265,15 +265,8 @@
 
     <!-- Wallet -->
     <string name="balance">बैलेंस</string>
-    <string name="you_currently_have">आपके पास अभी है</string>
     <string name="convert_credits"> आप अपने क्रेडिटस को यूसडी में बदल सकते हैं और उन्हें एक्सचेंज की मदद से निकाल भी सकते हैं। &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt; क्रेडिटस को यूसडी में बदलें बिट्रिक्स पर&lt;/a&gt;</string>
-    <string name="you_also_have">  आपके पास और भी है</string>
-    <string name="you_staked">आपने स्टेक की है</string>
-    <string name="in_tips">टिप्स में</string>
-    <string name="in_your_publishes">आपकी पब्लिशिस में हैं</string>
-    <string name="in_your_supports">आपके सपोर्ट्स में हैं</string>
-    <string name="earn_more_tips">मनोरंजक वीडियोस अपलोड करके और अधिक टिप्स कमाए</string>
     <string name="sdk_initializing">पृष्ठभूमि सेवा प्रारंभ कर रहा है ...</string>
     <string name="sdk_still_initializing">पृष्ठभूमि सेवाएं अभी भी शुरू हो रही है। इस दौरान आप अन्य सामग्री को खोज एवं देख सकते हैं।</string>
     <string name="sdk_initializing_functionality">आप यह अभी नहीं कर सकते हैं क्योंकि पृष्ठभूमि सेवाएं अभी भी शुरू हो रही है</string>

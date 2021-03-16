@@ -281,15 +281,8 @@
 
     <!-- Wallet -->
     <string name="balance">Баланс</string>
-    <string name="you_currently_have">У Вас сейчас есть </string>
     <string name="convert_credits">Вы можете поменять кредиты на доллары США и снять сумму, используя обменник. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">У Вас также есть</string>
-    <string name="you_staked">У Вас сохранено</string>
-    <string name="in_tips">в чаевых</string>
-    <string name="in_your_publishes">в Ваших публикациях</string>
-    <string name="in_your_supports">в Ваших поддержках</string>
-    <string name="earn_more_tips">Заработайте больше чаевых, загружая крутые видео</string>
     <string name="sdk_initializing">Фоновый сервис запускается...</string>
     <string name="sdk_still_initializing">Фоновый сервис всё ещё запускается. Между тем Вы уже можете искать и смотреть какой-либо контент.</string>
     <string name="sdk_initializing_functionality">Вы не можете сделать это прямо сейчас, потому что фоновый сервис всё ещё запускается.</string>

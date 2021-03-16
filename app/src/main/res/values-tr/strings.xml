@@ -252,15 +252,8 @@
 
     <!-- Wallet -->
     <string name="balance">Bakiye</string>
-    <string name="you_currently_have">Şuna sahipsiniz</string>
     <string name="convert_credits">Kredilerinizi USD\'ye çevirebilir ve döviz hizmeti ile paranızı çekebilirsiniz. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">Şunlara da sahipsiniz</string>
-    <string name="you_staked">Ayırdığınız miktar</string>
-    <string name="in_tips">bahşiş olarak</string>
-    <string name="in_your_publishes">yayınlarınızda mevcut olan</string>
-    <string name="in_your_supports">desteklerinizde mevcut olan</string>
-    <string name="earn_more_tips">Daha havalı videolar yükleyerek daha çok bahşiş kazan</string>
     <string name="sdk_still_initializing">Arkaplan servisi hala başlatılıyor. Bu arada siz içerikleri keşfedebilir ve izleyebilirsiniz.</string>
     <string name="sdk_initializing_functionality">Bunu şu an yapamazsınız çünkü arkaplan servisi hala başlatılıyor.</string>
 
