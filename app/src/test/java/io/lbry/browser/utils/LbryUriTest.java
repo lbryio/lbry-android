@@ -114,6 +114,33 @@ public class LbryUriTest {
     }
 
     @Test
+    public void parseLbryTvWithEncodedChars() {
+        LbryUri obtained = new LbryUri();
+
+        try {
+            obtained = LbryUri.parse("https://lbry.tv/@Content_I_Like:1/DR.-ASTRID-ST%C3%9CCKELBERGER:2",false);
+        } catch (LbryUriException e) {
+            e.printStackTrace();
+        }
+
+        expected = new LbryUri();
+        expected.setChannelName("@Content_I_Like");
+        expected.setStreamName("DR.-ASTRID-STÜCKELBERGER");
+
+        try {
+            LbryUri.UriModifier primaryMod = LbryUri.UriModifier.parse("#", "1");
+            LbryUri.UriModifier secondaryMod = LbryUri.UriModifier.parse("#", "2");
+            expected.setChannelClaimId(primaryMod.getClaimId());
+            expected.setStreamClaimId(secondaryMod.getClaimId());
+        } catch (LbryUriException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(expected, obtained);
+
+    }
+
+    @Test
     public void lbryToTvString() {
         LbryUri obtained = new LbryUri();
 

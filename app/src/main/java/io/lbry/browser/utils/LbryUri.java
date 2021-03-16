@@ -1,5 +1,7 @@
 package io.lbry.browser.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -7,6 +9,8 @@ import java.util.regex.Pattern;
 
 import io.lbry.browser.exceptions.LbryUriException;
 import lombok.Data;
+
+import static org.apache.commons.codec.CharEncoding.UTF_8;
 
 @Data
 public class LbryUri {
@@ -117,10 +121,17 @@ public class LbryUri {
             }
         }
 
-        String streamOrChannelName = components.get(2);
+        String streamOrChannelName = null;
+        String possibleStreamName = null;
+        try {
+            // Using java.net.URLDecoder to be able to quickly unit test
+            streamOrChannelName = URLDecoder.decode(components.get(2), UTF_8);
+            possibleStreamName = URLDecoder.decode(components.get(6), UTF_8);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         String primaryModSeparator = components.get(3);
         String primaryModValue = components.get(4);
-        String possibleStreamName = components.get(6);
         String secondaryModSeparator = components.get(7);
         String secondaryModValue = components.get(8);
 
