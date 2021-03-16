@@ -281,15 +281,8 @@
 
     <!-- Wallet -->
     <string name="balance">Balans</string>
-    <string name="you_currently_have">Obecnie posiadasz</string>
     <string name="convert_credits">Możesz zamienić swoje kredyty na USD i wypłacić przeliczoną kwotę za pomocą giełdy. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">Posiadasz również</string>
-    <string name="you_staked">Zestackowane</string>
-    <string name="in_tips">w napiwkach</string>
-    <string name="in_your_publishes">w twoich publikacjach</string>
-    <string name="in_your_supports">w twoich wsparciach</string>
-    <string name="earn_more_tips">Zarób więcej napiwków publikując fajne filmiki</string>
     <string name="sdk_initializing">Usługa w tle jest inicjowana...</string>
     <string name="sdk_still_initializing">Usługa w tle jest nadal inicjowana. W międzyczasie możesz eksplorować i oglądać treści.</string>
     <string name="sdk_initializing_functionality">Nie możesz tego teraz zrobić, ponieważ usługa w tle wciąż się inicjuje.</string>

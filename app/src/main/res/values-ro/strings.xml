@@ -260,15 +260,8 @@
 
     <!-- Wallet -->
     <string name="balance">Sold</string>
-    <string name="you_currently_have">Acum ai</string>
     <string name="convert_credits">Îţi poţi converti creditele în USD şi să retragi suma folosind o casă de schimb. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Detalii&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Schimbă creditele în USD la Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">Mai ai și</string>
-    <string name="you_staked">Ai depus</string>
-    <string name="in_tips">în bacşişuri</string>
-    <string name="in_your_publishes">în publicările tale</string>
-    <string name="in_your_supports">în susţinerile tale</string>
-    <string name="earn_more_tips">Câştigă mai multe bacşişuri publicând conţinut</string>
     <string name="sdk_still_initializing">Serviciul din fundal încă se iniţializează. Poţi explora şi vedea conţinut între timp.</string>
     <string name="sdk_initializing_functionality">Nu poţi face asta acum deoarce serviciul din fundal încă se iniţializează.</string>
 

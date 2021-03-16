@@ -3,12 +3,12 @@ package io.lbry.browser.ui.wallet;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.util.Base64;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -16,11 +16,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
@@ -41,6 +41,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,21 +51,23 @@ import javax.crypto.spec.SecretKeySpec;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
 import io.lbry.browser.adapter.TransactionListAdapter;
+import io.lbry.browser.adapter.WalletDetailAdapter;
 import io.lbry.browser.listener.SdkStatusListener;
 import io.lbry.browser.listener.WalletBalanceListener;
 import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.Transaction;
 import io.lbry.browser.model.WalletBalance;
+import io.lbry.browser.model.WalletDetailItem;
 import io.lbry.browser.tasks.wallet.TransactionListTask;
 import io.lbry.browser.tasks.wallet.WalletAddressUnusedTask;
 import io.lbry.browser.tasks.wallet.WalletSendTask;
 import io.lbry.browser.ui.BaseFragment;
-import io.lbry.browser.ui.publish.PublishFragment;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 import io.lbry.browser.utils.LbryAnalytics;
 import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
+import io.lbry.browser.views.CreditsBalanceView;
 
 public class WalletFragment extends BaseFragment implements SdkStatusListener, WalletBalanceListener {
 
@@ -75,16 +78,17 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     private View layoutAccountRecommended;
     private View layoutSdkInitializing;
     private View linkSkipAccount;
-    private TextView textWalletBalance;
+    private CreditsBalanceView walletTotalBalanceView;
+    private CreditsBalanceView walletSpendableBalanceView;
+    private CreditsBalanceView walletSupportingBalanceView;
     private TextView textWalletBalanceUSD;
-    private TextView textTipsBalance;
-    private TextView textTipsBalanceUSD;
-    private TextView textClaimsBalance;
-    private TextView textSupportsBalance;
-    private ProgressBar walletSendProgress;
+    private TextView textWalletBalanceDesc;
+    private TextView buttonViewMore;
+    private ListView detailListView;
+    List<WalletDetailItem> detailRows;
+    private WalletDetailAdapter detailAdapter;
 
-    private TextView linkUnlockTips;
-    private ProgressBar progressUnlockTips;
+    private ProgressBar walletSendProgress;
 
     private View loadingRecentContainer;
     private View inlineBalanceContainer;
@@ -95,7 +99,6 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     private View linkViewAll;
     private TextView textConvertCredits;
     private TextView textConvertCreditsBittrex;
-    private TextView textEarnMoreTips;
     private TextView textWhatSyncMeans;
     private TextView textWalletReceiveAddress;
     private TextView textWalletHintSyncStatus;
@@ -127,16 +130,14 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         textWalletInlineBalance = root.findViewById(R.id.wallet_inline_balance_value);
         walletSendProgress = root.findViewById(R.id.wallet_send_progress);
 
-        textWalletBalance = root.findViewById(R.id.wallet_balance_value);
+        walletTotalBalanceView = root.findViewById(R.id.wallet_total_balance);
+        walletSpendableBalanceView = root.findViewById(R.id.wallet_spendable_balance);
+        walletSupportingBalanceView = root.findViewById(R.id.wallet_supporting_balance);
         textWalletBalanceUSD = root.findViewById(R.id.wallet_balance_usd_value);
-        textTipsBalance = root.findViewById(R.id.wallet_balance_tips);
-        textTipsBalanceUSD = root.findViewById(R.id.wallet_balance_tips_usd_value);
-        textClaimsBalance = root.findViewById(R.id.wallet_balance_staked_publishes);
-        textSupportsBalance = root.findViewById(R.id.wallet_balance_staked_supports);
+        textWalletBalanceDesc = root.findViewById(R.id.total_balance_desc);
         textWalletHintSyncStatus = root.findViewById(R.id.wallet_hint_sync_status);
-
-        linkUnlockTips = root.findViewById(R.id.wallet_unlock_tips_link);
-        progressUnlockTips = root.findViewById(R.id.wallet_unlock_tips_progress);
+        buttonViewMore = root.findViewById(R.id.view_more_button);
+        detailListView = root.findViewById(R.id.balance_detail_listview);
 
         recentTransactionsList = root.findViewById(R.id.wallet_recent_transactions_list);
         linkViewAll = root.findViewById(R.id.wallet_link_view_all);
@@ -144,7 +145,6 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         buttonBuyLBC = root.findViewById(R.id.wallet_buy_lbc_button);
         textConvertCredits = root.findViewById(R.id.wallet_hint_convert_credits);
         textConvertCreditsBittrex = root.findViewById(R.id.wallet_hint_convert_credits_bittrex);
-        textEarnMoreTips = root.findViewById(R.id.wallet_hint_earn_more_tips);
         textWhatSyncMeans = root.findViewById(R.id.wallet_hint_what_sync_means);
         textWalletReceiveAddress = root.findViewById(R.id.wallet_receive_address);
         buttonCopyReceiveAddress = root.findViewById(R.id.wallet_copy_receive_address);
@@ -267,29 +267,26 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         itemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.thin_divider));
         recentTransactionsList.addItemDecoration(itemDecoration);
 
-        linkUnlockTips.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (context != null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context).
-                            setTitle(R.string.unlock_tips).
-                            setMessage(R.string.confirm_unlock_tips)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    unlockTips();
-                                }
-                            }).setNegativeButton(R.string.no, null);
-                    builder.show();
-                }
-            }
-        });
+        detailRows = new ArrayList(3);
 
-        textEarnMoreTips.setOnClickListener(new View.OnClickListener() {
+        detailAdapter = new WalletDetailAdapter((MainActivity) context, detailRows);
+        detailListView.setAdapter(detailAdapter);
+
+        buttonViewMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Context context = getContext();
                 if (context instanceof MainActivity) {
-                    ((MainActivity) context).openFragment(PublishFragment.class, true, NavMenuItem.ID_ITEM_NEW_PUBLISH);
+                    View walletDetail = ((MainActivity) context).findViewById(R.id.balance_detail_listview);
+
+                    if (walletDetail.getVisibility() == View.GONE) {
+                        TransitionManager.beginDelayedTransition((ViewGroup) walletDetail.getParent());
+                        walletDetail.setVisibility(View.VISIBLE);
+                        buttonViewMore.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_dropup, 0);
+                    } else {
+                        walletDetail.setVisibility(View.GONE);
+                        buttonViewMore.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_dropdown, 0);
+                    }
                 }
             }
         });
@@ -638,34 +635,90 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     }
 
     public void onWalletBalanceUpdated(WalletBalance walletBalance) {
-        double balance = walletBalance.getAvailable().doubleValue();
-        double usdBalance = balance * Lbryio.LBCUSDRate;
+        double totalBalance = walletBalance.getTotal().doubleValue();
+        double spendableBalance = walletBalance.getAvailable().doubleValue();
+        double supportingBalance = walletBalance.getClaims().doubleValue() + walletBalance.getTips().doubleValue() + walletBalance.getSupports().doubleValue();
+        double usdBalance = spendableBalance * Lbryio.LBCUSDRate;
         double tipsBalance = walletBalance.getTips().doubleValue();
-        double tipsUsdBalance = tipsBalance * Lbryio.LBCUSDRate;
 
-        String formattedBalance = Helper.SIMPLE_CURRENCY_FORMAT.format(balance);
-        Helper.setViewText(textWalletBalance, balance > 0 && formattedBalance.equals("0") ? Helper.FULL_LBC_CURRENCY_FORMAT.format(balance) : formattedBalance);
-        Helper.setViewText(textTipsBalance, Helper.shortCurrencyFormat(tipsBalance));
-        Helper.setViewText(textClaimsBalance, Helper.shortCurrencyFormat(walletBalance.getClaims().doubleValue()));
-        Helper.setViewText(textSupportsBalance, Helper.shortCurrencyFormat(walletBalance.getSupports().doubleValue()));
-        Helper.setViewText(textWalletInlineBalance, Helper.shortCurrencyFormat(balance));
+        if (detailRows == null)
+            detailRows = new ArrayList<>(3);
+
+        if (detailAdapter == null) {
+            detailAdapter = new WalletDetailAdapter((MainActivity) getContext(), detailRows);
+            detailListView.setAdapter(detailAdapter);
+        }
+
+        WalletDetailItem earnedBalance = new WalletDetailItem(getResources().getString(R.string.earned_from_others), getResources().getString(R.string.unlock_to_spend), Helper.SIMPLE_CURRENCY_FORMAT.format(tipsBalance), tipsBalance != 0, ((MainActivity) getContext()).isUnlockingTips());
+        WalletDetailItem initialPublishes = new WalletDetailItem(getResources().getString(R.string.on_initial_publishes), getResources().getString(R.string.delete_or_edit_past_content), Helper.SIMPLE_CURRENCY_FORMAT.format(walletBalance.getClaims().doubleValue()), false, false);
+        WalletDetailItem supportingContent = new WalletDetailItem(getResources().getString(R.string.supporting_content), getResources().getString(R.string.delete_supports_to_spend), Helper.SIMPLE_CURRENCY_FORMAT.format(walletBalance.getSupports().doubleValue()), false, false);
+
+        boolean needNotifyAdapter = false;
+        boolean firstDatasetNotification;
+
+        if (detailRows.size() == 0) {
+            detailRows.add(0, earnedBalance);
+            detailRows.add(1, initialPublishes);
+            detailRows.add(2, supportingContent);
+            needNotifyAdapter = true;
+            firstDatasetNotification = true;
+        } else {
+            firstDatasetNotification = false;
+            if (!detailRows.get(0).detailAmount.equals(earnedBalance.detailAmount)
+                 || detailRows.get(0).isInProgress != earnedBalance.isInProgress
+                 || detailRows.get(0).isUnlockable != earnedBalance.isUnlockable) {
+                detailRows.set(0, earnedBalance);
+                needNotifyAdapter = true;
+            }
+            if (!detailRows.get(1).detailAmount.equals(initialPublishes.detailAmount)) {
+                detailRows.set(1, initialPublishes);
+                needNotifyAdapter = true;
+            }
+            if (!detailRows.get(2).detailAmount.equals(supportingContent.detailAmount)) {
+                detailRows.set(2, supportingContent);
+                needNotifyAdapter = true;
+            }
+        }
+
+        if (needNotifyAdapter) {
+            // notifyDatasetChanged() doesn't work, so simply reset the adapter to the list
+            // to update the view
+            detailListView.setAdapter(detailAdapter);
+
+            if (firstDatasetNotification) {
+                int listHeight = Math.round(getResources().getDisplayMetrics().density);
+
+                for (int i = 0; i < detailRows.size(); i++) {
+                    View item = detailAdapter.getView(i, null, detailListView);
+                    item.measure(0, 0);
+                    listHeight += item.getMeasuredHeight();
+                }
+
+                // Avoid scroll bars being displayed
+                ViewGroup.LayoutParams params = detailListView.getLayoutParams();
+                params.height = listHeight + (detailListView.getCount() + 1) * detailListView.getDividerHeight();
+                detailListView.setLayoutParams(params);
+                detailListView.setVerticalScrollBarEnabled(false);
+                detailListView.requestLayout();
+            }
+        }
+
+        String formattedTotalBalance = Helper.REDUCED_LBC_CURRENCY_FORMAT.format(totalBalance);
+        String formattedSpendableBalance = Helper.SIMPLE_CURRENCY_FORMAT.format(spendableBalance);
+        String formattedSupportingBalance = Helper.SIMPLE_CURRENCY_FORMAT.format(supportingBalance);
+        Helper.setViewText(walletTotalBalanceView, totalBalance > 0 && formattedTotalBalance.equals("0") ? Helper.FULL_LBC_CURRENCY_FORMAT.format(totalBalance) : formattedTotalBalance);
+        Helper.setViewText(walletSpendableBalanceView, spendableBalance > 0 && formattedSpendableBalance.equals("0") ? Helper.FULL_LBC_CURRENCY_FORMAT.format(spendableBalance) : formattedSpendableBalance);
+        Helper.setViewText(walletSupportingBalanceView, supportingBalance > 0 && formattedSupportingBalance.equals("0") ? Helper.FULL_LBC_CURRENCY_FORMAT.format(supportingBalance) : formattedSupportingBalance);
+        Helper.setViewText(textWalletInlineBalance, Helper.shortCurrencyFormat(spendableBalance));
         if (Lbryio.LBCUSDRate > 0) {
             // only update display usd values if the rate is loaded
             Helper.setViewText(textWalletBalanceUSD, String.format("≈$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(usdBalance)));
-            Helper.setViewText(textTipsBalanceUSD, String.format("≈$%s", Helper.SIMPLE_CURRENCY_FORMAT.format(tipsUsdBalance)));
         }
+
+        textWalletBalanceDesc.setText(spendableBalance == totalBalance ? getResources().getString(R.string.your_total_balance) : getResources().getString(R.string.all_of_this_is_yours));
 
         checkTips();
         checkRewardsDriver();
-    }
-
-    private void unlockTips() {
-        Context context = getContext();
-        if (context instanceof MainActivity) {
-            linkUnlockTips.setVisibility(View.GONE);
-            progressUnlockTips.setVisibility(View.VISIBLE);
-            ((MainActivity) context).unlockTips();
-        }
     }
 
     public void checkTips() {
@@ -681,9 +734,6 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             MainActivity activity = (MainActivity) context;
             unlocking = activity.isUnlockingTips();
         }
-
-        Helper.setViewVisibility(linkUnlockTips, !forceHideLink && tipBalance > 0 && !unlocking ? View.VISIBLE : View.GONE);
-        Helper.setViewVisibility(progressUnlockTips, unlocking ? View.VISIBLE : View.GONE);
     }
 
     private void checkRewardsDriver() {

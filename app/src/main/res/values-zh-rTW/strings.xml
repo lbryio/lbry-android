@@ -257,15 +257,8 @@
 
     <!-- Wallet -->
     <string name="balance">餘額</string>
-    <string name="you_currently_have">你目前有</string>
     <string name="convert_credits">你可以把信用額兌換為美元然後到交易所提取。&lt;a href=\"https://lbry.com/faq/exchanges\"&gt;了解更多&lt;/a&gt;。</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;在Bittrex上轉換美元&lt;/a&gt;</string>
-    <string name="you_also_have">你同時有</string>
-    <string name="you_staked">你累計</string>
-    <string name="in_tips">於小費</string>
-    <string name="in_your_publishes">為發佈押金</string>
-    <string name="in_your_supports">你支持的內容</string>
-    <string name="earn_more_tips">上傳酷酷的影片以獲得更多小費</string>
     <string name="sdk_initializing">背景程式執行初始化中……</string>
     <string name="sdk_still_initializing">背景程式仍在初始化。與此同時，你可以探索和觀看內容。</string>
     <string name="sdk_initializing_functionality">你目前還不能執行這動作，因為背景程式仍在初始化。</string>

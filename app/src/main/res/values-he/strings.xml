@@ -281,15 +281,8 @@
 
     <!-- Wallet -->
     <string name="balance">מאזן</string>
-    <string name="you_currently_have">יש לך כרגע</string>
     <string name="convert_credits">ביכולתך להמיר את הקרדיט שלך ל-USD ולמשוך את הסכום המומר באמצעות חלפניה. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;למדו עוד&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;המר קרדיט ל-USD באתר Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">יש לך גם</string>
-    <string name="you_staked">השקעת</string>
-    <string name="in_tips">בטיפים</string>
-    <string name="in_your_publishes">בפרסומים שלך</string>
-    <string name="in_your_supports">בפעולות תמיכה</string>
-    <string name="earn_more_tips">הרווח יותר טיפים ע\"י העלאת סרטונים מגניבים</string>
     <string name="sdk_initializing">תהליך הרקע כרגע מתאתחל…</string>
     <string name="sdk_still_initializing">תהליך הרקע כרגע מתאתחל. אתה יכול לבצע סקירה ולצפות בתכנים בינתיים.</string>
     <string name="sdk_initializing_functionality">אינך יכול לבצע זאת בינתיים משום שתהליך הרקע עדיין מתאתחל.</string>

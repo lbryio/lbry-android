@@ -252,15 +252,8 @@
 
     <!-- Wallet -->
     <string name="balance">બેલેન્સ</string>
-    <string name="you_currently_have">તમારી પાસે હાલમાં</string>
     <string name="convert_credits">તમે તમારા ક્રેડિટને USD માં કન્વર્ટ કરી શકો છો અને એક્સચેંજનો ઉપયોગ કરીને રૂપાંતરિત રકમ પાછા ખેંચી શકો છો. &lt;a href=\"https://lbry.com/faq/exchanges\"&gt;Learn more&lt;/a&gt;.</string>
     <string name="convert_credits_bittrex">&lt;a href=\"https://bittrex.com/Account/Register?referralCode=4M1-P30-BON\"&gt;Convert credits to USD on Bittrex&lt;/a&gt;</string>
-    <string name="you_also_have">તમારી પાસે પણ છે</string>
-    <string name="you_staked">તમે સ્ટેક્ડ</string>
-    <string name="in_tips">ટીપ્સમાં</string>
-    <string name="in_your_publishes">તમારા પ્રકાશનોમાં</string>
-    <string name="in_your_supports">તમારા સપોર્ટ</string>
-    <string name="earn_more_tips">કૂલ વિડિઓઝ અપલોડ કરીને વધુ ટીપ્સ કમાઓ</string>
     <string name="sdk_still_initializing">પૃષ્ઠભૂમિ સેવા હજી પ્રારંભ થઈ રહી છે. તમે સરેરાશ સમયમાં અન્વેષણ કરી શકો છો અને સામગ્રી જોઈ શકો છો.</string>
     <string name="sdk_initializing_functionality">તમે હમણાં આ કરી શકતા નથી કારણ કે પૃષ્ઠભૂમિ સેવા હજી પ્રારંભ થઈ રહી છે.</string>
 
