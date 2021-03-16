@@ -452,6 +452,9 @@
     <string name="twitter_verification">Twitter Verification</string>
     <string name="twitter_verification_desc">Get instantly verified using your Twitter account. Your Twitter email address must match the email that you provided and your account should be active.</string>
     <string name="twitter_verify">Verify with Twitter</string>
+    <string name="phone_number_verification">Phone Number Verification</string>
+    <string name="phone_number_verification_desc">Get instantly verified using your phone number.</string>
+    <string name="phone_number_verify">Verify with phone number</string>
     <string name="skip_queue_verification">Skip the Queue</string>
     <string name="skip_queue_verification_desc">Skip the manual verification queue by paying a fee in order to start participating in the rewards program immediately.</string>
     <string name="skip_queue_manual_check">If you previously completed a purchase successfully and you still see this screen, please tap the verify purchase button below.</string>
