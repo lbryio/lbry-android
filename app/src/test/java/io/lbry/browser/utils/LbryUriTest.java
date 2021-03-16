@@ -137,7 +137,6 @@ public class LbryUriTest {
         }
 
         assertEquals(expected, obtained);
-
     }
 
     @Test
@@ -151,6 +150,32 @@ public class LbryUriTest {
         }
 
         assertEquals("https://lbry.tv/@lbry:3f/lbryturns4:6", obtained.toTvString());
+    }
+
+    @Test
+    public void lbryToTvStringWithEncodedChars() {
+        LbryUri obtained = new LbryUri();
+
+        try {
+            obtained = LbryUri.parse("lbry://La-Peur,-Nos-Attentats,-c'est-VOTRE-Sécurité!-Les-Guignols#6",false);
+        } catch (LbryUriException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("https://lbry.tv/La-Peur%2C-Nos-Attentats%2C-c%27est-VOTRE-Se%CC%81curite%CC%81%21-Les-Guignols:6", obtained.toTvString());
+    }
+
+    @Test
+    public void lbryToTvStringWithChannelAndEncodedChars() {
+        LbryUri obtained = new LbryUri();
+
+        try {
+            obtained = LbryUri.parse("lbry://@test#1/La-Peur,-Nos-Attentats,-c'est-VOTRE-Sécurité!-Les-Guignols#6",false);
+        } catch (LbryUriException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("https://lbry.tv/@test:1/La-Peur%2C-Nos-Attentats%2C-c%27est-VOTRE-Se%CC%81curite%CC%81%21-Les-Guignols:6", obtained.toTvString());
     }
 
     @NotNull

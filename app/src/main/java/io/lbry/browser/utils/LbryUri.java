@@ -2,6 +2,7 @@ package io.lbry.browser.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -199,7 +200,18 @@ public class LbryUri {
         if (channelName != null) {
             formattedChannelName = channelName.startsWith("@") ? channelName : String.format("@%s", channelName);
         }
-        String primaryClaimName = claimName;
+        String primaryClaimName = null;
+
+        if (protocol.equals(LBRY_TV_BASE_URL) && Helper.isNullOrEmpty(formattedChannelName)) {
+            try {
+                primaryClaimName = URLEncoder.encode(claimName, UTF_8);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            primaryClaimName = claimName;
+        }
+
         if (Helper.isNullOrEmpty(primaryClaimName)) {
             primaryClaimName = contentName;
         }
@@ -229,7 +241,15 @@ public class LbryUri {
             secondaryClaimName = contentName;
         }
         if (Helper.isNullOrEmpty(secondaryClaimName)) {
-            secondaryClaimName = !Helper.isNullOrEmpty(formattedChannelName) ? streamName : null;
+            if (protocol.equals(LBRY_TV_BASE_URL)) {
+                try {
+                    secondaryClaimName = !Helper.isNullOrEmpty(formattedChannelName) ? URLEncoder.encode(streamName, UTF_8) : null;
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                secondaryClaimName = !Helper.isNullOrEmpty(formattedChannelName) ? streamName : null;
+            }
         }
         String secondaryClaimId = !Helper.isNullOrEmpty(secondaryClaimName) ? streamClaimId : null;
 
