@@ -223,7 +223,10 @@ public class LbryUri {
         String secondaryClaimId = !Helper.isNullOrEmpty(secondaryClaimName) ? streamClaimId : null;
 
         if (!Helper.isNullOrEmpty(primaryClaimId)) {
-            sb.append('#').append(primaryClaimId);
+            if (protocol.equals(LBRY_TV_BASE_URL))
+                sb.append(':').append(primaryClaimId);
+            else
+                sb.append('#').append(primaryClaimId);
         } else if (primaryClaimSequence > 0) {
             sb.append(':').append(primaryClaimSequence);
         } else if (primaryBidPosition > 0) {
@@ -235,7 +238,10 @@ public class LbryUri {
         }
 
         if (!Helper.isNullOrEmpty(secondaryClaimId)) {
-            sb.append('#').append(secondaryClaimId);
+            if (protocol.equals(LBRY_TV_BASE_URL))
+                sb.append(':').append(secondaryClaimId);
+            else
+                sb.append('#').append(secondaryClaimId);
         } else if (secondaryClaimSequence > 0) {
             sb.append(':').append(secondaryClaimSequence);
         } else  if (secondaryBidPosition > 0) {
@@ -262,7 +268,7 @@ public class LbryUri {
         return toString().hashCode();
     }
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof LbryUri)) {
+        if (!(o instanceof LbryUri)) {
             return false;
         }
         return toString().equalsIgnoreCase(o.toString());
@@ -270,9 +276,9 @@ public class LbryUri {
 
     @Data
     public static class UriModifier {
-        private String claimId;
-        private int claimSequence;
-        private int bidPosition;
+        private final String claimId;
+        private final int claimSequence;
+        private final int bidPosition;
 
         public UriModifier(String claimId, int claimSequence, int bidPosition) {
             this.claimId = claimId;

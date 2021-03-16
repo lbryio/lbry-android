@@ -54,8 +54,8 @@ public class ContentScopeDialogFragment extends BottomSheetDialogFragment {
         private final int[] checkViewIds = {
                 R.id.content_scope_everyone_item_selected, R.id.content_scope_tags_item_selected
         };
-        private BottomSheetDialogFragment dialog;
-        private ContentScopeListener listener;
+        private final BottomSheetDialogFragment dialog;
+        private final ContentScopeListener listener;
 
         public ContentScopeItemClickListener(BottomSheetDialogFragment dialog, ContentScopeListener listener) {
             this.dialog = dialog;

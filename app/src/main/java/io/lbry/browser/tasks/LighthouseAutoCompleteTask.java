@@ -12,9 +12,9 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lighthouse;
 
 public class LighthouseAutoCompleteTask extends AsyncTask<Void, Void, List<UrlSuggestion>> {
-    private String text;
-    private AutoCompleteResultHandler handler;
-    private View progressView;
+    private final String text;
+    private final AutoCompleteResultHandler handler;
+    private final View progressView;
     private Exception error;
 
     public LighthouseAutoCompleteTask(String text, View progressView, AutoCompleteResultHandler handler) {

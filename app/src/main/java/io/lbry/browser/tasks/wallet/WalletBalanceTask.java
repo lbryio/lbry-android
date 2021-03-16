@@ -4,15 +4,12 @@ import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
-
 import io.lbry.browser.exceptions.ApiCallException;
 import io.lbry.browser.model.WalletBalance;
-import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class WalletBalanceTask extends AsyncTask<Void, Void, WalletBalance> {
-    private WalletBalanceHandler handler;
+    private final WalletBalanceHandler handler;
     private Exception error;
 
     public WalletBalanceTask(WalletBalanceHandler handler) {

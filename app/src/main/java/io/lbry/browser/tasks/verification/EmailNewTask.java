@@ -3,8 +3,6 @@ package io.lbry.browser.tasks.verification;
 import android.os.AsyncTask;
 import android.view.View;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,9 +13,9 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class EmailNewTask extends AsyncTask<Void, Void, Boolean> {
-    private String email;
-    private View progressView;
-    private EmailNewHandler handler;
+    private final String email;
+    private final View progressView;
+    private final EmailNewHandler handler;
     private Exception error;
 
     public EmailNewTask(String email, View progressView, EmailNewHandler handler) {

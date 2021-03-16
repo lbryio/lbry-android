@@ -10,13 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import io.lbry.browser.R;
-import io.lbry.browser.model.Language;
 import io.lbry.browser.model.License;
 import io.lbry.browser.utils.Predefined;
 
 public class LicenseSpinnerAdapter extends ArrayAdapter<License> {
-    private int layoutResourceId;
-    private LayoutInflater inflater;
+    private final int layoutResourceId;
+    private final LayoutInflater inflater;
 
     public LicenseSpinnerAdapter(Context context, int resource) {
         super(context, resource, 0, Predefined.LICENSES);

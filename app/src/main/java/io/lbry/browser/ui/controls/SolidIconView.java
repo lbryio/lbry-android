@@ -8,7 +8,7 @@ import android.view.Gravity;
 import androidx.appcompat.widget.AppCompatTextView;
 
 public class SolidIconView extends AppCompatTextView {
-    private Context context;
+    private final Context context;
 
     public SolidIconView(Context context) {
         super(context);

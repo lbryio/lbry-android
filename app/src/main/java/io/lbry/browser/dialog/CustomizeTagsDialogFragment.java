@@ -142,7 +142,7 @@ public class CustomizeTagsDialogFragment extends BottomSheetDialogFragment {
         return view;
     }
 
-    private TagListAdapter.TagClickListener customizeTagClickListener = new TagListAdapter.TagClickListener() {
+    private final TagListAdapter.TagClickListener customizeTagClickListener = new TagListAdapter.TagClickListener() {
         @Override
         public void onTagClicked(Tag tag, int customizeMode) {
             if (customizeMode == TagListAdapter.CUSTOMIZE_MODE_ADD) {

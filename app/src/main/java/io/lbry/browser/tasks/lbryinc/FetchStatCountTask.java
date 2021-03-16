@@ -15,10 +15,10 @@ public class FetchStatCountTask extends AsyncTask<Void, Void, Integer> {
     public static final int STAT_VIEW_COUNT = 1;
     public static final int STAT_SUB_COUNT = 2;
 
-    private String claimId;
-    private int stat;
-    private FetchStatCountHandler handler;
-    private View progressView;
+    private final String claimId;
+    private final int stat;
+    private final FetchStatCountHandler handler;
+    private final View progressView;
     private Exception error;
 
     public FetchStatCountTask(int stat, String claimId, View progressView, FetchStatCountHandler handler) {

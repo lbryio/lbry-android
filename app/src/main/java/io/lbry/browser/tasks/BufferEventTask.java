@@ -12,16 +12,17 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class BufferEventTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "LbryBufferEvent";
     private static final String ENDPOINT = "https://collector-service.api.lbry.tv/api/v1/events/video";
 
-    private String streamUrl;
-    private String userIdHash;
-    private long streamDuration;
-    private long streamPosition;
-    private long bufferDuration;
+    private final String streamUrl;
+    private final String userIdHash;
+    private final long streamDuration;
+    private final long streamPosition;
+    private final long bufferDuration;
 
     public BufferEventTask(String streamUrl, long streamDuration, long streamPosition, long bufferDuration, String userIdHash) {
         this.streamUrl = streamUrl;
@@ -53,7 +54,11 @@ public class BufferEventTask extends AsyncTask<Void, Void, Void> {
                     build();
 
             Response response = client.newCall(request).execute();
-            String responseString = response.body().string();
+            ResponseBody resBody = response.body();
+            String responseString = "";
+            if (resBody != null) {
+                responseString = response.body().string();
+            }
             Log.d(TAG, String.format("buffer event sent: %s", responseString));
         } catch (Exception ex) {
             // we don't want to fail if a buffer event fails to register

@@ -25,10 +25,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,7 +50,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,7 +74,6 @@ import io.lbry.browser.model.License;
 import io.lbry.browser.model.NavMenuItem;
 import io.lbry.browser.model.Tag;
 import io.lbry.browser.model.WalletBalance;
-import io.lbry.browser.tasks.claim.ChannelCreateUpdateTask;
 import io.lbry.browser.tasks.UpdateSuggestedTagsTask;
 import io.lbry.browser.tasks.UploadImageTask;
 import io.lbry.browser.tasks.claim.ClaimListResultHandler;
@@ -1171,7 +1167,7 @@ public class PublishFormFragment extends BaseFragment implements
         Helper.setViewEnabled(inputTitle, true);
         Helper.setViewEnabled(inputDescription, true);
         Helper.setViewEnabled(inputTagFilter, false);
-        Helper.setViewEnabled(inputAddress, editMode ? false : true);
+        Helper.setViewEnabled(inputAddress, !editMode);
         Helper.setViewEnabled(inputDeposit, true);
         Helper.setViewEnabled(inputPrice, true);
         Helper.setViewEnabled(inputOtherLicenseDescription, true);
@@ -1351,8 +1347,8 @@ public class PublishFormFragment extends BaseFragment implements
     }
 
     private static class VideoProbeTask extends AsyncTask<Void, Void, VideoInformation> {
-        private String filePath;
-        private VideoProbeHandler handler;
+        private final String filePath;
+        private final VideoProbeHandler handler;
         public VideoProbeTask(String filePath, VideoProbeHandler handler) {
             this.filePath = filePath;
             this.handler = handler;
@@ -1390,11 +1386,11 @@ public class PublishFormFragment extends BaseFragment implements
 
     private static class VideoTranscodeTask extends AsyncTask<Void, Integer, Boolean> {
 
-        private String filePath;
-        private String scaleFlag;
-        private String outputFilePath;
-        private boolean transcodeRequired;
-        private VideoTranscodeHandler handler;
+        private final String filePath;
+        private final String scaleFlag;
+        private final String outputFilePath;
+        private final boolean transcodeRequired;
+        private final VideoTranscodeHandler handler;
 
         public VideoTranscodeTask(String filePath, String outputFilePath, String scaleFlag, boolean transcodeRequired, VideoTranscodeHandler handler) {
             this.handler = handler;
@@ -1504,10 +1500,10 @@ public class PublishFormFragment extends BaseFragment implements
     }
 
     private static class CreateThumbnailTask extends AsyncTask<Void, Void, String> {
-        private Context context;
-        private String filePath;
-        private String type;
-        private CreateThumbnailHandler handler;
+        private final Context context;
+        private final String filePath;
+        private final String type;
+        private final CreateThumbnailHandler handler;
         private Exception error;
         public CreateThumbnailTask(String filePath, String type, Context context, CreateThumbnailHandler handler) {
             this.context = context;

@@ -7,9 +7,9 @@ import io.lbry.browser.data.DatabaseHelper;
 import io.lbry.browser.model.ViewHistory;
 
 public class SaveViewHistoryTask extends AsyncTask<Void, Void, Boolean> {
-    private DatabaseHelper dbHelper;
-    private ViewHistory history;
-    private SaveViewHistoryHandler handler;
+    private final DatabaseHelper dbHelper;
+    private final ViewHistory history;
+    private final SaveViewHistoryHandler handler;
     private Exception error;
 
     public SaveViewHistoryTask(ViewHistory history, DatabaseHelper dbHelper, SaveViewHistoryHandler handler) {

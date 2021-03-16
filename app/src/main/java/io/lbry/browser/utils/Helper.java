@@ -687,10 +687,14 @@ public final class Helper {
             LbryFile file = files.get(i);
             // remove own claims as well
             if (Lbry.ownClaims != null && Lbry.ownClaims.size() > 0) {
+                boolean hasClaim = false;
                 for (Claim own : Lbry.ownClaims) {
                     if (own.getClaimId().equalsIgnoreCase(file.getClaimId())) {
-                        continue;
+                        hasClaim = true;
                     }
+                }
+                if (hasClaim) {
+                    continue;
                 }
             }
             if (!Helper.isNullOrEmpty(file.getDownloadPath())) {
@@ -750,11 +754,12 @@ public final class Helper {
 
     public static String generateUrl() {
         Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-        sb.append(Predefined.ADJECTIVES.get(random.nextInt(Predefined.ADJECTIVES.size()))).append("-").
-            append(Predefined.ADJECTIVES.get(random.nextInt(Predefined.ADJECTIVES.size()))).append("-").
-                append(Predefined.ANIMALS.get(random.nextInt(Predefined.ANIMALS.size())));
-        return sb.toString().toLowerCase();
+
+        String sb = "";
+        sb += Predefined.ADJECTIVES.get(random.nextInt(Predefined.ADJECTIVES.size())) + "-";
+        sb += Predefined.ADJECTIVES.get(random.nextInt(Predefined.ADJECTIVES.size())) + "-";
+        sb += Predefined.ANIMALS.get(random.nextInt(Predefined.ANIMALS.size()));
+        return sb.toLowerCase();
     }
 
     public static void refreshRecyclerView(RecyclerView rv) {
@@ -774,7 +779,7 @@ public final class Helper {
 
         rv.setAdapter(null);
         rv.setAdapter(adapter);
-        rv.scrollToPosition(prevScrollPosition > 0 ? prevScrollPosition : 0);
+        rv.scrollToPosition(Math.max(prevScrollPosition, 0));
     }
 
     public static String makeid(int length) {

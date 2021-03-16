@@ -12,10 +12,10 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class NotificationUpdateTask extends AsyncTask<Void, Void, Boolean> {
-    private List<Long> ids;
-    private boolean seen;
-    private boolean read;
-    private boolean updateRead;
+    private final List<Long> ids;
+    private final boolean seen;
+    private final boolean read;
+    private final boolean updateRead;
 
     public NotificationUpdateTask(List<Long> ids, boolean seen) {
         this(ids, false, true, false);

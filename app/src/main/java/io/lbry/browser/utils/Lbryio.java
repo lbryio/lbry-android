@@ -23,13 +23,13 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import io.lbry.browser.BuildConfig;
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.exceptions.AuthTokenInvalidatedException;
 import io.lbry.browser.exceptions.LbryioRequestException;
@@ -68,8 +68,8 @@ public final class Lbryio {
     public static String AUTH_TOKEN;
     private static boolean generatingAuthToken = false;
 
-    public static List<Reward> allRewards = new ArrayList<>();
-    public static List<Reward> unclaimedRewards = new ArrayList<>();
+    public static final List<Reward> allRewards = new ArrayList<>();
+    public static final List<Reward> unclaimedRewards = new ArrayList<>();
     public static double totalUnclaimedRewardAmount = 0;
 
     public static Response call(String resource, String action, Context context) throws LbryioRequestException, LbryioResponseException {
@@ -316,7 +316,7 @@ public final class Lbryio {
     private static void broadcastAuthTokenGenerated(Context context) {
         try {
             if (context != null) {
-                String encryptedAuthToken = Utils.encrypt(AUTH_TOKEN.getBytes("UTF8"), context, Lbry.KEYSTORE);
+                String encryptedAuthToken = Utils.encrypt(AUTH_TOKEN.getBytes(StandardCharsets.UTF_8), context, Lbry.KEYSTORE);
                 Intent intent = new Intent(MainActivity.ACTION_AUTH_TOKEN_GENERATED);
                 intent.putExtra("authToken", encryptedAuthToken);
                 context.sendBroadcast(intent);

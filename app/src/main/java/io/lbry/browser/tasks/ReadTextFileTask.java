@@ -4,18 +4,15 @@ import android.os.AsyncTask;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.Buffer;
 
 import io.lbry.browser.utils.Helper;
 
 public class ReadTextFileTask extends AsyncTask<Void, Void, String> {
-    private String filePath;
+    private final String filePath;
     private Exception error;
-    private ReadTextFileHandler handler;
+    private final ReadTextFileHandler handler;
     public ReadTextFileTask(String filePath, ReadTextFileHandler handler) {
         this.filePath = filePath;
         this.handler = handler;

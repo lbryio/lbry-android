@@ -3,7 +3,6 @@ package io.lbry.browser.tasks.wallet;
 import android.os.AsyncTask;
 import android.view.View;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -17,10 +16,10 @@ public class SyncApplyTask extends AsyncTask<Void, Void, Boolean> {
     // flag to indicate if this sync_apply is to fetch wallet data or apply data
     private boolean fetch;
     private Exception error;
-    private String password;
+    private final String password;
     private String data;
     private View progressView;
-    private SyncTaskHandler handler;
+    private final SyncTaskHandler handler;
 
     private String syncHash;
     private String syncData;

@@ -11,12 +11,12 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class FileListTask extends AsyncTask<Void, Void, List<LbryFile>> {
-    private String claimId;
+    private final String claimId;
     private boolean downloads;
     private int page;
     private int pageSize;
-    private FileListResultHandler handler;
-    private View progressView;
+    private final FileListResultHandler handler;
+    private final View progressView;
     private ApiCallException error;
 
     public FileListTask(int page, int pageSize, boolean downloads, View progressView, FileListResultHandler handler) {

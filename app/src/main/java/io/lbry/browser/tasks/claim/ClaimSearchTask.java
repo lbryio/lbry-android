@@ -12,10 +12,10 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class ClaimSearchTask extends AsyncTask<Void, Void, List<Claim>> {
-    private Map<String, Object> options;
-    private String connectionString;
-    private ClaimSearchResultHandler handler;
-    private View progressView;
+    private final Map<String, Object> options;
+    private final String connectionString;
+    private final ClaimSearchResultHandler handler;
+    private final View progressView;
     private ApiCallException error;
 
     public ClaimSearchTask(Map<String, Object> options, String connectionString, View progressView, ClaimSearchResultHandler handler) {

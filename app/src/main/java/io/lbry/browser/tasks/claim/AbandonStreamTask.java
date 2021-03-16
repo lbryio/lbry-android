@@ -11,17 +11,16 @@ import java.util.List;
 import java.util.Map;
 
 import io.lbry.browser.exceptions.ApiCallException;
-import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class AbandonStreamTask extends AsyncTask<Void, Void, Boolean> {
-    private List<String> claimIds;
+    private final List<String> claimIds;
     private List<String> successfulClaimIds;
     private List<String> failedClaimIds;
     private List<Exception> failedExceptions;
-    private View progressView;
-    private AbandonHandler handler;
+    private final View progressView;
+    private final AbandonHandler handler;
 
     public AbandonStreamTask(List<String> claimIds, View progressView, AbandonHandler handler) {
         this.claimIds = claimIds;

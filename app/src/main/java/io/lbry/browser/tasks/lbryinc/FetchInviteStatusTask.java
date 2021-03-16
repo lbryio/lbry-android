@@ -17,8 +17,8 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbryio;
 
 public class FetchInviteStatusTask extends AsyncTask<Void, Void, List<Invitee>> {
-    private FetchInviteStatusHandler handler;
-    private View progressView;
+    private final FetchInviteStatusHandler handler;
+    private final View progressView;
     private Exception error;
 
     public FetchInviteStatusTask(View progressView, FetchInviteStatusHandler handler) {

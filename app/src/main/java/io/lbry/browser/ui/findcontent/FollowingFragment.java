@@ -91,8 +91,8 @@ public class FollowingFragment extends BaseFragment implements
     private View noContentView;
     private boolean subscriptionsShown;
 
-    private List<Integer> queuedContentPages = new ArrayList<>();
-    private List<Integer> queuedSuggestedPages = new ArrayList<>();
+    private final List<Integer> queuedContentPages = new ArrayList<>();
+    private final List<Integer> queuedSuggestedPages = new ArrayList<>();
 
     private int currentSuggestedPage = 0;
     private int currentClaimSearchPage;

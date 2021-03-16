@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatSpinner;
@@ -41,7 +40,6 @@ import io.lbry.browser.tasks.claim.ClaimListTask;
 import io.lbry.browser.tasks.wallet.SupportCreateTask;
 import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
-import lombok.Setter;
 
 public class CreateSupportDialogFragment extends BottomSheetDialogFragment implements WalletBalanceListener {
     public static final String TAG = "CreateSupportDialog";
@@ -61,13 +59,17 @@ public class CreateSupportDialogFragment extends BottomSheetDialogFragment imple
     private ProgressBar progressLoadingChannels;
 
 
-    @Setter
-    private CreateSupportListener listener;
-    @Setter
-    private Claim claim;
+    private final CreateSupportListener listener;
+    private final Claim claim;
 
-    public static CreateSupportDialogFragment newInstance() {
-        return new CreateSupportDialogFragment();
+    private CreateSupportDialogFragment(Claim claim, CreateSupportListener listener) {
+        super();
+        this.claim = claim;
+        this.listener = listener;
+    }
+
+    public static CreateSupportDialogFragment newInstance(Claim claim, CreateSupportListener listener) {
+        return new CreateSupportDialogFragment(claim, listener);
     }
 
     private void disableControls() {

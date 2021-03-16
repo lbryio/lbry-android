@@ -3,9 +3,7 @@ package io.lbry.browser.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.utils.LbryUri;
-import io.lbry.browser.utils.Lbryio;
 import lombok.Data;
 
 @Data

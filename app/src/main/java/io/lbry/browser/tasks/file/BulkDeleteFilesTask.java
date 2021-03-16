@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import io.lbry.browser.exceptions.ApiCallException;
-import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.utils.Lbry;
 
 // Just run delete on the specified claim IDs (no need for a handler)
 public class BulkDeleteFilesTask extends AsyncTask<Void, Void, Boolean> {
-    private List<String> claimIds;
+    private final List<String> claimIds;
     public BulkDeleteFilesTask(List<String> claimIds) {
         this.claimIds = claimIds;
     }

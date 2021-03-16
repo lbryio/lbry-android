@@ -10,9 +10,9 @@ import io.lbry.browser.tasks.GenericTaskHandler;
 import io.lbry.browser.utils.Lbry;
 
 public class DeleteFileTask extends AsyncTask<Void, Void, Boolean> {
-    private String claimId;
+    private final String claimId;
     private Exception error;
-    private GenericTaskHandler handler;
+    private final GenericTaskHandler handler;
 
     public DeleteFileTask(String claimId, GenericTaskHandler handler) {
         this.claimId = claimId;

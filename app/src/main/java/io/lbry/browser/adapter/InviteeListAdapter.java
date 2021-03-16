@@ -1,9 +1,7 @@
 package io.lbry.browser.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +9,16 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.lbry.browser.R;
 import io.lbry.browser.model.lbryinc.Invitee;
-import io.lbry.browser.utils.Helper;
-import io.lbry.browser.utils.LbryUri;
-import lombok.Setter;
 
 public class InviteeListAdapter extends RecyclerView.Adapter<InviteeListAdapter.ViewHolder> {
 
-    private Context context;
-    private List<Invitee> items;
+    private final Context context;
+    private final List<Invitee> items;
 
     public InviteeListAdapter(List<Invitee> invitees, Context context) {
         this.context = context;
@@ -80,8 +73,8 @@ public class InviteeListAdapter extends RecyclerView.Adapter<InviteeListAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected TextView emailView;
-        protected TextView rewardView;
+        protected final TextView emailView;
+        protected final TextView rewardView;
 
         public ViewHolder(View v) {
             super(v);

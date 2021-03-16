@@ -36,8 +36,8 @@ import io.lbry.browser.utils.LbryUri;
 public class LoadSharedUserStateTask extends AsyncTask<Void, Void, Boolean> {
     private static final String KEY = "shared";
 
-    private Context context;
-    private LoadSharedUserStateHandler handler;
+    private final Context context;
+    private final LoadSharedUserStateHandler handler;
     private Exception error;
 
     private List<Subscription> subscriptions;

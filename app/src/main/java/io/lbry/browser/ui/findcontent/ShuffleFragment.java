@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
@@ -642,7 +641,7 @@ public class ShuffleFragment extends BaseFragment {
         dailyViewTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private ClaimRewardTask.ClaimRewardHandler eligibleRewardHandler = new ClaimRewardTask.ClaimRewardHandler() {
+    private final ClaimRewardTask.ClaimRewardHandler eligibleRewardHandler = new ClaimRewardTask.ClaimRewardHandler() {
         @Override
         public void onSuccess(double amountClaimed, String message) {
             if (Helper.isNullOrEmpty(message)) {
@@ -686,10 +685,7 @@ public class ShuffleFragment extends BaseFragment {
 
             @Override
             public boolean onDown(MotionEvent e) {
-                if (control instanceof PlayerView) {
-                    return false;
-                }
-                return true;
+                return control instanceof PlayerView;
             }
 
             @Override

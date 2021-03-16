@@ -2,15 +2,9 @@ package io.lbry.browser.tasks.verification;
 
 import android.os.AsyncTask;
 
-import com.google.api.client.auth.oauth.OAuthHmacSigner;
-import com.google.api.client.auth.oauth.OAuthParameters;
-import com.google.api.client.http.GenericUrl;
-
-import io.lbry.browser.VerificationActivity;
 import io.lbry.browser.model.TwitterOauth;
 import io.lbry.browser.tasks.TwitterOauthHandler;
 import io.lbry.browser.utils.Helper;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -20,8 +14,8 @@ public class TwitterAccessTokenTask extends AsyncTask<Void, Void, String> {
     private static final String ENDPOINT = "https://api.twitter.com/oauth/access_token";
 
     private Exception error;
-    private String oauthParams;
-    private TwitterOauthHandler handler;
+    private final String oauthParams;
+    private final TwitterOauthHandler handler;
 
     public TwitterAccessTokenTask(String oauthParams, TwitterOauthHandler handler) {
         this.oauthParams = oauthParams;

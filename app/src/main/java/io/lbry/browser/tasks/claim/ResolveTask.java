@@ -13,10 +13,10 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class ResolveTask extends AsyncTask<Void, Void, List<Claim>> {
-    private List<String> urls;
-    private String connectionString;
-    private ClaimListResultHandler handler;
-    private View progressView;
+    private final List<String> urls;
+    private final String connectionString;
+    private final ClaimListResultHandler handler;
+    private final View progressView;
     private ApiCallException error;
 
     public ResolveTask(String url, String connectionString, View progressView, ClaimListResultHandler handler) {

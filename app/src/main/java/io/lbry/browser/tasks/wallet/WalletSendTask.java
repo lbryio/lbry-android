@@ -12,10 +12,10 @@ import io.lbry.browser.utils.Helper;
 import io.lbry.browser.utils.Lbry;
 
 public class WalletSendTask extends AsyncTask<Void, Void, Boolean> {
-    private String recipientAddress;
-    private String amount;
-    private View progressView;
-    private WalletSendHandler handler;
+    private final String recipientAddress;
+    private final String amount;
+    private final View progressView;
+    private final WalletSendHandler handler;
     private Exception error;
 
     public WalletSendTask(String recipientAddress, String amount, View progressView, WalletSendHandler handler) {

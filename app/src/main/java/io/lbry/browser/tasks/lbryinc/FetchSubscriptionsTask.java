@@ -23,9 +23,9 @@ import io.lbry.browser.utils.LbryUri;
 import io.lbry.browser.utils.Lbryio;
 
 public class FetchSubscriptionsTask extends AsyncTask<Void, Void, List<Subscription>> {
-    private Context context;
-    private FetchSubscriptionsHandler handler;
-    private ProgressBar progressBar;
+    private final Context context;
+    private final FetchSubscriptionsHandler handler;
+    private final ProgressBar progressBar;
     private Exception error;
 
     public FetchSubscriptionsTask(Context context, ProgressBar progressBar, FetchSubscriptionsHandler handler) {

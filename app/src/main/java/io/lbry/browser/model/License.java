@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class License {
-    private String name;
+    private final String name;
     private String url;
-    private int stringResourceId;
+    private final int stringResourceId;
 
     public License(String name, int stringResourceId) {
         this.name = name;
