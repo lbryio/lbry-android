@@ -91,6 +91,8 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     // if this is set, scroll to the specific comment on load
     private String commentHash;
 
+    private float floatingWalletPositionY;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_channel, container, false);
@@ -121,6 +123,23 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         tabPager = root.findViewById(R.id.channel_view_pager);
         tabLayout = root.findViewById(R.id.channel_view_tabs);
         tabPager.setSaveEnabled(false);
+
+        View floatingBalance = getActivity().findViewById(R.id.floating_balance_main_container);
+        floatingWalletPositionY = floatingBalance.getY();
+
+        tabPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                if (position > 0) {
+                    // Hide floating wallet for the About and the Comment tabs as they are mostly text
+                    ((MainActivity) getContext()).translateFloatingWallet(floatingWalletPositionY);
+                } else {
+                    ((MainActivity) getContext()).restoreWalletContainerPosition();
+                }
+            }
+        });
 
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -378,6 +397,14 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
             ((MainActivity) context).removeFetchChannelsListener(this);
         }
         super.onPause();
+    }
+
+    public void onStop() {
+        Context context = getContext();
+        if (context instanceof MainActivity) {
+            ((MainActivity) context ).restoreWalletContainerPosition();
+        }
+        super.onStop();
     }
 
     private void checkParams() {
