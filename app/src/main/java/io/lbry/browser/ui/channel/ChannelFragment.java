@@ -73,6 +73,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
     private TextView textFollowerCount;
     private TabLayout tabLayout;
     private ViewPager2 tabPager;
+    ViewPager2.OnPageChangeCallback opcc;
 
     private View buttonEdit;
     private View buttonDelete;
@@ -127,7 +128,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         View floatingBalance = getActivity().findViewById(R.id.floating_balance_main_container);
         floatingWalletPositionY = floatingBalance.getY();
 
-        tabPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        opcc = new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -139,7 +140,9 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
                     ((MainActivity) getContext()).restoreWalletContainerPosition();
                 }
             }
-        });
+        };
+
+        tabPager.registerOnPageChangeCallback(opcc);
 
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -404,6 +407,7 @@ public class ChannelFragment extends BaseFragment implements FetchChannelsListen
         if (context instanceof MainActivity) {
             ((MainActivity) context ).restoreWalletContainerPosition();
         }
+        tabPager.unregisterOnPageChangeCallback(opcc);
         super.onStop();
     }
 
