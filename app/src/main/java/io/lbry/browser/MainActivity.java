@@ -2781,12 +2781,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     private Fragment getCurrentFragment() {
-        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
-
-        if (fragmentList.size() > 0)
-            return fragmentList.get(fragmentList.size() - 1);
-        else
-            return null;
+        return getSupportFragmentManager().findFragmentById(R.id.content_main);
     }
 
     public void hideActionBar() {
