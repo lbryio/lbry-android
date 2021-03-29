@@ -2781,15 +2781,7 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
     }
 
     private Fragment getCurrentFragment() {
-        int backCount = getSupportFragmentManager().getBackStackEntryCount();
-        if (backCount > 0) {
-            try {
-                return getSupportFragmentManager().getFragments().get(backCount - 1);
-            } catch (IndexOutOfBoundsException ex) {
-                return null;
-            }
-        }
-        return null;
+        return getSupportFragmentManager().findFragmentById(R.id.content_main);
     }
 
     public void hideActionBar() {
@@ -3493,6 +3485,18 @@ public class MainActivity extends AppCompatActivity implements SdkStatusListener
             Fragment currentFragment = getCurrentFragment();
             if (currentFragment != null && currentFragment.equals(fragment)) {
                 return;
+            }
+
+            if (currentFragment != null && ((BaseFragment) currentFragment).getParams() != null
+                    && ((BaseFragment) currentFragment).getParams().containsKey("source")
+                    && ((BaseFragment) currentFragment).getParams().get("source").equals("notification")) {
+
+                Map<String, Object> currentParams = new HashMap<>(1);
+
+                if (((BaseFragment) currentFragment).getParams().containsKey("url"))
+                    currentParams.put("url", ((BaseFragment) currentFragment).getParams().get("url"));
+
+                ((BaseFragment) currentFragment).setParams(currentParams);
             }
 
             //fragment.setRetainInstance(true);
