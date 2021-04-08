@@ -155,6 +155,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
+            android:visibility="gone"
             android:fontFamily="@font/inter"
             android:text="@string/convert_credits_bittrex"
             android:textColorLink="@color/lbryGreen"
