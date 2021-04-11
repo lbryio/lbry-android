@@ -114,7 +114,7 @@
     <string name="website">Website</string>
     <string name="reposted">Opnieuw geplaatst</string>
     <plurals name="follower_count">
-        <item quantity="one">%1$svolger</item>
+        <item quantity="one">%1$s volger</item>
         <item quantity="other">%1$s volgers</item>
     </plurals>
 
