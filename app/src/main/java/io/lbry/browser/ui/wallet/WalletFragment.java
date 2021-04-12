@@ -33,6 +33,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONObject;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -44,6 +52,10 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -290,6 +302,44 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
                 }
             }
         });
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        // This will return /true/ if user IP is **not** on the US or the request fails
+        Future<Boolean> localeFuture = executor.submit(() -> {
+            Request request  = new Request.Builder().url("https://api.lbry.com/locale/get").build();
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+            try (Response response = okHttpClient.newCall(request).execute()){
+                ResponseBody responseBody = response.body();
+                JSONObject responseJson;
+
+                if (responseBody != null)
+                    responseJson = new JSONObject(responseBody.string());
+                else
+                    return false;
+
+                if (responseJson.has("data") && responseJson.getBoolean("success")) {
+                    JSONObject dataJson = (JSONObject) responseJson.get("data");
+                    return !dataJson.getString("country").equals("US");
+                } else {
+                    return false;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        });
+
+        try {
+            Boolean isNotUS = localeFuture.get();
+            if (isNotUS)
+                textConvertCreditsBittrex.setVisibility(View.VISIBLE);
+            else
+                textConvertCreditsBittrex.setVisibility(View.GONE);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
