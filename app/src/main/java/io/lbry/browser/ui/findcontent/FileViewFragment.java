@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateUtils;
@@ -87,8 +88,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -161,6 +166,10 @@ import io.lbry.browser.utils.Lbryio;
 import io.lbry.lbrysdk.DownloadManager;
 import io.lbry.lbrysdk.LbrynetService;
 import io.lbry.lbrysdk.Utils;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
+import static android.os.Environment.DIRECTORY_MOVIES;
+import static android.os.Environment.DIRECTORY_PICTURES;
 
 public class FileViewFragment extends BaseFragment implements
         MainActivity.BackPressInterceptor,
@@ -2844,6 +2853,41 @@ public class FileViewFragment extends BaseFragment implements
                     downloadInProgress = false;
                     downloadProgressView.setProgress(100);
                     Helper.setViewVisibility(downloadProgressView, View.GONE);
+
+                    // Copy file to shared Downloads folder
+                    // TODO Assign this folder when downloading instead of copying the file
+
+                    File fileFolder;
+
+                    if (claimFile.getMimeType().contains("video"))
+                        fileFolder = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES);
+                    else if (claimFile.getMimeType().contains("image") || claimFile.getMimeType().contains("picture"))
+                        fileFolder = Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES);
+                    else
+                        fileFolder = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS);
+
+                    InputStream in = null;
+                    OutputStream out;
+                    try {
+                        in = new FileInputStream(claimFile.getDownloadPath());
+
+                        out = new FileOutputStream(new File(fileFolder, claimFile.getFileName()));
+
+                        byte[] buf = new byte[1024];
+                        int len;
+
+                        while ((len = in.read(buf)) > 0) {
+                            out.write(buf, 0, len);
+                        }
+
+                        in.close();
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+
                     playOrViewMedia();
                 }
                 checkIsFileComplete();
