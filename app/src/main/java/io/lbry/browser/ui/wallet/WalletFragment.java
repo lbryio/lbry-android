@@ -688,7 +688,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         double totalBalance = walletBalance.getTotal().doubleValue();
         double spendableBalance = walletBalance.getAvailable().doubleValue();
         double supportingBalance = walletBalance.getClaims().doubleValue() + walletBalance.getTips().doubleValue() + walletBalance.getSupports().doubleValue();
-        double usdBalance = spendableBalance * Lbryio.LBCUSDRate;
+        double usdBalance = totalBalance * Lbryio.LBCUSDRate;
         double tipsBalance = walletBalance.getTips().doubleValue();
 
         if (detailRows == null)
