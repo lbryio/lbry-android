@@ -178,6 +178,19 @@ public class LbryUriTest {
         assertEquals("https://lbry.tv/@test:1/La-Peur%2C-Nos-Attentats%2C-c%27est-VOTRE-Se%CC%81curite%CC%81%21-Les-Guignols:6", obtained.toTvString());
     }
 
+    @Test
+    public void lbryToOdyseeString() {
+        LbryUri obtained = new LbryUri();
+
+        try {
+            obtained = LbryUri.parse("lbry://@lbry#3f/lbryturns4#6",false);
+        } catch (LbryUriException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("https://odysee.com/@lbry:3f/lbryturns4:6", obtained.toOdyseeString());
+    }
+
     @NotNull
     private LbryUri sinthesizeExpected() {
         LbryUri expectedForChannel = new LbryUri();

@@ -57,6 +57,7 @@
     <string name="delete">Delete</string>
     <string name="download">Download</string>
     <string name="open">Open</string>
+    <string name="open_on_odysee_com">Open on ODYSEE.COM</string>
     <string name="report">Report</string>
     <string name="loading_decentralized_data">Loading decentralized data…</string>
     <string name="related_content">Related Content</string>
@@ -71,6 +72,7 @@
     <string name="play">Play</string>
     <string name="unsupported_content">Unsupported Content</string>
     <string name="unsupported_content_desc">Sorry, we are unable to display this content in the app. You can find the file %1$sin your downloads folder.</string>
+    <string name="unsupported_content_to_odysee_desc">Sorry, we are unable to display this content in the app. Click the button to open it on the Odysee website.</string>
     <string name="nothing_at_this_location">There\'s nothing at this location.</string>
     <string name="dmca_complaint_blocked">In response to a complaint we received under the US Digital Millennium Copyright Act, we have blocked access to this content from our applications. &lt;a href="https://lbry.com/faq/dmca"&gt;Read more&lt;/a&gt;</string>
     <string name="dmca_complaint_channel_blocked">In response to a complaint we received under the US Digital Millennium Copyright Act, we have blocked access to this channel from our applications. &lt;a href="https://lbry.com/faq/dmca"&gt;Read more&lt;/a&gt;</string>

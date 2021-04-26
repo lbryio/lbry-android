@@ -132,8 +132,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    __32bitImplementation 'io.lbry:lbrysdk32:0.91.0'
-    __64bitImplementation 'io.lbry:lbrysdk64:0.91.0'
+    __32bitImplementation 'io.lbry:lbrysdk32:0.94.1'
+    __64bitImplementation 'io.lbry:lbrysdk64:0.94.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
