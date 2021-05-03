@@ -1523,7 +1523,7 @@ public class FileViewFragment extends BaseFragment implements
         Helper.setViewVisibility(layoutLoadingState, View.GONE);
         Helper.setViewVisibility(layoutNothingAtLocation, View.GONE);
 
-        if (claim.getTags().contains("disable-support") || claim.getSigningChannel().getTags().contains("disable-support"))
+        if ((claim.getTags() != null && claim.getTags().contains("disable-support")) || (claim.getSigningChannel() != null && claim.getSigningChannel().getTags().contains("disable-support")))
             Helper.setViewVisibility(tipButton, View.GONE);
         else
             Helper.setViewVisibility(tipButton, View.VISIBLE);
@@ -1713,7 +1713,7 @@ public class FileViewFragment extends BaseFragment implements
             View commentsDisabledText = root.findViewById(R.id.file_view_disabled_comments);
             View commentForm = root.findViewById(R.id.container_comment_form);
             RecyclerView commentsList = root.findViewById(R.id.file_view_comments_list);
-            if (claim.getTags().contains("disable-comments") || claim.getSigningChannel().getTags().contains("disable-comments")) {
+            if ((claim.getTags() != null && (claim.getTags().contains("disable-comments")) || (claim.getSigningChannel() != null && claim.getSigningChannel().getTags().contains("disable-comments")))) {
                 Helper.setViewVisibility(commentsDisabledText, View.VISIBLE);
                 Helper.setViewVisibility(commentForm, View.GONE);
                 Helper.setViewVisibility(commentsList, View.GONE);
