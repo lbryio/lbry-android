@@ -421,7 +421,8 @@ public class AllContentFragment extends BaseFragment implements DownloadActionLi
                 0,
                 0,
                 currentClaimSearchPage == 0 ? 1 : currentClaimSearchPage,
-                Helper.CONTENT_PAGE_SIZE);
+                Helper.CONTENT_PAGE_SIZE,
+                true);
     }
 
     private List<String> getContentSortOrder() {

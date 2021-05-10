@@ -79,7 +79,8 @@ public class EditorsChoiceFragment extends BaseFragment {
                 Arrays.asList(Claim.ORDER_BY_RELEASE_TIME),
                 null,
                 1,
-                99);
+                99,
+                true);
     }
 
     public void onResume() {

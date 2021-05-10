@@ -373,7 +373,7 @@ public final class Lbry {
 
     // build claim search for surf mode
     public static Map<String, Object> buildClaimSearchOptions(
-            String claimType, List<String> notTags, List<String> channelIds, List<String> orderBy, long maxDuration, int limitClaimsPerChannel, int page, int pageSize) {
+            String claimType, List<String> notTags, List<String> channelIds, List<String> orderBy, long maxDuration, int limitClaimsPerChannel, int page, int pageSize, boolean hasSource) {
         return buildClaimSearchOptions(
                 Collections.singletonList(claimType),
                 null,
@@ -385,7 +385,8 @@ public final class Lbry {
                 maxDuration,
                 limitClaimsPerChannel,
                 page,
-                pageSize);
+                pageSize,
+                hasSource);
     }
 
     public static Map<String, Object> buildClaimSearchOptions(
@@ -397,7 +398,8 @@ public final class Lbry {
             List<String> orderBy,
             String releaseTime,
             int page,
-            int pageSize) {
+            int pageSize,
+            boolean hasSource) {
         return buildClaimSearchOptions(
                 Collections.singletonList(claimType),
                 anyTags,
@@ -409,7 +411,8 @@ public final class Lbry {
                 0,
                 0,
                 page,
-                pageSize);
+                pageSize,
+                hasSource);
     }
 
     public static Map<String, Object> buildClaimSearchOptions(
@@ -423,7 +426,8 @@ public final class Lbry {
             long maxDuration,
             int limitClaimsPerChannel,
             int page,
-            int pageSize) {
+            int pageSize,
+            boolean hasSource) {
         Map<String, Object> options = new HashMap<>();
         if (claimType != null && claimType.size() > 0) {
             options.put("claim_type", claimType);
@@ -439,6 +443,12 @@ public final class Lbry {
         }
         if (limitClaimsPerChannel > 0) {
             options.put("limit_claims_per_channel", limitClaimsPerChannel);
+        }
+
+        if (hasSource) {
+            options.put("has_source", true);
+        } else {
+            options.put("has_no_source", true);
         }
 
         addClaimSearchListOption("any_tags", anyTags, options);

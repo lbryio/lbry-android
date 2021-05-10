@@ -137,6 +137,14 @@ public class Claim {
         return null;
     }
 
+    public boolean hasSource() {
+        if (value instanceof StreamMetadata) {
+            StreamMetadata metadata = (StreamMetadata) value;
+            return metadata.getSource() != null;
+        }
+        return false;
+    }
+
     public boolean isPlayable() {
         if (value instanceof StreamMetadata) {
             StreamMetadata metadata = (StreamMetadata) value;

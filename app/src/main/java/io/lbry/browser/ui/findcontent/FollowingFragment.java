@@ -415,7 +415,8 @@ public class FollowingFragment extends BaseFragment implements
                 Arrays.asList(Claim.ORDER_BY_EFFECTIVE_AMOUNT),
                 null,
                 currentSuggestedPage == 0 ? 1 : currentSuggestedPage,
-                SUGGESTED_PAGE_SIZE);
+                SUGGESTED_PAGE_SIZE,
+                true);
     }
 
     private Map<String, Object> buildContentOptions() {
@@ -437,7 +438,8 @@ public class FollowingFragment extends BaseFragment implements
                 0,
                 0,
                 currentClaimSearchPage == 0 ? 1 : currentClaimSearchPage,
-                Helper.CONTENT_PAGE_SIZE);
+                Helper.CONTENT_PAGE_SIZE,
+                true);
     }
 
     private List<String> getChannelIds() {

@@ -210,7 +210,8 @@ public class ShuffleFragment extends BaseFragment {
                 121, // 2 minutes or less
                 1,
                 currentClaimSearchPage == 0 ? 1 : currentClaimSearchPage,
-                PAGE_SIZE);
+                PAGE_SIZE,
+                true);
     }
 
     public void onStart() {
