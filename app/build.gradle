@@ -21,7 +21,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-     packagingOptions {
+    packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'lib/x86_64/darwin/libscrypt.dylib'
     }
@@ -134,6 +134,9 @@ dependencies {
 
     __32bitImplementation 'io.lbry:lbrysdk32:0.94.1'
     __64bitImplementation 'io.lbry:lbrysdk64:0.94.1'
+
+    implementation ('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
+    implementation 'com.google.zxing:core:3.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

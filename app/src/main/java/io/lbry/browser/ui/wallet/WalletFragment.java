@@ -3,6 +3,7 @@ package io.lbry.browser.ui.wallet;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
@@ -59,6 +60,9 @@ import java.util.concurrent.Future;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
@@ -117,6 +121,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
     private ImageButton buttonCopyReceiveAddress;
     private MaterialButton buttonGetNewAddress;
     private TextInputEditText inputSendAddress;
+    private ImageButton buttonQRScanAddress;
     private TextInputEditText inputSendAmount;
     private MaterialButton buttonSend;
     private TextView textConnectedEmail;
@@ -162,6 +167,7 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         buttonCopyReceiveAddress = root.findViewById(R.id.wallet_copy_receive_address);
         buttonGetNewAddress = root.findViewById(R.id.wallet_get_new_address);
         inputSendAddress = root.findViewById(R.id.wallet_input_send_address);
+        buttonQRScanAddress = root.findViewById(R.id.wallet_qr_scan_address);
         inputSendAmount = root.findViewById(R.id.wallet_input_amount);
         buttonSend = root.findViewById(R.id.wallet_send);
         textConnectedEmail = root.findViewById(R.id.wallet_connected_email);
@@ -366,6 +372,12 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             @Override
             public void onClick(View view) {
                 copyReceiveAddress();
+            }
+        });
+        buttonQRScanAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IntentIntegrator.forSupportFragment(WalletFragment.this).initiateScan();
             }
         });
         buttonSend.setOnClickListener(new View.OnClickListener() {
@@ -715,8 +727,8 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         } else {
             firstDatasetNotification = false;
             if (!detailRows.get(0).detailAmount.equals(earnedBalance.detailAmount)
-                 || detailRows.get(0).isInProgress != earnedBalance.isInProgress
-                 || detailRows.get(0).isUnlockable != earnedBalance.isUnlockable) {
+                    || detailRows.get(0).isInProgress != earnedBalance.isInProgress
+                    || detailRows.get(0).isUnlockable != earnedBalance.isUnlockable) {
                 detailRows.set(0, earnedBalance);
                 needNotifyAdapter = true;
             }
@@ -800,4 +812,13 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             checkRewardsDriverCard(rewardsDriverText, 0);
         }
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == IntentIntegrator.REQUEST_CODE) {
+            IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            String code = intentResult.getContents();
+            inputSendAddress.setText(code);
+        }
+    }
+
 }
