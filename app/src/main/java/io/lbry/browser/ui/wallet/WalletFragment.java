@@ -377,7 +377,8 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         buttonQRScanAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentIntegrator.forSupportFragment(WalletFragment.this).initiateScan();
+                IntentIntegrator intentIntegrator = IntentIntegrator.forSupportFragment(WalletFragment.this);
+                intentIntegrator.setOrientationLocked(false).initiateScan();
             }
         });
         buttonSend.setOnClickListener(new View.OnClickListener() {
@@ -727,8 +728,8 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
         } else {
             firstDatasetNotification = false;
             if (!detailRows.get(0).detailAmount.equals(earnedBalance.detailAmount)
-                    || detailRows.get(0).isInProgress != earnedBalance.isInProgress
-                    || detailRows.get(0).isUnlockable != earnedBalance.isUnlockable) {
+                 || detailRows.get(0).isInProgress != earnedBalance.isInProgress
+                 || detailRows.get(0).isUnlockable != earnedBalance.isUnlockable) {
                 detailRows.set(0, earnedBalance);
                 needNotifyAdapter = true;
             }
@@ -820,5 +821,4 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             inputSendAddress.setText(code);
         }
     }
-
 }
