@@ -101,11 +101,6 @@
             android:theme="@style/AppTheme.NoActionBarTranslucent"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity
-            android:name="com.journeyapps.barcodescanner.CaptureActivity"
-            android:screenOrientation="fullSensor"
-            tools:replace="screenOrientation" />
-
         <service
             android:name="io.lbry.browser.LbrynetMessagingService"
             android:exported="false">

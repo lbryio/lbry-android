@@ -122,9 +122,6 @@ dependencies {
     implementation 'org.bitcoinj:bitcoinj-tools:0.14.7'
     implementation 'org.java-websocket:Java-WebSocket:1.5.1'
 
-    implementation ('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
-    implementation 'com.google.zxing:core:3.3.0'
-
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
@@ -137,6 +134,9 @@ dependencies {
 
     __32bitImplementation 'io.lbry:lbrysdk32:0.94.1'
     __64bitImplementation 'io.lbry:lbrysdk64:0.94.1'
+
+    implementation ('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
+    implementation 'com.google.zxing:core:3.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
