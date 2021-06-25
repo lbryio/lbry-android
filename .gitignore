@@ -66,3 +66,4 @@ app/twitter.properties
 *.hprof
 app/build
 bin
+app/debuglib

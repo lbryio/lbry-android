@@ -5,7 +5,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.4'
@@ -20,8 +20,11 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url  "https://dl.bintray.com/lbryio/io.lbry" }
+        /*flatDir {
+            dirs 'debuglib'
+        }*/
     }
 }
 
