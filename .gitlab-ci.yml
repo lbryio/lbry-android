@@ -10,7 +10,7 @@ build apk:
   before_script:
     - echo "$PGP_PRIVATE_KEY" | gpg --batch --import
     - echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list
-    - wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | sudo apt-key add -
+    - wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | apt-key add -
     - apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign git-secret
     - git secret reveal
     - chmod u+x $CI_PROJECT_DIR/gradlew
@@ -37,7 +37,7 @@ deploy build.lbry.io:
     - apt-get -y update && apt-get -y install apt-transport-https
     - echo "$PGP_PRIVATE_KEY" | gpg --batch --import
     - echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list
-    - wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | sudo apt-key add -
+    - wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | apt-key add -
     - apt-get -y update && apt-get -y install openjdk-8-jdk git git-secret
     - pip install awscli
     - chmod u+x $CI_PROJECT_DIR/gradlew
