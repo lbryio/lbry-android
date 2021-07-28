@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 public class LbryUriTest {
     private LbryUri expected;
+    private LbryUri expectedOctoshape;
 
     /*
      * Create an LbryUri object and assign fields manually using class methods. This object will be
@@ -18,14 +19,21 @@ public class LbryUriTest {
     @Before
     public void createExpected() {
         expected = new LbryUri();
+        expectedOctoshape = new LbryUri();
         expected.setChannelName("@lbry");
         expected.setStreamName("lbryturns4");
+        expectedOctoshape.setChannelName("@lbry");
+        expectedOctoshape.setStreamName("lbryturns4");
 
         try {
-            LbryUri.UriModifier primaryMod = LbryUri.UriModifier.parse("#", "3f");
-            LbryUri.UriModifier secondaryMod = LbryUri.UriModifier.parse("#", "6");
+            LbryUri.UriModifier primaryMod = LbryUri.UriModifier.parse(":", "3f");
+            LbryUri.UriModifier secondaryMod = LbryUri.UriModifier.parse(":", "6");
+            LbryUri.UriModifier primaryModOctoshape = LbryUri.UriModifier.parse("#", "3f");
+            LbryUri.UriModifier secondaryModOctoshape = LbryUri.UriModifier.parse("#", "6");
             expected.setChannelClaimId(primaryMod.getClaimId());
             expected.setStreamClaimId(secondaryMod.getClaimId());
+            expectedOctoshape.setChannelClaimId(primaryModOctoshape.getClaimId());
+            expectedOctoshape.setStreamClaimId(secondaryModOctoshape.getClaimId());
         } catch (LbryUriException e) {
             e.printStackTrace();
         }
@@ -71,7 +79,7 @@ public class LbryUriTest {
     }
 
     @Test
-    public void parseLbryProtocolWithChannel() {
+    public void parseLbryProtocolWithChannelOctoshape() {
         LbryUri obtained = new LbryUri();
 
         try {
@@ -80,12 +88,12 @@ public class LbryUriTest {
             e.printStackTrace();
         }
 
-        assertEquals(expected, obtained);
+        assertEquals(expectedOctoshape, obtained);
     }
 
     @Test
     public void parseLbryProtocolOnlyChannel() {
-        LbryUri expectedForChannel = sinthesizeExpected();
+        LbryUri expectedForChannel = sinthesizeExpectedChannelOctoshape();
 
         LbryUri obtained = new LbryUri();
 
@@ -100,7 +108,7 @@ public class LbryUriTest {
 
     @Test
     public void parseLbryTvProtocolOnlyChannel() {
-        LbryUri expectedForChannel = sinthesizeExpected();
+        LbryUri expectedForChannel = sinthesizeExpectedChannelOctoshape();
 
         LbryUri obtained = new LbryUri();
 
@@ -192,7 +200,7 @@ public class LbryUriTest {
     }
 
     @NotNull
-    private LbryUri sinthesizeExpected() {
+    private LbryUri sinthesizeExpectedChannelOctoshape() {
         LbryUri expectedForChannel = new LbryUri();
         expectedForChannel.setChannelName("@UCBerkeley");
         expectedForChannel.setChannel(true);

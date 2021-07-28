@@ -141,20 +141,6 @@ public class LbryUri {
         boolean isChannel = includesChannel && Helper.isNullOrEmpty(possibleStreamName);
         String channelName = includesChannel && streamOrChannelName.length() > 1 ? streamOrChannelName.substring(1) : null;
 
-        /*
-         * It would have thrown already on the RegEx parser if protocol value was incorrect
-         * or HTTPS host was unknown to us.
-         *
-         * [https://] hosts use ':' as ModSeparators while [lbry://] protocol expects '#'
-         */
-
-        if (!components.get(1).isEmpty()) {
-            if (primaryModSeparator.equals(":"))
-                primaryModSeparator = "#";
-            if (secondaryModSeparator.equals(":"))
-                secondaryModSeparator = "#";
-        }
-
         if (includesChannel) {
             if (Helper.isNullOrEmpty(channelName)) {
                 throw new LbryUriException("No channel name after @.");
@@ -329,9 +315,9 @@ public class LbryUri {
                     throw new LbryUriException(String.format("No modifier provided after separator %s", modSeparator));
                 }
 
-                if ("#".equals(modSeparator)) {
+                if ("#".equals(modSeparator) || ":".equals(modSeparator)) {
                     claimId = modValue;
-                } else if (":".equals(modSeparator)) {
+                } else if ("*".equals(modSeparator)) {
                     claimSequence = Helper.parseInt(modValue, -1);
                 } else if ("$".equals(modSeparator)) {
                     bidPosition = Helper.parseInt(modValue, -1);
