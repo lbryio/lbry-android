@@ -583,7 +583,9 @@ public class PublishFormFragment extends BaseFragment implements
             Context context = getContext();
             try {
                 Claim.StreamMetadata metadata = (Claim.StreamMetadata) currentClaim.getValue();
-                uploadedThumbnailUrl = currentClaim.getThumbnailUrl();
+                if (context != null) {
+                    uploadedThumbnailUrl = currentClaim.getThumbnailUrl(imageThumbnail.getLayoutParams().width, imageThumbnail.getLayoutParams().height, 85);
+                }
                 if (context != null && !Helper.isNullOrEmpty(uploadedThumbnailUrl)) {
                     Glide.with(context.getApplicationContext()).load(uploadedThumbnailUrl).centerCrop().into(imageThumbnail);
                 }

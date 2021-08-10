@@ -193,7 +193,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         vh.thumbnailView.setVisibility(notification.getCommentAuthor() == null ? View.INVISIBLE : View.VISIBLE);
         if (notification.getCommentAuthor() != null) {
             Glide.with(context.getApplicationContext()).load(
-                    notification.getCommentAuthor().getThumbnailUrl()).apply(RequestOptions.circleCropTransform()).into(vh.thumbnailView);
+                    notification.getCommentAuthor().getThumbnailUrl(vh.thumbnailView.getLayoutParams().width, vh.thumbnailView.getLayoutParams().height, 85)).apply(RequestOptions.circleCropTransform()).into(vh.thumbnailView);
         }
 
         vh.iconView.setVisibility(notification.getCommentAuthor() != null ? View.INVISIBLE : View.VISIBLE);

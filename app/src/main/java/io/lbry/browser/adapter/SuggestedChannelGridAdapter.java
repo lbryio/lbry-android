@@ -89,7 +89,8 @@ public class SuggestedChannelGridAdapter extends RecyclerView.Adapter<SuggestedC
     @Override
     public void onBindViewHolder(SuggestedChannelGridAdapter.ViewHolder vh, int position) {
         Claim claim = items.get(position);
-        String thumbnailUrl = claim.getThumbnailUrl();
+        ViewGroup.LayoutParams lp = vh.thumbnailView.getLayoutParams();
+        String thumbnailUrl = claim.getThumbnailUrl(lp.width, lp.height, 85);
 
         int bgColor = Helper.generateRandomColorForValue(claim.getClaimId());
         Helper.setIconViewBackgroundColor(vh.noThumbnailView, bgColor, false, context);

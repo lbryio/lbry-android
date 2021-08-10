@@ -334,7 +334,8 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         if (metadata instanceof Claim.StreamMetadata) {
             streamMetadata = (Claim.StreamMetadata) metadata;
         }
-        String thumbnailUrl = item.getThumbnailUrl();
+
+        String thumbnailUrl = item.getThumbnailUrl(vh.thumbnailView.getLayoutParams().width, vh.thumbnailView.getLayoutParams().height, 85);
         long publishTime = (streamMetadata != null && streamMetadata.getReleaseTime() > 0) ? streamMetadata.getReleaseTime() * 1000 : item.getTimestamp() * 1000;
         int bgColor = Helper.generateRandomColorForValue(item.getClaimId());
         if (bgColor == 0) {

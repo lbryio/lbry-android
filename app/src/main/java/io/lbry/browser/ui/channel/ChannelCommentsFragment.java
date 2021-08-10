@@ -467,7 +467,7 @@ public class ChannelCommentsFragment extends Fragment implements SdkStatusListen
         if (hasThumbnail && context != null) {
             Glide.with(context.getApplicationContext()).
                     asBitmap().
-                    load(channel.getThumbnailUrl()).
+                    load(channel.getThumbnailUrl(commentPostAsThumbnail.getLayoutParams().width, commentPostAsThumbnail.getLayoutParams().height, 85)).
                     apply(RequestOptions.circleCropTransform()).
                     into(commentPostAsThumbnail);
         }
