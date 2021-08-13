@@ -1566,7 +1566,8 @@ public class FileViewFragment extends BaseFragment implements
                 int bgColor = Helper.generateRandomColorForValue(signingChannel.getClaimId());
                 Helper.setIconViewBackgroundColor(root.findViewById(R.id.file_view_publisher_no_thumbnail), bgColor, false, context);
                 if (hasPublisherThumbnail && context != null) {
-                    Glide.with(context.getApplicationContext()).load(signingChannel.getThumbnailUrl()).
+                    ViewGroup.LayoutParams lp = root.findViewById(R.id.file_view_publisher_thumbnail).getLayoutParams();
+                    Glide.with(context.getApplicationContext()).load(signingChannel.getThumbnailUrl(lp.width, lp.height, 85)).
                             apply(RequestOptions.circleCropTransform()).into((ImageView) root.findViewById(R.id.file_view_publisher_thumbnail));
                 }
                 ((TextView) root.findViewById(R.id.file_view_publisher_thumbnail_alpha)).
@@ -1606,7 +1607,7 @@ public class FileViewFragment extends BaseFragment implements
             Claim.GenericMetadata metadata = claim.getValue();
             if (!Helper.isNullOrEmpty(claim.getThumbnailUrl())) {
                 ImageView thumbnailView = root.findViewById(R.id.file_view_thumbnail);
-                Glide.with(context.getApplicationContext()).asBitmap().load(claim.getThumbnailUrl()).centerCrop().into(thumbnailView);
+                Glide.with(context.getApplicationContext()).asBitmap().load(claim.getThumbnailUrl(context.getResources().getDisplayMetrics().widthPixels, thumbnailView.getLayoutParams().height, 85)).centerCrop().into(thumbnailView);
             } else {
                 // display first x letters of claim name, with random background
             }
@@ -3243,7 +3244,7 @@ public class FileViewFragment extends BaseFragment implements
         if (hasThumbnail && context != null) {
             Glide.with(context.getApplicationContext()).
                     asBitmap().
-                    load(channel.getThumbnailUrl()).
+                    load(channel.getThumbnailUrl(commentPostAsThumbnail.getLayoutParams().width, commentPostAsThumbnail.getLayoutParams().height, 85)).
                     apply(RequestOptions.circleCropTransform()).
                     into(commentPostAsThumbnail);
         }

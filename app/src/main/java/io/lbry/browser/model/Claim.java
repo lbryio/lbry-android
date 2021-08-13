@@ -1,5 +1,7 @@
 package io.lbry.browser.model;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -180,6 +182,21 @@ public class Claim {
     public String getThumbnailUrl() {
         if (value != null && value.getThumbnail() != null) {
             return value.getThumbnail().getUrl();
+        }
+        return null;
+    }
+
+    /**
+     * Gets the URL from the CDN where getting the image file
+     * @param width Pass zero for width and height for the full size image file
+     * @param height Pass zero for width and height for the full size image file
+     * @param q Desired quality for the image to be retrieved
+     * @return URL from the CDN from where image can be retrieved
+     */
+    public String getThumbnailUrl(int width, int height, int q) {
+        if (value != null && value.getThumbnail() != null) {
+            ImageCDNUrl imageCDNUrl = new ImageCDNUrl(Math.max(width, 0), Math.max(height, 0), q, null, value.getThumbnail().getUrl());
+            return imageCDNUrl.toString();
         }
         return null;
     }
@@ -491,6 +508,30 @@ public class Claim {
         private String url;
     }
 
+    /**
+     * Object to be instantiated. In order to get the URLto the CDN, call toString() on it
+     */
+    static class ImageCDNUrl {
+        private String appendedPath = "";
+
+        public ImageCDNUrl(int width, int height, int quality, @Nullable String format, String thumbnailUrl) {
+            if (width != 0 && height != 0)
+                appendedPath = "s:".concat(String.valueOf(width)).concat(":").concat(String.valueOf(height)).concat("/");
+
+            appendedPath = appendedPath.concat("quality:").concat(String.valueOf(quality)).concat("/");
+
+            appendedPath = appendedPath.concat("plain/").concat(thumbnailUrl);
+
+            if (format != null)
+                appendedPath = appendedPath.concat("@").concat(format);
+        }
+
+        @Override
+        public String toString() {
+            String url = "https://image-processor.vanwanet.com/optimize/";
+            return url.concat(appendedPath);
+        }
+    }
     @Data
     public static class StreamInfo {
         private long duration; // video / audio
