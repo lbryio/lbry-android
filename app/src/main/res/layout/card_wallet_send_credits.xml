@@ -19,18 +19,41 @@
             android:text="@string/send_credits"
             android:textSize="20sp"/>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/recipient_address">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/wallet_input_send_address"
-                android:fontFamily="@font/inter"
-                android:textSize="14sp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNext" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_weight="1"
+                android:hint="@string/recipient_address"
+                android:layout_toStartOf="@id/wallet_qr_scan_address">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/wallet_input_send_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:imeOptions="actionNext"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/wallet_qr_scan_address"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:background="@null"
+                android:src="@drawable/ic_qr_scanner"
+                android:tint="@color/lbryGreen" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_marginTop="16dp"
