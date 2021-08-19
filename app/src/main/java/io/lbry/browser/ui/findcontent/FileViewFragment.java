@@ -316,7 +316,10 @@ public class FileViewFragment extends BaseFragment implements
                     hideBuffering();
 
                     if (loadingNewClaim) {
-                        MainActivity.appPlayer.setPlayWhenReady(Objects.requireNonNull((MainActivity) (getActivity())).isMediaAutoplayEnabled());
+                        Context context = getContext();
+                        if (context instanceof MainActivity) {
+                            MainActivity.appPlayer.setPlayWhenReady(((MainActivity) context).isMediaAutoplayEnabled());
+                        }
                         loadingNewClaim = false;
                     }
                 } else if (playbackState == Player.STATE_BUFFERING) {
