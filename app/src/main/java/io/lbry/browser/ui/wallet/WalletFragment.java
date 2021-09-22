@@ -397,19 +397,6 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             }
         });
 
-        inputSendAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                inputSendAddress.setHint(hasFocus ? getString(R.string.recipient_address_placeholder) : "");
-            }
-        });
-        inputSendAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                inputSendAmount.setHint(hasFocus ? getString(R.string.zero) : "");
-                inlineBalanceContainer.setVisibility(hasFocus ? View.VISIBLE : View.INVISIBLE);
-            }
-        });
 
         layoutSdkInitializing.setVisibility(Lbry.SDK_READY ? View.GONE : View.VISIBLE);
         layoutAccountRecommended.setVisibility(hasSkippedAccount() || Lbryio.isSignedIn() ? View.GONE : View.VISIBLE);
