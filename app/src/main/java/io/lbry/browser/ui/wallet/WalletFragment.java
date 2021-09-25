@@ -1,5 +1,7 @@
 package io.lbry.browser.ui.wallet;
 
+import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
+
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -16,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -397,6 +401,25 @@ public class WalletFragment extends BaseFragment implements SdkStatusListener, W
             }
         });
 
+
+        inputSendAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputSendAddress.setHint(hasFocus ? getString(R.string.recipient_address_placeholder) : "");
+                imm.showSoftInput(inputSendAddress, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+
+        inputSendAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputSendAmount.setHint(hasFocus ? getString(R.string.zero) : "");
+                imm.showSoftInput(inputSendAmount, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
 
         layoutSdkInitializing.setVisibility(Lbry.SDK_READY ? View.GONE : View.VISIBLE);
         layoutAccountRecommended.setVisibility(hasSkippedAccount() || Lbryio.isSignedIn() ? View.GONE : View.VISIBLE);
