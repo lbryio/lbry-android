@@ -11,13 +11,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/normal_01">
 
             <include layout="@layout/card_reward_driver"
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="@dimen/normal_01" />
 
             <!-- Balance view -->
             <include layout="@layout/card_wallet_balance" />
@@ -43,7 +43,7 @@
         android:background="@color/lbryGreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="@dimen/normal_01">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:textSize="24sp"
+                android:textSize="@dimen/text_size_11"
                 android:text="@string/account_recommended"
                 android:textColor="@color/white" />
 
@@ -61,8 +61,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:layout_marginTop="16dp"
+                android:textSize="@dimen/text_size_06"
+                android:layout_marginTop="@dimen/normal_01"
                 android:text="@string/wallet_account_desc"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
@@ -71,8 +71,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:layout_marginTop="16dp"
+                android:textSize="@dimen/text_size_06"
+                android:layout_marginTop="@dimen/normal_01"
                 android:text="@string/wallet_without_account"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />

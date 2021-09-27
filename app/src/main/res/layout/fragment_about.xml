@@ -9,144 +9,144 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/normal_01">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="@string/content_freedom"
             android:textColor="@color/lbryGreen"
-            android:textSize="24sp" />
+            android:textSize="@dimen/text_size_11" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/about_paragraph"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
 
         <TextView
             android:id="@+id/about_link_what_is_lbry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/about_link_what_is_lbry"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <TextView
             android:id="@+id/about_link_android_basics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/about_link_android_basics"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <TextView
             android:id="@+id/about_link_faq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/about_link_faq"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="@dimen/normal_06"
             android:fontFamily="@font/inter"
             android:text="@string/get_social"
             android:textColor="@color/lbryGreen"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_08" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/social_paragraph"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <TextView
             android:id="@+id/about_link_discord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/about_link_discord"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <TextView
             android:id="@+id/about_link_facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/about_link_facebook"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <TextView
             android:id="@+id/about_link_instagram"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/about_link_instagram"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <TextView
             android:id="@+id/about_link_reddit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/about_link_reddit"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <TextView
             android:id="@+id/about_link_telegram"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/about_link_telegram"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <TextView
             android:id="@+id/about_link_twitter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:text="@string/about_link_twitter"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="@dimen/normal_06"
             android:fontFamily="@font/inter"
             android:text="@string/app_info"
             android:textColor="@color/lbryGreen"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_08" />
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="@dimen/small_08">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -156,20 +156,20 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_weight="10"
-                    android:padding="12dp">
+                    android:padding="@dimen/small_12">
                     <TextView
                         android:layout_weight="4"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/inter"
                         android:singleLine="true"
                         android:text="@string/connected_email"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:textStyle="bold" />
                     <LinearLayout
                         android:layout_weight="6"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
@@ -181,7 +181,7 @@
                             android:text="@string/no_connected_email"
                             android:textFontWeight="300"
                             android:textIsSelectable="true"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/text_size_04"
                             android:textStyle="italic" />
                         <TextView
                             android:id="@+id/about_update_mailing_preferences"
@@ -189,75 +189,75 @@
                             android:clickable="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginTop="@dimen/small_02"
                             android:fontFamily="@font/inter"
                             android:singleLine="true"
                             android:text="@string/update_mailing_preferences"
                             android:textColor="@color/lbryGreen"
                             android:textFontWeight="300"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/text_size_04" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <View
                     android:background="@color/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp" />
+                    android:layout_height="@dimen/small_00.5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_weight="10"
-                    android:padding="12dp">
+                    android:padding="@dimen/small_12">
                     <TextView
                         android:layout_weight="4"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/inter"
                         android:singleLine="true"
                         android:text="@string/app_version"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/about_app_version"
                         android:layout_weight="6"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/inter"
                         android:singleLine="true"
                         android:textFontWeight="300"
                         android:textIsSelectable="true"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_04" />
                 </LinearLayout>
 
                 <View
                     android:background="@color/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp" />
+                    android:layout_height="@dimen/small_00.5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_weight="10"
-                    android:padding="12dp">
+                    android:padding="@dimen/small_12">
                     <TextView
                         android:layout_weight="4"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/inter"
                         android:singleLine="true"
                         android:text="@string/lbry_sdk"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/about_lbry_sdk"
                         android:layout_weight="6"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/inter"
@@ -265,34 +265,34 @@
                         android:text="@string/loading"
                         android:textFontWeight="300"
                         android:textIsSelectable="true"
-                        android:textSize="14sp"  />
+                        android:textSize="@dimen/text_size_04"  />
                 </LinearLayout>
 
                 <View
                     android:background="@color/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp" />
+                    android:layout_height="@dimen/small_00.5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_weight="10"
-                    android:padding="12dp">
+                    android:padding="@dimen/small_12">
                     <TextView
                         android:layout_weight="4"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/inter"
                         android:singleLine="true"
                         android:text="@string/platform"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/about_platform"
                         android:layout_weight="6"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/inter"
@@ -300,20 +300,20 @@
                         android:text="@string/loading"
                         android:textFontWeight="300"
                         android:textIsSelectable="true"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_04" />
                 </LinearLayout>
 
                 <View
                     android:background="@color/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp" />
+                    android:layout_height="@dimen/small_00.5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="10"
-                    android:padding="12dp">
+                    android:padding="@dimen/small_12">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -321,7 +321,7 @@
                         android:fontFamily="@font/inter"
                         android:singleLine="true"
                         android:text="@string/installation_id"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/about_installation_id"
@@ -332,20 +332,20 @@
                         android:text="@string/loading"
                         android:textFontWeight="300"
                         android:textIsSelectable="true"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_04" />
                 </LinearLayout>
 
                 <View
                     android:background="@color/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp" />
+                    android:layout_height="@dimen/small_00.5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="10"
-                    android:padding="12dp">
+                    android:padding="@dimen/small_12">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -353,7 +353,7 @@
                         android:fontFamily="@font/inter"
                         android:singleLine="true"
                         android:text="@string/firebase_token"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/about_firebase_token"
@@ -363,36 +363,36 @@
                         android:fontFamily="@font/inter"
                         android:textFontWeight="300"
                         android:textIsSelectable="true"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_04" />
                 </LinearLayout>
 
                 <View
                     android:background="@color/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp" />
+                    android:layout_height="@dimen/small_00.5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_weight="10"
-                    android:padding="12dp">
+                    android:padding="@dimen/small_12">
                     <TextView
                         android:layout_weight="4"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/inter"
                         android:singleLine="true"
                         android:text="@string/logs"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/about_send_log"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:layout_weight="6"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/inter"
@@ -400,7 +400,7 @@
                         android:text="@string/send_log"
                         android:textColor="@color/lbryGreen"
                         android:textFontWeight="300"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_04" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

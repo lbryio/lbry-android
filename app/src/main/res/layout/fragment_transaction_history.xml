@@ -9,10 +9,10 @@
         android:id="@+id/transaction_history_no_transactions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/normal_01"
+        android:layout_marginEnd="@dimen/normal_01"
         android:fontFamily="@font/inter"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_04"
         android:text="@string/no_transactions"
         android:visibility="gone" />
 
@@ -23,9 +23,9 @@
 
     <ProgressBar
         android:id="@+id/transaction_history_loading"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="@dimen/normal_02"
+        android:layout_height="@dimen/normal_02"
+        android:layout_marginTop="@dimen/normal_01"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

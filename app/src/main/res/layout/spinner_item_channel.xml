@@ -3,12 +3,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp">
+    android:padding="@dimen/small_12">
     <TextView
         android:id="@+id/channel_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_04"
         android:textFontWeight="300" />
 </LinearLayout>

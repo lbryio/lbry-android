@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
         android:id="@+id/startup_stage_icon"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="@dimen/normal_01"
+        android:layout_height="@dimen/normal_01"
         android:layout_gravity="center_vertical"
         android:src="@drawable/ic_check"
         app:tint="@color/white" />
@@ -15,12 +15,12 @@
         android:id="@+id/startup_stage_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/small_08"
         android:layout_gravity="center_vertical"
         android:fontFamily="@font/inter"
         tools:text="@string/installation_id_loaded"
         android:textColor="@color/white"
         android:textFontWeight="300"
-        android:textSize="14sp" />
+        android:textSize="@dimen/text_size_04" />
 
 </LinearLayout>

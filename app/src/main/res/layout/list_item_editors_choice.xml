@@ -9,11 +9,11 @@
         android:id="@+id/editors_choice_header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="@dimen/normal_01"
+        android:layout_marginEnd="@dimen/normal_01"
+        android:layout_marginBottom="@dimen/normal_01"
         android:fontFamily="@font/inter"
-        android:textSize="24sp"
+        android:textSize="@dimen/text_size_11"
         android:textColor="@color/lbryGreen" />
 
     <androidx.cardview.widget.CardView
@@ -22,43 +22,43 @@
         android:foreground="?attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginStart="@dimen/normal_01"
+        android:layout_marginEnd="@dimen/normal_01"
+        android:layout_marginBottom="@dimen/normal_01">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/normal_01">
             <TextView
                 android:id="@+id/editors_choice_content_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_size_08"
                 android:singleLine="true" />
 
             <RelativeLayout
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/small_08"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/editors_choice_content_thumbnail"
-                    android:layout_width="160dp"
-                    android:layout_height="120dp"
+                    android:layout_width="@dimen/large_11"
+                    android:layout_height="@dimen/large_01"
                     android:layout_centerVertical="true"/>
                 <TextView
                     android:id="@+id/editors_choice_content_description"
                     android:layout_toEndOf="@id/editors_choice_content_thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/normal_01"
                     android:lineSpacingMultiplier="1.2"
                     android:fontFamily="@font/inter"
                     android:ellipsize="end"
                     android:maxLines="8"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
             </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

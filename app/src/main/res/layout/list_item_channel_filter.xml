@@ -2,16 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:clickable="true"
     android:focusable="true"
-    android:padding="8dp"
+    android:padding="@dimen/small_08"
     android:foreground="?attr/selectableItemBackground"
     android:background="@drawable/bg_selected_item"
-    android:layout_width="100dp"
+    android:layout_width="@dimen/normal_22"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="2dp">
+    android:layout_marginEnd="@dimen/small_02">
     <RelativeLayout
         android:id="@+id/channel_filter_media_container"
-        android:layout_width="80dp"
-        android:layout_height="80dp">
+        android:layout_width="@dimen/normal_17"
+        android:layout_height="@dimen/normal_17">
         <RelativeLayout
             android:id="@+id/channel_filter_no_thumbnail"
             android:background="@drawable/bg_channel_icon"
@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/inter"
-                android:textSize="48sp"
+                android:textSize="@dimen/text_size_15"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
         </RelativeLayout>
@@ -55,6 +55,6 @@
         android:layout_below="@id/channel_filter_media_container"
         android:layout_centerHorizontal="true"
         android:singleLine="true"
-        android:textSize="12sp"
-        android:layout_marginTop="4dp" />
+        android:textSize="@dimen/text_size_02"
+        android:layout_marginTop="@dimen/small_04" />
 </RelativeLayout>

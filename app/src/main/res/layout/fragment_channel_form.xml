@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/channel_form_display_area"
         android:clipChildren="false"
-        android:elevation="4dp"
+        android:elevation="@dimen/small_04"
         android:orientation="vertical"
         android:layout_weight="10"
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
             android:layout_width="match_parent"
-            android:layout_height="220dp">
+            android:layout_height="@dimen/large_26">
             <ImageView
                 android:id="@+id/channel_form_cover_image"
                 android:layout_width="match_parent"
@@ -27,15 +27,15 @@
                 android:scaleType="centerCrop" />
             <RelativeLayout
                 android:background="@drawable/bg_small_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_width="@dimen/normal_03"
+                android:layout_height="@dimen/normal_03"
+                android:layout_marginStart="@dimen/normal_01"
+                android:layout_marginBottom="@dimen/normal_01"
                 android:layout_alignParentBottom="true">
                 <ImageView
                     android:id="@+id/channel_form_cover_edit_icon"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="@dimen/normal_01"
+                    android:layout_height="@dimen/normal_01"
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_edit"
                     app:tint="@color/white" />
@@ -48,42 +48,42 @@
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="@dimen/small_04"
+                android:layout_marginTop="@dimen/small_04"
                 android:orientation="horizontal"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingTop="@dimen/small_02"
+                android:paddingBottom="@dimen/small_02"
+                android:paddingStart="@dimen/small_08"
+                android:paddingEnd="@dimen/small_08"
                 android:visibility="gone">
                 <ProgressBar
-                    android:layout_width="16dp"
-                    android:layout_height="16dp" />
+                    android:layout_width="@dimen/normal_01"
+                    android:layout_height="@dimen/normal_01" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="@dimen/small_04"
                     android:fontFamily="@font/inter"
                     android:text="@string/uploading"
                     android:textColor="@color/white"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
             </LinearLayout>
             <RelativeLayout
                 android:id="@+id/channel_form_icon_container"
                 android:foreground=" ?attr/selectableItemBackground"
                 android:clickable="true"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/normal_17"
+                android:layout_height="@dimen/normal_17"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/normal_01"
                 android:layout_centerHorizontal="true">
                 <RelativeLayout
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/bg_channel_icon"
                     android:id="@+id/channel_form_no_thumbnail"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp">
+                    android:layout_width="@dimen/normal_19_02"
+                    android:layout_height="@dimen/normal_19_02">
                     <TextView
                         android:id="@+id/channel_form_icon_alpha"
                         android:layout_centerInParent="true"
@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter"
                         android:textAllCaps="true"
-                        android:textSize="48sp"
+                        android:textSize="@dimen/text_size_15"
                         android:textColor="@color/white"
                         android:textFontWeight="300" />
                 </RelativeLayout>
@@ -101,15 +101,15 @@
                     android:layout_height="match_parent" />
                 <RelativeLayout
                     android:background="@drawable/bg_small_icon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_width="@dimen/normal_03"
+                    android:layout_height="@dimen/normal_03"
+                    android:layout_marginStart="@dimen/normal_01"
+                    android:layout_marginBottom="@dimen/normal_01"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true">
                     <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="@dimen/normal_01"
+                        android:layout_height="@dimen/normal_01"
                         android:layout_centerInParent="true"
                         android:src="@drawable/ic_edit"
                         app:tint="@color/white" />
@@ -134,7 +134,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/normal_01">
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -145,13 +145,13 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter"
                             android:singleLine="true"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/text_size_04" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp">
+                        android:layout_marginTop="@dimen/normal_01">
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -162,32 +162,32 @@
                                 android:fontFamily="@font/inter"
                                 android:hint="@string/channel_name"
                                 android:singleLine="true"
-                                android:textSize="14sp" />
+                                android:textSize="@dimen/text_size_04" />
                         </com.google.android.material.textfield.TextInputLayout>
                         <TextView
                             android:id="@+id/channel_form_at_prefix"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="28dp"
-                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="@dimen/normal_04"
+                            android:layout_marginStart="@dimen/small_12"
                             android:text="@string/at"
                             android:visibility="gone" />
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/normal_01"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/channel_form_input_layout_deposit"
-                            android:layout_width="100dp"
+                            android:layout_width="@dimen/normal_22"
                             android:layout_height="wrap_content"
                             android:hint="@string/deposit">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/channel_form_input_deposit"
                                 android:fontFamily="@font/inter"
                                 android:singleLine="true"
-                                android:textSize="14sp"
+                                android:textSize="@dimen/text_size_04"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="numberDecimal" />
@@ -198,26 +198,26 @@
                             android:layout_toEndOf="@id/channel_form_input_layout_deposit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="30dp"
+                            android:layout_marginStart="@dimen/small_08"
+                            android:layout_marginTop="@dimen/normal_04_02"
                             android:fontFamily="@font/inter"
                             android:text="@string/lbc"
                             android:textAllCaps="true"
-                            android:textSize="10sp"
+                            android:textSize="@dimen/text_size_00"
                             android:textFontWeight="300" />
 
                         <LinearLayout
                             android:id="@+id/channel_form_inline_balance_container"
                             android:layout_toEndOf="@id/channel_form_input_currency"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginTop="28dp"
+                            android:layout_marginStart="@dimen/normal_03"
+                            android:layout_marginTop="@dimen/normal_04"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:visibility="invisible">
                             <ImageView
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
+                                android:layout_width="@dimen/small_12"
+                                android:layout_height="@dimen/small_12"
                                 android:layout_gravity="center_vertical"
                                 android:src="@drawable/ic_credits" />
                             <TextView
@@ -226,24 +226,24 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"
                                 android:textFontWeight="300"
-                                android:layout_marginStart="2dp" />
+                                android:layout_marginStart="@dimen/small_02" />
                         </LinearLayout>
                     </RelativeLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="@dimen/small_04"
                         android:fontFamily="@font/inter"
                         android:text="@string/deposit_remains_yours"
                         android:textFontWeight="300"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/text_size_02" />
 
                     <LinearLayout
                         android:id="@+id/channel_form_optional_fields_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/normal_01"
                         android:orientation="vertical"
                         android:visibility="gone">
 
@@ -259,13 +259,13 @@
                                 android:inputType="textMultiLine"
                                 android:singleLine="false"
                                 android:scrollbars="vertical"
-                                android:textSize="14sp" />
+                                android:textSize="@dimen/text_size_04" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="@dimen/normal_01"
                             android:hint="@string/website">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/channel_form_input_website"
@@ -273,13 +273,13 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"
                                 android:singleLine="true"
-                                android:textSize="14sp" />
+                                android:textSize="@dimen/text_size_04" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="@dimen/normal_01"
                             android:hint="@string/email">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/channel_form_input_email"
@@ -287,25 +287,25 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"
                                 android:singleLine="true"
-                                android:textSize="14sp" />
+                                android:textSize="@dimen/text_size_04" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginTop="@dimen/normal_01"
+                            android:layout_marginBottom="@dimen/small_08"
                             android:fontFamily="@font/inter"
                             android:text="@string/tags"
                             android:textFontWeight="600"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/text_size_04" />
                         <include layout="@layout/container_inline_tag_form" />
                     </LinearLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp">
+                        android:layout_marginTop="@dimen/normal_03">
                         <TextView
                             android:id="@+id/channel_form_cancel_link"
                             android:background="?attr/selectableItemBackground"
@@ -314,7 +314,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:fontFamily="@font/inter"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/text_size_04"
                             android:text="@string/cancel" />
 
                         <TextView
@@ -324,17 +324,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginEnd="24dp"
+                            android:layout_marginEnd="@dimen/normal_03"
                             android:layout_toStartOf="@id/channel_form_save_button"
                             android:fontFamily="@font/inter"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/text_size_04"
                             android:text="@string/show_optional_fields" />
                         <ProgressBar
                             android:id="@+id/channel_form_save_progress"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/normal_02"
+                            android:layout_height="@dimen/normal_02"
                             android:layout_centerVertical="true"
-                            android:layout_marginEnd="24dp"
+                            android:layout_marginEnd="@dimen/normal_03"
                             android:layout_toStartOf="@+id/channel_form_save_button"
                             android:visibility="gone" />
                         <com.google.android.material.button.MaterialButton

@@ -6,11 +6,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/normal_01">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="@dimen/small_12">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -18,11 +18,11 @@
                 android:fontFamily="@font/inter"
                 android:textStyle="bold"
                 android:text="@string/invite_history"
-                android:textSize="20sp"/>
+                android:textSize="@dimen/text_size_10"/>
             <ProgressBar
                 android:id="@+id/invites_loading_status_progress"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/normal_02"
+                android:layout_height="@dimen/normal_02"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:visibility="gone" />
@@ -32,14 +32,14 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="@string/earn_credits_for_inviting"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/invite_history_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/normal_01"
             android:visibility="gone"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

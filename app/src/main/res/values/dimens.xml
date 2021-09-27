@@ -8,4 +8,176 @@
     <dimen name="wallet_total_balance_font_size">14sp</dimen>
     <dimen name="wallet_detail_balance_font_size">12sp</dimen>
     <dimen name="wallet_detail_balance_desc_font_size">12sp</dimen>
+
+    <!--Text Dimensions-->
+    <dimen name="text_size_00">10sp</dimen>
+    <dimen name="text_size_01">11sp</dimen>
+    <dimen name="text_size_02">12sp</dimen>
+    <dimen name="text_size_03">13sp</dimen>
+    <dimen name="text_size_04">14sp</dimen>
+    <dimen name="text_size_05">15sp</dimen>
+    <dimen name="text_size_06">16sp</dimen>
+    <dimen name="text_size_07">17sp</dimen>
+    <dimen name="text_size_08">18sp</dimen>
+    <dimen name="text_size_09">19sp</dimen>
+    <dimen name="text_size_10">20sp</dimen>
+    <dimen name="text_size_11">24sp</dimen>
+    <dimen name="text_size_12">28sp</dimen>
+    <dimen name="text_size_13">30sp</dimen>
+    <dimen name="text_size_14">32sp</dimen>
+    <dimen name="text_size_15">48sp</dimen>
+    <dimen name="text_size_16">56sp</dimen>
+
+    <!--Layout Dimensions-->
+    <dimen name="small_00">0dp</dimen>
+    <dimen name="small_00.5">0.5dp</dimen>
+    <dimen name="small_01">1dp</dimen>
+    <dimen name="small_02">2dp</dimen>
+    <dimen name="small_03">3dp</dimen>
+    <dimen name="small_04">4dp</dimen>
+    <dimen name="small_05">5dp</dimen>
+    <dimen name="small_06">6dp</dimen>
+    <dimen name="small_07">7dp</dimen>
+    <dimen name="small_08">8dp</dimen>
+    <dimen name="small_09">9dp</dimen>
+    <dimen name="small_10">10dp</dimen>
+    <dimen name="small_11">11dp</dimen>
+    <dimen name="small_12">12dp</dimen>
+    <dimen name="small_13">13dp</dimen>
+    <dimen name="small_14">14dp</dimen>
+    <dimen name="small_15">15dp</dimen>
+
+    <dimen name="normal_01">16dp</dimen>
+    <dimen name="normal_01_01">17dp</dimen>
+    <dimen name="normal_01_02">18dp</dimen>
+    <dimen name="normal_01_03">19dp</dimen>
+
+    <dimen name="normal_02">20dp</dimen>
+    <dimen name="normal_02_01">21dp</dimen>
+    <dimen name="normal_02_02">22dp</dimen>
+    <dimen name="normal_02_03">23dp</dimen>
+
+    <dimen name="normal_03">24dp</dimen>
+
+    <dimen name="normal_04">28dp</dimen>
+    <dimen name="normal_04_01">29dp</dimen>
+    <dimen name="normal_04_02">30dp</dimen>
+    <dimen name="normal_04_03">31dp</dimen>
+
+    <dimen name="normal_05">32dp</dimen>
+    <dimen name="normal_06">36dp</dimen>
+    <dimen name="normal_07">40dp</dimen>
+    <dimen name="normal_08">44dp</dimen>
+
+    <dimen name="normal_09">48dp</dimen>
+    <dimen name="normal_09_01">49dp</dimen>
+    <dimen name="normal_09_02">50dp</dimen>
+    <dimen name="normal_09_03">51dp</dimen>
+
+    <dimen name="normal_10">52dp</dimen>
+    <dimen name="normal_11">56dp</dimen>
+    <dimen name="normal_12">60dp</dimen>
+    <dimen name="normal_13">64dp</dimen>
+    <dimen name="normal_14">68dp</dimen>
+    <dimen name="normal_15">72dp</dimen>
+    <dimen name="normal_16">76dp</dimen>
+    <dimen name="normal_17">80dp</dimen>
+    <dimen name="normal_18">84dp</dimen>
+
+    <dimen name="normal_19">88dp</dimen>
+    <dimen name="normal_19_01">89dp</dimen>
+    <dimen name="normal_19_02">90dp</dimen>
+    <dimen name="normal_19_03">91dp</dimen>
+
+    <dimen name="normal_20">92dp</dimen>
+    <dimen name="normal_21">96dp</dimen>
+    <dimen name="normal_22">100dp</dimen>
+    <dimen name="normal_23">104dp</dimen>
+
+    <dimen name="normal_24">108dp</dimen>
+    <dimen name="normal_24_01">109dp</dimen>
+    <dimen name="normal_24_02">110dp</dimen>
+    <dimen name="normal_24_03">111dp</dimen>
+
+    <dimen name="normal_25">112dp</dimen>
+    <dimen name="normal_26">116dp</dimen>
+
+    <dimen name="large_01">120dp</dimen>
+    <dimen name="large_02">124dp</dimen>
+    <dimen name="large_03">128dp</dimen>
+    <dimen name="large_04">132dp</dimen>
+    <dimen name="large_05">136dp</dimen>
+    <dimen name="large_06">140dp</dimen>
+    <dimen name="large_07">144dp</dimen>
+    <dimen name="large_08">148dp</dimen>
+    <dimen name="large_08.5">148.5dp</dimen>
+
+    <dimen name="large_09">152dp</dimen>
+    <dimen name="large_10">156dp</dimen>
+    <dimen name="large_11">160dp</dimen>
+
+    <dimen name="large_12">164dp</dimen>
+    <dimen name="large_13">168dp</dimen>
+    <dimen name="large_14">172dp</dimen>
+    <dimen name="large_15">176dp</dimen>
+    <dimen name="large_16">180dp</dimen>
+    <dimen name="large_17">184dp</dimen>
+    <dimen name="large_18">188dp</dimen>
+    <dimen name="large_19">192dp</dimen>
+    <dimen name="large_20">196dp</dimen>
+    <dimen name="large_21">200dp</dimen>
+    <dimen name="large_22">204dp</dimen>
+    <dimen name="large_23">208dp</dimen>
+    <dimen name="large_24">212dp</dimen>
+    <dimen name="large_25">216dp</dimen>
+    <dimen name="large_26">220dp</dimen>
+    <dimen name="large_27">224dp</dimen>
+    <dimen name="large_28">228dp</dimen>
+    <dimen name="large_29">232dp</dimen>
+    <dimen name="large_30">236dp</dimen>
+
+    <dimen name="large_31">240dp</dimen>
+    <dimen name="large_31_01">241dp</dimen>
+    <dimen name="large_31_02">242dp</dimen>
+    <dimen name="large_31_03">243dp</dimen>
+
+    <dimen name="large_32">244dp</dimen>
+    <dimen name="large_32_01">245dp</dimen>
+    <dimen name="large_32_02">246dp</dimen>
+    <dimen name="large_32_03">247dp</dimen>
+
+    <dimen name="large_33">248dp</dimen>
+    <dimen name="large_34">252dp</dimen>
+    <dimen name="large_35">256dp</dimen>
+    <dimen name="large_36">260dp</dimen>
+
+    <dimen name="large_37">260dp</dimen>
+    <dimen name="large_38">264dp</dimen>
+    <dimen name="large_39">268dp</dimen>
+    <dimen name="large_40">272dp</dimen>
+    <dimen name="large_41">276dp</dimen>
+    <dimen name="large_42">280dp</dimen>
+    <dimen name="large_43">284dp</dimen>
+    <dimen name="large_44">288dp</dimen>
+    <dimen name="large_45">292dp</dimen>
+    <dimen name="large_46">296dp</dimen>
+    <dimen name="large_47">300dp</dimen>
+
+    <dimen name="large_48">304dp</dimen>
+    <dimen name="large_49">308dp</dimen>
+    <dimen name="large_50">312dp</dimen>
+    <dimen name="large_51">316dp</dimen>
+    <dimen name="large_52">320dp</dimen>
+    <dimen name="large_53">324dp</dimen>
+    <dimen name="large_54">328dp</dimen>
+    <dimen name="large_55">332dp</dimen>
+    <dimen name="large_56">336dp</dimen>
+    <dimen name="large_57">340dp</dimen>
+
+    <dimen name="large_92">480dp</dimen>
+
+    <dimen name="negative_small_01.5">-1.5dp</dimen>
+    <dimen name="negative_small_01">-1dp</dimen>
+    <dimen name="negative_normal_06">-36dp</dimen>
+
 </resources>

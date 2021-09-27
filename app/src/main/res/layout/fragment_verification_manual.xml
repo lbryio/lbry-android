@@ -7,8 +7,8 @@
 
     <ProgressBar
         android:id="@+id/verification_manual_loading"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/normal_03"
+        android:layout_height="@dimen/normal_03"
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
@@ -22,9 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:visibility="visible"
-            android:layout_margin="36dp">
+            android:layout_margin="@dimen/normal_06">
             <TextView
-                android:textSize="28sp"
+                android:textSize="@dimen/text_size_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
@@ -32,10 +32,10 @@
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
             <TextView
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/normal_01"
                 android:fontFamily="@font/inter"
                 android:text="@string/get_instantly_verified"
                 android:textColor="@color/white"
@@ -43,19 +43,19 @@
 
 
             <TextView
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="@dimen/normal_06"
                 android:fontFamily="@font/inter"
                 android:text="@string/twitter_verification"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
             <TextView
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:text="@string/twitter_verification_desc"
                 android:textColor="@color/white"
@@ -64,25 +64,25 @@
                 android:id="@+id/verification_manual_twitter_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:text="@string/twitter_verify" />
 
 
             <TextView
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="@dimen/normal_06"
                 android:fontFamily="@font/inter"
                 android:text="@string/phone_number_verification"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
             <TextView
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:text="@string/phone_number_verification_desc"
                 android:textColor="@color/white"
@@ -91,24 +91,24 @@
                 android:id="@+id/verification_manual_phone_number_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:text="@string/phone_number_verify" />
 
             <TextView
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="@dimen/normal_06"
                 android:fontFamily="@font/inter"
                 android:text="@string/skip_queue_verification"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
             <TextView
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:text="@string/skip_queue_verification_desc"
                 android:textColor="@color/white"
@@ -117,14 +117,14 @@
                 android:id="@+id/verification_manual_skip_queue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:text="@string/skip_queue_button_text" />
             <TextView
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/normal_01"
                 android:fontFamily="@font/inter"
                 android:text="@string/skip_queue_manual_check"
                 android:textColor="@color/white"
@@ -133,35 +133,35 @@
                 android:id="@+id/verification_manual_skip_queue_verify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:text="@string/verify_purchase" />
 
             <TextView
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="@dimen/normal_06"
                 android:fontFamily="@font/inter"
                 android:text="@string/manual_reward_verification"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
             <TextView
                 android:id="@+id/verification_manual_discord_verify"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:text="@string/request_to_be_verified"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
 
             <TextView
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/normal_01"
                 android:fontFamily="@font/inter"
                 android:text="@string/enjoy_free_content"
                 android:textColor="@color/white"
@@ -171,7 +171,7 @@
                 android:id="@+id/verification_manual_continue_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:text="@string/continue_text" />
         </LinearLayout>

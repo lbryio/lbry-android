@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/normal_01">
         <TextView
             android:id="@+id/repost_title"
             android:layout_width="wrap_content"
@@ -16,13 +16,13 @@
             android:fontFamily="@font/inter"
             android:singleLine="true"
             android:text="@string/repost"
-            android:textSize="20sp" />
+            android:textSize="@dimen/text_size_10" />
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="@dimen/small_00.5"
             android:background="@color/divider"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="@dimen/small_08"
+            android:layout_marginBottom="@dimen/small_08" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,34 +30,34 @@
             android:fontFamily="@font/inter"
             android:text="@string/repost_your_favorite"
             android:textFontWeight="300"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_04" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/normal_03"
             android:fontFamily="@font/inter"
             android:text="@string/channel_to_post_on"
             android:textFontWeight="300"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_04" />
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/repost_channel_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="@dimen/small_04" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/normal_03"
             android:fontFamily="@font/inter"
             android:text="@string/name"
             android:textFontWeight="300"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_04" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="@dimen/small_04">
             <TextView
                 android:id="@+id/repost_name_prefix"
                 android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                 android:fontFamily="@font/inter"
                 android:singleLine="true"
                 android:textColor="@color/lightGrey"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:textFontWeight="300" />
             <EditText
                 android:id="@+id/repost_name_input"
@@ -77,7 +77,7 @@
                 android:layout_toEndOf="@id/repost_name_prefix"
                 android:fontFamily="@font/inter"
                 android:singleLine="true"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:textFontWeight="300" />
         </RelativeLayout>
 
@@ -85,7 +85,7 @@
             android:id="@+id/repost_advanced_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/normal_03"
             android:orientation="vertical"
             android:visibility="gone">
             <RelativeLayout
@@ -93,13 +93,13 @@
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/repost_input_layout_amount"
-                    android:layout_width="100dp"
+                    android:layout_width="@dimen/normal_22"
                     android:layout_height="wrap_content"
                     android:hint="@string/deposit">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/repost_input_deposit"
                         android:fontFamily="@font/inter"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal" />
@@ -110,26 +110,26 @@
                     android:layout_toEndOf="@id/repost_input_layout_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="@dimen/small_08"
+                    android:layout_marginTop="@dimen/normal_04_02"
                     android:fontFamily="@font/inter"
                     android:text="@string/lbc"
                     android:textAllCaps="true"
-                    android:textSize="10sp"
+                    android:textSize="@dimen/text_size_00"
                     android:textFontWeight="300" />
 
                 <LinearLayout
                     android:id="@+id/repost_inline_balance_container"
                     android:layout_toEndOf="@id/repost_input_currency"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginStart="@dimen/normal_03"
+                    android:layout_marginTop="@dimen/normal_04"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:visibility="invisible">
                     <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
+                        android:layout_width="@dimen/small_12"
+                        android:layout_height="@dimen/small_12"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_credits" />
                     <TextView
@@ -138,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter"
                         android:textFontWeight="300"
-                        android:layout_marginStart="2dp" />
+                        android:layout_marginStart="@dimen/small_02" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -146,7 +146,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp">
+            android:layout_marginTop="@dimen/normal_03">
             <TextView
                 android:id="@+id/repost_cancel_link"
                 android:background="?attr/selectableItemBackground"
@@ -157,7 +157,7 @@
                 android:fontFamily="@font/inter"
                 android:text="@string/cancel"
                 android:textFontWeight="300"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_04" />
 
             <TextView
                 android:id="@+id/repost_toggle_advanced"
@@ -166,18 +166,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="@dimen/normal_03"
                 android:layout_toStartOf="@id/repost_button"
                 android:fontFamily="@font/inter"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:text="@string/show_advanced" />
             <ProgressBar
                 android:id="@+id/repost_progress"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/normal_02"
+                android:layout_height="@dimen/normal_02"
                 android:layout_toStartOf="@id/repost_button"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/small_08"
                 android:visibility="gone" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/repost_button"

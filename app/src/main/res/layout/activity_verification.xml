@@ -19,17 +19,17 @@
         <RelativeLayout
             android:id="@+id/verification_close_button"
             android:visibility="gone"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="@dimen/normal_06"
+            android:layout_height="@dimen/normal_06"
+            android:layout_marginEnd="@dimen/small_08"
+            android:layout_marginTop="@dimen/small_08"
             android:background="?attr/selectableItemBackground"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent">
             <ImageView
                 android:layout_centerInParent="true"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/normal_03"
+                android:layout_height="@dimen/normal_03"
                 android:src="@drawable/ic_close"
                 app:tint="@color/white" />
         </RelativeLayout>
@@ -37,8 +37,8 @@
         <ProgressBar
             android:id="@+id/verification_loading_progress"
             android:visibility="gone"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/normal_06"
+            android:layout_height="@dimen/normal_06"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

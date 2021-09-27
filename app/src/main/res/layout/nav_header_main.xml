@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@color/lbryGreen"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:paddingTop="@dimen/normal_01"
+            android:paddingBottom="@dimen/normal_01">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 android:gravity="center"
                 android:text="@string/sign_in"
                 android:fontFamily="@font/inter"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:textFontWeight="600"
                 android:textAllCaps="true" />
         </RelativeLayout>
@@ -45,8 +45,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:paddingTop="@dimen/normal_01"
+            android:paddingBottom="@dimen/normal_01">
             <TextView
                 android:id="@+id/signed_in_email"
                 android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
                 android:fontFamily="@font/inter"
                 android:gravity="center"
                 android:singleLine="true"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:textAllCaps="true"
                 android:textColor="@color/menuItemForeground"
                 android:textFontWeight="300" />
@@ -67,5 +67,5 @@
         android:id="@+id/sign_in_header_divider"
         android:background="@color/lbryGreen"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+        android:layout_height="@dimen/small_00.5" />
 </LinearLayout>

@@ -8,10 +8,10 @@
 
     <ProgressBar
         android:id="@+id/search_loading"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="@dimen/normal_02"
+        android:layout_height="@dimen/normal_02"
+        android:layout_marginTop="@dimen/small_08"
+        android:layout_marginEnd="@dimen/small_08"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
@@ -24,14 +24,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="32dp">
+        android:padding="@dimen/normal_05">
         <TextView
             android:id="@+id/search_no_results"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/inter"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300"
             android:text="@string/search_no_results"
             android:visibility="gone" />
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/inter"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300"
             android:text="@string/search_no_query"
             android:visibility="gone" />

@@ -6,39 +6,39 @@
     android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="8dp">
+    android:layout_marginStart="@dimen/small_08"
+    android:layout_marginEnd="@dimen/small_08"
+    android:layout_marginBottom="@dimen/small_08">
     <LinearLayout
         android:id="@+id/notification_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <RelativeLayout
-            android:layout_marginStart="16dp"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_width="@dimen/normal_09"
+            android:layout_height="@dimen/normal_09"
             android:layout_gravity="center_vertical">
             <io.lbry.browser.ui.controls.SolidIconView
                 android:id="@+id/notification_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:textSize="24dp" />
+                android:layout_width="@dimen/normal_09"
+                android:layout_height="@dimen/normal_09"
+                android:textSize="@dimen/normal_03" />
             <ImageView
                 android:id="@+id/notification_author_thumbnail"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/normal_09"
+                android:layout_height="@dimen/normal_09"
                 android:visibility="invisible" />
             <RelativeLayout
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_channel_overlay_icon"
                 android:id="@+id/notification_selected_overlay"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/normal_09"
+                android:layout_height="@dimen/normal_09"
                 android:visibility="gone">
                 <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="@dimen/normal_06"
+                    android:layout_height="@dimen/normal_06"
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_check"
                     app:tint="@color/nextLbryGreen" />
@@ -48,28 +48,28 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/normal_01">
             <TextView
                 android:id="@+id/notification_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="@dimen/small_02"
                 android:fontFamily="@font/inter"
                 android:textStyle="bold"
-                android:textSize="13sp" />
+                android:textSize="@dimen/text_size_03" />
             <TextView
                 android:id="@+id/notification_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="@dimen/small_04"
                 android:fontFamily="@font/inter"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_04" />
             <TextView
                 android:id="@+id/notification_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:textSize="11sp" />
+                android:textSize="@dimen/text_size_01" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

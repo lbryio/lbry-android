@@ -5,23 +5,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <TextView
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/small_10"
+        android:layout_marginEnd="@dimen/small_10"
+        android:layout_marginTop="@dimen/small_08"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter"
         android:text="@string/filter_for"
-        android:textSize="12sp"
+        android:textSize="@dimen/text_size_02"
         android:textAllCaps="true"
         android:textStyle="bold" />
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="@dimen/small_00.5"
         android:background="@color/divider"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginTop="@dimen/small_08"
+        android:layout_marginStart="@dimen/small_08"
+        android:layout_marginEnd="@dimen/small_08" />
 
     <RelativeLayout
         android:id="@+id/content_scope_everyone_item"
@@ -29,23 +29,23 @@
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="@dimen/small_12">
         <io.lbry.browser.ui.controls.SolidIconView
             android:id="@+id/content_scope_everyone_item_icon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:textSize="16dp"
+            android:layout_width="@dimen/normal_01_02"
+            android:layout_height="@dimen/normal_01_02"
+            android:textSize="@dimen/normal_01"
             android:layout_centerVertical="true"
             android:text="@string/fa_globe_americas" />
         <TextView
             android:layout_toEndOf="@+id/content_scope_everyone_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/normal_01"
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter"
             android:text="@string/everyone"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <ImageView
             android:id="@+id/content_scope_everyone_item_selected"
@@ -64,23 +64,23 @@
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="@dimen/small_12">
         <io.lbry.browser.ui.controls.SolidIconView
             android:id="@+id/content_scope_tags_item_icon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:textSize="16dp"
+            android:layout_width="@dimen/normal_01_02"
+            android:layout_height="@dimen/normal_01_02"
+            android:textSize="@dimen/normal_01"
             android:layout_centerVertical="true"
             android:text="@string/fa_hashtag" />
         <TextView
             android:layout_toEndOf="@+id/content_scope_tags_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/normal_01"
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter"
             android:text="@string/tags_you_follow"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <ImageView
             android:id="@+id/content_scope_tags_item_selected"

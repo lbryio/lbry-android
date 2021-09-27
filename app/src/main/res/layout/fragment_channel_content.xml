@@ -8,8 +8,8 @@
 
     <ProgressBar
         android:id="@+id/channel_content_main_progress"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/normal_06"
+        android:layout_height="@dimen/normal_06"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -20,15 +20,15 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="16dp">
+        android:paddingTop="@dimen/normal_01">
         <RelativeLayout
             android:id="@+id/channel_content_filter_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="@dimen/small_02"
+            android:layout_marginBottom="@dimen/small_08"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01"
             android:visibility="visible">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -48,12 +48,12 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/inter"
                         android:textFontWeight="300"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_size_02"
                         android:text="@string/new_text" />
                     <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginStart="2dp"
+                        android:layout_width="@dimen/normal_01"
+                        android:layout_height="@dimen/normal_01"
+                        android:layout_marginStart="@dimen/small_02"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_arrow_dropdown"
                         app:tint="@color/foreground" />
@@ -66,7 +66,7 @@
                     android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="@dimen/normal_03"
                     android:layout_toEndOf="@id/channel_content_sort_link"
                     android:visibility="gone">
                     <TextView
@@ -74,15 +74,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginStart="@dimen/small_04"
                         android:fontFamily="@font/inter"
                         android:textFontWeight="300"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_size_02"
                         android:text="@string/past_week" />
                     <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginStart="2dp"
+                        android:layout_width="@dimen/normal_01"
+                        android:layout_height="@dimen/normal_01"
+                        android:layout_marginStart="@dimen/small_02"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_arrow_dropdown"
                         app:tint="@color/foreground" />
@@ -92,8 +92,8 @@
             <ProgressBar
                 android:id="@+id/channel_content_load_progress"
                 android:visibility="gone"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="@dimen/normal_01"
+                android:layout_height="@dimen/normal_01"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true" />
         </RelativeLayout>
@@ -102,17 +102,17 @@
             android:id="@+id/channel_content_no_claim_search_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/normal_01"
             android:fontFamily="@font/inter"
             android:text="@string/no_claim_search_content"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300"
             android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/channel_content_list"
             android:clipToPadding="false"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="@dimen/small_02"
             android:layout_width="match_parent"
             android:layout_height="match_parent"  />
     </LinearLayout>
