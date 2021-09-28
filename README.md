@@ -37,7 +37,7 @@ Contributions to this project are welcome, encouraged, and compensated. For more
 This project is MIT licensed. For the full license, see [LICENSE](LICENSE).
 
 ## Security
-We take security seriously. Please contact security@lbry.com regarding any security issues. Our PGP key is [here](https://keybase.io/lbry/key.asc) if you need it.
+We take security seriously. Please contact security@lbry.com regarding any security issues. Our PGP key is [here](https://lbry.com/faq/pgp-key) if you need it.
 
 ## Contact
 The primary contact for this project is [@akinwale](https://github.com/akinwale) (akinwale@lbry.com)
