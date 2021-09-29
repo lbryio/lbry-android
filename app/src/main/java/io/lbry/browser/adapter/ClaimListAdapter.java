@@ -2,12 +2,14 @@ package io.lbry.browser.adapter;
 
 import android.content.Context;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.lbry.browser.R;
+import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.LbryFile;
@@ -32,6 +35,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.ViewHolder> {
+    private static final String TAG = ClaimListAdapter.class.getSimpleName();
     private static final int VIEW_TYPE_STREAM = 1;
     private static final int VIEW_TYPE_CHANNEL = 2;
     private static final int VIEW_TYPE_FEATURED = 3; // featured search result
@@ -369,6 +373,22 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+
+                //THIS IS FOR SHARING THE VIDEO ON LONG PRESS
+                Toast.makeText(context,  "LONG CLICKED: " + original.getTitle(), Toast.LENGTH_SHORT).show(); //Don't need, but it's nice to see it on the UI
+                Log.d(TAG, "LONG CLICKED: " + original.getTitle());
+
+                try{
+                    String shareUrl = LbryUri.parse(
+                            !Helper.isNullOrEmpty(original.getCanonicalUrl()) ? original.getCanonicalUrl() :
+                                    (!Helper.isNullOrEmpty(original.getShortUrl()) ? original.getShortUrl() : original.getPermanentUrl())).toTvString();
+
+                    Log.d(TAG, "LONG CLICKED, SHARE " + shareUrl);
+
+                } catch (LbryUriException lbryUriException){
+                    lbryUriException.printStackTrace();
+                }
+
                 if (!canEnterSelectionMode) {
                     return false;
                 }

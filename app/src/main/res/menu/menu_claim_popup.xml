@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_claim_popup_share"
+        android:title="@string/share" />
+
+    <item android:id="@+id/menu_claim_popup_support"
+        android:title="@string/support" />
+
+    <item android:id="@+id/menu_claim_popup_repost"
+        android:title="@string/repost" />
+
+    <item android:id="@+id/menu_claim_popup_download"
+        android:title="@string/download" />
+
+    <item android:id="@+id/menu_claim_popup_report"
+        android:title="@string/report" />
+</menu>
