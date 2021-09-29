@@ -9,6 +9,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowBackground">@color/colorPrimaryDark</item>
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowStyle</item>
+        <item name="popupMenuStyle">@style/ClaimPopupMenu</item>
         <!--item name="android:windowLightStatusBar">true</item-->
     </style>
 
@@ -30,6 +31,11 @@
 
     <style name="AppTheme.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@color/actionBarForeground</item>
+    </style>
+
+    <style name="ClaimPopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:dropDownHorizontalOffset">-8dp</item>
+        <item name="android:dropDownVerticalOffset">8dp</item>
     </style>
 
 </resources>
