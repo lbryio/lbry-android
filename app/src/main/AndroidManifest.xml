@@ -72,6 +72,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="https" android:host="open.lbry.com"/>
+                <data android:scheme="https" android:host="odysee.com"/>
                 <data android:scheme="https" android:host="lbry.tv" android:pathPattern="/..*/*" />
                 <data android:scheme="https" android:host="lbry.tv" android:pathPattern="/.*:.*" />
                 <data android:scheme="https" android:host="lbry.tv" android:pathPattern="/.*#.*" />
