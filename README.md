@@ -28,6 +28,8 @@ twitterConsumerKey=XXXXXX
 twitterConsumerSecret=XXXXXX
 ```
 
+Rename the file 'google-services.sample.json' to 'google-services.json' in the app/ folder.
+
 Click the Sync button and when process finishes, the Run button to launch the app on your simulator or connected debugging device after the build process is complete.
 
 ## Contributing
