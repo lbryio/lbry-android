@@ -51,7 +51,7 @@ public final class Lbry {
 
     public static final int TTL_CLAIM_SEARCH_VALUE = 120000; // 2-minute TTL for cache
     public static final String SDK_CONNECTION_STRING = "http://127.0.0.1:5279";
-    public static final String LBRY_TV_CONNECTION_STRING = "https://api.lbry.tv/api/v1/proxy";
+    public static final String LBRY_TV_CONNECTION_STRING = "https://api.na-backend.odysee.com/api/v1/proxy";
     public static final String TAG = "Lbry";
 
     // Values to obtain from LBRY SDK status
