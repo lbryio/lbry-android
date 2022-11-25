@@ -3,6 +3,8 @@ name: Publish APK
 on:
   pull_request:
     branches: [test-deploy]
+  push:
+    branches: [test-deploy]
 
 jobs:
   build:
