@@ -41,6 +41,7 @@ jobs:
           export PATH=/usr/bin:$PATH 
           export ANDROID_SDK_ROOT=~/.buildozer/android/platform/android-sdk-23
           echo $ANDROID_SDK_ROOT
+          echo $HOME
         env:
           PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
