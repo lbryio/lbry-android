@@ -11,6 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     container: lbry/android-base:platform-28
     steps:
+      - name: update git
+        run: |
+          apt install -y software-properties-common \
+          apt update \
+          add-apt-repository -y ppa:git-core/ppa \
+          apt update \
+          apt install -y git
       - name: checkout
         uses: actions/checkout@v3
       - name: aftercheckout
