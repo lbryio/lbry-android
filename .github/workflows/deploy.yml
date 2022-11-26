@@ -38,14 +38,14 @@ jobs:
           git secret reveal
           chmod u+x $GITHUB_WORKSPACE/gradlew
           export BUILD_VERSION=$($GITHUB_WORKSPACE/gradlew -p $GITHUB_WORKSPACE -q printVersionName --console=plain | tail -1)
+          export PATH=/usr/bin:$PATH 
+          export ANDROID_SDK_ROOT=~/.buildozer/android/platform/android-sdk-23
+          echo $ANDROID_SDK_ROOT
         env:
           PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       - name: build
         run: |
-          export PATH=/usr/bin:$PATH 
-          export ANDROID_SDK_ROOT=~/.buildozer/android/platform/android-sdk-23
-          echo $ANDROID_SDK_ROOT
           ls -al ~/
           chmod u+x ./release.sh
           ./release.sh
