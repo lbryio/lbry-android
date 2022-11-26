@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "release.sh"
 echo $HOME
 echo $ANDROID_SDK_ROOT
 ./gradlew assembleRelease --console=plain --stacktrace
