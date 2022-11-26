@@ -11,24 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     container: lbry/android-base:platform-28
     steps:
-      - name: update git
+      - name: update git # container git is too old
         run: |
           apt-get install -y software-properties-common
           apt-get update
           add-apt-repository -y ppa:git-core/ppa
           apt-get update
           apt-get install -y git
-      - name: work around for permission issue
+      - name: work around for permission issue # git doesn't trust user that owns the checkout
         run: |
            git config --global --add safe.directory /__w/lbry-android/lbry-android
       - name: checkout
         uses: actions/checkout@v3
-      - name: aftercheckout
-        run: |
-          ls -al
-          ls -al ..
-          git --version
-          pwd
       - name: hacky copy # docker image runs ~ as /root, but github actions uses ~=/github/home
         run: | 
           cp -r /root/.buildozer ~/.buildozer/
@@ -42,9 +36,23 @@ jobs:
           ls -al
           git rev-parse --is-inside-work-tree
           git secret reveal
+          chmod u+x $CI_PROJECT_DIR/gradlew
+          export BUILD_VERSION=$($CI_PROJECT_DIR/gradlew -p $CI_PROJECT_DIR -q printVersionName --console=plain | tail -1)
         env:
           PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      - name: build
+        run: |
+          export PATH=/usr/bin:$PATH 
+          export ANDROID_SDK_ROOT=~/.buildozer/android/platform/android-sdk-23
+          chmod u+x ./release.sh
+          ./release.sh
+          cp bin/browser-$BUILD_VERSION-release__arm.apk /dev/null
+          cp bin/browser-$BUILD_VERSION-release__arm64.apk /dev/null
+        env:
+          PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+
       # - name: Upload math result for job 1
       #   uses: actions/upload-artifact@v3
       #   with:
