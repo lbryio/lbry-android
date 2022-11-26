@@ -109,7 +109,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:extension-cast:2.15.1'
     implementation 'com.google.android.exoplayer:extension-mediasession:2.15.1'
 
-    implementation 'com.github.google:flexbox:-SNAPSHOT'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     implementation 'com.hbb20:ccp:2.4.7'
 
