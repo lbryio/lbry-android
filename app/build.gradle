@@ -109,14 +109,14 @@ dependencies {
     implementation 'com.google.android.exoplayer:extension-cast:2.15.1'
     implementation 'com.google.android.exoplayer:extension-mediasession:2.15.1'
 
-    implementation 'com.google.android:flexbox:2.0.1'
+    implementation 'com.google.android:flexbox:3.0.1'
 
-    implementation 'com.hbb20:ccp:2.3.8'
+    implementation 'com.hbb20:ccp:2.4.7'
 
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.atlassian.commonmark:commonmark:0.14.0'
 
-    implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.3.1.LTS'
+    implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.4.LTS'
 
     implementation 'commons-codec:commons-codec:1.15'
     implementation 'org.bitcoinj:bitcoinj-tools:0.14.7'
