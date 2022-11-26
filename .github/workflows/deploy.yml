@@ -97,6 +97,7 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }} 
         run: |
           sudo apt install zipalign apksigner
+          chmod +x gradlew
           ./release.sh
           rm bin/*-unsigned.apk
       - name: Upload APK
