@@ -30,6 +30,7 @@ jobs:
           ls -al ..
           ls -al
           git init
+          git secret init
           ls -al
           git-secret reveal
         env:
