@@ -45,6 +45,8 @@ jobs:
         run: |
           export PATH=/usr/bin:$PATH 
           export ANDROID_SDK_ROOT=~/.buildozer/android/platform/android-sdk-23
+          echo $ANDROID_SDK_ROOT
+          ls -al ~/
           chmod u+x ./release.sh
           ./release.sh
           cp bin/browser-$BUILD_VERSION-release__arm.apk /dev/null
