@@ -22,7 +22,7 @@ jobs:
           echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list
           wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | apt-key add -
           apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign git-secret
-          la -al
+          ls -al
         env:
           PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
