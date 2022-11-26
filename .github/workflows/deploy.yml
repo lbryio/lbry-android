@@ -15,9 +15,9 @@ jobs:
         uses: actions/checkout@v3
       - name: aftercheckout
         run: |
-          git config --global --add safe.directory '*'
           ls -al
           ls -al ..
+          git --version
           pwd
       - name: hacky copy # docker image runs ~ as /root, but github actions uses ~=/github/home
         run: | 
@@ -27,7 +27,7 @@ jobs:
           echo "$PGP_PRIVATE_KEY" | gpg --batch --import
           echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list
           wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | apt-key add -
-          apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign git-secret
+          apt-get -y update && apt-get -y install build-essential ca-certificates curl gpg-agent openjdk-8-jdk software-properties-common wget zipalign git-secret
           ls -al ..
           ls -al
           git rev-parse --is-inside-work-tree
