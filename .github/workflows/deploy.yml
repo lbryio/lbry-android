@@ -13,6 +13,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      - name: aftercheckout
+        run: |
+          ls -al
+          ls -al ..
+          pwd
       - name: hacky copy # docker image runs ~ as /root, but github actions uses ~=/github/home
         run: | 
           cp -r /root/.buildozer ~/.buildozer/
@@ -22,6 +27,7 @@ jobs:
           echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list
           wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | apt-key add -
           apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign git-secret
+          ls -al ..
           ls -al
           git init
           ls -al
