@@ -16,7 +16,6 @@ jobs:
       - name: aftercheckout
         run: |
           git init
-          git secret init
           ls -al
           ls -al ..
           pwd
@@ -30,9 +29,6 @@ jobs:
           wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | apt-key add -
           apt-get -y update && apt-get -y install build-essential ca-certificates curl git gpg-agent openjdk-8-jdk software-properties-common wget zipalign git-secret
           ls -al ..
-          ls -al
-          git init
-          git secret init
           ls -al
           git-secret reveal
         env:
