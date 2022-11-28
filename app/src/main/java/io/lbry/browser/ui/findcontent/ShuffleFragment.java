@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
@@ -29,8 +30,10 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource.Factory;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.util.Util;
@@ -88,7 +91,7 @@ public class ShuffleFragment extends BaseFragment {
     private boolean isPlaying;
     private boolean newPlayerCreated;
     private String currentUrl;
-    private Player.EventListener playerListener;
+    private Player.Listener playerListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -97,7 +100,7 @@ public class ShuffleFragment extends BaseFragment {
         surfModeLoading = root.findViewById(R.id.shuffle_loading);
         textTitle = root.findViewById(R.id.shuffle_content_title);
         textPublisher = root.findViewById(R.id.shuffle_content_publisher);
-        playerListener = new Player.EventListener() {
+        playerListener = new Player.Listener() {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 if (playbackState == Player.STATE_READY) {
@@ -445,7 +448,7 @@ public class ShuffleFragment extends BaseFragment {
         if (MainActivity.appPlayer == null && context != null) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(C.USAGE_MEDIA)
-                    .setContentType(C.CONTENT_TYPE_MOVIE)
+                    .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
                     .build();
 
             MainActivity.appPlayer = new SimpleExoPlayer.Builder(context).build();
@@ -498,9 +501,9 @@ public class ShuffleFragment extends BaseFragment {
                 String userAgent = Util.getUserAgent(context, getString(R.string.app_name));
                 String mediaSourceUrl = getStreamingUrl();
                 MediaSource mediaSource = new ProgressiveMediaSource.Factory(
-                        new CacheDataSourceFactory(MainActivity.playerCache, new DefaultDataSourceFactory(context, userAgent)),
+                        new CacheDataSource.Factory().setCache(MainActivity.playerCache).setUpstreamDataSourceFactory( new DefaultDataSource.Factory(context)),
                         new DefaultExtractorsFactory()
-                ).setLoadErrorHandlingPolicy(new FileViewFragment.StreamLoadErrorPolicy()).createMediaSource(Uri.parse(mediaSourceUrl));
+                ).setLoadErrorHandlingPolicy(new FileViewFragment.StreamLoadErrorPolicy()).createMediaSource(MediaItem.fromUri(Uri.parse(mediaSourceUrl)));
 
                 MainActivity.appPlayer.prepare(mediaSource, true, true);
             }

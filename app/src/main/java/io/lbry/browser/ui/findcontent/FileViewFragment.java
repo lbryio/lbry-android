@@ -53,7 +53,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.DefaultControlDispatcher;
+//import com.google.android.exoplayer2.DefaultControlDispatcher;
+import com.google.android.exoplayer2.ForwardingPlayer;
 import com.google.android.exoplayer2.ParserException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -65,10 +66,11 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
 import com.google.android.exoplayer2.upstream.Loader;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
+//import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.util.Util;
@@ -200,7 +202,8 @@ public class FileViewFragment extends BaseFragment implements
     private ClaimListAdapter relatedContentAdapter;
     private CommentListAdapter commentListAdapter;
     private BroadcastReceiver sdkReceiver;
-    private Player.EventListener fileViewPlayerListener;
+    //private Player.EventListener fileViewPlayerListener;
+    private Player.Listener fileViewPlayerListener;
 
     private long elapsedDuration = 0;
     private long totalDuration = 0;
@@ -296,7 +299,7 @@ public class FileViewFragment extends BaseFragment implements
 
         initUi(root);
 
-        fileViewPlayerListener = new Player.EventListener() {
+        fileViewPlayerListener = new Player.Listener() {
             @Override
             public void onPlaybackStateChanged(@Player.State int playbackState) {
                 if (playbackState == Player.STATE_READY) {
@@ -1208,18 +1211,19 @@ public class FileViewFragment extends BaseFragment implements
             }
         });
 
-        PlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
+        StyledPlayerView playerView = root.findViewById(R.id.file_view_exoplayer_view);
         View playbackSpeedContainer = playerView.findViewById(R.id.player_playback_speed);
         TextView textPlaybackSpeed = playerView.findViewById(R.id.player_playback_speed_label);
         textPlaybackSpeed.setText(DEFAULT_PLAYBACK_SPEED);
 
+        /* TODO: Removed until better method is rewritten
         playerView.setControlDispatcher(new DefaultControlDispatcher() {
             @Override
             public boolean dispatchSetPlayWhenReady(Player player, boolean playWhenReady) {
                 isPlaying = playWhenReady;
                 return super.dispatchSetPlayWhenReady(player, playWhenReady);
             }
-        });
+        });*/
 
         playbackSpeedContainer.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
@@ -1772,7 +1776,7 @@ public class FileViewFragment extends BaseFragment implements
         if (MainActivity.appPlayer == null && context != null) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(C.USAGE_MEDIA)
-                    .setContentType(C.CONTENT_TYPE_MOVIE)
+                    .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
                     .build();
 
             MainActivity.appPlayer = new SimpleExoPlayer.Builder(context).build();
@@ -3040,14 +3044,6 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     public static class StreamLoadErrorPolicy extends DefaultLoadErrorHandlingPolicy {
-        @Override
-        public long getRetryDelayMsFor(int dataType, long loadDurationMs, IOException exception, int errorCount) {
-            return exception instanceof ParserException
-                    || exception instanceof FileNotFoundException
-                    || exception instanceof Loader.UnexpectedLoaderException
-                    ? C.TIME_UNSET
-                    : Math.min((errorCount - 1) * 1000, 5000);
-        }
 
         @Override
         public int getMinimumLoadableRetryCount(int dataType) {

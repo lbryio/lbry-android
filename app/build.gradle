@@ -3,8 +3,7 @@ import com.google.gms.googleservices.GoogleServicesPlugin
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 33
     flavorDimensions "default"
 
     compileOptions {
@@ -14,17 +13,18 @@ android {
 
     defaultConfig {
         applicationId "io.lbry.browser"
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1701
-        versionName "0.17.1"
+        minSdkVersion 24
+        targetSdkVersion 33
+        versionCode 1702
+        versionName "0.17.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'lib/x86_64/darwin/libscrypt.dylib'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'lib/x86_64/darwin/libscrypt.dylib']
+        }
     }
+
 
     productFlavors {
         __32bit {
@@ -57,6 +57,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'io.lbry.browser'
 }
 
 task printVersionName {
@@ -75,48 +76,49 @@ configurations {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.3.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.7.0-alpha01'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.3.0-alpha01'
+    implementation 'com.google.android.material:material:1.8.0-alpha02'
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.navigation:navigation-fragment:2.3.1'
-    implementation 'androidx.navigation:navigation-ui:2.3.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment:2.5.3'
+    implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-    implementation 'androidx.preference:preference:1.1.1'
-    implementation 'androidx.webkit:webkit:1.4.0-rc01'
-    implementation 'androidx.camera:camera-core:1.0.0-beta03'
-    implementation 'androidx.camera:camera-camera2:1.0.0-beta03'
-    implementation 'androidx.camera:camera-lifecycle:1.0.0-beta03'
-    implementation 'androidx.camera:camera-view:1.0.0-alpha10'
-    implementation 'androidx.browser:browser:1.2.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.webkit:webkit:1.6.0-alpha03'
+    implementation 'androidx.camera:camera-core:1.3.0-alpha01'
+    implementation 'androidx.camera:camera-camera2:1.3.0-alpha01'
+    implementation 'androidx.camera:camera-lifecycle:1.3.0-alpha01'
+    implementation 'androidx.camera:camera-view:1.3.0-alpha01'
+    implementation 'androidx.browser:browser:1.4.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.squareup.okhttp3:okhttp:4.4.1'
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
-    implementation 'com.google.android.gms:play-services-base:17.5.0'
-    implementation 'com.google.firebase:firebase-messaging:21.0.0'
+    implementation 'com.google.firebase:firebase-iid:21.1.0'
+    implementation 'com.google.firebase:firebase-analytics:21.2.0'
+    implementation 'com.google.android.gms:play-services-base:18.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.1.0'
     implementation 'com.google.oauth-client:google-oauth-client:1.30.4'
 
-    implementation 'com.android.billingclient:billing:3.0.2'
+    implementation 'com.android.billingclient:billing:5.1.0'
 
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.12.2'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.12.2'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.12.2'
-    implementation 'com.google.android.exoplayer:extension-cast:2.12.2'
-    implementation 'com.google.android.exoplayer:extension-mediasession:2.12.2'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.18.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.1'
+    implementation 'com.google.android.exoplayer:extension-cast:2.18.1'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.18.1'
 
-    implementation 'com.google.android:flexbox:2.0.1'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
-    implementation 'com.hbb20:ccp:2.3.8'
+    implementation 'com.hbb20:ccp:2.5.1'
 
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.atlassian.commonmark:commonmark:0.14.0'
 
-    implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.3.1.LTS'
+    implementation 'com.arthenica:mobile-ffmpeg-full:4.4.LTS'
 
     implementation 'commons-codec:commons-codec:1.15'
     implementation 'org.bitcoinj:bitcoinj-tools:0.14.7'
@@ -127,13 +129,14 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.10")
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test:rules:1.3.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.5.1'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
     __32bitImplementation 'io.lbry:lbrysdk32:0.102.0'
     __64bitImplementation 'io.lbry:lbrysdk64:0.102.0'
@@ -141,4 +144,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-GoogleServicesPlugin.config.disableVersionCheck = true
