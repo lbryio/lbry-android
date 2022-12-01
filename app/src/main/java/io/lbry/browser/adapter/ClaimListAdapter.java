@@ -1,14 +1,20 @@
 package io.lbry.browser.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,7 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.lbry.browser.MainActivity;
 import io.lbry.browser.R;
+import io.lbry.browser.exceptions.LbryUriException;
 import io.lbry.browser.listener.SelectionModeListener;
 import io.lbry.browser.model.Claim;
 import io.lbry.browser.model.LbryFile;
@@ -32,6 +40,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.ViewHolder> {
+    private static final String TAG = ClaimListAdapter.class.getSimpleName();
     private static final int VIEW_TYPE_STREAM = 1;
     private static final int VIEW_TYPE_CHANNEL = 2;
     private static final int VIEW_TYPE_FEATURED = 3; // featured search result
@@ -369,6 +378,11 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+
+                if (original != null) {
+                    showClaimPopupMenu(view, original);
+                }
+
                 if (!canEnterSelectionMode) {
                     return false;
                 }
@@ -517,6 +531,79 @@ public class ClaimListAdapter extends RecyclerView.Adapter<ClaimListAdapter.View
         }
 
         notifyDataSetChanged();
+    }
+
+    public void showClaimPopupMenu(View view, Claim claim) {
+
+        Toast.makeText(context,  "LONG CLICKED: " + claim.getTitle(), Toast.LENGTH_SHORT).show(); //Don't need, but it's nice to see it on the UI
+        Log.d(TAG, "LONG CLICKED: " + claim.getTitle());
+
+        //do I need to do a check if context is null?
+        PopupMenu popup = new PopupMenu(context, view);
+
+        popup.getMenuInflater().inflate(R.menu.menu_claim_popup, popup.getMenu());
+        popup.setGravity(Gravity.END);
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                int i = item.getItemId();
+                if (i == R.id.menu_claim_popup_share) {
+                    //share the claim
+                    Log.d(TAG, "Let's share: " + claim.getTitle());
+                    try{
+                        String shareUrl = LbryUri.parse(
+                                !Helper.isNullOrEmpty(claim.getCanonicalUrl()) ? claim.getCanonicalUrl() :
+                                        (!Helper.isNullOrEmpty(claim.getShortUrl()) ? claim.getShortUrl() : claim.getPermanentUrl())).toTvString();
+
+                        Intent shareIntent = new Intent();
+                        shareIntent.setAction(Intent.ACTION_SEND);
+                        shareIntent.setType("text/plain");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, shareUrl);
+
+                        MainActivity.startingShareActivity = true;
+                        Intent shareUrlIntent = Intent.createChooser(shareIntent, context.getString(R.string.share_lbry_content));
+                        shareUrlIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        context.startActivity(shareUrlIntent);
+                        Log.d(TAG, "Sharing: " + shareUrl);
+
+                    } catch (LbryUriException lbryUriException){
+                        lbryUriException.printStackTrace();
+                    }
+                    return true;
+                }
+                else if (i == R.id.menu_claim_popup_support){
+                    //support the claim
+                    Log.d(TAG, "Let's support: " + claim.getTitle());
+
+                    return true;
+                }
+                else if (i == R.id.menu_claim_popup_repost) {
+                    //repost the claim
+                    Log.d(TAG, "Let's repost: " + claim.getTitle());
+
+                    return true;
+                }
+                else if (i == R.id.menu_claim_popup_download) {
+                    //download the claim
+                    Log.d(TAG, "Let's download: " + claim.getTitle());
+
+                    return true;
+                }
+                else if (i == R.id.menu_claim_popup_report) {
+                    //report the claim
+                    Log.d(TAG, "Let's report: " + claim.getTitle());
+
+                    return true;
+                }
+                else {
+                    return onMenuItemClick(item);
+                }
+            }
+        });
+
+        popup.show();
+
     }
 
     public interface ClaimListItemListener {
