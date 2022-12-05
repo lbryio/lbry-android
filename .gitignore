@@ -67,3 +67,4 @@ app/twitter.properties
 app/build
 bin
 app/debuglib
+.vscode

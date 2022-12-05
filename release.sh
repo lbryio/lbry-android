@@ -1,5 +1,8 @@
 #!/bin/bash
-./gradlew assembleRelease --console=plain
+echo "release.sh"
+echo $HOME
+echo $ANDROID_SDK_ROOT
+./gradlew assembleRelease --console=plain --stacktrace
 version=$(./gradlew -q printVersionName --console=plain | tail -1)
 mkdir -p bin/
 rm -f bin/*

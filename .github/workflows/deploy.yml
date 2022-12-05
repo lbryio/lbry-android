@@ -1,1 +1,107 @@
+name: Publish APK
 
+on:
+  pull_request:
+    branches: [test-deploy]
+  push:
+    branches: [test-deploy]
+
+jobs:
+  # build:
+  #   runs-on: ubuntu-latest
+  #   container: lbry/android-base:platform-28
+  #   steps:
+  #     - name: update git # container git is too old
+  #       run: |
+  #         apt-get install -y software-properties-common
+  #         apt-get update
+  #         add-apt-repository -y ppa:git-core/ppa
+  #         apt-get update
+  #         apt-get install -y git
+  #     - name: work around for permission issue # git doesn't trust user that owns the checkout
+  #       run: |
+  #          git config --global --add safe.directory /__w/lbry-android/lbry-android
+  #     - name: checkout
+  #       uses: actions/checkout@v3
+  #     - name: hacky copy # docker image runs ~ as /root, but github actions uses ~=/github/home
+  #       run: | 
+  #         cp -r /root/.buildozer ~/.buildozer/
+  #     - name: setup
+  #       run: |
+  #         echo "$PGP_PRIVATE_KEY" | gpg --batch --import
+  #         echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list
+  #         wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | apt-key add -
+  #         apt-get -y update && apt-get -y install build-essential ca-certificates curl gpg-agent openjdk-8-jdk software-properties-common wget zipalign git-secret
+  #         ls -al ..
+  #         ls -al
+  #         git rev-parse --is-inside-work-tree
+  #         git secret reveal
+  #         chmod u+x $GITHUB_WORKSPACE/gradlew
+  #         export BUILD_VERSION=$($GITHUB_WORKSPACE/gradlew -p $GITHUB_WORKSPACE -q printVersionName --console=plain | tail -1)
+  #         export PATH=/usr/bin:$PATH 
+  #         export ANDROID_SDK_ROOT=~/.buildozer/android/platform/android-sdk-23
+  #         echo $ANDROID_SDK_ROOT
+  #         echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+  #         echo "end of setup home:"
+  #         echo $HOME
+  #       env:
+  #         PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
+  #         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+  #     - name: build
+  #       run: |
+  #         ls -al ~/
+  #         chmod u+x ./release.sh
+  #         ./release.sh
+  #         cp bin/browser-$BUILD_VERSION-release__arm.apk /dev/null
+  #         cp bin/browser-$BUILD_VERSION-release__arm64.apk /dev/null
+  #       env:
+  #         PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
+  #         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+
+      # - name: Upload math result for job 1
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: homework
+      #     path: math-homework.txt
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Create and checkout branch
+        # push events already checked out the branch
+        if: github.event_name == 'pull_request'
+        run: git checkout -B ${{ github.head_ref }}
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Reveal secrets
+        env:
+          PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY  }}
+        run: |
+          sudo apt install git-secret gpg-agent
+          echo "$PGP_PRIVATE_KEY" | gpg --batch --import
+          git secret reveal
+      - name: Install NDK version 21.0.6113669
+        run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;21.0.6113669"
+
+      - name: Build
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }} 
+        run: |
+          sudo apt install zipalign apksigner
+          chmod +x gradlew
+          ./release.sh
+          rm bin/*-unsigned.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release
+          path: bin/*.apk
