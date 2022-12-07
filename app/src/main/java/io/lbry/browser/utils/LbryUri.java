@@ -24,7 +24,7 @@ public class LbryUri {
     public static final int CLAIM_ID_MAX_LENGTH = 40;
 
     private static final String REGEX_PART_PROTOCOL = "^((?:lbry://|https://)?)";
-    private static final String REGEX_PART_HOST = "((?:open.lbry.com/|lbry.tv/|lbry.lat/|lbry.fr/|lbry.in/)?)";
+    private static final String REGEX_PART_HOST = "((?:open.lbry.com/|odysee.com/|lbry.tv/|lbry.lat/|lbry.fr/|lbry.in/)?)";
     private static final String REGEX_PART_STREAM_OR_CHANNEL_NAME = "([^:$#/]*)";
     private static final String REGEX_PART_MODIFIER_SEPARATOR = "([:$#]?)([^/]*)";
     private static final String QUERY_STRING_BREAKER = "^([\\S]+)([?][\\S]*)";
