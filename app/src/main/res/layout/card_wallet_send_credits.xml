@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:elevation="4dp"
+    android:elevation="@dimen/small_04"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp">
+    android:layout_marginTop="@dimen/normal_01">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="@dimen/normal_01">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/normal_01"
             android:fontFamily="@font/inter"
             android:textStyle="bold"
             android:text="@string/send_credits"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/text_size_10"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/small_08"
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -39,35 +39,35 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
                     android:imeOptions="actionNext"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_size_04" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
                 android:id="@+id/wallet_qr_scan_address"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/normal_09"
+                android:layout_height="@dimen/normal_09"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/small_08"
                 android:background="@null"
                 android:src="@drawable/ic_qr_scanner"
                 android:tint="@color/lbryGreen" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/normal_01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/wallet_input_layout_amount"
-                android:layout_width="80dp"
+                android:layout_width="@dimen/normal_17"
                 android:layout_height="wrap_content"
                 android:hint="@string/amount">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/wallet_input_amount"
                     android:fontFamily="@font/inter"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/text_size_04"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal" />
@@ -78,26 +78,26 @@
                 android:layout_toEndOf="@id/wallet_input_layout_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginStart="@dimen/small_08"
+                android:layout_marginTop="@dimen/normal_04_02"
                 android:fontFamily="@font/inter"
                 android:text="@string/lbc"
                 android:textAllCaps="true"
-                android:textSize="10sp"
+                android:textSize="@dimen/text_size_00"
                 android:textFontWeight="300" />
 
             <LinearLayout
                 android:id="@+id/wallet_inline_balance_container"
                 android:layout_toEndOf="@id/wallet_input_currency"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginStart="@dimen/normal_03"
+                android:layout_marginTop="@dimen/normal_04"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:visibility="invisible">
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="@dimen/small_12"
+                    android:layout_height="@dimen/small_12"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_credits" />
                 <TextView
@@ -106,16 +106,16 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
                     android:textFontWeight="300"
-                    android:layout_marginStart="2dp" />
+                    android:layout_marginStart="@dimen/small_02" />
             </LinearLayout>
 
             <ProgressBar
                 android:id="@+id/wallet_send_progress"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/normal_02"
+                android:layout_height="@dimen/normal_02"
                 android:layout_toStartOf="@id/wallet_send"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/small_08"
                 android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton

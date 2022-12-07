@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:elevation="4dp"
+    android:elevation="@dimen/small_04"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp">
+    android:layout_marginTop="@dimen/normal_01">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -12,29 +12,29 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginTop="@dimen/normal_01"
             android:fontFamily="@font/inter"
             android:textStyle="bold"
             android:text="@string/wallet_sync"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/text_size_10"/>
 
         <View
             android:background="@color/lightDivider"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="16dp" />
+            android:layout_height="@dimen/small_00.5"
+            android:layout_marginTop="@dimen/normal_01" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01"
             android:weightSum="10">
             <TextView
                 android:layout_weight="4"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/small_00"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -42,36 +42,36 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/sync_status"
                 android:textFontWeight="600"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size_06" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/wallet_switch_sync_status"
                 android:fontFamily="@font/inter"
                 android:layout_weight="6"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/small_00"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/off"
                 android:textFontWeight="300"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size_06" />
         </LinearLayout>
 
         <View
             android:background="@color/lightDivider"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginBottom="14dp" />
+            android:layout_height="@dimen/small_00.5"
+            android:layout_marginBottom="@dimen/small_14" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01"
             android:weightSum="10">
             <TextView
                 android:layout_weight="4"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/small_00"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -79,12 +79,12 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/email"
                 android:textFontWeight="600"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size_06" />
 
             <TextView
                 android:id="@+id/wallet_connected_email"
                 android:layout_weight="6"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/small_00"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -92,35 +92,35 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/no_connected_email"
                 android:textFontWeight="300"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size_06" />
         </LinearLayout>
 
         <View
             android:background="@color/lightDivider"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_height="@dimen/small_00.5"
+            android:layout_marginTop="@dimen/small_14"
+            android:layout_marginBottom="@dimen/small_12" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01"
+            android:layout_marginBottom="@dimen/small_12"
             android:weightSum="2">
             <TextView
                 android:id="@+id/wallet_link_manual_backup"
                 android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/small_00"
                 android:layout_height="wrap_content"
                 android:text="@string/manual_backup"
                 android:textColorLink="@color/lbryGreen" />
             <TextView
                 android:id="@+id/wallet_link_sync_faq"
                 android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/small_00"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:text="@string/sync_faq"

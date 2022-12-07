@@ -5,20 +5,20 @@
     android:clickable="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="6dp"
-    android:layout_marginEnd="6dp"
+    android:layout_marginBottom="@dimen/small_06"
+    android:layout_marginEnd="@dimen/small_06"
     android:orientation="horizontal"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
-    android:paddingStart="8dp"
-    android:paddingEnd="12dp"
+    android:paddingTop="@dimen/small_04"
+    android:paddingBottom="@dimen/small_04"
+    android:paddingStart="@dimen/small_08"
+    android:paddingEnd="@dimen/small_12"
     android:foreground="?attr/selectableItemBackground">
     <ImageView
         android:id="@+id/tag_action"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="@dimen/normal_01"
+        android:layout_height="@dimen/normal_01"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="@dimen/small_04"
         app:tint="@color/darkForeground" />
     <TextView
         android:id="@+id/tag_name"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:fontFamily="@font/inter"
-        android:layout_marginStart="4dp"
-        android:textSize="12sp"
+        android:layout_marginStart="@dimen/small_04"
+        android:textSize="@dimen/text_size_02"
         android:textFontWeight="300" />
 </LinearLayout>

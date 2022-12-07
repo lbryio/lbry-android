@@ -6,10 +6,10 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    android:paddingBottom="8dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="8dp">
+    android:paddingBottom="@dimen/small_08"
+    android:paddingStart="@dimen/normal_01"
+    android:paddingEnd="@dimen/normal_01"
+    android:paddingTop="@dimen/small_08">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,14 +17,14 @@
 
         <RelativeLayout
             android:id="@+id/comment_avatar_container"
-            android:layout_width="40dp"
-            android:layout_height="40dp">
+            android:layout_width="@dimen/normal_07"
+            android:layout_height="@dimen/normal_07">
             <RelativeLayout
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_channel_icon"
                 android:id="@+id/comment_no_thumbnail"
-                android:layout_width="40dp"
-                android:layout_height="40dp">
+                android:layout_width="@dimen/normal_07"
+                android:layout_height="@dimen/normal_07">
                 <TextView
                     android:id="@+id/comment_thumbnail_alpha"
                     android:layout_centerInParent="true"
@@ -32,22 +32,22 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
                     android:textAllCaps="true"
-                    android:textSize="24sp"
+                    android:textSize="@dimen/text_size_11"
                     android:textColor="@color/white"
                     android:textFontWeight="300" />
             </RelativeLayout>
             <ImageView
                 android:layout_centerHorizontal="true"
                 android:id="@+id/comment_thumbnail"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_width="@dimen/normal_07"
+                android:layout_height="@dimen/normal_07" />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/comment_avatar_container"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/normal_01"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
                     android:textColor="@color/lbryGreen"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_size_04" />
                 <TextView
                     android:id="@+id/comment_time"
                     android:layout_width="wrap_content"
@@ -70,19 +70,19 @@
                     android:layout_centerInParent="true"
                     android:fontFamily="@font/inter"
                     android:textColor="@color/lightGrey"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/comment_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="@dimen/small_02"
                 android:lineSpacingMultiplier="1.1"
                 android:fontFamily="@font/inter"
                 android:textFontWeight="300"
                 android:textIsSelectable="true"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_04" />
 
             <TextView
                 android:id="@+id/comment_reply_link"
@@ -90,12 +90,12 @@
                 android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:text="@string/reply"
                 android:textFontWeight="300"
                 android:textColor="@color/lbryGreen"
-                android:textSize="12sp" />
+                android:textSize="@dimen/text_size_02" />
         </LinearLayout>
     </RelativeLayout>
 

@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/publish_main_actions"
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="@dimen/large_47">
         <androidx.camera.view.PreviewView
             android:id="@+id/publish_camera_preview"
             android:layout_width="match_parent"
@@ -24,17 +24,17 @@
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/small_00"
                 android:layout_height="match_parent"
-                android:layout_marginStart="-1.5dp">
+                android:layout_marginStart="@dimen/negative_small_01.5">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:orientation="vertical">
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="@dimen/normal_09"
+                        android:layout_height="@dimen/normal_09"
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/ic_record"
                         app:tint="@color/white" />
@@ -42,22 +42,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="@dimen/small_04"
                         android:fontFamily="@font/inter"
                         android:text="@string/record"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_size_06" />
                 </LinearLayout>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/small_00"
                 android:layout_height="match_parent">
                 <View
                     android:id="@+id/publish_vertical_divider"
                     android:background="@color/publishBackground"
-                    android:layout_width="3dp"
+                    android:layout_width="@dimen/small_03"
                     android:layout_height="match_parent" />
                 <RelativeLayout
                     android:id="@+id/publish_photo_button"
@@ -66,15 +66,15 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:layout_toEndOf="@id/publish_vertical_divider"
                     android:layout_width="match_parent"
-                    android:layout_height="148.5dp">
+                    android:layout_height="@dimen/large_08.5">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:orientation="vertical">
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/normal_09"
+                            android:layout_height="@dimen/normal_09"
                             android:layout_gravity="center_horizontal"
                             android:src="@drawable/ic_photo"
                             app:tint="@color/white" />
@@ -82,12 +82,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="@dimen/small_04"
                             android:fontFamily="@font/inter"
                             android:text="@string/take_photo"
                             android:textAllCaps="true"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/text_size_06" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -95,7 +95,7 @@
                     android:id="@+id/publish_photo_upload_divider"
                     android:background="@color/publishBackground"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
+                    android:layout_height="@dimen/small_03"
                     android:layout_below="@id/publish_photo_button" />
 
                 <RelativeLayout
@@ -113,8 +113,8 @@
                         android:layout_centerInParent="true"
                         android:orientation="vertical">
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/normal_09"
+                            android:layout_height="@dimen/normal_09"
                             android:layout_gravity="center_horizontal"
                             android:src="@drawable/ic_upload"
                             app:tint="@color/white" />
@@ -122,12 +122,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="@dimen/small_04"
                             android:fontFamily="@font/inter"
                             android:text="@string/upload_file"
                             android:textAllCaps="true"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/text_size_06" />
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
@@ -139,17 +139,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/publish_main_actions"
-        android:layout_marginTop="3dp" />
+        android:layout_marginTop="@dimen/small_03" />
     <TextView
         android:id="@+id/publish_grid_no_videos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/publish_main_actions"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/normal_01"
         android:fontFamily="@font/inter"
         android:text="@string/no_videos_found"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_size_06"
         android:visibility="gone" />
     <RelativeLayout
         android:id="@+id/publish_grid_loading"
@@ -163,16 +163,16 @@
             android:layout_centerInParent="true"
             android:orientation="horizontal">
             <ProgressBar
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
+                android:layout_width="@dimen/normal_02"
+                android:layout_height="@dimen/normal_02" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/small_08"
                 android:fontFamily="@font/inter"
                 android:text="@string/loading_videos"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_04" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

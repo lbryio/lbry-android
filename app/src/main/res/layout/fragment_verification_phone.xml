@@ -11,19 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_margin="36dp">
+        android:layout_margin="@dimen/normal_06">
 
         <TextView
-            android:textSize="28sp"
+            android:textSize="@dimen/text_size_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="@string/phone_number"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/normal_01"
             android:textColor="@color/white"
             android:textFontWeight="300" />
         <TextView
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_06"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
@@ -34,7 +34,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/normal_01"
             android:orientation="horizontal">
             <com.hbb20.CountryCodePicker
                 android:id="@+id/verification_phone_country_code"
@@ -44,7 +44,7 @@
                 app:ccp_arrowColor="@color/white"
                 app:ccp_countryPreference="US,IN,NG,CH,BR,TH"
                 app:ccp_defaultNameCode="US"
-                app:ccp_textSize="20sp"
+                app:ccp_textSize="@dimen/text_size_10"
                 app:ccpDialog_showTitle="false" />
 
             <EditText
@@ -55,14 +55,14 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/inter"
                 android:singleLine="true"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size_10"
                 android:textFontWeight="300" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="@dimen/normal_01">
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/verification_phone_continue_button"
                 android:layout_width="match_parent"
@@ -72,8 +72,8 @@
             <ProgressBar
                 android:id="@+id/verification_phone_new_progress"
                 android:visibility="gone"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/normal_03"
+                android:layout_height="@dimen/normal_03"
                 android:layout_centerInParent="true" />
         </RelativeLayout>
     </LinearLayout>
@@ -84,21 +84,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_margin="36dp"
+        android:layout_margin="@dimen/normal_06"
         android:visibility="gone">
 
         <TextView
-            android:textSize="28sp"
+            android:textSize="@dimen/text_size_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="@string/verify_phone_number"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/normal_01"
             android:textColor="@color/white"
             android:textFontWeight="300" />
         <TextView
             android:id="@+id/verification_phone_verify_paragraph"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_06"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
@@ -110,7 +110,7 @@
             android:id="@+id/verification_phone_code_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/normal_01"
             android:background="@android:color/transparent"
             android:fontFamily="@font/inter"
             android:singleLine="true"
@@ -118,13 +118,13 @@
             android:inputType="number"
             android:letterSpacing="1.25"
             android:textAlignment="center"
-            android:textSize="48sp"
+            android:textSize="@dimen/text_size_15"
             android:textFontWeight="300" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="@dimen/normal_01">
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/verification_phone_verify_button"
                 android:layout_width="wrap_content"
@@ -134,10 +134,10 @@
                 android:text="@string/verify" />
             <ProgressBar
                 android:id="@+id/verification_phone_verify_progress"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/normal_03"
+                android:layout_height="@dimen/normal_03"
                 android:layout_toEndOf="@id/verification_phone_verify_button"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/normal_01"
                 android:layout_centerVertical="true"
                 android:visibility="gone" />
 

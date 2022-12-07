@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
+    android:paddingStart="@dimen/normal_01"
+    android:paddingEnd="@dimen/normal_01"
+    android:paddingTop="@dimen/small_08"
+    android:paddingBottom="@dimen/small_08"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
@@ -16,15 +16,15 @@
         android:id="@+id/claim_repost_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="@dimen/small_04"
         android:orientation="horizontal"
         android:visibility="gone">
         <io.lbry.browser.ui.controls.SolidIconView
-            android:layout_width="16dp"
-            android:layout_height="12dp"
+            android:layout_width="@dimen/normal_01"
+            android:layout_height="@dimen/small_12"
             android:layout_gravity="center_vertical"
             android:textColor="@color/lightForeground"
-            android:textSize="12dp"
+            android:textSize="@dimen/small_12"
             android:text="@string/fa_repost" />
         <TextView
             android:id="@+id/claim_repost_channel"
@@ -33,29 +33,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="@dimen/small_04"
             android:fontFamily="@font/inter"
             android:textColor="@color/lightForeground"
             android:textFontWeight="300"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_size_02" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="@dimen/small_04"
             android:fontFamily="@font/inter"
             android:text="@string/reposted"
             android:textColor="@color/lightForeground"
             android:textFontWeight="300"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_size_02" />
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
             android:id="@+id/claim_media_container"
-            android:layout_width="160dp"
-            android:layout_height="90dp">
+            android:layout_width="@dimen/large_11"
+            android:layout_height="@dimen/normal_19_02">
             <RelativeLayout
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_thumbnail_icon"
@@ -69,15 +69,15 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
                     android:textAllCaps="true"
-                    android:textSize="24sp"
+                    android:textSize="@dimen/text_size_11"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textFontWeight="300" />
             </RelativeLayout>
             <ImageView
                 android:id="@+id/claim_thumbnail"
-                android:layout_width="160dp"
-                android:layout_height="90dp" />
+                android:layout_width="@dimen/large_11"
+                android:layout_height="@dimen/normal_19_02" />
             <TextView
                 android:background="@android:color/black"
                 android:id="@+id/claim_duration"
@@ -85,13 +85,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="@dimen/small_04"
+                android:layout_marginBottom="@dimen/small_04"
                 android:fontFamily="@font/inter"
                 android:textColor="@android:color/white"
-                android:textSize="10sp"
+                android:textSize="@dimen/text_size_00"
                 android:textFontWeight="300"
-                android:padding="2dp"
+                android:padding="@dimen/small_02"
                 android:visibility="gone" />
             <LinearLayout
                 android:id="@+id/claim_fee_container"
@@ -100,16 +100,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="7dp"
+                android:layout_marginTop="@dimen/small_04"
+                android:layout_marginEnd="@dimen/small_04"
+                android:paddingTop="@dimen/small_02"
+                android:paddingBottom="@dimen/small_02"
+                android:paddingStart="@dimen/small_06"
+                android:paddingEnd="@dimen/small_07"
                 android:visibility="gone">
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="@dimen/small_12"
+                    android:layout_height="@dimen/small_12"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_credits" />
                 <TextView
@@ -117,10 +117,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="1dp"
+                    android:layout_marginStart="@dimen/small_01"
                     android:fontFamily="@font/inter"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/text_size_04"
                     android:textFontWeight="300" />
             </LinearLayout>
             <RelativeLayout
@@ -131,8 +131,8 @@
                 android:layout_height="match_parent"
                 android:visibility="gone">
                 <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="@dimen/normal_06"
+                    android:layout_height="@dimen/normal_06"
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_check"
                     app:tint="@color/nextLbryGreen" />
@@ -141,8 +141,8 @@
                 android:id="@+id/claim_thumbnail_placeholder"
                 android:background="@color/lighterGrey"
                 android:orientation="vertical"
-                android:layout_width="160dp"
-                android:layout_height="90dp"
+                android:layout_width="@dimen/large_11"
+                android:layout_height="@dimen/normal_19_02"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -150,22 +150,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/normal_01"
             android:layout_toEndOf="@id/claim_media_container">
             <LinearLayout
                 android:id="@+id/claim_text_loading_placeholder_1"
                 android:background="@color/lighterGrey"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="16dp"
+                android:layout_height="@dimen/normal_01"
                 android:visibility="gone" />
             <LinearLayout
                 android:id="@+id/claim_text_loading_placeholder_2"
                 android:background="@color/lighterGrey"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="@dimen/normal_01"
+                android:layout_marginTop="@dimen/small_08"
                 android:visibility="gone" />
 
             <TextView
@@ -180,7 +180,7 @@
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:fontFamily="@font/inter"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:textFontWeight="600" />
             <TextView
                 android:id="@+id/claim_publisher"
@@ -190,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/lbryGreen"
                 android:fontFamily="@font/inter"
-                android:textSize="12sp" />
+                android:textSize="@dimen/text_size_02" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -199,7 +199,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
-                    android:textSize="11sp"
+                    android:textSize="@dimen/text_size_01"
                     android:textFontWeight="300" />
                 <TextView
                     android:id="@+id/claim_pending_text"
@@ -207,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
                     android:text="@string/pending"
-                    android:textSize="11sp"
+                    android:textSize="@dimen/text_size_01"
                     android:textStyle="italic"
                     android:textFontWeight="300"
                     android:visibility="gone" />
@@ -218,28 +218,28 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/inter"
-                    android:textSize="11sp"
+                    android:textSize="@dimen/text_size_01"
                     android:textFontWeight="300" />
             </RelativeLayout>
             <!-- download progress bar -->
             <ProgressBar
                 android:id="@+id/claim_download_progress"
                 android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="4dp"
+                android:layout_height="@dimen/small_04"
+                android:layout_marginTop="@dimen/small_04"
                 android:visibility="invisible"
                 style="?android:progressBarStyleHorizontal" />
             <TextView
                 android:id="@+id/claim_view_device"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:layout_gravity="end"
                 android:ellipsize="end"
                 android:fontFamily="@font/inter"
                 android:singleLine="true"
                 android:textColor="@color/lightGrey"
-                android:textSize="10sp"
+                android:textSize="@dimen/text_size_00"
                 android:textFontWeight="300" />
         </LinearLayout>
     </RelativeLayout>

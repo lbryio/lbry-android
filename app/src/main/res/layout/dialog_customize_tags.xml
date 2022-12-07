@@ -8,87 +8,87 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <TextView
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/small_10"
+            android:layout_marginEnd="@dimen/small_10"
+            android:layout_marginTop="@dimen/small_08"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="@string/customize_your_tags"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_02"
             android:textAllCaps="true"
             android:textStyle="bold" />
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="@dimen/small_00.5"
             android:background="@color/divider"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginTop="@dimen/small_08"
+            android:layout_marginStart="@dimen/small_08"
+            android:layout_marginEnd="@dimen/small_08"
+            android:layout_marginBottom="@dimen/normal_01"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/customize_tags_followed_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01" />
         <TextView
             android:id="@+id/customize_no_followed_tags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01"
+            android:layout_marginBottom="@dimen/small_06"
             android:fontFamily="@font/inter"
             android:text="@string/no_followed_tags"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300"
             android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="@dimen/small_00.5"
             android:background="@color/divider"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginTop="@dimen/small_10"
+            android:layout_marginStart="@dimen/small_08"
+            android:layout_marginEnd="@dimen/small_08"
+            android:layout_marginBottom="@dimen/normal_01"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/customize_tags_suggested_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01" />
 
         <TextView
             android:id="@+id/customize_no_tag_results"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01"
+            android:layout_marginBottom="@dimen/small_06"
             android:fontFamily="@font/inter"
             android:text="@string/no_tag_results"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300"
             android:visibility="gone" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginTop="@dimen/small_10"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01"
+            android:layout_marginBottom="@dimen/normal_01">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/customize_tag_filter_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/search_for_more_tags"
                 android:fontFamily="@font/inter"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:textFontWeight="300" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,9 +97,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01"
+            android:layout_marginBottom="@dimen/normal_01"
             android:fontFamily="@font/inter"
             android:text="@string/done" />
     </LinearLayout>

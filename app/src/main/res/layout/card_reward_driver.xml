@@ -7,18 +7,18 @@
     android:foreground="?attr/selectableItemBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="4dp"
-    app:cardCornerRadius="0dp">
+    android:elevation="@dimen/small_04"
+    app:cardCornerRadius="@dimen/small_00">
     <RelativeLayout
         android:background="@color/rewardDriverBlue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="@dimen/small_12">
         <io.lbry.browser.ui.controls.SolidIconView
             android:id="@+id/reward_driver_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:textSize="16dp"
+            android:layout_width="@dimen/normal_02"
+            android:layout_height="@dimen/normal_02"
+            android:textSize="@dimen/normal_01"
             android:layout_centerVertical="true"
             android:text="@string/fa_award"
             android:textColor="@color/white" />
@@ -27,12 +27,12 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/small_08"
             android:layout_toEndOf="@id/reward_driver_icon"
             android:fontFamily="@font/inter"
             android:lineSpacingMultiplier="1.2"
             android:textColor="@color/white"
             android:textFontWeight="300"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_04" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

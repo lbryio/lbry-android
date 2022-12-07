@@ -14,7 +14,7 @@
             android:id="@+id/welcome_wait_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="24dp"
+            android:padding="@dimen/normal_03"
             android:visibility="gone">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -22,9 +22,9 @@
                 android:layout_centerInParent="true">
                 <ProgressBar
                     android:id="@+id/welcome_progress_bar"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="@dimen/normal_03"
+                    android:layout_height="@dimen/normal_03"
+                    android:layout_marginEnd="@dimen/small_08"
                     android:layout_gravity="center_vertical"/>
                 <TextView
                     android:id="@+id/welcome_wait_text"
@@ -43,7 +43,7 @@
             android:id="@+id/welcome_link_use_lbry"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:padding="16dp"
+            android:padding="@dimen/normal_01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -68,34 +68,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:padding="24dp">
+                android:padding="@dimen/normal_03">
                 <TextView
                     android:fontFamily="@font/inter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/welcome_to_lbry"
                     android:textColor="@color/white"
-                    android:textSize="32sp" />
+                    android:textSize="@dimen/text_size_14" />
                 <TextView
                     android:fontFamily="@font/inter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/welcome_paragraph"
                     android:textColor="@color/white"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/normal_01"
                     android:textFontWeight="300"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_06" />
                 <TextView
                     android:id="@+id/welcome_text_view_tos"
                     android:fontFamily="@font/inter"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="@dimen/normal_09"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:linksClickable="true"
                     android:text="@string/welcome_tos"
                     android:textColor="@color/white"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
             </LinearLayout>
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

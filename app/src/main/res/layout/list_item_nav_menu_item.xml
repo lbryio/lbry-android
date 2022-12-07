@@ -3,29 +3,29 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp"
+    android:paddingTop="@dimen/small_12"
+    android:paddingBottom="@dimen/small_12"
+    android:paddingStart="@dimen/normal_02"
+    android:paddingEnd="@dimen/normal_02"
     android:clickable="true"
     android:focusable="true"
     android:background="@drawable/bg_selected_nav_item"
     android:foreground="?attr/selectableItemBackground">
     <io.lbry.browser.ui.controls.SolidIconView
         android:id="@+id/nav_menu_item_icon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/normal_02"
+        android:layout_height="@dimen/normal_02"
         android:layout_gravity="center_vertical"
         android:textColor="@drawable/fg_nav_menu_item"
-        android:textSize="14dp" />
+        android:textSize="@dimen/small_14" />
 
     <TextView
         android:id="@+id/nav_menu_title"
         android:fontFamily="@font/inter"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="@dimen/small_12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textColor="@drawable/fg_nav_menu_item"
-        android:textSize="14sp" />
+        android:textSize="@dimen/text_size_04" />
 </LinearLayout>

@@ -34,33 +34,33 @@
                     android:background="@android:color/transparent"
                     android:layout_centerVertical="true"
                     android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="@dimen/small_08"
                     android:drawableTint="@color/actionBarForeground"
                     android:fontFamily="@font/inter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginEnd="@dimen/normal_03"
                     android:hint="@string/uri_placeholder"
                     android:imeOptions="actionGo"
                     android:inputType="textNoSuggestions"
-                    android:paddingEnd="36dp"
+                    android:paddingEnd="@dimen/normal_06"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
                     android:textFontWeight="300"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_size_04" />
                 <LinearLayout
                     android:id="@+id/wunderbar_close"
                     android:clickable="true"
                     android:background="?attr/selectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginEnd="@dimen/normal_03"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:visibility="gone">
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/normal_03"
+                        android:layout_height="@dimen/normal_03"
                         android:src="@drawable/ic_close"
                         app:tint="@color/actionBarForeground" />
                 </LinearLayout>
@@ -69,14 +69,14 @@
                     android:id="@+id/wunderbar_notifications"
                     android:clickable="true"
                     android:background="?attr/selectableItemBackground"
-                    android:layout_width="48dp"
+                    android:layout_width="@dimen/normal_09"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true">
                     <ImageView
                         android:id="@+id/notifications_toggle_icon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/normal_03"
+                        android:layout_height="@dimen/normal_03"
                         android:layout_centerInParent="true"
                         android:src="@drawable/ic_notifications"
                         app:tint="@color/actionBarForeground" />
@@ -87,13 +87,13 @@
                         android:background="@drawable/bg_notification_badge"
                         android:fontFamily="@font/inter"
                         android:gravity="center_horizontal"
-                        android:minWidth="12dp"
-                        android:paddingStart="2dp"
-                        android:paddingEnd="2dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginStart="24dp"
+                        android:minWidth="@dimen/small_12"
+                        android:paddingStart="@dimen/small_02"
+                        android:paddingEnd="@dimen/small_02"
+                        android:layout_marginTop="@dimen/small_12"
+                        android:layout_marginStart="@dimen/normal_03"
                         android:textColor="@color/white"
-                        android:textSize="10sp"
+                        android:textSize="@dimen/text_size_00"
                         android:visibility="invisible"
                         />
                 </RelativeLayout>
@@ -124,13 +124,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
                 android:fontFamily="@font/inter"
-                android:textSize="56sp"
+                android:textSize="@dimen/text_size_16"
                 android:textStyle="bold" />
             <ProgressBar
                 android:layout_gravity="center_horizontal"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="48dp" />
+                android:layout_width="@dimen/normal_03"
+                android:layout_height="@dimen/normal_03"
+                android:layout_marginTop="@dimen/normal_09" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/splash_view_error_container"
@@ -139,30 +139,30 @@
             android:layout_centerVertical="true"
             android:orientation="vertical"
             android:visibility="gone"
-            android:padding="24dp">
+            android:padding="@dimen/normal_03">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
                 android:text="@string/oops_something_went_wrong"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size_10"
                 android:textColor="@color/white" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/small_08"
                 android:text="@string/startup_failed"
                 android:textColor="@color/white"
                 android:textFontWeight="300"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_04" />
             <ListView
                 android:id="@+id/startup_stage_error_listview"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="12dp"
+                android:layout_height="@dimen/small_00"
+                android:layout_marginTop="@dimen/small_12"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="8dp"
+                android:dividerHeight="@dimen/small_08"
                 android:scrollbars="none"
                 tools:listitem="@layout/list_item_startupstage">
 

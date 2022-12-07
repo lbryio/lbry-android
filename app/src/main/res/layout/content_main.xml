@@ -14,7 +14,7 @@
         android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="0dp"
+        android:layout_margin="@dimen/small_00"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
     <RelativeLayout
         android:id="@+id/url_suggestions_container"
         android:background="@color/pageBackground"
-        android:elevation="6dp"
+        android:elevation="@dimen/small_06"
         android:fitsSystemWindows="true"
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
     <RelativeLayout
         android:id="@+id/notifications_container"
         android:background="@color/pageBackground"
-        android:elevation="6dp"
+        android:elevation="@dimen/small_06"
         android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,8 +44,8 @@
         <ProgressBar
             android:id="@+id/notifications_progress"
             android:layout_centerInParent="true"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/normal_03"
+            android:layout_height="@dimen/normal_03"
             android:visibility="gone" />
         <LinearLayout
             android:id="@+id/notification_list_empty_container"
@@ -53,22 +53,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:padding="36dp"
+            android:padding="@dimen/normal_06"
             android:visibility="gone">
             <ImageView
                 android:layout_gravity="center_horizontal"
-                android:layout_width="160dp"
-                android:layout_height="300dp"
+                android:layout_width="@dimen/large_11"
+                android:layout_height="@dimen/large_47"
                 android:adjustViewBounds="true"
                 android:src="@drawable/gerbil_happy" />
             <TextView
                 android:text="@string/no_notifications"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/normal_03"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/inter"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:textAlignment="center" />
         </LinearLayout>
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -79,7 +79,7 @@
                 android:id="@+id/notifications_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="8dp"
+                android:paddingTop="@dimen/small_08"
                 android:clipToPadding="false"
                 />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -92,8 +92,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lbryGreen"
-        android:elevation="12dp"
-        android:padding="8dp"
+        android:elevation="@dimen/small_12"
+        android:padding="@dimen/small_08"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent">
         <LinearLayout
@@ -102,17 +102,17 @@
             android:layout_centerHorizontal="true"
             android:orientation="horizontal">
             <ProgressBar
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="@dimen/normal_01"
+                android:layout_height="@dimen/normal_01"
                 android:layout_gravity="center_vertical" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/small_08"
                 android:fontFamily="@font/inter"
                 android:text="@string/sdk_initializing"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
         </LinearLayout>
@@ -123,24 +123,24 @@
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginStart="@dimen/small_04"
+        android:layout_marginEnd="@dimen/small_04"
+        android:layout_marginBottom="@dimen/small_04"
         android:visibility="gone"
-        app:cardElevation="8dp"
+        app:cardElevation="@dimen/small_08"
         app:layout_constraintBottom_toTopOf="@id/global_sdk_initializing_status">
         <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="90dp">
+            android:layout_height="@dimen/normal_19_02">
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/global_now_playing_player_view"
-                android:layout_width="160dp"
-                android:layout_height="90dp" />
+                android:layout_width="@dimen/large_11"
+                android:layout_height="@dimen/normal_19_02" />
             <LinearLayout
                 android:layout_toEndOf="@id/global_now_playing_player_view"
                 android:layout_toStartOf="@id/global_now_playing_close"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/small_08"
                 android:layout_centerVertical="true"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -152,28 +152,28 @@
                     android:layout_height="wrap_content"
                     android:maxLines="2"
                     android:ellipsize="end"
-                    android:textSize="12sp"  />
+                    android:textSize="@dimen/text_size_02"  />
                 <TextView
                     android:id="@+id/global_now_playing_channel_title"
                     android:fontFamily="@font/inter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/small_08"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textSize="10sp" />
+                    android:textSize="@dimen/text_size_00" />
             </LinearLayout>
             <RelativeLayout
                 android:id="@+id/global_now_playing_close"
                 android:background="?attr/selectableItemBackground"
                 android:layout_height="match_parent"
-                android:layout_width="36dp"
+                android:layout_width="@dimen/normal_06"
                 android:layout_alignParentEnd="true"
                 android:clickable="true"
-                android:layout_marginStart="8dp">
+                android:layout_marginStart="@dimen/small_08">
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/normal_03"
+                    android:layout_height="@dimen/normal_03"
                     android:src="@drawable/ic_close"
                     android:layout_centerInParent="true"
                     app:tint="@color/foreground" />

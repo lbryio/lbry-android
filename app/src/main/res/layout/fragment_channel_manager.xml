@@ -7,17 +7,17 @@
     android:focusedByDefault="true">
     <ProgressBar
         android:id="@+id/channel_manager_list_big_loading"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/normal_06"
+        android:layout_height="@dimen/normal_06"
         android:layout_centerInParent="true"
         android:visibility="gone" />
     <ProgressBar
         android:id="@+id/channel_manager_list_loading"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/normal_02"
+        android:layout_height="@dimen/normal_02"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="@dimen/normal_01"
+        android:layout_marginEnd="@dimen/normal_01"
         android:visibility="gone" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/channel_manager_list"
@@ -35,28 +35,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:padding="36dp">
+            android:padding="@dimen/normal_06">
             <ImageView
                 android:layout_gravity="center_horizontal"
-                android:layout_width="160dp"
-                android:layout_height="300dp"
+                android:layout_width="@dimen/large_11"
+                android:layout_height="@dimen/large_47"
                 android:adjustViewBounds="true"
                 android:src="@drawable/gerbil_happy" />
             <TextView
                 android:text="@string/no_channel_created"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/normal_03"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/inter"
                 android:textAlignment="center"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:textFontWeight="300"/>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/channel_manager_create_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/normal_03"
                 android:fontFamily="@font/inter"
                 android:text="@string/create_a_channel"  />
         </LinearLayout>
@@ -68,8 +68,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="@dimen/normal_01"
+        android:layout_marginBottom="@dimen/normal_01"
         android:src="@drawable/ic_add"
         android:visibility="gone" />
 </RelativeLayout>

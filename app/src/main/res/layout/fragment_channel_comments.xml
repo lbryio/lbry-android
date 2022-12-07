@@ -7,13 +7,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_height="@dimen/normal_09"
+        android:layout_marginStart="@dimen/normal_01"
+        android:layout_marginEnd="@dimen/normal_01">
         <ProgressBar
             android:id="@+id/channel_comments_progress"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/normal_02"
+            android:layout_height="@dimen/normal_02"
             android:layout_centerVertical="true"
             android:visibility="gone" />
     </RelativeLayout>
@@ -31,49 +31,49 @@
                 android:id="@+id/container_comment_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="@dimen/small_00"
+                android:layout_marginStart="@dimen/normal_01"
+                android:layout_marginEnd="@dimen/normal_01"
+                android:layout_marginBottom="@dimen/normal_01"
                 android:visibility="gone" />
 
             <TextView
                 android:id="@+id/channel_disabled_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/normal_01"
+                android:layout_marginEnd="@dimen/normal_01"
+                android:layout_marginTop="@dimen/small_08"
                 android:fontFamily="@font/inter"
                 android:text="@string/channel_disabled_comments"
                 android:textFontWeight="300"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:visibility="gone" />
 
             <TextView
                 android:id="@+id/channel_no_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/normal_01"
+                android:layout_marginEnd="@dimen/normal_01"
+                android:layout_marginTop="@dimen/small_08"
                 android:fontFamily="@font/inter"
                 android:text="@string/no_comments"
                 android:textFontWeight="300"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:visibility="gone" />
 
             <TextView
                 android:id="@+id/channel_comments_sdk_initializing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/normal_01"
+                android:layout_marginEnd="@dimen/normal_01"
+                android:layout_marginTop="@dimen/small_08"
                 android:fontFamily="@font/inter"
                 android:text="@string/sdk_initializing_comments"
                 android:textFontWeight="300"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="100dp"
+    android:layout_height="@dimen/normal_22"
     android:orientation="vertical"
     android:clickable="true"
     android:focusable="true"
@@ -17,12 +17,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="@dimen/small_04"
+        android:layout_marginBottom="@dimen/small_04"
         android:fontFamily="@font/inter"
         android:textColor="@android:color/white"
-        android:textSize="10sp"
+        android:textSize="@dimen/text_size_00"
         android:textFontWeight="300"
-        android:padding="2dp"
+        android:padding="@dimen/small_02"
         android:visibility="gone" />
 </RelativeLayout>

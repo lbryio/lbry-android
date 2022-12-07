@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:elevation="4dp"
+    android:elevation="@dimen/small_04"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp">
+    android:layout_marginTop="@dimen/normal_01">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -12,16 +12,16 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp">
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01"
+            android:layout_marginTop="@dimen/normal_01">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
                 android:textStyle="bold"
                 android:text="@string/recent_transactions"
-                android:textSize="20sp"/>
+                android:textSize="@dimen/text_size_10"/>
 
             <TextView
                 android:id="@+id/wallet_link_view_all"
@@ -34,21 +34,21 @@
                 android:fontFamily="@font/inter"
                 android:text="@string/view_all"
                 android:textColor="@color/lbryGreen"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:textFontWeight="300"/>
         </RelativeLayout>
 
         <View
             android:background="@color/lightDivider"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="16dp" />
+            android:layout_height="@dimen/small_00.5"
+            android:layout_marginTop="@dimen/normal_01" />
         
         <RelativeLayout
             android:id="@+id/wallet_loading_recent_container"
             android:visibility="gone"
             android:orientation="horizontal"
-            android:padding="16dp"
+            android:padding="@dimen/normal_01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -57,16 +57,16 @@
                 android:layout_height="wrap_content">
                 <ProgressBar
                     android:id="@+id/wallet_loading_recent_progress"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/normal_02"
+                    android:layout_height="@dimen/normal_02"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/small_08"
                     android:text="@string/loading_transactions"
                     android:fontFamily="@font/inter"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/text_size_04"
                     android:textFontWeight="300" />
             </LinearLayout>
         </RelativeLayout>
@@ -76,10 +76,10 @@
             android:id="@+id/wallet_no_recent_transactions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/normal_01"
             android:text="@string/no_recent_transactions"
             android:fontFamily="@font/inter"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textAlignment="center"
             android:textFontWeight="300" />
 

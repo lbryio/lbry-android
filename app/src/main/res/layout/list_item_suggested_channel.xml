@@ -3,19 +3,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
+    android:layout_margin="@dimen/small_02"
     android:foreground="?attr/selectableItemBackground"
     android:background="@drawable/bg_selected_item"
     android:clickable="true"
     android:focusable="true"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp">
+    android:paddingTop="@dimen/small_12"
+    android:paddingBottom="@dimen/small_12"
+    android:paddingStart="@dimen/small_08"
+    android:paddingEnd="@dimen/small_08">
     <RelativeLayout
         android:id="@+id/suggested_media_container"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/normal_17"
+        android:layout_height="@dimen/normal_17"
         android:layout_gravity="center_horizontal">
         <RelativeLayout
             android:layout_centerHorizontal="true"
@@ -31,7 +31,7 @@
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/inter"
                 android:textAllCaps="true"
-                android:textSize="48sp"
+                android:textSize="@dimen/text_size_15"
                 android:textColor="@color/white" />
         </RelativeLayout>
         <ImageView
@@ -45,25 +45,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/small_04"
         android:minLines="2"
         android:maxLines="2"
         android:fontFamily="@font/inter"
         android:textAlignment="center"
-        android:textSize="13sp" />
+        android:textSize="@dimen/text_size_03" />
     <TextView
         android:id="@+id/suggested_channel_tag"
         android:singleLine="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="@dimen/small_02"
         android:fontFamily="@font/inter"
         android:textAlignment="center"
         android:textFontWeight="300"
-        android:textSize="12sp"
-        android:paddingTop="2dp"
-        android:paddingBottom="3dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp" />
+        android:textSize="@dimen/text_size_02"
+        android:paddingTop="@dimen/small_02"
+        android:paddingBottom="@dimen/small_03"
+        android:paddingStart="@dimen/small_08"
+        android:paddingEnd="@dimen/small_08" />
 </LinearLayout>

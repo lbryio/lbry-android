@@ -8,13 +8,13 @@
         android:id="@+id/library_filter_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp">
+        android:layout_marginStart="@dimen/normal_01"
+        android:layout_marginEnd="@dimen/normal_01"
+        android:layout_marginTop="@dimen/normal_01">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:padding="@dimen/small_12">
             <TextView
                 android:id="@+id/library_filter_link_downloads"
                 android:background="?attr/selectableItemBackground"
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="@dimen/normal_03"
                 android:layout_toEndOf="@id/library_filter_link_downloads"
                 android:fontFamily="@font/inter"
                 android:text="@string/purchases" />
@@ -43,15 +43,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="@dimen/normal_03"
                 android:layout_toEndOf="@id/library_filter_link_purchases"
                 android:fontFamily="@font/inter"
                 android:text="@string/history"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_04" />
             <ProgressBar
                 android:id="@+id/library_list_loading"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/normal_02"
+                android:layout_height="@dimen/normal_02"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:visibility="gone" />
@@ -66,7 +66,7 @@
                 android:text="@string/stats"
                 android:textColor="@color/lbryGreen"
                 android:textFontWeight="300"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_size_02"
                 android:visibility="gone" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -75,14 +75,14 @@
         android:layout_below="@id/library_filter_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="@dimen/normal_01"
+        android:layout_marginEnd="@dimen/normal_01"
+        android:layout_marginTop="@dimen/normal_01"
         android:visibility="gone">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="@dimen/small_08"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -100,17 +100,17 @@
                         android:text="@string/zero"
                         android:textColor="@color/lbryGreen"
                         android:textFontWeight="300"
-                        android:textSize="30sp" />
+                        android:textSize="@dimen/text_size_13" />
                     <TextView
                         android:id="@+id/library_storage_stat_unit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
+                        android:layout_marginStart="@dimen/small_03"
                         android:fontFamily="@font/inter"
                         android:text="@string/mb"
                         android:textColor="@color/lbryGreen"
                         android:textFontWeight="300"
-                        android:textSize="20sp" />
+                        android:textSize="@dimen/text_size_10" />
                 </LinearLayout>
 
                 <TextView
@@ -120,18 +120,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="@dimen/small_04"
                     android:fontFamily="@font/inter"
                     android:text="@string/hide"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
             </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/library_storage_stat_distribution"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="4dp"
+                android:layout_height="@dimen/small_10"
+                android:layout_marginTop="@dimen/small_04"
                 android:orientation="horizontal"
                 android:weightSum="100"
                 android:visibility="gone">
@@ -139,25 +139,25 @@
                     android:id="@+id/library_storage_stat_video_bar"
                     android:background="@color/statsVideo"
                     android:layout_weight="0"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/small_00"
                     android:layout_height="match_parent" />
                 <View
                     android:id="@+id/library_storage_stat_audio_bar"
                     android:background="@color/statsAudio"
                     android:layout_weight="0"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/small_00"
                     android:layout_height="match_parent" />
                 <View
                     android:id="@+id/library_storage_stat_image_bar"
                     android:background="@color/statsImage"
                     android:layout_weight="0"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/small_00"
                     android:layout_height="match_parent" />
                 <View
                     android:id="@+id/library_storage_stat_other_bar"
                     android:background="@color/statsOther"
                     android:layout_weight="0"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/small_00"
                     android:layout_height="match_parent" />
             </LinearLayout>
 
@@ -165,13 +165,13 @@
                 android:id="@+id/library_storage_legend_video"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:visibility="gone">
                 <View
                     android:id="@+id/library_storage_legend_video_icon"
                     android:background="@color/statsVideo"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/small_10"
+                    android:layout_height="@dimen/small_10"
                     android:layout_centerVertical="true" />
                 <TextView
                     android:layout_toEndOf="@id/library_storage_legend_video_icon"
@@ -180,9 +180,9 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/video"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="@dimen/small_04"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
 
                 <TextView
                     android:id="@+id/library_storage_stat_video_size"
@@ -194,20 +194,20 @@
                     android:fontFamily="@font/inter"
                     android:text="@string/zero_mb"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/library_storage_legend_audio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:visibility="gone">
                 <View
                     android:id="@+id/library_storage_legend_audio_icon"
                     android:background="@color/statsAudio"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/small_10"
+                    android:layout_height="@dimen/small_10"
                     android:layout_centerVertical="true" />
                 <TextView
                     android:layout_toEndOf="@id/library_storage_legend_audio_icon"
@@ -216,9 +216,9 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/audio"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="@dimen/small_04"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
 
                 <TextView
                     android:id="@+id/library_storage_stat_audio_size"
@@ -230,20 +230,20 @@
                     android:fontFamily="@font/inter"
                     android:text="@string/zero_mb"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/library_storage_legend_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:visibility="gone">
                 <View
                     android:id="@+id/library_storage_legend_image_icon"
                     android:background="@color/statsImage"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/small_10"
+                    android:layout_height="@dimen/small_10"
                     android:layout_centerVertical="true" />
                 <TextView
                     android:layout_toEndOf="@id/library_storage_legend_image_icon"
@@ -252,9 +252,9 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/images"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="@dimen/small_04"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
 
                 <TextView
                     android:id="@+id/library_storage_stat_image_size"
@@ -266,20 +266,20 @@
                     android:fontFamily="@font/inter"
                     android:text="@string/zero_mb"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/library_storage_legend_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/small_04"
                 android:visibility="gone">
                 <View
                     android:id="@+id/library_storage_legend_other_icon"
                     android:background="@color/statsOther"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/small_10"
+                    android:layout_height="@dimen/small_10"
                     android:layout_centerVertical="true" />
                 <TextView
                     android:layout_toEndOf="@id/library_storage_legend_other_icon"
@@ -288,9 +288,9 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/other"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="@dimen/small_04"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
 
                 <TextView
                     android:id="@+id/library_storage_stat_other_size"
@@ -302,7 +302,7 @@
                     android:fontFamily="@font/inter"
                     android:text="@string/zero_mb"
                     android:textFontWeight="300"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_02" />
             </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -324,11 +324,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:padding="36dp">
+            android:padding="@dimen/normal_06">
             <ImageView
                 android:layout_gravity="center_horizontal"
-                android:layout_width="160dp"
-                android:layout_height="300dp"
+                android:layout_width="@dimen/large_11"
+                android:layout_height="@dimen/large_47"
                 android:adjustViewBounds="true"
                 android:src="@drawable/gerbil_happy" />
             <TextView
@@ -336,11 +336,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/normal_01"
                 android:fontFamily="@font/inter"
                 android:text="@string/library_no_downloads"
                 android:textAlignment="center"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:textFontWeight="300" />
         </LinearLayout>
     </RelativeLayout>

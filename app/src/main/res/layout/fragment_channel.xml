@@ -17,9 +17,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
             <ProgressBar
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_width="@dimen/normal_01"
+                android:layout_height="@dimen/normal_01"
+                android:layout_marginEnd="@dimen/small_08"
                 android:layout_gravity="center_vertical" />
             <TextView
                 android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
                 android:layout_gravity="center_vertical"
                 android:fontFamily="@font/inter"
                 android:text="@string/loading_decentralized_data"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:textFontWeight="300" />
         </LinearLayout>
 
@@ -42,7 +42,7 @@
         android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp">
+            android:layout_height="@dimen/large_26">
             <ImageView
                 android:id="@+id/channel_view_cover_image"
                 android:layout_width="match_parent"
@@ -53,8 +53,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginStart="@dimen/small_12"
+                android:layout_marginEnd="@dimen/small_12"
                 android:layout_above="@+id/channel_view_tabs"
                 android:layout_toEndOf="@id/channel_view_icon_container"
                 android:orientation="vertical">
@@ -63,14 +63,14 @@
                     android:background="@color/channelCoverBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
+                    android:paddingStart="@dimen/small_04"
+                    android:paddingEnd="@dimen/small_04"
+                    android:paddingTop="@dimen/small_02"
+                    android:paddingBottom="@dimen/small_02"
                     android:ellipsize="end"
                     android:fontFamily="@font/inter"
                     android:maxLines="2"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/text_size_10"
                     android:textColor="@color/white" />
                 <TextView
                     android:id="@+id/channel_view_follower_count"
@@ -78,14 +78,14 @@
                     android:visibility="invisible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
+                    android:layout_marginTop="@dimen/small_02"
+                    android:layout_marginBottom="@dimen/small_02"
+                    android:paddingStart="@dimen/small_04"
+                    android:paddingEnd="@dimen/small_04"
+                    android:paddingTop="@dimen/small_02"
+                    android:paddingBottom="@dimen/small_02"
                     android:fontFamily="@font/inter"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/text_size_04"
                     android:textColor="@color/white"
                     android:textFontWeight="300"/>
             </LinearLayout>
@@ -95,22 +95,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:paddingStart="110dp"
+                android:paddingStart="@dimen/normal_24_02"
                 app:tabGravity="fill"
                 app:tabMode="scrollable"/>
             <RelativeLayout
                 android:id="@+id/channel_view_icon_container"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/normal_17"
+                android:layout_height="@dimen/normal_17"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="12dp">
+                android:layout_marginStart="@dimen/small_12"
+                android:layout_marginBottom="@dimen/small_12">
                 <RelativeLayout
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/bg_channel_icon"
                     android:id="@+id/channel_view_no_thumbnail"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp">
+                    android:layout_width="@dimen/normal_19_02"
+                    android:layout_height="@dimen/normal_19_02">
                     <TextView
                         android:id="@+id/channel_view_icon_alpha"
                         android:layout_centerInParent="true"
@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter"
                         android:textAllCaps="true"
-                        android:textSize="48sp"
+                        android:textSize="@dimen/text_size_15"
                         android:textColor="@color/white"
                         android:textFontWeight="300" />
                 </RelativeLayout>
@@ -140,23 +140,23 @@
                 android:layout_height="match_parent" />
 
             <LinearLayout
-                android:elevation="4dp"
+                android:elevation="@dimen/small_04"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:padding="8dp">
+                android:padding="@dimen/small_08">
                 <RelativeLayout
                     android:id="@+id/channel_view_edit"
                     android:clickable="true"
                     android:background="?attr/selectableItemBackground"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="@dimen/normal_06"
+                    android:layout_height="@dimen/normal_06"
+                    android:layout_marginEnd="@dimen/small_08"
                     android:visibility="gone">
                     <ImageView
                         android:layout_centerInParent="true"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/normal_03"
+                        android:layout_height="@dimen/normal_03"
                         android:src="@drawable/ic_edit"
                         app:tint="@color/foreground" />
                 </RelativeLayout>
@@ -164,14 +164,14 @@
                     android:id="@+id/channel_view_delete"
                     android:clickable="true"
                     android:background="?attr/selectableItemBackground"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="@dimen/normal_06"
+                    android:layout_height="@dimen/normal_06"
+                    android:layout_marginEnd="@dimen/small_08"
                     android:visibility="gone">
                     <ImageView
                         android:layout_centerInParent="true"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/normal_03"
+                        android:layout_height="@dimen/normal_03"
                         android:src="@drawable/ic_delete"
                         app:tint="@color/foreground" />
                 </RelativeLayout>
@@ -179,13 +179,13 @@
                     android:id="@+id/channel_view_share"
                     android:clickable="true"
                     android:background="?attr/selectableItemBackground"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp">
+                    android:layout_width="@dimen/normal_06"
+                    android:layout_height="@dimen/normal_06"
+                    android:layout_marginEnd="@dimen/small_08">
                     <ImageView
                         android:layout_centerInParent="true"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
+                        android:layout_width="@dimen/normal_02_02"
+                        android:layout_height="@dimen/normal_02_02"
                         android:src="@drawable/ic_share"
                         app:tint="@color/foreground" />
                 </RelativeLayout>
@@ -193,71 +193,71 @@
                     android:id="@+id/channel_view_tip"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp">
+                    android:layout_width="@dimen/normal_06"
+                    android:layout_height="@dimen/normal_06"
+                    android:layout_marginEnd="@dimen/small_08">
                     <io.lbry.browser.ui.controls.SolidIconView
                         android:layout_centerInParent="true"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/normal_03"
+                        android:layout_height="@dimen/normal_03"
                         android:text="@string/fa_gift"
                         android:textColor="@color/foreground"
-                        android:textSize="20dp" />
+                        android:textSize="@dimen/normal_02" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/channel_view_follow_unfollow"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp">
+                    android:layout_height="@dimen/normal_06">
                     <TextView
                         android:id="@+id/channel_view_text_follow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="@dimen/small_06"
+                        android:layout_marginEnd="@dimen/small_06"
                         android:fontFamily="@font/inter"
                         android:text="@string/follow"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_size_02"
                         android:textStyle="bold"
                         android:textAllCaps="true" />
                     <io.lbry.browser.ui.controls.OutlineIconView
                         android:id="@+id/channel_view_icon_follow"
                         android:layout_toRightOf="@id/channel_view_text_follow"
                         android:layout_centerVertical="true"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_width="@dimen/normal_03"
+                        android:layout_height="@dimen/normal_03"
+                        android:layout_marginEnd="@dimen/small_06"
                         android:text="@string/fa_heart"
                         android:textColor="@color/red"
-                        android:textSize="20dp" />
+                        android:textSize="@dimen/normal_02" />
                     <io.lbry.browser.ui.controls.SolidIconView
                         android:id="@+id/channel_view_icon_unfollow"
                         android:layout_centerInParent="true"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/normal_03"
+                        android:layout_height="@dimen/normal_03"
                         android:text="@string/fa_heart_broken"
                         android:textColor="@color/foreground"
-                        android:textSize="20dp"
+                        android:textSize="@dimen/normal_02"
                         android:visibility="invisible"/>
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/channel_view_subscribe_notify"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_width="@dimen/normal_06"
+                    android:layout_height="@dimen/normal_06"
+                    android:layout_marginStart="@dimen/small_08"
                     android:visibility="gone">
                     <io.lbry.browser.ui.controls.SolidIconView
                         android:id="@+id/channel_view_icon_bell"
                         android:layout_centerInParent="true"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/normal_03"
+                        android:layout_height="@dimen/normal_03"
                         android:text="@string/fa_bell_slash"
                         android:textColor="@color/foreground"
-                        android:textSize="20dp"/>
+                        android:textSize="@dimen/normal_02"/>
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>

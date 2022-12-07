@@ -10,19 +10,19 @@
         android:id="@+id/form_no_added_tags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="@dimen/small_06"
         android:fontFamily="@font/inter"
         android:text="@string/no_added_tags"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_04"
         android:textFontWeight="300"
         android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="@dimen/small_00.5"
         android:background="@color/divider"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginTop="@dimen/small_10"
+        android:layout_marginBottom="@dimen/normal_01"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/form_suggested_tags"
@@ -33,7 +33,7 @@
         android:id="@+id/form_mature_tags_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/small_08"
         android:orientation="vertical"
         android:visibility="gone">
         <TextView
@@ -41,38 +41,38 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="@string/mature_tags"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/form_mature_tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="@dimen/small_04" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/form_no_tag_results"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="@dimen/small_06"
         android:fontFamily="@font/inter"
         android:text="@string/form_no_tag_results"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_04"
         android:textFontWeight="300"
         android:visibility="gone" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginTop="@dimen/small_10"
+        android:layout_marginBottom="@dimen/normal_01">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/form_tag_filter_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_for_more_tags"
             android:fontFamily="@font/inter"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

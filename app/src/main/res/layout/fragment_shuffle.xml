@@ -22,8 +22,8 @@
                 app:controller_layout_id="@layout/exo_playback_control_view"/>
             <ProgressBar
                 android:id="@+id/player_buffering_progress"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="@dimen/normal_06"
+                android:layout_height="@dimen/normal_06"
                 android:layout_centerInParent="true"
                 android:visibility="gone" />
         </RelativeLayout>
@@ -33,10 +33,10 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/small_08"
+            android:layout_marginLeft="@dimen/normal_01"
+            android:layout_marginRight="@dimen/normal_01"
+            android:layout_marginBottom="@dimen/small_08"
             android:layout_alignParentBottom="true">
             <TextView
                 android:id="@+id/shuffle_content_title"
@@ -47,7 +47,7 @@
                 android:textFontWeight="300"
                 android:minLines="1"
                 android:maxLines="3"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size_10"
                 />
             <TextView
                 android:id="@+id/shuffle_content_publisher"
@@ -58,27 +58,27 @@
                 android:textFontWeight="300"
                 android:minLines="1"
                 android:maxLines="1"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_04" />
         </LinearLayout>
 
         <ProgressBar
             android:id="@+id/shuffle_loading"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/normal_03"
+            android:layout_height="@dimen/normal_03"
             android:layout_centerInParent="true"
             android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/shuffle_share_button"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="@dimen/normal_15"
+            android:layout_height="@dimen/normal_15"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:clickable="true"
             android:background="?attr/selectableItemBackground">
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/normal_03"
+                android:layout_height="@dimen/normal_03"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_share"
                 app:tint="@color/white" />

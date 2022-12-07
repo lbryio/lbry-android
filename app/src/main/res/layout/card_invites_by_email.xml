@@ -2,52 +2,52 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp">
+    android:layout_marginBottom="@dimen/normal_01">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/normal_01">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="@dimen/small_12"
             android:fontFamily="@font/inter"
             android:textStyle="bold"
             android:text="@string/invite_by_email"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/text_size_10"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="@string/invite_someone"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/invites_email_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="@dimen/normal_01">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/invites_email_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
                 android:hint="@string/invite_email_placeholder"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:textFontWeight="300" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="@dimen/normal_01">
             <ProgressBar
                 android:id="@+id/invites_loading_invite_by_email_progress"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/normal_02"
+                android:layout_height="@dimen/normal_02"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="@dimen/normal_03"
                 android:layout_toStartOf="@id/invites_email_button"
                 android:visibility="gone" />
             <com.google.android.material.button.MaterialButton

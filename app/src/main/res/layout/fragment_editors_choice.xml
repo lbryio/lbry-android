@@ -6,8 +6,8 @@
     android:orientation="vertical">
     <ProgressBar
         android:id="@+id/editors_choice_loading"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/normal_06"
+        android:layout_height="@dimen/normal_06"
         android:layout_centerInParent="true"
         android:visibility="gone" />
     <androidx.recyclerview.widget.RecyclerView
@@ -15,6 +15,6 @@
         android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp" />
+        android:paddingTop="@dimen/normal_01"
+        android:paddingBottom="@dimen/normal_01" />
 </RelativeLayout>

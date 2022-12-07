@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container_inline_channel_form_create"
-    android:layout_marginTop="16dp"
+    android:layout_marginTop="@dimen/normal_01"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -17,16 +17,16 @@
             android:fontFamily="@font/inter"
             android:hint="@string/channel_name"
             android:textFontWeight="300"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_04" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <RelativeLayout
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/normal_01"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inline_channel_form_layout_deposit"
-            android:layout_width="100dp"
+            android:layout_width="@dimen/normal_22"
             android:layout_height="wrap_content"
             android:hint="@string/deposit">
             <com.google.android.material.textfield.TextInputEditText
@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_04"
                 android:text="@string/min_deposit"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -45,26 +45,26 @@
             android:layout_toEndOf="@id/inline_channel_form_layout_deposit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="@dimen/small_08"
+            android:layout_marginTop="@dimen/normal_04_02"
             android:fontFamily="@font/inter"
             android:text="@string/lbc"
             android:textAllCaps="true"
-            android:textSize="10sp"
+            android:textSize="@dimen/text_size_00"
             android:textFontWeight="300" />
 
         <LinearLayout
             android:id="@+id/inline_channel_form_inline_balance_container"
             android:layout_toEndOf="@id/inline_channel_form_inline_currency"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginStart="@dimen/normal_03"
+            android:layout_marginTop="@dimen/normal_04"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="invisible">
             <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="@dimen/small_12"
+                android:layout_height="@dimen/small_12"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_credits" />
             <TextView
@@ -73,23 +73,23 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
                 android:textFontWeight="300"
-                android:layout_marginStart="2dp" />
+                android:layout_marginStart="@dimen/small_02" />
         </LinearLayout>
     </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/small_04"
         android:fontFamily="@font/inter"
         android:text="@string/deposit_remains_yours"
         android:textFontWeight="300"
-        android:textSize="12sp" />
+        android:textSize="@dimen/text_size_02" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="@dimen/normal_01">
         <TextView
             android:id="@+id/inline_channel_form_cancel_link"
             android:background="?attr/selectableItemBackground"
@@ -98,15 +98,15 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_02"
             android:text="@string/cancel" />
 
         <ProgressBar
             android:id="@+id/inline_channel_form_create_progress"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/normal_02"
+            android:layout_height="@dimen/normal_02"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="@dimen/normal_03"
             android:layout_toStartOf="@id/inline_channel_form_create_button"
             android:visibility="gone" />
 

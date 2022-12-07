@@ -5,9 +5,9 @@
     android:background="@android:color/transparent"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginEnd="8dp"
-    android:elevation="4dp"
+    android:layout_marginBottom="@dimen/small_08"
+    android:layout_marginEnd="@dimen/small_08"
+    android:elevation="@dimen/small_04"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toBottomOf="parent">
     <LinearLayout
@@ -17,15 +17,15 @@
         android:foreground="?attr/selectableItemBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="44dp"
+        android:paddingTop="@dimen/small_08"
+        android:paddingBottom="@dimen/small_08"
+        android:paddingStart="@dimen/small_08"
+        android:paddingEnd="@dimen/normal_08"
         android:visibility="invisible">
         <io.lbry.browser.ui.controls.SolidIconView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:textSize="10dp"
+            android:layout_width="@dimen/normal_01"
+            android:layout_height="@dimen/normal_01"
+            android:textSize="@dimen/small_10"
             android:layout_gravity="center_vertical"
             android:textColor="@color/white"
             android:text="@string/fa_award" />
@@ -33,12 +33,12 @@
             android:id="@+id/floating_reward_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="@dimen/small_02"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/inter"
             android:textColor="@color/white"
             android:text="@string/zero"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textStyle="bold"
             android:textFontWeight="300"  />
     </LinearLayout>
@@ -51,14 +51,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/floating_reward_container"
-        android:layout_marginStart="-36dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="16dp">
+        android:layout_marginStart="@dimen/negative_normal_06"
+        android:paddingTop="@dimen/small_08"
+        android:paddingBottom="@dimen/small_08"
+        android:paddingStart="@dimen/small_12"
+        android:paddingEnd="@dimen/normal_01">
         <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="@dimen/small_12"
+            android:layout_height="@dimen/small_12"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_credits" />
         <TextView
@@ -66,26 +66,26 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/inter"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_04" />
         <TextView
             android:id="@+id/floating_balance_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="@dimen/small_02"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/inter"
             android:textColor="@color/white"
             android:text="@string/zero"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textStyle="bold"
             android:textFontWeight="300"
             android:visibility="gone" />
         <ProgressBar
             android:id="@+id/floating_balance_loading"
             android:layout_gravity="center_vertical"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="2dp"  />
+            android:layout_width="@dimen/normal_01"
+            android:layout_height="@dimen/normal_01"
+            android:layout_marginStart="@dimen/small_02"  />
     </LinearLayout>
 
 

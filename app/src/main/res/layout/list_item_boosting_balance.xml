@@ -5,17 +5,17 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="16dp">
+    android:layout_marginTop="@dimen/small_08"
+    android:layout_marginBottom="@dimen/normal_01">
 
     <TextView
         android:id="@+id/detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="@dimen/normal_01"
+        android:layout_marginTop="@dimen/normal_01"
         android:textColor="@color/white"
-        android:textSize="12sp"
+        android:textSize="@dimen/text_size_02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,11 +23,11 @@
         android:id="@+id/detail_explanation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/small_08"
+        android:layout_marginTop="@dimen/small_08"
+        android:layout_marginBottom="@dimen/small_08"
         android:textColor="@color/white"
-        android:textSize="12sp"
+        android:textSize="@dimen/text_size_02"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/detail"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,10 +35,10 @@
 
     <ProgressBar
         android:id="@+id/wallet_unlock_tips_progress"
-        android:layout_width="16dp"
+        android:layout_width="@dimen/normal_01"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/small_08"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@id/wallet_supporting_balance" />
 
@@ -46,7 +46,7 @@
         android:id="@+id/lock_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/small_08"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_lock"
         android:visibility="gone"
@@ -62,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@color/white"
-        lbry:iconSize="18dp"
+        lbry:iconSize="@dimen/normal_01_02"
         lbry:textSize="@dimen/wallet_detail_balance_font_size" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

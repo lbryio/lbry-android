@@ -4,7 +4,7 @@
     xmlns:lbry="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="4dp">
+    android:elevation="@dimen/small_04">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
             android:background="@drawable/stripe_2x"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="@dimen/normal_01"
             android:orientation="vertical">
 
             <io.lbry.browser.views.CreditsBalanceView
@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 lbry:textSize="@dimen/wallet_total_balance_font_size"
-                lbry:iconSize="24dp"
+                lbry:iconSize="@dimen/normal_03"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
 
@@ -31,14 +31,14 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:textFontWeight="300" />
 
             <TextView
                 android:id="@+id/total_balance_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/small_08"
                 android:fontFamily="@font/inter"
                 android:textColor="@color/white"
                 android:textFontWeight="300"
@@ -46,9 +46,9 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_height="@dimen/small_00.5"
+                android:layout_marginTop="@dimen/normal_01"
+                android:layout_marginBottom="@dimen/normal_01"
                 android:background="@color/lightDivider" />
 
 
@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     lbry:textSize="@dimen/wallet_detail_balance_font_size"
-                    lbry:iconSize="14dp"
+                    lbry:iconSize="@dimen/small_14"
                     android:textColor="@color/white"
                     android:textFontWeight="300" />
 
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
                     android:fontFamily="@font/inter"
-                    android:paddingStart="8dp"
+                    android:paddingStart="@dimen/small_08"
                     android:text="@string/immediately_spendable"
                     android:textColor="@color/white"
                     android:textFontWeight="300"
@@ -80,14 +80,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/small_12"
                 android:orientation="horizontal">
                 <io.lbry.browser.views.CreditsBalanceView
                     android:id="@+id/wallet_supporting_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     lbry:textSize="@dimen/wallet_detail_balance_font_size"
-                    lbry:iconSize="14dp"
+                    lbry:iconSize="@dimen/small_14"
                     android:textColor="@color/white"
                     android:textFontWeight="300" />
 
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
-                    android:paddingStart="8dp"
+                    android:paddingStart="@dimen/small_08"
                     android:text="@string/boosting_content"
                     android:textColor="@color/white"
                     android:textFontWeight="300"
@@ -105,7 +105,7 @@
                     android:id="@+id/view_more_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
+                    android:layout_marginStart="@dimen/normal_01_02"
                     android:drawableEnd="@drawable/ic_arrow_dropdown"
                     android:gravity="end"
                     android:text="@string/view_more"
@@ -116,8 +116,8 @@
             <ListView
                 android:id="@+id/balance_detail_listview"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="@dimen/small_00"
+                android:layout_marginTop="@dimen/small_08"
                 android:visibility="gone">
 
             </ListView>
@@ -132,40 +132,40 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="@string/buy_lbc"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:textSize="16sp" />
+            android:layout_marginTop="@dimen/small_08"
+            android:layout_marginStart="@dimen/small_12"
+            android:layout_marginEnd="@dimen/small_12"
+            android:textSize="@dimen/text_size_06" />
 
         <TextView
             android:id="@+id/wallet_hint_convert_credits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="@dimen/small_06"
+            android:layout_marginStart="@dimen/normal_01"
+            android:layout_marginEnd="@dimen/normal_01"
             android:fontFamily="@font/inter"
             android:text="@string/convert_credits"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_size_02" />
 
         <TextView
             android:id="@+id/wallet_hint_convert_credits_bittrex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="@dimen/small_08"
+            android:layout_marginStart="@dimen/normal_01"
             android:visibility="gone"
             android:fontFamily="@font/inter"
             android:text="@string/convert_credits_bittrex"
             android:textColorLink="@color/lbryGreen"
-            android:textSize="16sp" />
+            android:textSize="@dimen/text_size_06" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="@dimen/small_00.5"
+            android:layout_marginTop="@dimen/normal_01"
+            android:layout_marginBottom="@dimen/normal_01"
             android:background="@color/lightDivider" />
 
 
@@ -173,9 +173,9 @@
             android:background="@color/lbryGreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/normal_01"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/normal_01">
             <TextView
                 android:id="@+id/wallet_hint_sync_status"
                 android:layout_width="wrap_content"
@@ -183,16 +183,16 @@
                 android:fontFamily="@font/inter"
                 android:text="@string/backup_notsynced"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_04" />
             <TextView
                 android:id="@+id/wallet_hint_what_sync_means"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/small_08"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
                 android:text="@string/backup_what_does_this_mean"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="@dimen/text_size_02" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

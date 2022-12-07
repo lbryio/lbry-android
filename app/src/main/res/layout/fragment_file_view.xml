@@ -18,9 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
             <ProgressBar
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_width="@dimen/normal_01"
+                android:layout_height="@dimen/normal_01"
+                android:layout_marginEnd="@dimen/small_08"
                 android:layout_gravity="center_vertical" />
             <TextView
                 android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
                 android:layout_gravity="center_vertical"
                 android:fontFamily="@font/inter"
                 android:text="@string/loading_decentralized_data"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_06"
                 android:textFontWeight="300" />
         </LinearLayout>
 
@@ -45,7 +45,7 @@
         <RelativeLayout
             android:id="@+id/file_view_media_container"
             android:layout_width="match_parent"
-            android:layout_height="246dp"
+            android:layout_height="@dimen/large_32_02"
             android:background="@color/mediaContainerBackground">
 
             <RelativeLayout
@@ -62,8 +62,8 @@
 
                 <ProgressBar
                     android:id="@+id/file_view_main_action_loading"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="@dimen/normal_06"
+                    android:layout_height="@dimen/normal_06"
                     android:layout_centerInParent="true" />
 
                 <com.google.android.material.button.MaterialButton
@@ -73,7 +73,7 @@
                     android:layout_centerInParent="true"
                     android:fontFamily="@font/inter"
                     android:text="@string/play"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/text_size_04"
                     android:visibility="invisible" />
 
                 <LinearLayout
@@ -81,19 +81,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginTop="@dimen/small_04"
+                    android:layout_marginEnd="@dimen/small_04"
                     android:background="@drawable/bg_stream_cost"
                     android:orientation="horizontal"
-                    android:paddingStart="6dp"
-                    android:paddingTop="2dp"
-                    android:paddingEnd="7dp"
-                    android:paddingBottom="2dp"
+                    android:paddingStart="@dimen/small_06"
+                    android:paddingTop="@dimen/small_02"
+                    android:paddingEnd="@dimen/small_07"
+                    android:paddingBottom="@dimen/small_02"
                     android:visibility="gone">
 
                     <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
+                        android:layout_width="@dimen/small_12"
+                        android:layout_height="@dimen/small_12"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_credits" />
 
@@ -102,11 +102,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="1dp"
+                        android:layout_marginStart="@dimen/small_01"
                         android:fontFamily="@font/inter"
                         android:textColor="@android:color/black"
                         android:textFontWeight="300"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_04" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -125,8 +125,8 @@
 
                 <ProgressBar
                     android:id="@+id/player_buffering_progress"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="@dimen/normal_06"
+                    android:layout_height="@dimen/normal_06"
                     android:layout_centerInParent="true"
                     android:visibility="gone" />
             </RelativeLayout>
@@ -136,12 +136,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/mediaContainerBackground"
-                android:padding="36dp"
+                android:padding="@dimen/normal_06"
                 android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/file_view_unsupported_gerbil"
-                    android:layout_width="64dp"
+                    android:layout_width="@dimen/normal_13"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:src="@drawable/gerbil_happy" />
@@ -150,7 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="@dimen/normal_03"
                     android:layout_toEndOf="@id/file_view_unsupported_gerbil"
                     android:orientation="vertical">
 
@@ -160,7 +160,7 @@
                         android:fontFamily="@font/inter"
                         android:text="@string/unsupported_content"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/text_size_08" />
 
                     <TextView
                         android:id="@+id/file_view_unsupported_text"
@@ -170,7 +170,7 @@
                         android:text="@string/unsupported_content_desc"
                         android:textColor="@color/white"
                         android:textFontWeight="300"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_04" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/file_view_open_external_button"
@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter"
                         android:text="@string/open"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_04" />
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
@@ -206,17 +206,17 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="4dp"
-                    android:paddingBottom="8dp">
+                    android:paddingStart="@dimen/normal_01"
+                    android:paddingTop="@dimen/small_08"
+                    android:paddingEnd="@dimen/small_04"
+                    android:paddingBottom="@dimen/small_08">
 
                     <LinearLayout
                         android:id="@+id/file_view_title_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="48dp"
+                        android:layout_marginEnd="@dimen/normal_09"
                         android:orientation="vertical">
 
                         <TextView
@@ -224,23 +224,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/text_size_06"
                             android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="@dimen/small_04"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/file_view_view_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="16dp"
+                                android:layout_marginEnd="@dimen/normal_01"
                                 android:fontFamily="@font/inter"
                                 android:textFontWeight="300"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_02"
                                 android:visibility="gone" />
 
                             <TextView
@@ -249,14 +249,14 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"
                                 android:textFontWeight="300"
-                                android:textSize="12sp" />
+                                android:textSize="@dimen/text_size_02" />
                         </LinearLayout>
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/file_view_desc_toggle_arrow"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/normal_03"
+                        android:layout_height="@dimen/normal_03"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@+id/file_view_title_layout"
@@ -273,23 +273,23 @@
 
                     <LinearLayout
                         android:id="@+id/file_view_action_share"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
+                        android:paddingTop="@dimen/small_08"
+                        android:paddingBottom="@dimen/small_08">
 
                         <RelativeLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/normal_06"
+                            android:layout_height="@dimen/normal_06"
                             android:layout_gravity="center_horizontal">
 
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/normal_03"
+                                android:layout_height="@dimen/normal_03"
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/ic_share"
                                 app:tint="@color/foreground" />
@@ -301,32 +301,32 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/inter"
                             android:text="@string/share"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/text_size_02" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/file_view_action_tip"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
+                        android:paddingTop="@dimen/small_08"
+                        android:paddingBottom="@dimen/small_08">
 
                         <RelativeLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/normal_06"
+                            android:layout_height="@dimen/normal_06"
                             android:layout_gravity="center_horizontal">
 
                             <io.lbry.browser.ui.controls.SolidIconView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/normal_03"
+                                android:layout_height="@dimen/normal_03"
                                 android:layout_centerInParent="true"
                                 android:text="@string/fa_gift"
                                 android:textColor="@color/foreground"
-                                android:textSize="20dp" />
+                                android:textSize="@dimen/normal_02" />
                         </RelativeLayout>
 
                         <TextView
@@ -335,33 +335,33 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/inter"
                             android:text="@string/support"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/text_size_02" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/file_view_action_repost"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
+                        android:paddingTop="@dimen/small_08"
+                        android:paddingBottom="@dimen/small_08">
 
                         <RelativeLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/normal_06"
+                            android:layout_height="@dimen/normal_06"
                             android:layout_gravity="center_horizontal">
 
                             <io.lbry.browser.ui.controls.SolidIconView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/normal_03"
+                                android:layout_height="@dimen/normal_03"
                                 android:layout_centerInParent="true"
                                 android:layout_gravity="center_horizontal"
                                 android:text="@string/fa_repost"
                                 android:textColor="@color/foreground"
-                                android:textSize="20dp" />
+                                android:textSize="@dimen/normal_02" />
                         </RelativeLayout>
 
                         <TextView
@@ -370,29 +370,29 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/inter"
                             android:text="@string/repost"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/text_size_02" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/file_view_action_edit"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
+                        android:paddingTop="@dimen/small_08"
+                        android:paddingBottom="@dimen/small_08"
                         android:visibility="gone">
 
                         <RelativeLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/normal_06"
+                            android:layout_height="@dimen/normal_06"
                             android:layout_gravity="center_horizontal">
 
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/normal_03"
+                                android:layout_height="@dimen/normal_03"
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/ic_edit"
                                 app:tint="@color/foreground" />
@@ -404,37 +404,37 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/inter"
                             android:text="@string/edit"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/text_size_02" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/file_view_action_download"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
+                        android:paddingTop="@dimen/small_08"
+                        android:paddingBottom="@dimen/small_08">
 
                         <RelativeLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/normal_06"
+                            android:layout_height="@dimen/normal_06"
                             android:layout_gravity="center_horizontal">
 
                             <ProgressBar
                                 android:id="@+id/file_view_download_progress"
                                 style="?android:progressBarStyleHorizontal"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
+                                android:layout_width="@dimen/normal_06"
+                                android:layout_height="@dimen/normal_06"
                                 android:progressDrawable="@drawable/determinate_progress_circle"
                                 android:visibility="gone" />
 
                             <ImageView
                                 android:id="@+id/file_view_action_download_icon"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="@dimen/normal_02"
+                                android:layout_height="@dimen/normal_02"
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/ic_download"
                                 app:tint="@color/foreground" />
@@ -446,29 +446,29 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/inter"
                             android:text="@string/download"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/text_size_02" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/file_view_action_delete"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
+                        android:paddingTop="@dimen/small_08"
+                        android:paddingBottom="@dimen/small_08"
                         android:visibility="gone">
 
                         <RelativeLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/normal_06"
+                            android:layout_height="@dimen/normal_06"
                             android:layout_gravity="center_horizontal">
 
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/normal_03"
+                                android:layout_height="@dimen/normal_03"
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/ic_delete"
                                 app:tint="@color/foreground" />
@@ -480,28 +480,28 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/inter"
                             android:text="@string/delete"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/text_size_02" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/file_view_action_unpublish"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
+                        android:paddingTop="@dimen/small_08"
+                        android:paddingBottom="@dimen/small_08">
 
                         <RelativeLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/normal_06"
+                            android:layout_height="@dimen/normal_06"
                             android:layout_gravity="center_horizontal">
 
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/normal_03"
+                                android:layout_height="@dimen/normal_03"
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/ic_unpublish"
                                 app:tint="@color/foreground" />
@@ -513,28 +513,28 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/inter"
                             android:text="@string/unpublish"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/text_size_02" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/file_view_action_report"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/small_00"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
+                        android:paddingTop="@dimen/small_08"
+                        android:paddingBottom="@dimen/small_08">
 
                         <RelativeLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/normal_06"
+                            android:layout_height="@dimen/normal_06"
                             android:layout_gravity="center_horizontal">
 
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/normal_03"
+                                android:layout_height="@dimen/normal_03"
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/ic_report"
                                 app:tint="@color/foreground" />
@@ -546,14 +546,14 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/inter"
                             android:text="@string/report"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/text_size_02" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_height="@dimen/small_00.5"
+                    android:layout_marginTop="@dimen/small_12"
                     android:background="@color/divider" />
 
                 <RelativeLayout
@@ -568,22 +568,22 @@
                         android:layout_toStartOf="@id/file_view_publisher_area_actions"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
-                        android:paddingStart="16dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp">
+                        android:paddingStart="@dimen/normal_01"
+                        android:paddingTop="@dimen/small_12"
+                        android:paddingBottom="@dimen/small_12">
 
                         <RelativeLayout
                             android:id="@+id/file_view_publisher_avatar"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="@dimen/normal_09_02"
+                            android:layout_height="@dimen/normal_09_02"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginEnd="@dimen/normal_01"
                             android:visibility="gone">
 
                             <RelativeLayout
                                 android:id="@+id/file_view_publisher_no_thumbnail"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="@dimen/normal_09_02"
+                                android:layout_height="@dimen/normal_09_02"
                                 android:layout_centerHorizontal="true"
                                 android:background="@drawable/bg_channel_icon">
 
@@ -596,13 +596,13 @@
                                     android:textAllCaps="true"
                                     android:textColor="@color/white"
                                     android:textFontWeight="300"
-                                    android:textSize="24sp" />
+                                    android:textSize="@dimen/text_size_11" />
                             </RelativeLayout>
 
                             <ImageView
                                 android:id="@+id/file_view_publisher_thumbnail"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="@dimen/normal_09_02"
+                                android:layout_height="@dimen/normal_09_02"
                                 android:layout_centerHorizontal="true" />
                         </RelativeLayout>
 
@@ -619,7 +619,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"
                                 android:textFontWeight="300"
-                                android:textSize="14sp"
+                                android:textSize="@dimen/text_size_04"
                                 android:visibility="gone" />
 
                             <TextView
@@ -629,7 +629,7 @@
                                 android:fontFamily="@font/inter"
                                 android:textColor="@color/lbryGreen"
                                 android:textFontWeight="600"
-                                android:textSize="14sp" />
+                                android:textSize="@dimen/text_size_04" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -648,61 +648,61 @@
                             android:background="?attr/selectableItemBackground"
                             android:clickable="true"
                             android:orientation="horizontal"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp">
+                            android:paddingTop="@dimen/small_08"
+                            android:paddingBottom="@dimen/small_08">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginStart="16dp"
+                                android:layout_marginStart="@dimen/normal_01"
                                 android:fontFamily="@font/inter"
                                 android:text="@string/follow"
                                 android:textAllCaps="true"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_02"
                                 android:textStyle="bold" />
 
                             <io.lbry.browser.ui.controls.OutlineIconView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginEnd="16dp"
+                                android:layout_width="@dimen/normal_03"
+                                android:layout_height="@dimen/normal_03"
+                                android:layout_marginStart="@dimen/normal_01"
+                                android:layout_marginEnd="@dimen/normal_01"
                                 android:text="@string/fa_heart"
                                 android:textColor="@color/red"
-                                android:textSize="20dp" />
+                                android:textSize="@dimen/normal_02" />
                         </LinearLayout>
 
                         <io.lbry.browser.ui.controls.SolidIconView
                             android:id="@+id/file_view_icon_unfollow"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
+                            android:layout_width="@dimen/normal_03"
+                            android:layout_height="@dimen/normal_03"
+                            android:layout_marginStart="@dimen/normal_01"
+                            android:layout_marginEnd="@dimen/normal_01"
                             android:background="?attr/selectableItemBackground"
                             android:clickable="true"
                             android:text="@string/fa_heart_broken"
                             android:textColor="@color/foreground"
-                            android:textSize="20dp"
+                            android:textSize="@dimen/normal_02"
                             android:visibility="gone" />
 
                         <io.lbry.browser.ui.controls.SolidIconView
                             android:id="@+id/file_view_icon_bell"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginEnd="16dp"
+                            android:layout_width="@dimen/normal_03"
+                            android:layout_height="@dimen/normal_03"
+                            android:layout_marginEnd="@dimen/normal_01"
                             android:background="?attr/selectableItemBackground"
                             android:clickable="true"
                             android:text="@string/fa_bell_slash"
                             android:textColor="@color/foreground"
-                            android:textSize="20dp"
+                            android:textSize="@dimen/normal_02"
                             android:visibility="gone" />
                     </LinearLayout>
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_height="@dimen/small_00.5"
+                    android:layout_marginBottom="@dimen/small_12"
                     android:background="@color/divider" />
 
                 <LinearLayout
@@ -716,46 +716,46 @@
                         android:id="@+id/file_view_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="@dimen/normal_01"
+                        android:layout_marginEnd="@dimen/normal_01"
                         android:autoLink="all"
                         android:fontFamily="@font/inter"
                         android:textColorLink="@color/lbryGreen"
                         android:textFontWeight="300"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/text_size_02" />
 
                     <LinearLayout
                         android:id="@+id/file_view_tag_area"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="@dimen/normal_01"
+                        android:layout_marginEnd="@dimen/normal_01"
                         android:layout_weight="10"
                         android:orientation="horizontal"
-                        android:paddingTop="36dp">
+                        android:paddingTop="@dimen/normal_06">
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:layout_width="@dimen/small_00"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:fontFamily="@font/inter"
                             android:text="@string/tags"
                             android:textFontWeight="600"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/text_size_02" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/file_view_tag_list"
-                            android:layout_width="0dp"
+                            android:layout_width="@dimen/small_00"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginStart="@dimen/small_08"
                             android:layout_weight="8" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="12dp"
+                        android:layout_height="@dimen/small_00.5"
+                        android:layout_marginTop="@dimen/small_12"
+                        android:layout_marginBottom="@dimen/small_12"
                         android:background="@color/divider" />
                 </LinearLayout>
 
@@ -763,14 +763,14 @@
                     android:id="@+id/file_view_related_content_area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/small_08"
                     android:orientation="vertical">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp">
+                        android:layout_marginStart="@dimen/normal_01"
+                        android:layout_marginEnd="@dimen/normal_01">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -778,12 +778,12 @@
                             android:layout_centerVertical="true"
                             android:fontFamily="@font/inter"
                             android:text="@string/related_content"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/text_size_06" />
 
                         <ProgressBar
                             android:id="@+id/file_view_related_content_progress"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="@dimen/normal_01"
+                            android:layout_height="@dimen/normal_01"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:visibility="gone" />
@@ -793,13 +793,13 @@
                         android:id="@+id/file_view_no_related_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="@dimen/normal_01"
+                        android:layout_marginTop="@dimen/small_08"
+                        android:layout_marginEnd="@dimen/normal_01"
                         android:fontFamily="@font/inter"
                         android:text="@string/no_related_content"
                         android:textFontWeight="300"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -811,8 +811,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_height="@dimen/small_00.5"
+                    android:layout_marginBottom="@dimen/small_12"
                     android:background="@color/divider" />
 
                 <LinearLayout
@@ -820,18 +820,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingBottom="16dp">
+                    android:paddingBottom="@dimen/normal_01">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp">
+                        android:layout_marginStart="@dimen/normal_01"
+                        android:layout_marginEnd="@dimen/normal_01">
 
                         <ProgressBar
                             android:id="@+id/file_view_comments_progress"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="@dimen/normal_01"
+                            android:layout_height="@dimen/normal_01"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:visibility="gone" />
@@ -842,7 +842,7 @@
                             android:layout_centerVertical="true"
                             android:fontFamily="@font/inter"
                             android:text="@string/comments"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/text_size_06" />
                     </RelativeLayout>
 
                     <include layout="@layout/container_comment_form"
@@ -852,26 +852,26 @@
                         android:id="@+id/file_view_disabled_comments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="@dimen/normal_01"
+                        android:layout_marginTop="@dimen/small_08"
+                        android:layout_marginEnd="@dimen/normal_01"
                         android:fontFamily="@font/inter"
                         android:text="@string/creator_disabled_comments"
                         android:textFontWeight="300"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/file_view_no_comments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="@dimen/normal_01"
+                        android:layout_marginTop="@dimen/small_08"
+                        android:layout_marginEnd="@dimen/normal_01"
                         android:fontFamily="@font/inter"
                         android:text="@string/no_comments"
                         android:textFontWeight="300"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_size_04"
                         android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView

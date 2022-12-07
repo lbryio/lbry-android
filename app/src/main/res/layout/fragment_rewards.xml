@@ -7,9 +7,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingTop="@dimen/normal_01"
+        android:paddingStart="@dimen/normal_01"
+        android:paddingEnd="@dimen/normal_01">
         <androidx.cardview.widget.CardView
             android:id="@+id/rewards_filter_card"
             android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp">
+                android:padding="@dimen/small_12">
                 <TextView
                     android:id="@+id/rewards_filter_link_unclaimed"
                     android:background="?attr/selectableItemBackground"
@@ -35,15 +35,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/normal_01"
                     android:layout_toEndOf="@id/rewards_filter_link_unclaimed"
                     android:fontFamily="@font/inter"
                     android:text="@string/all"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_size_04" />
                 <ProgressBar
                     android:id="@+id/rewards_list_loading"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/normal_02"
+                    android:layout_height="@dimen/normal_02"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:visibility="gone" />
@@ -55,7 +55,7 @@
             android:layout_below="@id/rewards_filter_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="16dp" />
+            android:paddingTop="@dimen/normal_01" />
     </RelativeLayout>
 
     <include layout="@layout/container_sdk_initializing" />
@@ -65,7 +65,7 @@
         android:background="@color/lbryGreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="@dimen/normal_01">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -76,9 +76,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <io.lbry.browser.ui.controls.SolidIconView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:textSize="24dp"
+                    android:layout_width="@dimen/normal_06"
+                    android:layout_height="@dimen/normal_06"
+                    android:textSize="@dimen/normal_03"
                     android:layout_gravity="center_vertical"
                     android:text="@string/fa_award"
                     android:textColor="@color/white" />
@@ -87,9 +87,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/small_08"
                     android:fontFamily="@font/inter"
-                    android:textSize="24sp"
+                    android:textSize="@dimen/text_size_11"
                     android:textColor="@color/white" />
             </LinearLayout>
 
@@ -97,8 +97,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:layout_marginTop="16dp"
+                android:textSize="@dimen/text_size_06"
+                android:layout_marginTop="@dimen/normal_01"
                 android:text="@string/lbry_credits_allow"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
@@ -108,8 +108,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:layout_marginTop="16dp"
+                android:textSize="@dimen/text_size_06"
+                android:layout_marginTop="@dimen/normal_01"
                 android:text="@string/free_credits_worth"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />
@@ -119,8 +119,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:layout_marginTop="16dp"
+                android:textSize="@dimen/text_size_06"
+                android:layout_marginTop="@dimen/normal_01"
                 android:text="@string/rewards_learn_more"
                 android:textColor="@color/white"
                 android:textFontWeight="300" />

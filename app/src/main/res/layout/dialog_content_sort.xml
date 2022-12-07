@@ -5,23 +5,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <TextView
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/small_10"
+        android:layout_marginEnd="@dimen/small_10"
+        android:layout_marginTop="@dimen/small_08"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter"
         android:text="@string/sort_content_by"
-        android:textSize="12sp"
+        android:textSize="@dimen/text_size_02"
         android:textAllCaps="true"
         android:textStyle="bold" />
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="@dimen/small_00.5"
         android:background="@color/divider"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginTop="@dimen/small_08"
+        android:layout_marginStart="@dimen/small_08"
+        android:layout_marginEnd="@dimen/small_08" />
 
     <RelativeLayout
         android:id="@+id/sort_by_trending_item"
@@ -29,11 +29,11 @@
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="@dimen/small_12">
         <ImageView
             android:id="@+id/sort_by_trending_item_icon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="@dimen/normal_01_02"
+            android:layout_height="@dimen/normal_01_02"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_trending"
             app:tint="@color/foreground" />
@@ -41,11 +41,11 @@
             android:layout_toEndOf="@+id/sort_by_trending_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/normal_01"
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter"
             android:text="@string/trending_content"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <ImageView
             android:id="@+id/sort_by_trending_item_selected"
@@ -64,11 +64,11 @@
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="@dimen/small_12">
         <ImageView
             android:id="@+id/sort_by_new_item_icon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="@dimen/normal_01_02"
+            android:layout_height="@dimen/normal_01_02"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_new"
             app:tint="@color/foreground" />
@@ -76,11 +76,11 @@
             android:layout_toEndOf="@+id/sort_by_new_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/normal_01"
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter"
             android:text="@string/new_content"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <ImageView
             android:id="@+id/sort_by_new_item_selected"
@@ -99,11 +99,11 @@
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="@dimen/small_12">
         <ImageView
             android:id="@+id/sort_by_top_item_icon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="@dimen/normal_01_02"
+            android:layout_height="@dimen/normal_01_02"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_top"
             app:tint="@color/foreground" />
@@ -111,11 +111,11 @@
             android:layout_toEndOf="@+id/sort_by_top_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/normal_01"
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter"
             android:text="@string/top_content"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_04"
             android:textFontWeight="300" />
         <ImageView
             android:id="@+id/sort_by_top_item_selected"

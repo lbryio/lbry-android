@@ -12,23 +12,23 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_centerVertical="true"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="@dimen/normal_15"
+        android:layout_height="@dimen/normal_15"
         android:layout_toStartOf="@id/player_play_pause">
         <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/normal_06"
+            android:layout_height="@dimen/normal_06"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/normal_01"
             android:src="@drawable/ic_replay_10"
             app:tint="@color/white" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/player_play_pause"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="@dimen/normal_21"
+        android:layout_height="@dimen/normal_21"
         android:layout_centerInParent="true">
         <RelativeLayout
             android:id="@id/exo_play"
@@ -38,8 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:layout_width="@dimen/normal_15"
+                android:layout_height="@dimen/normal_15"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_play" />
         </RelativeLayout>
@@ -52,8 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="@dimen/normal_13"
+                android:layout_height="@dimen/normal_13"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_pause" />
         </RelativeLayout>
@@ -64,15 +64,15 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_centerVertical="true"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="@dimen/normal_15"
+        android:layout_height="@dimen/normal_15"
         android:layout_toEndOf="@id/player_play_pause">
         <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/normal_06"
+            android:layout_height="@dimen/normal_06"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/normal_01"
             android:src="@drawable/ic_forward_10"
             app:tint="@color/white" />
     </RelativeLayout>
@@ -81,15 +81,15 @@
         android:id="@+id/player_toggle_cast"
         android:clickable="true"
         android:background="?attr/selectableItemBackground"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/normal_09"
+        android:layout_height="@dimen/normal_09"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:visibility="gone">
         <ImageView
             android:id="@+id/player_image_cast_toggle"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/normal_03"
+            android:layout_height="@dimen/normal_03"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_cast"
             app:tint="@color/white" />
@@ -101,8 +101,8 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_alignParentBottom="true"
-        android:layout_width="56dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/normal_11"
+        android:layout_height="@dimen/normal_09"
         android:layout_toStartOf="@id/player_toggle_fullscreen">
         <TextView
             android:id="@+id/player_playback_speed_label"
@@ -110,12 +110,12 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/small_08"
             android:fontFamily="@font/inter"
             android:letterSpacing="0.05"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textSize="11sp" />
+            android:textSize="@dimen/text_size_01" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -123,14 +123,14 @@
         android:clickable="true"
         android:focusable="true"
         android:background="?attr/selectableItemBackground"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/normal_09"
+        android:layout_height="@dimen/normal_09"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true">
         <ImageView
             android:id="@+id/player_image_full_screen_toggle"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/normal_03"
+            android:layout_height="@dimen/normal_03"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_fullscreen"
             app:tint="@color/white" />
@@ -138,36 +138,36 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/normal_09"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@id/player_playback_speed"
-        android:paddingStart="16dp"
-        android:paddingEnd="4dp">
+        android:paddingStart="@dimen/normal_01"
+        android:paddingEnd="@dimen/small_04">
         <TextView
             android:id="@+id/player_duration_elapsed"
-            android:layout_width="64dp"
+            android:layout_width="@dimen/normal_13"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter"
             android:singleLine="true"
             android:text="@string/zero_duration"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_04" />
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@id/exo_progress"
             android:layout_toStartOf="@id/player_duration_total"
             android:layout_toEndOf="@id/player_duration_elapsed"
             android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_height="@dimen/normal_03"
+            android:layout_marginStart="@dimen/small_04"
+            android:layout_marginEnd="@dimen/small_04"
             android:layout_centerVertical="true"
             app:scrubber_color="@color/scrubberColor"
             app:played_color="@color/playedColor"
             app:buffered_color="@color/bufferedColor" />
         <TextView
             android:id="@+id/player_duration_total"
-            android:layout_width="64dp"
+            android:layout_width="@dimen/normal_13"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
@@ -176,6 +176,6 @@
             android:singleLine="true"
             android:text="@string/zero_duration"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_04" />
     </RelativeLayout>
 </RelativeLayout>
