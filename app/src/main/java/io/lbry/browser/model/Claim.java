@@ -384,10 +384,12 @@ public class Claim {
             long feeAmount = searchResultObject.isNull("fee") ? 0 : searchResultObject.getLong("fee");
             String releaseTimeString = !searchResultObject.isNull("release_time") ? searchResultObject.getString("release_time") : null;
             long releaseTime = 0;
-            try {
-                releaseTime = Double.valueOf(new SimpleDateFormat(RELEASE_TIME_DATE_FORMAT).parse(releaseTimeString).getTime() / 1000.0).longValue();
-            } catch (ParseException ex) {
-                // pass
+            if (releaseTimeString != null) {
+                try {
+                    releaseTime = Double.valueOf(new SimpleDateFormat(RELEASE_TIME_DATE_FORMAT).parse(releaseTimeString).getTime() / 1000.0).longValue();
+                } catch (ParseException ex) {
+                    // pass
+                }
             }
 
             GenericMetadata metadata = (duration > 0 || releaseTime > 0 || feeAmount > 0) ? new StreamMetadata() : new GenericMetadata();
